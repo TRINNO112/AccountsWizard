@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AccountsWizard — Lessons</title>
+  <meta name="description" content="AccountsWizard Lessons — Grade 11 accounting basics (skeleton page)" />
+  <style>
+    :root{
+      --bg:#0b1020; --bg-2:#0f1733; --text:#f7f9ff;
+      --muted:#b8c2ff; --brand:#7c4dff; --accent:#ff7ac6; --card:#141b38;
+      --radius:16px; --shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(180deg,var(--bg),var(--bg-2)); color:var(--text);
+    }
+
+    /* Header (same style as index) */
+    header{ position:sticky; top:0; z-index:30; backdrop-filter: blur(8px); background:rgba(10,14,30,.6); border-bottom:1px solid rgba(255,255,255,.04) }
+    .nav{ max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 18px; }
+    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); }
+    .brand .logo{ width:36px; height:36px; border-radius:8px; background:conic-gradient(var(--brand), #00e5ff, var(--accent)); transform:rotate(6deg); }
+    .brand h1{ margin:0; font-size:1rem; font-weight:800; letter-spacing:.4px; }
+
+    /* Layout */
+    .wrap{ max-width:1200px; margin:26px auto; padding: 0 18px 80px; display:grid; grid-template-columns: 320px 1fr; gap:20px; align-items:start; }
+    .sidebar{ background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border-radius:var(--radius); padding:14px; border:1px solid rgba(255,255,255,.04); box-shadow:var(--shadow); min-height:380px; }
+    .main{ background: linear-gradient(180deg, rgba(255,255,255,.015), transparent); padding:20px; border-radius:var(--radius); border:1px solid rgba(255,255,255,.04); box-shadow:var(--shadow); min-height:380px; }
+
+    /* Search & TOC */
+    .search { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+    .search input{ flex:1; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.06); background: rgba(10,14,30,.6); color:var(--text) }
+    .toc{ display:flex; flex-direction:column; gap:8px; max-height:64vh; overflow:auto; padding-right:6px; }
+    .toc-item{ cursor:pointer; padding:10px 12px; border-radius:10px; display:flex; justify-content:space-between; gap:8px; align-items:center; transition:.15s; background:transparent; border:1px solid transparent }
+    .toc-item:hover{ transform:translateX(6px); background: rgba(255,255,255,.02) }
+    .toc-item.active{ background: linear-gradient(90deg,var(--brand), #00e5ff); color:#071025; border: none; }
+    .badge-small{ font-size: .78rem; padding:6px 8px; border-radius:999px; background: rgba(255,255,255,.04); color:var(--muted); }
+
+    /* Main content */
+    .lesson-title{ margin:0 0 6px; font-size:1.6rem; font-weight:800; line-height:1.05; background: linear-gradient(90deg,#fff,var(--accent)); -webkit-background-clip:text; color:transparent; }
+    .meta{ color:var(--muted); margin-bottom:14px; font-size:.95rem }
+    .content{ color: #e6ebff; line-height:1.7; font-size:1rem; }
+    .controls{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap }
+    .btn{ padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; background:rgba(255,255,255,.04); color:var(--text) }
+    .btn.primary{ background:linear-gradient(90deg,var(--brand), #00e5ff); color:#071025 }
+    .small{ font-size:.9rem; color:var(--muted) }
+
+    /* collapsible lesson card (for future content blocks) */
+    .collapsible{ margin-top:12px; border-radius:12px; background: rgba(255,255,255,.02); padding:12px; border:1px solid rgba(255,255,255,.03) }
+    .collapsible h4{ margin:0 0 8px }
+    details summary{ cursor:pointer; padding:8px 10px; border-radius:8px; background: rgba(255,255,255,.01); list-style:none; }
+    details[open] summary{ background:linear-gradient(90deg,var(--brand), #00e5ff); color:#071025 }
+
+    /* small footer */
+    .less-footer{ margin-top:26px; color:var(--muted); font-size:.9rem; text-align:center }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .wrap{ grid-template-columns: 1fr; }
+      .sidebar{ order:2 }
+      .main{ order:1 }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="index.html"><span class="logo" aria-hidden="true"></span><h1>AccountsWizard</h1></a>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a class="small" href="quiz.html" style="text-decoration:none;color:var(--muted)">Quiz</a>
+        <a class="small" href="about.html" style="text-decoration:none;color:var(--muted)">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap" role="main">
+    <!-- SIDEBAR: Search + TOC -->
+    <aside class="sidebar" aria-label="Lessons table of contents">
+      <div class="search">
+        <input id="search" placeholder="Search topics (e.g., journal, ledger)" aria-label="Search lessons" />
+        <button id="clear" class="btn" title="Clear search">✕</button>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+        <div style="flex:1"><strong style="font-size:.95rem">Lessons</strong><div class="small">Click to open</div></div>
+        <div class="small" id="progressSummary">0 / 0 done</div>
+      </div>
+
+      <div class="toc" id="toc" role="navigation" aria-label="Lesson list">
+        <!-- JS will populate TOC items here -->
+      </div>
+
+      <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+        <button id="markAll" class="btn">Mark all read</button>
+        <button id="resetProgress" class="btn">Reset</button>
+      </div>
+
+      <div style="margin-top:14px; font-size:.9rem; color:var(--muted)">
+        Tip: Use the search to quickly find topics. You can paste structured content (JSON) into the console and run `importFromJSON(...)` to import lessons.
+      </div>
+    </aside>
+
+    <!-- MAIN: Lesson content area -->
+    <section class="main" id="main">
+      <div id="headerArea">
+        <h2 id="lessonTitle" class="lesson-title">Pick a lesson from the left</h2>
+        <div class="meta" id="lessonMeta">Lessons for Grade 11 • DK Goel friendly • Last opened: <span id="lastOpened">—</span></div>
+      </div>
+
+      <article id="lessonContent" class="content">
+        <p style="opacity:.8">No lesson loaded yet. Click any lesson on the left to begin. When you edit lesson content later, paste HTML strings into the `lessonsData` object inside the script.</p>
+
+        <!-- Example of a collapsible subtopic -->
+        <div class="collapsible" style="display:none" id="exampleCollapsible">
+          <details>
+            <summary>Example subtopic (click)</summary>
+            <div style="padding-top:10px">
+              <p>This is a sample subtopic area inside a lesson. Use this for worked examples or solved problem steps.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="controls">
+          <button id="prevBtn" class="btn">← Previous</button>
+          <button id="nextBtn" class="btn">Next →</button>
+          <button id="markBtn" class="btn">Mark as complete</button>
+          <button id="openEditor" class="btn primary">Open lesson editor</button>
+        </div>
+
+        <div id="editorArea" style="margin-top:18px; display:none">
+          <div style="margin-bottom:8px; color:var(--muted)">Quick editor (paste HTML content or JSON):</div>
+          <textarea id="editor" style="width:100%; min-height:120px; border-radius:8px; background:rgba(10,14,30,.6); color:var(--text); border:1px solid rgba(255,255,255,.04); padding:10px"></textarea>
+          <div style="margin-top:8px; display:flex; gap:8px">
+            <button id="saveEd" class="btn primary">Save to current lesson</button>
+            <button id="cancelEd" class="btn">Cancel</button>
+          </div>
+        </div>
+
+        <div class="less-footer">
+          Progress is saved on this device. Want cloud saving later? We can add a simple backend or GitHub-based workflow.
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    /************************************************************************
+     * LESSONS SKELETON SCRIPT
+     *
+     * - lessonsData: Add lessons here (id must be unique)
+     * - loadLesson(id): loads lesson content into #lessonContent
+     * - Completed lessons are saved in localStorage as aw_completed (array)
+     * - lastLesson saved as aw_lastLesson
+     *
+     * To add a lesson simply:
+     *   1) Add an entry into lessonsData with fields:
+     *      { id:'basic-concepts', title:'Basic Concepts', time:'5 min', content: '<p>HTML content</p>' }
+     *   2) Call renderTOC() (the page already does this)
+     *
+     * To import content from other AIs: use the prompt template included at the bottom of this file.
+     ************************************************************************/
+
+    const $ = (s, r=document)=> r.querySelector(s);
+    const $$ = (s, r=document)=> [...r.querySelectorAll(s)];
+
+    /* ----------- Example lessons data (start here) ------------ */
+    const lessonsData = [
+      {
+        id: 'basic-concepts',
+        title: 'Basic Concepts',
+        time: '6 min',
+        short: 'Entity, Money Measurement, Going Concern, Dual Aspect',
+        content: `
+          <p><strong>Basic accounting concepts</strong> set the foundation. <em>Entity</em> means the business is separate from owners. <em>Money measurement</em> limits records to monetary transactions only.</p>
+          <h4>Key points</h4>
+          <ul>
+            <li>Entity, Continuity (Going Concern), Money Measurement, Dual Aspect</li>
+            <li>Conservatism, Consistency, Materiality (brief intro)</li>
+          </ul>
+          <h4>Quick example</h4>
+          <p>If owner invests ₹10,000 into business → record as <b>Capital (credit)</b> and <b>Cash (debit)</b>.</p>
+        `
+      },
+      {
+        id: 'accounting-equation',
+        title: 'Accounting Equation',
+        time: '5 min',
+        short: 'Assets = Capital + Liabilities',
+        content: `
+          <p>The fundamental <strong>Accounting Equation</strong> is:</p>
+          <p style="font-weight:900; font-size:1.15rem">Assets = Capital + Liabilities</p>
+          <p>This shows the ownership claim (capital) and obligations (liabilities) on assets.</p>
+          <h4>Mini exercise</h4>
+          <p>If assets = ₹50,000 and liabilities = ₹12,000, capital = ? (answer: ₹38,000)</p>
+        `
+      }
+      // Add more lessons here as objects
+    ];
+
+    /* ----------- State & Storage ----------- */
+    let completed = new Set(JSON.parse(localStorage.getItem('aw_completed') || '[]'));
+    let lastLesson = localStorage.getItem('aw_lastLesson') || null;
+
+    /* ----------- Render TOC ----------- */
+    function renderTOC(filter=''){
+      const toc = $('#toc');
+      toc.innerHTML = '';
+      const list = lessonsData.filter(l => l.title.toLowerCase().includes(filter) || (l.short||'').toLowerCase().includes(filter) || l.id.toLowerCase().includes(filter));
+      list.forEach((l, idx)=>{
+        const item = document.createElement('div');
+        item.className = 'toc-item';
+        item.dataset.id = l.id;
+        item.innerHTML = `<div><strong>${l.title}</strong><div class="small">${l.short || ''}</div></div><div style="display:flex;gap:8px;align-items:center"><div class="badge-small">${l.time || ''}</div><div style="width:8px;height:8px;border-radius:50%;background:${completed.has(l.id)?'#27e1a3':'transparent'}; box-shadow:${completed.has(l.id)?'0 6px 14px #27e1a3':''}"></div></div>`;
+        item.addEventListener('click', ()=> loadLesson(l.id));
+        toc.appendChild(item);
+      });
+      updateProgressUI();
+    }
+
+    /* ----------- Load a lesson ----------- */
+    function loadLesson(id){
+      const L = lessonsData.find(x => x.id === id);
+      if(!L) return;
+      $('#lessonTitle').textContent = L.title;
+      $('#lessonMeta').innerHTML = `Lesson • <span class="small">${L.time || '—'}</span> • <span class="small">ID: ${L.id}</span>`;
+      $('#lessonContent').querySelector('p')?.remove?.(); // remove the initial placeholder p if present
+      $('#lessonContent').insertAdjacentHTML('afterbegin', L.content);
+      // show exampleCollapsible only if lesson contains such blocks in content or for demo
+      document.getElementById('exampleCollapsible').style.display = 'block';
+      // update active TOC style
+      $$('.toc-item').forEach(it => it.classList.toggle('active', it.dataset.id === id));
+      // save last
+      lastLesson = id;
+      localStorage.setItem('aw_lastLesson', id);
+      $('#lastOpened').textContent = new Date().toLocaleString();
+    }
+
+    /* ----------- Navigation (prev/next) ----------- */
+    function navNext(offset){
+      if(!lastLesson) { if(lessonsData.length) loadLesson(lessonsData[0].id); return; }
+      const idx = lessonsData.findIndex(x=>x.id===lastLesson);
+      const nxt = lessonsData[idx + offset];
+      if(nxt) loadLesson(nxt.id);
+    }
+
+    /* ----------- Mark complete toggle ----------- */
+    function toggleCompleteCurrent(){
+      if(!lastLesson) { toast('Open a lesson first'); return; }
+      if(completed.has(lastLesson)) completed.delete(lastLesson);
+      else completed.add(lastLesson);
+      localStorage.setItem('aw_completed', JSON.stringify([...completed]));
+      renderTOC($('#search').value.trim().toLowerCase());
+      toast(completed.has(lastLesson) ? 'Marked complete ✅' : 'Marked incomplete');
+    }
+
+    /* ----------- Utility: toast (small) ----------- */
+    function toast(m){
+      const t = document.createElement('div');
+      t.textContent = m; t.style.position='fixed'; t.style.right='18px'; t.style.bottom='18px';
+      t.style.background='linear-gradient(90deg,var(--brand),#00e5ff)'; t.style.color='#071025'; t.style.padding='10px 12px';
+      t.style.borderRadius='10px'; t.style.fontWeight=800; t.style.boxShadow='0 12px 30px rgba(0,0,0,.4)';
+      document.body.appendChild(t);
+      setTimeout(()=> t.style.opacity=0, 1600); setTimeout(()=> t.remove(), 2000);
+    }
+
+    /* ----------- Editor helpers ----------- */
+    $('#openEditor').addEventListener('click', ()=>{
+      if(!lastLesson){ toast('Open a lesson first to edit'); return; }
+      $('#editorArea').style.display = 'block';
+      const L = lessonsData.find(x=>x.id === lastLesson);
+      $('#editor').value = L.content.trim();
+    });
+    $('#cancelEd').addEventListener('click', ()=> { $('#editorArea').style.display = 'none'; });
+    $('#saveEd').addEventListener('click', ()=>{
+      const txt = $('#editor').value.trim();
+      if(!lastLesson){ toast('No lesson open'); return; }
+      const L = lessonsData.find(x=>x.id === lastLesson);
+      L.content = txt || '<p>(empty)</p>';
+      toast('Saved to lesson (local only). If you want to persist to GitHub, copy this content to your local file and push.');
+      $('#editorArea').style.display = 'none';
+      loadLesson(lastLesson); // reload
+    });
+
+    /* ----------- Search + controls ----------- */
+    $('#search').addEventListener('input', (e)=> renderTOC(e.target.value.trim().toLowerCase()));
+    $('#clear').addEventListener('click', ()=> { $('#search').value=''; renderTOC(); });
+
+    $('#prevBtn').addEventListener('click', ()=> navNext(-1));
+    $('#nextBtn').addEventListener('click', ()=> navNext(1));
+    $('#markBtn').addEventListener('click', toggleCompleteCurrent);
+
+    $('#markAll').addEventListener('click', ()=>{
+      lessonsData.forEach(l=> completed.add(l.id));
+      localStorage.setItem('aw_completed', JSON.stringify([...completed]));
+      renderTOC($('#search').value.trim().toLowerCase());
+      toast('All lessons marked complete');
+    });
+    $('#resetProgress').addEventListener('click', ()=>{
+      completed = new Set();
+      localStorage.removeItem('aw_completed');
+      localStorage.removeItem('aw_lastLesson');
+      renderTOC($('#search').value.trim().toLowerCase());
+      toast('Progress reset');
+    });
+
+    /* ----------- Progress UI ----------- */
+    function updateProgressUI(){
+      const done = completed.size;
+      const tot = lessonsData.length;
+      $('#progressSummary').textContent = `${done} / ${tot} done`;
+    }
+
+    /* ----------- Import helper (paste JSON into console) ----------- */
+    // Accepts array of lesson objects like lessonsData (id,title,time,short,content)
+    function importFromJSON(arr){
+      if(!Array.isArray(arr)) { console.error('importFromJSON expects an array'); return; }
+      for(const it of arr){
+        // naive replace: if id exists update, else push
+        const existing = lessonsData.find(x=>x.id===it.id);
+        if(existing){ Object.assign(existing, it); } else { lessonsData.push(it); }
+      }
+      renderTOC($('#search').value.trim().toLowerCase());
+      toast('Imported ' + arr.length + ' lessons (local)');
+    }
+    window.importFromJSON = importFromJSON; // expose for console usage
+
+    /* ----------- Initial render & restore last ----------- */
+    renderTOC();
+    if(lastLesson) loadLesson(lastLesson);
+    updateProgressUI();
+
+    /* ----------- Small accessibility: keyboard nav (j/k) ---------- */
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'j') navNext(1);
+      if(e.key === 'k') navNext(-1);
+    });
+
+    /* ----------- Developer helper: show console prompt template ---------- */
+    console.log('%cAccountsWizard Lessons Skeleton loaded — edit lessonsData in the script.', 'color:#a5b4fc;font-weight:800');
+
+    /* ----------- PROMPT TEMPLATE (use with DeepSeek / other AI to get JSON) ----------
+     Use this prompt to fetch structured lesson content from other AI sources.
+     Ask the AI to return ONLY valid JSON: an array of lesson objects.
+
+     PROMPT (paste to DeepSeek or other AI):
+     ------------------------------------------------------------
+     I want lesson content for Grade 11 accounting (DK Goel style). 
+     Provide an array of JSON objects. Each object must have these fields:
+       - id: (kebab-case unique id, e.g., "journal-entry")
+       - title: human title
+       - time: estimated read time like "6 min"
+       - short: short one-line summary
+       - content: HTML string using <p>, <ul>, <ol>, <h4>, <strong>, <em>, <pre> tags only.
+     Provide 5 lessons covering these topics: Basic Concepts, Journal, Ledger, Trial Balance, Cash Book.
+     Keep HTML short and focused (150-350 words per lesson). Return ONLY JSON (no commentary).
+
+     Example output shape:
+     [
+       {"id":"basic-concepts","title":"Basic Concepts","time":"5 min","short":"Entity, dual aspect","content":"<p>...</p>"},
+       ...
+     ]
+     ------------------------------------------------------------
+
+     After you get JSON from DeepSeek, copy it and run in your browser console:
+       importFromJSON(PASTE_JSON_HERE)
+    --------------------------------------------------------------------------- */
+
+  </script>
+</body>
+</html>
