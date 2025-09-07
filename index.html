@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    AccountsWizard - Fun Theme Homepage (Single File)
+    Tech: Pure HTML + CSS + JS (no frameworks)
+    Author: You + your wingman 😎
+  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AccountsWizard — Learn Accounting the Fun Way</title>
+  <meta name="description" content="AccountsWizard helps Grade 11 students learn accounting basics with interactive, colorful lessons and quizzes." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M7 3h10a2 2 0 0 1 2 2v2H5V5a2 2 0 0 1 2-2m12 6v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z'/%3E%3Cpath fill='%23a5b4fc' d='M8.5 12h7v1.6h-7zM8.5 15h5v1.6h-5z'/%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --bg: #0b1020;           /* deep space */
+      --bg-2:#0f1733;
+      --text:#f7f9ff;          /* near-white */
+      --muted:#b8c2ff;         /* soft periwinkle */
+      --brand:#7c4dff;         /* violet */
+      --brand-2:#00e5ff;       /* aqua */
+      --accent:#ff7ac6;        /* pink */
+      --lime:#b7ff4a;          /* fun lime */
+      --card:#141b38;          /* card background */
+      --ok:#27e1a3;
+      --warn:#ffd166;
+      --shadow: 0 15px 30px rgba(0,0,0,.35), 0 6px 10px rgba(0,0,0,.2);
+      --radius: 18px;
+      --radius-lg: 28px;
+      --speed: 500ms;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; }
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(124,77,255,.35), transparent 60%),
+                  radial-gradient(1000px 700px at 10% 10%, rgba(0,229,255,.25), transparent 55%),
+                  linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* Floating background shapes */
+    .floaters { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
+    .bubble{
+      position: absolute; border-radius: 999px; filter: blur(1px);
+      opacity: .35; mix-blend-mode: screen;
+      animation: drift var(--dur) linear infinite;
+      box-shadow: 0 0 50px currentColor;
+    }
+    @keyframes drift{
+      from{ transform: translateY(120vh) translateX(var(--sx)) scale(var(--sc)); }
+      to  { transform: translateY(-20vh) translateX(calc(var(--sx) + var(--dx))) scale(var(--sc)); }
+    }
+
+    /* Header / Navbar */
+    header{
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(13,18,40,.9), rgba(13,18,40,.5));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav{
+      max-width: 1200px; margin: 0 auto; padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .brand{
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .logo{
+      width: 40px; height: 40px; border-radius: 10px;
+      background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent), var(--brand));
+      box-shadow: 0 8px 18px rgba(124,77,255,.5);
+      transform: rotate(8deg);
+    }
+    .brand h1{
+      margin:0; font-size: 1.1rem; letter-spacing: .6px;
+      background: linear-gradient(90deg, #fff, var(--muted), var(--lime));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      font-weight: 800;
+    }
+    .menu{ display: flex; gap: 10px; align-items: center; }
+    .menu a{
+      text-decoration: none; color: var(--text); opacity: .9;
+      padding: 10px 14px; border-radius: 12px; transition: .2s ease;
+    }
+    .menu a:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
+    .pill{
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      color: #0b1020; font-weight: 800; border: none;
+      padding: 10px 16px; border-radius: 999px; cursor: pointer;
+      box-shadow: 0 12px 25px rgba(0,229,255,.25), inset 0 -2px 0 rgba(0,0,0,.2);
+      transition: transform .15s ease, filter .3s ease;
+    }
+    .pill:hover{ transform: translateY(-1px) scale(1.02); filter: brightness(1.1); }
+    .hamb{ display:none; background:none; border:none; color:var(--text); font-size: 1.6rem; cursor:pointer;}
+
+    /* Mobile menu */
+    .mobile{
+      display:none; padding: 6px 16px 14px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      background: rgba(10,14,30,.75);
+    }
+    .mobile a{
+      display:block; text-decoration:none; color:var(--text);
+      padding: 12px 10px; border-radius: 12px; opacity:.9;
+    }
+    .mobile a:hover{ background: rgba(255,255,255,.06); }
+
+    /* Hero */
+    .hero{
+      max-width: 1200px; margin: 42px auto 0; padding: 0 18px 30px;
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center;
+    }
+    .tag{
+      display:inline-flex; gap:10px; align-items:center; padding:6px 10px; border-radius: 999px;
+      background: rgba(124,77,255,.15); border:1px solid rgba(124,77,255,.35); color:#e6e6ff; font-weight:700; letter-spacing:.3px;
+    }
+    .spark{ width:8px; height:8px; border-radius:50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+    .title{
+      font-size: clamp(1.9rem, 3.4vw + .8rem, 3.4rem); line-height: 1.05; margin: 14px 0 10px; font-weight: 900;
+      background: linear-gradient(90deg, #fff, #c2d0ff, var(--accent), var(--lime));
+      -webkit-background-clip:text; background-clip:text; color: transparent;
+    }
+    .subtitle{ color: #dfe5ff; opacity: .85; font-size: 1.05rem; line-height: 1.7; }
+    .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
+    .ghost{
+      background: transparent; color: var(--text); border:1px solid rgba(255,255,255,.2);
+      padding: 10px 16px; border-radius: 14px; font-weight:700; cursor:pointer; transition: .2s ease;
+    }
+    .ghost:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
+
+    .hero-media{
+      position: relative; min-height: 300px; border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(124,77,255,.22), rgba(0,229,255,.15));
+      border: 1px solid rgba(255,255,255,.08); box-shadow: var(--shadow); overflow: clip;
+    }
+    .coin{
+      position:absolute; width: 96px; height: 96px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe29a, #ffb703 55%, #a56b00 70%);
+      box-shadow: 0 16px 30px rgba(255,183,3,.25), inset 0 2px 0 rgba(255,255,255,.5);
+      animation: float 5s ease-in-out infinite;
+    }
+    .coin::after{
+      content:"₹"; position:absolute; inset:0; display:grid; place-items:center;
+      font-weight: 900; font-size: 38px; color:#2b1900; text-shadow: 0 1px 0 #fff7, 0 2px 8px #0006;
+    }
+    .coin.c1{ top: 26px; left: 22px; }
+    .coin.c2{ bottom: 26px; right: 22px; animation-delay: .9s; }
+    .chip{
+      position:absolute; inset: 20px; border-radius: 22px;
+      background: rgba(10,12,30,.55); border:1px solid rgba(255,255,255,.08);
+      display:grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px;
+    }
+    .mini{
+      background: linear-gradient(180deg, #1a224a, #10163a);
+      border:1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px;
+    }
+    .mini h4{ margin: 0 0 6px; font-size: .95rem; color:#e6ebff; }
+    .stat{font-size: 1.35rem; font-weight: 900; letter-spacing:.5px;}
+    .stat.ok{ color: var(--ok); }
+    .stat.warn{ color: var(--warn); }
+
+    /* Feature Cards */
+    .features{
+      max-width: 1200px; margin: 22px auto 0; padding: 0 18px 60px;
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    .card{
+      position:relative; background: linear-gradient(180deg, #0f1330, #0b0f2a);
+      border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: clip; transition: transform .18s ease, filter .25s ease;
+      min-height: 180px; padding: 18px;
+    }
+    .card:hover{ transform: translateY(-4px) scale(1.01); filter: brightness(1.06); }
+    .card .badge{
+      position:absolute; right: 12px; top: 12px; font-size: .75rem; letter-spacing:.3px;
+      background: linear-gradient(90deg, var(--accent), var(--brand-2)); color:#0b1020; font-weight:900;
+      padding: 6px 10px; border-radius: 999px;
+    }
+    .card h3{ margin: 8px 0 6px; font-size: 1.25rem; }
+    .card p{ margin:0; color:#d6dcff; opacity:.9; line-height:1.6; }
+    .card .go{
+      margin-top: 14px; display:inline-flex; align-items:center; gap:10px;
+      text-decoration:none; background: rgba(255,255,255,.08); color:var(--text);
+      padding: 10px 14px; border-radius: 12px; transition:.18s ease;
+    }
+    .card .go:hover{ background: rgba(255,255,255,.15); transform: translateX(2px); }
+
+    /* Topics Grid */
+    .section{
+      max-width: 1200px; margin: 28px auto 0; padding: 0 18px 70px;
+    }
+    .section h2{
+      font-size: clamp(1.4rem, 2.2vw + .9rem, 2.2rem);
+      margin: 0 0 12px;
+      background: linear-gradient(90deg, #fff, var(--accent), var(--lime));
+      -webkit-background-clip:text; background-clip:text; color: transparent;
+    }
+    .topics{
+      display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    }
+    .topic{
+      background: linear-gradient(180deg, #0e1636, #0b122c);
+      border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 14px;
+      min-height: 110px; display:flex; flex-direction: column; justify-content: space-between;
+      transition: transform .18s ease;
+    }
+    .topic:hover{ transform: translateY(-3px); }
+    .topic b{ font-size: .98rem; }
+    .topic small{ color:#cbd3ff; opacity:.85; }
+
+    /* CTA band */
+    .cta-band{
+      margin-top: 24px; border-radius: var(--radius-lg);
+      background: linear-gradient(90deg, rgba(124,77,255,.32), rgba(0,229,255,.28));
+      padding: 18px; display:flex; align-items:center; justify-content: space-between; gap: 16px;
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow: 0 18px 40px rgba(0,229,255,.12);
+    }
+    .cta-band .left{ max-width: 760px; }
+    .cta-band p{ margin:8px 0 0; color:#e9edff; opacity:.95; }
+    .cta-band .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 20px 18px 60px; color:#c9d0ff; opacity:.9; text-align:center;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .hero-media{ order:-1; min-height: 240px; }
+      .features{ grid-template-columns: 1fr 1fr; }
+      .topics{ grid-template-columns: 1fr 1fr 1fr; }
+    }
+    @media (max-width: 680px){
+      .hamb{ display:block; }
+      .menu { display:none; }
+      .mobile.show{ display:block; }
+      .features{ grid-template-columns: 1fr; }
+      .topics{ grid-template-columns: 1fr 1fr; }
+      .cta-band{ flex-direction: column; align-items: flex-start; }
+    }
+
+    /* Cute micro-animations */
+    .pop{ animation: pop .5s ease forwards; }
+    @keyframes pop{
+      0%{ transform: scale(.9); opacity:.0 }
+      60%{ transform: scale(1.03); opacity:1 }
+      100%{ transform: scale(1) }
+    }
+    .reveal{ opacity:0; transform: translateY(14px); transition: .6s ease; }
+    .reveal.on{ opacity:1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <!-- Floating colorful bubbles for fun vibe -->
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header>
+    <nav class="nav">
+      <a class="brand" href="#">
+        <span class="logo" aria-hidden="true"></span>
+        <h1>Accounts<span style="letter-spacing:.5px;">Wizard</span> ✨</h1>
+      </a>
+      <div class="menu" id="menu">
+        <a href="#learn">Learn</a>
+        <a href="lessons.html">Lessons</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">About</a>
+        <button class="pill" id="sayHiBtn" title="Set your name">Hi, <span id="who">Student</span>!</button>
+      </div>
+      <button class="hamb" id="hamb" aria-label="Open menu">☰</button>
+    </nav>
+    <div class="mobile" id="mobile">
+      <a href="#learn">Learn</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="about.html">About</a>
+      <a href="#" id="mset">Set your name</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div>
+      <span class="tag reveal"><span class="spark"></span> Grade 11 • CBSE / DK Goel basics</span>
+      <h2 class="title reveal" style="transition-delay:.06s">Learn Accounting the Fun Way with <span style="white-space:nowrap;">AccountsWizard</span>!</h2>
+      <p class="subtitle reveal" style="transition-delay:.12s">
+        No boring walls of text. Colorful explanations, interactive examples, quick quizzes, and a friendly wizard vibe.
+        Master <b>Journal → Ledger → Trial Balance → Financial Statements</b> step by step.
+      </p>
+      <div class="cta-row reveal" style="transition-delay:.18s">
+        <a class="pill" href="lessons.html">Start Learning</a>
+        <a class="ghost" href="quiz.html">Take a Quick Quiz</a>
+        <a class="ghost" href="#topics">Explore Topics</a>
+      </div>
+    </div>
+    <div class="hero-media pop" role="img" aria-label="Animated accounting showcase">
+      <div class="coin c1" aria-hidden="true"></div>
+      <div class="coin c2" aria-hidden="true"></div>
+      <div class="chip">
+        <div class="mini">
+          <h4>Double Entry Rule</h4>
+          <div class="stat ok">Debit = Credit</div>
+          <small style="opacity:.85">Every transaction affects two accounts.</small>
+        </div>
+        <div class="mini">
+          <h4>Accounting Cycle</h4>
+          <div class="stat warn">Journal → Ledger → Trial Balance</div>
+          <small style="opacity:.85">Then adjustments &amp; statements.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Cards -->
+  <section class="features" id="learn">
+    <article class="card reveal" style="border-left:4px solid var(--brand)">
+      <span class="badge">Step 1</span>
+      <h3>Learn with Mini-Lessons</h3>
+      <p>Short, colorful explanations with diagrams and quick checks so you never get lost.</p>
+      <a class="go" href="lessons.html">Open Lessons →</a>
+    </article>
+
+    <article class="card reveal" style="border-left:4px solid var(--accent)">
+      <span class="badge">Step 2</span>
+      <h3>Practice Journal Entries</h3>
+      <p>Interactive prompts: pick accounts, choose debit/credit, and see instant feedback.</p>
+      <a class="go" href="lessons.html#journal">Try Journal Practice →</a>
+    </article>
+
+    <article class="card reveal" style="border-left:4px solid var(--lime)">
+      <span class="badge">Step 3</span>
+      <h3>Test Yourself</h3>
+      <p>MCQs aligned to Grade 11 syllabus. Save your score locally to track progress.</p>
+      <a class="go" href="quiz.html">Go to Quiz →</a>
+    </article>
+  </section>
+
+  <!-- Topics -->
+  <section class="section" id="topics">
+    <h2 class="reveal">Popular Topics</h2>
+    <div class="topics">
+      <div class="topic reveal">
+        <b>Basic Concepts</b>
+        <small>Entity, Money Measurement, Going Concern, Dual Aspect.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Accounting Equation</b>
+        <small>Assets = Capital + Liabilities.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Source Documents</b>
+        <small>Invoice, Cash Memo, Debit/Credit Note, Voucher.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Journal</b>
+        <small>General journal entries &amp; narration.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Ledger</b>
+        <small>Posting from journal, balancing accounts.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Cash Book</b>
+        <small>Single, double, triple column cash book.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Trial Balance</b>
+        <small>Methods of preparation, error types.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Depreciation</b>
+        <small>Straight-line, WDV, disposal of asset.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Bank Reconciliation</b>
+        <small>Causes of difference &amp; statement.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Rectification of Errors</b>
+        <small>Before/after trial balance.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Accounting for GST</b>
+        <small>CGST, SGST, IGST basics.</small>
+      </div>
+      <div class="topic reveal">
+        <b>Final Accounts (Intro)</b>
+        <small>Trading, P&amp;L, Balance Sheet basics.</small>
+      </div>
+    </div>
+
+    <!-- CTA band -->
+    <div class="cta-band reveal">
+      <div class="left">
+        <h3 style="margin:0 0 6px">Ready to become an Accounting Wizard? 🧙‍♂️</h3>
+        <p>Jump into lessons or try a quick quiz. Your name and best score will be saved on this device.</p>
+      </div>
+      <div class="actions">
+        <a class="pill" href="lessons.html">Start Lessons</a>
+        <a class="ghost" href="quiz.html">Quick Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> AccountsWizard • Made for Grade 11 learners • <a href="about.html" style="color:#fff">About</a>
+  </footer>
+
+  <script>
+    /* ========= Utilities ========= */
+    const $ = (q,root=document)=>root.querySelector(q);
+    const $$ = (q,root=document)=>[...root.querySelectorAll(q)];
+
+    /* ========= Mobile menu ========= */
+    const hamb = $('#hamb');
+    const mobile = $('#mobile');
+    hamb.addEventListener('click', ()=>{
+      mobile.classList.toggle('show');
+      hamb.textContent = mobile.classList.contains('show') ? '✕' : '☰';
+    });
+    $('#mset').addEventListener('click', (e)=>{ e.preventDefault(); setName(); });
+
+    /* ========= Year ========= */
+    $('#year').textContent = new Date().getFullYear();
+
+    /* ========= Greeting name with localStorage ========= */
+    const whoEl = $('#who');
+    const sayHiBtn = $('#sayHiBtn');
+    function setName(){
+      const current = localStorage.getItem('aw_name') || '';
+      const name = prompt('Enter your name to personalize AccountsWizard:', current) || '';
+      const clean = name.trim().slice(0, 24);
+      if(clean){
+        localStorage.setItem('aw_name', clean);
+        whoEl.textContent = clean.split(' ')[0];
+        toast(`Hi ${clean}! Let’s learn smart ✨`);
+      }else{
+        localStorage.removeItem('aw_name');
+        whoEl.textContent = 'Student';
+      }
+    }
+    function loadName(){
+      const saved = localStorage.getItem('aw_name');
+      if(saved){
+        whoEl.textContent = saved.split(' ')[0];
+      }
+    }
+    sayHiBtn.addEventListener('click', setName);
+    loadName();
+
+    /* ========= Floating bubbles generator ========= */
+    const floaterHost = $('#floaters');
+    const COLORS = ['#7c4dff', '#00e5ff', '#ff7ac6', '#b7ff4a', '#ffd166'];
+    function mkBubble(){
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = Math.floor(40 + Math.random()*160);
+      const color = COLORS[Math.floor(Math.random()*COLORS.length)];
+      const startX = Math.floor(Math.random()*100) + 'vw';
+      const driftX = (Math.random()*60 - 30) + 'vw';
+      const scale = (0.6 + Math.random()*1.2).toFixed(2);
+      const duration = 14 + Math.random()*22;
+      b.style.width = b.style.height = size+'px';
+      b.style.left = startX;
+      b.style.setProperty('--sx', '0');
+      b.style.setProperty('--dx', driftX);
+      b.style.setProperty('--sc', scale);
+      b.style.setProperty('--dur', duration+'s');
+      b.style.color = color;
+      floaterHost.appendChild(b);
+      setTimeout(()=> b.remove(), duration*1000);
+    }
+    // Launch waves of bubbles
+    setInterval(()=>{ for(let i=0;i<2;i++) mkBubble(); }, 1600);
+    for(let i=0;i<8;i++) mkBubble();
+
+    /* ========= Coin float ========= */
+    // (already animated with CSS keyframes via .coin)
+
+    /* ========= Reveal-on-scroll ========= */
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('on');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold:.14 });
+    $$('.reveal').forEach(el=> observer.observe(el));
+
+    /* ========= Friendly toast ========= */
+    const toastHost = document.createElement('div');
+    toastHost.style.position='fixed';
+    toastHost.style.inset='auto 0 24px 0';
+    toastHost.style.display='grid';
+    toastHost.style.placeItems='center';
+    toastHost.style.pointerEvents='none';
+    toastHost.style.zIndex='50';
+    document.body.appendChild(toastHost);
+    function toast(msg){
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.pointerEvents='auto';
+      t.style.maxWidth='92vw';
+      t.style.background='linear-gradient(90deg, rgba(124,77,255,.95), rgba(0,229,255,.95))';
+      t.style.color='#0b1020';
+      t.style.fontWeight='900';
+      t.style.padding='12px 16px';
+      t.style.borderRadius='14px';
+      t.style.boxShadow='0 14px 30px rgba(0,0,0,.35)';
+      t.style.margin='8px auto';
+      t.style.transform='translateY(16px)';
+      t.style.opacity='0';
+      t.style.transition='.35s ease';
+      toastHost.appendChild(t);
+      requestAnimationFrame(()=>{
+        t.style.transform='translateY(0)'; t.style.opacity='1';
+      });
+      setTimeout(()=>{
+        t.style.transform='translateY(12px)'; t.style.opacity='.0';
+        setTimeout(()=> t.remove(), 350);
+      }, 2200);
+    }
+
+    /* ========= Fun ripple on card click ========= */
+    $$('.card').forEach(card=>{
+      card.addEventListener('click', (e)=>{
+        const r = document.createElement('span');
+        const d = Math.max(card.clientWidth, card.clientHeight);
+        r.style.position='absolute';
+        r.style.width = r.style.height = d+'px';
+        r.style.left = (e.offsetX - d/2)+'px';
+        r.style.top  = (e.offsetY - d/2)+'px';
+        r.style.borderRadius='50%';
+        r.style.background='radial-gradient(circle, rgba(255,255,255,.25), transparent 60%)';
+        r.style.pointerEvents='none';
+        r.style.transform='scale(.6)';
+        r.style.opacity='.0';
+        r.style.transition='.6s ease';
+        card.appendChild(r);
+        requestAnimationFrame(()=>{
+          r.style.transform='scale(1.25)';
+          r.style.opacity='.9';
+        });
+        setTimeout(()=>r.remove(), 620);
+      });
+    });
+
+    /* ========= Keyboard accessibility ========= */
+    document.addEventListener('keyup', (e)=>{
+      if(e.key === 'Escape' && mobile.classList.contains('show')){
+        mobile.classList.remove('show'); hamb.textContent='☰';
+      }
+    });
+
+    // Small welcome on first visit
+    if(!localStorage.getItem('aw_seen')){
+      setTimeout(()=> toast('Welcome! Tap “Hi, Student!” to personalize.'), 700);
+      localStorage.setItem('aw_seen','1');
+    }
+  </script>
+</body>
+</html>
