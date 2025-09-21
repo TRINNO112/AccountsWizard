@@ -1,0 +1,16 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "title": "Introduction to Accounting",
+      "description": "Learn the basic concepts and importance of accounting in business",
+      "path": "lessons/lesson-1.html"
+    },
+    {
+      "id": 2,
+      "title": "Basic Accounting Terms",
+      "description": "Master essential accounting terminology and definitions",
+      "path": "lessons/lesson-2.html"
+    }
+  ]
+}
