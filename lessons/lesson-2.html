@@ -4,13 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Lesson 2 — Basic Accounting Terms | AccountsWizard</title>
-  <meta name="description" content="Lesson 2 - Basic Accounting Terms for Class 11 (DK Goel). Learn essential accounting terminology with examples and practice MCQs.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-
   <style>
-    /* =======================
-       Neon / Glass Theme
-       ======================= */
     :root {
       --bg: #0b1020;
       --bg-2: #0f1733;
@@ -23,7 +18,10 @@
       --radius: 16px;
       --shadow: 0 18px 40px rgba(2,6,23,.55);
       --speed: 300ms;
+      --success: #4caf50;
+      --error: #f44336;
     }
+
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -36,129 +34,553 @@
       min-height: 100vh;
       padding: 20px;
     }
-
-    header {
-      text-align: center;
-      padding: 30px 20px;
-    }
+    header { text-align: center; padding: 30px 20px; }
     .lesson-title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      margin-bottom: 10px;
+      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
       background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .breadcrumb {
-      color: var(--muted);
-      font-size: .95rem;
-    }
-    .breadcrumb a {
-      color: inherit;
-      text-decoration: none;
-    }
-    .breadcrumb a:hover {
-      color: var(--text);
-    }
-
-    /* Navigation Header */
+    .breadcrumb { color: var(--muted); font-size: .95rem; }
+    .breadcrumb a { color: inherit; text-decoration: none; }
+    .breadcrumb a:hover { color: var(--text); }
     .nav-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 24px;
-      background: var(--card);
-      border-radius: var(--radius);
-      margin-bottom: 32px;
-      box-shadow: var(--shadow);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
+      margin-bottom: 32px; box-shadow: var(--shadow);
     }
     .nav-header a {
-      color: var(--muted);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: all var(--speed);
+      color: var(--muted); text-decoration: none; display: flex; align-items: center;
+      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
     }
-    .nav-header a:hover {
-      color: var(--text);
-      background: rgba(255,255,255,.1);
-    }
-
-    /* Content Sections */
+    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
     section {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 32px;
-      margin-bottom: 32px;
-      box-shadow: var(--shadow);
+      background: var(--card); border-radius: var(--radius);
+      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
     }
     section h2 {
-      margin-top: 0;
-      font-size: 1.5rem;
+      margin-top: 0; font-size: 1.5rem;
       background: linear-gradient(90deg,#fff,var(--brand-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    section p {
-      line-height: 1.6;
-      color: var(--muted);
-    }
-    
-    /* MCQ Section */
-    .mcq {
-      margin-bottom: 24px;
-      padding: 24px;
-      background: rgba(255,255,255,.03);
-      border-radius: calc(var(--radius) / 2);
-    }
-    .mcq:last-child {
-      margin-bottom: 0;
-    }
-    .mcq h3 {
-      margin-top: 0;
-      font-size: 1.1rem;
-    }
-    .mcq label {
-      display: block;
-      margin: 12px 0;
-      padding: 12px 20px;
-      background: rgba(255,255,255,.05);
-      border-radius: 8px;
-      cursor: pointer;
+    section p { line-height: 1.6; color: var(--muted); }
+    /* Accordion */
+    .accordion-item { margin-bottom: 12px; border-radius: var(--radius); overflow: hidden; background: rgba(255,255,255,.05); }
+    .accordion-header {
+      width: 100%; padding: 14px 20px; text-align: left; font-weight: bold;
+      background: var(--card); color: var(--brand-2); border: none; cursor: pointer;
       transition: all var(--speed);
     }
-    .mcq label:hover {
-      background: rgba(255,255,255,.08);
+    .accordion-header:hover { background: rgba(255,255,255,.1); }
+    .accordion-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 20px;
     }
-    .mcq input[type="radio"] {
+    .accordion-body.open { max-height: 500px; padding: 14px 20px; }
+    /* MCQs */
+    .mcq { margin-bottom: 24px; padding: 24px; background: rgba(255,255,255,.03); border-radius: calc(var(--radius) / 2); }
+    .mcq h3 { margin-top: 0; font-size: 1.1rem; }
+    .mcq label { display: block; margin: 12px 0; padding: 12px 20px; background: rgba(255,255,255,.05);
+      border-radius: 8px; cursor: pointer; transition: all var(--speed);}
+    .mcq label:hover { background: rgba(255,255,255,.08);}
+    .mcq input[type="radio"] { display: none;}
+    .mcq input[type="radio"]:checked + label { background: var(--brand); color: #fff;}
+    .mcq.correct { background: rgba(0,255,0,.05);}
+    .mcq.wrong { background: rgba(255,0,0,.05);}
+    .submit-button {
+      display: block; width: 200px; margin: 24px auto; padding: 12px 24px;
+      background: var(--brand); color: white; border: none; border-radius: 8px;
+      font-size: 1rem; cursor: pointer; transition: all var(--speed);
+    }
+    .submit-button:hover { background: var(--brand-2); transform: translateY(-2px);}
+    .score-display { text-align: center; margin-top: 20px; padding: 16px; border-radius: 8px; display: none; }
+    .score-display.show { display: block;}
+    .score-display.success { background: rgba(0,255,0,.1); color: #00ff00;}
+    .score-display.partial { background: rgba(255,165,0,.1); color: #ffa500;}
+    /* Progress Circle */
+    .progress-container { display: flex; justify-content: center; margin: 20px 0;}
+    .progress-circle { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--brand-2) 0deg, #333 0deg);
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text); }
+      /* MCQ reveal styling — paste into your existing <style> */
+    .mcq label[data-correct="true"] {
+      background: linear-gradient(90deg, rgba(0,255,200,0.06), rgba(124,77,255,0.03));
+      border: 1px solid rgba(0,255,200,0.12);
+      color: #eafbe8;
+      position: relative;
+      padding-right: 14px;
+    }
+    .mcq label[data-wrong="true"] {
+      background: rgba(255,0,0,0.06);
+      border: 1px solid rgba(255,0,0,0.10);
+      color: #ffecec;
+      position: relative;
+      padding-right: 14px;
+    }
+
+    /* Bad / Good indicators appended to labels */
+    .mcq label[data-correct="true"]::after {
+      content: " ✓ Correct";
+      font-size: .85rem;
+      display: block;
+      margin-top: 8px;
+      color: #bfffcf;
+    }
+    .mcq label[data-wrong="true"]::after {
+      content: " ✕  Correct: " attr(data-correct-text);
+      font-size: .85rem;
+      display: block;
+      margin-top: 8px;
+      color: #ffd6d6;
+      white-space: normal;
+    }
+
+    /* Retry Button Styles */
+    #retry-btn {
       display: none;
+      width: 180px;
+      margin: 16px auto;
+      padding: 12px 22px;
+      font-size: 1rem;
+      border-radius: 50px;
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(255, 122, 198, 0.4);
     }
-    .mcq input[type="radio"]:checked + label {
-      background: var(--brand);
+    #retry-btn:hover {
+      background: var(--accent);
       color: #fff;
+      box-shadow: 0 0 20px rgba(255, 122, 198, 0.8);
+      transform: scale(1.05);
     }
-    .mcq.correct {
-      background: rgba(0,255,0,.05);
+
+    /* Accordion Container */
+    .accordion {
+      margin-top: 20px;
     }
-    .mcq.wrong {
-      background: rgba(255,0,0,.05);
+
+    /* Accordion Item */
+    .accordion-item {
+      margin-bottom: 12px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    .accordion-item:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Accordion Header */
+    .accordion-header {
+      width: 100%;
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      background: none;
+      color: var(--brand-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+    .accordion-header:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Icon inside header */
+    .accordion-header i {
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    /* Accordion Body */
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    .accordion-body.open {
+      max-height: 500px;
+      padding: 16px 20px;
+    }
+
+
+    /* Main Container */
+    .hierarchy-container {
+      position: relative;
+      padding: 50px 20px;
+      background: linear-gradient(135deg, rgba(124,77,255,0.05), rgba(0,229,255,0.05));
+      border-radius: var(--radius);
+      margin: 30px 0;
+      overflow: visible;
+    }
+
+    /* Hierarchy Levels */
+    .hierarchy-level {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      margin: 50px 0;
+      flex-wrap: wrap;
+    }
+
+    .level-0 { margin-bottom: 60px; }
+    .level-1 { margin: 60px 0; }
+    .level-2 { margin-top: 60px; flex-direction: column; align-items: center; gap: 40px; }
+
+    /* Card Styles */
+    .hierarchy-card {
+      position: relative;
+      background: var(--card);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.4s ease;
+      border: 2px solid transparent;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .hierarchy-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      transition: height 0.3s ease;
+    }
+
+    .hierarchy-card:hover::before {
+      height: 6px;
+    }
+
+    .hierarchy-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      border-color: var(--brand-2);
+    }
+
+    /* Root Card */
+    .root-card {
+      min-width: 300px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      border: none;
+    }
+
+    .root-card::before { display: none; }
+
+    .root-card i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .root-card h3 {
+      margin: 15px 0 8px 0;
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+
+    /* Type Cards */
+    .type-card {
+      min-width: 250px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .personal-type { border-left: 6px solid #ff7ac6; }
+    .real-type { border-left: 6px solid #00e5ff; }
+    .nominal-type { border-left: 6px solid #7c4dff; }
+
+    .type-card i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .type-card h4 {
+      margin: 12px 0 8px 0;
+      font-size: 1.3rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .rule-text {
+      font-size: 0.8rem;
+      color: var(--brand-2);
+      font-style: italic;
+      line-height: 1.3;
+      margin-top: 10px;
+    }
+
+    /* Account Sections */
+    .account-section {
+      width: 100%;
+      margin: 30px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 25px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 25px;
+      display: inline-block;
+    }
+
+    .personal-section .section-header { background: rgba(255,122,198,0.1); }
+    .real-section .section-header { background: rgba(0,229,255,0.1); }
+    .nominal-section .section-header { background: rgba(124,77,255,0.1); }
+
+    /* Cards Row */
+    .cards-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    /* Detail Cards */
+    .detail-card {
+      min-width: 180px;
+      max-width: 220px;
+      height: 160px;
+      padding: 20px 15px;
+    }
+
+    .detail-card i {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+
+    .detail-card h5 {
+      margin: 8px 0 5px 0;
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .detail-card p {
+      margin: 5px 0 8px 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+
+    .detail-card ul {
+      margin: 8px 0 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .detail-card li {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 3px 0;
+      padding: 2px 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+
+    /* Specific Detail Card Colors */
+    .personal-detail { border-left: 4px solid #ff7ac6; }
+    .real-detail { border-left: 4px solid #00e5ff; }
+    .income-card { border-left: 4px solid #4caf50; }
+    .expense-card { border-left: 4px solid #f44336; }
+
+    /* Sub Categories */
+    .sub-category {
+      margin: 30px 0;
+    }
+
+    .sub-category h6 {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 20px;
+      padding: 8px 15px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    /* Amount Indicators */
+    .amount-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .positive {
+      background: rgba(76,175,80,0.2);
+      color: #4caf50;
+    }
+
+    .negative {
+      background: rgba(244,67,54,0.2);
+      color: #f44336;
+    }
+
+    /* Card Badges */
+    .card-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .type-card .card-badge {
+      background: var(--brand);
+    }
+
+    /* Lines */
+    .hierarchy-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Summary Section */
+    .summary-section {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .summary-card {
+      flex: 1;
+      min-width: 300px;
+      background: var(--card);
+      padding: 25px;
+      border-radius: 12px;
+      border-left: 5px solid var(--accent);
+    }
+
+    .equation-card {
+      border-left-color: var(--brand);
+    }
+
+    .equation {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .term {
+      background: var(--brand);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .operator {
+      font-size: 1.5rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .rules-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .rule-item {
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border-left: 4px solid;
+    }
+
+    .personal-rule { 
+      border-left-color: #ff7ac6; 
+      background: rgba(255,122,198,0.05);
+    }
+    .real-rule { 
+      border-left-color: #00e5ff; 
+      background: rgba(0,229,255,0.05);
+    }
+    .nominal-rule { 
+      border-left-color: #7c4dff; 
+      background: rgba(124,77,255,0.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hierarchy-level {
+        gap: 30px;
+      }
+      
+      .cards-row {
+        gap: 15px;
+      }
+      
+      .detail-card {
+        min-width: 150px;
+        height: 140px;
+      }
+      
+      .summary-section {
+        flex-direction: column;
+      }
+      
+      .hierarchy-lines {
+        display: none;
+      }
+      
+      .equation {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation Header -->
   <div class="nav-header">
-    <a href="../index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="../lessons.html">
-      <i class="fa-solid fa-book"></i>
-      <span>All Lessons</span>
-    </a>
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
   </div>
 
   <header>
@@ -172,381 +594,740 @@
 
   <main>
     <section>
-      <h2>Introduction to Basic Accounting Terms</h2>
-      <p>Understanding basic accounting terms is crucial for anyone studying accounting. These terms form the foundation of accounting language and help in understanding financial transactions and statements. In this lesson, we'll cover essential accounting terminology that every student should know.</p>
-    </section>
+    <h2>Introduction to Basic Accounting Terms</h2>
+    <p style="font-size:1.2rem; font-weight:500; line-height:1.8;">
+      Understanding basic accounting terms is crucial. These terms form the foundation 
+      of accounting language. Without them, it’s difficult to interpret financial records 
+      or communicate in business.
+    </p>
+  </section>
+
 
     <section>
-      <h2>Key Terms and Definitions</h2>
-      
-      <h3>1. Transaction</h3>
-      <p>A transaction is any event that involves the exchange of value between two or more entities. It can be:</p>
-      <ul>
-        <li>Purchase of goods</li>
-        <li>Sale of services</li>
-        <li>Payment of expenses</li>
-        <li>Receipt of income</li>
-      </ul>
+      <h2>Key Accounting Terms</h2>
+      <div class="accordion">
 
-      <h3>2. Account</h3>
-      <p>An account is a systematic record of all transactions relating to a particular person, asset, liability, expense, or income. Types of accounts include:</p>
-      <ul>
-        <li>Personal Accounts (accounts of persons or entities)</li>
-        <li>Real Accounts (accounts of assets)</li>
-        <li>Nominal Accounts (accounts of expenses and incomes)</li>
-      </ul>
+        <!-- Entity -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-university"></i> Entity
+          </button>
+          <div class="accordion-body">
+            <p>An entity is any unit (person, organization, or business) that carries on economic activities independently.</p>
+          </div>
+        </div>
 
-      <h3>3. Capital</h3>
-      <p>Capital represents the amount invested by the owner in the business. It is also known as owner's equity. Features of capital:</p>
-      <ul>
-        <li>Initial investment by owner</li>
-        <li>Can be increased through additional investments</li>
-        <li>Can be decreased through withdrawals</li>
-      </ul>
+        <!-- Business Entity -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-building"></i> Business Entity
+          </button>
+          <div class="accordion-body">
+            <p>The business entity concept states that the business is treated as separate from its owner(s) for accounting purposes.</p>
+          </div>
+        </div>
 
-      <h3>4. Asset</h3>
-      <p>Assets are economic resources owned by a business that have value and can generate future economic benefits. Examples include:</p>
-      <ul>
-        <li>Cash and Bank Balance</li>
-        <li>Inventory</li>
-        <li>Machinery and Equipment</li>
-        <li>Buildings</li>
-      </ul>
+        <!-- Event -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-calendar-day"></i> Event
+          </button>
+          <div class="accordion-body">
+            <p>An event is any happening that has an economic impact on the business. All events may not be transactions, but all transactions are events.</p>
+          </div>
+        </div>
 
-      <h3>5. Liability</h3>
-      <p>Liabilities are amounts owed by the business to external parties. Common types include:</p>
-      <ul>
-        <li>Bank Loans</li>
-        <li>Accounts Payable</li>
-        <li>Outstanding Expenses</li>
-      </ul>
+        <!-- Account -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-book-open"></i> Account
+          </button>
+          <div class="accordion-body">
+            <p>An account is a record that summarizes all transactions relating to a particular item such as assets, liabilities, income, or expenses.</p>
+          </div>
+        </div>
+
+        <!-- Capital -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-piggy-bank"></i> Capital
+          </button>
+          <div class="accordion-body">
+            <p>Capital is the amount invested by the owner in the business for earning profit.</p>
+          </div>
+        </div>
+
+        <!-- Drawings -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-hand-holding-usd"></i> Drawings
+          </button>
+          <div class="accordion-body">
+            <p>Drawings are amounts or goods withdrawn by the owner for personal use. They reduce owner’s equity.</p>
+          </div>
+        </div>
+
+        <!-- Liability -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-balance-scale"></i> Liability
+          </button>
+          <div class="accordion-body">
+            <p>Liabilities are obligations that a business owes to outsiders, e.g., creditors, loans, outstanding expenses.</p>
+          </div>
+        </div>
+
+        <!-- Types of Assets -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-boxes"></i> Types of Assets
+          </button>
+          <div class="accordion-body">
+            <p>Assets are resources owned by the business which provide future economic benefits. They are classified as:</p>
+            <ul>
+              <li><strong>Tangible Assets:</strong> Physical assets such as machinery, buildings, furniture.</li>
+              <li><strong>Intangible Assets:</strong> Non-physical assets such as goodwill, patents, trademarks.</li>
+              <li><strong>Current Assets:</strong> Short-term assets like cash, debtors, stock, expected to be used within one year.</li>
+              <li><strong>Fictitious/Nominal Assets:</strong> Not real assets, but expenditure not written off (e.g., preliminary expenses).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Expenditure -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-receipt"></i> Expenditure
+          </button>
+          <div class="accordion-body">
+            <p>Expenditure is the amount spent or liability incurred to acquire goods, services, or assets. It can be capital, revenue, or deferred expenditure.</p>
+          </div>
+        </div>
+
+        <!-- Expenses -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <i class="fas fa-money-check-alt"></i> Expenses
+          </button>
+          <div class="accordion-body">
+            <p>Expenses are the cost incurred in earning revenue, e.g., rent, salary, electricity. They are deducted from revenue to calculate profit.</p>
+          </div>
+        </div>
+
+      </div>
     </section>
 
+
+
+    <!-- Visual Learning - Complete Account Hierarchy -->
+    <section>
+      <h2>Visual Learning: Complete Account Hierarchy System</h2>
+      <div class="hierarchy-container">
+        
+        <!-- Level 0 - Root: All Accounts -->
+        <div class="hierarchy-level level-0">
+          <div class="hierarchy-card root-card">
+            <i class="fas fa-sitemap"></i>
+            <h3>ALL ACCOUNTS</h3>
+            <p>Complete Business Account Classification</p>
+            <div class="card-badge">Foundation</div>
+          </div>
+        </div>
+
+        <!-- Level 1 - Main Account Types -->
+        <div class="hierarchy-level level-1">
+          <div class="hierarchy-card type-card personal-type">
+            <i class="fas fa-users"></i>
+            <h4>PERSONAL ACCOUNTS</h4>
+            <p>People & Organizations</p>
+            <div class="rule-text">Debit the Receiver<br>Credit the Giver</div>
+            <div class="card-badge">Type 1</div>
+          </div>
+          
+          <div class="hierarchy-card type-card real-type">
+            <i class="fas fa-building"></i>
+            <h4>REAL ACCOUNTS</h4>
+            <p>Assets & Properties</p>
+            <div class="rule-text">Debit What Comes In<br>Credit What Goes Out</div>
+            <div class="card-badge">Type 2</div>
+          </div>
+          
+          <div class="hierarchy-card type-card nominal-type">
+            <i class="fas fa-chart-line"></i>
+            <h4>NOMINAL ACCOUNTS</h4>
+            <p>Income, Expenses & Trading</p>
+            <div class="rule-text">Debit All Expenses<br>Credit All Incomes</div>
+            <div class="card-badge">Type 3</div>
+          </div>
+        </div>
+
+        <!-- Level 2 - Account Categories -->
+        <div class="hierarchy-level level-2">
+          
+          <!-- Personal Account Categories -->
+          <div class="account-section personal-section">
+            <div class="section-header">Personal Account Categories</div>
+            <div class="cards-row">
+              <div class="hierarchy-card detail-card personal-detail">
+                <i class="fas fa-arrow-up"></i>
+                <h5>DEBTORS</h5>
+                <p>Customers who owe money</p>
+                <ul>
+                  <li>Trade Debtors</li>
+                  <li>Sundry Debtors</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card personal-detail">
+                <i class="fas fa-arrow-down"></i>
+                <h5>CREDITORS</h5>
+                <p>Suppliers we owe money to</p>
+                <ul>
+                  <li>Trade Creditors</li>
+                  <li>Sundry Creditors</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card personal-detail">
+                <i class="fas fa-university"></i>
+                <h5>BANK A/C</h5>
+                <p>Banking relationships</p>
+                <ul>
+                  <li>Current A/c</li>
+                  <li>Savings A/c</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real Account Categories -->
+          <div class="account-section real-section">
+            <div class="section-header">Real Account Categories</div>
+            <div class="cards-row">
+              <div class="hierarchy-card detail-card real-detail">
+                <i class="fas fa-coins"></i>
+                <h5>CASH A/C</h5>
+                <p>Physical money in business</p>
+                <ul>
+                  <li>Cash in Hand</li>
+                  <li>Petty Cash</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card real-detail">
+                <i class="fas fa-home"></i>
+                <h5>BUILDING A/C</h5>
+                <p>Property & Real Estate</p>
+                <ul>
+                  <li>Office Building</li>
+                  <li>Factory Premises</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card real-detail">
+                <i class="fas fa-file-invoice"></i>
+                <h5>BILLS RECEIVABLE</h5>
+                <p>Promissory notes receivable</p>
+                <ul>
+                  <li>Trade Bills</li>
+                  <li>Bank Drafts</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card real-detail">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <h5>BILLS PAYABLE</h5>
+                <p>Promissory notes payable</p>
+                <ul>
+                  <li>Trade Bills</li>
+                  <li>Bank Loans</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nominal Account Categories -->
+          <div class="account-section nominal-section">
+            <div class="section-header">Nominal Account Categories</div>
+            <div class="cards-row">
+              <div class="hierarchy-card detail-card nominal-detail">
+                <i class="fas fa-shopping-cart"></i>
+                <h5>SALES A/C</h5>
+                <p>Revenue from goods sold</p>
+                <ul>
+                  <li>Cash Sales</li>
+                  <li>Credit Sales</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card nominal-detail">
+                <i class="fas fa-chart-line"></i>
+                <h5>INCOME</h5>
+                <p>Total earnings of business</p>
+                <ul>
+                  <li>Operating Income</li>
+                  <li>Non-operating Income</li>
+                </ul>
+              </div>
+              <div class="hierarchy-card detail-card nominal-detail">
+                    <i class="fas fa-trophy"></i>
+                    <h5>PROFIT</h5>
+                    <p>Income minus expenses</p>
+                    <ul>
+                      <li>Gross Profit</li>
+                      <li>Net Profit</li>
+                    </ul>
+                  </div>
+                  <div class="hierarchy-card detail-card nominal-detail">
+                    <i class="fas fa-sync-alt"></i>
+                    <h5>TURNOVER</h5>
+                    <p>Total sales volume</p>
+                    <ul>
+                      <li>Annual Turnover</li>
+                      <li>Monthly Turnover</li>
+                    </ul>
+                  </div>
+                  <div class="hierarchy-card detail-card nominal-detail">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h5>PURCHASES A/C</h5>
+                    <p>Goods bought for resale</p>
+                    <ul>
+                      <li>Cash Purchases</li>
+                      <li>Credit Purchases</li>
+                    </ul>
+                  </div>
+                  <div class="hierarchy-card detail-card nominal-detail">
+                    <i class="fas fa-undo"></i>
+                    <h5>PURCHASE RETURNS</h5>
+                    <p>Goods returned to suppliers</p>
+                    <ul>
+                      <li>Defective Goods</li>
+                      <li>Excess Stock</li>
+                    </ul>
+                  </div>
+                  <div class="hierarchy-card detail-card nominal-detail">
+                    <i class="fas fa-reply"></i>
+                    <h5>SALES RETURNS</h5>
+                    <p>Goods returned by customers</p>
+                    <ul>
+                      <li>Damaged Goods</li>
+                      <li>Wrong Items</li>
+                    </ul>
+                  </div>
+                  <div class="hierarchy-card detail-card nominal-detail">
+                    <i class="fas fa-home"></i>
+                    <h5>RENT A/C</h5>
+                    <p>Property rental expenses</p>
+                    <ul>
+                      <li>Office Rent</li>
+                      <li>Shop Rent</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <!-- Key Definitions Section -->
+    <div class="account-section nominal-section">
+      <div class="section-header">Key Definitions</div>
+      <div class="cards-row">
+
+        <!-- Gross Profit -->
+        <div class="hierarchy-card detail-card nominal-detail">
+          <i class="fas fa-calculator"></i>
+          <h5>GROSS PROFIT</h5>
+          <p>Basic measure of trading results</p>
+          <ul>
+            <li>Gross Profit = Sales – Cost of Goods Sold (COGS)</li>
+            <li>Shows efficiency of core business</li>
+          </ul>
+        </div>
+
+        <!-- Net Profit -->
+        <div class="hierarchy-card detail-card nominal-detail">
+          <i class="fas fa-balance-scale"></i>
+          <h5>NET PROFIT</h5>
+          <p>Final earnings after expenses</p>
+          <ul>
+            <li>Net Profit = Gross Profit – Expenses</li>
+            <li>Represents true profitability</li>
+          </ul>
+        </div>
+
+        <!-- Cash Sales -->
+        <div class="hierarchy-card detail-card nominal-detail">
+          <i class="fas fa-money-bill-wave"></i>
+          <h5>CASH SALES</h5>
+          <p>Goods sold with instant payment</p>
+          <ul>
+            <li>Buyer pays cash immediately</li>
+            <li>No outstanding balance</li>
+          </ul>
+        </div>
+
+        <!-- Credit Sales -->
+        <div class="hierarchy-card detail-card nominal-detail">
+          <i class="fas fa-handshake"></i>
+          <h5>CREDIT SALES</h5>
+          <p>Goods sold with delayed payment</p>
+          <ul>
+            <li>Customer owes business</li>
+            <li>Recorded as Debtors</li>
+          </ul>
+        </div>
+
+        <!-- Cash Purchases -->
+        <div class="hierarchy-card detail-card nominal-detail">
+          <i class="fas fa-shopping-basket"></i>
+          <h5>CASH PURCHASES</h5>
+          <p>Goods bought with immediate payment</p>
+          <ul>
+            <li>Business pays instantly</li>
+            <li>No liability created</li>
+          </ul>
+        </div>
+
+        <!-- Credit Purchases -->
+        <div class="hierarchy-card detail-card nominal-detail">
+          <i class="fas fa-credit-card"></i>
+          <h5>CREDIT PURCHASES</h5>
+          <p>Goods bought with deferred payment</p>
+          <ul>
+            <li>Business owes supplier</li>
+            <li>Recorded as Creditors</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+
+      </div>
+
+      <!-- Key Summary -->
+      <div class="summary-section">
+        <div class="summary-card equation-card">
+          <i class="fas fa-balance-scale"></i>
+          <h4>Accounting Equation</h4>
+          <div class="equation">
+            <span class="term">ASSETS</span>
+            <span class="operator">=</span>
+            <span class="term">CAPITAL</span>
+            <span class="operator">+</span>
+            <span class="term">LIABILITIES</span>
+          </div>
+        </div>
+        
+        <div class="summary-card golden-rules">
+          <i class="fas fa-star"></i>
+          <h4>Golden Rules Summary</h4>
+          <div class="rules-grid">
+            <div class="rule-item personal-rule">
+              <strong>Personal:</strong> Dr. Receiver, Cr. Giver
+            </div>
+            <div class="rule-item real-rule">
+              <strong>Real:</strong> Dr. What comes in, Cr. What goes out
+            </div>
+            <div class="rule-item nominal-rule">
+              <strong>Nominal:</strong> Dr. Expenses, Cr. Income
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- MCQs -->
     <section>
       <h2>Multiple Choice Questions</h2>
-      
+      <div class="progress-container"><div id="progress" class="progress-circle">0%</div></div>
       <div id="mcq-container">
         <div class="mcq" data-answer="c">
-          <h3>1. What is capital?</h3>
-          <input type="radio" name="q1" id="q1a" value="a">
-          <label for="q1a">Money kept in the bank</label>
-          <input type="radio" name="q1" id="q1b" value="b">
-          <label for="q1b">Total assets of the business</label>
-          <input type="radio" name="q1" id="q1c" value="c">
-          <label for="q1c">Amount invested by the owner in the business</label>
-          <input type="radio" name="q1" id="q1d" value="d">
-          <label for="q1d">Cash available in the business</label>
-        </div>
+      <h3>1. What is capital?</h3>
+      <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Money kept in bank</label>
+      <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Total assets of business</label>
+      <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Owner’s investment</label>
+      <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Cash balance</label>
+    </div>
 
-      <div class="mcq" data-answer="b">
-        <h3>2. Which of the following is an asset?</h3>
-        <input type="radio" name="q2" id="q2a" value="a">
-        <label for="q2a">Salary payable</label>
-        <input type="radio" name="q2" id="q2b" value="b">
-        <label for="q2b">Building owned by the business</label>
-        <input type="radio" name="q2" id="q2c" value="c">
-        <label for="q2c">Bank loan</label>
-        <input type="radio" name="q2" id="q2d" value="d">
-        <label for="q2d">Outstanding rent</label>
-      </div>
+    <div class="mcq" data-answer="b">
+      <h3>2. Which of the following is an asset?</h3>
+      <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Salary payable</label>
+      <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Building owned</label>
+      <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Bank loan</label>
+      <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Outstanding rent</label>
+    </div>
 
-      <div class="mcq" data-answer="d">
-        <h3>3. A transaction must involve:</h3>
-        <input type="radio" name="q3" id="q3a" value="a">
-        <label for="q3a">Only cash payment</label>
-        <input type="radio" name="q3" id="q3b" value="b">
-        <label for="q3b">Only credit payment</label>
-        <input type="radio" name="q3" id="q3c" value="c">
-        <label for="q3c">Only goods</label>
-        <input type="radio" name="q3" id="q3d" value="d">
-        <label for="q3d">Exchange of value</label>
-      </div>
+    <div class="mcq" data-answer="d">
+      <h3>3. A transaction must involve:</h3>
+      <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Only cash</label>
+      <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Only credit</label>
+      <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Only goods</label>
+      <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Exchange of value</label>
+    </div>
 
-      <div class="mcq" data-answer="a">
-        <h3>4. Which of these is a liability?</h3>
-        <input type="radio" name="q4" id="q4a" value="a">
-        <label for="q4a">Bank loan taken by business</label>
-        <input type="radio" name="q4" id="q4b" value="b">
-        <label for="q4b">Cash in hand</label>
-        <input type="radio" name="q4" id="q4c" value="c">
-        <label for="q4c">Machinery</label>
-        <input type="radio" name="q4" id="q4d" value="d">
-        <label for="q4d">Stock of goods</label>
-      </div>
+    <div class="mcq" data-answer="a">
+      <h3>4. Which is a liability?</h3>
+      <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Bank loan</label>
+      <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Cash in hand</label>
+      <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Machinery</label>
+      <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Inventory</label>
+    </div>
 
-      <div class="mcq" data-answer="b">
-        <h3>5. Personal accounts relate to:</h3>
-        <input type="radio" name="q5" id="q5a" value="a">
-        <label for="q5a">Assets only</label>
-        <input type="radio" name="q5" id="q5b" value="b">
-        <label for="q5b">Persons or entities</label>
-        <input type="radio" name="q5" id="q5c" value="c">
-        <label for="q5c">Expenses only</label>
-        <input type="radio" name="q5" id="q5d" value="d">
-        <label for="q5d">Income only</label>
-        </div>
-        <button id="submit-mcq" class="submit-button">Submit Answers</button>
-        <div id="score-display" class="score-display"></div>
-      </div>
+    <div class="mcq" data-answer="b">
+      <h3>5. Personal accounts relate to:</h3>
+      <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Assets</label>
+      <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Persons or entities</label>
+      <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Expenses</label>
+      <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">Incomes</label>
+    </div>
+
+    <div class="mcq" data-answer="c">
+      <h3>6. Which of these is a real account?</h3>
+      <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Rent A/c</label>
+      <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Salary A/c</label>
+      <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Building A/c</label>
+      <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Commission A/c</label>
+    </div>
+
+    <div class="mcq" data-answer="a">
+      <h3>7. Nominal accounts record:</h3>
+      <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">Expenses and incomes</label>
+      <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Assets</label>
+      <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">Liabilities</label>
+      <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Owners</label>
+    </div>
+
+    <div class="mcq" data-answer="b">
+      <h3>8. Outstanding rent is classified as:</h3>
+      <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">Asset</label>
+      <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">Liability</label>
+      <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">Capital</label>
+      <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">Income</label>
+    </div>
+
+    <div class="mcq" data-answer="c">
+      <h3>9. Which account does Bank A/c fall under?</h3>
+      <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Nominal</label>
+      <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Real</label>
+      <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Personal</label>
+      <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">None</label>
+    </div>
+
+    <div class="mcq" data-answer="a">
+      <h3>10. Profit increases:</h3>
+      <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Capital</label>
+      <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">Liabilities</label>
+      <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Expenses</label>
+      <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">Loss</label>
+    </div>
+
+    <div class="mcq" data-answer="d">
+      <h3>11. Which of the following is not an asset?</h3>
+      <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">Cash</label>
+      <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">Machinery</label>
+      <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">Inventory</label>
+      <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">Outstanding salary</label>
+    </div>
+
+    <div class="mcq" data-answer="c">
+      <h3>12. The amount invested by owner is shown as:</h3>
+      <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">Asset</label>
+      <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">Liability</label>
+      <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Capital</label>
+      <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Expense</label>
+    </div>
+
+    <div class="mcq" data-answer="b">
+      <h3>13. Which of these is a nominal account?</h3>
+      <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Furniture A/c</label>
+      <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Rent A/c</label>
+      <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Bank A/c</label>
+      <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Debtors A/c</label>
+    </div>
+
+    <div class="mcq" data-answer="a">
+      <h3>14. Liabilities are payable to:</h3>
+      <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Outsiders</label>
+      <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Owners</label>
+      <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Employees</label>
+      <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Government only</label>
+    </div>
+
+    <div class="mcq" data-answer="d">
+      <h3>15. Which of these represents expenses?</h3>
+      <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Capital</label>
+      <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">Debtors</label>
+      <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Cash</label>
+      <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Salary paid</label>
+    </div>
+
+    <div class="mcq" data-answer="c">
+      <h3>16. Which account records goods purchased?</h3>
+      <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">Sales A/c</label>
+      <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Capital A/c</label>
+      <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Purchases A/c</label>
+      <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Cash A/c</label>
+    </div>
+
+    <div class="mcq" data-answer="b">
+      <h3>17. Which of these is a fictitious asset?</h3>
+      <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Cash</label>
+      <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Preliminary expenses</label>
+      <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Building</label>
+      <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Furniture</label>
+    </div>
+
+    <div class="mcq" data-answer="d">
+      <h3>18. Who is a creditor?</h3>
+      <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">One who buys goods</label>
+      <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">One who lends money</label>
+      <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">One who invests capital</label>
+      <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">One to whom money is payable</label>
+    </div>
+
+    <div class="mcq" data-answer="a">
+      <h3>19. Debit the receiver, credit the giver applies to:</h3>
+      <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">Personal accounts</label>
+      <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">Real accounts</label>
+      <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">Nominal accounts</label>
+      <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">None</label>
+    </div>
+
+    <div class="mcq" data-answer="c">
+      <h3>20. Debit what comes in, credit what goes out applies to:</h3>
+      <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">Nominal accounts</label>
+      <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">Personal accounts</label>
+      <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">Real accounts</label>
+      <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">Capital accounts</label>
+    </div>
+
+      <button id="submit-mcq" class="submit-button">Submit Answers</button>
+      <div id="score-display" class="score-display"></div>
     </section>
-
-    <!-- Infographics Section -->
-    <section>
-      <h2>Visual Learning - Key Concepts</h2>
-      
-      <!-- Types of Accounts Infographic -->
-      <div class="infographic account-types">
-        <h3>Types of Accounts</h3>
-        <div class="infographic-content">
-          <div class="account-type personal">
-            <i class="fa-solid fa-user"></i>
-            <h4>Personal</h4>
-            <p>Accounts of persons or entities</p>
-            <ul>
-              <li>Debtors</li>
-              <li>Creditors</li>
-              <li>Bank Account</li>
-            </ul>
-          </div>
-          <div class="account-type real">
-            <i class="fa-solid fa-building"></i>
-            <h4>Real</h4>
-            <p>Accounts of assets</p>
-            <ul>
-              <li>Machinery</li>
-              <li>Building</li>
-              <li>Inventory</li>
-            </ul>
-          </div>
-          <div class="account-type nominal">
-            <i class="fa-solid fa-chart-line"></i>
-            <h4>Nominal</h4>
-            <p>Accounts of expenses and incomes</p>
-            <ul>
-              <li>Rent</li>
-              <li>Salary</li>
-              <li>Sales</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Business Transaction Flow -->
-      <div class="infographic transaction-flow">
-        <h3>Business Transaction Flow</h3>
-        <div class="flow-diagram">
-          <div class="flow-step">
-            <i class="fa-solid fa-handshake"></i>
-            <span>Event</span>
-          </div>
-          <i class="fa-solid fa-arrow-right"></i>
-          <div class="flow-step">
-            <i class="fa-solid fa-exchange-alt"></i>
-            <span>Exchange of Value</span>
-          </div>
-          <i class="fa-solid fa-arrow-right"></i>
-          <div class="flow-step">
-            <i class="fa-solid fa-book"></i>
-            <span>Recording</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <button id="retry-btn" class="submit-button" style="display:none;">Retry Quiz</button>
   </main>
 
-  <style>
-    /* Submit Button Styles */
-    .submit-button {
-      display: block;
-      width: 200px;
-      margin: 24px auto;
-      padding: 12px 24px;
-      background: var(--brand);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all var(--speed);
-    }
-    .submit-button:hover {
-      background: var(--brand-2);
-      transform: translateY(-2px);
-    }
-    .submit-button:disabled {
-      background: var(--muted);
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* Score Display Styles */
-    .score-display {
-      text-align: center;
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 8px;
-      display: none;
-    }
-    .score-display.show {
-      display: block;
-    }
-    .score-display.success {
-      background: rgba(0,255,0,.1);
-      color: #00ff00;
-    }
-    .score-display.partial {
-      background: rgba(255,165,0,.1);
-      color: #ffa500;
-    }
-
-    /* Infographic Styles */
-    .infographic {
-      margin: 40px 0;
-      padding: 24px;
-      background: rgba(255,255,255,.03);
-      border-radius: var(--radius);
-    }
-    .infographic h3 {
-      text-align: center;
-      margin-bottom: 32px;
-      color: var(--brand-2);
-    }
-    .infographic-content {
-      display: flex;
-      justify-content: space-around;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .account-type {
-      flex: 1;
-      min-width: 250px;
-      text-align: center;
-      padding: 24px;
-      background: var(--card);
-      border-radius: var(--radius);
-      transition: all var(--speed);
-    }
-    .account-type:hover {
-      transform: translateY(-5px);
-    }
-    .account-type i {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      color: var(--brand);
-    }
-    .account-type h4 {
-      color: var(--brand-2);
-      margin: 8px 0;
-    }
-    .account-type ul {
-      list-style: none;
-      padding: 0;
-      color: var(--muted);
-    }
-    .account-type li {
-      margin: 8px 0;
-    }
-
-    /* Transaction Flow Diagram */
-    .flow-diagram {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      padding: 24px;
-    }
-    .flow-step {
-      text-align: center;
-      background: var(--card);
-      padding: 24px;
-      border-radius: var(--radius);
-      min-width: 150px;
-    }
-    .flow-step i {
-      font-size: 2rem;
-      color: var(--brand);
-      margin-bottom: 12px;
-    }
-    .flow-step span {
-      display: block;
-      color: var(--text);
-    }
-    .flow-diagram .fa-arrow-right {
-      color: var(--brand-2);
-      font-size: 1.5rem;
-    }
-  </style>
-
   <script>
-    // Progress tracking
-    const mcqs = document.querySelectorAll('.mcq');
-    const submitButton = document.getElementById('submit-mcq');
-    const scoreDisplay = document.getElementById('score-display');
-    let score = 0;
-    let completed = false;
+    (function(){
+      const mcqs = document.querySelectorAll('.mcq');
+      const submitButton = document.getElementById('submit-mcq');
+      const scoreDisplay = document.getElementById('score-display');
+      const progressCircle = document.getElementById('progress'); // optional; safe if not present
 
-    function checkAnswers() {
-      score = 0;
-      let allAnswered = true;
-      
-      mcqs.forEach(mcq => {
-        const selected = mcq.querySelector('input:checked');
-        if (!selected) {
-          allAnswered = false;
-        }
-      });
+      // Enable submit if at least one MCQ is answered
+      function updateSubmitState() {
+        const anyAnswered = Array.from(mcqs).some(mcq => mcq.querySelector('input:checked'));
+        if (submitButton) submitButton.disabled = !anyAnswered;
+      }
 
-      submitButton.disabled = !allAnswered;
-    }
+      // Clear previous data-* indicators for a given mcq
+      function clearIndicators(mcq){
+        mcq.querySelectorAll('label').forEach(l => {
+          delete l.dataset.correct;
+          delete l.dataset.wrong;
+          delete l.dataset.correctText;
+        });
+        mcq.classList.remove('correct', 'wrong');
+      }
 
-    function submitAnswers() {
-      score = 0;
-      mcqs.forEach(mcq => {
-        const answer = mcq.dataset.answer;
-        const selected = mcq.querySelector('input:checked');
-        
-        if (selected) {
+      // Submit handler - reveal only for answered MCQs
+      function submitAnswers() {
+        let score = 0;
+        mcqs.forEach(mcq => {
+          clearIndicators(mcq);
+          const answer = mcq.dataset.answer;
+          const selected = mcq.querySelector('input:checked');
+
+          if (!selected) return;
+
+          const selectedLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+          const correctInput = mcq.querySelector(`input[value="${answer}"]`);
+          const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
+          const correctText = correctLabel ? correctLabel.textContent.trim() : '';
+
           if (selected.value === answer) {
+            if (selectedLabel) selectedLabel.dataset.correct = "true";
             mcq.classList.add('correct');
-            mcq.classList.remove('wrong');
             score++;
           } else {
+            if (selectedLabel) {
+              selectedLabel.dataset.wrong = "true";
+              selectedLabel.dataset.correctText = correctText;
+            }
+            if (correctLabel) correctLabel.dataset.correct = "true";
             mcq.classList.add('wrong');
-            mcq.classList.remove('correct');
+          }
+        });
+
+        // Show score
+        if (scoreDisplay) {
+          scoreDisplay.classList.add('show');
+          scoreDisplay.classList.remove('success','partial');
+          if (score === mcqs.length) {
+            scoreDisplay.classList.add('success');
+            scoreDisplay.innerHTML = `<strong>Perfect!</strong> ${score}/${mcqs.length}`;
+          } else {
+            scoreDisplay.classList.add('partial');
+            scoreDisplay.innerHTML = `${score} out of ${mcqs.length} correct.`;
           }
         }
+
+        // Update progress circle if exists
+        if (progressCircle) {
+          const percent = Math.round((score / mcqs.length) * 100);
+          progressCircle.style.background = `conic-gradient(var(--brand-2) ${percent * 3.6}deg, #333 0deg)`;
+          progressCircle.textContent = percent + "%";
+        }
+
+        // Show retry button
+        showRetryButton();
+
+        // Auto-clear feedback after 15 seconds
+        setTimeout(resetQuizFeedback, 15000);
+      }
+
+      function resetQuizFeedback() {
+      mcqs.forEach(mcq => {
+        clearIndicators(mcq);
+        mcq.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+      });
+      if (scoreDisplay) scoreDisplay.classList.remove('show','success','partial');
+      if (progressCircle) {
+        progressCircle.style.background = `conic-gradient(var(--brand-2) 0deg, #333 0deg)`;
+        progressCircle.textContent = "0%";
+      }
+      submitButton.disabled = true;
+      document.getElementById('retry-btn').style.display = "none";
+    }
+
+    function showRetryButton() {
+      const retryBtn = document.getElementById('retry-btn');
+      retryBtn.style.display = "block";
+      retryBtn.onclick = resetQuizFeedback;
+    }
+
+      // Wire up radio change events
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', updateSubmitState);
       });
 
-      // Update score display
-      scoreDisplay.classList.add('show');
-      if (score === mcqs.length) {
-        completed = true;
-        localStorage.setItem('lesson2-completed', 'true');
-        scoreDisplay.classList.add('success');
-        scoreDisplay.classList.remove('partial');
-        scoreDisplay.innerHTML = `<strong>Perfect!</strong> You got all ${score} questions correct! 🎉`;
-      } else {
-        scoreDisplay.classList.add('partial');
-        scoreDisplay.classList.remove('success');
-        scoreDisplay.innerHTML = `You got ${score} out of ${mcqs.length} questions correct. Try again!`;
-      }
-    }
+      // Wire submit button
+      if (submitButton) submitButton.addEventListener('click', submitAnswers);
+      // Initial state
+      updateSubmitState();
+    })();
 
-    // Add event listeners
-    document.querySelectorAll('input[type="radio"]').forEach(radio => {
-      radio.addEventListener('change', checkAnswers);
-    });
+      document.querySelectorAll(".accordion-header").forEach(header => {
+        header.addEventListener("click", () => {
+          const item = header.parentElement;
+          const body = item.querySelector(".accordion-body");
 
-    submitButton.addEventListener('click', submitAnswers);
+          // Close all other open accordions
+          document.querySelectorAll(".accordion-body.open").forEach(openBody => {
+            if (openBody !== body) {
+              openBody.classList.remove("open");
+            }
+          });
 
-    // Check if lesson was previously completed
-    if (localStorage.getItem('lesson2-completed') === 'true') {
-      completed = true;
-    }
+          // Toggle current one
+          body.classList.toggle("open");
+        });
+      });
+</script>
 
-    // Initial button state
-    checkAnswers();
-  </script>
 </body>
 </html>
