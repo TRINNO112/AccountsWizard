@@ -1,0 +1,3352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Chapter 9 – Journal Entries & Recording Transactions | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+      :root {
+        --bg: #0b1020;
+        --bg-2: #0f1733;
+        --card: #111633;
+        --muted: #b8c2ff;
+        --brand: #7c4dff;
+        --brand-2: #00e5ff;
+        --accent: #ff7ac6;
+        --text: #e9eefc;
+        --success: #4caf50;
+        --warning: #ff9800;
+        --error: #f44336;
+        --radius: 16px;
+        --shadow: 0 18px 40px rgba(2,6,23,.55);
+        --speed: 300ms;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, Roboto, Arial;
+        color: var(--text);
+        background: linear-gradient(180deg, var(--bg), var(--bg-2));
+        min-height: 100vh;
+        padding: 20px;
+        overflow-x: hidden;
+      }
+
+      header { text-align: center; padding: 30px 20px; }
+
+      .lesson-title {
+        font-size: 2.2rem; font-weight: 900;
+        background: linear-gradient(90deg,#fff,var(--accent));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      }
+
+      .breadcrumb { color: var(--muted); font-size: .95rem; }
+      .breadcrumb a { color: inherit; text-decoration: none; }
+      .breadcrumb a:hover { color: var(--text); }
+
+      .nav-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 24px; background: var(--card); border-radius: var(--radius);
+        margin-bottom: 32px; box-shadow: var(--shadow);
+      }
+
+      .nav-header a {
+        color: var(--muted); text-decoration: none; display: flex; align-items: center;
+        gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
+      }
+
+      .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
+
+      section {
+        background: var(--card); border-radius: var(--radius);
+        padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
+        overflow: visible;
+      }
+
+      section h2 {
+        margin-top: 0; font-size: 1.5rem;
+        background: linear-gradient(90deg,#fff,var(--brand-2));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      }
+
+      section p { line-height: 1.6; color: var(--muted); }
+
+      /* Animation System */
+      .animate-card {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+      }
+
+      .animate-card.animate-pending {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+
+      .animate-card.animate-pending.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .animate-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(2,6,23,.8) !important;
+      }
+
+      .slide-in-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .slide-in-left.visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+      }
+
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Definition Box */
+      .definition-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 25px;
+        border-radius: 15px;
+        margin: 20px 0;
+        border-left: 5px solid var(--brand);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        color: white;
+      }
+
+      /* Features Grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin: 25px 0;
+      }
+
+      .feature-card {
+        background: rgba(255,255,255,0.02);
+        border-radius: 16px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.8s ease;
+      }
+
+      .feature-card:hover::before { left: 100%; }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--brand-2);
+        box-shadow: 0 20px 40px rgba(0,229,255,0.2);
+      }
+
+      .feature-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .feature-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      }
+
+      .feature-title {
+        color: var(--text);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .feature-content {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* Journal Entry Table */
+      .journal-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .journal-table th,
+      .journal-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .journal-table th {
+        background: rgba(255,255,255,0.08);
+        font-weight: 700;
+        color: var(--brand-2);
+        text-align: center;
+      }
+
+      .journal-table .date-col { width: 12%; }
+      .journal-table .particulars-col { width: 50%; }
+      .journal-table .lf-col { width: 8%; }
+      .journal-table .debit-col, .journal-table .credit-col { width: 15%; }
+
+      .journal-table .amount-cell {
+        text-align: right;
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+      }
+
+      .journal-table .particulars-cell {
+        font-size: 0.95rem;
+      }
+
+      .journal-table .debit-entry {
+        padding-left: 20px;
+      }
+
+      .journal-table .credit-entry {
+        padding-left: 40px;
+      }
+
+      .journal-table .narration {
+        font-style: italic;
+        color: var(--muted);
+        padding-left: 60px;
+        font-size: 0.9rem;
+      }
+
+      /* Entry Type Cards */
+      .entry-types-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 25px;
+        margin: 30px 0;
+      }
+
+      .entry-type-card {
+        background: rgba(255,255,255,0.02);
+        border-radius: 16px;
+        padding: 25px;
+        border: 2px solid rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+      }
+
+      .entry-type-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(255,122,198,0.2);
+      }
+
+      .entry-type-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .entry-type-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+      }
+
+      .sales-entry .entry-type-icon { background: linear-gradient(135deg, var(--success), #66bb6a); }
+      .purchase-entry .entry-type-icon { background: linear-gradient(135deg, var(--brand), #9c27b0); }
+      .capital-entry .entry-type-icon { background: linear-gradient(135deg, var(--brand-2), #26c6da); }
+      .drawings-entry .entry-type-icon { background: linear-gradient(135deg, var(--accent), #ec407a); }
+      .loan-entry .entry-type-icon { background: linear-gradient(135deg, var(--warning), #ffa726); }
+      .bad-debts-entry .entry-type-icon { background: linear-gradient(135deg, var(--error), #ef5350); }
+      .rebate-entry .entry-type-icon { background: linear-gradient(135deg, #607d8b, #78909c); }
+      .assets-entry .entry-type-icon { background: linear-gradient(135deg, #795548, #8d6e63); }
+
+      .entry-type-title {
+        color: var(--text);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .entry-type-subtitle {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 5px 0 0 0;
+      }
+
+      .entry-description {
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .view-example-btn {
+        background: var(--brand-2);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+      }
+
+      .view-example-btn:hover {
+        background: var(--brand);
+        transform: scale(1.05);
+      }
+
+      .journal-example {
+        display: none;
+        background: rgba(255,255,255,0.05);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+      }
+
+      .journal-example.active {
+        display: block;
+      }
+
+      /* Infographic Styles */
+      .infographic-container {
+        background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.05));
+        border-radius: 20px;
+        padding: 30px;
+        margin: 25px 0;
+        text-align: center;
+      }
+
+      .infographic-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 30px;
+      }
+
+      .accounting-equation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+
+      .equation-part {
+        background: var(--card);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        min-width: 150px;
+        transition: all 0.3s ease;
+      }
+
+      .equation-part:hover {
+        transform: scale(1.05);
+        box-shadow: 0 25px 50px rgba(2,6,23,.8);
+      }
+
+      .equation-label {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: var(--brand-2);
+        margin-bottom: 10px;
+      }
+
+      .equation-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text);
+      }
+
+      .equation-operator {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      /* MCQ Styles */
+      .mcq {
+        margin-bottom: 24px;
+        padding: 24px;
+        background: rgba(255,255,255,.03);
+        border-radius: calc(var(--radius) / 2);
+        border-left: 4px solid var(--muted);
+        transition: all 0.3s ease;
+      }
+
+      .mcq:hover {
+        border-left-color: var(--brand-2);
+        background: rgba(255,255,255,.05);
+      }
+
+      .mcq h3 {
+        margin-top: 0;
+        font-size: 1.1rem;
+        color: var(--text);
+        margin-bottom: 16px;
+        line-height: 1.4;
+      }
+
+      .mcq label {
+        display: block;
+        margin: 12px 0;
+        padding: 12px 20px;
+        background: rgba(255,255,255,.05);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all var(--speed);
+        color: var(--muted);
+        border: 1px solid transparent;
+      }
+
+      .mcq label:hover {
+        background: rgba(255,255,255,.08);
+        border-color: var(--brand-2);
+      }
+
+      .mcq input[type="radio"] { display: none; }
+
+      .mcq input[type="radio"]:checked + label {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+      }
+
+      /* Progress Circle */
+      .progress-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0;
+      }
+
+      .circular-progress {
+        position: relative;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        background: conic-gradient(var(--brand-2) 0deg, rgba(255,255,255,0.1) 0deg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 8px 20px rgba(0, 229, 255, 0.3);
+        transition: background 0.3s ease-in-out;
+      }
+
+      .circular-progress::before {
+        content: "";
+        position: absolute;
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+        background-color: var(--card);
+      }
+
+      .progress-value {
+        position: relative;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--brand-2);
+      }
+
+      .submit-button {
+        display: block;
+        width: 200px;
+        margin: 0 auto;
+        padding: 12px 24px;
+        background: var(--brand);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all var(--speed);
+      }
+
+      .submit-button:not(:disabled):hover {
+        background: var(--brand-2);
+        transform: translateY(-2px);
+      }
+
+      .submit-button:disabled {
+        opacity: 0.5 !important;
+        cursor: not-allowed;
+      }
+
+      .hidden-score {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(129,199,132,0.1));
+        border-radius: 12px;
+        border-left: 5px solid #4caf50;
+      }
+
+      /* Animation keyframes */
+      @keyframes shakeX {
+        0%,100%{transform:translateX(0)}
+        20%{transform:translateX(-8px)}
+        40%{transform:translateX(8px)}
+        60%{transform:translateX(-6px)}
+        80%{transform:translateX(6px)}
+      }
+      .aw-shake{animation:shakeX 0.4s ease}
+      .aw-pop{animation:popIn 0.35s ease both}
+      @keyframes popIn {
+        0%{opacity:0;transform:translateY(10px) scale(.96)}
+        60%{opacity:1;transform:translateY(-4px) scale(1.02)}
+        100%{opacity:1;transform:translateY(0) scale(1)}
+      }
+
+      @keyframes buttonPress {
+        0%   { transform: scale(1); }
+        40%  { transform: scale(0.95); }
+        60%  { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      .btn-animate {
+        animation: buttonPress 0.3s ease;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .features-grid { grid-template-columns: 1fr; }
+        .entry-types-grid { grid-template-columns: 1fr; }
+        .accounting-equation { flex-direction: column; gap: 15px; }
+        .journal-table { font-size: 0.85rem; }
+        .journal-table th,
+        .journal-table td { padding: 8px 10px; }
+      }
+
+      /* Add these CSS styles for proper alignment */
+        .amount-cell {
+        vertical-align: top;
+        padding: 8px 4px;
+        }
+
+        .debit-amount, .credit-amount {
+        min-height: 24px;
+        padding: 2px 0;
+        border-bottom: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        }
+
+        .debit-amount {
+        color: var(--danger);
+        font-weight: 500;
+        }
+
+        .credit-amount {
+        color: var(--success);
+        font-weight: 500;
+        }
+
+        /* Ensure proper alignment with particulars */
+        .particulars-cell .debit-entry,
+        .particulars-cell .credit-entry {
+        min-height: 24px;
+        padding: 2px 0;
+        border-bottom: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        }
+
+        .lf-col {
+        vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <header>
+    <h1 class="lesson-title">Journal Entries & Recording Transactions</h1>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / 
+      <a href="../lessons.html">Lessons</a> / 
+      Journal Entries & Recording Transactions
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Introduction Section -->
+    <section class="animate-card">
+      <h2>What is a Journal?</h2>
+      
+      <div class="definition-box animate-card fade-up">
+        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-book" style="color:#fff;"></i>
+          Definition
+        </h3>
+        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6;">
+          A <strong>Journal</strong> is the primary book of accounting where all business transactions 
+          are first recorded in chronological order. It is also known as the "Book of Original Entry" 
+          or "Day Book" because it serves as the initial record of financial transactions before they 
+          are transferred to ledger accounts.
+        </p>
+      </div>
+
+      <p style="font-size:1.1rem; line-height:1.8; color: var(--muted);">
+        The journal acts as a bridge between source documents and the ledger. Every transaction is 
+        analyzed and recorded using the double-entry system, ensuring that for every debit entry, 
+        there is a corresponding credit entry of equal amount.
+      </p>
+
+      <!-- Infographic Section -->
+      <div class="infographic-container animate-card slide-in-left">
+        <div class="infographic-title">The Accounting Equation</div>
+        <div class="accounting-equation">
+          <div class="equation-part">
+            <div class="equation-label">Assets</div>
+            <div class="equation-value">A</div>
+          </div>
+          <div class="equation-operator">=</div>
+          <div class="equation-part">
+            <div class="equation-label">Liabilities</div>
+            <div class="equation-value">L</div>
+          </div>
+          <div class="equation-operator">+</div>
+          <div class="equation-part">
+            <div class="equation-label">Capital</div>
+            <div class="equation-value">C</div>
+          </div>
+        </div>
+        <p style="color: var(--muted); margin-top: 20px; font-size: 1rem;">
+          Every journal entry must maintain this fundamental equation balance
+        </p>
+      </div>
+    </section>
+
+    <!-- Features/Characteristics Section -->
+    <section class="animate-card">
+      <h2>Characteristics of Journal</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        A journal has specific features that make it an essential component of the accounting system.
+      </p>
+
+      <div class="features-grid">
+        
+        <div class="feature-card animate-card slide-in-left">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">Chronological Recording</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            All transactions are recorded in the journal in the order of their occurrence, maintaining 
+            a systematic timeline. This chronological sequence helps in tracking the flow of business 
+            activities and provides a clear audit trail for verification purposes.
+          </div>
+        </div>
+
+        <div class="feature-card animate-card slide-in-left">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">Double Entry System</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            Every transaction follows the principle of double entry bookkeeping where each transaction 
+            affects at least two accounts. The total of debit amounts must always equal the total of 
+            credit amounts, ensuring mathematical accuracy and completeness.
+          </div>
+        </div>
+
+        <div class="feature-card animate-card slide-in-left">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">Complete Information</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            Each journal entry contains comprehensive details including date, accounts affected, 
+            amounts debited and credited, and narration explaining the transaction. This complete 
+            information provides full context for understanding each business transaction.
+          </div>
+        </div>
+
+        <div class="feature-card animate-card slide-in-left">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <span class="fa-stack fa-1x">
+                <i class="fas fa-shield fa-stack-2x"></i>
+                <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+              </span>
+
+            </div>
+            <div>
+              <h3 class="feature-title">Legal Evidence</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            Journal entries serve as legal evidence of business transactions and can be presented 
+            in courts of law. They provide authenticated records that support the financial position 
+            and performance of the business, making them crucial for legal compliance.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Limitations Section -->
+    <section class="animate-card">
+      <h2>Limitations of Journal</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        While journals are fundamental to accounting, they have certain limitations that businesses must consider.
+      </p>
+
+      <div class="features-grid">
+        
+        <div class="feature-card animate-card slide-in-left" style="border-left: 4px solid var(--error);">
+          <div class="feature-header">
+            <div class="feature-icon" style="background: linear-gradient(135deg, var(--error), #ef5350);">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">Time Consuming</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            Recording every transaction with complete details in the journal is time-consuming, 
+            especially for businesses with high transaction volumes. This detailed recording process 
+            can delay the preparation of financial statements and slow down accounting operations.
+          </div>
+        </div>
+
+        <div class="feature-card animate-card slide-in-left" style="border-left: 4px solid var(--warning);">
+          <div class="feature-header">
+            <div class="feature-icon" style="background: linear-gradient(135deg, var(--warning), #ffa726);">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">Risk of Errors</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            Manual recording in journals increases the possibility of clerical errors, wrong postings, 
+            and mathematical mistakes. These errors can lead to incorrect financial information and 
+            require additional time and effort for detection and correction.
+          </div>
+        </div>
+
+        <div class="feature-card animate-card slide-in-left" style="border-left: 4px solid var(--accent);">
+          <div class="feature-header">
+            <div class="feature-icon" style="background: linear-gradient(135deg, var(--accent), #ec407a);">
+              <i class="fas fa-search-minus"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">Difficulty in Analysis</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            Analyzing specific accounts or tracking particular types of transactions becomes difficult 
+            when all entries are mixed together in chronological order. This limitation makes it 
+            challenging to quickly assess the performance of specific business aspects.
+          </div>
+        </div>
+
+        <div class="feature-card animate-card slide-in-left" style="border-left: 4px solid #607d8b;">
+          <div class="feature-header">
+            <div class="feature-icon" style="background: linear-gradient(135deg, #607d8b, #78909c);">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div>
+              <h3 class="feature-title">No Account Balances</h3>
+            </div>
+          </div>
+          <div class="feature-content">
+            The journal does not show the running balance of individual accounts, making it impossible 
+            to determine the current balance of assets, liabilities, or equity accounts without 
+            additional calculations or reference to ledger accounts.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Journal Entry Format Section -->
+    <section class="animate-card">
+      <h2>Journal Entry Format</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Understanding the standard format of journal entries is crucial for proper recording of transactions.
+      </p>
+
+      <div style="background: rgba(255,255,255,0.02); border-radius: 16px; padding: 25px; margin: 20px 0;">
+        <h3 style="color: var(--brand-2); margin-bottom: 20px;">Standard Journal Entry Format</h3>
+        
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="lf-col">L.F.</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024<br>Mar 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                <div class="credit-entry">To Sales A/c</div>
+                <div class="narration">(Being cash sales made)</div>
+              </td>
+              <td>1<br>5</td>
+              <td class="amount-cell">10,000</td>
+              <td class="amount-cell">10,000</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top: 20px; color: var(--muted); font-size: 0.95rem;">
+          <h4 style="color: var(--text);">Components Explained:</h4>
+          <ul style="line-height: 1.6;">
+            <li><strong>Date:</strong> The date when the transaction occurred</li>
+            <li><strong>Particulars:</strong> Names of accounts affected with "Dr." for debit and "To" for credit</li>
+            <li><strong>L.F. (Ledger Folio):</strong> Reference number of the ledger page where the account is maintained</li>
+            <li><strong>Debit Amount:</strong> Amount to be debited to the account</li>
+            <li><strong>Credit Amount:</strong> Amount to be credited to the account</li>
+            <li><strong>Narration:</strong> Brief explanation of the transaction in brackets</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Types of Journal Entries Section -->
+    <section class="animate-card">
+      <h2>Types of Journal Entries</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Different types of business transactions require specific journal entry formats. Let's explore the most common types with practical examples.
+      </p>
+
+      <div class="entry-types-grid">
+        
+        <!-- Sales Entry -->
+        <div class="entry-type-card sales-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Sales Entries</h3>
+              <p class="entry-type-subtitle">Recording Revenue Transactions</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Sales entries record the revenue generated from selling goods or services. They can be cash sales (immediate payment) or credit sales (payment to be received later).
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('sales')">View Examples</button>
+
+          <div class="journal-example" id="sales-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Cash Sales</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 10</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                    <div class="credit-entry">To Sales A/c</div>
+                    <div class="narration">(Being goods sold for cash)</div>
+                  </td>
+                  <td>1<br>5</td>
+                  <td class="amount-cell">15,000</td>
+                  <td class="amount-cell">15,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Credit Sales</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 12</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Accounts Receivable A/c .......... Dr.</div>
+                    <div class="credit-entry">To Sales A/c</div>
+                    <div class="narration">(Being goods sold on credit to Mr. Sharma)</div>
+                  </td>
+                  <td>2<br>5</td>
+                  <td class="amount-cell">25,000</td>
+                  <td class="amount-cell">25,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Purchase Entry -->
+        <div class="entry-type-card purchase-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-shopping-bag"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Purchase Entries</h3>
+              <p class="entry-type-subtitle">Recording Procurement Transactions</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Purchase entries record the acquisition of goods, raw materials, or services for business operations. They can be cash purchases or credit purchases from suppliers.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('purchase')">View Examples</button>
+
+          <div class="journal-example" id="purchase-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Cash Purchase</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 15</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                    <div class="credit-entry">To Cash A/c</div>
+                    <div class="narration">(Being raw materials purchased for cash)</div>
+                  </td>
+                  <td>6<br>1</td>
+                  <td class="amount-cell">20,000</td>
+                  <td class="amount-cell">20,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Credit Purchase</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 18</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                    <div class="credit-entry">To Accounts Payable A/c</div>
+                    <div class="narration">(Being goods purchased on credit from ABC Suppliers)</div>
+                  </td>
+                  <td>6<br>8</td>
+                  <td class="amount-cell">30,000</td>
+                  <td class="amount-cell">30,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Capital Entry -->
+        <div class="entry-type-card capital-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Capital Entries</h3>
+              <p class="entry-type-subtitle">Owner's Investment Transactions</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Capital entries record the owner's investment in the business, additional capital introduced, or capital withdrawals. These affect the owner's equity in the business.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('capital')">View Examples</button>
+
+          <div class="journal-example" id="capital-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Capital Introduction (Cash)</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 1</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                    <div class="credit-entry">To Capital A/c</div>
+                    <div class="narration">(Being capital introduced by owner)</div>
+                  </td>
+                  <td>1<br>10</td>
+                  <td class="amount-cell">1,00,000</td>
+                  <td class="amount-cell">1,00,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Additional Capital (Assets)</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 5</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Machinery A/c ................. Dr.</div>
+                    <div class="credit-entry">To Capital A/c</div>
+                    <div class="narration">(Being machinery introduced as additional capital)</div>
+                  </td>
+                  <td>15<br>10</td>
+                  <td class="amount-cell">50,000</td>
+                  <td class="amount-cell">50,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Drawings Entry -->
+        <div class="entry-type-card drawings-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Drawings Entries</h3>
+              <p class="entry-type-subtitle">Owner's Withdrawals</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Drawings entries record when the owner withdraws cash, goods, or other assets from the business for personal use. This reduces the owner's capital in the business.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('drawings')">View Examples</button>
+
+          <div class="journal-example" id="drawings-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Cash Drawings</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 20</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                    <div class="credit-entry">To Cash A/c</div>
+                    <div class="narration">(Being cash withdrawn by owner for personal use)</div>
+                  </td>
+                  <td>11<br>1</td>
+                  <td class="amount-cell">15,000</td>
+                  <td class="amount-cell">15,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Goods Drawings</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 25</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                    <div class="credit-entry">To Purchase A/c</div>
+                    <div class="narration">(Being goods taken by owner for personal use)</div>
+                  </td>
+                  <td>11<br>6</td>
+                  <td class="amount-cell">5,000</td>
+                  <td class="amount-cell">5,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Loan Entry -->
+        <div class="entry-type-card loan-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Loan Entries</h3>
+              <p class="entry-type-subtitle">Borrowing & Lending Transactions</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Loan entries record borrowing money from banks or individuals, as well as lending money to others. These transactions create liabilities or assets respectively.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('loan')">View Examples</button>
+
+          <div class="journal-example" id="loan-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Loan Taken</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 8</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                    <div class="credit-entry">To Loan A/c</div>
+                    <div class="narration">(Being loan taken from State Bank)</div>
+                  </td>
+                  <td>1<br>12</td>
+                  <td class="amount-cell">2,00,000</td>
+                  <td class="amount-cell">2,00,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Loan Given</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 22</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Loan to Employee A/c ........... Dr.</div>
+                    <div class="credit-entry">To Cash A/c</div>
+                    <div class="narration">(Being loan given to employee Mr. Kumar)</div>
+                  </td>
+                  <td>13<br>1</td>
+                  <td class="amount-cell">25,000</td>
+                  <td class="amount-cell">25,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Bad Debts Entry -->
+        <div class="entry-type-card bad-debts-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Bad Debts Entries</h3>
+              <p class="entry-type-subtitle">Irrecoverable Amounts</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Bad debts entries record amounts that cannot be recovered from customers. When a customer fails to pay their dues, the amount becomes a loss for the business.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('bad-debts')">View Examples</button>
+
+          <div class="journal-example" id="bad-debts-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Writing off Bad Debt</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 30</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Bad Debts A/c ................. Dr.</div>
+                    <div class="credit-entry">To Accounts Receivable A/c</div>
+                    <div class="narration">(Being amount written off as irrecoverable from Mr. Patel)</div>
+                  </td>
+                  <td>14<br>2</td>
+                  <td class="amount-cell">8,000</td>
+                  <td class="amount-cell">8,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Bad Debt Recovered</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Apr 5</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                    <div class="credit-entry">To Bad Debts Recovered A/c</div>
+                    <div class="narration">(Being previously written off amount recovered)</div>
+                  </td>
+                  <td>1<br>16</td>
+                  <td class="amount-cell">3,000</td>
+                  <td class="amount-cell">3,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rebate Entry -->
+        <div class="entry-type-card rebate-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Rebate Entries</h3>
+              <p class="entry-type-subtitle">Discounts & Allowances</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Rebate entries record discounts given to customers or received from suppliers. These can be trade discounts, cash discounts, or other allowances for various reasons.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('rebate')">View Examples</button>
+
+          <div class="journal-example" id="rebate-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Discount Given to Customer</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 28</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Discount Allowed A/c ............ Dr.</div>
+                    <div class="credit-entry">To Accounts Receivable A/c</div>
+                    <div class="narration">(Being cash discount allowed to customer)</div>
+                  </td>
+                  <td>17<br>2</td>
+                  <td class="amount-cell">2,500</td>
+                  <td class="amount-cell">2,500</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Discount Received from Supplier</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 29</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Accounts Payable A/c ............ Dr.</div>
+                    <div class="credit-entry">To Discount Received A/c</div>
+                    <div class="narration">(Being early payment discount received)</div>
+                  </td>
+                  <td>8<br>18</td>
+                  <td class="amount-cell">1,800</td>
+                  <td class="amount-cell">1,800</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Assets Entry -->
+        <div class="entry-type-card assets-entry animate-card slide-in-left">
+          <div class="entry-type-header">
+            <div class="entry-type-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div>
+              <h3 class="entry-type-title">Assets Entries</h3>
+              <p class="entry-type-subtitle">Fixed Assets & Depreciation</p>
+            </div>
+          </div>
+          
+          <div class="entry-description">
+            Assets entries record the purchase of fixed assets like machinery, furniture, and buildings, as well as their depreciation over time due to wear and tear.
+          </div>
+
+          <button class="view-example-btn" onclick="toggleExample('assets')">View Examples</button>
+
+          <div class="journal-example" id="assets-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Purchase of Fixed Asset</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 3</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Machinery A/c ................. Dr.</div>
+                    <div class="credit-entry">To Cash A/c</div>
+                    <div class="narration">(Being machinery purchased for factory)</div>
+                  </td>
+                  <td>15<br>1</td>
+                  <td class="amount-cell">3,50,000</td>
+                  <td class="amount-cell">3,50,000</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Depreciation on Assets</h4>
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Mar 31</td>
+                  <td class="particulars-cell">
+                    <div class="debit-entry">Depreciation A/c ................ Dr.</div>
+                    <div class="credit-entry">To Accumulated Depreciation A/c</div>
+                    <div class="narration">(Being depreciation charged on machinery)</div>
+                  </td>
+                  <td>19<br>20</td>
+                  <td class="amount-cell">5,000</td>
+                  <td class="amount-cell">5,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      <!-- Expenses Entry -->
+        <div class="entry-type-card expenses-entry animate-card slide-in-left">
+        <div class="entry-type-header">
+            <div class="entry-type-icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div>
+            <h3 class="entry-type-title">Expenses Entries</h3>
+            <p class="entry-type-subtitle">Recording Business Expenses</p>
+            </div>
+        </div>
+
+        <div class="entry-description">
+            Expenses entries record costs incurred by the business, such as rent, salaries, electricity, and other operating expenses. They reduce the business’s profit.
+        </div>
+
+        <button class="view-example-btn" onclick="toggleExample('expenses')">View Examples</button>
+
+        <div class="journal-example" id="expenses-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Rent Paid</h4>
+            <table class="journal-table">
+            <thead>
+                <tr>
+                <th class="date-col">Date</th>
+                <th class="particulars-col">Particulars</th>
+                <th class="lf-col">L.F.</th>
+                <th class="debit-col">Debit (₹)</th>
+                <th class="credit-col">Credit (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>2024<br>Mar 10</td>
+                <td class="particulars-cell">
+                    <div class="debit-entry">Rent Expense A/c ............... Dr.</div>
+                    <div class="credit-entry">To Cash A/c</div>
+                    <div class="narration">(Being rent paid for March)</div>
+                </td>
+                <td>1<br>21</td>
+                <td class="amount-cell">10,000</td>
+                <td class="amount-cell">10,000</td>
+                </tr>
+            </tbody>
+            </table>
+
+            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Salaries Paid</h4>
+            <table class="journal-table">
+            <thead>
+                <tr>
+                <th class="date-col">Date</th>
+                <th class="particulars-col">Particulars</th>
+                <th class="lf-col">L.F.</th>
+                <th class="debit-col">Debit (₹)</th>
+                <th class="credit-col">Credit (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>2024<br>Mar 15</td>
+                <td class="particulars-cell">
+                    <div class="debit-entry">Salaries Expense A/c .......... Dr.</div>
+                    <div class="credit-entry">To Cash A/c</div>
+                    <div class="narration">(Being salaries paid to employees)</div>
+                </td>
+                <td>2<br>21</td>
+                <td class="amount-cell">25,000</td>
+                <td class="amount-cell">25,000</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+
+        <!-- Other Income Entry -->
+        <div class="entry-type-card other-income-entry animate-card slide-in-left">
+        <div class="entry-type-header">
+            <div class="entry-type-icon">
+            <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div>
+            <h3 class="entry-type-title">Other Income Entries</h3>
+            <p class="entry-type-subtitle">Non-Sales Revenues</p>
+            </div>
+        </div>
+
+        <div class="entry-description">
+            Other income entries record revenues earned from sources other than core sales, like interest, commission, or rent received.
+        </div>
+
+        <button class="view-example-btn" onclick="toggleExample('other-income')">View Examples</button>
+
+        <div class="journal-example" id="other-income-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Interest Received</h4>
+            <table class="journal-table">
+            <thead>
+                <tr>
+                <th class="date-col">Date</th>
+                <th class="particulars-col">Particulars</th>
+                <th class="lf-col">L.F.</th>
+                <th class="debit-col">Debit (₹)</th>
+                <th class="credit-col">Credit (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>2024<br>Mar 20</td>
+                <td class="particulars-cell">
+                    <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                    <div class="credit-entry">To Interest Income A/c</div>
+                    <div class="narration">(Being interest received on bank deposit)</div>
+                </td>
+                <td>3<br>21</td>
+                <td class="amount-cell">5,000</td>
+                <td class="amount-cell">5,000</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+
+        <!-- Provision Entry -->
+        <div class="entry-type-card provision-entry animate-card slide-in-left">
+        <div class="entry-type-header">
+            <div class="entry-type-icon">
+            <i class="fas fa-file-alt"></i>
+            </div>
+            <div>
+            <h3 class="entry-type-title">Provision & Adjustment Entries</h3>
+            <p class="entry-type-subtitle">Adjustments for Accuracy</p>
+            </div>
+        </div>
+
+        <div class="entry-description">
+            These entries ensure the financial statements are accurate by recording provisions for bad debts, outstanding expenses, prepaid expenses, and depreciation.
+        </div>
+
+        <button class="view-example-btn" onclick="toggleExample('provision')">View Examples</button>
+
+        <div class="journal-example" id="provision-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Provision for Bad Debts</h4>
+            <table class="journal-table">
+            <thead>
+                <tr>
+                <th class="date-col">Date</th>
+                <th class="particulars-col">Particulars</th>
+                <th class="lf-col">L.F.</th>
+                <th class="debit-col">Debit (₹)</th>
+                <th class="credit-col">Credit (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>2024<br>Mar 31</td>
+                <td class="particulars-cell">
+                    <div class="debit-entry">Bad Debts Expense A/c ........ Dr.</div>
+                    <div class="credit-entry">To Provision for Bad Debts A/c</div>
+                    <div class="narration">(Being provision created for doubtful debts)</div>
+                </td>
+                <td>20<br>21</td>
+                <td class="amount-cell">3,000</td>
+                <td class="amount-cell">3,000</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+
+    </section>
+
+    <!-- MCQ Section -->
+    <section class="animate-card">
+      <h2>Multiple Choice Questions</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
+        Test your understanding of Journal Entries and their applications. Complete all questions to see your results.
+      </p>
+
+      <div id="mcq-container">
+        
+        <!-- Question 1 -->
+        <div class="mcq" data-answer="b">
+          <h3>1. A journal is also known as:</h3>
+          <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Book of Final Entry</label>
+          <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Book of Original Entry</label>
+          <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Book of Secondary Entry</label>
+          <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Book of Prime Entry</label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="mcq" data-answer="a">
+          <h3>2. In journal entries, which account is written first?</h3>
+          <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Account to be debited</label>
+          <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Account to be credited</label>
+          <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Any account can be written first</label>
+          <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Cash account is always first</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="mcq" data-answer="c">
+          <h3>3. When owner withdraws cash for personal use, which accounts are affected?</h3>
+          <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Cash A/c (Dr.) and Capital A/c (Cr.)</label>
+          <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Capital A/c (Dr.) and Cash A/c (Cr.)</label>
+          <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Drawings A/c (Dr.) and Cash A/c (Cr.)</label>
+          <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Drawings A/c (Dr.) and Capital A/c (Cr.)</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="mcq" data-answer="b">
+          <h3>4. For credit sales, the journal entry would be:</h3>
+          <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Cash A/c Dr. To Sales A/c</label>
+          <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Accounts Receivable A/c Dr. To Sales A/c</label>
+          <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Sales A/c Dr. To Cash A/c</label>
+          <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Sales A/c Dr. To Accounts Receivable A/c</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="mcq" data-answer="a">
+          <h3>5. What does L.F. stand for in journal entries?</h3>
+          <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Ledger Folio</label>
+          <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Last Figure</label>
+          <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Loss Factor</label>
+          <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">Legal Form</label>
+        </div>
+      </div>
+
+      <!-- Submit Button and Progress -->
+      <div style="text-align: center; margin: 30px 0;">
+        <button id="submit-mcq" class="submit-button" disabled style="opacity: 0.5;">Submit Answers</button>
+      </div>
+
+      <div id="score-display" class="hidden-score"></div>
+      <div style="text-align: center; margin-top: 10px;">
+        <button id="retry-btn" style="display: none; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Try Again</button>
+      </div>
+
+      <div class="progress-wrapper">
+        <div class="circular-progress" id="circularProgress">
+          <span class="progress-value" id="progressValue">0%</span>
+        </div>
+      </div>
+    </section>
+
+        <!-- Practical Questions Section -->
+        <section class="animate-card">
+        <h2>Practical Journal Entry Questions</h2>
+        <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
+            Practice making journal entries for these real business scenarios. Try to solve them first, then check the solutions.
+        </p>
+
+        <div class="entry-types-grid">
+            
+            <!-- Practical Question 1 -->
+            <div class="entry-type-card animate-card slide-in-left" style="border-left: 4px solid var(--success);">
+            <div class="entry-type-header">
+                <div class="entry-type-icon" style="background: linear-gradient(135deg, var(--success), #66bb6a);">
+                <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                <h3 class="entry-type-title">Question 1</h3>
+                <p class="entry-type-subtitle">Mixed Transactions</p>
+                </div>
+            </div>
+            
+            <div class="entry-description">
+                <strong>Scenario:</strong> Mr. Rajesh started a business on April 1, 2024. The following transactions occurred:
+                <br>• April 1: Invested ₹2,00,000 cash as capital
+                <br>• April 2: Opened bank account with ₹1,50,000
+                <br>• April 3: Purchased goods for ₹50,000 on credit from ABC Suppliers
+                <br>• April 4: Bought furniture for ₹25,000 cash
+                <br>• April 5: Sold goods for ₹30,000 cash
+                <br>• April 8: Purchased goods for ₹40,000 by cheque
+                <br>• April 10: Sold goods to Mr. Sharma for ₹35,000 on credit
+                <br>• April 12: Paid rent for shop ₹8,000 cash
+                <br>• April 15: Received commission income ₹5,000
+                <br>• April 18: Paid salaries to employees ₹12,000
+                <br>• April 20: Withdrew ₹10,000 cash for personal use
+            </div>
+
+            <button class="view-example-btn" onclick="toggleExample('practical1')">View Solution</button>
+
+            <div class="journal-example" id="practical1-example">
+                <table class="journal-table">
+                <thead>
+                    <tr>
+                    <th class="date-col">Date</th>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="lf-col">L.F.</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2024<br>Apr 1</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Capital A/c</div>
+                        <div class="narration">(Being capital invested by owner)</div>
+                    </td>
+                    <td>1<br>10</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">2,00,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">2,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 2</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Bank A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being bank account opened)</div>
+                    </td>
+                    <td>3<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,50,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,50,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 3</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                        <div class="credit-entry">To ABC Suppliers A/c</div>
+                        <div class="narration">(Being goods purchased on credit)</div>
+                    </td>
+                    <td>6<br>8</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">50,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">50,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 4</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Furniture A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being furniture purchased for cash)</div>
+                    </td>
+                    <td>13<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">25,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">25,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 5</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold for cash)</div>
+                    </td>
+                    <td>1<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">30,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">30,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 8</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                        <div class="credit-entry">To Bank A/c</div>
+                        <div class="narration">(Being goods purchased by cheque)</div>
+                    </td>
+                    <td>6<br>3</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">40,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">40,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 10</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Mr. Sharma A/c ................ Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold on credit)</div>
+                    </td>
+                    <td>4<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">35,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">35,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 12</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Rent A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being rent paid for shop)</div>
+                    </td>
+                    <td>18<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">8,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">8,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 15</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Commission A/c</div>
+                        <div class="narration">(Being commission received)</div>
+                    </td>
+                    <td>1<br>23</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">5,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">5,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 18</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Salary A/c .................... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being salaries paid to employees)</div>
+                    </td>
+                    <td>24<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">12,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">12,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Apr 20</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being cash withdrawn for personal use)</div>
+                    </td>
+                    <td>11<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">10,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">10,000</div>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+            <!-- Practical Question 2 -->
+            <div class="entry-type-card animate-card slide-in-left" style="border-left: 4px solid var(--brand);">
+            <div class="entry-type-header">
+                <div class="entry-type-icon" style="background: linear-gradient(135deg, var(--brand), #9c27b0);">
+                <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                <h3 class="entry-type-title">Question 2</h3>
+                <p class="entry-type-subtitle">Returns & Discounts</p>
+                </div>
+            </div>
+            
+            <div class="entry-description">
+                <strong>Scenario:</strong> The following transactions occurred in May 2024:
+                <br>• May 5: Purchased goods from M/S Gupta Traders ₹60,000 on credit
+                <br>• May 8: Returned damaged goods to M/S Gupta Traders ₹7,000
+                <br>• May 10: Sold goods to Mr. Kumar for ₹40,000 on credit
+                <br>• May 12: Paid M/S Gupta Traders ₹52,000 in full settlement (discount received ₹1,000)
+                <br>• May 15: Mr. Kumar returned goods worth ₹5,000
+                <br>• May 18: Purchased goods from ABC Co. ₹35,000, paid ₹15,000 cash and balance on credit
+                <br>• May 20: Received ₹33,250 from Mr. Kumar in full settlement (discount allowed ₹1,750)
+                <br>• May 22: Sold goods to Mr. Verma ₹28,000, received ₹18,000 cash and balance on credit
+                <br>• May 25: Mr. Verma returned goods worth ₹3,000
+                <br>• May 28: Received full payment from Mr. Verma after allowing discount of ₹500
+                <br>• May 31: Paid electricity bill ₹2,500 and telephone bill ₹1,800
+            </div>
+
+            <button class="view-example-btn" onclick="toggleExample('practical2')">View Solution</button>
+
+            <div class="journal-example" id="practical2-example">
+                <table class="journal-table">
+                <thead>
+                    <tr>
+                    <th class="date-col">Date</th>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="lf-col">L.F.</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2024<br>May 5</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                        <div class="credit-entry">To M/S Gupta Traders A/c</div>
+                        <div class="narration">(Being goods purchased on credit)</div>
+                    </td>
+                    <td>6<br>8</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">60,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">60,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 8</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">M/S Gupta Traders A/c .......... Dr.</div>
+                        <div class="credit-entry">To Purchase Return A/c</div>
+                        <div class="narration">(Being goods returned to supplier)</div>
+                    </td>
+                    <td>8<br>9</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">7,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">7,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 10</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Mr. Kumar A/c ................. Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold on credit)</div>
+                    </td>
+                    <td>4<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">40,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">40,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 12</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">M/S Gupta Traders A/c .......... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="credit-entry">To Discount Received A/c</div>
+                        <div class="narration">(Being payment made with discount received)</div>
+                    </td>
+                    <td>8<br>1<br>25</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">53,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">52,000</div>
+                        <div class="credit-amount">1,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 15</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Sales Return A/c ................ Dr.</div>
+                        <div class="credit-entry">To Mr. Kumar A/c</div>
+                        <div class="narration">(Being goods returned by customer)</div>
+                    </td>
+                    <td>7<br>4</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">5,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">5,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 18</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="credit-entry">To ABC Co. A/c</div>
+                        <div class="narration">(Being goods purchased partly for cash)</div>
+                    </td>
+                    <td>6<br>1<br>26</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">35,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">15,000</div>
+                        <div class="credit-amount">20,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 20</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="debit-entry">Discount Allowed A/c ............ Dr.</div>
+                        <div class="credit-entry">To Mr. Kumar A/c</div>
+                        <div class="narration">(Being amount received with discount allowed)</div>
+                    </td>
+                    <td>1<br>17<br>4</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">33,250</div>
+                        <div class="debit-amount">1,750</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">35,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 22</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="debit-entry">Mr. Verma A/c ................. Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold partly for cash)</div>
+                    </td>
+                    <td>1<br>27<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">18,000</div>
+                        <div class="debit-amount">10,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">28,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 25</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Sales Return A/c ................ Dr.</div>
+                        <div class="credit-entry">To Mr. Verma A/c</div>
+                        <div class="narration">(Being goods returned by customer)</div>
+                    </td>
+                    <td>7<br>27</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">3,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">3,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 28</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="debit-entry">Discount Allowed A/c ............ Dr.</div>
+                        <div class="credit-entry">To Mr. Verma A/c</div>
+                        <div class="narration">(Being final payment received with discount)</div>
+                    </td>
+                    <td>1<br>17<br>27</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">6,500</div>
+                        <div class="debit-amount">500</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">7,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>May 31</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Electricity Expense A/c ......... Dr.</div>
+                        <div class="debit-entry">Telephone Expense A/c ........... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being utility bills paid)</div>
+                    </td>
+                    <td>28<br>29<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">2,500</div>
+                        <div class="debit-amount">1,800</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">4,300</div>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+            <!-- Practical Question 3 -->
+            <div class="entry-type-card animate-card slide-in-left" style="border-left: 4px solid var(--brand-2);">
+            <div class="entry-type-header">
+                <div class="entry-type-icon" style="background: linear-gradient(135deg, var(--brand-2), #26c6da);">
+                <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                <h3 class="entry-type-title">Question 3</h3>
+                <p class="entry-type-subtitle">Fixed Assets & Depreciation</p>
+                </div>
+            </div>
+            
+            <div class="entry-description">
+                <strong>Scenario:</strong> Business transactions in June 2024:
+                <br>• June 1: Purchased land for ₹8,00,000, paid ₹3,00,000 cash and balance by bank loan
+                <br>• June 5: Purchased machinery for ₹1,50,000, paid ₹50,000 cash and rest on credit
+                <br>• June 8: Bought computer equipment for ₹45,000 by cheque
+                <br>• June 12: Purchased delivery van for ₹4,50,000, paid ₹1,50,000 cash and balance on credit
+                <br>• June 15: Paid installation charges for machinery ₹5,000 cash
+                <br>• June 18: Purchased office furniture for ₹35,000 on credit from Modern Furniture
+                <br>• June 22: Sold old furniture (book value ₹8,000) for ₹6,500 cash
+                <br>• June 25: Paid repair charges for delivery van ₹3,200 cash
+                <br>• June 28: Purchased additional machinery parts ₹12,000 by cheque
+                <br>• June 30: Charged depreciation on machinery @ 10% per annum
+                <br>• June 30: Charged depreciation on computer equipment @ 20% per annum
+                <br>• June 30: Charged depreciation on delivery van @ 15% per annum
+            </div>
+
+            <button class="view-example-btn" onclick="toggleExample('practical3')">View Solution</button>
+
+            <div class="journal-example" id="practical3-example">
+                <table class="journal-table">
+                <thead>
+                    <tr>
+                    <th class="date-col">Date</th>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="lf-col">L.F.</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2024<br>Jun 1</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Land A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="credit-entry">To Bank Loan A/c</div>
+                        <div class="narration">(Being land purchased partly by loan)</div>
+                    </td>
+                    <td>30<br>1<br>12</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">8,00,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">3,00,000</div>
+                        <div class="credit-amount">5,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 5</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Machinery A/c ................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="credit-entry">To Accounts Payable A/c</div>
+                        <div class="narration">(Being machinery purchased partly for cash)</div>
+                    </td>
+                    <td>15<br>1<br>8</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,50,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">50,000</div>
+                        <div class="credit-amount">1,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 8</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Computer Equipment A/c ......... Dr.</div>
+                        <div class="credit-entry">To Bank A/c</div>
+                        <div class="narration">(Being computer equipment purchased)</div>
+                    </td>
+                    <td>31<br>3</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">45,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">45,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 12</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Delivery Van A/c .............. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="credit-entry">To Creditors for Van A/c</div>
+                        <div class="narration">(Being delivery van purchased)</div>
+                    </td>
+                    <td>32<br>1<br>33</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">4,50,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,50,000</div>
+                        <div class="credit-amount">3,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 15</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Machinery A/c ................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being installation charges paid)</div>
+                    </td>
+                    <td>15<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">5,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">5,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 18</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Office Furniture A/c ........... Dr.</div>
+                        <div class="credit-entry">To Modern Furniture A/c</div>
+                        <div class="narration">(Being furniture purchased on credit)</div>
+                    </td>
+                    <td>34<br>35</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">35,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">35,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 22</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="debit-entry">Loss on Sale of Furniture A/c ... Dr.</div>
+                        <div class="credit-entry">To Furniture A/c</div>
+                        <div class="narration">(Being old furniture sold at loss)</div>
+                    </td>
+                    <td>1<br>36<br>13</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">6,500</div>
+                        <div class="debit-amount">1,500</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">8,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 25</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Repairs & Maintenance A/c ....... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being repair charges paid for van)</div>
+                    </td>
+                    <td>37<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">3,200</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">3,200</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 28</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Machinery A/c ................. Dr.</div>
+                        <div class="credit-entry">To Bank A/c</div>
+                        <div class="narration">(Being machinery parts purchased)</div>
+                    </td>
+                    <td>15<br>3</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">12,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">12,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 30</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Depreciation A/c ................ Dr.</div>
+                        <div class="credit-entry">To Accumulated Depreciation - Machinery A/c</div>
+                        <div class="narration">(Being depreciation on machinery)</div>
+                    </td>
+                    <td>19<br>38</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,392</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,392</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 30</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Depreciation A/c ................ Dr.</div>
+                        <div class="credit-entry">To Accumulated Depreciation - Computer A/c</div>
+                        <div class="narration">(Being depreciation on computer)</div>
+                    </td>
+                    <td>19<br>39</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">750</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">750</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jun 30</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Depreciation A/c ................ Dr.</div>
+                        <div class="credit-entry">To Accumulated Depreciation - Van A/c</div>
+                        <div class="narration">(Being depreciation on delivery van)</div>
+                    </td>
+                    <td>19<br>40</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">5,625</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">5,625</div>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+                <p style="color: var(--muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>Calculations:</strong><br>
+                Machinery: (₹1,50,000 + ₹5,000 + ₹12,000) × 10% ÷ 12 = ₹1,392<br>
+                Computer: ₹45,000 × 20% ÷ 12 = ₹750<br>
+                Delivery Van: ₹4,50,000 × 15% ÷ 12 = ₹5,625
+                </p>
+            </div>
+            </div>
+
+            <!-- Practical Question 4 -->
+            <div class="entry-type-card animate-card slide-in-left" style="border-left: 4px solid var(--accent);">
+            <div class="entry-type-header">
+                <div class="entry-type-icon" style="background: linear-gradient(135deg, var(--accent), #ec407a);">
+                <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                <h3 class="entry-type-title">Question 4</h3>
+                <p class="entry-type-subtitle">Bad Debts & Recovery</p>
+                </div>
+            </div>
+            
+            <div class="entry-description">
+                <strong>Scenario:</strong> Business events in July 2024:
+                <br>• July 1: Sold goods to Mr. Roy ₹25,000 on credit
+                <br>• July 5: Received ₹20,000 from Mr. Roy and balance considered doubtful
+                <br>• July 10: Mr. Gupta's account ₹15,000 written off as bad debt
+                <br>• July 12: Created provision for doubtful debts @ 5% on sundry debtors of ₹2,00,000
+                <br>• July 15: Sold goods to Ms. Sharma ₹18,000 on credit
+                <br>• July 18: Received information that Mr. Roy became insolvent
+                <br>• July 20: Wrote off Mr. Roy's balance ₹5,000 as bad debt
+                <br>• July 22: Sold goods to Mr. Patel ₹12,000 on credit
+                <br>• July 25: Received ₹6,000 from Mr. Gupta (partial recovery of previously written off amount)
+                <br>• July 28: Ms. Sharma declared insolvent, received 40% of her debt as final settlement
+                <br>• July 30: Adjusted provision for doubtful debts (closing debtors ₹1,80,000)
+                <br>• July 31: Transferred bad debts to Profit & Loss Account
+            </div>
+
+            <button class="view-example-btn" onclick="toggleExample('practical4')">View Solution</button>
+
+            <div class="journal-example" id="practical4-example">
+                <table class="journal-table">
+                <thead>
+                    <tr>
+                    <th class="date-col">Date</th>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="lf-col">L.F.</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2024<br>Jul 1</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Mr. Roy A/c ................... Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold on credit)</div>
+                    </td>
+                    <td>41<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">25,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">25,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 5</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Mr. Roy A/c</div>
+                        <div class="narration">(Being partial payment received)</div>
+                    </td>
+                    <td>1<br>41</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">20,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">20,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 10</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Bad Debts A/c ................. Dr.</div>
+                        <div class="credit-entry">To Mr. Gupta A/c</div>
+                        <div class="narration">(Being debt written off as bad)</div>
+                    </td>
+                    <td>14<br>42</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">15,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">15,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 12</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Provision for Doubtful Debts A/c . Dr.</div>
+                        <div class="credit-entry">To Sundry Debtors A/c</div>
+                        <div class="narration">(Being provision created @ 5%)</div>
+                    </td>
+                    <td>43<br>2</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">10,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">10,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 15</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Ms. Sharma A/c ................ Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold on credit)</div>
+                    </td>
+                    <td>44<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">18,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">18,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 18</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Bad Debts A/c ................. Dr.</div>
+                        <div class="credit-entry">To Mr. Roy A/c</div>
+                        <div class="narration">(Being balance written off as bad debt)</div>
+                    </td>
+                    <td>14<br>41</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">5,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">5,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 22</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Mr. Patel A/c ................. Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold on credit)</div>
+                    </td>
+                    <td>45<br>5</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">12,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">12,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 25</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Bad Debts Recovered A/c</div>
+                        <div class="narration">(Being partial recovery from written off debt)</div>
+                    </td>
+                    <td>1<br>16</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">6,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">6,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 28</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="debit-entry">Bad Debts A/c ................. Dr.</div>
+                        <div class="credit-entry">To Ms. Sharma A/c</div>
+                        <div class="narration">(Being final settlement received)</div>
+                    </td>
+                    <td>1<br>14<br>44</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">7,200</div>
+                        <div class="debit-amount">10,800</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">18,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 30</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Provision for Doubtful Debts A/c . Dr.</div>
+                        <div class="credit-entry">To Sundry Debtors A/c</div>
+                        <div class="narration">(Being provision adjusted)</div>
+                    </td>
+                    <td>43<br>2</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Jul 31</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Profit & Loss A/c .............. Dr.</div>
+                        <div class="credit-entry">To Bad Debts A/c</div>
+                        <div class="narration">(Being bad debts transferred)</div>
+                    </td>
+                    <td>46<br>14</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">30,800</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">30,800</div>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+            <!-- Practical Question 5 -->
+            <div class="entry-type-card animate-card slide-in-left" style="border-left: 4px solid var(--warning);">
+            <div class="entry-type-header">
+                <div class="entry-type-icon" style="background: linear-gradient(135deg, var(--warning), #ffa726);">
+                <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                <h3 class="entry-type-title">Question 5</h3>
+                <p class="entry-type-subtitle">Loan & Interest</p>
+                </div>
+            </div>
+            
+            <div class="entry-description">
+                <strong>Scenario:</strong> Financial transactions in August 2024:
+                <br>• August 1: Took cash credit loan from SBI ₹2,00,000 @ 11% per annum
+                <br>• August 5: Took term loan from Bank of India ₹3,00,000 @ 12% per annum
+                <br>• August 8: Borrowed ₹1,00,000 from Mr. Kapoor @ 10% per annum
+                <br>• August 12: Paid interest on SBI cash credit ₹1,833 for August
+                <br>• August 15: Purchased goods ₹80,000 using SBI cash credit
+                <br>• August 18: Repaid Mr. Kapoor ₹50,000 along with interest ₹417
+                <br>• August 22: Took overdraft facility from PNB ₹1,50,000 @ 13% per annum
+                <br>• August 25: Paid salaries ₹25,000 using overdraft facility
+                <br>• August 28: Repaid SBI cash credit ₹75,000
+                <br>• August 31: Accrued interest on all outstanding loans
+                <br>• August 31: Paid bank charges ₹500 for loan processing
+            </div>
+
+            <button class="view-example-btn" onclick="toggleExample('practical5')">View Solution</button>
+
+            <div class="journal-example" id="practical5-example">
+                <table class="journal-table">
+                <thead>
+                    <tr>
+                    <th class="date-col">Date</th>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="lf-col">L.F.</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2024<br>Aug 1</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To SBI Cash Credit A/c</div>
+                        <div class="narration">(Being cash credit taken from SBI)</div>
+                    </td>
+                    <td>1<br>47</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">2,00,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">2,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 5</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Bank of India Loan A/c</div>
+                        <div class="narration">(Being term loan taken from BOI)</div>
+                    </td>
+                    <td>1<br>12</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">3,00,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">3,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 8</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Mr. Kapoor Loan A/c</div>
+                        <div class="narration">(Being loan taken from private party)</div>
+                    </td>
+                    <td>1<br>48</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,00,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,00,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 12</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Interest Expense A/c ............ Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being interest paid on cash credit)</div>
+                    </td>
+                    <td>21<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,833</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,833</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 15</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Purchase A/c .................. Dr.</div>
+                        <div class="credit-entry">To SBI Cash Credit A/c</div>
+                        <div class="narration">(Being goods purchased using cash credit)</div>
+                    </td>
+                    <td>6<br>47</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">80,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">80,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 18</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Mr. Kapoor Loan A/c ............. Dr.</div>
+                        <div class="debit-entry">Interest Expense A/c ............ Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being partial loan repayment with interest)</div>
+                    </td>
+                    <td>48<br>21<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">50,000</div>
+                        <div class="debit-amount">417</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount"></div>
+                        <div class="credit-amount">50,417</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 22</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To PNB Overdraft A/c</div>
+                        <div class="narration">(Being overdraft facility availed)</div>
+                    </td>
+                    <td>1<br>49</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,50,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,50,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 25</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Salary A/c .................... Dr.</div>
+                        <div class="credit-entry">To PNB Overdraft A/c</div>
+                        <div class="narration">(Being salaries paid using overdraft)</div>
+                    </td>
+                    <td>24<br>49</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">25,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">25,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 28</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">SBI Cash Credit A/c ............. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being partial repayment of cash credit)</div>
+                    </td>
+                    <td>47<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">75,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">75,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 31</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Interest Expense A/c ............ Dr.</div>
+                        <div class="credit-entry">To Interest Payable A/c</div>
+                        <div class="narration">(Being interest accrued on all loans)</div>
+                    </td>
+                    <td>21<br>22</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">6,792</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">6,792</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Aug 31</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Bank Charges A/c ............... Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being bank charges paid)</div>
+                    </td>
+                    <td>50<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">500</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">500</div>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+                <p style="color: var(--muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>Interest Calculations:</strong><br>
+                SBI Cash Credit: (₹2,00,000 - ₹75,000) × 11% ÷ 12 = ₹1,146<br>
+                BOI Term Loan: ₹3,00,000 × 12% ÷ 12 = ₹3,000<br>
+                Mr. Kapoor Loan: ₹50,000 × 10% ÷ 12 = ₹417<br>
+                PNB Overdraft: ₹1,75,000 × 13% ÷ 12 = ₹1,896<br>
+                PNB OD Interest: (₹1,50,000 + ₹25,000) × 13% ÷ 12 × 9/31 = ₹550<br>
+                Total Interest: ₹1,146 + ₹3,000 + ₹417 + ₹1,896 + ₹550 = ₹7,009
+                </p>
+            </div>
+            </div>
+
+            <!-- Practical Question 6 -->
+            <div class="entry-type-card animate-card slide-in-left" style="border-left: 4px solid #795548;">
+            <div class="entry-type-header">
+                <div class="entry-type-icon" style="background: linear-gradient(135deg, #795548, #8d6e63);">
+                <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                <h3 class="entry-type-title">Question 6</h3>
+                <p class="entry-type-subtitle">Owner's Drawings</p>
+                </div>
+            </div>
+            
+            <div class="entry-description">
+                <strong>Scenario:</strong> Owner's personal transactions in September 2024:
+                <br>• September 1: Owner withdrew ₹25,000 cash for personal use
+                <br>• September 5: Owner took goods worth ₹8,000 for personal use
+                <br>• September 8: Paid owner's daughter school fees ₹12,000 from business account
+                <br>• September 12: Owner used business car for personal trip, expenses ₹3,500
+                <br>• September 15: Owner withdrew ₹15,000 for household expenses
+                <br>• September 18: Paid owner's personal credit card bill ₹18,000 by business cheque
+                <br>• September 20: Owner took goods worth ₹5,000 for personal consumption
+                <br>• September 22: Paid owner's personal income tax ₹22,000 from business cash
+                <br>• September 25: Paid owner's personal electricity bill ₹3,500 from business cash
+                <br>• September 28: Owner used business premises for personal function, cost ₹7,000
+                <br>• September 30: Total drawings transferred to capital account
+            </div>
+
+            <button class="view-example-btn" onclick="toggleExample('practical6')">View Solution</button>
+
+            <div class="journal-example" id="practical6-example">
+                <table class="journal-table">
+                <thead>
+                    <tr>
+                    <th class="date-col">Date</th>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="lf-col">L.F.</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>2024<br>Sep 1</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being cash withdrawn for personal use)</div>
+                    </td>
+                    <td>11<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">25,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">25,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 5</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Purchase A/c</div>
+                        <div class="narration">(Being goods taken for personal use)</div>
+                    </td>
+                    <td>11<br>6</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">8,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">8,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 8</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Bank A/c</div>
+                        <div class="narration">(Being school fees paid for owner's daughter)</div>
+                    </td>
+                    <td>11<br>3</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">12,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">12,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 12</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Car Expenses A/c</div>
+                        <div class="narration">(Being personal use of business car)</div>
+                    </td>
+                    <td>11<br>51</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">3,500</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">3,500</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 15</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being cash withdrawn for household)</div>
+                    </td>
+                    <td>11<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">15,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">15,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 18</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Bank A/c</div>
+                        <div class="narration">(Being personal credit card bill paid)</div>
+                    </td>
+                    <td>11<br>3</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">18,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">18,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 20</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Purchase A/c</div>
+                        <div class="narration">(Being goods taken for personal consumption)</div>
+                    </td>
+                    <td>11<br>6</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">5,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">5,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 22</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being personal income tax paid)</div>
+                    </td>
+                    <td>11<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">22,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">22,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 25</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Cash A/c</div>
+                        <div class="narration">(Being personal electricity bill paid)</div>
+                    </td>
+                    <td>11<br>1</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">3,500</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">3,500</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 28</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                        <div class="credit-entry">To Miscellaneous Expenses A/c</div>
+                        <div class="narration">(Being business premises used for personal function)</div>
+                    </td>
+                    <td>11<br>52</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">7,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">7,000</div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>Sep 30</td>
+                    <td class="particulars-cell">
+                        <div class="debit-entry">Capital A/c ................... Dr.</div>
+                        <div class="credit-entry">To Drawings A/c</div>
+                        <div class="narration">(Being total drawings transferred to capital)</div>
+                    </td>
+                    <td>10<br>11</td>
+                    <td class="amount-cell">
+                        <div class="debit-amount">1,19,000</div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="credit-amount">1,19,000</div>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+                <p style="color: var(--muted); font-size: 0.9rem; margin-top: 10px;">
+                <strong>Total Drawings:</strong> ₹25,000 + ₹8,000 + ₹12,000 + ₹3,500 + ₹15,000 + ₹18,000 + ₹5,000 + ₹22,000 + ₹3,500 + ₹7,000 = ₹1,19,000
+                </p>
+            </div>
+            </div>
+        </div>
+        </section>
+
+  </main>
+
+  <script>
+    // Complete JavaScript Code for Chapter 9 - Journal Entries
+    (() => {
+      // Selectors
+      const $ = sel => document.querySelector(sel);
+      const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+      /* Animation CSS injection */
+      const css = `
+        @keyframes shakeX {
+          0%,100%{transform:translateX(0)}
+          20%{transform:translateX(-8px)}
+          40%{transform:translateX(8px)}
+          60%{transform:translateX(-6px)}
+          80%{transform:translateX(6px)}
+        }
+        .aw-shake{animation:shakeX 0.4s ease}
+        .aw-pop{animation:popIn 0.35s ease both}
+        @keyframes popIn {
+          0%{opacity:0;transform:translateY(10px) scale(.96)}
+          60%{opacity:1;transform:translateY(-4px) scale(1.02)}
+          100%{opacity:1;transform:translateY(0) scale(1)}
+        }
+      `;
+      const st = document.createElement("style");
+      st.textContent = css;
+      document.head.appendChild(st);
+
+      // Global variables
+      const mcqs = $$('.mcq');
+      const submitButton = $('#submit-mcq');
+      const scoreDisplay = $('#score-display');
+      const retryBtn = $('#retry-btn');
+      const circularProgress = $('#circularProgress');
+      const progressValueSpan = $('#progressValue');
+      const totalQuestions = mcqs.length;
+      let correctAnswered = new Set();
+      let currentProgress = 0, targetProgress = 0, raf;
+
+      /* Card Animation System */
+      class CardAnimator {
+        constructor() {
+          this.observer = null;
+          this.init();
+        }
+
+        init() {
+          setTimeout(() => {
+            this.addAnimationClasses();
+            this.setupObserver();
+            this.animateOnLoad();
+          }, 100);
+        }
+
+        addAnimationClasses() {
+          // Feature cards
+          $$('.feature-card').forEach(card => {
+            card.classList.add('slide-in-left');
+          });
+
+          // Entry type cards
+          $$('.entry-type-card').forEach(card => {
+            card.classList.add('slide-in-left');
+          });
+
+          // Definition boxes
+          $$('.definition-box').forEach(box => {
+            box.classList.add('fade-up');
+          });
+
+          // Infographic containers
+          $$('.infographic-container').forEach(container => {
+            container.classList.add('slide-in-left');
+          });
+        }
+
+        setupObserver() {
+          const options = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+          };
+
+          this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                this.observer.unobserve(entry.target);
+              }
+            });
+          }, options);
+
+          $$('.slide-in-left, .fade-up').forEach(element => {
+            this.observer.observe(element);
+          });
+        }
+
+        animateOnLoad() {
+          setTimeout(() => {
+            const introSection = $('section:first-of-type');
+            if (introSection) {
+              introSection.querySelectorAll('.fade-up').forEach(card => {
+                card.classList.add('visible');
+              });
+            }
+          }, 300);
+        }
+      }
+
+      // Toggle example function
+      window.toggleExample = function(type) {
+        const example = document.getElementById(`${type}-example`);
+        const btn = document.querySelector(`[onclick="toggleExample('${type}')"]`);
+
+        if (btn) {
+          btn.classList.add('btn-animate');
+          btn.addEventListener('animationend', () => btn.classList.remove('btn-animate'), { once: true });
+        }
+
+        if (example) {
+          if (example.classList.contains('active')) {
+            example.classList.remove('active');
+            setTimeout(() => {
+              example.style.display = 'none';
+            }, 300);
+          } else {
+            // Hide all other examples first
+            document.querySelectorAll('.journal-example').forEach(otherExample => {
+              otherExample.classList.remove('active');
+              setTimeout(() => {
+                if (!otherExample.classList.contains('active')) {
+                  otherExample.style.display = 'none';
+                }
+              }, 300);
+            });
+            
+            example.style.display = 'block';
+            setTimeout(() => {
+              example.classList.add('active');
+              example.classList.add('aw-pop');
+            }, 10);
+          }
+        }
+      };
+
+      /* MCQ System */
+      function animateProgressTo(percent) {
+        targetProgress = Math.round(percent);
+        cancelAnimationFrame(raf);
+        const step = () => {
+          currentProgress += (targetProgress - currentProgress) * 0.18;
+          updateCircularUI(currentProgress);
+          if (Math.abs(targetProgress - currentProgress) > 0.5) {
+            raf = requestAnimationFrame(step);
+          } else {
+            currentProgress = targetProgress;
+            updateCircularUI(currentProgress);
+          }
+        };
+        raf = requestAnimationFrame(step);
+      }
+
+      function updateCircularUI(percent) {
+        if (!circularProgress || !progressValueSpan) return;
+        const deg = (percent/100)*360;
+        circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
+        progressValueSpan.textContent = `${Math.round(percent)}%`;
+      }
+
+      function enableSubmitCheck() {
+        const answered = $('#mcq-container input[type=radio]:checked').length;
+        if (submitButton) {
+          submitButton.disabled = answered === 0;
+          submitButton.style.opacity = answered ? '1' : '0.5';
+        }
+      }
+
+      function handleRadio(e) {
+        const input = e.target;
+        if (input.type !== 'radio') return;
+        const mcq = input.closest('.mcq');
+        const correctAns = mcq.dataset.answer;
+        const label = mcq.querySelector(`label[for="${input.id}"]`);
+
+        if (label) {
+          label.classList.add('aw-pop');
+          setTimeout(() => label.classList.remove('aw-pop'), 350);
+        }
+        
+        if (input.value === correctAns) {
+          correctAnswered.add(mcq);
+        } else {
+          correctAnswered.delete(mcq);
+        }
+        
+        animateProgressTo((correctAnswered.size / totalQuestions) * 100);
+        enableSubmitCheck();
+      }
+
+      function handleSubmit() {
+        let score = 0;
+        let attempted = 0;
+
+        mcqs.forEach(mcq => {
+          const correctAns = mcq.dataset.answer;
+          const selected = mcq.querySelector('input:checked');
+          if (!selected) return;
+          attempted++;
+
+          const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+          const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
+          const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
+
+          if (selected.value === correctAns) {
+            score++;
+            if (corrLabel) corrLabel.classList.add('aw-pop');
+          } else {
+            if (selLabel) {
+              selLabel.classList.add('aw-shake');
+              selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
+            }
+            if (corrLabel) corrLabel.classList.add('aw-pop');
+          }
+        });
+
+        const pct = attempted ? (score / attempted) * 100 : 0;
+        let msg = '';
+
+        if (score === totalQuestions && attempted === totalQuestions) {
+          msg = `🌟 <strong>Excellent!</strong> You scored ${score}/${totalQuestions}. Perfect score! You have mastered Journal Entries!`;
+        } else if (pct >= 80) {
+          msg = `👍 <strong>Great Job!</strong> You scored ${score}/${attempted}. Almost there! Review the concepts you missed.`;
+        } else if (pct >= 60) {
+          msg = `👏 <strong>Good Job!</strong> You got ${score}/${attempted}. Keep practicing journal entries.`;
+        } else if (pct > 0) {
+          msg = `💡 <strong>Keep Learning!</strong> You got ${score}/${attempted}. Review the journal entry rules.`;
+        } else {
+          msg = `⚡ <strong>Start Learning!</strong> Try answering the questions about journal entries.`;
+        }
+
+        if (scoreDisplay) {
+          scoreDisplay.innerHTML = msg;
+          scoreDisplay.style.display = 'block';
+          scoreDisplay.style.opacity = '0';
+          setTimeout(() => {
+            scoreDisplay.style.transition = 'all .5s ease';
+            scoreDisplay.style.opacity = '1';
+            scoreDisplay.classList.add('aw-pop');
+          }, 50);
+        }
+
+        if (retryBtn) retryBtn.style.display = 'inline-block';
+      }
+
+      function resetQuiz() {
+        correctAnswered.clear();
+        mcqs.forEach(mcq => {
+          mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+        });
+        animateProgressTo(0);
+        if (scoreDisplay) scoreDisplay.style.display = 'none';
+        if (retryBtn) retryBtn.style.display = 'none';
+        enableSubmitCheck();
+      }
+
+      /* Initialize Everything */
+      function initialize() {
+        const animator = new CardAnimator();
+
+        const mcqContainer = $('#mcq-container');
+        if (mcqContainer) {
+          mcqContainer.addEventListener('change', handleRadio);
+        }
+        
+        if (submitButton) {
+          submitButton.addEventListener('click', handleSubmit);
+        }
+        
+        if (retryBtn) {
+          retryBtn.addEventListener('click', resetQuiz);
+        }
+
+        animateProgressTo(0);
+        enableSubmitCheck();
+
+        console.log('Chapter 9 - Journal Entries loaded successfully!');
+      }
+
+      /* Event Listeners */
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize);
+      } else {
+        initialize();
+      }
+    })();
+  </script>
+</body>
+</html>
