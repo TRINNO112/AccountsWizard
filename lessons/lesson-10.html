@@ -926,368 +926,6 @@
       </div>
     </section>
 
-    <!-- Basic GST Format Section -->
-    <section class="animate-card">
-      <h2>Basic GST Journal Entry Format</h2>
-      
-      <div class="definition-box animate-card fade-up">
-        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px;">
-          <i class="fas fa-book" style="color:#fff;"></i>
-          Understanding GST Entries
-        </h3>
-        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6;">
-          GST journal entries involve recording <strong>Input GST</strong> (GST paid on purchases) and <strong>Output GST</strong> (GST collected on sales). The net GST payable is calculated as Output GST minus Input GST.
-        </p>
-      </div>
-
-      <div style="background: rgba(124,77,255,0.05); border-radius: 16px; padding: 30px; margin: 25px 0; border: 2px solid rgba(124,77,255,.2);">
-        <h3 style="color: var(--brand-2); margin-bottom: 25px; text-align: center;">Standard GST Journal Entry Format</h3>
-        
-        <table class="gst-table">
-          <thead>
-            <tr>
-              <th class="date-col">Date</th>
-              <th class="particulars-col">Particulars</th>
-              <th class="amount-col">Amount (₹)</th>
-              <th class="gst-col">GST (₹)</th>
-              <th class="total-col">Total (₹)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>2024<br>Mar 15</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
-                <div class="debit-entry">Input GST A/c ................... Dr.</div>
-                <div class="credit-entry">To Supplier A/c</div>
-                <div class="narration">(Being goods purchased with GST)</div>
-              </td>
-              <td class="amount-cell">10,000</td>
-              <td class="gst-cell">1,800</td>
-              <td class="total-cell">11,800</td>
-            </tr>
-            <tr>
-              <td>Mar 20</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Customer A/c .................... Dr.</div>
-                <div class="credit-entry">To Sales A/c</div>
-                <div class="credit-entry">To Output GST A/c</div>
-                <div class="narration">(Being goods sold with GST)</div>
-              </td>
-              <td class="amount-cell">15,000</td>
-              <td class="gst-cell">2,700</td>
-              <td class="total-cell">17,700</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div style="margin-top: 25px; color: var(--muted); font-size: 1rem;">
-          <h4 style="color: var(--text); margin-bottom: 15px;">Key Points:</h4>
-          <ul style="line-height: 1.6; padding-left: 20px;">
-            <li><strong>Input GST:</strong> GST paid on purchases (can be claimed as credit)</li>
-            <li><strong>Output GST:</strong> GST collected on sales (to be paid to government)</li>
-            <li><strong>Net GST Payable:</strong> Output GST minus Input GST</li>
-            <li><strong>GST Rate:</strong> Applied on the base amount (excluding GST)</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Practical Examples Section -->
-    <section class="animate-card">
-      <h2>Practical GST Examples</h2>
-      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
-        Let's explore real-world GST scenarios with detailed journal entries and calculations:
-      </p>
-
-      <div class="practical-examples-grid">
-        
-        <!-- Example 1 -->
-        <div class="practical-card animate-card slide-in-left">
-          <div class="practical-header">
-            <div class="practical-icon">
-              <i class="fas fa-shopping-cart"></i>
-            </div>
-            <div>
-              <h3 class="practical-title">Example 1</h3>
-              <p class="practical-subtitle">Intra-State Purchase & Sale</p>
-            </div>
-          </div>
-          
-          <div class="practical-description">
-            <strong>Scenario:</strong> ABC Traders (Gujarat) purchased goods worth ₹50,000 from XYZ Suppliers (Gujarat) at 18% GST. Later sold goods worth ₹80,000 to a customer in Gujarat at 18% GST.
-          </div>
-
-          <button class="view-solution-btn" onclick="toggleSolution('example1')">View Solution</button>
-
-          <div class="gst-solution" id="example1-solution">
-            <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
-            
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">1. Purchase Entry:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>Mar 5</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Purchase A/c ..................... Dr.</div>
-                    <div class="debit-entry">CGST Input A/c .................. Dr.</div>
-                    <div class="debit-entry">SGST Input A/c .................. Dr.</div>
-                    <div class="credit-entry">To XYZ Suppliers A/c</div>
-                    <div class="narration">(Being goods purchased with GST)</div>
-                  </td>
-                  <td class="amount-cell">50,000</td>
-                  <td class="gst-cell">9,000<br>(4,500+4,500)</td>
-                  <td class="total-cell">59,000</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">2. Sales Entry:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>Mar 15</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Customer A/c .................... Dr.</div>
-                    <div class="credit-entry">To Sales A/c</div>
-                    <div class="credit-entry">To CGST Output A/c</div>
-                    <div class="credit-entry">To SGST Output A/c</div>
-                    <div class="narration">(Being goods sold with GST)</div>
-                  </td>
-                  <td class="amount-cell">80,000</td>
-                  <td class="gst-cell">14,400<br>(7,200+7,200)</td>
-                  <td class="total-cell">94,400</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div style="background: rgba(76,175,80,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
-              <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Calculation:</h5>
-              <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-                • CGST = 9% of base amount<br>
-                • SGST = 9% of base amount<br>
-                • Net CGST Payable = ₹7,200 - ₹4,500 = ₹2,700<br>
-                • Net SGST Payable = ₹7,200 - ₹4,500 = ₹2,700<br>
-                • Total GST Payable = ₹5,400
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Example 2 -->
-        <div class="practical-card animate-card slide-in-left">
-          <div class="practical-header">
-            <div class="practical-icon">
-              <i class="fas fa-truck"></i>
-            </div>
-            <div>
-              <h3 class="practical-title">Example 2</h3>
-              <p class="practical-subtitle">Inter-State Supply Chain</p>
-            </div>
-          </div>
-          
-          <div class="practical-description">
-            <strong>Scenario:</strong> Mumbai Traders purchased goods worth ₹1,20,000 from Delhi Suppliers at 12% GST. Sold goods worth ₹1,80,000 to Kolkata Customer at 12% GST.
-          </div>
-
-          <button class="view-solution-btn" onclick="toggleSolution('example2')">View Solution</button>
-
-          <div class="gst-solution" id="example2-solution">
-            <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
-            
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">1. Inter-State Purchase:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>Apr 10</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Purchase A/c ..................... Dr.</div>
-                    <div class="debit-entry">IGST Input A/c .................. Dr.</div>
-                    <div class="credit-entry">To Delhi Suppliers A/c</div>
-                    <div class="narration">(Being inter-state purchase with IGST)</div>
-                  </td>
-                  <td class="amount-cell">1,20,000</td>
-                  <td class="gst-cell">14,400</td>
-                  <td class="total-cell">1,34,400</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">2. Inter-State Sale:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>Apr 25</td>
-                  <td class="particulars-cell">
-                                        <div class="debit-entry">Kolkata Customer A/c ............. Dr.</div>
-                    <div class="credit-entry">To Sales A/c</div>
-                    <div class="credit-entry">To IGST Output A/c</div>
-                    <div class="narration">(Being inter-state sale with IGST)</div>
-                  </td>
-                  <td class="amount-cell">1,80,000</td>
-                  <td class="gst-cell">21,600</td>
-                  <td class="total-cell">2,01,600</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div style="background: rgba(0,229,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
-              <h5 style="color: var(--brand-2); margin: 0 0 10px 0;">IGST Calculation:</h5>
-              <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-                • IGST Rate = 12%<br>
-                • IGST on Purchase = ₹1,20,000 × 12% = ₹14,400<br>
-                • IGST on Sale = ₹1,80,000 × 12% = ₹21,600<br>
-                • Net IGST Payable = ₹21,600 - ₹14,400 = ₹7,200
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Example 3 -->
-        <div class="practical-card animate-card slide-in-left">
-          <div class="practical-header">
-            <div class="practical-icon">
-              <i class="fas fa-utensils"></i>
-            </div>
-            <div>
-              <h3 class="practical-title">Example 3</h3>
-              <p class="practical-subtitle">Restaurant Service with GST</p>
-            </div>
-          </div>
-          
-          <div class="practical-description">
-            <strong>Scenario:</strong> Royal Restaurant provided dining services worth ₹25,000 at 5% GST, purchased kitchen equipment worth ₹60,000 at 18% GST, and paid rent ₹15,000 at 18% GST.
-          </div>
-
-          <button class="view-solution-btn" onclick="toggleSolution('example3')">View Solution</button>
-
-          <div class="gst-solution" id="example3-solution">
-            <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
-            
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">1. Restaurant Service Income:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>May 15</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Cash A/c ........................ Dr.</div>
-                    <div class="credit-entry">To Restaurant Income A/c</div>
-                    <div class="credit-entry">To CGST Output A/c</div>
-                    <div class="credit-entry">To SGST Output A/c</div>
-                    <div class="narration">(Being restaurant service income with GST)</div>
-                  </td>
-                  <td class="amount-cell">25,000</td>
-                  <td class="gst-cell">1,250<br>(625+625)</td>
-                  <td class="total-cell">26,250</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">2. Kitchen Equipment Purchase:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>May 20</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Kitchen Equipment A/c ........... Dr.</div>
-                    <div class="debit-entry">CGST Input A/c .................. Dr.</div>
-                    <div class="debit-entry">SGST Input A/c .................. Dr.</div>
-                    <div class="credit-entry">To Equipment Supplier A/c</div>
-                    <div class="narration">(Being kitchen equipment purchased with GST)</div>
-                  </td>
-                  <td class="amount-cell">60,000</td>
-                  <td class="gst-cell">10,800<br>(5,400+5,400)</td>
-                  <td class="total-cell">70,800</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div style="background: rgba(255,152,0,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
-              <h5 style="color: var(--warning); margin: 0 0 10px 0;">GST Summary:</h5>
-              <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-                • CGST Output = ₹625 | SGST Output = ₹625<br>
-                • CGST Input = ₹5,400 | SGST Input = ₹5,400<br>
-                • CGST Refund = ₹4,775 | SGST Refund = ₹4,775<br>
-                • Total Refund Claimable = ₹9,550
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Example 4 -->
-        <div class="practical-card animate-card slide-in-left">
-          <div class="practical-header">
-            <div class="practical-icon">
-              <i class="fas fa-building"></i>
-            </div>
-            <div>
-              <h3 class="practical-title">Example 4</h3>
-              <p class="practical-subtitle">Construction Service Contract</p>
-            </div>
-          </div>
-          
-          <div class="practical-description">
-            <strong>Scenario:</strong> ABC Builders provided construction services worth ₹5,00,000 at 18% GST. They purchased cement worth ₹1,50,000 and steel worth ₹2,00,000, both at 18% GST.
-          </div>
-
-          <button class="view-solution-btn" onclick="toggleSolution('example4')">View Solution</button>
-
-          <div class="gst-solution" id="example4-solution">
-            <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
-            
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">1. Material Purchases:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>Jun 5</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Cement Purchase A/c ............. Dr.</div>
-                    <div class="debit-entry">Steel Purchase A/c .............. Dr.</div>
-                    <div class="debit-entry">CGST Input A/c .................. Dr.</div>
-                    <div class="debit-entry">SGST Input A/c .................. Dr.</div>
-                    <div class="credit-entry">To Suppliers A/c</div>
-                    <div class="narration">(Being construction materials purchased)</div>
-                  </td>
-                  <td class="amount-cell">3,50,000</td>
-                  <td class="gst-cell">63,000<br>(31,500+31,500)</td>
-                  <td class="total-cell">4,13,000</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h5 style="color: var(--text); margin: 20px 0 10px 0;">2. Construction Service Income:</h5>
-            <table class="gst-table">
-              <tbody>
-                <tr>
-                  <td>2024<br>Jun 30</td>
-                  <td class="particulars-cell">
-                    <div class="debit-entry">Client A/c ...................... Dr.</div>
-                    <div class="credit-entry">To Construction Income A/c</div>
-                    <div class="credit-entry">To CGST Output A/c</div>
-                    <div class="credit-entry">To SGST Output A/c</div>
-                    <div class="narration">(Being construction service provided)</div>
-                  </td>
-                  <td class="amount-cell">5,00,000</td>
-                  <td class="gst-cell">90,000<br>(45,000+45,000)</td>
-                  <td class="total-cell">5,90,000</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div style="background: rgba(124,77,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
-              <h5 style="color: var(--brand); margin: 0 0 10px 0;">GST Summary:</h5>
-              <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-                • CGST Output = ₹45,000 | SGST Output = ₹45,000<br>
-                • CGST Input = ₹31,500 | SGST Input = ₹31,500<br>
-                • CGST Payable = ₹13,500 | SGST Payable = ₹13,500<br>
-                • Total GST Payable = ₹27,000
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- GST Types Comparison -->
     <section class="animate-card">
       <h2>Types of GST in India</h2>
@@ -1345,6 +983,1061 @@
         </p>
       </div>
     </section>
+
+    <!-- Basic GST Format Section -->
+    <section class="animate-card">
+      <h2>Basic GST Journal Entry Format</h2>
+      
+      <div class="definition-box animate-card fade-up">
+        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-book" style="color:#fff;"></i>
+          Understanding GST Entries
+        </h3>
+        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6;">
+          GST journal entries involve recording <strong>Input GST</strong> (GST paid on purchases) and <strong>Output GST</strong> (GST collected on sales). GST is divided into CGST & SGST for intra-state transactions and IGST for inter-state transactions.
+        </p>
+      </div>
+
+      <div style="background: rgba(124,77,255,0.05); border-radius: 16px; padding: 30px; margin: 25px 0; border: 2px solid rgba(124,77,255,.2);">
+        <h3 style="color: var(--brand-2); margin-bottom: 25px; text-align: center;">Intra-State GST (CGST + SGST)</h3>
+        
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="4">2024<br>Mar 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+              </td>
+              <td class="amount-cell">10,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">900</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">900</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Supplier A/c</div>
+                <div class="narration">(Being goods purchased with GST @ 18%)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">11,800</td>
+            </tr>
+            
+            <tr style="border-top: 2px solid rgba(124,77,255,.2);">
+              <td rowspan="4">Mar 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Customer A/c .................... Dr.</div>
+              </td>
+              <td class="amount-cell">17,700</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Sales A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">15,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output CGST A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">1,350</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output SGST A/c</div>
+                <div class="narration">(Being goods sold with GST @ 18%)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">1,350</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background: rgba(124,77,255,0.05); border-radius: 16px; padding: 30px; margin: 25px 0; border: 2px solid rgba(124,77,255,.2);">
+        <h3 style="color: var(--brand-2); margin-bottom: 25px; text-align: center;">Inter-State GST (IGST)</h3>
+        
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3">2024<br>Apr 10</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+              </td>
+              <td class="amount-cell">20,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">3,600</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Supplier A/c</div>
+                <div class="narration">(Being inter-state purchase with IGST @ 18%)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">23,600</td>
+            </tr>
+            
+            <tr style="border-top: 2px solid rgba(124,77,255,.2);">
+              <td rowspan="3">Apr 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Customer A/c .................... Dr.</div>
+              </td>
+              <td class="amount-cell">29,500</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Sales A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">25,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output IGST A/c</div>
+                <div class="narration">(Being inter-state sale with IGST @ 18%)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">4,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 25px; color: var(--muted); font-size: 1rem;">
+        <h4 style="color: var(--text); margin-bottom: 15px;">Key Points:</h4>
+        <ul style="line-height: 1.6; padding-left: 20px;">
+          <li><strong>Intra-State (Within State):</strong> CGST + SGST (usually 9% + 9% = 18% total)</li>
+          <li><strong>Inter-State (Between States):</strong> IGST (usually 18%)</li>
+          <li><strong>Input GST:</strong> Debited when purchasing (can be claimed as credit)</li>
+          <li><strong>Output GST:</strong> Credited when selling (to be paid to government)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- GST Adjustment Section -->
+    <section class="animate-card gst-adjustment-section">
+      <h2>GST Adjustment (Input vs Output)</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
+        Understand how Input GST is set-off against Output GST liability with a simple example:
+      </p>
+
+      <div class="practical-card animate-card slide-in-left">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">GST Adjustment Example</h3>
+            <p class="practical-subtitle">Offsetting Input vs Output Tax</p>
+          </div>
+        </div>
+
+        <div class="practical-description">
+          <strong>Scenario:</strong> ABC Traders (Delhi) had the following transactions in June 2024 (IGST @ 18%):
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Purchased goods worth ₹2,00,000 + IGST (18%)</li>
+            <li>Sold goods worth ₹2,50,000 + IGST (18%)</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('gstAdjustment')">View Adjustment</button>
+
+        <div class="gst-solution" id="gstAdjustment-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Working of GST Adjustment:</h4>
+
+          <table class="gst-table">
+            <thead>
+              <tr>
+                <th>Particulars</th>
+                <th>Amount (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Input IGST (on purchases)</strong></td>
+                <td>36,000 (₹2,00,000 × 18%)</td>
+              </tr>
+              <tr>
+                <td><strong>Output IGST (on sales)</strong></td>
+                <td>45,000 (₹2,50,000 × 18%)</td>
+              </tr>
+              <tr>
+                <td><strong>Adjustment</strong><br>
+                  Input IGST (36,000) is set off against Output IGST (45,000)
+                </td>
+                <td>-36,000</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.1); font-weight: bold;">
+                <td>Net IGST Payable</td>
+                <td>9,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="background: rgba(33,150,243,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+            <h5 style="color: var(--brand-2); margin: 0 0 10px 0;">Explanation:</h5>
+            <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+              • The business paid IGST of ₹36,000 on purchases.<br>
+              • It collected IGST of ₹45,000 on sales.<br>
+              • Instead of paying full ₹45,000, the business uses its Input IGST (₹36,000) as credit.<br>
+              • Only the balance of ₹9,000 is payable to the government.<br><br>
+              <strong>This is the core of Input Tax Credit (ITC) mechanism in GST.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Practical Examples Section -->
+<section class="animate-card">
+  <h2>Practical GST Examples</h2>
+  <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
+    Practice journal entries for business transactions with GST:
+  </p>
+
+  <div class="practical-examples-grid">
+    
+    <!-- Example 1 -->
+    <div class="practical-card animate-card slide-in-left">
+      <div class="practical-header">
+        <div class="practical-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div>
+          <h3 class="practical-title">Example 1</h3>
+          <p class="practical-subtitle">Trading Business - Intra-State</p>
+        </div>
+      </div>
+      
+      <div class="practical-description">
+        <strong>Question:</strong> Mr. Sharma started a trading business in Mumbai. Record the following transactions for March 2024 (All transactions within Maharashtra - CGST 9% + SGST 9%):
+        <ol style="margin: 10px 0; padding-left: 20px;">
+          <li>Started business with cash ₹5,00,000</li>
+          <li>Purchased goods from local supplier ₹80,000 + GST</li>
+          <li>Paid office rent ₹20,000 + GST</li>
+          <li>Sold goods to customer ₹1,20,000 + GST</li>
+          <li>Purchased furniture ₹30,000 + GST</li>
+          <li>Paid electricity bill ₹5,000 + GST</li>
+        </ol>
+      </div>
+
+      <button class="view-solution-btn" onclick="toggleSolution('example1')">View Solution</button>
+
+      <div class="gst-solution" id="example1-solution">
+        <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
+        
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transaction 1 -->
+            <tr>
+              <td>2024<br>Mar 1</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+                <div class="credit-entry">To Capital A/c</div>
+                <div class="narration">(Being business started with cash)</div>
+              </td>
+              <td class="amount-cell">5,00,000</td>
+              <td class="amount-cell">5,00,000</td>
+            </tr>
+
+            <!-- Transaction 2 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Mar 5</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+              </td>
+              <td class="amount-cell">80,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">7,200</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">7,200</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being goods purchased for cash with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">94,400</td>
+            </tr>
+
+            <!-- Transaction 3 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Mar 8</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Rent A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">20,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">1,800</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">1,800</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being office rent paid with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">23,600</td>
+            </tr>
+
+            <!-- Transaction 4 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Mar 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">1,41,600</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Sales A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">1,20,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output CGST A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">10,800</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output SGST A/c</div>
+                <div class="narration">(Being goods sold for cash with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">10,800</td>
+            </tr>
+
+            <!-- Transaction 5 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Mar 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Furniture A/c .................... Dr.</div>
+              </td>
+              <td class="amount-cell">30,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,700</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,700</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being furniture purchased with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">35,400</td>
+            </tr>
+
+            <!-- Transaction 6 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Mar 25</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Electricity Expenses A/c ......... Dr.</div>
+              </td>
+              <td class="amount-cell">5,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">450</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">450</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being electricity bill paid with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">5,900</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: rgba(76,175,80,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary:</h5>
+          <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+            • Total Input CGST = ₹11,950 | Total Input SGST = ₹11,950<br>
+            • Total Output CGST = ₹10,800 | Total Output SGST = ₹10,800<br>
+            • Net CGST Refund = ₹1,150 | Net SGST Refund = ₹1,150<br>
+            • Total GST Refund Claimable = ₹2,300
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="practical-card animate-card slide-in-left">
+      <div class="practical-header">
+        <div class="practical-icon">
+          <i class="fas fa-truck"></i>
+        </div>
+        <div>
+          <h3 class="practical-title">Example 2</h3>
+          <p class="practical-subtitle">Inter-State Business</p>
+        </div>
+      </div>
+      
+      <div class="practical-description">
+        <strong>Question:</strong> Rajesh Enterprises in Delhi started operations in April 2024. Record the following transactions (IGST @ 18%):
+        <ol style="margin: 10px 0; padding-left: 20px;">
+          <li>Started business with cash ₹10,00,000</li>
+          <li>Purchased goods from Mumbai supplier ₹2,00,000 + IGST</li>
+          <li>Paid transportation charges ₹15,000 + IGST</li>
+          <li>Sold goods to Kolkata customer ₹3,00,000 + IGST</li>
+          <li>Purchased computer from Chennai ₹50,000 + IGST</li>
+          <li>Paid insurance premium ₹12,000 + IGST</li>
+        </ol>
+      </div>
+
+      <button class="view-solution-btn" onclick="toggleSolution('example2')">View Solution</button>
+
+      <div class="gst-solution" id="example2-solution">
+        <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
+        
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transaction 1 -->
+            <tr>
+              <td>2024<br>Apr 1</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+                <div class="credit-entry">To Capital A/c</div>
+                <div class="narration">(Being business started with cash)</div>
+              </td>
+              <td class="amount-cell">10,00,000</td>
+              <td class="amount-cell">10,00,000</td>
+            </tr>
+
+            <!-- Transaction 2 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Apr 5</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,00,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">36,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being inter-state purchase from Mumbai)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">2,36,000</td>
+            </tr>
+
+            <!-- Transaction 3 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Apr 8</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Transportation Charges A/c ....... Dr.</div>
+              </td>
+              <td class="amount-cell">15,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,700</td>
+                        <!-- continuing Example 2 (complete) -->
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,700</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being transportation charges paid with IGST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">17,700</td>
+            </tr>
+
+            <!-- Transaction 4 - Sale -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Apr 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">3,54,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Sales A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">3,00,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output IGST A/c</div>
+                <div class="narration">(Being goods sold inter-state with IGST @18%)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">54,000</td>
+            </tr>
+
+            <!-- Transaction 5 - Computer purchase -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Apr 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Computer A/c .................... Dr.</div>
+              </td>
+              <td class="amount-cell">50,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">9,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being computer purchased from Chennai with IGST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">59,000</td>
+            </tr>
+
+            <!-- Transaction 6 - Insurance -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Apr 25</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Insurance A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">12,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,160</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being insurance premium paid with IGST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">14,160</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary (Rajesh Enterprises):</h5>
+          <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+            • Total Input IGST = ₹49,860 (36,000 + 2,700 + 9,000 + 2,160).<br>
+            • Total Output IGST = ₹54,000.<br>
+            • Net IGST Payable = ₹4,140 (54,000 - 49,860).<br>
+            • If reversed (input > output) it would be refundable; here output > input so tax to pay.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="practical-card animate-card slide-in-left">
+      <div class="practical-header">
+        <div class="practical-icon">
+          <i class="fas fa-concierge-bell"></i>
+        </div>
+        <div>
+          <h3 class="practical-title">Example 3</h3>
+          <p class="practical-subtitle">Service Provider — Intra-State (CGST/SGST 9%/9%)</p>
+        </div>
+      </div>
+
+      <div class="practical-description">
+        <strong>Question:</strong> Stellar Services (Pune) — record April 2024 transactions (all within Maharashtra; GST on services @18% split 9% CGST + 9% SGST):
+        <ol style="margin: 10px 0; padding-left: 20px;">
+          <li>Started business with cash ₹2,00,000</li>
+          <li>Received advance from client ₹50,000 (advance invoice) + GST</li>
+          <li>Rendered services on completion ₹1,00,000 + GST (client paid in cash)</li>
+          <li>Paid office rent ₹15,000 + GST</li>
+          <li>Purchased stationery ₹5,000 + GST</li>
+          <li>Paid tax consultant ₹8,000 + GST</li>
+        </ol>
+      </div>
+
+      <button class="view-solution-btn" onclick="toggleSolution('example3')">View Solution</button>
+
+      <div class="gst-solution" id="example3-solution">
+        <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
+
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transaction 1 -->
+            <tr>
+              <td>2024<br>Apr 1</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+                <div class="credit-entry">To Capital A/c</div>
+                <div class="narration">(Being business started with cash)</div>
+              </td>
+              <td class="amount-cell">2,00,000</td>
+              <td class="amount-cell">2,00,000</td>
+            </tr>
+
+            <!-- Transaction 2 - Advance received -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Apr 5</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">59,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Advances from Customers A/c</div>
+              </td>
+              <td class="amount-cell">50,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output CGST A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">4,500</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output SGST A/c</div>
+                <div class="narration">(Being advance received ₹50,000 + GST @18%)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">4,500</td>
+            </tr>
+
+            <!-- Transaction 3 - Services rendered -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Apr 10</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">1,18,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Service Revenue A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">1,00,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output CGST A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">9,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output SGST A/c</div>
+                <div class="narration">(Being services rendered and paid with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">9,000</td>
+            </tr>
+
+            <!-- Transaction 4 - Rent paid -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Apr 12</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Rent A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">15,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">1,350</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">1,350</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being office rent paid with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">17,700</td>
+            </tr>
+
+            <!-- Transaction 5 - Stationery -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Apr 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Stationery A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">5,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">450</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">450</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being stationery purchased with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">5,900</td>
+            </tr>
+
+            <!-- Transaction 6 - Tax consultant -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Apr 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Professional Fees A/c ........... Dr.</div>
+              </td>
+              <td class="amount-cell">8,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">720</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">720</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being tax consultant fees paid with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">9,440</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary (Stellar Services):</h5>
+          <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+            • Total Input CGST = ₹(1,350 + 450 + 720) = ₹2,520.<br>
+            • Total Input SGST = ₹2,520.<br>
+            • Total Output CGST = ₹(4,500 + 9,000) = ₹13,500 (advance + service sale).<br>
+            • Total Output SGST = ₹13,500.<br>
+            • Net CGST Payable = ₹10,980 (13,500 - 2,520).<br>
+            • Net SGST Payable = ₹10,980.<br>
+            • Total GST Payable (CGST + SGST) = ₹21,960.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="practical-card animate-card slide-in-left">
+      <div class="practical-header">
+        <div class="practical-icon">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div>
+          <h3 class="practical-title">Example 4</h3>
+          <p class="practical-subtitle">Export — Zero-rated Supply (inputs refundable)</p>
+        </div>
+      </div>
+
+      <div class="practical-description">
+        <strong>Question:</strong> Oceanic Exports — record transactions for May 2024. Exports are zero-rated (export sales have nil tax; input tax on domestic purchases can be claimed as refund or used against other liabilities):
+        <ol style="margin: 10px 0; padding-left: 20px;">
+          <li>Started business with cash ₹5,00,000</li>
+          <li>Purchased raw material from local supplier ₹1,50,000 + GST (CGST 9% + SGST 9%)</li>
+          <li>Exported goods worth ₹4,00,000 (zero-rated export)</li>
+          <li>Purchased packing material ₹10,000 + GST</li>
+          <li>Paid international freight ₹20,000 (to foreign transporter) — treated as export service (no domestic GST)</li>
+        </ol>
+      </div>
+
+      <button class="view-solution-btn" onclick="toggleSolution('example4')">View Solution</button>
+
+      <div class="gst-solution" id="example4-solution">
+        <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
+
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transaction 1 -->
+            <tr>
+              <td>2024<br>May 1</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+                <div class="credit-entry">To Capital A/c</div>
+                <div class="narration">(Being business started with cash)</div>
+              </td>
+              <td class="amount-cell">5,00,000</td>
+              <td class="amount-cell">5,00,000</td>
+            </tr>
+
+            <!-- Transaction 2 - Raw material purchase -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">May 5</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Raw Material A/c ............... Dr.</div>
+              </td>
+              <td class="amount-cell">1,50,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">13,500</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">13,500</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being raw material purchased with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">1,77,000</td>
+            </tr>
+
+            <!-- Transaction 3 - Export sale (zero-rated) -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td>May 10</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Debtors/Export Receivable A/c .. Dr.</div>
+                <div class="credit-entry">To Sales (Export) A/c</div>
+                <div class="narration">(Being export sale — zero-rated)</div>
+              </td>
+              <td class="amount-cell">4,00,000</td>
+              <td class="amount-cell">4,00,000</td>
+            </tr>
+
+            <!-- Transaction 4 - Packing material -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">May 12</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Packing Material A/c .......... Dr.</div>
+              </td>
+              <td class="amount-cell">10,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">900</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">900</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being packing material purchased with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">11,800</td>
+            </tr>
+
+            <!-- Transaction 5 - International freight (no domestic GST) -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td>May 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Freight Outwards A/c .......... Dr.</div>
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being international freight paid — no domestic GST)</div>
+              </td>
+              <td class="amount-cell">20,000</td>
+              <td class="amount-cell">20,000</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary (Oceanic Exports):</h5>
+          <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+            • Total Input CGST = ₹14,400 (13,500 + 900).<br>
+            • Total Input SGST = ₹14,400.<br>
+            • Output tax on export = ₹0 (exports are zero-rated).<br>
+            • Net effect: Input tax can be claimed as refund / adjusted — Total GST refundable = ₹28,800 (CGST + SGST).
+          </p>
+        </div>
+      </div>
+    </div>
+    </div>
+    </section>
+
 
     <!-- MCQ Section -->
     <section class="animate-card">
@@ -1462,6 +2155,125 @@
         </div>
       </div>
     </section>
+
+    <!-- GST Practice Questions Section -->
+    <section class="animate-card gst-practice-section">
+      <h2>Practice Questions – GST Journal Entries</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
+        Try these practice sets yourself. Record journal entries for the following transactions as per GST rules (DK Goel syllabus).
+      </p>
+
+      <div class="practice-grid">
+        <!-- Question 1 -->
+        <div class="practical-card animate-card slide-in-left">
+          <div class="practical-header">
+            <div class="practical-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div>
+              <h3 class="practical-title">Practice Question 1</h3>
+              <p class="practical-subtitle">Trading Business – Intra-State (CGST 9% + SGST 9%)</p>
+            </div>
+          </div>
+          <div class="practical-description">
+            <ol style="margin: 10px 0; padding-left: 20px;">
+              <li>Commenced business with cash ₹8,00,000</li>
+              <li>Purchased goods from local supplier ₹1,20,000 + GST</li>
+              <li>Sold goods for cash ₹2,00,000 + GST</li>
+              <li>Paid shop rent ₹25,000 + GST</li>
+              <li>Bought furniture for office use ₹50,000 + GST</li>
+              <li>Paid electricity charges ₹8,000 + GST</li>
+              <li>Sold goods to local customer ₹1,50,000 + GST</li>
+              <li>Paid salaries to staff ₹60,000 (No GST)</li>
+              <li>Purchased stationery ₹6,000 + GST</li>
+              <li>Owner withdrew cash for personal use ₹20,000</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="practical-card animate-card slide-in-left">
+          <div class="practical-header">
+            <div class="practical-icon">
+              <i class="fas fa-truck-moving"></i>
+            </div>
+            <div>
+              <h3 class="practical-title">Practice Question 2</h3>
+              <p class="practical-subtitle">Wholesale Business – Inter-State (IGST 18%)</p>
+            </div>
+          </div>
+          <div class="practical-description">
+            <ol style="margin: 10px 0; padding-left: 20px;">
+              <li>Started business with capital ₹12,00,000</li>
+              <li>Purchased goods from Mumbai supplier ₹3,00,000 + IGST</li>
+              <li>Paid transport charges ₹20,000 + IGST</li>
+              <li>Sold goods to Kolkata dealer ₹4,00,000 + IGST</li>
+              <li>Purchased computer ₹70,000 + IGST</li>
+              <li>Paid advertisement expenses ₹25,000 + IGST</li>
+              <li>Sold goods to Chennai dealer ₹2,50,000 + IGST</li>
+              <li>Paid telephone bill ₹10,000 + IGST</li>
+              <li>Purchased printer ₹15,000 + IGST</li>
+              <li>Paid insurance premium ₹18,000 + IGST</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="practical-card animate-card slide-in-left">
+          <div class="practical-header">
+            <div class="practical-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div>
+              <h3 class="practical-title">Practice Question 3</h3>
+              <p class="practical-subtitle">Service Business – Intra-State (CGST 9% + SGST 9%)</p>
+            </div>
+          </div>
+          <div class="practical-description">
+            <ol style="margin: 10px 0; padding-left: 20px;">
+              <li>Commenced service business with cash ₹5,00,000</li>
+              <li>Paid office rent ₹30,000 + GST</li>
+              <li>Purchased office furniture ₹40,000 + GST</li>
+              <li>Received advance from client ₹80,000 + GST</li>
+              <li>Provided services to client ₹1,50,000 + GST</li>
+              <li>Paid professional fees ₹12,000 + GST</li>
+              <li>Bought office stationery ₹7,000 + GST</li>
+              <li>Paid electricity bill ₹6,000 + GST</li>
+              <li>Rendered services on credit ₹1,00,000 + GST</li>
+              <li>Owner withdrew goods for personal use (cost ₹10,000, market value ₹15,000)</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="practical-card animate-card slide-in-left">
+          <div class="practical-header">
+            <div class="practical-icon">
+              <i class="fas fa-ship"></i>
+            </div>
+            <div>
+              <h3 class="practical-title">Practice Question 4</h3>
+              <p class="practical-subtitle">Export & Domestic Mix – Zero-rated & Intra-State (Exports @0%, Local CGST 9% + SGST 9%)</p>
+            </div>
+          </div>
+          <div class="practical-description">
+            <ol style="margin: 10px 0; padding-left: 20px;">
+              <li>Started export firm with cash ₹7,00,000</li>
+              <li>Purchased raw materials locally ₹2,00,000 + GST</li>
+              <li>Exported finished goods worth ₹3,50,000 (Zero-rated)</li>
+              <li>Purchased packing material ₹15,000 + GST</li>
+              <li>Paid freight for export consignment ₹25,000 (No GST)</li>
+              <li>Sold goods in local market ₹1,00,000 + GST</li>
+              <li>Bought office furniture ₹30,000 + GST</li>
+              <li>Paid advertisement expenses ₹20,000 + GST</li>
+              <li>Sold goods to another exporter ₹80,000 (Zero-rated)</li>
+              <li>Paid staff salaries ₹50,000 (No GST)</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
 
   </main>
 
