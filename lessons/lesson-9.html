@@ -724,11 +724,7 @@
         <div class="feature-card animate-card slide-in-left">
           <div class="feature-header">
             <div class="feature-icon">
-              <span class="fa-stack fa-1x">
-                <i class="fas fa-shield fa-stack-2x"></i>
-                <i class="fas fa-check fa-stack-1x fa-inverse"></i>
-              </span>
-
+              <i class="fas fa-scroll"></i>
             </div>
             <div>
               <h3 class="feature-title">Legal Evidence</h3>
@@ -1460,10 +1456,10 @@
           </div>
         </div>
 
-      <!-- Expenses Entry -->
+        <!-- Expenses Entry -->
         <div class="entry-type-card expenses-entry animate-card slide-in-left">
         <div class="entry-type-header">
-            <div class="entry-type-icon">
+            <div class="entry-type-icon" style="background-color: #FFCDD2; color: #B71C1C;">
             <i class="fas fa-file-invoice-dollar"></i>
             </div>
             <div>
@@ -1504,39 +1500,13 @@
                 </tr>
             </tbody>
             </table>
-
-            <h4 style="color: var(--brand-2); margin: 25px 0 15px 0;">2. Salaries Paid</h4>
-            <table class="journal-table">
-            <thead>
-                <tr>
-                <th class="date-col">Date</th>
-                <th class="particulars-col">Particulars</th>
-                <th class="lf-col">L.F.</th>
-                <th class="debit-col">Debit (₹)</th>
-                <th class="credit-col">Credit (₹)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>2024<br>Mar 15</td>
-                <td class="particulars-cell">
-                    <div class="debit-entry">Salaries Expense A/c .......... Dr.</div>
-                    <div class="credit-entry">To Cash A/c</div>
-                    <div class="narration">(Being salaries paid to employees)</div>
-                </td>
-                <td>2<br>21</td>
-                <td class="amount-cell">25,000</td>
-                <td class="amount-cell">25,000</td>
-                </tr>
-            </tbody>
-            </table>
         </div>
         </div>
 
         <!-- Other Income Entry -->
         <div class="entry-type-card other-income-entry animate-card slide-in-left">
         <div class="entry-type-header">
-            <div class="entry-type-icon">
+            <div class="entry-type-icon" style="background-color: #C8E6C9; color: #2E7D32;">
             <i class="fas fa-money-bill-wave"></i>
             </div>
             <div>
@@ -1580,10 +1550,10 @@
         </div>
         </div>
 
-        <!-- Provision Entry -->
+        <!-- Provision & Adjustment Entry -->
         <div class="entry-type-card provision-entry animate-card slide-in-left">
         <div class="entry-type-header">
-            <div class="entry-type-icon">
+            <div class="entry-type-icon" style="background-color: #BBDEFB; color: #0D47A1;">
             <i class="fas fa-file-alt"></i>
             </div>
             <div>
@@ -1627,6 +1597,53 @@
         </div>
         </div>
 
+        <!-- Accrued & Prepaid Entry -->
+        <div class="entry-type-card accrued-prepaid-entry animate-card slide-in-left">
+        <div class="entry-type-header">
+            <div class="entry-type-icon" style="background-color: #FFE0B2; color: #E65100;">
+            <i class="fas fa-calendar-check"></i>
+            </div>
+            <div>
+            <h3 class="entry-type-title">Accrued & Prepaid Entries</h3>
+            <p class="entry-type-subtitle">Adjustments for Expenses & Income</p>
+            </div>
+        </div>
+
+        <div class="entry-description">
+            These entries record expenses or income that belong to the current accounting period but have not yet been paid or received.
+        </div>
+
+        <button class="view-example-btn" onclick="toggleExample('accrued-prepaid')">View Examples</button>
+
+        <div class="journal-example" id="accrued-prepaid-example">
+            <h4 style="color: var(--brand-2); margin-bottom: 15px;">1. Accrued Expenses</h4>
+            <table class="journal-table">
+            <thead>
+                <tr>
+                <th class="date-col">Date</th>
+                <th class="particulars-col">Particulars</th>
+                <th class="lf-col">L.F.</th>
+                <th class="debit-col">Debit (₹)</th>
+                <th class="credit-col">Credit (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>2024<br>Mar 31</td>
+                <td class="particulars-cell">
+                    <div class="debit-entry">Salaries Expense A/c .......... Dr.</div>
+                    <div class="credit-entry">To Salaries Payable A/c</div>
+                    <div class="narration">(Being salaries accrued for March)</div>
+                </td>
+                <td>21<br>21</td>
+                <td class="amount-cell">8,000</td>
+                <td class="amount-cell">8,000</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+        </div>
     </section>
 
     <!-- MCQ Section -->
