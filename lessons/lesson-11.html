@@ -986,6 +986,92 @@
         width: 120px;
       }
     }
+
+    /* General Section Styling */
+    #cashbook-summary, #cashbook-questions {
+      background-color: var(--bg-2);
+      padding: 30px 20px;
+      border-radius: var(--radius);
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    /* Section Title */
+    .section-title {
+      color: var(--brand-2);
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px var(--brand-2);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: var(--brand);
+      margin-top: 6px;
+      border-radius: 2px;
+    }
+
+    /* Summary Cards */
+    .summary-card, .next-steps-card, .question-card {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .summary-card:hover, .next-steps-card:hover, .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    }
+
+    /* Text Styling */
+    .summary-card h3, .next-steps-card h4, .question-card h3 {
+      color: var(--brand-2);
+      margin-bottom: 15px;
+    }
+
+    .summary-card p, .next-steps-card p, .question-card p, .summary-card li, .question-card li {
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .summary-card ul {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+
+    .summary-card li {
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .summary-card li::before {
+      content: '•';
+      color: var(--accent);
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2521,43 +2607,121 @@
     </form>
   </section>
 
+  <section id="cashbook-summary">
+    <h2 class="section-title">Lesson Summary</h2>
 
-    <!-- Summary Section -->
-    <section>
-      <h2>Lesson Summary</h2>
-      
-      <div class="definition-box" style="background: linear-gradient(135deg, #00e5ff 0%, #7c4dff 100%);">
-        <h3 style="margin:0 0 15px 0; color:white;">
-          <i class="fas fa-bookmark"></i> Key Takeaways
-        </h3>
-        <div style="color: rgb(250, 246, 246); line-height: 1.8;">
-          <p style="margin-bottom: 15px;">
-            The Cash Book is a crucial accounting record that serves dual purposes - as a book of original entry and as a ledger account. Understanding its various formats and proper maintenance is essential for:
-          </p>
-          <ul style="margin: 0; padding-left: 20px;">
-            <li>Effective cash management and control</li>
-            <li>Prevention of fraud and errors</li>
-            <li>Quick access to cash and bank position</li>
-            <li>Simplified accounting process</li>
-            <li>Accurate financial reporting</li>
-          </ul>
-          <p style="margin-top: 15px; margin-bottom: 0;">
-            Master the Cash Book concepts to build a strong foundation for understanding more complex accounting topics like Bank Reconciliation Statement, Final Accounts, and Cash Flow Statements.
-          </p>
-        </div>
-      </div>
+    <!-- Key Takeaways -->
+    <div class="summary-card">
+      <h3><i class="fas fa-bookmark"></i> Key Takeaways</h3>
+      <p>
+        The <strong>Cash Book</strong> is a crucial accounting record that serves dual purposes — as a book of original entry and as a ledger account. Proper maintenance ensures:
+      </p>
+      <ul>
+        <li>Effective cash management and control</li>
+        <li>Prevention of fraud and errors</li>
+        <li>Quick access to cash and bank position</li>
+        <li>Simplified accounting process</li>
+        <li>Accurate financial reporting</li>
+      </ul>
+      <p>
+        Master the Cash Book to build a strong foundation for complex topics like Bank Reconciliation, Final Accounts, and Cash Flow Statements.
+      </p>
+    </div>
 
-      <div class="note-box" style="margin-top: 25px;">
-        <h4><i class="fas fa-graduation-cap"></i> Next Steps</h4>
-        <p style="color: var(--muted); margin: 0; line-height: 1.6;">
-          After mastering Cash Book, proceed to learn about:
-          <br>• Bank Reconciliation Statement
-          <br>• Other Subsidiary Books (Sales Book, Purchase Book, etc.)
-          <br>• Ledger Posting and Trial Balance
-          <br>• Final Accounts Preparation
-        </p>
-      </div>
-    </section>
+    <!-- Next Steps -->
+    <div class="next-steps-card">
+      <h4><i class="fas fa-graduation-cap"></i> Next Steps</h4>
+      <p>
+        After mastering Cash Book, proceed to learn:
+        <br>• Bank Reconciliation Statement
+        <br>• Other Subsidiary Books (Sales Book, Purchase Book, etc.)
+        <br>• Ledger Posting and Trial Balance
+        <br>• Final Accounts Preparation
+      </p>
+    </div>
+  </section>
+
+  <section id="cashbook-questions">
+    <h2 class="section-title">Practice Questions</h2>
+
+    <!-- Question 1 -->
+    <div class="question-card">
+      <h3>Question 1: Single Column Cash Book</h3>
+      <p>Record the following transactions in a Single Column Cash Book:</p>
+      <ol>
+        <li>Started business with cash ₹1,50,000</li>
+        <li>Purchased furniture ₹40,000</li>
+        <li>Paid rent ₹15,000</li>
+        <li>Sold goods for cash ₹50,000</li>
+        <li>Purchased goods for cash ₹30,000</li>
+        <li>Paid electricity bill ₹2,500</li>
+        <li>Received commission ₹5,000</li>
+      </ol>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-card">
+      <h3>Question 2: Double Column Cash Book (Cash + Bank)</h3>
+      <p>Record the following transactions in a Double Column Cash Book:</p>
+      <ol>
+        <li>Started business with cash ₹2,00,000</li>
+        <li>Deposited cash into bank ₹1,00,000</li>
+        <li>Purchased goods for cash ₹40,000</li>
+        <li>Paid wages by bank ₹15,000</li>
+        <li>Received cash from customers ₹60,000</li>
+        <li>Paid rent by cash ₹10,000</li>
+        <li>Withdrew cash from bank ₹20,000</li>
+      </ol>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question-card">
+      <h3>Question 3: Single Column Cash Book</h3>
+      <p>Record these transactions in a Single Column Cash Book:</p>
+      <ol>
+        <li>Started business with cash ₹1,20,000</li>
+        <li>Purchased office furniture ₹25,000</li>
+        <li>Paid rent ₹10,000</li>
+        <li>Sold goods for cash ₹45,000</li>
+        <li>Paid salaries ₹20,000</li>
+        <li>Received interest ₹3,000</li>
+        <li>Paid electricity bill ₹1,500</li>
+      </ol>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="question-card">
+      <h3>Question 4: Double Column Cash Book</h3>
+      <p>Record the following in a Double Column Cash Book (Cash + Bank):</p>
+      <ol>
+        <li>Started business with cash ₹1,50,000</li>
+        <li>Deposited cash into bank ₹50,000</li>
+        <li>Purchased goods for cash ₹30,000</li>
+        <li>Paid rent by bank ₹12,000</li>
+        <li>Sold goods for cash ₹55,000</li>
+        <li>Paid wages ₹20,000 (bank)</li>
+        <li>Received cash from debtor ₹25,000</li>
+      </ol>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="question-card">
+      <h3>Question 5: Single Column Cash Book</h3>
+      <p>Record the following in Single Column Cash Book:</p>
+      <ol>
+        <li>Started business with cash ₹2,00,000</li>
+        <li>Purchased machinery ₹80,000</li>
+        <li>Paid rent ₹20,000</li>
+        <li>Sold goods for cash ₹90,000</li>
+        <li>Paid electricity ₹5,000</li>
+        <li>Received commission ₹10,000</li>
+        <li>Paid salaries ₹15,000</li>
+        <li>Withdrawn cash by owner ₹25,000</li>
+      </ol>
+    </div>
+  </section>
+
+
   </main>
 
   <script>

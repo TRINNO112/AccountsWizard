@@ -1,896 +1,1951 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Lesson 12 – Worked Examples | AccountsWizard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subsidiary Books - Numerical Examples & Practice | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     :root {
-      --bg: #0b1020;
-      --bg-2: #0f1733;
-      --card: #111633;
-      --muted: #b8c2ff;
-      --brand: #7c4dff;
-      --brand-2: #00e5ff;
-      --accent: #ff7ac6;
-      --text: #e9eefc;
+      --bg: #0a0e27;
+      --bg-2: #0d1225;
+      --card: #141937;
+      --muted: #94a3b8;
+      --brand: #6366f1;
+      --brand-2: #06b6d4;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --text: #f1f5f9;
       --radius: 16px;
-      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --shadow: 0 20px 40px rgba(0,0,0,0.4);
       --speed: 300ms;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
-      background:
-        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
-        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
-        linear-gradient(180deg, var(--bg), var(--bg-2));
       min-height: 100vh;
       padding: 20px;
+      overflow-x: hidden;
     }
-    header { text-align: center; padding: 30px 20px; }
-    .lesson-title {
-      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
-      background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .subtitle { color: var(--muted); font-size: 1.1rem; margin-top: 10px; }
-    .breadcrumb { color: var(--muted); font-size: .95rem; margin-top: 15px; }
-    .breadcrumb a { color: inherit; text-decoration: none; }
-    .breadcrumb a:hover { color: var(--text); }
+
+    /* Header Styles */
     .nav-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
-      margin-bottom: 32px; box-shadow: var(--shadow); flex-wrap: wrap; gap: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      background: var(--card);
+      border-radius: var(--radius);
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      animation: slideDown 0.6s ease;
     }
+
     .nav-header a {
-      color: var(--muted); text-decoration: none; display: flex; align-items: center;
-      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: all var(--speed);
     }
-    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
+
+    .nav-header a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    /* Section Styles */
     section {
-      background: var(--card); border-radius: var(--radius);
-      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 35px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
+
     section h2 {
-      margin-top: 0; font-size: 1.5rem;
-      background: linear-gradient(90deg,#fff,var(--brand-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    section h3 {
-      color: var(--brand-2); font-size: 1.2rem; margin-top: 25px;
-      border-bottom: 2px solid rgba(124,77,255,0.3); padding-bottom: 8px;
-    }
-
-    .transactions-list {
-      background: rgba(0,229,255,0.05); padding: 15px 20px;
-      border-radius: 8px; margin: 15px 0;
-    }
-    .transactions-list h4 {
-      color: var(--brand-2); margin-top: 0; font-size: 1rem;
-    }
-    .transactions-list p {
-      margin: 8px 0; color: var(--muted); line-height: 1.6;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .book-table {
-      width: 100%; margin: 20px 0; border-collapse: collapse;
-      background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden;
+    /* Example Container */
+    .example-container {
+      background: rgba(255,255,255,0.02);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      position: relative;
+      animation: fadeIn 0.8s ease backwards;
     }
-    .book-table thead {
-      background: var(--brand);
+
+    .example-container:hover {
+      border-color: var(--brand-2);
+      box-shadow: 0 10px 30px rgba(6,182,212,0.2);
     }
-    .book-table th {
-      color: white; padding: 12px; text-align: left;
-      font-weight: 600; font-size: 0.9rem;
+
+    .example-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
     }
-    .book-table td {
-      padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
-      color: var(--text); font-size: 0.9rem;
-    }
-    .book-table tbody tr:hover {
-      background: rgba(255,255,255,0.03);
-    }
-    .total-row {
-      background: rgba(124,77,255,0.2) !important;
+
+    .example-title {
+      font-size: 1.3rem;
       font-weight: 700;
-    }
-    .ledger-entry {
-      background: rgba(0,229,255,0.05); padding: 15px;
-      border-radius: 8px; margin: 15px 0; font-family: monospace;
-    }
-    .ledger-entry h4 {
-      color: var(--brand-2); margin-top: 0; font-size: 1rem;
-    }
-    .debit-side { color: #4caf50; }
-    .credit-side { color: #f44336; }
-
-    .info-box {
-      background: rgba(255,122,198,0.1); border-left: 4px solid var(--accent);
-      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
-      color: var(--text); font-size: 0.9rem;
-    }
-    .note-box {
-      background: rgba(0,229,255,0.1); border-left: 4px solid var(--brand-2);
-      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
-      color: var(--text); font-size: 0.9rem;
-    }
-    .connection-box {
-      background: rgba(76,175,80,0.1); border-left: 4px solid #4caf50;
-      padding: 15px 20px; margin: 20px 0; border-radius: 8px;
-    }
-    .connection-box h4 {
-      color: #4caf50; margin-top: 0; font-size: 1.1rem;
+      color: var(--brand-2);
     }
 
+    .example-badge {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Question Box */
+    .question-box {
+      background: rgba(99,102,241,0.1);
+      border-left: 4px solid var(--brand);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .question-box h4 {
+      color: var(--brand-2);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Transaction List */
+    .transaction-list {
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .transaction-item {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-date {
+      color: var(--brand-2);
+      font-weight: 600;
+      min-width: 80px;
+    }
+
+    /* Solution Table */
+    .solution-table {
+      width: 100%;
+      background: white;
+      color: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 20px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .solution-header {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .solution-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .solution-table th,
+    .solution-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .solution-table th {
+      background: #f5f5f5;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .solution-table td {
+      color: #555;
+    }
+
+    .solution-table tr:hover {
+      background: #f9f9f9;
+    }
+
+    .solution-table .total-row {
+      background: #e8f4f8;
+      font-weight: bold;
+    }
+
+    .solution-table .total-row td {
+      color: #333;
+      border-top: 2px solid #333;
+    }
+
+    /* Show/Hide Solution Button */
+    .solution-toggle {
+      background: linear-gradient(135deg, var(--success), #34d399);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 15px 0;
+    }
+
+    .solution-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(16,185,129,0.3);
+    }
+
+    .solution-wrapper {
+      display: none;
+      animation: slideDown 0.5s ease;
+    }
+
+    .solution-wrapper.show {
+      display: block;
+    }
+
+    /* Journal Entry Display */
+    .journal-entry {
+      background: white;
+      color: #333;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .journal-entry .entry-row {
+      display: flex;
+      padding: 8px 0;
+    }
+
+    .journal-entry .particulars {
+      flex: 3;
+    }
+
+    .journal-entry .debit {
+      flex: 1;
+      text-align: right;
+      padding-right: 20px;
+    }
+
+    .journal-entry .credit {
+      flex: 1;
+      text-align: right;
+    }
+
+    .journal-entry .narration {
+      font-style: italic;
+      color: #666;
+      margin-left: 40px;
+      margin-top: 5px;
+    }
+
+    /* Practice Problem */
+    .practice-problem {
+      background: linear-gradient(135deg, rgba(236,72,153,0.1), rgba(99,102,241,0.1));
+      border: 2px solid rgba(236,72,153,0.3);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .practice-problem::before {
+      content: 'PRACTICE';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--card);
+      color: var(--accent);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    /* Tips Box */
+    .tips-box {
+      background: rgba(245,158,11,0.1);
+      border: 2px solid rgba(245,158,11,0.3);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .tips-box h4 {
+      color: var(--warning);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tips-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tips-box li {
+      color: var(--muted);
+      padding: 5px 0;
+      padding-left: 25px;
+      position: relative;
+    }
+
+    .tips-box li::before {
+      content: '💡';
+      position: absolute;
+      left: 0;
+    }
+
+    /* MCQ Styles */
+    .mcq {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--brand-2);
+      transition: all 0.3s ease;
+    }
+
+    .mcq:hover {
+      background: rgba(255,255,255,0.05);
+      transform: translateX(5px);
+    }
+
+    .mcq h3 {
+      color: var(--text);
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    .mcq label {
+      display: block;
+      padding: 12px 20px;
+      margin: 10px 0;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--muted);
+      border: 2px solid transparent;
+    }
+
+    .mcq label:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--brand-2);
+      color: var(--text);
+    }
+
+    .mcq input[type="radio"] {
+      display: none;
+    }
+
+    .mcq input[type="radio"]:checked + label {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.2));
+      border-color: var(--brand-2);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Submit Button */
+    .submit-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(99,102,241,0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Score Display */
+    .score-display {
+      display: none;
+      background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1));
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      text-align: center;
+      animation: slideUp 0.5s ease;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .book-table { font-size: 0.8rem; }
-      .book-table th, .book-table td { padding: 8px; }
+      .main-title { font-size: 2rem; }
+      section { padding: 20px; }
+      .solution-table { overflow-x: auto; }
+      .solution-table table { min-width: 500px; }
+      .journal-entry { font-size: 0.9rem; }
+      .example-header { flex-direction: column; gap: 10px; }
     }
   </style>
 </head>
 <body>
+  <!-- Navigation -->
   <div class="nav-header">
-    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
-    <a href="lesson-12.html" style="background: rgba(124,77,255,0.2);"><i class="fa-solid fa-arrow-left"></i><span>Back to Lesson</span></a>
+    <a href="lesson-12.html">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Theory</span>
+    </a>
+    <a href="../index.html">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
   </div>
 
+  <!-- Header -->
   <header>
-    <h1 class="lesson-title">Books of Original Entry</h1>
-    <div class="subtitle">Complete Interconnected Examples</div>
-    <div class="breadcrumb">
-      <a href="../index.html">Home</a> / 
-      <a href="../lessons.html">Lessons</a> / 
-      <a href="lesson-12.html">Lesson 12</a> /
-      Examples
-    </div>
+    <h1 class="main-title">Subsidiary Books - Numerical Examples</h1>
+    <p class="subtitle">Practice Problems & Solutions</p>
   </header>
 
-  <main>
-    <!-- OVERVIEW -->
-    <section>
-      <h2><i class="fas fa-info-circle"></i> How These Books Connect</h2>
-      <p style="font-size:1.1rem; line-height:1.8; color: var(--muted);">
-        In this example, we'll follow <strong>ABC Traders</strong> (a business) through multiple transactions in January 2025. 
-        You'll see the same parties appearing in different books, showing how subsidiary books work together as a complete system.
-      </p>
-      
-      <div class="note-box">
-        <strong>Key Understanding:</strong> When ABC Traders buys goods on credit, it goes to the Purchase Book. 
-        If they return some goods, it goes to the Purchase Returns Book. Both transactions involve the same supplier 
-        but are recorded in different books!
-      </div>
-    </section>
-
-    <!-- COMPLETE EXAMPLE -->
-    <section>
-      <h2><i class="fas fa-sync-alt"></i> Complete Business Cycle Example</h2>
-      
-      <div class="transactions-list">
-        <h4>All Transactions for ABC Traders - January 2025:</h4>
-        <p><strong>Jan 3:</strong> Purchased goods from Raj Suppliers ₹50,000 on credit (Invoice P-101)</p>
-        <p><strong>Jan 5:</strong> Sold goods to Kumar Enterprises ₹35,000 on credit (Invoice S-201)</p>
-        <p><strong>Jan 8:</strong> Purchased goods from Sharma & Co. ₹28,000 on credit (Invoice P-102)</p>
-        <p><strong>Jan 10:</strong> Returned defective goods to Raj Suppliers ₹5,000 (Debit Note DN-01)</p>
-        <p><strong>Jan 12:</strong> Sold goods to Patel Traders ₹42,000 on credit (Invoice S-202)</p>
-        <p><strong>Jan 15:</strong> Kumar Enterprises returned damaged goods ₹3,000 (Credit Note CN-01)</p>
-        <p><strong>Jan 18:</strong> Purchased goods from Gupta Brothers ₹33,000 on credit (Invoice P-103)</p>
-        <p><strong>Jan 20:</strong> Purchased furniture from Office Mart ₹25,000 on credit (needs Journal Proper)</p>
-        <p><strong>Jan 25:</strong> Sold goods to Mehta Ltd. ₹38,500 on credit (Invoice S-203)</p>
-        <p><strong>Jan 28:</strong> Returned excess stock to Sharma & Co. ₹2,500 (Debit Note DN-02)</p>
+  <!-- Example 1: Purchase Book -->
+  <section>
+    <h2><i class="fas fa-shopping-cart"></i> Example 1: Purchase Book</h2>
+    
+    <div class="example-container">
+      <div class="example-header">
+        <h3 class="example-title">Recording Credit Purchases with GST</h3>
+        <span class="example-badge">Comprehensive Example</span>
       </div>
 
-      <div class="connection-box">
-        <h4><i class="fas fa-link"></i> Notice the Connections:</h4>
-        <ul style="color: var(--muted); line-height: 1.8;">
-          <li><strong>Raj Suppliers</strong> appears in both Purchase Book (Jan 3) and Purchase Returns Book (Jan 10)</li>
-          <li><strong>Kumar Enterprises</strong> appears in both Sales Book (Jan 5) and Sales Returns Book (Jan 15)</li>
-          <li><strong>Sharma & Co.</strong> appears in both Purchase Book (Jan 8) and Purchase Returns Book (Jan 28)</li>
-          <li><strong>Furniture purchase</strong> goes to Journal Proper (not Purchase Book) because it's an asset!</li>
+      <div class="question-box">
+        <h4><i class="fas fa-question"></i> Question</h4>
+        <p>From the following transactions of M/s Sharma Traders for January 2024, prepare Purchase Book (GST rate: CGST 9%, SGST 9% for local, IGST 18% for inter-state):</p>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 2:</span>
+          <span>Purchased goods from Ram & Co. (Local) for ₹20,000 + GST (Invoice No. 234)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 5:</span>
+          <span>Bought merchandise from Shyam Enterprises (Local) ₹15,000 + GST, Trade Discount 10% (Invoice No. 456)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 8:</span>
+          <span>Credit purchase from Krishna Traders (Inter-state) ₹25,000 + GST (Invoice No. 789)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 10:</span>
+          <span>Purchased goods from Gopal & Sons (Local) for ₹12,000 + GST, Trade Discount 5% (Invoice No. 321)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 12:</span>
+          <span>Bought from Delhi Suppliers (Inter-state) ₹30,000 + GST (Invoice No. 654)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 15:</span>
+          <span>Credit purchase from Local Mart (Local) ₹8,000 + GST (Invoice No. 987)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 18:</span>
+          <span>Purchased from Mumbai Traders (Inter-state) ₹40,000 + GST, Trade Discount 15% (Invoice No. 111)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 20:</span>
+          <span>Bought goods from City Suppliers (Local) ₹18,000 + GST (Invoice No. 222)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 25:</span>
+          <span>Purchased from Gujarat Exporters (Inter-state) ₹22,000 + GST (Invoice No. 333)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jan 28:</span>
+          <span>Credit purchase from New Store (Local) ₹10,000 + GST, Trade Discount 8% (Invoice No. 444)</span>
+        </div>
+      </div>
+
+      <button class="solution-toggle" onclick="toggleSolution('solution1')">Show Solution</button>
+
+      <div class="solution-wrapper" id="solution1">
+        <div class="tips-box">
+          <h4><i class="fas fa-lightbulb"></i> Important Points</h4>
+          <ul>
+            <li>Trade discount is deducted before calculating GST</li>
+            <li>Local purchases attract CGST + SGST (9% + 9% = 18%)</li>
+            <li>Inter-state purchases attract IGST (18%)</li>
+            <li>Only credit purchases of goods for resale are recorded</li>
+          </ul>
+        </div>
+
+        <div class="solution-table">
+          <div class="solution-header">PURCHASE BOOK OF M/S SHARMA TRADERS</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Particulars<br>(Name of Supplier)</th>
+                <th>Invoice No.</th>
+                <th>L.F.</th>
+                <th>Details (₹)</th>
+                <th>Purchases (₹)</th>
+                <th>Input CGST (₹)</th>
+                <th>Input SGST (₹)</th>
+                <th>Input IGST (₹)</th>
+                <th>Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Jan 2</td>
+                <td>Ram & Co.</td>
+                <td>234</td>
+                <td></td>
+                <td>20,000</td>
+                <td>20,000</td>
+                <td>1,800</td>
+                <td>1,800</td>
+                <td>-</td>
+                <td>23,600</td>
+              </tr>
+              <tr>
+                <td>Jan 5</td>
+                <td>Shyam Enterprises</td>
+                <td>456</td>
+                <td></td>
+                <td>15,000<br>- 1,500<br>13,500</td>
+                <td>13,500</td>
+                <td>1,215</td>
+                <td>1,215</td>
+                <td>-</td>
+                <td>15,930</td>
+              </tr>
+              <tr>
+                <td>Jan 8</td>
+                <td>Krishna Traders</td>
+                <td>789</td>
+                <td></td>
+                <td>25,000</td>
+                <td>25,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>4,500</td>
+                <td>29,500</td>
+              </tr>
+              <tr>
+                <td>Jan 10</td>
+                <td>Gopal & Sons</td>
+                <td>321</td>
+                <td></td>
+                <td>12,000<br>- 600<br>11,400</td>
+                <td>11,400</td>
+                <td>1,026</td>
+                <td>1,026</td>
+                <td>-</td>
+                <td>13,452</td>
+              </tr>
+              <tr>
+                <td>Jan 12</td>
+                <td>Delhi Suppliers</td>
+                <td>654</td>
+                <td></td>
+                <td>30,000</td>
+                <td>30,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>5,400</td>
+                <td>35,400</td>
+              </tr>
+              <tr>
+                <td>Jan 15</td>
+                <td>Local Mart</td>
+                <td>987</td>
+                <td></td>
+                <td>8,000</td>
+                <td>8,000</td>
+                <td>720</td>
+                <td>720</td>
+                <td>-</td>
+                <td>9,440</td>
+              </tr>
+              <tr>
+                <td>Jan 18</td>
+                <td>Mumbai Traders</td>
+                <td>111</td>
+                <td></td>
+                <td>40,000<br>- 6,000<br>34,000</td>
+                <td>34,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>6,120</td>
+                <td>40,120</td>
+              </tr>
+              <tr>
+                <td>Jan 20</td>
+                <td>City Suppliers</td>
+                <td>222</td>
+                <td></td>
+                <td>18,000</td>
+                <td>18,000</td>
+                <td>1,620</td>
+                <td>1,620</td>
+                <td>-</td>
+                <td>21,240</td>
+              </tr>
+              <tr>
+                <td>Jan 25</td>
+                <td>Gujarat Exporters</td>
+                <td>333</td>
+                <td></td>
+                <td>22,000</td>
+                <td>22,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>3,960</td>
+                <td>25,960</td>
+              </tr>
+              <tr>
+                <td>Jan 28</td>
+                <td>New Store</td>
+                <td>444</td>
+                <td></td>
+                <td>10,000<br>- 800<br>9,200</td>
+                <td>9,200</td>
+                <td>828</td>
+                <td>828</td>
+                <td>-</td>
+                <td>10,856</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+                <td><strong>1,91,100</strong></td>
+                <td><strong>7,209</strong></td>
+                <td><strong>7,209</strong></td>
+                <td><strong>19,980</strong></td>
+                <td><strong>2,25,498</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example 2: Sales Book -->
+  <section>
+    <h2><i class="fas fa-cash-register"></i> Example 2: Sales Book with GST</h2>
+    
+    <div class="example-container">
+      <div class="example-header">
+        <h3 class="example-title">Recording Credit Sales with GST</h3>
+        <span class="example-badge">Comprehensive Example</span>
+      </div>
+
+      <div class="question-box">
+        <h4><i class="fas fa-question"></i> Question</h4>
+        <p>Prepare Sales Book for February 2024 from the following credit sales transactions (GST rate: CGST 9%, SGST 9% for local, IGST 18% for inter-state):</p>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 1:</span>
+          <span>Sold goods to ABC Ltd. (Local) for ₹25,000 + GST (Invoice No. 501)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 3:</span>
+          <span>Credit sales to XYZ Enterprises (Local) ₹18,000 + GST, Trade Discount 5% (Invoice No. 502)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 5:</span>
+          <span>Sold to Delhi Traders (Inter-state) ₹35,000 + GST (Invoice No. 503)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 8:</span>
+          <span>Sales to PQR & Co. (Local) ₹22,000 + GST, Trade Discount 10% (Invoice No. 504)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 10:</span>
+          <span>Sold goods to Mumbai Corp (Inter-state) ₹45,000 + GST (Invoice No. 505)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 12:</span>
+          <span>Credit sales to Local Store (Local) ₹15,000 + GST (Invoice No. 506)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 15:</span>
+          <span>Sold to Chennai Buyers (Inter-state) ₹28,000 + GST, Trade Discount 8% (Invoice No. 507)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 18:</span>
+          <span>Sales to City Mall (Local) ₹32,000 + GST (Invoice No. 508)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 22:</span>
+          <span>Sold goods to Kolkata Traders (Inter-state) ₹38,000 + GST (Invoice No. 509)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Feb 25:</span>
+          <span>Credit sales to Metro Stores (Local) ₹20,000 + GST, Trade Discount 12% (Invoice No. 510)</span>
+        </div>
+      </div>
+
+      <button class="solution-toggle" onclick="toggleSolution('solution2')">Show Solution</button>
+
+      <div class="solution-wrapper" id="solution2">
+        <div class="solution-table">
+          <div class="solution-header">SALES BOOK - FEBRUARY 2024</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Particulars<br>(Name of Customer)</th>
+                <th>Invoice No.</th>
+                <th>L.F.</th>
+                <th>Details (₹)</th>
+                <th>Sales (₹)</th>
+                <th>Output CGST (₹)</th>
+                <th>Output SGST (₹)</th>
+                <th>Output IGST (₹)</th>
+                <th>Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Feb 1</td>
+                <td>ABC Ltd.</td>
+                <td>501</td>
+                <td></td>
+                <td>25,000</td>
+                <td>25,000</td>
+                <td>2,250</td>
+                <td>2,250</td>
+                <td>-</td>
+                <td>29,500</td>
+              </tr>
+              <tr>
+                <td>Feb 3</td>
+                <td>XYZ Enterprises</td>
+                <td>502</td>
+                <td></td>
+                <td>18,000<br>- 900<br>17,100</td>
+                <td>17,100</td>
+                <td>1,539</td>
+                <td>1,539</td>
+                <td>-</td>
+                <td>20,178</td>
+              </tr>
+              <tr>
+                <td>Feb 5</td>
+                <td>Delhi Traders</td>
+                <td>503</td>
+                <td></td>
+                <td>35,000</td>
+                <td>35,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>6,300</td>
+                <td>41,300</td>
+              </tr>
+              <tr>
+                <td>Feb 8</td>
+                <td>PQR & Co.</td>
+                <td>504</td>
+                <td></td>
+                <td>22,000<br>- 2,200<br>19,800</td>
+                <td>19,800</td>
+                <td>1,782</td>
+                <td>1,782</td>
+                <td>-</td>
+                <td>23,364</td>
+              </tr>
+              <tr>
+                <td>Feb 10</td>
+                <td>Mumbai Corp</td>
+                <td>505</td>
+                <td></td>
+                <td>45,000</td>
+                <td>45,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>8,100</td>
+                <td>53,100</td>
+              </tr>
+              <tr>
+                <td>Feb 12</td>
+                <td>Local Store</td>
+                <td>506</td>
+                <td></td>
+                <td>15,000</td>
+                <td>15,000</td>
+                <td>1,350</td>
+                <td>1,350</td>
+                <td>-</td>
+                <td>17,700</td>
+              </tr>
+              <tr>
+                <td>Feb 15</td>
+                <td>Chennai Buyers</td>
+                <td>507</td>
+                <td></td>
+                <td>28,000<br>- 2,240<br>25,760</td>
+                <td>25,760</td>
+                <td>-</td>
+                <td>-</td>
+                <td>4,637</td>
+                <td>30,397</td>
+              </tr>
+              <tr>
+                <td>Feb 18</td>
+                <td>City Mall</td>
+                <td>508</td>
+                <td></td>
+                <td>32,000</td>
+                <td>32,000</td>
+                <td>2,880</td>
+                <td>2,880</td>
+                <td>-</td>
+                <td>37,760</td>
+              </tr>
+              <tr>
+                <td>Feb 22</td>
+                <td>Kolkata Traders</td>
+                <td>509</td>
+                <td></td>
+                <td>38,000</td>
+                <td>38,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>6,840</td>
+                <td>44,840</td>
+              </tr>
+              <tr>
+                <td>Feb 25</td>
+                <td>Metro Stores</td>
+                <td>510</td>
+                <td></td>
+                <td>20,000<br>- 2,400<br>17,600</td>
+                <td>17,600</td>
+                <td>1,584</td>
+                <td>1,584</td>
+                <td>-</td>
+                <td>20,768</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+                <td><strong>2,70,260</strong></td>
+                <td><strong>11,385</strong></td>
+                <td><strong>11,385</strong></td>
+                <td><strong>25,877</strong></td>
+                <td><strong>3,18,907</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example 3: Sales Return Book -->
+  <section>
+    <h2><i class="fas fa-undo"></i> Example 3: Sales Return Book (Return Inward Book)</h2>
+    
+    <div class="example-container">
+      <div class="example-header">
+        <h3 class="example-title">Recording Returns from Customers</h3>
+        <span class="example-badge">With GST Adjustments</span>
+      </div>
+
+      <div class="question-box">
+        <h4><i class="fas fa-question"></i> Question</h4>
+        <p>Record the following sales returns in Sales Return Book for March 2024 (GST rates as applicable):</p>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 2:</span>
+          <span>ABC Ltd. (Local) returned goods worth ₹3,000 + GST (Credit Note No. CN-101)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 5:</span>
+          <span>XYZ Enterprises (Local) returned defective items ₹2,500 + GST (CN-102)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 8:</span>
+          <span>Delhi Traders (Inter-state) returned excess goods ₹5,000 + GST (CN-103)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 10:</span>
+          <span>PQR & Co. (Local) returned damaged products ₹1,800 + GST (CN-104)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 12:</span>
+          <span>Mumbai Corp (Inter-state) returned wrong items ₹8,000 + GST (CN-105)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 15:</span>
+          <span>Local Store (Local) returned goods ₹3,500 + GST (CN-106)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 18:</span>
+          <span>Chennai Buyers (Inter-state) returned defective goods ₹6,200 + GST (CN-107)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 20:</span>
+          <span>City Mall (Local) returned excess quantity ₹4,000 + GST (CN-108)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 22:</span>
+          <span>Kolkata Traders (Inter-state) returned goods ₹7,500 + GST (CN-109)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Mar 25:</span>
+          <span>Metro Stores (Local) returned damaged items ₹2,200 + GST (CN-110)</span>
+        </div>
+      </div>
+
+      <button class="solution-toggle" onclick="toggleSolution('solution3')">Show Solution</button>
+
+      <div class="solution-wrapper" id="solution3">
+        <div class="solution-table">
+          <div class="solution-header">SALES RETURN BOOK (RETURN INWARD BOOK)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Particulars<br>(Name of Customer)</th>
+                <th>Credit Note No.</th>
+                <th>L.F.</th>
+                <th>Details (₹)</th>
+                <th>Sales Return (₹)</th>
+                <th>Output CGST (₹)</th>
+                <th>Output SGST (₹)</th>
+                <th>Output IGST (₹)</th>
+                <th>Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mar 2</td>
+                <td>ABC Ltd.</td>
+                <td>CN-101</td>
+                <td></td>
+                <td>3,000</td>
+                <td>3,000</td>
+                <td>270</td>
+                <td>270</td>
+                <td>-</td>
+                <td>3,540</td>
+              </tr>
+              <tr>
+                <td>Mar 5</td>
+                <td>XYZ Enterprises</td>
+                <td>CN-102</td>
+                <td></td>
+                <td>2,500</td>
+                <td>2,500</td>
+                <td>225</td>
+                <td>225</td>
+                <td>-</td>
+                <td>2,950</td>
+              </tr>
+              <tr>
+                <td>Mar 8</td>
+                <td>Delhi Traders</td>
+                <td>CN-103</td>
+                <td></td>
+                <td>5,000</td>
+                <td>5,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>900</td>
+                <td>5,900</td>
+              </tr>
+              <tr>
+                <td>Mar 10</td>
+                <td>PQR & Co.</td>
+                <td>CN-104</td>
+                <td></td>
+                <td>1,800</td>
+                <td>1,800</td>
+                <td>162</td>
+                <td>162</td>
+                <td>-</td>
+                <td>2,124</td>
+              </tr>
+              <tr>
+                <td>Mar 12</td>
+                <td>Mumbai Corp</td>
+                <td>CN-105</td>
+                <td></td>
+                <td>8,000</td>
+                <td>8,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>1,440</td>
+                <td>9,440</td>
+              </tr>
+              <tr>
+                <td>Mar 15</td>
+                <td>Local Store</td>
+                <td>CN-106</td>
+                <td></td>
+                <td>3,500</td>
+                <td>3,500</td>
+                <td>315</td>
+                <td>315</td>
+                <td>-</td>
+                <td>4,130</td>
+              </tr>
+              <tr>
+                <td>Mar 18</td>
+                <td>Chennai Buyers</td>
+                <td>CN-107</td>
+                <td></td>
+                <td>6,200</td>
+                <td>6,200</td>
+                <td>-</td>
+                <td>-</td>
+                <td>1,116</td>
+                <td>7,316</td>
+              </tr>
+              <tr>
+                <td>Mar 20</td>
+                <td>City Mall</td>
+                <td>CN-108</td>
+                <td></td>
+                <td>4,000</td>
+                <td>4,000</td>
+                <td>360</td>
+                <td>360</td>
+                <td>-</td>
+                <td>4,720</td>
+              </tr>
+              <tr>
+                <td>Mar 22</td>
+                <td>Kolkata Traders</td>
+                <td>CN-109</td>
+                <td></td>
+                <td>7,500</td>
+                <td>7,500</td>
+                <td>-</td>
+                <td>-</td>
+                <td>1,350</td>
+                <td>8,850</td>
+              </tr>
+              <tr>
+                <td>Mar 25</td>
+                <td>Metro Stores</td>
+                <td>CN-110</td>
+                <td></td>
+                <td>2,200</td>
+                <td>2,200</td>
+                <td>198</td>
+                <td>198</td>
+                <td>-</td>
+                <td>2,596</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+                <td><strong>43,700</strong></td>
+                <td><strong>1,530</strong></td>
+                <td><strong>1,530</strong></td>
+                <td><strong>4,806</strong></td>
+                <td><strong>51,566</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example 4: Purchase Return Book -->
+  <section>
+    <h2><i class="fas fa-exchange-alt"></i> Example 4: Purchase Return Book (Return Outward Book)</h2>
+    
+    <div class="example-container">
+      <div class="example-header">
+        <h3 class="example-title">Recording Returns to Suppliers</h3>
+        <span class="example-badge">With GST Adjustments</span>
+      </div>
+
+      <div class="question-box">
+        <h4><i class="fas fa-question"></i> Question</h4>
+        <p>Prepare Purchase Return Book from the following returns made in April 2024:</p>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 1:</span>
+          <span>Returned defective goods to Ram & Co. (Local) worth ₹2,000 + GST (Debit Note No. DN-201)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 4:</span>
+          <span>Goods returned to Shyam Enterprises (Local) ₹1,500 + GST due to wrong specifications (DN-202)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 6:</span>
+          <span>Returned excess quantity to Krishna Traders (Inter-state) ₹4,000 + GST (DN-203)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 8:</span>
+          <span>Damaged goods returned to Gopal & Sons (Local) ₹800 + GST (DN-204)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 10:</span>
+          <span>Returned goods to Delhi Suppliers (Inter-state) ₹6,000 + GST (DN-205)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 12:</span>
+          <span>Wrong items returned to Local Mart (Local) ₹2,500 + GST (DN-206)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 15:</span>
+          <span>Returned defective goods to Mumbai Traders (Inter-state) ₹5,500 + GST (DN-207)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 18:</span>
+          <span>Excess goods returned to City Suppliers (Local) ₹3,200 + GST (DN-208)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 20:</span>
+          <span>Returned goods to Gujarat Exporters (Inter-state) ₹7,000 + GST (DN-209)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Apr 25:</span>
+          <span>Damaged items returned to New Store (Local) ₹1,800 + GST (DN-210)</span>
+        </div>
+      </div>
+
+      <button class="solution-toggle" onclick="toggleSolution('solution4')">Show Solution</button>
+
+      <div class="solution-wrapper" id="solution4">
+        <div class="solution-table">
+          <div class="solution-header">PURCHASE RETURN BOOK (RETURN OUTWARD BOOK)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Particulars<br>(Name of Supplier)</th>
+                <th>Debit Note No.</th>
+                <th>L.F.</th>
+                <th>Details (₹)</th>
+                <th>Purchase Return (₹)</th>
+                <th>Input CGST (₹)</th>
+                <th>Input SGST (₹)</th>
+                <th>Input IGST (₹)</th>
+                <th>Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Apr 1</td>
+                <td>Ram & Co.</td>
+                <td>DN-201</td>
+                <td></td>
+                <td>2,000</td>
+                <td>2,000</td>
+                <td>180</td>
+                <td>180</td>
+                <td>-</td>
+                <td>2,360</td>
+              </tr>
+              <tr>
+                <td>Apr 4</td>
+                <td>Shyam Enterprises</td>
+                <td>DN-202</td>
+                <td></td>
+                <td>1,500</td>
+                <td>1,500</td>
+                <td>135</td>
+                <td>135</td>
+                <td>-</td>
+                <td>1,770</td>
+              </tr>
+              <tr>
+                <td>Apr 6</td>
+                <td>Krishna Traders</td>
+                <td>DN-203</td>
+                <td></td>
+                <td>4,000</td>
+                <td>4,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>720</td>
+                <td>4,720</td>
+              </tr>
+              <tr>
+                <td>Apr 8</td>
+                <td>Gopal & Sons</td>
+                <td>DN-204</td>
+                <td></td>
+                <td>800</td>
+                <td>800</td>
+                <td>72</td>
+                <td>72</td>
+                <td>-</td>
+                <td>944</td>
+              </tr>
+              <tr>
+                <td>Apr 10</td>
+                <td>Delhi Suppliers</td>
+                <td>DN-205</td>
+                <td></td>
+                <td>6,000</td>
+                <td>6,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>1,080</td>
+                <td>7,080</td>
+              </tr>
+              <tr>
+                <td>Apr 12</td>
+                <td>Local Mart</td>
+                <td>DN-206</td>
+                <td></td>
+                <td>2,500</td>
+                <td>2,500</td>
+                <td>225</td>
+                <td>225</td>
+                <td>-</td>
+                <td>2,950</td>
+              </tr>
+              <tr>
+                <td>Apr 15</td>
+                <td>Mumbai Traders</td>
+                <td>DN-207</td>
+                <td></td>
+                <td>5,500</td>
+                <td>5,500</td>
+                <td>-</td>
+                <td>-</td>
+                <td>990</td>
+                <td>6,490</td>
+              </tr>
+              <tr>
+                <td>Apr 18</td>
+                <td>City Suppliers</td>
+                <td>DN-208</td>
+                <td></td>
+                <td>3,200</td>
+                <td>3,200</td>
+                <td>288</td>
+                <td>288</td>
+                <td>-</td>
+                <td>3,776</td>
+              </tr>
+              <tr>
+                <td>Apr 20</td>
+                <td>Gujarat Exporters</td>
+                <td>DN-209</td>
+                <td></td>
+                <td>7,000</td>
+                <td>7,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td>1,260</td>
+                <td>8,260</td>
+              </tr>
+              <tr>
+                <td>Apr 25</td>
+                <td>New Store</td>
+                <td>DN-210</td>
+                <td></td>
+                <td>1,800</td>
+                <td>1,800</td>
+                <td>162</td>
+                <td>162</td>
+                <td>-</td>
+                <td>2,124</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+                <td><strong>34,300</strong></td>
+                <td><strong>1,062</strong></td>
+                <td><strong>1,062</strong></td>
+                <td><strong>4,050</strong></td>
+                <td><strong>40,474</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Example 5: Journal Proper -->
+  <section>
+    <h2><i class="fas fa-book"></i> Example 5: Journal Proper Entries</h2>
+    
+    <div class="example-container">
+      <div class="example-header">
+        <h3 class="example-title">Transactions for Journal Proper</h3>
+        <span class="example-badge">Mixed Transactions</span>
+      </div>
+
+      <div class="question-box">
+        <h4><i class="fas fa-question"></i> Question</h4>
+        <p>Pass journal entries for the following transactions in May 2024:</p>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <span class="transaction-date">May 1:</span>
+          <span>Started business with: Cash ₹1,00,000, Furniture ₹50,000, Bank ₹2,00,000</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 3:</span>
+          <span>Purchased machinery from Tech Solutions for ₹1,50,000 on credit</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 5:</span>
+          <span>Sold old furniture to Office Mart for ₹15,000 on credit</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 8:</span>
+          <span>Goods worth ₹8,000 withdrawn by proprietor for personal use</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 10:</span>
+          <span>Bad debts written off from Rahul (debtor) ₹5,000</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 12:</span>
+          <span>Received commission ₹10,000 in advance</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 15:</span>
+          <span>Depreciation charged on machinery @ 10% p.a. for the month</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 18:</span>
+          <span>Interest on capital to be provided @ 12% p.a. for the month</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 20:</span>
+          <span>Rent outstanding for the month ₹15,000</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">May 25:</span>
+          <span>Goods distributed as free samples ₹3,000</span>
+        </div>
+      </div>
+
+      <button class="solution-toggle" onclick="toggleSolution('solution5')">Show Solution</button>
+
+      <div class="solution-wrapper" id="solution5">
+        <div class="solution-table">
+          <div class="solution-header">JOURNAL PROPER</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Particulars</th>
+                <th>L.F.</th>
+                <th>Debit Amount (₹)</th>
+                <th>Credit Amount (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="4">May 1</td>
+                <td>Cash A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>1,00,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Furniture A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>50,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Bank A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>2,00,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c<br><em>(Being business started with capital)</em></td>
+                <td></td>
+                <td></td>
+                <td>3,50,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 3</td>
+                <td>Machinery A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>1,50,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Tech Solutions A/c<br><em>(Being machinery purchased on credit)</em></td>
+                <td></td>
+                <td></td>
+                <td>1,50,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 5</td>
+                <td>Office Mart A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>15,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Furniture A/c<br><em>(Being old furniture sold on credit)</em></td>
+                <td></td>
+                <td></td>
+                <td>15,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 8</td>
+                <td>Drawings A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>8,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchases A/c<br><em>(Being goods withdrawn for personal use)</em></td>
+                <td></td>
+                <td></td>
+                <td>8,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 10</td>
+                <td>Bad Debts A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>5,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Rahul A/c<br><em>(Being bad debts written off)</em></td>
+                <td></td>
+                <td></td>
+                <td>5,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 12</td>
+                <td>Cash/Bank A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>10,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Unearned Commission A/c<br><em>(Being commission received in advance)</em></td>
+                <td></td>
+                <td></td>
+                <td>10,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 15</td>
+                <td>Depreciation A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>1,250</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Machinery A/c<br><em>(Being depreciation for the month: 1,50,000 × 10% × 1/12)</em></td>
+                <td></td>
+                <td></td>
+                <td>1,250</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 18</td>
+                <td>Interest on Capital A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>3,500</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c<br><em>(Being interest on capital: 3,50,000 × 12% × 1/12)</em></td>
+                <td></td>
+                <td></td>
+                <td>3,500</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 20</td>
+                <td>Rent A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>15,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Outstanding Rent A/c<br><em>(Being rent outstanding for the month)</em></td>
+                <td></td>
+                <td></td>
+                <td>15,000</td>
+              </tr>
+              <tr>
+                <td rowspan="2">May 25</td>
+                <td>Advertisement A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td></td>
+                <td>3,000</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchases A/c<br><em>(Being goods distributed as free samples)</em></td>
+                <td></td>
+                <td></td>
+                <td>3,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Practice Problem -->
+  <section>
+    <h2><i class="fas fa-pencil-alt"></i> Comprehensive Practice Problem</h2>
+    
+    <div class="practice-problem">
+      <div class="question-box">
+        <h4><i class="fas fa-question"></i> Problem for Practice</h4>
+        <p><strong>Instructions:</strong> From the following transactions for June 2024, identify and record entries in appropriate subsidiary books:</p>
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 1:</span>
+          <span>Credit purchase from A & Co. (Local) ₹30,000 + GST, Trade Discount 10%</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 3:</span>
+          <span>Sold goods to B Ltd. (Inter-state) on credit ₹40,000 + GST</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 5:</span>
+          <span>Cash sales ₹20,000 + GST (Not for subsidiary books)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 7:</span>
+          <span>Returned goods to A & Co. ₹3,000 + GST (from Jun 1 purchase)</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 9:</span>
+          <span>B Ltd. returned goods ₹4,000 + GST</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 11:</span>
+          <span>Purchased computer on credit from Tech World ₹60,000</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 13:</span>
+          <span>Credit purchase from C Traders (Inter-state) ₹25,000 + GST</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 15:</span>
+          <span>Sold old furniture to D & Sons on credit ₹12,000</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 17:</span>
+          <span>Credit sales to E Enterprises (Local) ₹35,000 + GST, Trade Discount 5%</span>
+        </div>
+        <div class="transaction-item">
+          <span class="transaction-date">Jun 20:</span>
+          <span>Goods taken by proprietor for personal use ₹5,000</span>
+        </div>
+      </div>
+
+      <div class="tips-box">
+        <h4><i class="fas fa-lightbulb"></i> Hints for Solution</h4>
+        <ul>
+          <li>Purchase Book: Jun 1 (₹27,000 + GST), Jun 13 (₹25,000 + GST)</li>
+          <li>Sales Book: Jun 3 (₹40,000 + GST), Jun 17 (₹33,250 + GST)</li>
+          <li>Purchase Return Book: Jun 7 (₹3,000 + GST)</li>
+          <li>Sales Return Book: Jun 9 (₹4,000 + GST)</li>
+          <li>Journal Proper: Jun 11 (Computer purchase), Jun 15 (Furniture sale), Jun 20 (Drawings)</li>
+          <li>Remember: Cash transactions go to Cash Book (not shown here)</li>
         </ul>
       </div>
-    </section>
-
-    <!-- PURCHASE BOOK -->
-    <section>
-      <h2><i class="fas fa-shopping-cart"></i> 1. Purchase Book</h2>
-      
-      <div class="note-box">
-        <strong>Remember:</strong> Only CREDIT purchases of GOODS for resale are recorded here.
-      </div>
-
-      <h3>Purchase Book of ABC Traders:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Invoice No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 3, 2025</td>
-            <td>Raj Suppliers</td>
-            <td>P-101</td>
-            <td>15</td>
-            <td>50,000</td>
-          </tr>
-          <tr>
-            <td>Jan 8, 2025</td>
-            <td>Sharma & Co.</td>
-            <td>P-102</td>
-            <td>22</td>
-            <td>28,000</td>
-          </tr>
-          <tr>
-            <td>Jan 18, 2025</td>
-            <td>Gupta Brothers</td>
-            <td>P-103</td>
-            <td>28</td>
-            <td>33,000</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-            <td><strong>1,11,000</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Purchases A/c Dr.</span> ₹1,11,000</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Sundry Creditors A/c</span> ₹1,11,000</p>
-        <p style="margin-top:10px; font-style:italic;">(Being total credit purchases for January)</p>
-        <hr style="margin:15px 0; opacity:0.3;">
-        <p style="font-size:0.9rem;">Individual Postings:</p>
-        <p style="font-size:0.85rem;">• Raj Suppliers A/c credited with ₹50,000</p>
-        <p style="font-size:0.85rem;">• Sharma & Co. A/c credited with ₹28,000</p>
-        <p style="font-size:0.85rem;">• Gupta Brothers A/c credited with ₹33,000</p>
-      </div>
-
-      <div class="info-box">
-        <strong>Why furniture purchase (Jan 20) is NOT here?</strong> Because furniture is an ASSET, not goods for resale. It goes to Journal Proper!
-      </div>
-    </section>
-
-    <!-- SALES BOOK -->
-    <section>
-      <h2><i class="fas fa-cash-register"></i> 2. Sales Book</h2>
-      
-      <div class="note-box">
-        <strong>Remember:</strong> Only CREDIT sales of GOODS are recorded here.
-      </div>
-
-      <h3>Sales Book of ABC Traders:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Invoice No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 5, 2025</td>
-            <td>Kumar Enterprises</td>
-            <td>S-201</td>
-            <td>12</td>
-            <td>35,000</td>
-          </tr>
-          <tr>
-            <td>Jan 12, 2025</td>
-            <td>Patel Traders</td>
-            <td>S-202</td>
-            <td>18</td>
-            <td>42,000</td>
-          </tr>
-          <tr>
-            <td>Jan 25, 2025</td>
-            <td>Mehta Ltd.</td>
-            <td>S-203</td>
-            <td>25</td>
-            <td>38,500</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-            <td><strong>1,15,500</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Sundry Debtors A/c Dr.</span> ₹1,15,500</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Sales A/c</span> ₹1,15,500</p>
-        <p style="margin-top:10px; font-style:italic;">(Being total credit sales for January)</p>
-        <hr style="margin:15px 0; opacity:0.3;">
-        <p style="font-size:0.9rem;">Individual Postings:</p>
-        <p style="font-size:0.85rem;">• Kumar Enterprises A/c debited with ₹35,000</p>
-        <p style="font-size:0.85rem;">• Patel Traders A/c debited with ₹42,000</p>
-        <p style="font-size:0.85rem;">• Mehta Ltd. A/c debited with ₹38,500</p>
-      </div>
-    </section>
-
-    <!-- PURCHASE RETURNS BOOK -->
-    <section>
-      <h2><i class="fas fa-undo"></i> 3. Purchase Returns Book (Returns Outward)</h2>
-      
-      <div class="note-box">
-        <strong>Remember:</strong> Goods returned TO suppliers who sold us goods on credit.
-      </div>
-
-      <h3>Purchase Returns Book of ABC Traders:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Debit Note No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 10, 2025</td>
-            <td>Raj Suppliers</td>
-            <td>DN-01</td>
-            <td>15</td>
-            <td>5,000</td>
-          </tr>
-          <tr>
-            <td>Jan 28, 2025</td>
-            <td>Sharma & Co.</td>
-            <td>DN-02</td>
-            <td>22</td>
-            <td>2,500</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-            <td><strong>7,500</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Sundry Creditors A/c Dr.</span> ₹7,500</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Purchase Returns A/c</span> ₹7,500</p>
-        <p style="margin-top:10px; font-style:italic;">(Being goods returned to suppliers)</p>
-        <hr style="margin:15px 0; opacity:0.3;">
-        <p style="font-size:0.9rem;">Individual Postings:</p>
-        <p style="font-size:0.85rem;">• Raj Suppliers A/c debited with ₹5,000</p>
-        <p style="font-size:0.85rem;">• Sharma & Co. A/c debited with ₹2,500</p>
-      </div>
-
-      <div class="connection-box">
-        <h4><i class="fas fa-link"></i> See the Connection:</h4>
-        <p style="color: var(--muted);">
-          <strong>Raj Suppliers:</strong> We bought ₹50,000 (Purchase Book) but returned ₹5,000 (Purchase Returns). 
-          <br><strong>Net amount we owe = ₹45,000</strong>
-        </p>
-        <p style="color: var(--muted);">
-          <strong>Sharma & Co.:</strong> We bought ₹28,000 (Purchase Book) but returned ₹2,500 (Purchase Returns). 
-          <br><strong>Net amount we owe = ₹25,500</strong>
-        </p>
-      </div>
-    </section>
-
-    <!-- SALES RETURNS BOOK -->
-    <section>
-      <h2><i class="fas fa-reply"></i> 4. Sales Returns Book (Returns Inward)</h2>
-      
-      <div class="note-box">
-        <strong>Remember:</strong> Goods returned BY customers who bought from us on credit.
-      </div>
-
-      <h3>Sales Returns Book of ABC Traders:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Credit Note No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 15, 2025</td>
-            <td>Kumar Enterprises</td>
-            <td>CN-01</td>
-            <td>12</td>
-            <td>3,000</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-            <td><strong>3,000</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Sales Returns A/c Dr.</span> ₹3,000</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Sundry Debtors A/c</span> ₹3,000</p>
-        <p style="margin-top:10px; font-style:italic;">(Being goods returned by customers)</p>
-        <hr style="margin:15px 0; opacity:0.3;">
-        <p style="font-size:0.9rem;">Individual Posting:</p>
-        <p style="font-size:0.85rem;">• Kumar Enterprises A/c credited with ₹3,000</p>
-      </div>
-
-      <div class="connection-box">
-        <h4><i class="fas fa-link"></i> See the Connection:</h4>
-        <p style="color: var(--muted);">
-          <strong>Kumar Enterprises:</strong> They bought ₹35,000 (Sales Book) but returned ₹3,000 (Sales Returns). 
-          <br><strong>Net amount they owe us = ₹32,000</strong>
-        </p>
-      </div>
-    </section>
-
-    <!-- JOURNAL PROPER -->
-    <section>
-      <h2><i class="fas fa-book"></i> 5. Journal Proper</h2>
-      
-      <div class="note-box">
-        <strong>Remember:</strong> For transactions that DON'T fit in other books.
-      </div>
-
-      <h3>Journal Proper of ABC Traders:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>L.F.</th>
-            <th>Debit (₹)</th>
-            <th>Credit (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 20, 2025</td>
-            <td style="line-height:1.8;">
-              <strong>Furniture A/c Dr.</strong><br>
-              <span style="margin-left:30px;">To Office Mart A/c</span><br>
-              <em style="font-size:0.85rem;">(Being furniture purchased on credit from Office Mart)</em>
-            </td>
-            <td style="vertical-align:top;">8<br>18</td>
-            <td style="vertical-align:top;">25,000<br><br></td>
-            <td style="vertical-align:top;"><br>25,000</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="info-box">
-        <strong>Why this goes to Journal Proper:</strong> Furniture is a FIXED ASSET, not goods for resale. 
-        Purchase Book only records goods meant for trading. Asset purchases on credit go to Journal Proper.
-      </div>
-
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Furniture A/c Dr.</span> ₹25,000</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Office Mart A/c</span> ₹25,000</p>
-      </div>
-    </section>
-
-    <!-- FINAL SUMMARY -->
-    <section>
-      <h2><i class="fas fa-chart-line"></i> Complete Month Summary</h2>
-      
-      <h3>Final Ledger Balances After All Postings:</h3>
-      
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin:20px 0;">
-        
-        <div class="connection-box">
-          <h4>Purchases Side (What We Bought):</h4>
-          <table style="width:100%; color: var(--muted); font-size:0.9rem;">
-            <tr><td>Total Purchases:</td><td style="text-align:right;"><strong>₹1,11,000</strong></td></tr>
-            <tr><td>Less: Purchase Returns:</td><td style="text-align:right;"><strong>(₹7,500)</strong></td></tr>
-            <tr style="border-top:2px solid rgba(255,255,255,0.2);"><td><strong>Net Purchases:</strong></td><td style="text-align:right;"><strong>₹1,03,500</strong></td></tr>
-          </table>
-        </div>
-
-        <div class="connection-box">
-          <h4>Sales Side (What We Sold):</h4>
-          <table style="width:100%; color: var(--muted); font-size:0.9rem;">
-            <tr><td>Total Sales:</td><td style="text-align:right;"><strong>₹1,15,500</strong></td></tr>
-            <tr><td>Less: Sales Returns:</td><td style="text-align:right;"><strong>(₹3,000)</strong></td></tr>
-            <tr style="border-top:2px solid rgba(255,255,255,0.2);"><td><strong>Net Sales:</strong></td><td style="text-align:right;"><strong>₹1,12,500</strong></td></tr>
-          </table>
-        </div>
-
-      </div>
-
-      <h3>Individual Party Balances:</h3>
-      
-      <div style="background: rgba(255,255,255,0.03); padding:20px; border-radius:8px; margin:20px 0;">
-        <h4 style="color: var(--accent); margin-top:0;">Creditors (We Owe Them):</h4>
-        <table style="width:100%; color: var(--muted); font-size:0.9rem;">
-          <tr><td>Raj Suppliers:</td><td>₹50,000 - ₹5,000 =</td><td style="text-align:right; color:#f44336;"><strong>₹45,000</strong></td></tr>
-          <tr><td>Sharma & Co.:</td><td>₹28,000 - ₹2,500 =</td><td style="text-align:right; color:#f44336;"><strong>₹25,500</strong></td></tr>
-          <tr><td>Gupta Brothers:</td><td>₹33,000 - ₹0 =</td><td style="text-align:right; color:#f44336;"><strong>₹33,000</strong></td></tr>
-          <tr><td>Office Mart:</td><td>₹25,000 (furniture) =</td><td style="text-align:right; color:#f44336;"><strong>₹25,000</strong></td></tr>
-          <tr style="border-top:2px solid rgba(255,255,255,0.2);"><td colspan="2"><strong>Total Creditors:</strong></td><td style="text-align:right; color:#f44336;"><strong>₹1,28,500</strong></td></tr>
-        </table>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.03); padding:20px; border-radius:8px; margin:20px 0;">
-        <h4 style="color: var(--brand-2); margin-top:0;">Debtors (They Owe Us):</h4>
-        <table style="width:100%; color: var(--muted); font-size:0.9rem;">
-          <tr><td>Kumar Enterprises:</td><td>₹35,000 - ₹3,000 =</td><td style="text-align:right; color:#4caf50;"><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Lesson 12 – Worked Examples | AccountsWizard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <style>
-    :root {
-      --bg: #0b1020;
-      --bg-2: #0f1733;
-      --card: #111633;
-      --muted: #b8c2ff;
-      --brand: #7c4dff;
-      --brand-2: #00e5ff;
-      --accent: #ff7ac6;
-      --text: #e9eefc;
-      --radius: 16px;
-      --shadow: 0 18px 40px rgba(2,6,23,.55);
-      --speed: 300ms;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      color: var(--text);
-      background:
-        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
-        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
-        linear-gradient(180deg, var(--bg), var(--bg-2));
-      min-height: 100vh;
-      padding: 20px;
-    }
-    header { text-align: center; padding: 30px 20px; }
-    .lesson-title {
-      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
-      background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .subtitle { color: var(--muted); font-size: 1.1rem; margin-top: 10px; }
-    .breadcrumb { color: var(--muted); font-size: .95rem; margin-top: 15px; }
-    .breadcrumb a { color: inherit; text-decoration: none; }
-    .breadcrumb a:hover { color: var(--text); }
-    .nav-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
-      margin-bottom: 32px; box-shadow: var(--shadow);
-    }
-    .nav-header a {
-      color: var(--muted); text-decoration: none; display: flex; align-items: center;
-      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
-    }
-    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
-    section {
-      background: var(--card); border-radius: var(--radius);
-      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
-    }
-    section h2 {
-      margin-top: 0; font-size: 1.5rem;
-      background: linear-gradient(90deg,#fff,var(--brand-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    section h3 {
-      color: var(--brand-2); font-size: 1.2rem; margin-top: 25px;
-      border-bottom: 2px solid rgba(124,77,255,0.3); padding-bottom: 8px;
-    }
-
-    .example-box {
-      background: rgba(255,255,255,0.03); border-left: 4px solid var(--brand);
-      padding: 20px; margin: 20px 0; border-radius: 8px;
-    }
-    .example-title {
-      color: var(--accent); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;
-    }
-    .transactions-list {
-      background: rgba(0,229,255,0.05); padding: 15px 20px;
-      border-radius: 8px; margin: 15px 0;
-    }
-    .transactions-list h4 {
-      color: var(--brand-2); margin-top: 0; font-size: 1rem;
-    }
-    .transactions-list p {
-      margin: 8px 0; color: var(--muted); line-height: 1.6;
-    }
-
-    .book-table {
-      width: 100%; margin: 20px 0; border-collapse: collapse;
-      background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden;
-    }
-    .book-table thead {
-      background: var(--brand);
-    }
-    .book-table th {
-      color: white; padding: 12px; text-align: left;
-      font-weight: 600; font-size: 0.9rem;
-    }
-    .book-table td {
-      padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
-      color: var(--text); font-size: 0.9rem;
-    }
-    .book-table tbody tr:hover {
-      background: rgba(255,255,255,0.03);
-    }
-    .total-row {
-      background: rgba(124,77,255,0.2) !important;
-      font-weight: 700;
-    }
-    .ledger-entry {
-      background: rgba(0,229,255,0.05); padding: 15px;
-      border-radius: 8px; margin: 15px 0; font-family: monospace;
-    }
-    .ledger-entry h4 {
-      color: var(--brand-2); margin-top: 0; font-size: 1rem;
-    }
-    .debit-side { color: #4caf50; }
-    .credit-side { color: #f44336; }
-
-    .info-box {
-      background: rgba(255,122,198,0.1); border-left: 4px solid var(--accent);
-      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
-      color: var(--text); font-size: 0.9rem;
-    }
-    .note-box {
-      background: rgba(0,229,255,0.1); border-left: 4px solid var(--brand-2);
-      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
-      color: var(--text); font-size: 0.9rem;
-    }
-
-    @media (max-width: 768px) {
-      .book-table { font-size: 0.8rem; }
-      .book-table th, .book-table td { padding: 8px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="nav-header">
-    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
-  </div>
-
-  <header>
-    <h1 class="lesson-title">Books of Original Entry</h1>
-    <div class="subtitle">Detailed Worked Examples</div>
-    <div class="breadcrumb">
-      <a href="../index.html">Home</a> / 
-      <a href="../lessons.html">Lessons</a> / 
-      <a href="lesson-12.html">Lesson 12</a> /
-      Examples
     </div>
-  </header>
+  </section>
 
-  <main>
-    <!-- PURCHASE BOOK EXAMPLE -->
-    <section>
-      <h2><i class="fas fa-shopping-cart"></i> Purchase Book - Complete Example</h2>
+  <!-- MCQ Section -->
+  <section>
+    <h2><i class="fas fa-question-circle"></i> Numerical MCQs</h2>
+    
+    <div class="mcq-container">
+      <!-- Question 1 -->
+      <div class="mcq">
+        <h3>1. If goods worth ₹50,000 are purchased with trade discount of 20%, the amount to be recorded in Purchase Book is:</h3>
+        <input type="radio" name="q1" id="q1a" value="a">
+        <label for="q1a">₹50,000</label>
+        <input type="radio" name="q1" id="q1b" value="b">
+        <label for="q1b">₹40,000</label>
+        <input type="radio" name="q1" id="q1c" value="c">
+        <label for="q1c">₹10,000</label>
+        <input type="radio" name="q1" id="q1d" value="d">
+        <label for="q1d">₹60,000</label>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="mcq">
+        <h3>2. Sales Book shows total of ₹75,000. The journal entry will be:</h3>
+        <input type="radio" name="q2" id="q2a" value="a">
+        <label for="q2a">Sales A/c Dr. ₹75,000 To Sundry Debtors A/c ₹75,000</label>
+        <input type="radio" name="q2" id="q2b" value="b">
+        <label for="q2b">Sundry Debtors A/c Dr. ₹75,000 To Sales A/c ₹75,000</label>
+        <input type="radio" name="q2" id="q2c" value="c">
+        <label for="q2c">Cash A/c Dr. ₹75,000 To Sales A/c ₹75,000</label>
+        <input type="radio" name="q2" id="q2d" value="d">
+        <label for="q2d">Sales A/c Dr. ₹75,000 To Cash A/c ₹75,000</label>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="mcq">
+        <h3>3. Purchase Return Book total is ₹12,000. The effect on Purchase A/c will be:</h3>
+        <input type="radio" name="q3" id="q3a" value="a">
+        <label for="q3a">Debit ₹12,000</label>
+        <input type="radio" name="q3" id="q3b" value="b">
+        <label for="q3b">Credit ₹12,000</label>
+        <input type="radio" name="q3" id="q3c" value="c">
+        <label for="q3c">No effect on Purchase A/c</label>
+        <input type="radio" name="q3" id="q3d" value="d">
+        <label for="q3d">Both debit and credit ₹12,000</label>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="mcq">
+        <h3>4. If Sales Return Book shows ₹8,000, the Sundry Debtors account will be:</h3>
+        <input type="radio" name="q4" id="q4a" value="a">
+        <label for="q4a">Debited by ₹8,000</label>
+        <input type="radio" name="q4" id="q4b" value="b">
+        <label for="q4b">Credited by ₹8,000</label>
+        <input type="radio" name="q4" id="q4c" value="c">
+        <label for="q4c">Not affected</label>
+        <input type="radio" name="q4" id="q4d" value="d">
+        <label for="q4d">Increased by ₹8,000</label>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="mcq">
+        <h3>5. Goods costing ₹30,000 sold at 25% profit on credit. Amount in Sales Book:</h3>
+        <input type="radio" name="q5" id="q5a" value="a">
+        <label for="q5a">₹30,000</label>
+        <input type="radio" name="q5" id="q5b" value="b">
+        <label for="q5b">₹37,500</label>
+        <input type="radio" name="q5" id="q5c" value="c">
+        <label for="q5c">₹7,500</label>
+        <input type="radio" name="q5" id="q5d" value="d">
+        <label for="q5d">₹22,500</label>
+      </div>
+
+      <!-- Question 6 -->
+      <div class="mcq">
+        <h3>6. Purchase Book total ₹1,00,000 includes GST @ 18%. The net purchase amount is:</h3>
+        <input type="radio" name="q6" id="q6a" value="a">
+        <label for="q6a">₹1,00,000</label>
+        <input type="radio" name="q6" id="q6b" value="b">
+        <label for="q6b">₹82,000</label>
+        <input type="radio" name="q6" id="q6c" value="c">
+        <label for="q6c">₹84,746</label>
+        <input type="radio" name="q6" id="q6d" value="d">
+        <label for="q6d">₹1,18,000</label>
+      </div>
+
+      <!-- Question 7 -->
+      <div class="mcq">
+        <h3>7. Credit purchase ₹40,000, returns ₹5,000. Net amount payable to creditor:</h3>
+        <input type="radio" name="q7" id="q7a" value="a">
+        <label for="q7a">₹45,000</label>
+        <input type="radio" name="q7" id="q7b" value="b">
+        <label for="q7b">₹40,000</label>
+        <input type="radio" name="q7" id="q7c" value="c">
+        <label for="q7c">₹35,000</label>
+        <input type="radio" name="q7" id="q7d" value="d">
+        <label for="q7d">₹5,000</label>
+      </div>
+
+      <!-- Question 8 -->
+      <div class="mcq">
+        <h3>8. Sales ₹60,000, Sales Returns ₹8,000. Net Sales amount is:</h3>
+        <input type="radio" name="q8" id="q8a" value="a">
+        <label for="q8a">₹68,000</label>
+        <input type="radio" name="q8" id="q8b" value="b">
+        <label for="q8b">₹60,000</label>
+        <input type="radio" name="q8" id="q8c" value="c">
+        <label for="q8c">₹52,000</label>
+        <input type="radio" name="q8" id="q8d" value="d">
+        <label for="q8d">₹8,000</label>
+      </div>
+
+      <!-- Question 9 -->
+      <div class="mcq">
+        <h3>9. Furniture purchased for ₹25,000 on credit will be recorded in:</h3>
+        <input type="radio" name="q9" id="q9a" value="a">
+        <label for="q9a">Purchase Book as ₹25,000</label>
+        <input type="radio" name="q9" id="q9b" value="b">
+        <label for="q9b">Journal Proper as Furniture Dr. ₹25,000</label>
+        <input type="radio" name="q9" id="q9c" value="c">
+        <label for="q9c">Cash Book as payment</label>
+        <input type="radio" name="q9" id="q9d" value="d">
+        <label for="q9d">Sales Book as sale</label>
+      </div>
+
+      <!-- Question 10 -->
+      <div class="mcq">
+        <h3>10. Monthly totals: Purchase Book ₹80,000, Purchase Returns ₹10,000, Sales Book ₹1,20,000, Sales Returns ₹15,000. Gross Profit is:</h3>
+        <input type="radio" name="q10" id="q10a" value="a">
+        <label for="q10a">₹40,000</label>
+        <input type="radio" name="q10" id="q10b" value="b">
+        <label for="q10b">₹35,000</label>
+        <input type="radio" name="q10" id="q10c" value="c">
+        <label for="q10c">₹50,000</label>
+        <input type="radio" name="q10" id="q10d" value="d">
+        <label for="q10d">₹45,000</label>
+      </div>
+    </div>
+
+    <div class="submit-container">
+      <button class="submit-btn" onclick="checkAnswers()">Submit Answers</button>
+    </div>
+
+    <div class="score-display" id="scoreDisplay"></div>
+  </section>
+
+  <script>
+    // Solution toggle function
+    function toggleSolution(solutionId) {
+      const solution = document.getElementById(solutionId);
+      const button = event.target;
       
-      <div class="transactions-list">
-        <h4>Transactions for January 2025:</h4>
-        <p><strong>Jan 5:</strong> Purchased goods from Raj Traders worth ₹25,000 on credit (Invoice No. 101)</p>
-        <p><strong>Jan 10:</strong> Bought merchandise from Kumar & Co. for ₹18,500 on credit (Invoice No. 205)</p>
-        <p><strong>Jan 15:</strong> Purchased stock from Sharma Enterprises ₹32,000 on credit (Invoice No. 310)</p>
-        <p><strong>Jan 22:</strong> Acquired goods from Gupta Brothers ₹15,750 on credit (Invoice No. 425)</p>
-        <p><strong>Jan 28:</strong> Purchased inventory from Modern Traders ₹21,200 on credit (Invoice No. 530)</p>
-      </div>
+      if (solution.classList.contains('show')) {
+        solution.classList.remove('show');
+        button.textContent = 'Show Solution';
+      } else {
+        solution.classList.add('show');
+        button.textContent = 'Hide Solution';
+      }
+    }
 
-      <h3>Purchase Book Format:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Invoice No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 5, 2025</td>
-            <td>Raj Traders</td>
-            <td>101</td>
-            <td>15</td>
-            <td>25,000</td>
-          </tr>
-          <tr>
-            <td>Jan 10, 2025</td>
-            <td>Kumar & Co.</td>
-            <td>205</td>
-            <td>22</td>
-            <td>18,500</td>
-          </tr>
-          <tr>
-            <td>Jan 15, 2025</td>
-            <td>Sharma Enterprises</td>
-            <td>310</td>
-            <td>28</td>
-            <td>32,000</td>
-          </tr>
-          <tr>
-            <td>Jan 22, 2025</td>
-            <td>Gupta Brothers</td>
-            <td>425</td>
-            <td>35</td>
-            <td>15,750</td>
-          </tr>
-          <tr>
-            <td>Jan 28, 2025</td>
-            <td>Modern Traders</td>
-            <td>530</td>
-            <td>42</td>
-            <td>21,200</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="4" style="text-align:right;"><strong>Total Purchases for January</strong></td>
-            <td><strong>1,12,450</strong></td>
-          </tr>
-        </tbody>
-      </table>
+    // Correct answers for MCQs
+    const correctAnswers = {
+      q1: 'b', // ₹40,000 (50,000 - 20% discount)
+      q2: 'b', // Sundry Debtors Dr. To Sales
+      q3: 'c', // No effect on Purchase A/c (affects Purchase Return A/c)
+      q4: 'b', // Credited by ₹8,000
+      q5: 'b', // ₹37,500 (30,000 + 25%)
+      q6: 'c', // ₹84,746 (100,000 ÷ 1.18)
+      q7: 'c', // ₹35,000 (40,000 - 5,000)
+      q8: 'c', // ₹52,000 (60,000 - 8,000)
+      q9: 'b', // Journal Proper
+      q10: 'b' // ₹35,000 (Net Sales 105,000 - Net Purchase 70,000)
+    };
 
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Purchases A/c Dr.</span> ₹1,12,450</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Sundry Creditors A/c</span> ₹1,12,450</p>
-        <p style="margin-top:10px; font-style:italic;">(Being goods purchased on credit during January)</p>
-      </div>
-
-      <div class="info-box">
-        <strong>Important:</strong> Individual creditor accounts are also posted separately with their respective amounts.
-      </div>
-    </section>
-
-    <!-- SALES BOOK EXAMPLE -->
-    <section>
-      <h2><i class="fas fa-cash-register"></i> Sales Book - Complete Example</h2>
+    function checkAnswers() {
+      let score = 0;
+      let answered = 0;
       
-      <div class="transactions-list">
-        <h4>Transactions for January 2025:</h4>
-        <p><strong>Jan 3:</strong> Sold goods to ABC Enterprises ₹28,000 on credit (Invoice No. S-201)</p>
-        <p><strong>Jan 8:</strong> Goods sold to XYZ Traders for ₹35,500 on credit (Invoice No. S-202)</p>
-        <p><strong>Jan 14:</strong> Merchandise sold to PQR Ltd. ₹42,300 on credit (Invoice No. S-203)</p>
-        <p><strong>Jan 20:</strong> Sold stock to LMN Retailers ₹19,800 on credit (Invoice No. S-204)</p>
-        <p><strong>Jan 26:</strong> Goods supplied to RST Corporation ₹31,400 on credit (Invoice No. S-205)</p>
-      </div>
+      for (let i = 1; i <= 10; i++) {
+        const question = document.querySelector(`input[name="q${i}"]:checked`);
+        if (question) {
+          answered++;
+          if (question.value === correctAnswers[`q${i}`]) {
+            score++;
+            question.parentElement.style.background = 'rgba(16,185,129,0.2)';
+            question.parentElement.style.borderColor = '#10b981';
+          } else {
+            question.parentElement.style.background = 'rgba(239,68,68,0.2)';
+            question.parentElement.style.borderColor = '#ef4444';
+            // Highlight correct answer
+            const correctOption = document.querySelector(`input[name="q${i}"][value="${correctAnswers[`q${i}`]}"]`);
+            if (correctOption) {
+              correctOption.parentElement.style.background = 'rgba(16,185,129,0.2)';
+              correctOption.parentElement.style.borderColor = '#10b981';
+            }
+          }
+        }
+      }
 
-      <h3>Sales Book Format:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Invoice No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 3, 2025</td>
-            <td>ABC Enterprises</td>
-            <td>S-201</td>
-            <td>12</td>
-            <td>28,000</td>
-          </tr>
-          <tr>
-            <td>Jan 8, 2025</td>
-            <td>XYZ Traders</td>
-            <td>S-202</td>
-            <td>18</td>
-            <td>35,500</td>
-          </tr>
-          <tr>
-            <td>Jan 14, 2025</td>
-            <td>PQR Ltd.</td>
-            <td>S-203</td>
-            <td>25</td>
-            <td>42,300</td>
-          </tr>
-          <tr>
-            <td>Jan 20, 2025</td>
-            <td>LMN Retailers</td>
-            <td>S-204</td>
-            <td>32</td>
-            <td>19,800</td>
-          </tr>
-          <tr>
-            <td>Jan 26, 2025</td>
-            <td>RST Corporation</td>
-            <td>S-205</td>
-            <td>38</td>
-            <td>31,400</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="4" style="text-align:right;"><strong>Total Sales for January</strong></td>
-            <td><strong>1,57,000</strong></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="ledger-entry">
-        <h4>Ledger Posting:</h4>
-        <p><span class="debit-side">Sundry Debtors A/c Dr.</span> ₹1,57,000</p>
-        <p style="margin-left:40px;">To <span class="credit-side">Sales A/c</span> ₹1,57,000</p>
-        <p style="margin-top:10px; font-style:italic;">(Being goods sold on credit during January)</p>
-      </div>
-
-      <div class="info-box">
-        <strong>Important:</strong> Individual debtor accounts are also posted separately with their respective amounts.
-      </div>
-    </section>
-
-    <!-- PURCHASE RETURNS BOOK EXAMPLE -->
-    <section>
-      <h2><i class="fas fa-undo"></i> Purchase Returns Book - Complete Example</h2>
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      scoreDisplay.style.display = 'block';
       
-      <div class="transactions-list">
-        <h4>Transactions for January 2025:</h4>
-        <p><strong>Jan 7:</strong> Returned defective goods to Raj Traders worth ₹3,000 (Debit Note No. DN-01)</p>
-        <p><strong>Jan 12:</strong> Sent back excess stock to Kumar & Co. valued at ₹2,500 (Debit Note No. DN-02)</p>
-        <p><strong>Jan 18:</strong> Returned damaged goods to Sharma Enterprises ₹4,200 (Debit Note No. DN-03)</p>
-        <p><strong>Jan 25:</strong> Goods returned to Modern Traders ₹1,800 (Debit Note No. DN-04)</p>
-      </div>
+      let message = '';
+      const percentage = (score / 10) * 100;
+      
+      if (percentage === 100) {
+        message = `🎉 Perfect Score! ${score}/10 - Excellent numerical skills!`;
+      } else if (percentage >= 80) {
+        message = `🌟 Great! ${score}/10 - Strong understanding of calculations!`;
+      } else if (percentage >= 60) {
+        message = `👍 Good! ${score}/10 - Keep practicing!`;
+      } else {
+        message = `📚 Keep trying! ${score}/10 - Review the solutions and practice more!`;
+      }
+      
+      scoreDisplay.innerHTML = `
+        <h3 style="color: var(--brand-2); margin-bottom: 10px;">Your Results</h3>
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">${message}</p>
+        <p style="color: var(--muted);">Questions Attempted: ${answered}/10</p>
+        <button onclick="resetQuiz()" style="margin-top: 15px; padding: 10px 20px; background: var(--brand); color: white; border: none; border-radius: 8px; cursor: pointer;">Try Again</button>
+      `;
+    }
 
-      <h3>Purchase Returns Book Format:</h3>
-      <table class="book-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Particulars</th>
-            <th>Debit Note No.</th>
-            <th>L.F.</th>
-            <th>Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 7, 2025</td>
-            <td>Raj Traders</td>
-            <td>DN-01</td>
-            <td>15</td>
-            <td>3,000</td>
-          </tr>
-          <tr>
-            <td>Jan 12, 2025</td>
-            <td>Kumar & Co.</td>
-            <td>DN-02</td>
-            <td>22</td>
-            <td>2,500</td>
-          </tr>
-          <tr>
-            <td>Jan 18, 2025</td>
-            <td>Sharma Enterprises</td>
-            <td>DN-03</td>
-            <td>28</td>
-            <td>4,200</td>
-          </tr>
-          <tr>
-            <td>Jan 25, 2025</td>
-            <td>Modern Traders</td>
-            <td>DN-04</td>
-            <td>42</td>
-            <td>1,800</td>
-          </tr>
-          <tr class
+    function resetQuiz() {
+      // Clear all selections
+      const allInputs = document.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.parentElement.style.background = '';
+        input.parentElement.style.borderColor = '';
+      });
+      
+      // Hide score display
+      document.getElementById('scoreDisplay').style.display = 'none';
+    }
+
+    // Add animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(20px)';
+      section.style.transition = 'all 0.6s ease';
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>

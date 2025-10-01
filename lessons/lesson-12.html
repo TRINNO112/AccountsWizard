@@ -1,789 +1,1755 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Lesson 12 – Books of Original Entry | AccountsWizard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books of Original Entry & Subsidiary Books | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     :root {
-      --bg: #0b1020;
-      --bg-2: #0f1733;
-      --card: #111633;
-      --muted: #b8c2ff;
-      --brand: #7c4dff;
-      --brand-2: #00e5ff;
-      --accent: #ff7ac6;
-      --text: #e9eefc;
+      --bg: #0a0e27;
+      --bg-2: #0d1225;
+      --card: #141937;
+      --muted: #94a3b8;
+      --brand: #6366f1;
+      --brand-2: #06b6d4;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --text: #f1f5f9;
       --radius: 16px;
-      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --shadow: 0 20px 40px rgba(0,0,0,0.4);
       --speed: 300ms;
-      --success: #4caf50;
-      --error: #f44336;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
-      background:
-        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
-        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
-        linear-gradient(180deg, var(--bg), var(--bg-2));
       min-height: 100vh;
       padding: 20px;
+      overflow-x: hidden;
     }
-    header { text-align: center; padding: 30px 20px; }
-    .lesson-title {
-      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
-      background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .breadcrumb { color: var(--muted); font-size: .95rem; }
-    .breadcrumb a { color: inherit; text-decoration: none; }
-    .breadcrumb a:hover { color: var(--text); }
+
+    /* Header Styles */
     .nav-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
-      margin-bottom: 32px; box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      background: var(--card);
+      border-radius: var(--radius);
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      animation: slideDown 0.6s ease;
     }
+
     .nav-header a {
-      color: var(--muted); text-decoration: none; display: flex; align-items: center;
-      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: all var(--speed);
     }
-    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
+
+    .nav-header a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    /* Section Styles */
     section {
-      background: var(--card); border-radius: var(--radius);
-      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 35px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
+
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--brand-2), transparent);
+      animation: slideAcross 3s infinite;
+    }
+
+    @keyframes slideAcross {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
     section h2 {
-      margin-top: 0; font-size: 1.5rem;
-      background: linear-gradient(90deg,#fff,var(--brand-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
-    section p { line-height: 1.6; color: var(--muted); }
-    
-    .accordion-item { margin-bottom: 12px; border-radius: var(--radius); overflow: hidden; background: var(--card); box-shadow: var(--shadow); transition: transform 0.3s ease; }
-    .accordion-item:hover { transform: translateY(-2px); }
-    .accordion-header {
-      width: 100%; padding: 16px 20px; text-align: left; font-size: 1rem; font-weight: 600;
-      border: none; background: none; color: var(--brand-2); cursor: pointer;
-      display: flex; align-items: center; gap: 10px; transition: all 0.3s ease;
+
+    /* Definition Box */
+    .definition-box {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(6,182,212,0.1) 100%);
+      border: 2px solid rgba(99,102,241,0.3);
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      position: relative;
+      animation: fadeIn 0.8s ease;
     }
-    .accordion-header:hover { background: rgba(255,255,255,0.08); }
-    .accordion-header i { font-size: 1.2rem; color: var(--accent); }
-    .accordion-body {
-      max-height: 0; overflow: hidden; padding: 0 20px;
-      background: rgba(255,255,255,0.03); color: var(--muted);
-      font-size: 0.95rem; line-height: 1.6;
-      transition: max-height 0.5s ease, padding 0.3s ease;
+
+    .definition-box::before {
+      content: '📖';
+      position: absolute;
+      top: -15px;
+      left: 30px;
+      background: var(--card);
+      padding: 5px 15px;
+      font-size: 1.5rem;
     }
-    .accordion-body.open { max-height: 800px; padding: 16px 20px; }
-    .accordion-body strong { color: var(--brand-2); }
-    .accordion-body ul { margin: 10px 0; padding-left: 20px; }
-    .accordion-body li { margin: 5px 0; }
+
+    .definition-box h3 {
+      color: var(--brand-2);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    /* Books Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .book-card {
+      background: rgba(255,255,255,0.02);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease backwards;
+    }
+
+    .book-card:nth-child(1) { animation-delay: 0.1s; }
+    .book-card:nth-child(2) { animation-delay: 0.2s; }
+    .book-card:nth-child(3) { animation-delay: 0.3s; }
+    .book-card:nth-child(4) { animation-delay: 0.4s; }
+    .book-card:nth-child(5) { animation-delay: 0.5s; }
+
+    .book-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--brand-2);
+      box-shadow: 0 20px 40px rgba(6,182,212,0.3);
+    }
+
+    .book-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .book-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: white;
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.3); }
+      70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    }
+
+    .purchase-book .book-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .sales-book .book-icon { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .purchase-return .book-icon { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .sales-return .book-icon { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+    .journal-proper .book-icon { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+    .book-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .book-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Format Display */
+    .format-display {
+      background: white;
+      color: #333;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      overflow-x: auto;
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .format-display:hover {
+      transform: scale(1);
+    }
+
+    .format-display::before {
+      content: 'FORMAT';
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      background: var(--brand);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .format-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #333;
+    }
 
     .format-table {
-      width: 100%; margin: 15px 0; border-collapse: collapse;
-      background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
     }
-    .format-table th {
-      background: var(--brand); color: white; padding: 10px;
-      text-align: left; font-weight: 600; font-size: 0.9rem;
-    }
+
+    .format-table th,
     .format-table td {
-      padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.1);
-      color: var(--muted); font-size: 0.85rem;
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
     }
 
-    .info-box {
-      background: rgba(124,77,255,0.1); border-left: 4px solid var(--brand);
-      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
-      color: var(--text); font-size: 0.9rem;
+    .format-table th {
+      background: #f5f5f5;
+      font-weight: bold;
     }
 
-    .hierarchy-container {
-      position: relative; padding: 50px 20px;
-      background: linear-gradient(135deg, rgba(124,77,255,0.05), rgba(0,229,255,0.05));
-      border-radius: var(--radius); margin: 30px 0;
+    .format-table td {
+      background: white;
     }
-    .books-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px; margin: 30px 0;
+
+    /* Features List */
+    .features-list {
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
     }
-    .book-card {
-      background: var(--card); border-radius: 12px; padding: 25px;
-      text-align: center; transition: all 0.4s ease;
-      border: 2px solid transparent; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      position: relative; overflow: hidden;
+
+    .features-list h4 {
+      color: var(--brand-2);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .book-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      transition: height 0.3s ease;
+
+    .features-list ul {
+      list-style: none;
+      padding: 0;
     }
-    .book-card:hover::before { height: 6px; }
-    .book-card:hover {
-      transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+
+    .features-list li {
+      color: var(--muted);
+      padding: 8px 0;
+      padding-left: 30px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .features-list li:hover {
+      color: var(--text);
+      transform: translateX(5px);
+    }
+
+    .features-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* Benefits Section */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .benefit-card {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(6,182,212,0.05) 100%);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.8s ease backwards;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-5px);
       border-color: var(--brand-2);
-    }
-    .book-card i {
-      font-size: 2.5rem; margin-bottom: 15px; color: var(--brand-2); opacity: 0.8;
-    }
-    .book-card h4 {
-      margin: 12px 0 8px 0; font-size: 1.2rem; color: var(--text); font-weight: 700;
-    }
-    .book-card p {
-      font-size: 0.85rem; color: var(--muted); line-height: 1.4;
-    }
-    .book-badge {
-      position: absolute; top: 15px; right: 15px;
-      background: rgba(124,77,255,0.3); color: white;
-      padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;
+      box-shadow: 0 15px 30px rgba(6,182,212,0.2);
     }
 
-    .mcq { margin-bottom: 24px; padding: 24px; background: rgba(255,255,255,.03); border-radius: calc(var(--radius) / 2); }
-    .mcq h3 { margin-top: 0; font-size: 1.1rem; }
+    .benefit-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      display: block;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .benefit-card:nth-child(1) .benefit-icon { color: var(--success); }
+    .benefit-card:nth-child(2) .benefit-icon { color: var(--brand); }
+    .benefit-card:nth-child(3) .benefit-icon { color: var(--brand-2); }
+    .benefit-card:nth-child(4) .benefit-icon { color: var(--accent); }
+    .benefit-card:nth-child(5) .benefit-icon { color: var(--warning); }
+    .benefit-card:nth-child(6) .benefit-icon { color: var(--error); }
+
+    /* Process Flow */
+    .process-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 30px 0;
+      padding: 30px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 15px;
+    }
+
+    .process-step {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+      animation: slideIn 0.8s ease backwards;
+    }
+
+    .process-step:nth-child(1) { animation-delay: 0.2s; }
+    .process-step:nth-child(2) { animation-delay: 0.4s; }
+    .process-step:nth-child(3) { animation-delay: 0.6s; }
+    .process-step:nth-child(4) { animation-delay: 0.8s; }
+
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.3rem;
+      margin: 0 auto 15px;
+      animation: pulse 2s infinite;
+    }
+
+    .step-title {
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .step-desc {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .process-arrow {
+      color: var(--brand-2);
+      font-size: 2rem;
+      animation: moveArrow 1.5s infinite;
+    }
+
+    @keyframes moveArrow {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(10px); }
+    }
+
+    /* MCQ Styles */
+    .mcq-container {
+      margin-top: 30px;
+    }
+
+    .mcq {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--brand-2);
+      transition: all 0.3s ease;
+    }
+
+    .mcq:hover {
+      background: rgba(255,255,255,0.05);
+      transform: translateX(5px);
+    }
+
+    .mcq h3 {
+      color: var(--text);
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
     .mcq label {
-      display: block; margin: 12px 0; padding: 12px 20px; background: rgba(255,255,255,.05);
-      border-radius: 8px; cursor: pointer; transition: all var(--speed);
-    }
-    .mcq label:hover { background: rgba(255,255,255,.08); }
-    .mcq input[type="radio"] { display: none; }
-    .mcq input[type="radio"]:checked + label { background: var(--brand); color: #fff; }
-    .mcq label[data-correct="true"] {
-      background: linear-gradient(90deg, rgba(0,255,200,0.06), rgba(124,77,255,0.03));
-      border: 1px solid rgba(0,255,200,0.12); color: #eafbe8;
-    }
-    .mcq label[data-wrong="true"] {
-      background: rgba(255,0,0,0.06); border: 1px solid rgba(255,0,0,0.10); color: #ffecec;
-    }
-    .mcq label[data-correct="true"]::after {
-      content: " ✓ Correct"; font-size: .85rem; display: block;
-      margin-top: 8px; color: #bfffcf;
-    }
-    .mcq label[data-wrong="true"]::after {
-      content: " ✕ Correct: " attr(data-correct-text); font-size: .85rem;
-      display: block; margin-top: 8px; color: #ffd6d6; white-space: normal;
+      display: block;
+      padding: 12px 20px;
+      margin: 10px 0;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--muted);
+      border: 2px solid transparent;
     }
 
-    .submit-button {
-      display: block; width: 200px; margin: 24px auto; padding: 12px 24px;
-      background: var(--brand); color: white; border: none; border-radius: 8px;
-      font-size: 1rem; cursor: pointer; transition: all var(--speed);
+    .mcq label:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--brand-2);
+      color: var(--text);
     }
-    .submit-button:hover { background: var(--brand-2); transform: translateY(-2px); }
+
+    .mcq input[type="radio"] {
+      display: none;
+    }
+
+    .mcq input[type="radio"]:checked + label {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.2));
+      border-color: var(--brand-2);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Submit Button */
+    .submit-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(99,102,241,0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Score Display */
     .score-display {
-      text-align: center; margin-top: 20px; padding: 16px;
-      border-radius: 8px; display: none;
-    }
-    .score-display.show { display: block; }
-    .score-display.success { background: rgba(0,255,0,.1); color: #00ff00; }
-    .score-display.partial { background: rgba(255,165,0,.1); color: #ffa500; }
-
-    #retry-btn {
-      display: none; width: 180px; margin: 16px auto; padding: 12px 22px;
-      font-size: 1rem; border-radius: 50px; border: 2px solid var(--accent);
-      background: transparent; color: var(--accent); cursor: pointer;
-      transition: all 0.3s ease; box-shadow: 0 0 8px rgba(255, 122, 198, 0.4);
-    }
-    #retry-btn:hover {
-      background: var(--accent); color: #fff;
-      box-shadow: 0 0 20px rgba(255, 122, 198, 0.8); transform: scale(1.05);
+      display: none;
+      background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1));
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      text-align: center;
+      animation: slideUp 0.5s ease;
     }
 
+    /* Link Button */
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--brand));
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(236,72,153,0.3);
+      animation: pulse 2s infinite;
+    }
+
+    .link-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(236,72,153,0.4);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
+      .main-title { font-size: 2rem; }
       .books-grid { grid-template-columns: 1fr; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .process-flow { flex-direction: column; }
+      .process-arrow { transform: rotate(90deg); }
+      section { padding: 20px; }
+      .format-table { font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
+  <!-- Navigation -->
   <div class="nav-header">
-    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
-    <a href="lesson-12-examples.html" style="background: rgba(124,77,255,0.2); color: var(--accent);"><i class="fa-solid fa-lightbulb"></i><span>View Examples</span></a>
+    <a href="../index.html">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="lesson-12-examples.html">
+      <i class="fas fa-calculator"></i>
+      <span>Numerical Examples →</span>
+    </a>
   </div>
 
+  <!-- Header -->
   <header>
-    <h1 class="lesson-title">Books of Original Entry</h1>
-    <div class="breadcrumb">
-      <a href="../index.html">Home</a> / 
-      <a href="../lessons.html">Lessons</a> / 
-      Books of Original Entry
-    </div>
+    <h1 class="main-title">Books of Original Entry</h1>
+    <p class="subtitle">Special Purpose Subsidiary Books - Theory & Concepts</p>
   </header>
 
-  <main>
-    <section>
-      <h2>Introduction to Books of Original Entry</h2>
-      <p style="font-size:1.2rem; font-weight:500; line-height:1.8;">
-        Books of Original Entry are the first books where transactions are recorded chronologically before being posted to the ledger. These are also called <strong>Prime Entry Books</strong> or <strong>Subsidiary Books</strong>. They help organize transactions by type, making the accounting process more efficient and reducing the ledger's size.
+  <!-- Introduction Section -->
+  <section>
+    <h2><i class="fas fa-book-open"></i> Introduction to Subsidiary Books</h2>
+    
+    <div class="definition-box">
+      <h3>What are Books of Original Entry?</h3>
+      <p style="line-height: 1.8; color: var(--text);">
+        <strong>Books of Original Entry</strong>, also known as <strong>Subsidiary Books</strong> or <strong>Books of Prime Entry</strong>, 
+        are specialized journals where business transactions are first recorded chronologically before being posted to the ledger. 
+        These books are designed to record specific types of transactions, making the accounting process more efficient and organized.
       </p>
-      <div class="info-box">
-        <strong>Key Point:</strong> Subsidiary books record only CREDIT transactions (except Cash Book and Journal Proper). Cash transactions are recorded in the Cash Book.
+      <br>
+      <p style="line-height: 1.8; color: var(--text);">
+        The concept of subsidiary books arose from the need to divide the accounting work when businesses grew larger. 
+        Instead of recording all transactions in one journal, specific books are maintained for similar types of transactions. 
+        This system facilitates division of labor, reduces errors, and provides better internal control.
+      </p>
+    </div>
+
+    <div class="process-flow">
+      <div class="process-step">
+        <div class="step-number">1</div>
+        <div class="step-title">Transaction Occurs</div>
+        <div class="step-desc">Business event happens</div>
       </div>
-    </section>
-
-    <section>
-      <h2>Types of Subsidiary Books</h2>
-      <div class="accordion">
-
-        <!-- Purchase Book -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-shopping-cart"></i> Purchase Book (Purchase Journal)
-          </button>
-          <div class="accordion-body">
-            <p><strong>Definition:</strong> A book used to record all <strong>credit purchases of goods</strong> intended for resale.</p>
-            
-            <p><strong>What is recorded:</strong></p>
-            <ul>
-              <li>Only credit purchases of trading goods</li>
-              <li>NOT recorded: Cash purchases, purchase of assets (furniture, machinery), purchase returns</li>
-            </ul>
-
-            <p><strong>Format:</strong></p>
-            <table class="format-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Particulars (Supplier Name)</th>
-                  <th>Invoice No.</th>
-                  <th>L.F.</th>
-                  <th>Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>01/01/25</td>
-                  <td>ABC Traders</td>
-                  <td>INV-001</td>
-                  <td>15</td>
-                  <td>25,000</td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-                  <td><strong>25,000</strong></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p><strong>Accounting Entry:</strong> Purchases A/c Dr. / To Sundry Creditors A/c</p>
-          </div>
-        </div>
-
-        <!-- Sales Book -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-cash-register"></i> Sales Book (Sales Journal)
-          </button>
-          <div class="accordion-body">
-            <p><strong>Definition:</strong> A book used to record all <strong>credit sales of goods</strong>.</p>
-            
-            <p><strong>What is recorded:</strong></p>
-            <ul>
-              <li>Only credit sales of trading goods</li>
-              <li>NOT recorded: Cash sales, sale of assets, sales returns</li>
-            </ul>
-
-            <p><strong>Format:</strong></p>
-            <table class="format-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Particulars (Customer Name)</th>
-                  <th>Invoice No.</th>
-                  <th>L.F.</th>
-                  <th>Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>05/01/25</td>
-                  <td>XYZ Enterprises</td>
-                  <td>SALE-101</td>
-                  <td>22</td>
-                  <td>30,000</td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-                  <td><strong>30,000</strong></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p><strong>Accounting Entry:</strong> Sundry Debtors A/c Dr. / To Sales A/c</p>
-          </div>
-        </div>
-
-        <!-- Purchase Returns Book -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-undo"></i> Purchase Returns Book (Returns Outward Book)
-          </button>
-          <div class="accordion-body">
-            <p><strong>Definition:</strong> A book used to record goods returned to suppliers from whom goods were purchased on credit.</p>
-            
-            <p><strong>What is recorded:</strong></p>
-            <ul>
-              <li>Goods returned to credit suppliers</li>
-              <li>Defective, damaged, or excess goods sent back</li>
-              <li>Debit Note is issued to the supplier</li>
-            </ul>
-
-            <p><strong>Format:</strong></p>
-            <table class="format-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Particulars (Supplier Name)</th>
-                  <th>Debit Note No.</th>
-                  <th>L.F.</th>
-                  <th>Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>10/01/25</td>
-                  <td>ABC Traders</td>
-                  <td>DN-005</td>
-                  <td>15</td>
-                  <td>2,000</td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-                  <td><strong>2,000</strong></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p><strong>Accounting Entry:</strong> Sundry Creditors A/c Dr. / To Purchase Returns A/c</p>
-          </div>
-        </div>
-
-        <!-- Sales Returns Book -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-reply"></i> Sales Returns Book (Returns Inward Book)
-          </button>
-          <div class="accordion-body">
-            <p><strong>Definition:</strong> A book used to record goods returned by customers who bought on credit.</p>
-            
-            <p><strong>What is recorded:</strong></p>
-            <ul>
-              <li>Goods returned by credit customers</li>
-              <li>Damaged, wrong, or defective goods received back</li>
-              <li>Credit Note is issued to the customer</li>
-            </ul>
-
-            <p><strong>Format:</strong></p>
-            <table class="format-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Particulars (Customer Name)</th>
-                  <th>Credit Note No.</th>
-                  <th>L.F.</th>
-                  <th>Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>12/01/25</td>
-                  <td>XYZ Enterprises</td>
-                  <td>CN-008</td>
-                  <td>22</td>
-                  <td>1,500</td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
-                  <td><strong>1,500</strong></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p><strong>Accounting Entry:</strong> Sales Returns A/c Dr. / To Sundry Debtors A/c</p>
-          </div>
-        </div>
-
-        <!-- Journal Proper -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-book"></i> Journal Proper
-          </button>
-          <div class="accordion-body">
-            <p><strong>Definition:</strong> A book used to record transactions that cannot be recorded in any other subsidiary book.</p>
-            
-            <p><strong>What is recorded:</strong></p>
-            <ul>
-              <li>Opening entries</li>
-              <li>Closing entries</li>
-              <li>Adjustment entries</li>
-              <li>Rectification of errors</li>
-              <li>Purchase/Sale of assets on credit</li>
-              <li>Writing off bad debts</li>
-              <li>Depreciation entries</li>
-            </ul>
-
-            <p><strong>Format:</strong></p>
-            <table class="format-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Particulars</th>
-                  <th>L.F.</th>
-                  <th>Debit (₹)</th>
-                  <th>Credit (₹)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>15/01/25</td>
-                  <td>Furniture A/c Dr.<br><span style="margin-left:20px;">To ABC Suppliers</span><br><em>(Being furniture purchased on credit)</em></td>
-                  <td>8<br>18</td>
-                  <td>15,000</td>
-                  <td><br>15,000</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="info-box">
-              <strong>Note:</strong> Journal Proper is the ONLY subsidiary book that records both debit and credit aspects of a transaction.
-            </div>
-          </div>
-        </div>
-
+      <div class="process-arrow">→</div>
+      <div class="process-step">
+        <div class="step-number">2</div>
+        <div class="step-title">Source Document</div>
+        <div class="step-desc">Evidence created</div>
       </div>
-    </section>
+      <div class="process-arrow">→</div>
+      <div class="process-step">
+        <div class="step-number">3</div>
+        <div class="step-title">Subsidiary Book</div>
+        <div class="step-desc">First recording</div>
+      </div>
+      <div class="process-arrow">→</div>
+      <div class="process-step">
+        <div class="step-number">4</div>
+        <div class="step-title">Ledger</div>
+        <div class="step-desc">Final posting</div>
+      </div>
+    </div>
 
-    <!-- Visual Learning -->
-    <section>
-      <h2>Visual Learning: Complete Books of Original Entry</h2>
-      <div class="hierarchy-container">
-        <div class="books-grid">
-          
-          <div class="book-card">
-            <i class="fas fa-book-open"></i>
-            <h4>CASH BOOK</h4>
-            <p>Records all cash and bank transactions</p>
-            <div class="book-badge">Cash</div>
-          </div>
+    <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+      <h4 style="color: var(--brand-2); margin-bottom: 15px;">Historical Background</h4>
+      <p style="color: var(--muted); line-height: 1.8;">
+        The subdivision of journal into various subsidiary books became necessary with the growth of business enterprises. 
+        In the 19th century, as businesses expanded, the volume of transactions increased dramatically. 
+        Recording all transactions in a single journal became impractical and time-consuming. 
+        This led to the development of specialized books for different types of routine transactions, 
+        allowing multiple clerks to work simultaneously on different books.
+      </p>
+    </div>
+  </section>
 
-          <div class="book-card">
-            <i class="fas fa-shopping-cart"></i>
-            <h4>PURCHASE BOOK</h4>
-            <p>Credit purchases of goods only</p>
-            <div class="book-badge">Credit</div>
-          </div>
+  <!-- Classification of Books -->
+  <section>
+    <h2><i class="fas fa-sitemap"></i> Classification of Books of Account</h2>
+    
+    <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px; margin-bottom: 20px;">
+      <h4 style="color: var(--brand-2); margin-bottom: 15px;">Books of Account are classified into:</h4>
+      
+      <div style="margin-left: 20px;">
+        <h5 style="color: var(--text); margin: 15px 0;">1. Books of Original Entry (Subsidiary Books)</h5>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>Purchase Book</strong> - For credit purchases of goods</li>
+          <li><strong>Sales Book</strong> - For credit sales of goods</li>
+          <li><strong>Purchase Return Book</strong> - For returns to suppliers</li>
+          <li><strong>Sales Return Book</strong> - For returns from customers</li>
+          <li><strong>Bills Receivable Book</strong> - For bills received</li>
+          <li><strong>Bills Payable Book</strong> - For bills accepted</li>
+          <li><strong>Cash Book</strong> - For cash and bank transactions</li>
+          <li><strong>Journal Proper</strong> - For other transactions</li>
+        </ul>
+        
+        <h5 style="color: var(--text); margin: 15px 0;">2. Books of Final Entry (Ledgers)</h5>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>General Ledger</strong> - Contains all impersonal accounts</li>
+          <li><strong>Debtors Ledger</strong> - Contains individual customer accounts</li>
+          <li><strong>Creditors Ledger</strong> - Contains individual supplier accounts</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-          <div class="book-card">
-            <i class="fas fa-cash-register"></i>
-            <h4>SALES BOOK</h4>
-            <p>Credit sales of goods only</p>
-            <div class="book-badge">Credit</div>
-          </div>
-
-          <div class="book-card">
-            <i class="fas fa-undo"></i>
-            <h4>PURCHASE RETURNS</h4>
-            <p>Goods returned to suppliers (credit)</p>
-            <div class="book-badge">Returns Out</div>
-          </div>
-
-          <div class="book-card">
-            <i class="fas fa-reply"></i>
-            <h4>SALES RETURNS</h4>
-            <p>Goods returned by customers (credit)</p>
-            <div class="book-badge">Returns In</div>
-          </div>
-
-          <div class="book-card">
-            <i class="fas fa-book"></i>
-            <h4>JOURNAL PROPER</h4>
-            <p>All other transactions not in above books</p>
-            <div class="book-badge">Special</div>
-          </div>
-
+  <!-- Detailed Purchase Book Section -->
+  <section>
+    <h2><i class="fas fa-shopping-cart"></i> Purchase Book - Detailed Study</h2>
+    
+    <div class="book-card purchase-book" style="margin-bottom: 25px;">
+      <div class="book-header">
+        <div class="book-icon">
+          <i class="fas fa-shopping-cart"></i>
         </div>
-
-        <div class="info-box" style="margin-top:30px;">
-          <strong>Remember:</strong> All subsidiary books (except Cash Book and Journal Proper) record ONLY credit transactions. Cash Book records cash/bank transactions, and Journal Proper records miscellaneous entries.
+        <div>
+          <h3 class="book-title">Purchase Book</h3>
+          <p class="book-subtitle">Purchase Day Book / Purchase Journal / Bought Day Book</p>
         </div>
       </div>
-    </section>
-
-    <!-- MCQs -->
-    <section>
-      <h2>Multiple Choice Questions</h2>
-      <div id="mcq-container">
-
-        <div class="mcq" data-answer="b">
-          <h3>1. Books of Original Entry are also known as:</h3>
-          <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Ledger Books</label>
-          <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Subsidiary Books</label>
-          <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Trial Balance</label>
-          <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Final Accounts</label>
-        </div>
-
-        <div class="mcq" data-answer="c">
-          <h3>2. Purchase Book records:</h3>
-          <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">All purchases</label>
-          <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Cash purchases only</label>
-          <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Credit purchases of goods only</label>
-          <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Purchase of assets</label>
-        </div>
-
-        <div class="mcq" data-answer="a">
-          <h3>3. Sales Book is used for recording:</h3>
-          <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Credit sales of goods</label>
-          <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Cash sales</label>
-          <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Sale of fixed assets</label>
-          <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">All sales</label>
-        </div>
-
-        <div class="mcq" data-answer="d">
-          <h3>4. Purchase Returns Book is also called:</h3>
-          <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Returns Inward Book</label>
-          <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Sales Returns Book</label>
-          <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Credit Note Book</label>
-          <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Returns Outward Book</label>
-        </div>
-
-        <div class="mcq" data-answer="b">
-          <h3>5. When goods are returned by customers, we issue a:</h3>
-          <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Debit Note</label>
-          <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Credit Note</label>
-          <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Invoice</label>
-          <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">Receipt</label>
-        </div>
-
-        <div class="mcq" data-answer="a">
-          <h3>6. When we return goods to suppliers, we issue a:</h3>
-          <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Debit Note</label>
-          <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Credit Note</label>
-          <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Invoice</label>
-          <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Voucher</label>
-        </div>
-
-        <div class="mcq" data-answer="c">
-          <h3>7. Journal Proper is used for:</h3>
-          <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">All transactions</label>
-          <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Cash transactions only</label>
-          <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">Transactions not recorded elsewhere</label>
-          <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Credit sales only</label>
-        </div>
-
-        <div class="mcq" data-answer="d">
-          <h3>8. Which is NOT recorded in Purchase Book?</h3>
-          <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">Credit purchase of goods</label>
-          <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">Purchase from supplier on credit</label>
-          <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">Goods bought for resale on credit</label>
-          <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">Purchase of machinery on credit</label>
-        </div>
-
-        <div class="mcq" data-answer="b">
-          <h3>9. Sales Returns Book records:</h3>
-          <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Goods returned to suppliers</label>
-          <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Goods returned by customers</label>
-          <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Purchase of goods</label>
-          <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">Sale of assets</label>
-        </div>
-
-        <div class="mcq" data-answer="c">
-          <h3>10. Credit purchases of furniture should be recorded in:</h3>
-          <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Purchase Book</label>
-          <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">Sales Book</label>
-          <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Journal Proper</label>
-          <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">Cash Book</label>
-        </div>
-
-        <div class="mcq" data-answer="a">
-          <h3>11. Opening entries are recorded in:</h3>
-          <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">Journal Proper</label>
-          <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">Purchase Book</label>
-          <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">Sales Book</label>
-          <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">Cash Book</label>
-        </div>
-
-        <div class="mcq" data-answer="d">
-          <h3>12. Which book records both debit and credit?</h3>
-          <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">Purchase Book</label>
-          <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">Sales Book</label>
-          <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Sales Returns Book</label>
-          <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Journal Proper</label>
-        </div>
-
-        <div class="mcq" data-answer="b">
-          <h3>13. Cash sales are recorded in:</h3>
-          <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Sales Book</label>
-          <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Cash Book</label>
-          <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Journal Proper</label>
-          <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Purchase Book</label>
-        </div>
-
-        <div class="mcq" data-answer="a">
-          <h3>14. The column 'L.F.' stands for:</h3>
-          <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Ledger Folio</label>
-          <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Last Figure</label>
-          <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Long Format</label>
-          <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Legal Form</label>
-        </div>
-
-        <div class="mcq" data-answer="c">
-          <h3>15. Depreciation entry is recorded in:</h3>
-          <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Sales Book</label>
-          <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">Purchase Book</label>
-          <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Journal Proper</label>
-          <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Cash Book</label>
-        </div>
-
-        <div class="mcq" data-answer="b">
-          <h3>16. Returns Inward Book is another name for:</h3>
-          <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">Purchase Returns Book</label>
-          <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Sales Returns Book</label>
-          <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Journal Proper</label>
-          <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Sales Book</label>
-        </div>
-
-        <div class="mcq" data-answer="d">
-          <h3>17. Bad debts written off are recorded in:</h3>
-          <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Sales Book</label>
-          <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Purchase Book</label>
-          <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Cash Book</label>
-          <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Journal Proper</label>
-        </div>
-
-        <div class="mcq" data-answer="a">
-          <h3>18. Subsidiary books help in:</h3>
-          <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">Reducing ledger size</label>
-          <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">Preparing trial balance directly</label>
-          <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">Calculating profit</label>
-          <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">Preparing balance sheet</label>
-        </div>
-
-        <div class="mcq" data-answer="c">
-          <h3>19. Total of Purchase Book is posted to:</h3>
-          <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">Cash A/c</label>
-          <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">Sales A/c</label>
-          <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">Purchases A/c</label>
-          <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">Capital A/c</label>
-        </div>
-
-        <div class="mcq" data-answer="b">
-          <h3>20. Total of Sales Returns Book is posted to:</h3>
-          <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">Sales A/c (Credit)</label>
-          <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">Sales Returns A/c (Debit)</label>
-          <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">Purchases A/c (Debit)</label>
-          <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">Cash A/c (Credit)</label>
-        </div>
-
+      
+      <div style="margin: 20px 0;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Definition & Purpose</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Purchase Book is a subsidiary book that records all credit purchases of goods meant for resale or for use in manufacturing. 
+          It serves as a book of original entry where transactions are first recorded before being posted to respective ledger accounts. 
+          The book helps in maintaining a chronological record of all credit purchases, making it easier to track supplier balances and manage inventory.
+        </p>
       </div>
-      <button id="submit-mcq" class="submit-button">Submit Answers</button>
-      <button id="retry-btn">Retry Quiz</button>
-      <div id="score-display" class="score-display"></div>
-    </section>
-  </main>
+
+      <div class="features-list">
+        <h4><i class="fas fa-check-circle"></i> Transactions Recorded</h4>
+        <ul>
+          <li>Credit purchases of goods for resale</li>
+          <li>Credit purchases of raw materials for manufacturing</li>
+          <li>Credit purchases of goods for business use (trading items)</li>
+          <li>Purchases with trade discount (net amount recorded)</li>
+          <li>Inter-state and intra-state purchases with GST</li>
+        </ul>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-times-circle" style="color: var(--error);"></i> Transactions NOT Recorded</h4>
+        <ul>
+          <li>Cash purchases (recorded in Cash Book)</li>
+          <li>Purchase of fixed assets (recorded in Journal Proper)</li>
+          <li>Purchase of stationery, furniture, machinery</li>
+          <li>Purchase returns (recorded in Purchase Return Book)</li>
+          <li>Personal expenses of proprietor</li>
+        </ul>
+      </div>
+
+      <!-- Standard Format -->
+      <div class="format-display">
+        <div class="format-header">PURCHASE BOOK (Traditional Format)</div>
+        <div style="text-align: right; margin-bottom: 10px;">Page No: ___</div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Invoice No.</th>
+              <th>Name of Supplier</th>
+              <th>L.F.</th>
+              <th>Details</th>
+              <th>Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>Jan 5</td>
+              <td>101</td>
+              <td>ABC Traders</td>
+              <td>25</td>
+              <td>100 units @ ₹50<br>Less: Trade Discount 10%</td>
+              <td>4,500</td>
+            </tr>
+            <tr>
+              <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+              <td><strong>4,500</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- GST Format -->
+      <div class="format-display">
+        <div class="format-header">PURCHASE BOOK (GST Format)</div>
+        <div style="text-align: right; margin-bottom: 10px;">Page No: ___</div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Particulars<br>(Name of Supplier)</th>
+              <th>Invoice No.</th>
+              <th>L.F.</th>
+              <th>Details (₹)</th>
+              <th>Purchases (₹)</th>
+              <th>Input CGST (₹)</th>
+              <th>Input SGST (₹)</th>
+              <th>Input IGST (₹)</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jan 5</td>
+              <td>ABC Traders (Local)</td>
+              <td>101</td>
+              <td></td>
+              <td>5,000<br>- 500 (TD)<br>4,500</td>
+              <td>4,500</td>
+              <td>405</td>
+              <td>405</td>
+              <td>-</td>
+              <td>5,310</td>
+            </tr>
+            <tr>
+              <td>Jan 8</td>
+              <td>XYZ Ltd (Inter-state)</td>
+              <td>102</td>
+              <td></td>
+              <td>10,000</td>
+              <td>10,000</td>
+              <td>-</td>
+              <td>-</td>
+              <td>1,800</td>
+              <td>11,800</td>
+            </tr>
+            <tr>
+              <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+              <td><strong>14,500</strong></td>
+              <td><strong>405</strong></td>
+              <td><strong>405</strong></td>
+              <td><strong>1,800</strong></td>
+              <td><strong>17,110</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Posting from Purchase Book</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          <strong>Individual Posting:</strong> Each supplier's account is credited individually in the Creditors Ledger.<br>
+          <strong>Total Posting:</strong> The monthly total is posted to the debit of Purchase Account in General Ledger.<br>
+          <strong>GST Posting:</strong> Input CGST, SGST, and IGST totals are posted to respective GST accounts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Sales Book Section -->
+  <section>
+    <h2><i class="fas fa-cash-register"></i> Sales Book - Detailed Study</h2>
+    
+    <div class="book-card sales-book" style="margin-bottom: 25px;">
+      <div class="book-header">
+        <div class="book-icon">
+          <i class="fas fa-cash-register"></i>
+        </div>
+        <div>
+          <h3 class="book-title">Sales Book</h3>
+          <p class="book-subtitle">Sales Day Book / Sales Journal / Sold Day Book</p>
+        </div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Definition & Purpose</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Sales Book is a subsidiary book used to record all credit sales of goods dealt in by the business. 
+          It provides a systematic record of all goods sold on credit, helping businesses track customer balances, 
+          manage receivables, and analyze sales patterns. The book excludes cash sales and sales of fixed assets.
+        </p>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-check-circle"></i> Transactions Recorded</h4>
+        <ul>
+          <li>Credit sales of merchandise/goods</li>
+          <li>Credit sales of manufactured products</li>
+          <li>Sales with trade discount (net amount)</li>
+          <li>Local and inter-state sales with GST</li>
+          <li>Export sales (if applicable)</li>
+        </ul>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-times-circle" style="color: var(--error);"></i> Transactions NOT Recorded</h4>
+        <ul>
+          <li>Cash sales (recorded in Cash Book)</li>
+          <li>Sale of fixed assets (recorded in Journal Proper)</li>
+          <li>Sale of investments or securities</li>
+          <li>Sales returns (recorded in Sales Return Book)</li>
+          <li>Sale of scrap or waste materials for cash</li>
+        </ul>
+      </div>
+
+      <!-- GST Format for Sales Book -->
+      <div class="format-display">
+        <div class="format-header">SALES BOOK (GST Format)</div>
+        <div style="text-align: right; margin-bottom: 10px;">Page No: ___</div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Particulars<br>(Name of Customer)</th>
+              <th>Invoice No.</th>
+              <th>L.F.</th>
+              <th>Details (₹)</th>
+              <th>Sales (₹)</th>
+              <th>Output CGST (₹)</th>
+              <th>Output SGST (₹)</th>
+              <th>Output IGST (₹)</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Feb 1</td>
+              <td>Ram & Co. (Local)</td>
+              <td>501</td>
+              <td></td>
+              <td>20,000<br>- 2,000 (TD)<br>18,000</td>
+              <td>18,000</td>
+              <td>1,620</td>
+              <td>1,620</td>
+              <td>-</td>
+              <td>21,240</td>
+            </tr>
+            <tr>
+              <td colspan="5" style="text-align: right;"><strong>Total</strong></td>
+              <td><strong>18,000</strong></td>
+              <td><strong>1,620</strong></td>
+              <td><strong>1,620</strong></td>
+              <td><strong>-</strong></td>
+              <td><strong>21,240</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Posting from Sales Book</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          <strong>Individual Posting:</strong> Each customer's account is debited individually in the Debtors Ledger.<br>
+          <strong>Total Posting:</strong> The monthly total is posted to the credit of Sales Account in General Ledger.<br>
+          <strong>GST Posting:</strong> Output CGST, SGST, and IGST totals are posted to respective GST accounts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Purchase Return Book Section -->
+  <section>
+    <h2><i class="fas fa-undo"></i> Purchase Return Book - Detailed Study</h2>
+    
+    <div class="book-card purchase-return" style="margin-bottom: 25px;">
+      <div class="book-header">
+        <div class="book-icon">
+          <i class="fas fa-undo"></i>
+        </div>
+        <div>
+          <h3 class="book-title">Purchase Return Book</h3>
+          <p class="book-subtitle">Return Outward Book / Purchase Return Journal</p>
+        </div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Definition & Purpose</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Purchase Return Book records all returns of goods to suppliers that were originally purchased on credit. 
+          When goods are found defective, damaged, or not as per specifications, they are returned to the supplier. 
+          A debit note is issued to the supplier indicating the amount for which their account is debited.
+        </p>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-file-alt"></i> Source Documents</h4>
+        <ul>
+          <li><strong>Debit Note:</strong> Prepared by the purchaser and sent to supplier</li>
+          <li>Contains details of goods returned and reasons</li>
+          <li>Shows the amount to be deducted from supplier's account</li>
+          <li>Reference to original purchase invoice</li>
+        </ul>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-exclamation-circle"></i> Common Reasons for Returns</h4>
+        <ul>
+          <li>Defective or damaged goods</li>
+          <li>Wrong specifications or quality</li>
+          <li>Excess quantity delivered</li>
+          <li>Goods not as per sample</li>
+          <li>Expired or outdated products</li>
+        </ul>
+      </div>
+
+      <!-- GST Format -->
+      <div class="format-display">
+        <div class="format-header">PURCHASE RETURN BOOK (GST Format)</div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Particulars<br>(Name of Supplier)</th>
+              <th>Debit Note No.</th>
+              <th>L.F.</th>
+              <th>Details (₹)</th>
+              <th>Purchase Return (₹)</th>
+              <th>Input CGST (₹)</th>
+              <th>Input SGST (₹)</th>
+              <th>Input IGST (₹)</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mar 5</td>
+              <td>ABC Traders</td>
+              <td>DN-001</td>
+              <td></td>
+              <td>Defective goods</td>
+              <td>2,000</td>
+              <td>180</td>
+              <td>180</td>
+              <td>-</td>
+              <td>2,360</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sales Return Book Section -->
+  <section>
+    <h2><i class="fas fa-exchange-alt"></i> Sales Return Book - Detailed Study</h2>
+    
+    <div class="book-card sales-return" style="margin-bottom: 25px;">
+      <div class="book-header">
+        <div class="book-icon">
+          <i class="fas fa-exchange-alt"></i>
+        </div>
+        <div>
+          <h3 class="book-title">Sales Return Book</h3>
+          <p class="book-subtitle">Return Inward Book / Sales Return Journal</p>
+        </div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Definition & Purpose</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Sales Return Book records all returns of goods from customers that were originally sold on credit. 
+          When customers return goods due to various reasons, a credit note is issued to them, 
+          indicating the amount for which their account is credited. This book helps track product quality issues and customer satisfaction.
+        </p>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-file-alt"></i> Source Documents</h4>
+        <ul>
+          <li><strong>Credit Note:</strong> Prepared by the seller and sent to customer</li>
+          <li>Contains details of goods accepted back</li>
+          <li>Shows the amount to be credited to customer's account</li>
+          <li>Reference to original sales invoice</li>
+        </ul>
+      </div>
+
+      <!-- GST Format -->
+      <div class="format-display">
+        <div class="format-header">SALES RETURN BOOK (GST Format)</div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Particulars<br>(Name of Customer)</th>
+              <th>Credit Note No.</th>
+              <th>L.F.</th>
+              <th>Details (₹)</th>
+              <th>Sales Return (₹)</th>
+              <th>Output CGST (₹)</th>
+              <th>Output SGST (₹)</th>
+              <th>Output IGST (₹)</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apr 2</td>
+              <td>XYZ Ltd.</td>
+              <td>CN-001</td>
+              <td></td>
+              <td>Damaged items</td>
+              <td>3,000</td>
+              <td>270</td>
+              <td>270</td>
+              <td>-</td>
+              <td>3,540</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journal Proper Section -->
+  <section>
+    <h2><i class="fas fa-book"></i> Journal Proper - Detailed Study</h2>
+    
+    <div class="book-card journal-proper" style="margin-bottom: 25px;">
+      <div class="book-header">
+        <div class="book-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <div>
+          <h3 class="book-title">Journal Proper</h3>
+          <p class="book-subtitle">General Journal / Journal</p>
+        </div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <h4 style="color: var(--brand-2); margin-bottom: 10px;">Definition & Purpose</h4>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Journal Proper is used to record all transactions that cannot be recorded in any other subsidiary book. 
+          It acts as a residual book where non-routine, special, and adjustment entries are recorded. 
+          All transactions are recorded following the double-entry system with proper narration explaining the transaction.
+        </p>
+      </div>
+
+      <div class="features-list">
+        <h4><i class="fas fa-check-circle"></i> Transactions Recorded in Journal Proper</h4>
+        <ul>
+          <li><strong>Opening Entries:</strong> Recording opening balances at the start of accounting period</li>
+          <li><strong>Closing Entries:</strong> Transfer of nominal accounts to Trading/P&L Account</li>
+          <li><strong>Adjustment Entries:</strong> Outstanding expenses, prepaid expenses, accrued income, etc.</li>
+          <li><strong>Rectification Entries:</strong> Correction of errors in books of accounts</li>
+          <li><strong>Transfer Entries:</strong> Transfer between accounts</li>
+          <li><strong>Credit Transactions of Assets:</strong> Purchase/sale of fixed assets on credit</li>
+          <li><strong>Bad Debts:</strong> Writing off irrecoverable debts</li>
+          <li><strong>Depreciation:</strong> Providing for depreciation on fixed assets</li>
+          <li><strong>Drawings:</strong> Goods or cash withdrawn by proprietor</li>
+          <li><strong>Rare Transactions:</strong> Any unusual transaction not covered elsewhere</li>
+        </ul>
+      </div>
+
+      <div class="format-display">
+        <div class="format-header">JOURNAL PROPER</div>
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Particulars</th>
+              <th>L.F.</th>
+              <th>Debit (₹)</th>
+              <th>Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3">Jan 1</td>
+              <td>Cash A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+              <td></td>
+              <td>50,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Bank A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+              <td></td>
+              <td>1,00,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c<br>
+                  <em>(Being business started with cash and bank balance)</em></td>
+              <td></td>
+              <td></td>
+              <td>1,50,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- GST Treatment Section -->
+  <section>
+    <h2><i class="fas fa-percent"></i> GST Treatment in Subsidiary Books</h2>
+    
+    <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+      <h4 style="color: var(--brand-2); margin-bottom: 15px;">Understanding GST in Books of Entry</h4>
+      
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">Types of GST:</h5>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>CGST (Central GST):</strong> Collected by Central Government on intra-state transactions</li>
+          <li><strong>SGST (State GST):</strong> Collected by State Government on intra-state transactions</li>
+          <li><strong>IGST (Integrated GST):</strong> Collected on inter-state transactions</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">GST Rates Application:</h5>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>Intra-state (Local):</strong> CGST @ 9% + SGST @ 9% = Total 18%</li>
+          <li><strong>Inter-state:</strong> IGST @ 18%</li>
+          <li>GST is calculated on the net amount (after deducting trade discount)</li>
+          <li>Input GST (on purchases) can be claimed as input tax credit</li>
+          <li>Output GST (on sales) is payable to the government</li>
+        </ul>
+      </div>
+
+      <div style="padding: 15px; background: rgba(16,185,129,0.1); border-radius: 8px; margin-top: 15px;">
+        <h5 style="color: var(--success); margin-bottom: 10px;">GST Calculation Example:</h5>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Goods worth ₹10,000 with 10% trade discount:<br>
+          Net Amount = ₹10,000 - ₹1,000 = ₹9,000<br>
+          CGST @ 9% = ₹810<br>
+          SGST @ 9% = ₹810<br>
+          Total Invoice = ₹9,000 + ₹810 + ₹810 = ₹10,620
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trade Discount vs Cash Discount -->
+  <section>
+    <h2><i class="fas fa-tags"></i> Trade Discount vs Cash Discount</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div style="padding: 20px; background: rgba(99,102,241,0.1); border-radius: 10px;">
+        <h4 style="color: var(--brand); margin-bottom: 15px;">Trade Discount</h4>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li>Deduction from list price</li>
+          <li>Given at the time of purchase/sale</li>
+          <li>NOT recorded in books</li>
+          <li>Shown as deduction in invoice</li>
+          <li>Based on quantity or customer type</li>
+          <li>No separate accounting entry</li>
+          <li>Net amount after TD is recorded</li>
+        </ul>
+      </div>
+
+      <div style="padding: 20px; background: rgba(6,182,212,0.1); border-radius: 10px;">
+        <h4 style="color: var(--brand-2); margin-bottom: 15px;">Cash Discount</h4>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li>Deduction for prompt payment</li>
+          <li>Given at the time of payment</li>
+          <li>RECORDED in books</li>
+          <li>Shown in cash book</li>
+          <li>Based on payment terms</li>
+          <li>Separate account maintained</li>
+          <li>Discount Allowed/Received A/c</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advantages and Disadvantages -->
+  <section>
+    <h2><i class="fas fa-balance-scale"></i> Advantages & Disadvantages of Subsidiary Books</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div style="padding: 20px; background: rgba(16,185,129,0.05); border-radius: 10px;">
+        <h4 style="color: var(--success); margin-bottom: 15px;">
+          <i class="fas fa-thumbs-up"></i> Advantages
+        </h4>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>Division of Work:</strong> Multiple clerks can work simultaneously</li>
+          <li><strong>Specialization:</strong> Each clerk becomes expert in specific book</li>
+          <li><strong>Time Saving:</strong> Faster recording of similar transactions</li>
+          <li><strong>Reduced Errors:</strong> Systematic recording reduces mistakes</li>
+          <li><strong>Internal Check:</strong> Work of one clerk checked by another</li>
+          <li><strong>Easy Reference:</strong> Quick location of specific transactions</li>
+          <li><strong>Statistical Information:</strong> Easy to gather business statistics</li>
+          <li><strong>Reduced Fraud:</strong> Division of work reduces fraud possibilities</li>
+          <li><strong>Efficient Posting:</strong> Periodic posting saves time</li>
+          <li><strong>Better Control:</strong> Management has better control over transactions</li>
+        </ul>
+      </div>
+
+      <div style="padding: 20px; background: rgba(239,68,68,0.05); border-radius: 10px;">
+        <h4 style="color: var(--error); margin-bottom: 15px;">
+          <i class="fas fa-thumbs-down"></i> Disadvantages
+        </h4>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>Suitable for Large Firms:</strong> Not economical for small businesses</li>
+          <li><strong>More Books:</strong> Requires maintenance of multiple books</li>
+          <li><strong>Trained Staff:</strong> Requires trained accounting personnel</li>
+          <li><strong>Increased Cost:</strong> More staff means higher salary costs</li>
+          <li><strong>Complex System:</strong> More complicated than single journal</li>
+          <li><strong>Coordination Required:</strong> Needs proper coordination between clerks</li>
+          <li><strong>Space Requirements:</strong> Needs more storage space</li>
+          <li><strong>Not for All Transactions:</strong> Some transactions still need Journal Proper</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Posting Rules Section -->
+  <section>
+    <h2><i class="fas fa-exchange-alt"></i> Rules for Posting from Subsidiary Books</h2>
+    
+    <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+      <h4 style="color: var(--brand-2); margin-bottom: 20px;">General Posting Rules</h4>
+      
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">1. From Purchase Book:</h5>
+        <ul style="color: var(--muted); line-height: 1.8; margin-left: 20px;">
+          <li>Individual amounts → Credit respective Supplier's A/c (in Creditors Ledger)</li>
+          <li>Monthly total → Debit Purchase A/c (in General Ledger)</li>
+          <li>Input GST totals → Debit respective GST accounts</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">2. From Sales Book:</h5>
+        <ul style="color: var(--muted); line-height: 1.8; margin-left: 20px;">
+          <li>Individual amounts → Debit respective Customer's A/c (in Debtors Ledger)</li>
+          <li>Monthly total → Credit Sales A/c (in General Ledger)</li>
+          <li>Output GST totals → Credit respective GST accounts</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">3. From Purchase Return Book:</h5>
+        <ul style="color: var(--muted); line-height: 1.8; margin-left: 20px;">
+          <li>Individual amounts → Debit respective Supplier's A/c</li>
+          <li>Monthly total → Credit Purchase Return A/c</li>
+          <li>GST amounts → Reverse the input GST entries</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">4. From Sales Return Book:</h5>
+        <ul style="color: var(--muted); line-height: 1.8; margin-left: 20px;">
+          <li>Individual amounts → Credit respective Customer's A/c</li>
+          <li>Monthly total → Debit Sales Return A/c</li>
+          <li>GST amounts → Reverse the output GST entries</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--text); margin-bottom: 10px;">5. From Journal Proper:</h5>
+        <ul style="color: var(--muted); line-height: 1.8; margin-left: 20px;">
+          <li>Each entry posted individually to respective accounts</li>
+          <li>Both debit and credit aspects posted separately</li>
+          <li>No total posting as transactions are diverse</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Common Errors Section -->
+  <section>
+    <h2><i class="fas fa-exclamation-triangle"></i> Common Errors to Avoid</h2>
+    
+    <div style="display: grid; gap: 15px;">
+      <div style="padding: 15px; background: rgba(239,68,68,0.1); border-left: 4px solid var(--error); border-radius: 8px;">
+        <h5 style="color: var(--error); margin-bottom: 8px;">❌ Recording Cash Transactions</h5>
+        <p style="color: var(--muted); margin: 0;">
+          Never record cash purchases in Purchase Book or cash sales in Sales Book. These belong to Cash Book.
+        </p>
+      </div>
+
+      <div style="padding: 15px; background: rgba(239,68,68,0.1); border-left: 4px solid var(--error); border-radius: 8px;">
+        <h5 style="color: var(--error); margin-bottom: 8px;">❌ Including Fixed Assets</h5>
+        <p style="color: var(--muted); margin: 0;">
+          Purchase/sale of fixed assets should not be recorded in Purchase/Sales Books. Use Journal Proper.
+        </p>
+      </div>
+
+      <div style="padding: 15px; background: rgba(239,68,68,0.1); border-left: 4px solid var(--error); border-radius: 8px;">
+        <h5 style="color: var(--error); margin-bottom: 8px;">❌ Recording Trade Discount</h5>
+        <p style="color: var(--muted); margin: 0;">
+          Trade discount should not be recorded separately. Only net amount after discount is recorded.
+        </p>
+      </div>
+
+      <div style="padding: 15px; background: rgba(239,68,68,0.1); border-left: 4px solid var(--error); border-radius: 8px;">
+        <h5 style="color: var(--error); margin-bottom: 8px;">❌ Wrong GST Application</h5>
+        <p style="color: var(--muted); margin: 0;">
+          Don't apply both CGST/SGST and IGST. Use CGST+SGST for local, IGST for inter-state.
+        </p>
+      </div>
+
+      <div style="padding: 15px; background: rgba(239,68,68,0.1); border-left: 4px solid var(--error); border-radius: 8px;">
+        <h5 style="color: var(--error); margin-bottom: 8px;">❌ Mixing Personal Transactions</h5>
+        <p style="color: var(--muted); margin: 0;">
+          Personal expenses of proprietor should not be recorded in Purchase Book, even if on credit.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Important Formulas Section -->
+  <section>
+    <h2><i class="fas fa-calculator"></i> Important Formulas & Calculations</h2>
+    
+    <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">1. Net Purchase Calculation:</h5>
+        <p style="color: var(--muted); font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;">
+          Net Purchases = Total Purchases - Purchase Returns
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">2. Net Sales Calculation:</h5>
+        <p style="color: var(--muted); font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;">
+          Net Sales = Total Sales - Sales Returns
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">3. Trade Discount Calculation:</h5>
+        <p style="color: var(--muted); font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;">
+          Net Amount = List Price - (List Price × Trade Discount %)<br>
+          Example: ₹10,000 - (₹10,000 × 10%) = ₹9,000
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">4. GST Calculation (Intra-state):</h5>
+        <p style="color: var(--muted); font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;">
+          CGST = Net Amount × 9%<br>
+          SGST = Net Amount × 9%<br>
+          Total = Net Amount + CGST + SGST
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">5. GST Calculation (Inter-state):</h5>
+        <p style="color: var(--muted); font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;">
+          IGST = Net Amount × 18%<br>
+          Total = Net Amount + IGST
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Summary Section -->
+  <section>
+    <h2><i class="fas fa-bookmark"></i> Chapter Summary</h2>
+    
+    <div style="padding: 20px; background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1)); border-radius: 10px;">
+      <h4 style="color: var(--brand-2); margin-bottom: 15px;">Key Takeaways</h4>
+      <ul style="color: var(--muted); line-height: 2;">
+        <li>✅ Subsidiary books are books of original entry for specific types of transactions</li>
+        <li>✅ Purchase Book records only credit purchases of goods for resale</li>
+        <li>✅ Sales Book records only credit sales of goods</li>
+        <li>✅ Return books record goods returned (Purchase Return and Sales Return)</li>
+        <li>✅ Journal Proper records all transactions not covered in other books</li>
+        <li>✅ Cash transactions are never recorded in subsidiary books (except Cash Book)</li>
+        <li>✅ Trade discount is not recorded; only net amount is entered</li>
+        <li>✅ GST is recorded separately in respective columns</li>
+        <li>✅ Individual posting to personal accounts, total posting to impersonal accounts</li>
+        <li>✅ Subsidiary books facilitate division of work and internal check</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MCQ Section -->
+  <section>
+    <h2><i class="fas fa-question-circle"></i> Test Your Knowledge</h2>
+    
+    <div class="mcq-container">
+      <!-- Question 1 -->
+      <div class="mcq">
+        <h3>1. Which transactions are recorded in Purchase Book?</h3>
+        <input type="radio" name="q1" id="q1a" value="a">
+        <label for="q1a">All purchases of the business</label>
+        <input type="radio" name="q1" id="q1b" value="b">
+        <label for="q1b">Only credit purchases of goods for resale</label>
+        <input type="radio" name="q1" id="q1c" value="c">
+        <label for="q1c">Cash purchases of goods</label>
+        <input type="radio" name="q1" id="q1d" value="d">
+        <label for="q1d">Purchase of fixed assets</label>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="mcq">
+        <h3>2. Sales Return Book is also known as:</h3>
+        <input type="radio" name="q2" id="q2a" value="a">
+        <label for="q2a">Return Outward Book</label>
+        <input type="radio" name="q2" id="q2b" value="b">
+        <label for="q2b">Return Inward Book</label>
+        <input type="radio" name="q2" id="q2c" value="c">
+        <label for="q2c">Purchase Return Book</label>
+        <input type="radio" name="q2" id="q2d" value="d">
+        <label for="q2d">Sales Day Book</label>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="mcq">
+        <h3>3. Which document forms the basis for entries in Purchase Return Book?</h3>
+        <input type="radio" name="q3" id="q3a" value="a">
+        <label for="q3a">Credit Note</label>
+        <input type="radio" name="q3" id="q3b" value="b">
+        <label for="q3b">Debit Note</label>
+        <input type="radio" name="q3" id="q3c" value="c">
+        <label for="q3c">Invoice</label>
+        <input type="radio" name="q3" id="q3d" value="d">
+        <label for="q3d">Cash Memo</label>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="mcq">
+        <h3>4. Credit purchase of furniture will be recorded in:</h3>
+        <input type="radio" name="q4" id="q4a" value="a">
+        <label for="q4a">Purchase Book</label>
+        <input type="radio" name="q4" id="q4b" value="b">
+        <label for="q4b">Cash Book</label>
+        <input type="radio" name="q4" id="q4c" value="c">
+        <label for="q4c">Journal Proper</label>
+        <input type="radio" name="q4" id="q4d" value="d">
+        <label for="q4d">Sales Book</label>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="mcq">
+        <h3>5. Trade discount is:</h3>
+        <input type="radio" name="q5" id="q5a" value="a">
+        <label for="q5a">Recorded in the books of accounts</label>
+        <input type="radio" name="q5" id="q5b" value="b">
+        <label for="q5b">Not recorded in the books of accounts</label>
+        <input type="radio" name="q5" id="q5c" value="c">
+        <label for="q5c">Recorded in cash book only</label>
+        <input type="radio" name="q5" id="q5d" value="d">
+        <label for="q5d">Recorded in journal proper only</label>
+      </div>
+
+      <!-- Question 6 -->
+      <div class="mcq">
+        <h3>6. Opening entry of a business is recorded in:</h3>
+        <input type="radio" name="q6" id="q6a" value="a">
+        <label for="q6a">Purchase Book</label>
+        <input type="radio" name="q6" id="q6b" value="b">
+        <label for="q6b">Sales Book</label>
+        <input type="radio" name="q6" id="q6c" value="c">
+        <label for="q6c">Cash Book</label>
+        <input type="radio" name="q6" id="q6d" value="d">
+        <label for="q6d">Journal Proper</label>
+      </div>
+
+      <!-- Question 7 -->
+      <div class="mcq">
+        <h3>7. The total of Purchase Book is posted to:</h3>
+        <input type="radio" name="q7" id="q7a" value="a">
+        <label for="q7a">Debit side of Purchase Account</label>
+        <input type="radio" name="q7" id="q7b" value="b">
+        <label for="q7b">Credit side of Purchase Account</label>
+        <input type="radio" name="q7" id="q7c" value="c">
+        <label for="q7c">Debit side of Sales Account</label>
+        <input type="radio" name="q7" id="q7d" value="d">
+        <label for="q7d">Credit side of Sales Account</label>
+      </div>
+
+      <!-- Question 8 -->
+      <div class="mcq">
+        <h3>8. Which of the following is NOT a subsidiary book?</h3>
+        <input type="radio" name="q8" id="q8a" value="a">
+        <label for="q8a">Purchase Book</label>
+        <input type="radio" name="q8" id="q8b" value="b">
+        <label for="q8b">Trial Balance</label>
+        <input type="radio" name="q8" id="q8c" value="c">
+        <label for="q8c">Sales Book</label>
+        <input type="radio" name="q8" id="q8d" value="d">
+        <label for="q8d">Cash Book</label>
+      </div>
+
+      <!-- Question 9 -->
+      <div class="mcq">
+        <h3>9. Bad debts written off are recorded in:</h3>
+        <input type="radio" name="q9" id="q9a" value="a">
+        <label for="q9a">Sales Return Book</label>
+        <input type="radio" name="q9" id="q9b" value="b">
+        <label for="q9b">Purchase Return Book</label>
+        <input type="radio" name="q9" id="q9c" value="c">
+        <label for="q9c">Journal Proper</label>
+        <input type="radio" name="q9" id="q9d" value="d">
+        <label for="q9d">Cash Book</label>
+      </div>
+
+      <!-- Question 10 -->
+      <div class="mcq">
+        <h3>10. The main advantage of maintaining subsidiary books is:</h3>
+        <input type="radio" name="q10" id="q10a" value="a">
+        <label for="q10a">To increase the number of books</label>
+        <input type="radio" name="q10" id="q10b" value="b">
+        <label for="q10b">Division of labor and specialization</label>
+        <input type="radio" name="q10" id="q10c" value="c">
+        <label for="q10c">To make accounting complex</label>
+        <input type="radio" name="q10" id="q10d" value="d">
+        <label for="q10d">To avoid ledger posting</label>
+      </div>
+    </div>
+
+    <div class="submit-container">
+      <button class="submit-btn" onclick="checkAnswers()">Submit Answers</button>
+    </div>
+
+    <div class="score-display" id="scoreDisplay"></div>
+  </section>
+
+  <!-- Link to Examples Page -->
+  <section style="text-align: center;">
+    <h2><i class="fas fa-arrow-right"></i> Ready for Practice?</h2>
+    <p style="color: var(--muted); margin: 20px 0;">
+      Now that you understand the theory, let's practice with numerical examples and problems!
+    </p>
+    <a href="subsidiary-books-examples.html" class="link-button">
+      <i class="fas fa-calculator"></i>
+      Go to Numerical Examples
+    </a>
+  </section>
 
   <script>
-    (function(){
-      const mcqs = document.querySelectorAll('.mcq');
-      const submitButton = document.getElementById('submit-mcq');
-      const scoreDisplay = document.getElementById('score-display');
-      const retryBtn = document.getElementById('retry-btn');
+    // Correct answers
+    const correctAnswers = {
+      q1: 'b',
+      q2: 'b', 
+      q3: 'b',
+      q4: 'c',
+      q5: 'b',
+      q6: 'd',
+      q7: 'a',
+      q8: 'b',
+      q9: 'c',
+      q10: 'b'
+    };
 
-      function updateSubmitState() {
-        const anyAnswered = Array.from(mcqs).some(mcq => mcq.querySelector('input:checked'));
-        if (submitButton) submitButton.disabled = !anyAnswered;
-      }
-
-      function clearIndicators(mcq){
-        mcq.querySelectorAll('label').forEach(l => {
-          delete l.dataset.correct;
-          delete l.dataset.wrong;
-          delete l.dataset.correctText;
-        });
-        mcq.classList.remove('correct', 'wrong');
-      }
-
-      function submitAnswers() {
-        let score = 0;
-        mcqs.forEach(mcq => {
-          clearIndicators(mcq);
-          const answer = mcq.dataset.answer;
-          const selected = mcq.querySelector('input:checked');
-
-          if (!selected) return;
-
-          const selectedLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-          const correctInput = mcq.querySelector(`input[value="${answer}"]`);
-          const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
-          const correctText = correctLabel ? correctLabel.textContent.trim() : '';
-
-          if (selected.value === answer) {
-            if (selectedLabel) selectedLabel.dataset.correct = "true";
-            mcq.classList.add('correct');
+    function checkAnswers() {
+      let score = 0;
+      let answered = 0;
+      
+      for (let i = 1; i <= 10; i++) {
+        const question = document.querySelector(`input[name="q${i}"]:checked`);
+        if (question) {
+          answered++;
+          if (question.value === correctAnswers[`q${i}`]) {
             score++;
+            question.parentElement.style.background = 'rgba(16,185,129,0.2)';
+            question.parentElement.style.borderColor = '#10b981';
           } else {
-            if (selectedLabel) {
-              selectedLabel.dataset.wrong = "true";
-              selectedLabel.dataset.correctText = correctText;
+            question.parentElement.style.background = 'rgba(239,68,68,0.2)';
+            question.parentElement.style.borderColor = '#ef4444';
+            // Highlight correct answer
+            const correctOption = document.querySelector(`input[name="q${i}"][value="${correctAnswers[`q${i}`]}"]`);
+            if (correctOption) {
+              correctOption.parentElement.style.background = 'rgba(16,185,129,0.2)';
+              correctOption.parentElement.style.borderColor = '#10b981';
             }
-            if (correctLabel) correctLabel.dataset.correct = "true";
-            mcq.classList.add('wrong');
-          }
-        });
-
-        if (scoreDisplay) {
-          scoreDisplay.classList.add('show');
-          scoreDisplay.classList.remove('success','partial');
-          if (score === mcqs.length) {
-            scoreDisplay.classList.add('success');
-            scoreDisplay.innerHTML = `<strong>Perfect!</strong> ${score}/${mcqs.length}`;
-          } else {
-            scoreDisplay.classList.add('partial');
-            scoreDisplay.innerHTML = `${score} out of ${mcqs.length} correct.`;
           }
         }
-
-        if (retryBtn) retryBtn.style.display = "block";
-        setTimeout(resetQuizFeedback, 15000);
       }
 
-      function resetQuizFeedback() {
-        mcqs.forEach(mcq => {
-          clearIndicators(mcq);
-          mcq.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-        });
-        if (scoreDisplay) scoreDisplay.classList.remove('show','success','partial');
-        submitButton.disabled = true;
-        if (retryBtn) retryBtn.style.display = "none";
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      scoreDisplay.style.display = 'block';
+      
+      let message = '';
+      const percentage = (score / 10) * 100;
+      
+      if (percentage === 100) {
+        message = `🎉 Perfect Score! ${score}/10 - You're a master of Subsidiary Books!`;
+      } else if (percentage >= 80) {
+        message = `🌟 Excellent! ${score}/10 - Great understanding of the concepts!`;
+      } else if (percentage >= 60) {
+        message = `👍 Good job! ${score}/10 - Keep practicing to improve!`;
+      } else {
+        message = `📚 Keep studying! ${score}/10 - Review the concepts and try again!`;
       }
+      
+      scoreDisplay.innerHTML = `
+        <h3 style="color: var(--brand-2); margin-bottom: 10px;">Your Results</h3>
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">${message}</p>
+        <p style="color: var(--muted);">Questions Attempted: ${answered}/10</p>
+        <button onclick="resetQuiz()" style="margin-top: 15px; padding: 10px 20px; background: var(--brand); color: white; border: none; border-radius: 8px; cursor: pointer;">Try Again</button>
+      `;
+    }
 
-      document.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.addEventListener('change', updateSubmitState);
+    function resetQuiz() {
+      // Clear all selections
+      const allInputs = document.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.parentElement.style.background = '';
+        input.parentElement.style.borderColor = '';
       });
+      
+      // Hide score display
+      document.getElementById('scoreDisplay').style.display = 'none';
+    }
 
-      if (submitButton) submitButton.addEventListener('click', submitAnswers);
-      if (retryBtn) retryBtn.addEventListener('click', resetQuizFeedback);
-      updateSubmitState();
-
-      document.querySelectorAll(".accordion-header").forEach(header => {
-        header.addEventListener("click", () => {
-          const item = header.parentElement;
-          const body = item.querySelector(".accordion-body");
-
-          document.querySelectorAll(".accordion-body.open").forEach(openBody => {
-            if (openBody !== body) {
-              openBody.classList.remove("open");
-            }
-          });
-
-          body.classList.toggle("open");
+    // Add smooth scroll behavior
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
         });
       });
-    })();
+    });
+
+    // Add animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(20px)';
+      section.style.transition = 'all 0.6s ease';
+      observer.observe(section);
+    });
   </script>
-
 </body>
 </html>
