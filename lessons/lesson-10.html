@@ -554,42 +554,42 @@
         border-color: var(--brand);
       }
 
-      /* Progress Circle */
-      .progress-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2rem 0;
-      }
+      /* Progress Tracker */
+    #progressBox {
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 15px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
 
-      .circular-progress {
-        position: relative;
-        height: 150px;
-        width: 150px;
-        border-radius: 50%;
-        background: conic-gradient(#4f46e5 0deg, #d1d5db 0deg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0px 8px 20px rgba(79, 70, 229, 0.3);
-        transition: background 0.3s ease-in-out;
-      }
+    #progressBox h4 {
+      margin: 0 0 10px 0;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
 
-      .circular-progress::before {
-        content: "";
-        position: absolute;
-        height: 120px;
-        width: 120px;
-        border-radius: 50%;
-        background-color: var(--card);
-      }
+    progress {
+      border-radius: 10px;
+      overflow: hidden;
+      height: 24px;
+      width: 100%;
+    }
 
-      .progress-value {
-        position: relative;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: var(--brand-2);
-      }
+    progress::-webkit-progress-bar {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    progress::-webkit-progress-value {
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      transition: width 0.5s ease;
+    }
+
+    progress::-moz-progress-bar {
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    }
+
 
       .submit-button {
         display: block;
@@ -1550,13 +1550,7 @@
                 <div class="debit-entry">Input IGST A/c ................... Dr.</div>
               </td>
               <td class="amount-cell">2,700</td>
-                        <!-- continuing Example 2 (complete) -->
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">2,700</td>
-              <td class="amount-cell">-</td>
+                            <td class="amount-cell">-</td>
             </tr>
             <tr>
               <td class="particulars-cell">
@@ -1567,7 +1561,7 @@
               <td class="amount-cell">17,700</td>
             </tr>
 
-            <!-- Transaction 4 - Sale -->
+            <!-- Transaction 4 -->
             <tr style="border-top: 1px solid rgba(124,77,255,.1);">
               <td rowspan="3">Apr 15</td>
               <td class="particulars-cell">
@@ -1586,17 +1580,17 @@
             <tr>
               <td class="particulars-cell">
                 <div class="credit-entry">To Output IGST A/c</div>
-                <div class="narration">(Being goods sold inter-state with IGST @18%)</div>
+                <div class="narration">(Being inter-state sale to Kolkata)</div>
               </td>
               <td class="amount-cell">-</td>
               <td class="amount-cell">54,000</td>
             </tr>
 
-            <!-- Transaction 5 - Computer purchase -->
+            <!-- Transaction 5 -->
             <tr style="border-top: 1px solid rgba(124,77,255,.1);">
               <td rowspan="3">Apr 20</td>
               <td class="particulars-cell">
-                <div class="debit-entry">Computer A/c .................... Dr.</div>
+                <div class="debit-entry">Computer A/c ..................... Dr.</div>
               </td>
               <td class="amount-cell">50,000</td>
               <td class="amount-cell">-</td>
@@ -1611,17 +1605,17 @@
             <tr>
               <td class="particulars-cell">
                 <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being computer purchased from Chennai with IGST)</div>
+                <div class="narration">(Being computer purchased from Chennai)</div>
               </td>
               <td class="amount-cell">-</td>
               <td class="amount-cell">59,000</td>
             </tr>
 
-            <!-- Transaction 6 - Insurance -->
+            <!-- Transaction 6 -->
             <tr style="border-top: 1px solid rgba(124,77,255,.1);">
               <td rowspan="3">Apr 25</td>
               <td class="particulars-cell">
-                <div class="debit-entry">Insurance A/c ................... Dr.</div>
+                <div class="debit-entry">Insurance Premium A/c ............ Dr.</div>
               </td>
               <td class="amount-cell">12,000</td>
               <td class="amount-cell">-</td>
@@ -1644,13 +1638,12 @@
           </tbody>
         </table>
 
-        <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary (Rajesh Enterprises):</h5>
+        <div style="background: rgba(0,229,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--brand-2); margin: 0 0 10px 0;">IGST Summary:</h5>
           <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-            • Total Input IGST = ₹49,860 (36,000 + 2,700 + 9,000 + 2,160).<br>
-            • Total Output IGST = ₹54,000.<br>
-            • Net IGST Payable = ₹4,140 (54,000 - 49,860).<br>
-            • If reversed (input > output) it would be refundable; here output > input so tax to pay.
+            • Total Input IGST = ₹49,860<br>
+            • Total Output IGST = ₹54,000<br>
+            • Net IGST Payable = ₹54,000 - ₹49,860 = ₹4,140
           </p>
         </div>
       </div>
@@ -1660,23 +1653,23 @@
     <div class="practical-card animate-card slide-in-left">
       <div class="practical-header">
         <div class="practical-icon">
-          <i class="fas fa-concierge-bell"></i>
+          <i class="fas fa-utensils"></i>
         </div>
         <div>
           <h3 class="practical-title">Example 3</h3>
-          <p class="practical-subtitle">Service Provider — Intra-State (CGST/SGST 9%/9%)</p>
+          <p class="practical-subtitle">Service Business - Mixed GST</p>
         </div>
       </div>
-
+      
       <div class="practical-description">
-        <strong>Question:</strong> Stellar Services (Pune) — record April 2024 transactions (all within Maharashtra; GST on services @18% split 9% CGST + 9% SGST):
+        <strong>Question:</strong> Royal Restaurant in Bangalore started in May 2024. Record the following (Local: CGST 2.5% + SGST 2.5%, Inter-state: IGST 5%):
         <ol style="margin: 10px 0; padding-left: 20px;">
-          <li>Started business with cash ₹2,00,000</li>
-          <li>Received advance from client ₹50,000 (advance invoice) + GST</li>
-          <li>Rendered services on completion ₹1,00,000 + GST (client paid in cash)</li>
-          <li>Paid office rent ₹15,000 + GST</li>
-          <li>Purchased stationery ₹5,000 + GST</li>
-          <li>Paid tax consultant ₹8,000 + GST</li>
+          <li>Started business with cash ₹8,00,000</li>
+          <li>Purchased kitchen equipment locally ₹1,00,000 + GST @ 18%</li>
+          <li>Purchased food items locally ₹50,000 + GST @ 5%</li>
+          <li>Restaurant service income ₹80,000 + GST @ 5%</li>
+          <li>Paid local rent ₹30,000 + GST @ 18%</li>
+          <li>Purchased vegetables from farmer (no GST) ₹10,000</li>
         </ol>
       </div>
 
@@ -1684,234 +1677,7 @@
 
       <div class="gst-solution" id="example3-solution">
         <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
-
-        <table class="gst-table">
-          <thead>
-            <tr>
-              <th class="date-col">Date</th>
-              <th class="particulars-col">Particulars</th>
-              <th class="debit-col">Debit (₹)</th>
-              <th class="credit-col">Credit (₹)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Transaction 1 -->
-            <tr>
-              <td>2024<br>Apr 1</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Cash A/c ........................ Dr.</div>
-                <div class="credit-entry">To Capital A/c</div>
-                <div class="narration">(Being business started with cash)</div>
-              </td>
-              <td class="amount-cell">2,00,000</td>
-              <td class="amount-cell">2,00,000</td>
-            </tr>
-
-            <!-- Transaction 2 - Advance received -->
-            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td rowspan="4">Apr 5</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Cash A/c ........................ Dr.</div>
-              </td>
-              <td class="amount-cell">59,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Advances from Customers A/c</div>
-              </td>
-              <td class="amount-cell">50,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Output CGST A/c</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">4,500</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Output SGST A/c</div>
-                <div class="narration">(Being advance received ₹50,000 + GST @18%)</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">4,500</td>
-            </tr>
-
-            <!-- Transaction 3 - Services rendered -->
-            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td rowspan="4">Apr 10</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Cash A/c ........................ Dr.</div>
-              </td>
-              <td class="amount-cell">1,18,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Service Revenue A/c</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">1,00,000</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Output CGST A/c</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">9,000</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Output SGST A/c</div>
-                <div class="narration">(Being services rendered and paid with GST)</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">9,000</td>
-            </tr>
-
-            <!-- Transaction 4 - Rent paid -->
-            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td rowspan="4">Apr 12</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Rent A/c ........................ Dr.</div>
-              </td>
-              <td class="amount-cell">15,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">1,350</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">1,350</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being office rent paid with GST)</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">17,700</td>
-            </tr>
-
-            <!-- Transaction 5 - Stationery -->
-            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td rowspan="4">Apr 15</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Stationery A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">5,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">450</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">450</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being stationery purchased with GST)</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">5,900</td>
-            </tr>
-
-            <!-- Transaction 6 - Tax consultant -->
-            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td rowspan="4">Apr 20</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Professional Fees A/c ........... Dr.</div>
-              </td>
-              <td class="amount-cell">8,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">720</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">720</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being tax consultant fees paid with GST)</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">9,440</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary (Stellar Services):</h5>
-          <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-            • Total Input CGST = ₹(1,350 + 450 + 720) = ₹2,520.<br>
-            • Total Input SGST = ₹2,520.<br>
-            • Total Output CGST = ₹(4,500 + 9,000) = ₹13,500 (advance + service sale).<br>
-            • Total Output SGST = ₹13,500.<br>
-            • Net CGST Payable = ₹10,980 (13,500 - 2,520).<br>
-            • Net SGST Payable = ₹10,980.<br>
-            • Total GST Payable (CGST + SGST) = ₹21,960.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Example 4 -->
-    <div class="practical-card animate-card slide-in-left">
-      <div class="practical-header">
-        <div class="practical-icon">
-          <i class="fas fa-globe"></i>
-        </div>
-        <div>
-          <h3 class="practical-title">Example 4</h3>
-          <p class="practical-subtitle">Export — Zero-rated Supply (inputs refundable)</p>
-        </div>
-      </div>
-
-      <div class="practical-description">
-        <strong>Question:</strong> Oceanic Exports — record transactions for May 2024. Exports are zero-rated (export sales have nil tax; input tax on domestic purchases can be claimed as refund or used against other liabilities):
-        <ol style="margin: 10px 0; padding-left: 20px;">
-          <li>Started business with cash ₹5,00,000</li>
-          <li>Purchased raw material from local supplier ₹1,50,000 + GST (CGST 9% + SGST 9%)</li>
-          <li>Exported goods worth ₹4,00,000 (zero-rated export)</li>
-          <li>Purchased packing material ₹10,000 + GST</li>
-          <li>Paid international freight ₹20,000 (to foreign transporter) — treated as export service (no domestic GST)</li>
-        </ol>
-      </div>
-
-      <button class="view-solution-btn" onclick="toggleSolution('example4')">View Solution</button>
-
-      <div class="gst-solution" id="example4-solution">
-        <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
-
+        
         <table class="gst-table">
           <thead>
             <tr>
@@ -1930,114 +1696,377 @@
                 <div class="credit-entry">To Capital A/c</div>
                 <div class="narration">(Being business started with cash)</div>
               </td>
-              <td class="amount-cell">5,00,000</td>
-              <td class="amount-cell">5,00,000</td>
+              <td class="amount-cell">8,00,000</td>
+              <td class="amount-cell">8,00,000</td>
             </tr>
 
-            <!-- Transaction 2 - Raw material purchase -->
+            <!-- Transaction 2 -->
             <tr style="border-top: 1px solid rgba(124,77,255,.1);">
               <td rowspan="4">May 5</td>
               <td class="particulars-cell">
-                <div class="debit-entry">Raw Material A/c ............... Dr.</div>
+                <div class="debit-entry">Kitchen Equipment A/c ............ Dr.</div>
               </td>
-              <td class="amount-cell">1,50,000</td>
+              <td class="amount-cell">1,00,000</td>
               <td class="amount-cell">-</td>
             </tr>
             <tr>
               <td class="particulars-cell">
                 <div class="debit-entry">Input CGST A/c ................... Dr.</div>
               </td>
-              <td class="amount-cell">13,500</td>
+              <td class="amount-cell">9,000</td>
               <td class="amount-cell">-</td>
             </tr>
             <tr>
               <td class="particulars-cell">
                 <div class="debit-entry">Input SGST A/c ................... Dr.</div>
               </td>
-              <td class="amount-cell">13,500</td>
+              <td class="amount-cell">9,000</td>
               <td class="amount-cell">-</td>
             </tr>
             <tr>
               <td class="particulars-cell">
                 <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being raw material purchased with GST)</div>
+                <div class="narration">(Being kitchen equipment purchased @ 18% GST)</div>
               </td>
               <td class="amount-cell">-</td>
-              <td class="amount-cell">1,77,000</td>
+              <td class="amount-cell">1,18,000</td>
             </tr>
 
-            <!-- Transaction 3 - Export sale (zero-rated) -->
+            <!-- Transaction 3 -->
             <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td>May 10</td>
+              <td rowspan="4">May 10</td>
               <td class="particulars-cell">
-                <div class="debit-entry">Debtors/Export Receivable A/c .. Dr.</div>
-                <div class="credit-entry">To Sales (Export) A/c</div>
-                <div class="narration">(Being export sale — zero-rated)</div>
+                <div class="debit-entry">Purchase A/c (Food Items) ........ Dr.</div>
               </td>
-              <td class="amount-cell">4,00,000</td>
-              <td class="amount-cell">4,00,000</td>
+              <td class="amount-cell">50,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">1,250</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">1,250</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being food items purchased @ 5% GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">52,500</td>
             </tr>
 
-            <!-- Transaction 4 - Packing material -->
+            <!-- Transaction 4 -->
             <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td rowspan="4">May 12</td>
+              <td rowspan="4">May 15</td>
               <td class="particulars-cell">
-                <div class="debit-entry">Packing Material A/c .......... Dr.</div>
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">84,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Restaurant Income A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">80,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output CGST A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">2,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output SGST A/c</div>
+                <div class="narration">(Being restaurant service income @ 5% GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">2,000</td>
+            </tr>
+
+            <!-- Transaction 5 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">May 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Rent A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">30,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,700</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">2,700</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being rent paid @ 18% GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">35,400</td>
+            </tr>
+
+            <!-- Transaction 6 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td>May 25</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c (Vegetables) ........ Dr.</div>
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being vegetables purchased from farmer - No GST)</div>
               </td>
               <td class="amount-cell">10,000</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">900</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
-              </td>
-              <td class="amount-cell">900</td>
-              <td class="amount-cell">-</td>
-            </tr>
-            <tr>
-              <td class="particulars-cell">
-                <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being packing material purchased with GST)</div>
-              </td>
-              <td class="amount-cell">-</td>
-              <td class="amount-cell">11,800</td>
-            </tr>
-
-            <!-- Transaction 5 - International freight (no domestic GST) -->
-            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
-              <td>May 15</td>
-              <td class="particulars-cell">
-                <div class="debit-entry">Freight Outwards A/c .......... Dr.</div>
-                <div class="credit-entry">To Cash A/c</div>
-                <div class="narration">(Being international freight paid — no domestic GST)</div>
-              </td>
-              <td class="amount-cell">20,000</td>
-              <td class="amount-cell">20,000</td>
+              <td class="amount-cell">10,000</td>
             </tr>
           </tbody>
         </table>
 
-        <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-          <h5 style="color: var(--success); margin: 0 0 10px 0;">GST Summary (Oceanic Exports):</h5>
+        <div style="background: rgba(255,152,0,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--warning); margin: 0 0 10px 0;">GST Summary:</h5>
           <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-            • Total Input CGST = ₹14,400 (13,500 + 900).<br>
-            • Total Input SGST = ₹14,400.<br>
-            • Output tax on export = ₹0 (exports are zero-rated).<br>
-            • Net effect: Input tax can be claimed as refund / adjusted — Total GST refundable = ₹28,800 (CGST + SGST).
+            • Total Input CGST = ₹12,950 | Total Input SGST = ₹12,950<br>
+            • Total Output CGST = ₹2,000 | Total Output SGST = ₹2,000<br>
+            • Net CGST Refund = ₹10,950 | Net SGST Refund = ₹10,950<br>
+            • Total GST Refund Claimable = ₹21,900
           </p>
         </div>
       </div>
     </div>
-    </div>
-    </section>
 
+    <!-- Example 4 -->
+    <div class="practical-card animate-card slide-in-left">
+      <div class="practical-header">
+        <div class="practical-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <div>
+          <h3 class="practical-title">Example 4</h3>
+          <p class="practical-subtitle">Mixed Transactions</p>
+        </div>
+      </div>
+      
+      <div class="practical-description">
+        <strong>Question:</strong> ABC Traders in Chennai deals in both local and inter-state transactions. Record the following for June 2024:
+        <ol style="margin: 10px 0; padding-left: 20px;">
+          <li>Started business with cash ₹6,00,000</li>
+          <li>Purchased goods locally ₹60,000 + GST @ 18%</li>
+                    <li>Sold goods to local customer ₹40,000 + GST @ 18%</li>
+          <li>Purchased goods from Delhi ₹80,000 + IGST @ 18%</li>
+          <li>Sold goods to Mumbai customer ₹1,00,000 + IGST @ 18%</li>
+          <li>Paid telephone bill ₹3,000 + GST @ 18%</li>
+        </ol>
+      </div>
+
+      <button class="view-solution-btn" onclick="toggleSolution('example4')">View Solution</button>
+
+      <div class="gst-solution" id="example4-solution">
+        <h4 style="color: var(--brand-2); margin-bottom: 20px;">Journal Entries:</h4>
+        
+        <table class="gst-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transaction 1 -->
+            <tr>
+              <td>2024<br>Jun 1</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+                <div class="credit-entry">To Capital A/c</div>
+                <div class="narration">(Being business started with cash)</div>
+              </td>
+              <td class="amount-cell">6,00,000</td>
+              <td class="amount-cell">6,00,000</td>
+            </tr>
+
+            <!-- Transaction 2 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Jun 5</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+              </td>
+              <td class="amount-cell">60,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">5,400</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">5,400</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being local purchase with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">70,800</td>
+            </tr>
+
+            <!-- Transaction 3 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Jun 10</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">47,200</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Sales A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">40,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output CGST A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">3,600</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output SGST A/c</div>
+                <div class="narration">(Being local sale with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">3,600</td>
+            </tr>
+
+            <!-- Transaction 4 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Jun 15</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+              </td>
+              <td class="amount-cell">80,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input IGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">14,400</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being inter-state purchase from Delhi)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">94,400</td>
+            </tr>
+
+            <!-- Transaction 5 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="3">Jun 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ........................ Dr.</div>
+              </td>
+              <td class="amount-cell">1,18,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Sales A/c</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">1,00,000</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Output IGST A/c</div>
+                <div class="narration">(Being inter-state sale to Mumbai)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">18,000</td>
+            </tr>
+
+            <!-- Transaction 6 -->
+            <tr style="border-top: 1px solid rgba(124,77,255,.1);">
+              <td rowspan="4">Jun 25</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Telephone Expenses A/c ........... Dr.</div>
+              </td>
+              <td class="amount-cell">3,000</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input CGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">270</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="debit-entry">Input SGST A/c ................... Dr.</div>
+              </td>
+              <td class="amount-cell">270</td>
+              <td class="amount-cell">-</td>
+            </tr>
+            <tr>
+              <td class="particulars-cell">
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="narration">(Being telephone bill paid with GST)</div>
+              </td>
+              <td class="amount-cell">-</td>
+              <td class="amount-cell">3,540</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="background: rgba(124,77,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+          <h5 style="color: var(--brand); margin: 0 0 10px 0;">GST Summary:</h5>
+          <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+            • Input CGST = ₹5,670 | Input SGST = ₹5,670 | Input IGST = ₹14,400<br>
+            • Output CGST = ₹3,600 | Output SGST = ₹3,600 | Output IGST = ₹18,000<br>
+            • Net CGST Refund = ₹2,070 | Net SGST Refund = ₹2,070<br>
+            • Net IGST Payable = ₹18,000 - ₹14,400 = ₹3,600<br>
+            • After adjustment: Net GST Payable = ₹3,600 - ₹4,140 = NIL (Refund ₹540)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- MCQ Section -->
     <section class="animate-card">
@@ -2149,11 +2178,11 @@
         <button id="retry-btn" style="display: none; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Try Again</button>
       </div>
 
-      <div class="progress-wrapper">
-        <div class="circular-progress" id="circularProgress">
-          <span class="progress-value" id="progressValue">0%</span>
-        </div>
+      <div id="progressBox">
+        <h4>Your Progress</h4>
+        <progress id="lesson-progress" max="100" value="0"></progress>
       </div>
+
     </section>
 
     <!-- GST Practice Questions Section -->
@@ -2274,55 +2303,260 @@
       </div>
     </section>
 
+    <!-- MCQ Section-->
+    <section id="mcq-section">
+      <h2>MCQs on Books of Original Entry & Cash Book</h2>
+      <div id="mcq-container">
+
+        <!-- MCQ 1 -->
+        <div class="mcq" data-answer="B">
+          <p>1. Which of the following is a book of original entry?</p>
+          <label for="mcq1a"><input type="radio" id="mcq1a" name="q1" value="A"> Ledger</label>
+          <label for="mcq1b"><input type="radio" id="mcq1b" name="q1" value="B"> Journal</label>
+          <label for="mcq1c"><input type="radio" id="mcq1c" name="q1" value="C"> Balance Sheet</label>
+        </div>
+
+        <!-- MCQ 2 -->
+        <div class="mcq" data-answer="C">
+          <p>2. Cash Book is also treated as?</p>
+          <label for="mcq2a"><input type="radio" id="mcq2a" name="q2" value="A"> Memorandum Book</label>
+          <label for="mcq2b"><input type="radio" id="mcq2b" name="q2" value="B"> Ledger only</label>
+          <label for="mcq2c"><input type="radio" id="mcq2c" name="q2" value="C"> Both Journal and Ledger</label>
+        </div>
+
+        <!-- MCQ 3 -->
+        <div class="mcq" data-answer="A">
+          <p>3. Purchases book records only:</p>
+          <label for="mcq3a"><input type="radio" id="mcq3a" name="q3" value="A"> Credit purchases of goods</label>
+          <label for="mcq3b"><input type="radio" id="mcq3b" name="q3" value="B"> Cash purchases of goods</label>
+          <label for="mcq3c"><input type="radio" id="mcq3c" name="q3" value="C"> Both cash and credit purchases</label>
+        </div>
+
+        <!-- MCQ 4 -->
+        <div class="mcq" data-answer="C">
+          <p>4. Sales return book is also called:</p>
+          <label for="mcq4a"><input type="radio" id="mcq4a" name="q4" value="A"> Return Outward Book</label>
+          <label for="mcq4b"><input type="radio" id="mcq4b" name="q4" value="B"> Journal Proper</label>
+          <label for="mcq4c"><input type="radio" id="mcq4c" name="q4" value="C"> Return Inward Book</label>
+        </div>
+
+        <!-- MCQ 5 -->
+        <div class="mcq" data-answer="B">
+          <p>5. Contra entries are recorded in:</p>
+          <label for="mcq5a"><input type="radio" id="mcq5a" name="q5" value="A"> Purchases Book</label>
+          <label for="mcq5b"><input type="radio" id="mcq5b" name="q5" value="B"> Cash Book</label>
+          <label for="mcq5c"><input type="radio" id="mcq5c" name="q5" value="C"> Journal Proper</label>
+        </div>
+
+        <!-- MCQ 6 -->
+        <div class="mcq" data-answer="A">
+          <p>6. Petty Cash Book is maintained by which method?</p>
+          <label for="mcq6a"><input type="radio" id="mcq6a" name="q6" value="A"> Imprest System</label>
+          <label for="mcq6b"><input type="radio" id="mcq6b" name="q6" value="B"> Double Entry System</label>
+          <label for="mcq6c"><input type="radio" id="mcq6c" name="q6" value="C"> Single Entry System</label>
+        </div>
+
+        <!-- MCQ 7 -->
+        <div class="mcq" data-answer="B">
+          <p>7. Which book records credit sales of goods?</p>
+          <label for="mcq7a"><input type="radio" id="mcq7a" name="q7" value="A"> Cash Book</label>
+          <label for="mcq7b"><input type="radio" id="mcq7b" name="q7" value="B"> Sales Book</label>
+          <label for="mcq7c"><input type="radio" id="mcq7c" name="q7" value="C"> Purchases Return Book</label>
+        </div>
+
+        <!-- MCQ 8 -->
+        <div class="mcq" data-answer="C">
+          <p>8. Which voucher is prepared for credit purchase of goods?</p>
+          <label for="mcq8a"><input type="radio" id="mcq8a" name="q8" value="A"> Receipt Voucher</label>
+          <label for="mcq8b"><input type="radio" id="mcq8b" name="q8" value="B"> Payment Voucher</label>
+          <label for="mcq8c"><input type="radio" id="mcq8c" name="q8" value="C"> Journal Voucher</label>
+        </div>
+
+        <!-- MCQ 9 -->
+        <div class="mcq" data-answer="A">
+          <p>9. Which of the following is NOT a subsidiary book?</p>
+          <label for="mcq9a"><input type="radio" id="mcq9a" name="q9" value="A"> Trial Balance</label>
+          <label for="mcq9b"><input type="radio" id="mcq9b" name="q9" value="B"> Cash Book</label>
+          <label for="mcq9c"><input type="radio" id="mcq9c" name="q9" value="C"> Purchases Book</label>
+        </div>
+
+        <!-- MCQ 10 -->
+        <div class="mcq" data-answer="B">
+          <p>10. In Cash Book, discount allowed is shown on:</p>
+          <label for="mcq10a"><input type="radio" id="mcq10a" name="q10" value="A"> Credit side</label>
+          <label for="mcq10b"><input type="radio" id="mcq10b" name="q10" value="B"> Debit side</label>
+          <label for="mcq10c"><input type="radio" id="mcq10c" name="q10" value="C"> Both sides</label>
+        </div>
+
+      </div>
+
+      <button id="submit-mcq">Submit Answers</button>
+      <button id="retry-btn" style="display:none;">Retry</button>
+      <div id="score-display" style="display:none;"></div>
+
+      <!-- Progress Tracker -->
+      <div id="progressBox">
+        <h4>Your Progress</h4>
+        <progress id="lesson-progress" max="100" value="0"></progress>
+      </div>
+    </section>
+
+
+    <!-- Practical Section -->
+    <section id="practicals">
+      <h2>Practice Questions on Cash Book & Books of Original Entry</h2>
+      
+      <div class="practical-card">
+        <h3>Practical Question 1</h3>
+        <p>Record the following in a Cash Book:</p>
+        <ul>
+          <li>1 Jan: Started business with ₹80,000 cash.</li>
+          <li>2 Jan: Deposited ₹20,000 into bank.</li>
+          <li>4 Jan: Purchased goods on credit from Ramesh for ₹10,000.</li>
+          <li>6 Jan: Paid salary ₹5,000.</li>
+          <li>7 Jan: Received cash from Suresh ₹15,000.</li>
+          <li>10 Jan: Purchased furniture for ₹8,000 by cheque.</li>
+        </ul>
+      </div>
+
+      <div class="practical-card">
+        <h3>Practical Question 2</h3>
+        <p>Enter the following in suitable books of original entry:</p>
+        <ul>
+          <li>3 Feb: Purchased goods for cash ₹25,000.</li>
+          <li>5 Feb: Sold goods on credit to Mohan ₹30,000.</li>
+          <li>7 Feb: Returned goods worth ₹2,000 to supplier.</li>
+          <li>9 Feb: Received cheque from Mohan ₹20,000.</li>
+          <li>12 Feb: Paid rent ₹5,000.</li>
+          <li>14 Feb: Purchased stationery ₹1,200 cash.</li>
+        </ul>
+      </div>
+
+      <div class="practical-card">
+        <h3>Practical Question 3</h3>
+        <p>Record the following in Cash Book:</p>
+        <ul>
+          <li>1 Mar: Cash balance ₹50,000.</li>
+          <li>2 Mar: Deposited into bank ₹10,000.</li>
+          <li>3 Mar: Cash sales ₹12,000.</li>
+          <li>5 Mar: Paid wages ₹3,000.</li>
+          <li>8 Mar: Paid by cheque for advertisement ₹4,000.</li>
+          <li>10 Mar: Received cash from Ajay ₹7,000.</li>
+        </ul>
+      </div>
+
+      <div class="practical-card">
+        <h3>Practical Question 4</h3>
+        <p>Enter the following in proper books:</p>
+        <ul>
+          <li>2 Apr: Sold goods on credit to Ramesh ₹18,000.</li>
+          <li>3 Apr: Purchased goods from Sohan on credit ₹12,000.</li>
+          <li>5 Apr: Cash sales ₹5,000.</li>
+          <li>8 Apr: Returned goods by Ramesh ₹2,000.</li>
+          <li>9 Apr: Paid Sohan by cheque ₹10,000.</li>
+          <li>11 Apr: Paid electricity bill ₹3,000 cash.</li>
+        </ul>
+      </div>
+
+      <div class="practical-card">
+        <h3>Practical Question 5</h3>
+        <p>Record in Cash Book:</p>
+        <ul>
+          <li>1 May: Cash in hand ₹60,000.</li>
+          <li>2 May: Paid rent ₹6,000.</li>
+          <li>4 May: Cash sales ₹25,000.</li>
+          <li>6 May: Purchased goods for cash ₹10,000.</li>
+          <li>8 May: Deposited into bank ₹15,000.</li>
+          <li>10 May: Paid insurance premium ₹2,000.</li>
+        </ul>
+      </div>
+
+      <div class="practical-card">
+        <h3>Practical Question 6</h3>
+        <p>Enter the following in proper books of original entry:</p>
+        <ul>
+          <li>3 Jun: Purchased goods on credit from Anil ₹22,000.</li>
+          <li>4 Jun: Sold goods on credit to Sunil ₹28,000.</li>
+          <li>6 Jun: Cash sales ₹12,000.</li>
+          <li>7 Jun: Returned goods to Anil ₹2,000.</li>
+          <li>9 Jun: Received cheque from Sunil ₹20,000.</li>
+          <li>11 Jun: Paid salaries ₹7,000.</li>
+        </ul>
+      </div>
+    </section>
+
 
   </main>
 
   <script>
-    // Complete JavaScript Code for GST Chapter
     (() => {
-      // Selectors
       const $ = sel => document.querySelector(sel);
       const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-      /* Animation CSS injection */
+      // --- Config ---
+      const revealOnSelect = false; // if true, selecting wrong option immediately reveals correct answer
+
+      // --- Inject CSS for highlights & small animations ---
       const css = `
-        @keyframes shakeX {
-          0%,100%{transform:translateX(0)}
-          20%{transform:translateX(-8px)}
-          40%{transform:translateX(8px)}
-          60%{transform:translateX(-6px)}
-          80%{transform:translateX(6px)}
+        /* MCQ highlight styles */
+        .mcq label[data-correct] {
+          background: rgba(76,175,80,0.12) !important;
+          border: 1px solid rgba(76,175,80,0.9) !important;
+          color: #4caf50 !important;
         }
-        .aw-shake{animation:shakeX 0.4s ease}
-        .aw-pop{animation:popIn 0.35s ease both}
-        @keyframes popIn {
-          0%{opacity:0;transform:translateY(10px) scale(.96)}
-          60%{opacity:1;transform:translateY(-4px) scale(1.02)}
-          100%{opacity:1;transform:translateY(0) scale(1)}
+        .mcq label[data-wrong] {
+          background: rgba(244,67,54,0.08) !important;
+          border: 1px solid rgba(244,67,54,0.9) !important;
+          color: #f44336 !important;
         }
+        /* Show a small 'Correct: ...' hint when wrong */
+        .mcq label[data-wrong]::after {
+          content: " → Correct: " attr(data-correctText);
+          font-size: 0.85rem;
+          color: rgba(255,255,255,0.75);
+          margin-left: 8px;
+          font-style: italic;
+          display: inline-block;
+          vertical-align: middle;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 40%;
+          overflow: hidden;
+        }
+        /* Small UX animations used by the script */
+        @keyframes shakeX { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+        .aw-shake { animation: shakeX 0.4s ease; }
+        @keyframes popIn { 0%{opacity:0;transform:translateY(10px) scale(.96)} 60%{opacity:1;transform:translateY(-4px) scale(1.02)} 100%{opacity:1;transform:translateY(0) scale(1)} }
+        .aw-pop { animation: popIn 0.35s ease both; }
+        .btn-animate { animation: buttonPress 0.3s ease; }
+        @keyframes buttonPress { 0%{transform:scale(1)}40%{transform:scale(0.95)}60%{transform:scale(1.05)}100%{transform:scale(1)} }
       `;
-      const st = document.createElement("style");
+      const st = document.createElement('style');
       st.textContent = css;
       document.head.appendChild(st);
 
-      // Global variables
+      // --- DOM references ---
       const mcqs = $$('.mcq');
       const submitButton = $('#submit-mcq');
       const scoreDisplay = $('#score-display');
       const retryBtn = $('#retry-btn');
-      const circularProgress = $('#circularProgress');
-      const progressValueSpan = $('#progressValue');
+      const mcqContainer = $('#mcq-container');
+      const progressBar = $('#lesson-progress');          // horizontal progress (preferred)
+      const circularProgress = $('#circularProgress');    // fallback circular widget
+      const progressValueSpan = $('#progressValue');      // text inside circular
+
       const totalQuestions = mcqs.length;
-      let correctAnswered = new Set();
-      let currentProgress = 0, targetProgress = 0, raf;
 
-      /* Card Animation System */
+      // --- State for smooth progress animation ---
+      let correctAnswered = new Set(); // set of mcq DOM nodes marked correct (for real-time progress)
+      let currentProgress = 0;
+      let targetProgress = 0;
+      let raf = null;
+      let autoClearTimeout = null;
+
+      // ---------- Card animator (keeps your previous animation hooks) ----------
       class CardAnimator {
-        constructor() {
-          this.observer = null;
-          this.init();
-        }
-
+        constructor() { this.init(); }
         init() {
           setTimeout(() => {
             this.addAnimationClasses();
@@ -2330,248 +2564,279 @@
             this.animateOnLoad();
           }, 100);
         }
-
         addAnimationClasses() {
-          // Rate cards
-          $$('.rate-card').forEach(card => {
-            card.classList.add('slide-in-left');
-          });
-
-          // Feature cards
-          $$('.feature-card').forEach(card => {
-            card.classList.add('slide-in-left');
-          });
-
-          // Exempted cards
-          $$('.exempted-card').forEach(card => {
-            card.classList.add('slide-in-left');
-          });
-
-          // Practical cards
-          $$('.practical-card').forEach(card => {
-            card.classList.add('slide-in-left');
-          });
-
-          // Definition boxes
-          $$('.definition-box').forEach(box => {
-            box.classList.add('fade-up');
-          });
-
-          // Comparison table
-          $$('.comparison-table').forEach(table => {
-            table.classList.add('fade-up');
-          });
+          $$('.rate-card, .feature-card, .exempted-card, .practical-card').forEach(el => el.classList.add('slide-in-left'));
+          $$('.definition-box, .comparison-table').forEach(el => el.classList.add('fade-up'));
         }
-
         setupObserver() {
-          const options = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-          };
-
-          this.observer = new IntersectionObserver((entries) => {
+          const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                this.observer.unobserve(entry.target);
+                observer.unobserve(entry.target);
               }
             });
-          }, options);
+          }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-          $$('.slide-in-left, .fade-up').forEach(element => {
-            this.observer.observe(element);
-          });
+          $$('.slide-in-left, .fade-up').forEach(el => observer.observe(el));
         }
-
         animateOnLoad() {
           setTimeout(() => {
-            const introSection = $('section:first-of-type');
-            if (introSection) {
-              introSection.querySelectorAll('.fade-up').forEach(card => {
-                card.classList.add('visible');
-              });
-            }
+            const intro = $('section:first-of-type');
+            if (intro) intro.querySelectorAll('.fade-up').forEach(c => c.classList.add('visible'));
           }, 300);
         }
       }
 
-      // Toggle Solution Function
+      // ---------- Toggle solution (kept from your script) ----------
       window.toggleSolution = function(exampleId) {
         const solution = document.getElementById(`${exampleId}-solution`);
         const btn = document.querySelector(`[onclick="toggleSolution('${exampleId}')"]`);
-
         if (btn) {
           btn.classList.add('btn-animate');
           btn.addEventListener('animationend', () => btn.classList.remove('btn-animate'), { once: true });
         }
-
-        if (solution) {
-          if (solution.classList.contains('active')) {
-            solution.classList.remove('active');
-            setTimeout(() => {
-              solution.style.display = 'none';
-            }, 500);
-          } else {
-            solution.style.display = 'block';
-            setTimeout(() => {
-              solution.classList.add('active');
-              solution.classList.add('aw-pop');
-            }, 10);
-          }
+        if (!solution) return;
+        if (solution.classList.contains('active')) {
+          solution.classList.remove('active');
+          setTimeout(() => { solution.style.display = 'none'; }, 500);
+        } else {
+          solution.style.display = 'block';
+          setTimeout(() => { solution.classList.add('active', 'aw-pop'); }, 10);
         }
       };
 
-      /* MCQ System */
+      // ---------- Progress animation helpers ----------
       function animateProgressTo(percent) {
-        targetProgress = Math.round(percent);
-        cancelAnimationFrame(raf);
+        // clamp
+        targetProgress = Math.max(0, Math.min(100, Math.round(percent)));
+        if (raf) cancelAnimationFrame(raf);
         const step = () => {
           currentProgress += (targetProgress - currentProgress) * 0.18;
-          updateCircularUI(currentProgress);
-          if (Math.abs(targetProgress - currentProgress) > 0.5) {
+          if (Math.abs(targetProgress - currentProgress) < 0.5) currentProgress = targetProgress;
+          updateProgressUI(currentProgress);
+          if (currentProgress !== targetProgress) {
             raf = requestAnimationFrame(step);
-          } else {
-            currentProgress = targetProgress;
-            updateCircularUI(currentProgress);
           }
         };
         raf = requestAnimationFrame(step);
       }
 
-      function updateCircularUI(percent) {
-        if (!circularProgress || !progressValueSpan) return;
-        const deg = (percent/100)*360;
-        circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
-        progressValueSpan.textContent = `${Math.round(percent)}%`;
+      function updateProgressUI(percent) {
+        const p = Math.round(percent);
+        if (progressBar) {
+          // ensure progress element configured
+          if (!progressBar.max || Number(progressBar.max) !== 100) progressBar.max = 100;
+          progressBar.value = p;
+        } else if (circularProgress && progressValueSpan) {
+          const deg = (p / 100) * 360;
+          circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
+          progressValueSpan.textContent = `${p}%`;
+        }
+      }
+
+      // ---------- MCQ helpers ----------
+      function clearMcqIndicators(mcq) {
+        mcq.querySelectorAll('label').forEach(l => {
+          delete l.dataset.correct;
+          delete l.dataset.wrong;
+          delete l.dataset.correctText;
+        });
+        mcq.classList.remove('correct', 'wrong');
       }
 
       function enableSubmitCheck() {
-        const answered = $$('#mcq-container input[type=radio]:checked').length;
+        const anyAnswered = !!mcqContainer && mcqContainer.querySelectorAll('input[type="radio"]:checked').length > 0;
         if (submitButton) {
-          submitButton.disabled = answered === 0;
-          submitButton.style.opacity = answered ? '1' : '0.5';
+          submitButton.disabled = !anyAnswered;
+          submitButton.style.opacity = anyAnswered ? '1' : '0.5';
         }
       }
 
-      function handleRadio(e) {
+      // Real-time selection handler (updates progress and optionally reveals correct answer)
+      function handleRadioChange(e) {
         const input = e.target;
-        if (input.type !== 'radio') return;
+        if (!input || input.type !== 'radio') return;
         const mcq = input.closest('.mcq');
-                const correctAns = mcq.dataset.answer;
-        const label = mcq.querySelector(`label[for="${input.id}"]`);
+        if (!mcq) return;
 
-        if (label) {
-          label.classList.add('aw-pop');
-          setTimeout(() => label.classList.remove('aw-pop'), 350);
-        }
-        
-        if (input.value === correctAns) {
-          correctAnswered.add(mcq);
+        // Clear previous visual indicators for this mcq
+        clearMcqIndicators(mcq);
+
+        const correctAns = mcq.dataset.answer?.toString() ?? '';
+        const selectedValue = input.value?.toString() ?? '';
+        const selectedLabel = mcq.querySelector(`label[for="${input.id}"]`);
+        const correctInput = mcq.querySelector(`input[value="${correctAns}"]`);
+        const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
+        const correctText = correctLabel ? correctLabel.textContent.trim() : '';
+
+        // Immediate reveal logic if configured
+        if (revealOnSelect) {
+          if (selectedValue === correctAns) {
+            if (selectedLabel) selectedLabel.dataset.correct = "true";
+            mcq.classList.add('correct');
+            correctAnswered.add(mcq);
+          } else {
+            if (selectedLabel) {
+              selectedLabel.dataset.wrong = "true";
+              selectedLabel.dataset.correctText = correctText;
+              selectedLabel.classList.add('aw-shake');
+              selectedLabel.addEventListener('animationend', () => selectedLabel.classList.remove('aw-shake'), { once: true });
+            }
+            if (correctLabel) correctLabel.dataset.correct = "true";
+            mcq.classList.add('wrong');
+            correctAnswered.delete(mcq);
+          }
         } else {
-          correctAnswered.delete(mcq);
+          // only update Set — don't reveal labels
+          if (selectedValue === correctAns) correctAnswered.add(mcq);
+          else correctAnswered.delete(mcq);
         }
-        
-        animateProgressTo((correctAnswered.size / totalQuestions) * 100);
+
+        // Update smooth progress
+        const percent = totalQuestions ? (correctAnswered.size / totalQuestions) * 100 : 0;
+        animateProgressTo(percent);
+
+        // Enable or disable submit button
         enableSubmitCheck();
       }
 
+      // Submit answers (final marking + score)
       function handleSubmit() {
-        let score = 0;
-        let attempted = 0;
+        if (!mcqs.length) return;
+
+        // Clear any leftover auto-clear
+        if (autoClearTimeout) {
+          clearTimeout(autoClearTimeout);
+          autoClearTimeout = null;
+        }
+
+        let attempted = 0, score = 0;
 
         mcqs.forEach(mcq => {
-          const correctAns = mcq.dataset.answer;
-          const selected = mcq.querySelector('input:checked');
-          if (!selected) return;
-          attempted++;
+          // clear previous per-MCQ indicator attributes (we will set them freshly)
+          mcq.querySelectorAll('label').forEach(l => {
+            delete l.dataset.correct;
+            delete l.dataset.wrong;
+            delete l.dataset.correctText;
+          });
 
-          const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-          const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-          const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
+          const correctAns = mcq.dataset.answer?.toString() ?? '';
+          const selected = mcq.querySelector('input[type="radio"]:checked');
+          if (!selected) return;
+
+          attempted++;
+          const selectedLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+          const correctInput = mcq.querySelector(`input[value="${correctAns}"]`);
+          const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
+          const correctText = correctLabel ? correctLabel.textContent.trim() : '';
 
           if (selected.value === correctAns) {
             score++;
-            if (corrLabel) corrLabel.classList.add('aw-pop');
+            if (selectedLabel) selectedLabel.dataset.correct = "true";
+            mcq.classList.add('correct');
           } else {
-            if (selLabel) {
-              selLabel.classList.add('aw-shake');
-              selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
+            if (selectedLabel) {
+              selectedLabel.dataset.wrong = "true";
+              selectedLabel.dataset.correctText = correctText;
+              selectedLabel.classList.add('aw-shake');
+              selectedLabel.addEventListener('animationend', () => selectedLabel.classList.remove('aw-shake'), { once: true });
             }
-            if (corrLabel) corrLabel.classList.add('aw-pop');
+            if (correctLabel) correctLabel.dataset.correct = "true";
+            mcq.classList.add('wrong');
           }
         });
 
-        const pct = attempted ? (score / attempted) * 100 : 0;
-        let msg = '';
+        // update progress to reflect final score (percent of correct out of total)
+        const percent = totalQuestions ? Math.round((score / totalQuestions) * 100) : 0;
+        animateProgressTo(percent);
 
-        // Updated scoring logic - Excellent only when ALL questions are answered correctly
-        if (score === totalQuestions && attempted === totalQuestions) {
-          msg = `🌟 <strong>Excellent!</strong> You scored ${score}/${totalQuestions}. Perfect score! You have mastered GST concepts!`;
-        } else if (pct >= 80) {
-          msg = `👏 <strong>Great Job!</strong> You scored ${score}/${attempted}. Almost there! Review the ones you missed.`;
-        } else if (pct >= 60) {
-          msg = `👍 <strong>Good Job!</strong> You got ${score}/${attempted}. Keep studying GST concepts.`;
-        } else if (pct > 0) {
-          msg = `💡 <strong>Keep Learning!</strong> You got ${score}/${attempted}. Review the GST fundamentals.`;
-        } else {
-          msg = `⚡ <strong>Start Learning!</strong> Try answering the questions about GST.`;
-        }
-
+        // Display message
         if (scoreDisplay) {
+          let msg = '';
+          if (score === totalQuestions && attempted === totalQuestions) {
+            msg = `🌟 <strong>Excellent!</strong> You scored ${score}/${totalQuestions}. Perfect score!`;
+          } else if (totalQuestions && (score / totalQuestions) >= 0.8) {
+            msg = `👏 <strong>Great Job!</strong> ${score}/${totalQuestions}. Keep it up.`;
+          } else if (totalQuestions && (score / totalQuestions) >= 0.6) {
+            msg = `👍 <strong>Good!</strong> ${score}/${totalQuestions}. Review missed ones.`;
+          } else if (attempted > 0) {
+            msg = `💡 <strong>Keep Learning!</strong> ${score}/${attempted} correct. Try again.`;
+          } else {
+            msg = `⚡ <strong>Start Learning!</strong> Answer some questions first.`;
+          }
+
           scoreDisplay.innerHTML = msg;
           scoreDisplay.style.display = 'block';
-          scoreDisplay.style.opacity = '0';
+          scoreDisplay.style.opacity = 0;
           setTimeout(() => {
-            scoreDisplay.style.transition = 'all .5s ease';
-            scoreDisplay.style.opacity = '1';
+            scoreDisplay.style.transition = 'all .45s ease';
+            scoreDisplay.style.opacity = 1;
             scoreDisplay.classList.add('aw-pop');
-          }, 50);
+          }, 20);
         }
 
+        // Show retry
         if (retryBtn) retryBtn.style.display = 'inline-block';
+
+        // Optional: auto-clear the feedback after 15 seconds (you can comment this out)
+        autoClearTimeout = setTimeout(() => {
+          resetQuizFeedback();
+        }, 15000);
       }
 
+      // Reset quiz entirely (called by Retry)
       function resetQuiz() {
+        // clear set and UI
         correctAnswered.clear();
         mcqs.forEach(mcq => {
           mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+          clearMcqIndicators(mcq);
         });
         animateProgressTo(0);
         if (scoreDisplay) scoreDisplay.style.display = 'none';
         if (retryBtn) retryBtn.style.display = 'none';
         enableSubmitCheck();
+        if (autoClearTimeout) { clearTimeout(autoClearTimeout); autoClearTimeout = null; }
       }
 
-      /* Initialize Everything */
+      // Reset only feedback (keeps answers cleared)
+      function resetQuizFeedback() {
+        mcqs.forEach(mcq => clearMcqIndicators(mcq));
+        if (scoreDisplay) scoreDisplay.style.display = 'none';
+        animateProgressTo(0);
+        enableSubmitCheck();
+      }
+
+      // --- Initialization ---
       function initialize() {
-        const animator = new CardAnimator();
+        new CardAnimator();
 
-        const mcqContainer = $('#mcq-container');
+        // Wire radio change handling (real-time)
         if (mcqContainer) {
-          mcqContainer.addEventListener('change', handleRadio);
-        }
-        
-        if (submitButton) {
-          submitButton.addEventListener('click', handleSubmit);
-        }
-        
-        if (retryBtn) {
-          retryBtn.addEventListener('click', resetQuiz);
+          mcqContainer.addEventListener('change', handleRadioChange);
+        } else {
+          // fallback: bind to each radio (if mcq-container id not present)
+          document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', handleRadioChange));
         }
 
+        if (submitButton) submitButton.addEventListener('click', handleSubmit);
+        if (retryBtn) retryBtn.addEventListener('click', resetQuiz);
+
+        // initial progress zero
         animateProgressTo(0);
         enableSubmitCheck();
 
-        console.log('GST Chapter loaded successfully!');
+        console.log('GST chapter JS initialized — MCQs:', totalQuestions);
       }
 
-      /* Event Listeners */
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initialize);
       } else {
         initialize();
       }
     })();
+
   </script>
 
 </body>
