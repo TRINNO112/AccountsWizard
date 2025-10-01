@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Lesson 12 – Worked Examples | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --speed: 300ms;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
+        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      padding: 20px;
+    }
+    header { text-align: center; padding: 30px 20px; }
+    .lesson-title {
+      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
+      background: linear-gradient(90deg,#fff,var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: var(--muted); font-size: 1.1rem; margin-top: 10px; }
+    .breadcrumb { color: var(--muted); font-size: .95rem; margin-top: 15px; }
+    .breadcrumb a { color: inherit; text-decoration: none; }
+    .breadcrumb a:hover { color: var(--text); }
+    .nav-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
+      margin-bottom: 32px; box-shadow: var(--shadow); flex-wrap: wrap; gap: 10px;
+    }
+    .nav-header a {
+      color: var(--muted); text-decoration: none; display: flex; align-items: center;
+      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
+    }
+    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
+    section {
+      background: var(--card); border-radius: var(--radius);
+      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    section h2 {
+      margin-top: 0; font-size: 1.5rem;
+      background: linear-gradient(90deg,#fff,var(--brand-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    section h3 {
+      color: var(--brand-2); font-size: 1.2rem; margin-top: 25px;
+      border-bottom: 2px solid rgba(124,77,255,0.3); padding-bottom: 8px;
+    }
+
+    .transactions-list {
+      background: rgba(0,229,255,0.05); padding: 15px 20px;
+      border-radius: 8px; margin: 15px 0;
+    }
+    .transactions-list h4 {
+      color: var(--brand-2); margin-top: 0; font-size: 1rem;
+    }
+    .transactions-list p {
+      margin: 8px 0; color: var(--muted); line-height: 1.6;
+    }
+
+    .book-table {
+      width: 100%; margin: 20px 0; border-collapse: collapse;
+      background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden;
+    }
+    .book-table thead {
+      background: var(--brand);
+    }
+    .book-table th {
+      color: white; padding: 12px; text-align: left;
+      font-weight: 600; font-size: 0.9rem;
+    }
+    .book-table td {
+      padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: var(--text); font-size: 0.9rem;
+    }
+    .book-table tbody tr:hover {
+      background: rgba(255,255,255,0.03);
+    }
+    .total-row {
+      background: rgba(124,77,255,0.2) !important;
+      font-weight: 700;
+    }
+    .ledger-entry {
+      background: rgba(0,229,255,0.05); padding: 15px;
+      border-radius: 8px; margin: 15px 0; font-family: monospace;
+    }
+    .ledger-entry h4 {
+      color: var(--brand-2); margin-top: 0; font-size: 1rem;
+    }
+    .debit-side { color: #4caf50; }
+    .credit-side { color: #f44336; }
+
+    .info-box {
+      background: rgba(255,122,198,0.1); border-left: 4px solid var(--accent);
+      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
+      color: var(--text); font-size: 0.9rem;
+    }
+    .note-box {
+      background: rgba(0,229,255,0.1); border-left: 4px solid var(--brand-2);
+      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
+      color: var(--text); font-size: 0.9rem;
+    }
+    .connection-box {
+      background: rgba(76,175,80,0.1); border-left: 4px solid #4caf50;
+      padding: 15px 20px; margin: 20px 0; border-radius: 8px;
+    }
+    .connection-box h4 {
+      color: #4caf50; margin-top: 0; font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+      .book-table { font-size: 0.8rem; }
+      .book-table th, .book-table td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+    <a href="lesson-12.html" style="background: rgba(124,77,255,0.2);"><i class="fa-solid fa-arrow-left"></i><span>Back to Lesson</span></a>
+  </div>
+
+  <header>
+    <h1 class="lesson-title">Books of Original Entry</h1>
+    <div class="subtitle">Complete Interconnected Examples</div>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / 
+      <a href="../lessons.html">Lessons</a> / 
+      <a href="lesson-12.html">Lesson 12</a> /
+      Examples
+    </div>
+  </header>
+
+  <main>
+    <!-- OVERVIEW -->
+    <section>
+      <h2><i class="fas fa-info-circle"></i> How These Books Connect</h2>
+      <p style="font-size:1.1rem; line-height:1.8; color: var(--muted);">
+        In this example, we'll follow <strong>ABC Traders</strong> (a business) through multiple transactions in January 2025. 
+        You'll see the same parties appearing in different books, showing how subsidiary books work together as a complete system.
+      </p>
+      
+      <div class="note-box">
+        <strong>Key Understanding:</strong> When ABC Traders buys goods on credit, it goes to the Purchase Book. 
+        If they return some goods, it goes to the Purchase Returns Book. Both transactions involve the same supplier 
+        but are recorded in different books!
+      </div>
+    </section>
+
+    <!-- COMPLETE EXAMPLE -->
+    <section>
+      <h2><i class="fas fa-sync-alt"></i> Complete Business Cycle Example</h2>
+      
+      <div class="transactions-list">
+        <h4>All Transactions for ABC Traders - January 2025:</h4>
+        <p><strong>Jan 3:</strong> Purchased goods from Raj Suppliers ₹50,000 on credit (Invoice P-101)</p>
+        <p><strong>Jan 5:</strong> Sold goods to Kumar Enterprises ₹35,000 on credit (Invoice S-201)</p>
+        <p><strong>Jan 8:</strong> Purchased goods from Sharma & Co. ₹28,000 on credit (Invoice P-102)</p>
+        <p><strong>Jan 10:</strong> Returned defective goods to Raj Suppliers ₹5,000 (Debit Note DN-01)</p>
+        <p><strong>Jan 12:</strong> Sold goods to Patel Traders ₹42,000 on credit (Invoice S-202)</p>
+        <p><strong>Jan 15:</strong> Kumar Enterprises returned damaged goods ₹3,000 (Credit Note CN-01)</p>
+        <p><strong>Jan 18:</strong> Purchased goods from Gupta Brothers ₹33,000 on credit (Invoice P-103)</p>
+        <p><strong>Jan 20:</strong> Purchased furniture from Office Mart ₹25,000 on credit (needs Journal Proper)</p>
+        <p><strong>Jan 25:</strong> Sold goods to Mehta Ltd. ₹38,500 on credit (Invoice S-203)</p>
+        <p><strong>Jan 28:</strong> Returned excess stock to Sharma & Co. ₹2,500 (Debit Note DN-02)</p>
+      </div>
+
+      <div class="connection-box">
+        <h4><i class="fas fa-link"></i> Notice the Connections:</h4>
+        <ul style="color: var(--muted); line-height: 1.8;">
+          <li><strong>Raj Suppliers</strong> appears in both Purchase Book (Jan 3) and Purchase Returns Book (Jan 10)</li>
+          <li><strong>Kumar Enterprises</strong> appears in both Sales Book (Jan 5) and Sales Returns Book (Jan 15)</li>
+          <li><strong>Sharma & Co.</strong> appears in both Purchase Book (Jan 8) and Purchase Returns Book (Jan 28)</li>
+          <li><strong>Furniture purchase</strong> goes to Journal Proper (not Purchase Book) because it's an asset!</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PURCHASE BOOK -->
+    <section>
+      <h2><i class="fas fa-shopping-cart"></i> 1. Purchase Book</h2>
+      
+      <div class="note-box">
+        <strong>Remember:</strong> Only CREDIT purchases of GOODS for resale are recorded here.
+      </div>
+
+      <h3>Purchase Book of ABC Traders:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Invoice No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 3, 2025</td>
+            <td>Raj Suppliers</td>
+            <td>P-101</td>
+            <td>15</td>
+            <td>50,000</td>
+          </tr>
+          <tr>
+            <td>Jan 8, 2025</td>
+            <td>Sharma & Co.</td>
+            <td>P-102</td>
+            <td>22</td>
+            <td>28,000</td>
+          </tr>
+          <tr>
+            <td>Jan 18, 2025</td>
+            <td>Gupta Brothers</td>
+            <td>P-103</td>
+            <td>28</td>
+            <td>33,000</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
+            <td><strong>1,11,000</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Purchases A/c Dr.</span> ₹1,11,000</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Sundry Creditors A/c</span> ₹1,11,000</p>
+        <p style="margin-top:10px; font-style:italic;">(Being total credit purchases for January)</p>
+        <hr style="margin:15px 0; opacity:0.3;">
+        <p style="font-size:0.9rem;">Individual Postings:</p>
+        <p style="font-size:0.85rem;">• Raj Suppliers A/c credited with ₹50,000</p>
+        <p style="font-size:0.85rem;">• Sharma & Co. A/c credited with ₹28,000</p>
+        <p style="font-size:0.85rem;">• Gupta Brothers A/c credited with ₹33,000</p>
+      </div>
+
+      <div class="info-box">
+        <strong>Why furniture purchase (Jan 20) is NOT here?</strong> Because furniture is an ASSET, not goods for resale. It goes to Journal Proper!
+      </div>
+    </section>
+
+    <!-- SALES BOOK -->
+    <section>
+      <h2><i class="fas fa-cash-register"></i> 2. Sales Book</h2>
+      
+      <div class="note-box">
+        <strong>Remember:</strong> Only CREDIT sales of GOODS are recorded here.
+      </div>
+
+      <h3>Sales Book of ABC Traders:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Invoice No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 5, 2025</td>
+            <td>Kumar Enterprises</td>
+            <td>S-201</td>
+            <td>12</td>
+            <td>35,000</td>
+          </tr>
+          <tr>
+            <td>Jan 12, 2025</td>
+            <td>Patel Traders</td>
+            <td>S-202</td>
+            <td>18</td>
+            <td>42,000</td>
+          </tr>
+          <tr>
+            <td>Jan 25, 2025</td>
+            <td>Mehta Ltd.</td>
+            <td>S-203</td>
+            <td>25</td>
+            <td>38,500</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
+            <td><strong>1,15,500</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Sundry Debtors A/c Dr.</span> ₹1,15,500</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Sales A/c</span> ₹1,15,500</p>
+        <p style="margin-top:10px; font-style:italic;">(Being total credit sales for January)</p>
+        <hr style="margin:15px 0; opacity:0.3;">
+        <p style="font-size:0.9rem;">Individual Postings:</p>
+        <p style="font-size:0.85rem;">• Kumar Enterprises A/c debited with ₹35,000</p>
+        <p style="font-size:0.85rem;">• Patel Traders A/c debited with ₹42,000</p>
+        <p style="font-size:0.85rem;">• Mehta Ltd. A/c debited with ₹38,500</p>
+      </div>
+    </section>
+
+    <!-- PURCHASE RETURNS BOOK -->
+    <section>
+      <h2><i class="fas fa-undo"></i> 3. Purchase Returns Book (Returns Outward)</h2>
+      
+      <div class="note-box">
+        <strong>Remember:</strong> Goods returned TO suppliers who sold us goods on credit.
+      </div>
+
+      <h3>Purchase Returns Book of ABC Traders:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Debit Note No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 10, 2025</td>
+            <td>Raj Suppliers</td>
+            <td>DN-01</td>
+            <td>15</td>
+            <td>5,000</td>
+          </tr>
+          <tr>
+            <td>Jan 28, 2025</td>
+            <td>Sharma & Co.</td>
+            <td>DN-02</td>
+            <td>22</td>
+            <td>2,500</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
+            <td><strong>7,500</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Sundry Creditors A/c Dr.</span> ₹7,500</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Purchase Returns A/c</span> ₹7,500</p>
+        <p style="margin-top:10px; font-style:italic;">(Being goods returned to suppliers)</p>
+        <hr style="margin:15px 0; opacity:0.3;">
+        <p style="font-size:0.9rem;">Individual Postings:</p>
+        <p style="font-size:0.85rem;">• Raj Suppliers A/c debited with ₹5,000</p>
+        <p style="font-size:0.85rem;">• Sharma & Co. A/c debited with ₹2,500</p>
+      </div>
+
+      <div class="connection-box">
+        <h4><i class="fas fa-link"></i> See the Connection:</h4>
+        <p style="color: var(--muted);">
+          <strong>Raj Suppliers:</strong> We bought ₹50,000 (Purchase Book) but returned ₹5,000 (Purchase Returns). 
+          <br><strong>Net amount we owe = ₹45,000</strong>
+        </p>
+        <p style="color: var(--muted);">
+          <strong>Sharma & Co.:</strong> We bought ₹28,000 (Purchase Book) but returned ₹2,500 (Purchase Returns). 
+          <br><strong>Net amount we owe = ₹25,500</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- SALES RETURNS BOOK -->
+    <section>
+      <h2><i class="fas fa-reply"></i> 4. Sales Returns Book (Returns Inward)</h2>
+      
+      <div class="note-box">
+        <strong>Remember:</strong> Goods returned BY customers who bought from us on credit.
+      </div>
+
+      <h3>Sales Returns Book of ABC Traders:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Credit Note No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 15, 2025</td>
+            <td>Kumar Enterprises</td>
+            <td>CN-01</td>
+            <td>12</td>
+            <td>3,000</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right;"><strong>Total</strong></td>
+            <td><strong>3,000</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Sales Returns A/c Dr.</span> ₹3,000</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Sundry Debtors A/c</span> ₹3,000</p>
+        <p style="margin-top:10px; font-style:italic;">(Being goods returned by customers)</p>
+        <hr style="margin:15px 0; opacity:0.3;">
+        <p style="font-size:0.9rem;">Individual Posting:</p>
+        <p style="font-size:0.85rem;">• Kumar Enterprises A/c credited with ₹3,000</p>
+      </div>
+
+      <div class="connection-box">
+        <h4><i class="fas fa-link"></i> See the Connection:</h4>
+        <p style="color: var(--muted);">
+          <strong>Kumar Enterprises:</strong> They bought ₹35,000 (Sales Book) but returned ₹3,000 (Sales Returns). 
+          <br><strong>Net amount they owe us = ₹32,000</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- JOURNAL PROPER -->
+    <section>
+      <h2><i class="fas fa-book"></i> 5. Journal Proper</h2>
+      
+      <div class="note-box">
+        <strong>Remember:</strong> For transactions that DON'T fit in other books.
+      </div>
+
+      <h3>Journal Proper of ABC Traders:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>L.F.</th>
+            <th>Debit (₹)</th>
+            <th>Credit (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 20, 2025</td>
+            <td style="line-height:1.8;">
+              <strong>Furniture A/c Dr.</strong><br>
+              <span style="margin-left:30px;">To Office Mart A/c</span><br>
+              <em style="font-size:0.85rem;">(Being furniture purchased on credit from Office Mart)</em>
+            </td>
+            <td style="vertical-align:top;">8<br>18</td>
+            <td style="vertical-align:top;">25,000<br><br></td>
+            <td style="vertical-align:top;"><br>25,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Why this goes to Journal Proper:</strong> Furniture is a FIXED ASSET, not goods for resale. 
+        Purchase Book only records goods meant for trading. Asset purchases on credit go to Journal Proper.
+      </div>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Furniture A/c Dr.</span> ₹25,000</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Office Mart A/c</span> ₹25,000</p>
+      </div>
+    </section>
+
+    <!-- FINAL SUMMARY -->
+    <section>
+      <h2><i class="fas fa-chart-line"></i> Complete Month Summary</h2>
+      
+      <h3>Final Ledger Balances After All Postings:</h3>
+      
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin:20px 0;">
+        
+        <div class="connection-box">
+          <h4>Purchases Side (What We Bought):</h4>
+          <table style="width:100%; color: var(--muted); font-size:0.9rem;">
+            <tr><td>Total Purchases:</td><td style="text-align:right;"><strong>₹1,11,000</strong></td></tr>
+            <tr><td>Less: Purchase Returns:</td><td style="text-align:right;"><strong>(₹7,500)</strong></td></tr>
+            <tr style="border-top:2px solid rgba(255,255,255,0.2);"><td><strong>Net Purchases:</strong></td><td style="text-align:right;"><strong>₹1,03,500</strong></td></tr>
+          </table>
+        </div>
+
+        <div class="connection-box">
+          <h4>Sales Side (What We Sold):</h4>
+          <table style="width:100%; color: var(--muted); font-size:0.9rem;">
+            <tr><td>Total Sales:</td><td style="text-align:right;"><strong>₹1,15,500</strong></td></tr>
+            <tr><td>Less: Sales Returns:</td><td style="text-align:right;"><strong>(₹3,000)</strong></td></tr>
+            <tr style="border-top:2px solid rgba(255,255,255,0.2);"><td><strong>Net Sales:</strong></td><td style="text-align:right;"><strong>₹1,12,500</strong></td></tr>
+          </table>
+        </div>
+
+      </div>
+
+      <h3>Individual Party Balances:</h3>
+      
+      <div style="background: rgba(255,255,255,0.03); padding:20px; border-radius:8px; margin:20px 0;">
+        <h4 style="color: var(--accent); margin-top:0;">Creditors (We Owe Them):</h4>
+        <table style="width:100%; color: var(--muted); font-size:0.9rem;">
+          <tr><td>Raj Suppliers:</td><td>₹50,000 - ₹5,000 =</td><td style="text-align:right; color:#f44336;"><strong>₹45,000</strong></td></tr>
+          <tr><td>Sharma & Co.:</td><td>₹28,000 - ₹2,500 =</td><td style="text-align:right; color:#f44336;"><strong>₹25,500</strong></td></tr>
+          <tr><td>Gupta Brothers:</td><td>₹33,000 - ₹0 =</td><td style="text-align:right; color:#f44336;"><strong>₹33,000</strong></td></tr>
+          <tr><td>Office Mart:</td><td>₹25,000 (furniture) =</td><td style="text-align:right; color:#f44336;"><strong>₹25,000</strong></td></tr>
+          <tr style="border-top:2px solid rgba(255,255,255,0.2);"><td colspan="2"><strong>Total Creditors:</strong></td><td style="text-align:right; color:#f44336;"><strong>₹1,28,500</strong></td></tr>
+        </table>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.03); padding:20px; border-radius:8px; margin:20px 0;">
+        <h4 style="color: var(--brand-2); margin-top:0;">Debtors (They Owe Us):</h4>
+        <table style="width:100%; color: var(--muted); font-size:0.9rem;">
+          <tr><td>Kumar Enterprises:</td><td>₹35,000 - ₹3,000 =</td><td style="text-align:right; color:#4caf50;"><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Lesson 12 – Worked Examples | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --speed: 300ms;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
+        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      padding: 20px;
+    }
+    header { text-align: center; padding: 30px 20px; }
+    .lesson-title {
+      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
+      background: linear-gradient(90deg,#fff,var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: var(--muted); font-size: 1.1rem; margin-top: 10px; }
+    .breadcrumb { color: var(--muted); font-size: .95rem; margin-top: 15px; }
+    .breadcrumb a { color: inherit; text-decoration: none; }
+    .breadcrumb a:hover { color: var(--text); }
+    .nav-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
+      margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .nav-header a {
+      color: var(--muted); text-decoration: none; display: flex; align-items: center;
+      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
+    }
+    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
+    section {
+      background: var(--card); border-radius: var(--radius);
+      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    section h2 {
+      margin-top: 0; font-size: 1.5rem;
+      background: linear-gradient(90deg,#fff,var(--brand-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    section h3 {
+      color: var(--brand-2); font-size: 1.2rem; margin-top: 25px;
+      border-bottom: 2px solid rgba(124,77,255,0.3); padding-bottom: 8px;
+    }
+
+    .example-box {
+      background: rgba(255,255,255,0.03); border-left: 4px solid var(--brand);
+      padding: 20px; margin: 20px 0; border-radius: 8px;
+    }
+    .example-title {
+      color: var(--accent); font-weight: 700; font-size: 1.1rem; margin-bottom: 15px;
+    }
+    .transactions-list {
+      background: rgba(0,229,255,0.05); padding: 15px 20px;
+      border-radius: 8px; margin: 15px 0;
+    }
+    .transactions-list h4 {
+      color: var(--brand-2); margin-top: 0; font-size: 1rem;
+    }
+    .transactions-list p {
+      margin: 8px 0; color: var(--muted); line-height: 1.6;
+    }
+
+    .book-table {
+      width: 100%; margin: 20px 0; border-collapse: collapse;
+      background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden;
+    }
+    .book-table thead {
+      background: var(--brand);
+    }
+    .book-table th {
+      color: white; padding: 12px; text-align: left;
+      font-weight: 600; font-size: 0.9rem;
+    }
+    .book-table td {
+      padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: var(--text); font-size: 0.9rem;
+    }
+    .book-table tbody tr:hover {
+      background: rgba(255,255,255,0.03);
+    }
+    .total-row {
+      background: rgba(124,77,255,0.2) !important;
+      font-weight: 700;
+    }
+    .ledger-entry {
+      background: rgba(0,229,255,0.05); padding: 15px;
+      border-radius: 8px; margin: 15px 0; font-family: monospace;
+    }
+    .ledger-entry h4 {
+      color: var(--brand-2); margin-top: 0; font-size: 1rem;
+    }
+    .debit-side { color: #4caf50; }
+    .credit-side { color: #f44336; }
+
+    .info-box {
+      background: rgba(255,122,198,0.1); border-left: 4px solid var(--accent);
+      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
+      color: var(--text); font-size: 0.9rem;
+    }
+    .note-box {
+      background: rgba(0,229,255,0.1); border-left: 4px solid var(--brand-2);
+      padding: 12px 16px; margin: 15px 0; border-radius: 8px;
+      color: var(--text); font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .book-table { font-size: 0.8rem; }
+      .book-table th, .book-table td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <header>
+    <h1 class="lesson-title">Books of Original Entry</h1>
+    <div class="subtitle">Detailed Worked Examples</div>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / 
+      <a href="../lessons.html">Lessons</a> / 
+      <a href="lesson-12.html">Lesson 12</a> /
+      Examples
+    </div>
+  </header>
+
+  <main>
+    <!-- PURCHASE BOOK EXAMPLE -->
+    <section>
+      <h2><i class="fas fa-shopping-cart"></i> Purchase Book - Complete Example</h2>
+      
+      <div class="transactions-list">
+        <h4>Transactions for January 2025:</h4>
+        <p><strong>Jan 5:</strong> Purchased goods from Raj Traders worth ₹25,000 on credit (Invoice No. 101)</p>
+        <p><strong>Jan 10:</strong> Bought merchandise from Kumar & Co. for ₹18,500 on credit (Invoice No. 205)</p>
+        <p><strong>Jan 15:</strong> Purchased stock from Sharma Enterprises ₹32,000 on credit (Invoice No. 310)</p>
+        <p><strong>Jan 22:</strong> Acquired goods from Gupta Brothers ₹15,750 on credit (Invoice No. 425)</p>
+        <p><strong>Jan 28:</strong> Purchased inventory from Modern Traders ₹21,200 on credit (Invoice No. 530)</p>
+      </div>
+
+      <h3>Purchase Book Format:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Invoice No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 5, 2025</td>
+            <td>Raj Traders</td>
+            <td>101</td>
+            <td>15</td>
+            <td>25,000</td>
+          </tr>
+          <tr>
+            <td>Jan 10, 2025</td>
+            <td>Kumar & Co.</td>
+            <td>205</td>
+            <td>22</td>
+            <td>18,500</td>
+          </tr>
+          <tr>
+            <td>Jan 15, 2025</td>
+            <td>Sharma Enterprises</td>
+            <td>310</td>
+            <td>28</td>
+            <td>32,000</td>
+          </tr>
+          <tr>
+            <td>Jan 22, 2025</td>
+            <td>Gupta Brothers</td>
+            <td>425</td>
+            <td>35</td>
+            <td>15,750</td>
+          </tr>
+          <tr>
+            <td>Jan 28, 2025</td>
+            <td>Modern Traders</td>
+            <td>530</td>
+            <td>42</td>
+            <td>21,200</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right;"><strong>Total Purchases for January</strong></td>
+            <td><strong>1,12,450</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Purchases A/c Dr.</span> ₹1,12,450</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Sundry Creditors A/c</span> ₹1,12,450</p>
+        <p style="margin-top:10px; font-style:italic;">(Being goods purchased on credit during January)</p>
+      </div>
+
+      <div class="info-box">
+        <strong>Important:</strong> Individual creditor accounts are also posted separately with their respective amounts.
+      </div>
+    </section>
+
+    <!-- SALES BOOK EXAMPLE -->
+    <section>
+      <h2><i class="fas fa-cash-register"></i> Sales Book - Complete Example</h2>
+      
+      <div class="transactions-list">
+        <h4>Transactions for January 2025:</h4>
+        <p><strong>Jan 3:</strong> Sold goods to ABC Enterprises ₹28,000 on credit (Invoice No. S-201)</p>
+        <p><strong>Jan 8:</strong> Goods sold to XYZ Traders for ₹35,500 on credit (Invoice No. S-202)</p>
+        <p><strong>Jan 14:</strong> Merchandise sold to PQR Ltd. ₹42,300 on credit (Invoice No. S-203)</p>
+        <p><strong>Jan 20:</strong> Sold stock to LMN Retailers ₹19,800 on credit (Invoice No. S-204)</p>
+        <p><strong>Jan 26:</strong> Goods supplied to RST Corporation ₹31,400 on credit (Invoice No. S-205)</p>
+      </div>
+
+      <h3>Sales Book Format:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Invoice No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 3, 2025</td>
+            <td>ABC Enterprises</td>
+            <td>S-201</td>
+            <td>12</td>
+            <td>28,000</td>
+          </tr>
+          <tr>
+            <td>Jan 8, 2025</td>
+            <td>XYZ Traders</td>
+            <td>S-202</td>
+            <td>18</td>
+            <td>35,500</td>
+          </tr>
+          <tr>
+            <td>Jan 14, 2025</td>
+            <td>PQR Ltd.</td>
+            <td>S-203</td>
+            <td>25</td>
+            <td>42,300</td>
+          </tr>
+          <tr>
+            <td>Jan 20, 2025</td>
+            <td>LMN Retailers</td>
+            <td>S-204</td>
+            <td>32</td>
+            <td>19,800</td>
+          </tr>
+          <tr>
+            <td>Jan 26, 2025</td>
+            <td>RST Corporation</td>
+            <td>S-205</td>
+            <td>38</td>
+            <td>31,400</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4" style="text-align:right;"><strong>Total Sales for January</strong></td>
+            <td><strong>1,57,000</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="ledger-entry">
+        <h4>Ledger Posting:</h4>
+        <p><span class="debit-side">Sundry Debtors A/c Dr.</span> ₹1,57,000</p>
+        <p style="margin-left:40px;">To <span class="credit-side">Sales A/c</span> ₹1,57,000</p>
+        <p style="margin-top:10px; font-style:italic;">(Being goods sold on credit during January)</p>
+      </div>
+
+      <div class="info-box">
+        <strong>Important:</strong> Individual debtor accounts are also posted separately with their respective amounts.
+      </div>
+    </section>
+
+    <!-- PURCHASE RETURNS BOOK EXAMPLE -->
+    <section>
+      <h2><i class="fas fa-undo"></i> Purchase Returns Book - Complete Example</h2>
+      
+      <div class="transactions-list">
+        <h4>Transactions for January 2025:</h4>
+        <p><strong>Jan 7:</strong> Returned defective goods to Raj Traders worth ₹3,000 (Debit Note No. DN-01)</p>
+        <p><strong>Jan 12:</strong> Sent back excess stock to Kumar & Co. valued at ₹2,500 (Debit Note No. DN-02)</p>
+        <p><strong>Jan 18:</strong> Returned damaged goods to Sharma Enterprises ₹4,200 (Debit Note No. DN-03)</p>
+        <p><strong>Jan 25:</strong> Goods returned to Modern Traders ₹1,800 (Debit Note No. DN-04)</p>
+      </div>
+
+      <h3>Purchase Returns Book Format:</h3>
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Particulars</th>
+            <th>Debit Note No.</th>
+            <th>L.F.</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jan 7, 2025</td>
+            <td>Raj Traders</td>
+            <td>DN-01</td>
+            <td>15</td>
+            <td>3,000</td>
+          </tr>
+          <tr>
+            <td>Jan 12, 2025</td>
+            <td>Kumar & Co.</td>
+            <td>DN-02</td>
+            <td>22</td>
+            <td>2,500</td>
+          </tr>
+          <tr>
+            <td>Jan 18, 2025</td>
+            <td>Sharma Enterprises</td>
+            <td>DN-03</td>
+            <td>28</td>
+            <td>4,200</td>
+          </tr>
+          <tr>
+            <td>Jan 25, 2025</td>
+            <td>Modern Traders</td>
+            <td>DN-04</td>
+            <td>42</td>
+            <td>1,800</td>
+          </tr>
+          <tr class

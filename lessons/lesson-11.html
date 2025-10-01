@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -22,57 +23,335 @@
       --speed: 300ms;
     }
 
-    * { box-sizing: border-box; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      margin: 0;
       font-family: ui-sans-serif, system-ui, Roboto, Arial;
       color: var(--text);
       background: linear-gradient(180deg, var(--bg), var(--bg-2));
       min-height: 100vh;
       padding: 20px;
       overflow-x: hidden;
+      position: relative;
     }
 
-    header { text-align: center; padding: 30px 20px; }
+    /* Animated Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 122, 198, 0.05) 0%, transparent 50%);
+      animation: floatingBg 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatingBg {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-20px, -20px) rotate(1deg); }
+      50% { transform: translate(20px, -10px) rotate(-1deg); }
+      75% { transform: translate(-10px, 20px) rotate(2deg); }
+    }
+
+    /* Floating Particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .particle:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, var(--brand) 0%, transparent 70%);
+      animation: float1 15s infinite;
+    }
+
+    .particle:nth-child(2) {
+      top: 70%;
+      right: 10%;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, var(--brand-2) 0%, transparent 70%);
+      animation: float2 20s infinite;
+    }
+
+    .particle:nth-child(3) {
+      bottom: 20%;
+      left: 30%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      animation: float3 18s infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(100px, -100px) scale(1.2); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-150px, 100px) scale(0.8); }
+    }
+
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, 80px) scale(1.1); }
+    }
+
+    /* Header Animations */
+    header { 
+      text-align: center; 
+      padding: 30px 20px;
+      position: relative;
+      z-index: 1;
+      animation: slideDown 0.8s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { 
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     .lesson-title {
-      font-size: 2.2rem; font-weight: 900;
-      background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size: 2.5rem; 
+      font-weight: 900;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, var(--brand-2) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      animation: shineText 3s linear infinite;
+      margin-bottom: 10px;
     }
 
-    .breadcrumb { color: var(--muted); font-size: .95rem; }
-    .breadcrumb a { color: inherit; text-decoration: none; }
-    .breadcrumb a:hover { color: var(--text); }
+    @keyframes shineText {
+      to { background-position: 200% center; }
+    }
 
+    .breadcrumb { 
+      color: var(--muted); 
+      font-size: .95rem;
+      animation: fadeIn 1s ease-out 0.3s backwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .breadcrumb a { 
+      color: inherit; 
+      text-decoration: none;
+      transition: all var(--speed);
+      position: relative;
+    }
+
+    .breadcrumb a:hover { 
+      color: var(--text); 
+    }
+
+    .breadcrumb a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--brand-2);
+      transition: width var(--speed);
+    }
+
+    .breadcrumb a:hover::after {
+      width: 100%;
+    }
+
+    /* Navigation Header */
     .nav-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
-      margin-bottom: 32px; box-shadow: var(--shadow);
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 24px; 
+      background: var(--card); 
+      border-radius: var(--radius);
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 1;
+      animation: slideIn 0.6s ease-out;
+      overflow: hidden;
+    }
+
+    .nav-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes slideIn {
+      from { 
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .nav-header a {
-      color: var(--muted); text-decoration: none; display: flex; align-items: center;
-      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
+      color: var(--muted); 
+      text-decoration: none; 
+      display: flex; 
+      align-items: center;
+      gap: 8px; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      transition: all var(--speed);
+      position: relative;
+      overflow: hidden;
     }
 
-    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
+    .nav-header a::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
 
+    .nav-header a:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .nav-header a:hover { 
+      color: var(--text); 
+      transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Section Styles */
     section {
-      background: var(--card); border-radius: var(--radius);
-      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
-      overflow: visible;
+      background: var(--card); 
+      border-radius: var(--radius);
+      padding: 32px; 
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--brand), var(--brand-2), var(--accent));
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: -1;
+    }
+
+    section:hover::before {
+      opacity: 0.3;
+      animation: rotateGradient 3s linear infinite;
+    }
+
+    @keyframes rotateGradient {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     section h2 {
-      margin-top: 0; font-size: 1.5rem;
+      margin-top: 0; 
+      font-size: 1.5rem;
       background: linear-gradient(90deg,#fff,var(--brand-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
     }
 
-    section p { line-height: 1.6; color: var(--muted); }
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      animation: expandWidth 1s ease-out forwards;
+    }
 
+    @keyframes expandWidth {
+      from { width: 0; }
+      to { width: 50px; }
+    }
+
+    section p { 
+      line-height: 1.6; 
+      color: var(--muted);
+      animation: fadeIn 1s ease-out;
+    }
+
+    /* Definition Box */
     .definition-box {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 25px;
@@ -81,8 +360,39 @@
       border-left: 5px solid var(--brand);
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       color: white;
+      position: relative;
+      overflow: hidden;
+      animation: slideInLeft 0.8s ease-out;
     }
 
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .definition-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Advantages Grid */
     .advantages-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -98,10 +408,43 @@
       border: 2px solid rgba(255,255,255,0.1);
       position: relative;
       overflow: hidden;
+      animation: fadeInScale 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .advantage-card:nth-child(1) { animation-delay: 0.1s; }
+    .advantage-card:nth-child(2) { animation-delay: 0.2s; }
+    .advantage-card:nth-child(3) { animation-delay: 0.3s; }
+    .advantage-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .advantage-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .advantage-card:hover::before {
+      left: 100%;
     }
 
     .advantage-card:hover {
-      transform: translateY(-10px);
+      transform: translateY(-10px) scale(1.02);
       border-color: var(--brand-2);
       box-shadow: 0 20px 40px rgba(0,229,255,0.2);
     }
@@ -117,6 +460,12 @@
       color: white;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       margin-bottom: 15px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
 
     .advantage-title {
@@ -131,48 +480,29 @@
       line-height: 1.6;
     }
 
-    .comparison-table {
+    /* Tables */
+    .comparison-table,
+    .cash-book-table {
       width: 100%;
       border-collapse: collapse;
       margin: 25px 0;
       background: rgba(255,255,255,0.02);
       border-radius: 12px;
       overflow: hidden;
+      animation: fadeIn 1s ease-out;
     }
 
     .comparison-table th,
-    .comparison-table td {
-      padding: 15px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .comparison-table th {
-      background: rgba(255,255,255,0.05);
-      font-weight: 700;
-      color: var(--brand-2);
-    }
-
-    .comparison-table tr:hover {
-      background: rgba(255,255,255,0.05);
-    }
-
-    .cash-book-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background: rgba(255,255,255,0.02);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
+    .comparison-table td,
     .cash-book-table th,
     .cash-book-table td {
       padding: 12px;
       text-align: left;
       border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
     }
 
+    .comparison-table th,
     .cash-book-table th {
       background: rgba(124,77,255,0.2);
       font-weight: 700;
@@ -180,8 +510,9 @@
       text-align: center;
     }
 
-    .cash-book-table td {
-      color: var(--muted);
+    .comparison-table tr:hover,
+    .cash-book-table tr:hover {
+      background: rgba(255,255,255,0.05);
     }
 
     .debit-side {
@@ -192,20 +523,38 @@
       background: rgba(244,67,54,0.05);
     }
 
+    /* Format Box */
     .format-box {
       background: rgba(124,77,255,0.05);
       border-radius: 16px;
       padding: 30px;
       margin: 25px 0;
       border: 2px solid rgba(124,77,255,.2);
+      position: relative;
+      overflow: hidden;
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .format-box h3 {
       color: var(--brand-2);
       margin-bottom: 20px;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
+    /* Practical Cards */
     .practical-card {
       background: rgba(255,255,255,0.02);
       border-radius: 16px;
@@ -213,6 +562,21 @@
       margin: 20px 0;
       transition: all 0.3s ease;
       border: 2px solid rgba(255,255,255,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .practical-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,122,198,0.05) 0%, transparent 70%);
+      animation: rotate 25s linear infinite reverse;
+      pointer-events: none;
     }
 
     .practical-card:hover {
@@ -226,6 +590,8 @@
       align-items: center;
       gap: 15px;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .practical-icon {
@@ -238,6 +604,13 @@
       font-size: 1.5rem;
       color: white;
       background: linear-gradient(135deg, var(--brand-2), var(--accent));
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0,229,255,0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(0,229,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,229,255,0); }
     }
 
     .practical-title {
@@ -247,8 +620,9 @@
       margin: 0;
     }
 
+    /* Solution Button */
     .view-solution-btn {
-      background: var(--brand-2);
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
       color: white;
       border: none;
       padding: 10px 20px;
@@ -257,11 +631,31 @@
       font-size: 0.95rem;
       transition: all 0.3s ease;
       margin-top: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .view-solution-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .view-solution-btn:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     .view-solution-btn:hover {
-      background: var(--brand);
       transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(0,229,255,0.4);
     }
 
     .solution {
@@ -275,36 +669,331 @@
 
     .solution.active {
       display: block;
-      animation: slideIn 0.5s ease;
+      animation: expandDown 0.5s ease;
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes expandDown {
+      from { 
+        opacity: 0; 
+        max-height: 0;
+        transform: translateY(-20px);
+      }
+      to { 
+        opacity: 1; 
+        max-height: 5000px;
+        transform: translateY(0);
+      }
     }
 
+    /* Note Box */
     .note-box {
       background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(0,229,255,0.05));
       padding: 20px;
       border-radius: 12px;
       margin: 20px 0;
       border-left: 5px solid var(--brand-2);
+      animation: slideInLeft 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .note-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: shimmer 4s infinite;
     }
 
     .note-box h4 {
       color: var(--brand-2);
       margin: 0 0 10px 0;
+      position: relative;
+      z-index: 1;
     }
 
+    .note-box p {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* MCQ Styles */
+    .mcq {
+      margin-bottom: 24px;
+      padding: 24px;
+      background: rgba(255,255,255,.03);
+      border-radius: calc(var(--radius) / 2);
+      border-left: 4px solid var(--muted);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .mcq:nth-child(odd) { animation-delay: 0.1s; }
+    .mcq:nth-child(even) { animation-delay: 0.2s; }
+
+    .mcq:hover {
+      border-left-color: var(--brand-2);
+      background: rgba(255,255,255,.05);
+      transform: translateX(5px);
+    }
+
+    .mcq h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .mcq label {
+      display: block;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: rgba(255,255,255,.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--speed);
+      color: var(--muted);
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mcq label::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+      transform: translateY(-50%);
+    }
+
+    .mcq label:hover::before {
+      left: 100%;
+    }
+
+    .mcq label:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--brand-2);
+      transform: translateX(5px);
+    }
+
+    .mcq input[type="radio"] {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .mcq label.correct {
+      background: rgba(76,175,80,0.2) !important;
+      border-color: var(--success) !important;
+      color: var(--text) !important;
+    }
+
+    .mcq label.wrong {
+      background: rgba(244,67,54,0.2) !important;
+      border-color: var(--error) !important;
+      color: var(--text) !important;
+    }
+
+    .mcq input[type="radio"] {
+      margin-right: 10px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .mcq input[type="radio"]:checked + label {
+      border-color: var(--brand-2);
+      background: rgba(0, 229, 255, 0.1);
+      color: var(--text);
+    }
+
+    /* Progress Circle */
+    .progress-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 3rem 0;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .circular-progress {
+      position: relative;
+      height: 180px;
+      width: 180px;
+      border-radius: 50%;
+      background: conic-gradient(var(--brand-2) 0deg, rgba(255,255,255,0.05) 0deg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0px 10px 30px rgba(0, 229, 255, 0.3);
+      transition: all 0.5s ease;
+      animation: rotateIn 1s ease-out;
+    }
+
+    @keyframes rotateIn {
+      from {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0.5);
+      }
+      to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    .circular-progress::before {
+      content: "";
+      position: absolute;
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--card), rgba(17,22,51,0.9));
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .circular-progress::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid rgba(0,229,255,0.2);
+      animation: pulse 2s infinite;
+    }
+
+    .progress-value {
+      position: relative;
+      font-size: 2rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      z-index: 1;
+      animation: countUp 1s ease-out;
+    }
+
+    @keyframes countUp {
+      from {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Submit Button */
+    .submit-button {
+      display: inline-block;
+      padding: 12px 40px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--speed);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(124,77,255,0.3);
+    }
+
+    .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .submit-button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .submit-button:not(:disabled):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(124,77,255,0.4);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Score Display */
+    .score-display {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(129,199,132,0.1));
+      border-radius: 12px;
+      border-left: 5px solid #4caf50;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      animation: slideInUp 0.5s ease-out;
+    }
+
+    .retry-btn {
+      display: none;
+      margin: 20px auto;
+      padding: 10px 30px;
+      background: linear-gradient(135deg, var(--accent), var(--brand));
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .retry-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(255,122,198,0.4);
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
+      .lesson-title { font-size: 1.8rem; }
       .advantages-grid { grid-template-columns: 1fr; }
       .cash-book-table { font-size: 0.85rem; }
       .cash-book-table th,
       .cash-book-table td { padding: 8px; }
+      section { padding: 20px; }
+      .circular-progress { 
+        height: 150px; 
+        width: 150px; 
+      }
+      .circular-progress::before {
+        height: 120px;
+        width: 120px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Floating Particles -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+
   <div class="nav-header">
     <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
     <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
@@ -325,149 +1014,42 @@
       <h2>What is a Cash Book?</h2>
       
       <div class="definition-box">
-        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px;">
+        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px; position: relative; z-index: 1;">
           <i class="fas fa-book-open" style="color:#fff;"></i>
           Definition
         </h3>
-        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6;">
-          A <strong>Cash Book</strong> is a special journal or book of original entry in which all cash transactions (both cash receipts and cash payments) are recorded in chronological order. It serves a dual purpose – it functions both as a journal (book of original entry) and as a ledger account (Cash Account).
+        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6; position: relative; z-index: 1;">
+          A <strong>Cash Book</strong> is a special journal or book of original entry in which all cash and bank transactions are recorded in chronological order. It serves a dual purpose – it functions both as a journal (book of original entry) and as a ledger account (Cash Account and Bank Account).
         </p>
       </div>
 
       <p style="font-size:1.05rem; line-height:1.8; color: var(--muted); margin-top: 20px;">
-        The Cash Book is maintained to keep a systematic record of all cash and bank transactions of a business. Unlike other subsidiary books that record only one type of transaction, the Cash Book records both the debit side (receipts) and credit side (payments) of cash transactions. The balance of the Cash Book represents the cash in hand or cash at bank at any given point in time.
+        The Cash Book is maintained to keep a systematic record of all cash and bank transactions of a business. It records both the debit side (receipts) and credit side (payments). The balance of the Cash Book represents the cash in hand and/or cash at bank at any given point in time.
       </p>
 
       <div class="note-box">
         <h4><i class="fas fa-lightbulb"></i> Key Point</h4>
         <p style="color:var(--muted); margin:0; line-height:1.6;">
-          The Cash Book is unique because it eliminates the need to maintain a separate Cash Account in the ledger. It acts as both the primary book of entry for cash transactions and the ledger account for cash.
+          The Cash Book is unique because it eliminates the need to maintain separate Cash Account and Bank Account in the ledger. It acts as both the primary book of entry for cash/bank transactions and the ledger account.
         </p>
       </div>
-    </section>
-
-    <!-- Advantages Section -->
-    <section>
-      <h2>Advantages of Cash Book</h2>
-      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
-        Maintaining a Cash Book offers several significant benefits for businesses of all sizes:
-      </p>
-
-      <div class="advantages-grid">
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-copy"></i>
-          </div>
-          <div class="advantage-title">Dual Function</div>
-          <div class="advantage-desc">
-            The Cash Book serves both as a journal and a ledger, eliminating the need to post cash entries to a separate cash account in the ledger. This saves time and reduces duplication of work in bookkeeping.
-          </div>
-        </div>
-
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-list-check"></i>
-          </div>
-          <div class="advantage-title">Complete Record</div>
-          <div class="advantage-desc">
-            All cash receipts and payments are recorded in one place, providing a comprehensive view of all cash movements. This makes it easy to track and monitor cash flow at any point in time.
-          </div>
-        </div>
-
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-magnifying-glass"></i>
-          </div>
-          <div class="advantage-title">Easy Detection of Errors</div>
-          <div class="advantage-desc">
-            Since the Cash Book is balanced regularly (daily, weekly, or monthly), any discrepancies or errors in cash transactions can be detected and corrected immediately, ensuring accuracy in accounts.
-          </div>
-        </div>
-
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-chart-line"></i>
-          </div>
-          <div class="advantage-title">Accurate Cash Position</div>
-          <div class="advantage-desc">
-            The Cash Book provides an instant and accurate picture of the cash position of the business. The balance shows exactly how much cash is available, helping in better cash management and decision-making.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Difference Section -->
-    <section>
-      <h2>Difference Between Cash Account and Cash Book</h2>
-      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
-        While both relate to cash transactions, there are important distinctions between a Cash Account and a Cash Book:
-      </p>
-
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Basis</th>
-            <th>Cash Account</th>
-            <th>Cash Book</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Nature</strong></td>
-            <td>It is a ledger account</td>
-            <td>It is both a journal and a ledger</td>
-          </tr>
-          <tr>
-            <td><strong>Recording</strong></td>
-            <td>Cash transactions are first recorded in the journal, then posted to the Cash Account</td>
-            <td>Cash transactions are directly recorded in the Cash Book (no separate journal entry needed)</td>
-          </tr>
-          <tr>
-            <td><strong>Format</strong></td>
-            <td>Simple T-format with debit and credit sides</td>
-            <td>More detailed format with columns for date, particulars, V.No., L.F., and amount</td>
-          </tr>
-          <tr>
-            <td><strong>Narration</strong></td>
-            <td>Generally does not contain detailed narration</td>
-            <td>Contains brief narration/description for each transaction</td>
-          </tr>
-          <tr>
-            <td><strong>Balancing</strong></td>
-            <td>Balanced periodically (monthly or as needed)</td>
-            <td>Usually balanced daily or very frequently</td>
-          </tr>
-          <tr>
-            <td><strong>Types</strong></td>
-            <td>Only one type</td>
-            <td>Multiple types: Single Column, Double Column, Petty Cash Book, etc.</td>
-          </tr>
-        </tbody>
-      </table>
     </section>
 
     <!-- Types of Cash Book -->
     <section>
       <h2>Types of Cash Book</h2>
       <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
-        Based on the nature and volume of transactions, Cash Books are classified into three main types:
+        Based on the nature and volume of transactions, Cash Books are classified into four main types:
       </p>
 
       <!-- Single Column Cash Book -->
       <div class="format-box">
         <h3><i class="fas fa-1"></i> Single Column Cash Book</h3>
         <p style="color: var(--muted); line-height: 1.6; margin-bottom: 20px;">
-          This is the simplest form of Cash Book with only one amount column on each side (debit and credit). It records only cash transactions and is suitable for small businesses with limited transactions.
+          This is the simplest form of Cash Book with only one amount column on each side. It records only cash transactions (no bank transactions).
         </p>
 
-        <h4 style="color: var(--text); margin: 20px 0 15px 0;">When to Use:</h4>
-        <ul style="color: var(--muted); line-height: 1.8;">
-          <li>When the business deals only in cash (no bank transactions)</li>
-          <li>When there are no discount transactions</li>
-          <li>Suitable for small retail shops, vendors, and petty businesses</li>
-        </ul>
-
-        <h4 style="color: var(--text); margin: 25px 0 15px 0;">Format of Single Column Cash Book:</h4>
+        <h4 style="color: var(--text); margin: 20px 0 15px 0;">Format:</h4>
         
         <table class="cash-book-table">
           <thead>
@@ -488,91 +1070,17 @@
               <th class="credit-side">Amount (₹)</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>2024<br>Jan 1</td>
-              <td>To Balance b/d</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">5,000</td>
-              <td>2024<br>Jan 3</td>
-              <td>By Rent A/c</td>
-              <td>1</td>
-              <td>25</td>
-              <td style="text-align: right; font-family: monospace;">2,000</td>
-            </tr>
-            <tr>
-              <td>Jan 5</td>
-              <td>To Sales A/c</td>
-              <td>2</td>
-              <td>40</td>
-              <td style="text-align: right; font-family: monospace;">3,500</td>
-              <td>Jan 7</td>
-              <td>By Purchases A/c</td>
-              <td>3</td>
-              <td>35</td>
-              <td style="text-align: right; font-family: monospace;">1,500</td>
-            </tr>
-            <tr>
-              <td>Jan 10</td>
-              <td>To Debtor A/c</td>
-              <td>4</td>
-              <td>15</td>
-              <td style="text-align: right; font-family: monospace;">2,000</td>
-              <td>Jan 12</td>
-              <td>By Wages A/c</td>
-              <td>5</td>
-              <td>50</td>
-              <td style="text-align: right; font-family: monospace;">1,000</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td style="text-align: right; font-family: monospace;"></td>
-              <td>Jan 15</td>
-              <td>By Balance c/d</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">6,000</td>
-            </tr>
-            <tr style="background: rgba(124,77,255,0.1); font-weight: bold;">
-              <td colspan="4" style="text-align: right;">Total:</td>
-              <td style="text-align: right; font-family: monospace;">10,500</td>
-              <td colspan="4" style="text-align: right;">Total:</td>
-              <td style="text-align: right; font-family: monospace;">10,500</td>
-            </tr>
-          </tbody>
         </table>
-
-        <div class="note-box" style="margin-top: 20px;">
-          <h4>Column Explanations:</h4>
-          <ul style="color: var(--muted); margin: 10px 0 0 0; line-height: 1.8;">
-            <li><strong>Date:</strong> Date of transaction</li>
-            <li><strong>Particulars:</strong> Name of account affected (with "To" for receipts, "By" for payments)</li>
-            <li><strong>V.No. (Voucher Number):</strong> Reference number of the supporting document</li>
-            <li><strong>L.F. (Ledger Folio):</strong> Page number where the account appears in the ledger</li>
-            <li><strong>Amount:</strong> Cash received or paid</li>
-          </ul>
-        </div>
       </div>
 
       <!-- Double Column Cash Book -->
       <div class="format-box">
-        <h3><i class="fas fa-2"></i> Double Column Cash Book (Cash & Discount)</h3>
+        <h3><i class="fas fa-2"></i> Double Column Cash Book (Cash & Bank)</h3>
         <p style="color: var(--muted); line-height: 1.6; margin-bottom: 20px;">
-          This Cash Book has two amount columns on each side – one for cash and one for discount. It records both cash transactions and discount allowed (on receipts side) and discount received (on payments side).
+          This Cash Book has two amount columns on each side – one for Cash transactions and one for Bank transactions. It records both cash and bank transactions simultaneously.
         </p>
 
-        <h4 style="color: var(--text); margin: 20px 0 15px 0;">When to Use:</h4>
-        <ul style="color: var(--muted); line-height: 1.8;">
-          <li>When the business offers cash discounts to customers (discount allowed)</li>
-          <li>When the business receives cash discounts from suppliers (discount received)</li>
-          <li>Suitable for businesses with regular credit sales and purchases</li>
-        </ul>
-
-        <h4 style="color: var(--text); margin: 25px 0 15px 0;">Format of Double Column Cash Book:</h4>
+        <h4 style="color: var(--text); margin: 20px 0 15px 0;">Format:</h4>
         
         <table class="cash-book-table">
           <thead>
@@ -585,101 +1093,71 @@
               <th class="debit-side">Particulars</th>
               <th class="debit-side">V.No.</th>
               <th class="debit-side">L.F.</th>
-              <th class="debit-side">Discount<br>Allowed (₹)</th>
               <th class="debit-side">Cash (₹)</th>
+              <th class="debit-side">Bank (₹)</th>
               <th class="credit-side">Date</th>
               <th class="credit-side">Particulars</th>
               <th class="credit-side">V.No.</th>
               <th class="credit-side">L.F.</th>
-              <th class="credit-side">Discount<br>Received (₹)</th>
               <th class="credit-side">Cash (₹)</th>
+              <th class="credit-side">Bank (₹)</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>2024<br>Feb 1</td>
-              <td>To Balance b/d</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right; font-family: monospace;">8,000</td>
-              <td>2024<br>Feb 5</td>
-              <td>By Creditor A/c</td>
-              <td>6</td>
-              <td>28</td>
-              <td style="text-align: right; font-family: monospace;">200</td>
-              <td style="text-align: right; font-family: monospace;">4,800</td>
-            </tr>
-            <tr>
-              <td>Feb 3</td>
-              <td>To Debtor A/c</td>
-              <td>7</td>
-              <td>12</td>
-              <td style="text-align: right; font-family: monospace;">150</td>
-              <td style="text-align: right; font-family: monospace;">2,850</td>
-              <td>Feb 8</td>
-              <td>By Rent A/c</td>
-              <td>8</td>
-              <td>30</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right; font-family: monospace;">3,000</td>
-            </tr>
-            <tr>
-              <td>Feb 7</td>
-              <td>To Sales A/c</td>
-              <td>9</td>
-              <td>42</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right; font-family: monospace;">5,000</td>
-              <td>Feb 10</td>
-              <td>By Balance c/d</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right; font-family: monospace;">8,050</td>
-            </tr>
-            <tr style="background: rgba(124,77,255,0.1); font-weight: bold;">
-              <td colspan="4" style="text-align: right;">Total:</td>
-              <td style="text-align: right; font-family: monospace;">150</td>
-              <td style="text-align: right; font-family: monospace;">15,850</td>
-              <td colspan="4" style="text-align: right;">Total:</td>
-              <td style="text-align: right; font-family: monospace;">200</td>
-              <td style="text-align: right; font-family: monospace;">15,850</td>
-            </tr>
-          </tbody>
         </table>
 
         <div class="note-box" style="margin-top: 20px;">
           <h4>Important Points:</h4>
           <ul style="color: var(--muted); margin: 10px 0 0 0; line-height: 1.8;">
-            <li><strong>Discount Allowed:</strong> Appears on debit side when we allow discount to customers (recorded but not part of cash balance)</li>
-            <li><strong>Discount Received:</strong> Appears on credit side when we receive discount from suppliers (recorded but not part of cash balance)</li>
-            <li><strong>Balancing:</strong> Only cash columns are balanced; discount columns are totaled but not balanced</li>
-            <li><strong>Posting:</strong> Discounts are posted separately to Discount Allowed A/c and Discount Received A/c in the ledger</li>
+            <li><strong>Cash Column:</strong> Records all cash receipts and payments</li>
+            <li><strong>Bank Column:</strong> Records all bank deposits and withdrawals</li>
+            <li><strong>Contra Entries:</strong> Transfers between cash and bank marked with "C" in L.F.</li>
           </ul>
         </div>
       </div>
 
+      <!-- Three Column Cash Book -->
+      <div class="format-box">
+        <h3><i class="fas fa-3"></i> Three Column Cash Book (Cash, Bank & Discount)</h3>
+        <p style="color: var(--muted); line-height: 1.6; margin-bottom: 20px;">
+          This comprehensive Cash Book has three columns on each side – Cash, Bank, and Discount. It records cash transactions, bank transactions, and discounts (allowed/received).
+        </p>
+
+        <h4 style="color: var(--text); margin: 20px 0 15px 0;">Format:</h4>
+        
+        <table class="cash-book-table">
+          <thead>
+            <tr>
+              <th colspan="7" class="debit-side">Receipts (Dr. Side)</th>
+              <th colspan="7" class="credit-side">Payments (Cr. Side)</th>
+            </tr>
+            <tr>
+              <th class="debit-side">Date</th>
+              <th class="debit-side">Particulars</th>
+              <th class="debit-side">V.No.</th>
+              <th class="debit-side">L.F.</th>
+              <th class="debit-side">Discount<br>Allowed</th>
+              <th class="debit-side">Cash</th>
+              <th class="debit-side">Bank</th>
+              <th class="credit-side">Date</th>
+              <th class="credit-side">Particulars</th>
+              <th class="credit-side">V.No.</th>
+              <th class="credit-side">L.F.</th>
+              <th class="credit-side">Discount<br>Received</th>
+              <th class="credit-side">Cash</th>
+              <th class="credit-side">Bank</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
       <!-- Petty Cash Book -->
       <div class="format-box">
-        <h3><i class="fas fa-3"></i> Petty Cash Book</h3>
+        <h3><i class="fas fa-4"></i> Petty Cash Book</h3>
         <p style="color: var(--muted); line-height: 1.6; margin-bottom: 20px;">
-          A Petty Cash Book is maintained to record small, routine expenses of the business. It works on the <strong>Imprest System</strong>, where a fixed amount is allocated to the petty cashier at the beginning of a period, and it is replenished periodically.
+          A special Cash Book for recording small, routine expenses. Works on the <strong>Imprest System</strong> where a fixed amount is maintained.
         </p>
 
-        <h4 style="color: var(--text); margin: 20px 0 15px 0;">When to Use:</h4>
-        <ul style="color: var(--muted); line-height: 1.8;">
-          <li>For recording small daily expenses like tea, stationery, postage, taxi fares, etc.</li>
-          <li>When the business wants to reduce the burden on the main cashier</li>
-          <li>Helps in better control and monitoring of small expenses</li>
-        </ul>
-
-        <h4 style="color: var(--text); margin: 20px 0 15px 0;">Imprest System:</h4>
-        <p style="color: var(--muted); line-height: 1.6;">
-          Under the Imprest System, a fixed amount (say ₹5,000) is given to the petty cashier. At the end of the period, the amount spent is reimbursed, bringing the petty cash back to the original imprest amount.
-        </p>
-
-        <h4 style="color: var(--text); margin: 25px 0 15px 0;">Format of Petty Cash Book:</h4>
+        <h4 style="color: var(--text); margin: 20px 0 15px 0;">Analytical Petty Cash Book Format:</h4>
         
         <table class="cash-book-table">
           <thead>
@@ -687,215 +1165,30 @@
               <th rowspan="2">Date</th>
               <th rowspan="2">Particulars</th>
               <th rowspan="2">V.No.</th>
-              <th rowspan="2">Receipts<br>(₹)</th>
-              <th colspan="5">Payments (₹)</th>
-              <th rowspan="2">Total<br>Payment<br>(₹)</th>
+              <th rowspan="2">Receipts</th>
+              <th colspan="5">Analysis of Payments</th>
+              <th rowspan="2">Total</th>
             </tr>
             <tr>
               <th>Postage</th>
               <th>Stationery</th>
               <th>Travelling</th>
-              <th>Cartage</th>
-              <th>Sundries</th>
+              <th>Office Exp.</th>
+              <th>Misc.</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>2024<br>Mar 1</td>
-              <td>To Cash (Imprest)</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">5,000</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>Mar 2</td>
-              <td>Postage stamps</td>
-              <td>1</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">200</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">200</td>
-            </tr>
-            <tr>
-              <td>Mar 4</td>
-              <td>Office stationery</td>
-              <td>2</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">350</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">350</td>
-            </tr>
-            <tr>
-              <td>Mar 6</td>
-              <td>Taxi fare</td>
-              <td>3</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">450</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">450</td>
-            </tr>
-            <tr>
-              <td>Mar 8</td>
-              <td>Courier charges</td>
-              <td>4</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">150</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">150</td>
-            </tr>
-            <tr>
-              <td>Mar 10</td>
-              <td>Tea & refreshments</td>
-              <td>5</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">300</td>
-              <td style="text-align: right; font-family: monospace;">300</td>
-            </tr>
-            <tr style="background: rgba(124,77,255,0.1); font-weight: bold;">
-              <td colspan="3" style="text-align: right;">Total:</td>
-              <td style="text-align: right; font-family: monospace;">5,000</td>
-              <td style="text-align: right; font-family: monospace;">200</td>
-              <td style="text-align: right; font-family: monospace;">350</td>
-              <td style="text-align: right; font-family: monospace;">450</td>
-              <td style="text-align: right; font-family: monospace;">150</td>
-              <td style="text-align: right; font-family: monospace;">300</td>
-              <td style="text-align: right; font-family: monospace;">1,450</td>
-            </tr>
-            <tr>
-              <td>Mar 11</td>
-              <td>Balance c/d</td>
-              <td>-</td>
-              <td>-</td>
-              <td colspan="5"></td>
-              <td style="text-align: right; font-family: monospace;">3,550</td>
-            </tr>
-            <tr>
-              <td>Mar 12</td>
-              <td>To Cash (Reimbursement)</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">1,450</td>
-              <td colspan="5"></td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>Mar 12</td>
-              <td>Balance b/d</td>
-              <td>-</td>
-              <td style="text-align: right; font-family: monospace;">3,550</td>
-              <td colspan="5"></td>
-              <td>-</td>
-            </tr>
-            <tr style="background: rgba(76,175,80,0.1); font-weight: bold;">
-              <td colspan="3" style="text-align: right;">Total Imprest Amount:</td>
-              <td style="text-align: right; font-family: monospace;">5,000</td>
-              <td colspan="6"></td>
-            </tr>
-          </tbody>
         </table>
-
-        <div class="note-box" style="margin-top: 20px;">
-          <h4>Advantages of Petty Cash Book:</h4>
-          <ul style="color: var(--muted); margin: 10px 0 0 0; line-height: 1.8;">
-            <li>Reduces the burden on the main cashier</li>
-            <li>Analytical classification of expenses helps in better expense analysis</li>
-            <li>Better control over small expenses</li>
-            <li>Time-saving for the main cashier who can focus on major transactions</li>
-            <li>Easy to detect errors in petty expenses</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Cash Book Entries Section -->
-    <section>
-      <h2>Types of Entries in Cash Book</h2>
-      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
-        Cash Book entries can be broadly classified into the following categories:
-      </p>
-
-      <div class="advantages-grid">
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-arrow-down"></i>
-          </div>
-          <div class="advantage-title">Cash Receipts</div>
-          <div class="advantage-desc">
-            All transactions where cash is received are recorded on the debit (left) side. Examples: Cash sales, cash received from debtors, capital introduced, loans received, etc. Entry format: "To [Account Name]"
-          </div>
-        </div>
-
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-arrow-up"></i>
-          </div>
-          <div class="advantage-title">Cash Payments</div>
-          <div class="advantage-desc">
-            All transactions where cash is paid are recorded on the credit (right) side. Examples: Cash purchases, cash paid to creditors, expenses paid, drawings, etc. Entry format: "By [Account Name]"
-          </div>
-        </div>
-
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-money-bill-transfer"></i>
-          </div>
-          <div class="advantage-title">Contra Entries</div>
-          <div class="advantage-desc">
-            Transactions where money is transferred from cash to bank or bank to cash. These entries appear on both sides with "C" in the L.F. column. They don't affect the total cash and bank combined.
-          </div>
-        </div>
-
-        <div class="advantage-card">
-          <div class="advantage-icon">
-            <i class="fas fa-balance-scale"></i>
-          </div>
-          <div class="advantage-title">Opening & Closing Balances</div>
-          <div class="advantage-desc">
-            Opening balance (Balance b/d) appears on the debit side at the beginning. Closing balance (Balance c/d) appears on the credit side to balance the cash book. Next period starts with Balance b/d on debit side.
-          </div>
-        </div>
-      </div>
-
-      <div class="note-box" style="margin-top: 30px;">
-        <h4>Golden Rules for Cash Book Entries:</h4>
-        <ul style="color: var(--muted); margin: 10px 0 0 0; line-height: 1.8;">
-          <li><strong>Debit Side (Receipts):</strong> All receipts use "To" before the account name</li>
-          <li><strong>Credit Side (Payments):</strong> All payments use "By" before the account name</li>
-          <li><strong>Balancing:</strong> Cash book can never have a credit balance (you can't pay more cash than you have)</li>
-          <li><strong>Narration:</strong> Brief description is written below each entry for clarity</li>
-          <li><strong>Contra Entry:</strong> Marked with "C" in the L.F. column on both sides</li>
-        </ul>
       </div>
     </section>
 
     <!-- Practical Examples Section -->
     <section>
-      <h2>Practical Examples - Cash Book Entries</h2>
+      <h2>Practical Examples - Cash Book</h2>
       <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
         Let's practice recording transactions in different types of Cash Books with detailed solutions:
       </p>
 
-      <!-- Example 1 -->
+      <!-- Example 1: Single Column -->
       <div class="practical-card">
         <div class="practical-header">
           <div class="practical-icon">
@@ -903,23 +1196,23 @@
           </div>
           <div>
             <h3 class="practical-title">Example 1: Single Column Cash Book</h3>
-            <p style="color: var(--muted); margin: 5px 0 0 0;">Basic Cash Transactions</p>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Basic Cash Transactions Only</p>
           </div>
         </div>
 
         <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
-          <strong>Question:</strong> Mr. Sharma had the following transactions in January 2024. Prepare a Single Column Cash Book:
+          <strong>Question:</strong> Prepare a Single Column Cash Book from the following transactions for January 2024:
           <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>Jan 1: Cash in hand ₹15,000</li>
-            <li>Jan 3: Cash sales ₹8,000</li>
-            <li>Jan 5: Paid rent ₹3,000</li>
-            <li>Jan 8: Received from Ram (debtor) ₹5,500</li>
-            <li>Jan 12: Paid wages ₹2,000</li>
-            <li>Jan 15: Cash purchases ₹4,500</li>
-            <li>Jan 18: Received commission ₹1,500</li>
-            <li>Jan 22: Paid for furniture ₹6,000</li>
-            <li>Jan 25: Cash sales ₹7,000</li>
-            <li>Jan 28: Paid electricity bill ₹1,200</li>
+            <li>Jan 1: Cash in hand ₹20,000</li>
+            <li>Jan 3: Cash sales ₹15,000</li>
+            <li>Jan 5: Paid rent in cash ₹5,000</li>
+            <li>Jan 8: Received from debtor Ram ₹8,000</li>
+            <li>Jan 12: Cash purchases ₹10,000</li>
+            <li>Jan 15: Paid wages ₹3,000</li>
+            <li>Jan 20: Cash sales ₹12,000</li>
+            <li>Jan 25: Paid for stationery ₹1,500</li>
+            <li>Jan 28: Received commission ₹2,500</li>
+            <li>Jan 31: Withdrew for personal use ₹4,000</li>
           </ol>
         </div>
 
@@ -953,60 +1246,60 @@
                 <td>To Balance b/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">15,000</td>
+                <td style="text-align: right; font-family: monospace;">20,000</td>
                 <td>2024<br>Jan 5</td>
                 <td>By Rent A/c</td>
                 <td>1</td>
                 <td>25</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">3,000</td>
+                <td style="text-align: right; font-family: monospace;">5,000</td>
               </tr>
               <tr>
                 <td>Jan 3</td>
                 <td>To Sales A/c</td>
                 <td>2</td>
                 <td>40</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">8,000</td>
+                <td style="text-align: right; font-family: monospace;">15,000</td>
                 <td>Jan 12</td>
-                <td>By Wages A/c</td>
+                <td>By Purchases A/c</td>
                 <td>3</td>
-                <td>50</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">2,000</td>
+                <td>35</td>
+                <td style="text-align: right; font-family: monospace;">10,000</td>
               </tr>
               <tr>
                 <td>Jan 8</td>
                 <td>To Ram A/c</td>
                 <td>4</td>
                 <td>15</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">5,500</td>
+                <td style="text-align: right; font-family: monospace;">8,000</td>
                 <td>Jan 15</td>
-                <td>By Purchases A/c</td>
+                <td>By Wages A/c</td>
                 <td>5</td>
-                <td>35</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">4,500</td>
+                <td>50</td>
+                <td style="text-align: right; font-family: monospace;">3,000</td>
               </tr>
               <tr>
-                <td>Jan 18</td>
-                <td>To Commission A/c</td>
-                <td>6</td>
-                <td>55</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">1,500</td>
-                <td>Jan 22</td>
-                <td>By Furniture A/c</td>
-                <td>7</td>
-                <td>20</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">6,000</td>
-              </tr>
-              <tr>
-                <td>Jan 25</td>
+                <td>Jan 20</td>
                 <td>To Sales A/c</td>
-                <td>8</td>
+                <td>6</td>
                 <td>40</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">7,000</td>
-                <td>Jan 28</td>
-                <td>By Electricity A/c</td>
-                <td>9</td>
+                <td style="text-align: right; font-family: monospace;">12,000</td>
+                <td>Jan 25</td>
+                <td>By Stationery A/c</td>
+                <td>7</td>
                 <td>60</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">1,200</td>
+                <td style="text-align: right; font-family: monospace;">1,500</td>
+              </tr>
+              <tr>
+                <td>Jan 28</td>
+                <td>To Commission A/c</td>
+                <td>8</td>
+                <td>55</td>
+                <td style="text-align: right; font-family: monospace;">2,500</td>
+                <td>Jan 31</td>
+                <td>By Drawings A/c</td>
+                <td>9</td>
+                <td>10</td>
+                <td style="text-align: right; font-family: monospace;">4,000</td>
               </tr>
               <tr>
                 <td></td>
@@ -1018,38 +1311,28 @@
                 <td>By Balance c/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--brand-2);">20,300</td>
+                <td style="text-align: right; font-family: monospace; color: var(--brand-2);">34,000</td>
               </tr>
               <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
-                <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">37,000</td>
-                <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">37,000</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">57,500</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">57,500</td>
               </tr>
               <tr style="background: rgba(76,175,80,0.1);">
                 <td>Feb 1</td>
                 <td>To Balance b/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">20,300</td>
+                <td style="text-align: right; font-family: monospace; font-weight: bold;">34,000</td>
                 <td colspan="5"></td>
               </tr>
             </tbody>
           </table>
-
-          <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-            <h5 style="color: var(--success); margin: 0 0 10px 0;">Summary:</h5>
-            <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
-              • Total Receipts = ₹37,000<br>
-              • Total Payments = ₹16,700<br>
-              • Closing Cash Balance = ₹20,300<br>
-              • This balance becomes the opening balance for February
-            </p>
-          </div>
         </div>
       </div>
 
-      <!-- Example 2 -->
+      <!-- Example 2: Double Column (Cash & Bank) -->
       <div class="practical-card">
         <div class="practical-header">
           <div class="practical-icon">
@@ -1057,22 +1340,23 @@
           </div>
           <div>
             <h3 class="practical-title">Example 2: Double Column Cash Book</h3>
-            <p style="color: var(--muted); margin: 5px 0 0 0;">Cash and Discount Transactions</p>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Cash and Bank Transactions</p>
           </div>
         </div>
 
         <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
-          <strong>Question:</strong> Prepare a Double Column Cash Book from the following transactions for February 2024:
+          <strong>Question:</strong> Prepare a Double Column Cash Book for February 2024:
           <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>Feb 1: Cash in hand ₹25,000</li>
-            <li>Feb 3: Received from Mohan ₹9,500 and allowed him discount ₹500</li>
-            <li>Feb 6: Cash sales ₹12,000</li>
-            <li>Feb 10: Paid to Sohan ₹7,200 and he allowed discount ₹300</li>
-            <li>Feb 14: Paid rent ₹4,000</li>
-            <li>Feb 18: Received from Kumar ₹14,250 and allowed him discount ₹750</li>
-            <li>Feb 22: Paid wages ₹3,500</li>
-            <li>Feb 25: Paid to Ramesh ₹11,400 and received discount ₹600</li>
-            <li>Feb 27: Cash sales ₹8,500</li>
+            <li>Feb 1: Cash in hand ₹25,000; Bank balance ₹50,000</li>
+            <li>Feb 3: Deposited cash into bank ₹15,000</li>
+            <li>Feb 5: Cash sales ₹18,000</li>
+            <li>Feb 8: Paid rent by cheque ₹8,000</li>
+            <li>Feb 10: Withdrew from bank for office use ₹10,000</li>
+            <li>Feb 12: Received cheque from Mohan ₹25,000</li>
+            <li>Feb 15: Deposited Mohan's cheque into bank</li>
+            <li>Feb 18: Paid salary in cash ₹12,000</li>
+            <li>Feb 22: Paid to supplier by cheque ₹20,000</li>
+            <li>Feb 28: Cash purchases ₹8,000</li>
           </ol>
         </div>
 
@@ -1092,14 +1376,14 @@
                 <th class="debit-side">Particulars</th>
                 <th class="debit-side">V.No.</th>
                 <th class="debit-side">L.F.</th>
-                <th class="debit-side">Discount<br>Allowed (₹)</th>
                 <th class="debit-side">Cash (₹)</th>
+                <th class="debit-side">Bank (₹)</th>
                 <th class="credit-side">Date</th>
                 <th class="credit-side">Particulars</th>
                 <th class="credit-side">V.No.</th>
                 <th class="credit-side">L.F.</th>
-                <th class="credit-side">Discount<br>Received (₹)</th>
                 <th class="credit-side">Cash (₹)</th>
+                <th class="credit-side">Bank (₹)</th>
               </tr>
             </thead>
             <tbody>
@@ -1108,139 +1392,354 @@
                 <td>To Balance b/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">25,000</td>
-                <td>2024<br>Feb 10</td>
-                <td>By Sohan A/c</td>
-                <td>1</td>
-                <td>18</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">300</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">7,200</td>
+                <td style="text-align: right; font-family: monospace;">25,000</td>
+                <td style="text-align: right; font-family: monospace;">50,000</td>
+                <td>2024<br>Feb 3</td>
+                <td>By Bank A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td style="text-align: right; font-family: monospace;">15,000</td>
+                <td>-</td>
               </tr>
               <tr>
                 <td>Feb 3</td>
-                <td>To Mohan A/c</td>
-                <td>2</td>
-                <td>12</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">500</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">9,500</td>
-                <td>Feb 14</td>
+                <td>To Cash A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">15,000</td>
+                <td>Feb 8</td>
                 <td>By Rent A/c</td>
-                <td>3</td>
+                <td>1</td>
                 <td>30</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">4,000</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">8,000</td>
               </tr>
               <tr>
-                <td>Feb 6</td>
+                <td>Feb 5</td>
                 <td>To Sales A/c</td>
-                <td>4</td>
-                <td>45</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">12,000</td>
-                <td>Feb 22</td>
-                <td>By Wages A/c</td>
-                <td>5</td>
-                <td>55</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">3,500</td>
+                <td>2</td>
+                <td>40</td>
+                <td style="text-align: right; font-family: monospace;">18,000</td>
+                <td>-</td>
+                <td>Feb 10</td>
+                <td>By Cash A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">10,000</td>
               </tr>
               <tr>
+                <td>Feb 10</td>
+                <td>To Bank A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td style="text-align: right; font-family: monospace;">10,000</td>
+                <td>-</td>
                 <td>Feb 18</td>
-                <td>To Kumar A/c</td>
-                <td>6</td>
-                <td>15</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">750</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">14,250</td>
-                <td>Feb 25</td>
-                <td>By Ramesh A/c</td>
-                <td>7</td>
-                <td>22</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">600</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">11,400</td>
+                <td>By Salary A/c</td>
+                <td>3</td>
+                <td>50</td>
+                <td style="text-align: right; font-family: monospace;">12,000</td>
+                <td>-</td>
               </tr>
               <tr>
-                <td>Feb 27</td>
-                <td>To Sales A/c</td>
-                <td>8</td>
-                <td>45</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">8,500</td>
+                <td>Feb 12</td>
+                <td>To Mohan A/c</td>
+                <td>4</td>
+                <td>15</td>
+                <td style="text-align: right; font-family: monospace;">25,000</td>
+                <td>-</td>
+                <td>Feb 22</td>
+                <td>By Supplier A/c</td>
+                <td>5</td>
+                <td>18</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">20,000</td>
+              </tr>
+              <tr>
+                <td>Feb 15</td>
+                <td>To Bank A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">25,000</td>
+                <td>Feb 28</td>
+                <td>By Purchases A/c</td>
+                <td>6</td>
+                <td>35</td>
+                <td style="text-align: right; font-family: monospace;">8,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Feb 15</td>
+                <td>To Cash A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">25,000</td>
                 <td>Feb 28</td>
                 <td>By Balance c/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--brand-2);">42,150</td>
+                <td style="text-align: right; font-family: monospace;">43,000</td>
+                <td style="text-align: right; font-family: monospace;">77,000</td>
               </tr>
               <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
-                <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">1,250</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">69,250</td>
-                <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">900</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">69,250</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">78,000</td>
+                <td style="text-align: right; font-family: monospace;">115,000</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">78,000</td>
+                <td style="text-align: right; font-family: monospace;">115,000</td>
               </tr>
               <tr style="background: rgba(76,175,80,0.1);">
                 <td>Mar 1</td>
                 <td>To Balance b/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right;">-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">42,150</td>
+                <td style="text-align: right; font-family: monospace; font-weight: bold;">43,000</td>
+                <td style="text-align: right; font-family: monospace; font-weight: bold;">77,000</td>
                 <td colspan="6"></td>
               </tr>
             </tbody>
           </table>
 
-          <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-            <h5 style="color: var(--success); margin: 0 0 10px 0;">Summary:</h5>
-            <p style="color: var(--muted); margin: 0; font-size: 0.95rem; line-height: 1.8;">
-              • Total Discount Allowed = ₹1,250 (Posted to Discount Allowed A/c on Debit side in Ledger)<br>
-              • Total Discount Received = ₹900 (Posted to Discount Received A/c on Credit side in Ledger)<br>
-              • Closing Cash Balance = ₹42,150<br>
-              • Net Discount Benefit = ₹900 - ₹1,250 = -₹350 (Loss of ₹350)
+          <div class="note-box" style="margin-top: 15px;">
+            <h4>Note on Contra Entries:</h4>
+            <p style="color: var(--muted); margin: 0;">
+              Entries marked with "C" in L.F. column are contra entries (transfers between cash and bank). They appear on both sides of the Cash Book.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Example 3 -->
+      <!-- Example 3: Three Column Cash Book -->
       <div class="practical-card">
         <div class="practical-header">
           <div class="practical-icon">
             <i class="fas fa-3"></i>
           </div>
           <div>
-            <h3 class="practical-title">Example 3: Petty Cash Book</h3>
-            <p style="color: var(--muted); margin: 5px 0 0 0;">Small Expenses with Analytical Columns</p>
+            <h3 class="practical-title">Example 3: Three Column Cash Book</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Cash, Bank and Discount Transactions</p>
           </div>
         </div>
 
         <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
-          <strong>Question:</strong> From the following transactions, prepare a Petty Cash Book with analytical columns for March 2024. Imprest amount is ₹8,000:
+          <strong>Question:</strong> Prepare a Three Column Cash Book for March 2024:
           <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>Mar 1: Received imprest amount ₹8,000</li>
-            <li>Mar 2: Bought postage stamps ₹350</li>
-            <li>Mar 4: Paid for office stationery ₹520</li>
-            <li>Mar 6: Taxi fare for manager ₹450</li>
-            <li>Mar 8: Paid courier charges ₹200</li>
-            <li>Mar 10: Tea and refreshments ₹380</li>
-            <li>Mar 12: Paid for printer cartridge ₹680</li>
-            <li>Mar 14: Auto rickshaw fare ₹180</li>
-            <li>Mar 16: Cleaning charges ₹420</li>
-            <li>Mar 18: Bought envelopes and paper ₹340</li>
-            <li>Mar 20: Paid for office snacks ₹290</li>
-            <li>Mar 22: Metro fare for clerk ₹150</li>
-            <li>Mar 24: Paid for local courier ₹250</li>
-            <li>Mar 26: Office tea expenses ₹320</li>
-            <li>Mar 28: Paid for cleaning supplies ₹380</li>
+            <li>Mar 1: Cash ₹30,000; Bank ₹60,000</li>
+            <li>Mar 3: Received from Kumar ₹19,000 in cash after allowing discount ₹1,000</li>
+            <li>Mar 5: Paid to Supplier by cheque ₹28,500 and received discount ₹1,500</li>
+            <li>Mar 8: Cash sales ₹15,000</li>
+            <li>Mar 10: Deposited cash into bank ₹20,000</li>
+            <li>Mar 12: Received cheque from Ravi ₹38,000 after allowing discount ₹2,000</li>
+            <li>Mar 15: Paid wages in cash ₹8,000</li>
+            <li>Mar 18: Withdrew from bank ₹12,000</li>
+            <li>Mar 22: Paid to creditor in cash ₹9,500 and received discount ₹500</li>
+            <li>Mar 28: Deposited Ravi's cheque into bank</li>
           </ol>
         </div>
 
         <button class="view-solution-btn" onclick="toggleSolution('ex3')">View Solution</button>
 
         <div class="solution" id="ex3-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Three Column Cash Book</h4>
+          
+          <table class="cash-book-table" style="font-size: 0.9rem;">
+            <thead>
+              <tr>
+                <th colspan="7" class="debit-side">Receipts (Dr. Side)</th>
+                <th colspan="7" class="credit-side">Payments (Cr. Side)</th>
+              </tr>
+              <tr>
+                <th class="debit-side">Date</th>
+                <th class="debit-side">Particulars</th>
+                <th class="debit-side">V.No.</th>
+                <th class="debit-side">L.F.</th>
+                <th class="debit-side">Disc.</th>
+                <th class="debit-side">Cash</th>
+                <th class="debit-side">Bank</th>
+                <th class="credit-side">Date</th>
+                <th class="credit-side">Particulars</th>
+                <th class="credit-side">V.No.</th>
+                <th class="credit-side">L.F.</th>
+                <th class="credit-side">Disc.</th>
+                <th class="credit-side">Cash</th>
+                <th class="credit-side">Bank</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 0.85rem;">
+              <tr>
+                <td>2024<br>Mar 1</td>
+                <td>To Balance b/d</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">30,000</td>
+                <td style="text-align: right; font-family: monospace;">60,000</td>
+                <td>2024<br>Mar 5</td>
+                <td>By Supplier A/c</td>
+                <td>1</td>
+                <td>22</td>
+                <td style="text-align: right; font-family: monospace;">1,500</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">28,500</td>
+              </tr>
+              <tr>
+                <td>Mar 3</td>
+                <td>To Kumar A/c</td>
+                <td>2</td>
+                <td>15</td>
+                <td style="text-align: right; font-family: monospace;">1,000</td>
+                <td style="text-align: right; font-family: monospace;">19,000</td>
+                <td>-</td>
+                <td>Mar 10</td>
+                <td>By Bank A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Mar 8</td>
+                <td>To Sales A/c</td>
+                <td>3</td>
+                <td>40</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">15,000</td>
+                <td>-</td>
+                <td>Mar 15</td>
+                <td>By Wages A/c</td>
+                <td>4</td>
+                <td>50</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">8,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Mar 10</td>
+                <td>To Cash A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">20,000</td>
+                <td>Mar 18</td>
+                <td>By Cash A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">12,000</td>
+              </tr>
+              <tr>
+                <td>Mar 12</td>
+                <td>To Ravi A/c</td>
+                <td>5</td>
+                <td>18</td>
+                <td style="text-align: right; font-family: monospace;">2,000</td>
+                <td style="text-align: right; font-family: monospace;">38,000</td>
+                <td>-</td>
+                <td>Mar 22</td>
+                <td>By Creditor A/c</td>
+                <td>6</td>
+                <td>25</td>
+                <td style="text-align: right; font-family: monospace;">500</td>
+                <td style="text-align: right; font-family: monospace;">9,500</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Mar 18</td>
+                <td>To Bank A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">12,000</td>
+                <td>-</td>
+                <td>Mar 28</td>
+                <td>By Bank A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">38,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Mar 28</td>
+                <td>To Cash A/c</td>
+                <td>-</td>
+                <td>C</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">38,000</td>
+                <td>Mar 31</td>
+                <td>By Balance c/d</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">6,500</td>
+                <td style="text-align: right; font-family: monospace;">77,500</td>
+              </tr>
+              <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">3,000</td>
+                <td style="text-align: right; font-family: monospace;">114,000</td>
+                <td style="text-align: right; font-family: monospace;">118,000</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">2,000</td>
+                <td style="text-align: right; font-family: monospace;">114,000</td>
+                <td style="text-align: right; font-family: monospace;">118,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
+            <h5 style="color: var(--success); margin: 0 0 10px 0;">Summary:</h5>
+            <p style="color: var(--muted); margin: 0; font-size: 0.95rem;">
+              • Closing Cash Balance = ₹6,500<br>
+              • Closing Bank Balance = ₹77,500<br>
+              • Total Discount Allowed = ₹3,000<br>
+              • Total Discount Received = ₹2,000<br>
+              • Net Discount Loss = ₹1,000
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 4: Petty Cash Book -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-4"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Example 4: Petty Cash Book</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Small Expenses with Imprest System</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Question:</strong> Prepare a Petty Cash Book on Imprest System (₹5,000) for April 2024:
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Apr 1: Received imprest amount ₹5,000</li>
+            <li>Apr 2: Postage ₹200</li>
+            <li>Apr 4: Stationery ₹450</li>
+            <li>Apr 6: Taxi fare ₹300</li>
+            <li>Apr 8: Tea & refreshments ₹250</li>
+            <li>Apr 10: Courier charges ₹180</li>
+            <li>Apr 12: Office cleaning ₹400</li>
+            <li>Apr 15: Printing ₹600</li>
+            <li>Apr 18: Local conveyance ₹220</li>
+            <li>Apr 20: Miscellaneous ₹150</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex4')">View Solution</button>
+
+        <div class="solution" id="ex4-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Petty Cash Book</h4>
           
           <table class="cash-book-table">
@@ -1250,23 +1749,23 @@
                 <th rowspan="2">Particulars</th>
                 <th rowspan="2">V.No.</th>
                 <th rowspan="2">Receipts<br>(₹)</th>
-                <th colspan="5">Payments (₹)</th>
+                <th colspan="5">Analysis of Payments (₹)</th>
                 <th rowspan="2">Total<br>(₹)</th>
               </tr>
               <tr>
                 <th>Postage</th>
                 <th>Stationery</th>
-                <th>Travelling</th>
-                <th>Cartage</th>
+                <th>Travel</th>
+                <th>Office</th>
                 <th>Misc.</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>2024<br>Mar 1</td>
+                <td>2024<br>Apr 1</td>
                 <td>To Cash (Imprest)</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold;">8,000</td>
+                <td style="text-align: right; font-family: monospace;">5,000</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -1275,484 +1774,171 @@
                 <td>-</td>
               </tr>
               <tr>
-                <td>Mar 2</td>
+                <td>Apr 2</td>
                 <td>Postage stamps</td>
                 <td>1</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">350</td>
+                <td style="text-align: right;">200</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">350</td>
+                <td style="text-align: right;">200</td>
               </tr>
               <tr>
-                <td>Mar 4</td>
-                <td>Office stationery</td>
+                <td>Apr 4</td>
+                <td>Stationery items</td>
                 <td>2</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">520</td>
+                <td style="text-align: right;">450</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">520</td>
+                <td style="text-align: right;">450</td>
               </tr>
               <tr>
-                <td>Mar 6</td>
+                <td>Apr 6</td>
                 <td>Taxi fare</td>
                 <td>3</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">450</td>
+                <td style="text-align: right;">300</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">450</td>
+                <td style="text-align: right;">300</td>
               </tr>
               <tr>
-                <td>Mar 8</td>
-                <td>Courier charges</td>
+                <td>Apr 8</td>
+                <td>Tea & refreshments</td>
                 <td>4</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">200</td>
+                <td style="text-align: right;">250</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">200</td>
+                <td style="text-align: right;">250</td>
               </tr>
               <tr>
-                <td>Mar 10</td>
-                <td>Tea & refreshments</td>
+                <td>Apr 10</td>
+                <td>Courier charges</td>
                 <td>5</td>
                 <td>-</td>
+                <td style="text-align: right;">180</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">380</td>
-                <td style="text-align: right; font-family: monospace;">380</td>
+                <td style="text-align: right;">180</td>
               </tr>
               <tr>
-                <td>Mar 12</td>
-                <td>Printer cartridge</td>
+                <td>Apr 12</td>
+                <td>Office cleaning</td>
                 <td>6</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">680</td>
                 <td>-</td>
                 <td>-</td>
+                <td style="text-align: right;">400</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">680</td>
+                <td style="text-align: right;">400</td>
               </tr>
               <tr>
-                <td>Mar 14</td>
-                <td>Auto rickshaw fare</td>
+                <td>Apr 15</td>
+                <td>Printing charges</td>
                 <td>7</td>
                 <td>-</td>
                 <td>-</td>
+                <td style="text-align: right;">600</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">180</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">180</td>
+                <td style="text-align: right;">600</td>
               </tr>
               <tr>
-                <td>Mar 16</td>
-                <td>Cleaning charges</td>
+                <td>Apr 18</td>
+                <td>Local conveyance</td>
                 <td>8</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td style="text-align: right;">220</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">420</td>
-                <td style="text-align: right; font-family: monospace;">420</td>
+                <td style="text-align: right;">220</td>
               </tr>
               <tr>
-                <td>Mar 18</td>
-                <td>Envelopes & paper</td>
+                <td>Apr 20</td>
+                <td>Miscellaneous</td>
                 <td>9</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">340</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace;">340</td>
-              </tr>
-              <tr>
-                <td>Mar 20</td>
-                <td>Office snacks</td>
-                <td>10</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">290</td>
-                <td style="text-align: right; font-family: monospace;">290</td>
-              </tr>
-              <tr>
-                <td>Mar 22</td>
-                <td>Metro fare</td>
-                <td>11</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">150</td>
-                <td>-</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">150</td>
-              </tr>
-              <tr>
-                <td>Mar 24</td>
-                <td>Local courier</td>
-                <td>12</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">250</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">250</td>
-              </tr>
-              <tr>
-                <td>Mar 26</td>
-                <td>Office tea</td>
-                <td>13</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">320</td>
-                <td style="text-align: right; font-family: monospace;">320</td>
-              </tr>
-              <tr>
-                <td>Mar 28</td>
-                <td>Cleaning supplies</td>
-                <td>14</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace;">380</td>
-                <td style="text-align: right; font-family: monospace;">380</td>
+                <td style="text-align: right;">150</td>
+                <td style="text-align: right;">150</td>
               </tr>
               <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
-                <td colspan="3" style="text-align: right; color: var(--text);">Total Expenses:</td>
-                <td style="text-align: right; font-family: monospace;">8,000</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">350</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">1,540</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">780</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">450</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">1,790</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">4,910</td>
+                <td colspan="3" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">5,000</td>
+                <td style="text-align: right;">380</td>
+                <td style="text-align: right;">1,050</td>
+                <td style="text-align: right;">520</td>
+                <td style="text-align: right;">650</td>
+                <td style="text-align: right;">150</td>
+                <td style="text-align: right;">2,750</td>
               </tr>
               <tr>
-                <td>Mar 31</td>
+                <td>Apr 30</td>
                 <td>Balance c/d</td>
                 <td>-</td>
                 <td>-</td>
                 <td colspan="5"></td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold;">3,090</td>
-              </tr>
-              <tr style="background: rgba(76,175,80,0.1);">
-                <td>Apr 1</td>
-                <td>Balance b/d</td>
-                <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold;">3,090</td>
-                <td colspan="5"></td>
-                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">2,250</td>
               </tr>
               <tr style="background: rgba(0,229,255,0.1);">
-                <td>Apr 1</td>
+                <td>May 1</td>
                 <td>To Cash (Reimbursement)</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--brand-2);">4,910</td>
+                <td style="text-align: right; font-family: monospace; color: var(--brand-2);">2,750</td>
                 <td colspan="5"></td>
                 <td>-</td>
-              </tr>
-              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
-                <td colspan="3" style="text-align: right; color: var(--text);">Imprest Restored:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--success);">8,000</td>
-                <td colspan="6"></td>
               </tr>
             </tbody>
           </table>
-
-          <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-            <h5 style="color: var(--success); margin: 0 0 10px 0;">Summary & Analysis:</h5>
-            <p style="color: var(--muted); margin: 0; font-size: 0.95rem; line-height: 1.8;">
-              • Total Petty Expenses = ₹4,910<br>
-              • Postage = ₹350 (7.1%)<br>
-              • Stationery = ₹1,540 (31.4%)<br>
-              • Travelling = ₹780 (15.9%)<br>
-              • Cartage = ₹450 (9.2%)<br>
-              • Miscellaneous = ₹1,790 (36.4%)<br>
-              • Balance Carried Forward = ₹3,090<br>
-              • Reimbursement from Main Cashier = ₹4,910<br>
-              • Imprest Amount Restored = ₹8,000
-            </p>
-          </div>
         </div>
       </div>
 
-      <!-- Example 4 -->
-      <div class="practical-card">
-        <div class="practical-header">
-          <div class="practical-icon">
-            <i class="fas fa-4"></i>
-          </div>
-          <div>
-            <h3 class="practical-title">Example 4: Cash Book with Bank Column (Three Column)</h3>
-            <p style="color: var(--muted); margin: 5px 0 0 0;">Cash, Bank and Discount Transactions</p>
-          </div>
-        </div>
-
-        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
-          <strong>Question:</strong> Prepare a Three Column Cash Book from the following transactions for April 2024:
-          <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>Apr 1: Cash in hand ₹18,000; Cash at bank ₹45,000</li>
-            <li>Apr 3: Cash sales ₹15,000</li>
-            <li>Apr 5: Deposited into bank ₹12,000</li>
-            <li>Apr 8: Received cheque from Anil ₹9,400 and allowed him discount ₹600</li>
-            <li>Apr 10: Cheque deposited immediately into bank</li>
-            <li>Apr 12: Paid rent by cheque ₹6,000</li>
-            <li>Apr 15: Withdrew from bank for office use ₹8,000</li>
-            <li>Apr 18: Paid to Sunil by cheque ₹11,200 and received discount ₹800</li>
-            <li>Apr 22: Cash sales ₹10,500</li>
-            <li>Apr 25: Paid wages in cash ₹4,500</li>
-            <li>Apr 28: Received cheque from Kapil ₹14,100 and allowed discount ₹900, deposited same day</li>
-          </ol>
-        </div>
-
-        <button class="view-solution-btn" onclick="toggleSolution('ex4')">View Solution</button>
-
-        <div class="solution" id="ex4-solution">
-          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Three Column Cash Book</h4>
-          
-          <div style="overflow-x: auto;">
-            <table class="cash-book-table" style="font-size: 0.9rem;">
-              <thead>
-                <tr>
-                  <th colspan="7" class="debit-side">Receipts (Dr. Side)</th>
-                  <th colspan="7" class="credit-side">Payments (Cr. Side)</th>
-                </tr>
-                <tr>
-                  <th class="debit-side">Date</th>
-                  <th class="debit-side">Particulars</th>
-                  <th class="debit-side">V.No.</th>
-                  <th class="debit-side">L.F.</th>
-                  <th class="debit-side">Disc.<br>(₹)</th>
-                  <th class="debit-side">Cash<br>(₹)</th>
-                  <th class="debit-side">Bank<br>(₹)</th>
-                  <th class="credit-side">Date</th>
-                  <th class="credit-side">Particulars</th>
-                  <th class="credit-side">V.No.</th>
-                  <th class="credit-side">L.F.</th>
-                  <th class="credit-side">Disc.<br>(₹)</th>
-                  <th class="credit-side">Cash<br>(₹)</th>
-                  <th class="credit-side">Bank<br>(₹)</th>
-                </tr>
-              </thead>
-              <tbody style="font-size: 0.85rem;">
-                <tr>
-                  <td>2024<br>Apr 1</td>
-                  <td>To Balance b/d</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">18,000</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">45,000</td>
-                  <td>2024<br>Apr 5</td>
-                  <td>By Bank A/c</td>
-                  <td>-</td>
-                  <td>C</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace;">12,000</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Apr 3</td>
-                  <td>To Sales A/c</td>
-                  <td>1</td>
-                  <td>40</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">15,000</td>
-                  <td>-</td>
-                  <td>Apr 10</td>
-                  <td>By Bank A/c</td>
-                  <td>-</td>
-                  <td>C</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace;">9,400</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Apr 5</td>
-                  <td>To Cash A/c</td>
-                  <td>-</td>
-                  <td>C</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">12,000</td>
-                  <td>Apr 12</td>
-                  <td>By Rent A/c</td>
-                  <td>2</td>
-                  <td>30</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace;">6,000</td>
-                </tr>
-                <tr>
-                  <td>Apr 8</td>
-                  <td>To Anil A/c</td>
-                  <td>3</td>
-                  <td>12</td>
-                  <td style="text-align: right; font-family: monospace;">600</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">9,400</td>
-                  <td>-</td>
-                  <td>Apr 15</td>
-                  <td>By Cash A/c</td>
-                  <td>-</td>
-                  <td>C</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace;">8,000</td>
-                </tr>
-                <tr>
-                  <td>Apr 10</td>
-                  <td>To Bank A/c</td>
-                  <td>-</td>
-                  <td>C</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">9,400</td>
-                  <td>Apr 18</td>
-                  <td>By Sunil A/c</td>
-                  <td>4</td>
-                  <td>22</td>
-                  <td style="text-align: right; font-family: monospace;">800</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace;">11,200</td>
-                </tr>
-                <tr>
-                  <td>Apr 15</td>
-                  <td>To Bank A/c</td>
-                  <td>-</td>
-                  <td>C</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">8,000</td>
-                  <td>-</td>
-                  <td>Apr 25</td>
-                  <td>By Wages A/c</td>
-                  <td>5</td>
-                  <td>50</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace;">4,500</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Apr 22</td>
-                  <td>To Sales A/c</td>
-                  <td>6</td>
-                  <td>40</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">10,500</td>
-                  <td>-</td>
-                  <td>Apr 30</td>
-                  <td>By Balance c/d</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">25,000</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">41,200</td>
-                </tr>
-                <tr>
-                  <td>Apr 28</td>
-                  <td>To Kapil A/c</td>
-                  <td>7</td>
-                  <td>18</td>
-                  <td style="text-align: right; font-family: monospace;">900</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">14,100</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
-                  <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                  <td style="text-align: right; font-family: monospace;">1,500</td>
-                  <td style="text-align: right; font-family: monospace;">60,900</td>
-                  <td style="text-align: right; font-family: monospace;">80,500</td>
-                  <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                  <td style="text-align: right; font-family: monospace;">800</td>
-                  <td style="text-align: right; font-family: monospace;">60,900</td>
-                  <td style="text-align: right; font-family: monospace;">80,500</td>
-                </tr>
-                <tr style="background: rgba(76,175,80,0.1);">
-                  <td>May 1</td>
-                  <td>To Balance b/d</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">25,000</td>
-                  <td style="text-align: right; font-family: monospace; font-weight: bold;">41,200</td>
-                  <td colspan="7"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-            <h5 style="color: var(--success); margin: 0 0 10px 0;">Summary:</h5>
-            <p style="color: var(--muted); margin: 0; font-size: 0.95rem; line-height: 1.8;">
-              • Closing Cash Balance = ₹25,000<br>
-              • Closing Bank Balance = ₹41,200<br>
-              • Total Discount Allowed = ₹1,500<br>
-              • Total Discount Received = ₹800<br>
-              • Net Discount Loss = ₹700<br>
-              • Contra Entries (marked with "C"): Cash to Bank (₹12,000 + ₹9,400) and Bank to Cash (₹8,000)
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Example 5 -->
-       <!-- Example 5 -->
+      <!-- Example 5: Complex Single Column -->
       <div class="practical-card">
         <div class="practical-header">
           <div class="practical-icon">
             <i class="fas fa-5"></i>
           </div>
           <div>
-            <h3 class="practical-title">Example 5: Mixed Transactions</h3>
-            <p style="color: var(--muted); margin: 5px 0 0 0;">Opening Balance, Contra Entries, and Closing Balance</p>
+            <h3 class="practical-title">Example 5: Mixed Cash Transactions</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Various Cash Receipts and Payments</p>
           </div>
         </div>
 
         <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
-          <strong>Question:</strong> From the following transactions, prepare a Single Column Cash Book for May 2024:
+          <strong>Question:</strong> Prepare a Single Column Cash Book for May 2024:
           <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>May 1: Cash balance ₹22,000</li>
-            <li>May 4: Received cash from Rajesh ₹8,500</li>
-            <li>May 7: Cash sales ₹12,500</li>
-            <li>May 10: Paid salaries ₹6,000</li>
-            <li>May 13: Purchased goods for cash ₹9,000</li>
-            <li>May 16: Received interest ₹750</li>
-            <li>May 19: Paid insurance premium ₹2,500</li>
-            <li>May 22: Cash sales ₹14,000</li>
-            <li>May 25: Owner withdrew for personal use ₹5,000</li>
-            <li>May 28: Paid telephone bill ₹850</li>
-            <li>May 30: Received dividend ₹1,200</li>
+            <li>May 1: Opening cash balance ₹35,000</li>
+            <li>May 3: Received from debtor Amit ₹12,000</li>
+            <li>May 5: Cash sales ₹22,000</li>
+            <li>May 8: Paid electricity bill ₹3,500</li>
+            <li>May 10: Purchased furniture for cash ₹15,000</li>
+            <li>May 12: Received interest ₹1,800</li>
+            <li>May 15: Paid salaries ₹18,000</li>
+            <li>May 18: Cash sales ₹16,500</li>
+            <li>May 22: Paid rent ₹7,000</li>
+            <li>May 25: Received from debtor Suresh ₹9,500</li>
+            <li>May 28: Paid for repairs ₹2,800</li>
+            <li>May 31: Owner's drawings ₹5,000</li>
           </ol>
         </div>
 
@@ -1786,406 +1972,751 @@
                 <td>To Balance b/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">22,000</td>
-                <td>2024<br>May 10</td>
-                <td>By Salaries A/c</td>
+                <td style="text-align: right; font-family: monospace;">35,000</td>
+                <tr>
+                <td>May 3</td>
+                <td>To Amit A/c</td>
                 <td>1</td>
-                <td>50</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">6,000</td>
-              </tr>
-              <tr>
-                <td>May 4</td>
-                <td>To Rajesh A/c</td>
-                <td>2</td>
                 <td>15</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">8,500</td>
-                <td>May 13</td>
-                <td>By Purchases A/c</td>
+                <td style="text-align: right; font-family: monospace;">12,000</td>
+                <td>May 8</td>
+                <td>By Electricity A/c</td>
+                <td>2</td>
+                <td>30</td>
+                <td style="text-align: right; font-family: monospace;">3,500</td>
+            </tr>
+            <tr>
+                <td>May 5</td>
+                <td>To Sales A/c</td>
                 <td>3</td>
-                <td>35</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">9,000</td>
-              </tr>
-              <tr>
-                <td>May 7</td>
-                <td>To Sales A/c</td>
+                <td>40</td>
+                <td style="text-align: right; font-family: monospace;">22,000</td>
+                <td>May 10</td>
+                <td>By Furniture A/c</td>
                 <td>4</td>
-                <td>40</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">12,500</td>
-                <td>May 19</td>
-                <td>By Insurance A/c</td>
-                <td>5</td>
-                <td>55</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">2,500</td>
-              </tr>
-              <tr>
-                <td>May 16</td>
+                <td>25</td>
+                <td style="text-align: right; font-family: monospace;">15,000</td>
+            </tr>
+            <tr>
+                <td>May 12</td>
                 <td>To Interest A/c</td>
+                <td>5</td>
+                <td>50</td>
+                <td style="text-align: right; font-family: monospace;">1,800</td>
+                <td>May 15</td>
+                <td>By Salary A/c</td>
                 <td>6</td>
-                <td>60</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">750</td>
-                <td>May 25</td>
-                <td>By Drawings A/c</td>
-                <td>7</td>
-                <td>10</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">5,000</td>
-              </tr>
-              <tr>
-                <td>May 22</td>
+                <td>55</td>
+                <td style="text-align: right; font-family: monospace;">18,000</td>
+            </tr>
+            <tr>
+                <td>May 18</td>
                 <td>To Sales A/c</td>
-                <td>8</td>
+                <td>7</td>
                 <td>40</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">14,000</td>
-                <td>May 28</td>
-                <td>By Telephone A/c</td>
+                <td style="text-align: right; font-family: monospace;">16,500</td>
+                <td>May 22</td>
+                <td>By Rent A/c</td>
+                <td>8</td>
+                <td>35</td>
+                <td style="text-align: right; font-family: monospace;">7,000</td>
+            </tr>
+            <tr>
+                <td>May 25</td>
+                <td>To Suresh A/c</td>
                 <td>9</td>
-                <td>65</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--error);">850</td>
-              </tr>
-              <tr>
-                <td>May 30</td>
-                <td>To Dividend A/c</td>
+                <td>18</td>
+                <td style="text-align: right; font-family: monospace;">9,500</td>
+                <td>May 28</td>
+                <td>By Repairs A/c</td>
                 <td>10</td>
-                <td>70</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">1,200</td>
+                <td>45</td>
+                <td style="text-align: right; font-family: monospace;">2,800</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>May 31</td>
+                <td>By Drawings A/c</td>
+                <td>11</td>
+                <td>10</td>
+                <td style="text-align: right; font-family: monospace;">5,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>May 31</td>
                 <td>By Balance c/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--brand-2);">35,600</td>
-              </tr>
-              <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
-                <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">58,950</td>
-                <td colspan="4" style="text-align: right; color: var(--text);">Total:</td>
-                <td style="text-align: right; font-family: monospace; color: var(--text);">58,950</td>
-              </tr>
-              <tr style="background: rgba(76,175,80,0.1);">
+                <td style="text-align: right; font-family: monospace; color: var(--brand-2);">47,000</td>
+            </tr>
+            <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">96,800</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">96,800</td>
+            </tr>
+            <tr style="background: rgba(76,175,80,0.1);">
                 <td>Jun 1</td>
                 <td>To Balance b/d</td>
                 <td>-</td>
                 <td>-</td>
-                <td style="text-align: right; font-family: monospace; font-weight: bold; color: var(--success);">35,600</td>
+                <td style="text-align: right; font-family: monospace; font-weight: bold;">47,000</td>
                 <td colspan="5"></td>
-              </tr>
+            </tr>
             </tbody>
           </table>
 
-          <div style="background: rgba(76,175,80,0.08); padding: 15px; border-radius: 10px; margin-top: 15px;">
-            <h5 style="color: var(--success); margin: 0 0 10px 0;">Summary:</h5>
-            <p style="color: var(--muted); margin: 0; font-size: 0.95rem; line-height: 1.8;">
-              • Total Receipts = ₹58,950<br>
-              • Total Payments = ₹23,350<br>
-              • Closing Cash Balance = ₹35,600<br>
-              • Cash increased by ₹13,600 during the month
+          <div class="note-box" style="margin-top: 15px;">
+            <h4>Summary of Cash Position:</h4>
+            <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+              • Opening Balance: ₹35,000<br>
+              • Total Receipts: ₹61,800 (₹12,000 + ₹22,000 + ₹1,800 + ₹16,500 + ₹9,500)<br>
+              • Total Payments: ₹49,300 (₹3,500 + ₹15,000 + ₹18,000 + ₹7,000 + ₹2,800 + ₹5,000)<br>
+              • Closing Balance: ₹47,500<br>
+              • Net Increase in Cash: ₹12,500
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Key Points Section -->
+    <!-- Advantages Section -->
     <section>
-      <h2>Important Points to Remember</h2>
-      
+      <h2>Advantages of Cash Book</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 30px;">
+        Maintaining a Cash Book provides numerous benefits for effective financial management:
+      </p>
+
       <div class="advantages-grid">
         <div class="advantage-card">
           <div class="advantage-icon">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-shield-alt"></i>
           </div>
-          <div class="advantage-title">Cash Book Never Has Credit Balance</div>
+          <div class="advantage-title">Prevents Fraud</div>
           <div class="advantage-desc">
-            Unlike other ledger accounts, a Cash Book can never show a credit balance because you cannot pay more cash than you have. If calculations show a credit balance, there's an error that needs correction.
+            Regular recording and balancing of cash transactions helps detect any misappropriation or unauthorized use of cash quickly.
           </div>
         </div>
 
         <div class="advantage-card">
           <div class="advantage-icon">
-            <i class="fas fa-arrows-left-right"></i>
+            <i class="fas fa-clock"></i>
           </div>
-          <div class="advantage-title">Contra Entries</div>
+          <div class="advantage-title">Saves Time</div>
           <div class="advantage-desc">
-            Transactions between cash and bank (deposits and withdrawals) are called contra entries. They appear on both sides and are marked with "C" in the L.F. column. They don't affect total liquid assets.
+            Eliminates the need for separate Cash and Bank accounts in the ledger, reducing duplication of work and saving valuable time.
           </div>
         </div>
 
         <div class="advantage-card">
           <div class="advantage-icon">
-            <i class="fas fa-calculator"></i>
+            <i class="fas fa-chart-line"></i>
           </div>
-          <div class="advantage-title">Discount Columns</div>
+          <div class="advantage-title">Cash Management</div>
           <div class="advantage-desc">
-            In Double/Three Column Cash Books, discount columns are only totaled, never balanced. Discount Allowed is posted to the debit side of Discount Allowed A/c, and Discount Received to the credit side of Discount Received A/c.
+            Provides immediate information about cash position, helping in better planning and management of cash resources.
           </div>
         </div>
 
         <div class="advantage-card">
           <div class="advantage-icon">
-            <i class="fas fa-calendar-check"></i>
+            <i class="fas fa-check-double"></i>
           </div>
-          <div class="advantage-title">Regular Balancing</div>
+          <div class="advantage-title">Easy Verification</div>
           <div class="advantage-desc">
-            Cash Books should be balanced frequently (daily or weekly) to detect errors quickly and maintain accurate cash position. This helps in better cash management and prevents fraud.
+            Cash balance can be easily verified by physical counting, and bank balance can be verified with bank statements.
+          </div>
+        </div>
+
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="advantage-title">Dual Purpose</div>
+          <div class="advantage-desc">
+            Serves as both a book of original entry and a ledger account, providing complete record of cash transactions.
+          </div>
+        </div>
+
+        <div class="advantage-card">
+          <div class="advantage-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div class="advantage-title">Trial Balance Ready</div>
+          <div class="advantage-desc">
+            Cash and Bank balances from Cash Book can be directly taken to Trial Balance without preparing separate ledger accounts.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- MCQ Section-->
-    <section id="mcq-section">
-      <h2>MCQs on Books of Original Entry & Cash Book</h2>
-      <div id="mcq-container">
-
-        <!-- MCQ 1 -->
-        <div class="mcq" data-answer="B">
-          <p>1. Which of the following is a book of original entry?</p>
-          <label for="mcq1a"><input type="radio" id="mcq1a" name="q1" value="A"> Ledger</label>
-          <label for="mcq1b"><input type="radio" id="mcq1b" name="q1" value="B"> Journal</label>
-          <label for="mcq1c"><input type="radio" id="mcq1c" name="q1" value="C"> Balance Sheet</label>
-        </div>
-
-        <!-- MCQ 2 -->
-        <div class="mcq" data-answer="C">
-          <p>2. Cash Book is also treated as?</p>
-          <label for="mcq2a"><input type="radio" id="mcq2a" name="q2" value="A"> Memorandum Book</label>
-          <label for="mcq2b"><input type="radio" id="mcq2b" name="q2" value="B"> Ledger only</label>
-          <label for="mcq2c"><input type="radio" id="mcq2c" name="q2" value="C"> Both Journal and Ledger</label>
-        </div>
-
-        <!-- MCQ 3 -->
-        <div class="mcq" data-answer="A">
-          <p>3. Purchases book records only:</p>
-          <label for="mcq3a"><input type="radio" id="mcq3a" name="q3" value="A"> Credit purchases of goods</label>
-          <label for="mcq3b"><input type="radio" id="mcq3b" name="q3" value="B"> Cash purchases of goods</label>
-          <label for="mcq3c"><input type="radio" id="mcq3c" name="q3" value="C"> Both cash and credit purchases</label>
-        </div>
-
-        <!-- MCQ 4 -->
-        <div class="mcq" data-answer="C">
-          <p>4. Sales return book is also called:</p>
-          <label for="mcq4a"><input type="radio" id="mcq4a" name="q4" value="A"> Return Outward Book</label>
-          <label for="mcq4b"><input type="radio" id="mcq4b" name="q4" value="B"> Journal Proper</label>
-          <label for="mcq4c"><input type="radio" id="mcq4c" name="q4" value="C"> Return Inward Book</label>
-        </div>
-
-        <!-- MCQ 5 -->
-        <div class="mcq" data-answer="B">
-          <p>5. Contra entries are recorded in:</p>
-          <label for="mcq5a"><input type="radio" id="mcq5a" name="q5" value="A"> Purchases Book</label>
-          <label for="mcq5b"><input type="radio" id="mcq5b" name="q5" value="B"> Cash Book</label>
-          <label for="mcq5c"><input type="radio" id="mcq5c" name="q5" value="C"> Journal Proper</label>
-        </div>
-
-        <!-- MCQ 6 -->
-        <div class="mcq" data-answer="A">
-          <p>6. Petty Cash Book is maintained by which method?</p>
-          <label for="mcq6a"><input type="radio" id="mcq6a" name="q6" value="A"> Imprest System</label>
-          <label for="mcq6b"><input type="radio" id="mcq6b" name="q6" value="B"> Double Entry System</label>
-          <label for="mcq6c"><input type="radio" id="mcq6c" name="q6" value="C"> Single Entry System</label>
-        </div>
-
-        <!-- MCQ 7 -->
-        <div class="mcq" data-answer="B">
-          <p>7. Which book records credit sales of goods?</p>
-          <label for="mcq7a"><input type="radio" id="mcq7a" name="q7" value="A"> Cash Book</label>
-          <label for="mcq7b"><input type="radio" id="mcq7b" name="q7" value="B"> Sales Book</label>
-          <label for="mcq7c"><input type="radio" id="mcq7c" name="q7" value="C"> Purchases Return Book</label>
-        </div>
-
-        <!-- MCQ 8 -->
-        <div class="mcq" data-answer="C">
-          <p>8. Which voucher is prepared for credit purchase of goods?</p>
-          <label for="mcq8a"><input type="radio" id="mcq8a" name="q8" value="A"> Receipt Voucher</label>
-          <label for="mcq8b"><input type="radio" id="mcq8b" name="q8" value="B"> Payment Voucher</label>
-          <label for="mcq8c"><input type="radio" id="mcq8c" name="q8" value="C"> Journal Voucher</label>
-        </div>
-
-        <!-- MCQ 9 -->
-        <div class="mcq" data-answer="A">
-          <p>9. Which of the following is NOT a subsidiary book?</p>
-          <label for="mcq9a"><input type="radio" id="mcq9a" name="q9" value="A"> Trial Balance</label>
-          <label for="mcq9b"><input type="radio" id="mcq9b" name="q9" value="B"> Cash Book</label>
-          <label for="mcq9c"><input type="radio" id="mcq9c" name="q9" value="C"> Purchases Book</label>
-        </div>
-
-        <!-- MCQ 10 -->
-        <div class="mcq" data-answer="B">
-          <p>10. In Cash Book, discount allowed is shown on:</p>
-          <label for="mcq10a"><input type="radio" id="mcq10a" name="q10" value="A"> Credit side</label>
-          <label for="mcq10b"><input type="radio" id="mcq10b" name="q10" value="B"> Debit side</label>
-          <label for="mcq10c"><input type="radio" id="mcq10c" name="q10" value="C"> Both sides</label>
-        </div>
-
+    <!-- Important Points Section -->
+    <section>
+      <h2>Important Points to Remember</h2>
+      
+      <div class="definition-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <h3 style="margin:0 0 15px 0; color:white;">
+          <i class="fas fa-exclamation-circle"></i> Key Rules for Cash Book
+        </h3>
+        <ul style="color:white; margin:0; line-height:2; list-style-type: none; padding-left: 0;">
+          <li>✓ <strong>Cash Balance:</strong> Can never be negative (credit balance)</li>
+          <li>✓ <strong>Bank Balance:</strong> Can be negative (overdraft)</li>
+          <li>✓ <strong>Contra Entries:</strong> Appear on both sides of Cash Book</li>
+          <li>✓ <strong>Discount Column:</strong> Not balanced but totaled and posted to ledger</li>
+          <li>✓ <strong>Opening Balance:</strong> Cash always debit, Bank can be debit or credit</li>
+          <li>✓ <strong>Non-Cash Items:</strong> Not recorded in Cash Book (depreciation, bad debts, etc.)</li>
+        </ul>
       </div>
 
-      <button id="submit-mcq">Submit Answers</button>
-      <button id="retry-btn" style="display:none;">Retry</button>
-      <div id="score-display" style="display:none;"></div>
-
-      <!-- Progress Tracker -->
-      <div id="progressBox">
-        <h4>Your Progress</h4>
-        <progress id="lesson-progress" max="100" value="0"></progress>
+      <div class="comparison-table" style="margin-top: 30px;">
+        <h3 style="color: var(--brand-2); margin-bottom: 20px;">Comparison: Cash Book vs Cash Account</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Cash Book</th>
+              <th>Cash Account</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nature</strong></td>
+              <td>Book of Original Entry + Ledger</td>
+              <td>Only a Ledger Account</td>
+            </tr>
+            <tr>
+              <td><strong>Recording</strong></td>
+              <td>Transactions recorded from source documents</td>
+              <td>Posted from journal/cash book</td>
+            </tr>
+            <tr>
+              <td><strong>Narration</strong></td>
+              <td>Detailed narration provided</td>
+              <td>Brief particulars only</td>
+            </tr>
+            <tr>
+              <td><strong>Columns</strong></td>
+              <td>Multiple columns possible</td>
+              <td>Single amount column</td>
+            </tr>
+            <tr>
+              <td><strong>Balancing</strong></td>
+              <td>Balanced daily/weekly/monthly</td>
+              <td>Balanced periodically</td>
+            </tr>
+            <tr>
+              <td><strong>Verification</strong></td>
+              <td>Can be verified with physical cash</td>
+              <td>Verified through Cash Book</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-
-    <!-- Practical Section -->
-    <section id="practicals">
-      <h2>Practice Questions on Cash Book & Books of Original Entry</h2>
+    <!-- Common Errors Section -->
+    <section>
+      <h2>Common Errors in Cash Book</h2>
       
       <div class="practical-card">
-        <h3>Practical Question 1</h3>
-        <p>Record the following in a Cash Book:</p>
-        <ul>
-          <li>1 Jan: Started business with ₹80,000 cash.</li>
-          <li>2 Jan: Deposited ₹20,000 into bank.</li>
-          <li>4 Jan: Purchased goods on credit from Ramesh for ₹10,000.</li>
-          <li>6 Jan: Paid salary ₹5,000.</li>
-          <li>7 Jan: Received cash from Suresh ₹15,000.</li>
-          <li>10 Jan: Purchased furniture for ₹8,000 by cheque.</li>
-        </ul>
+        <div class="practical-header">
+          <div class="practical-icon" style="background: linear-gradient(135deg, var(--error), var(--warning));">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Errors to Avoid</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Common mistakes and their corrections</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <ol style="color: var(--muted); line-height: 2; padding-left: 20px;">
+            <li><strong>Wrong Side Entry:</strong> Recording receipts on credit side or payments on debit side</li>
+            <li><strong>Omission of Contra Entry:</strong> Not recording both sides of cash-bank transfers</li>
+            <li><strong>Wrong Totaling:</strong> Arithmetic errors in adding columns</li>
+            <li><strong>Credit Cash Balance:</strong> Showing negative cash balance (impossible)</li>
+            <li><strong>Missing Discount Entry:</strong> Not recording cash discount allowed or received</li>
+            <li><strong>Wrong Dating:</strong> Recording transactions on wrong dates</li>
+            <li><strong>Non-Cash Items:</strong> Recording depreciation, provisions, etc. in Cash Book</li>
+            <li><strong>Bank Charges Omission:</strong> Not recording bank charges, interest, etc.</li>
+          </ol>
+        </div>
       </div>
 
-      <div class="practical-card">
-        <h3>Practical Question 2</h3>
-        <p>Enter the following in suitable books of original entry:</p>
-        <ul>
-          <li>3 Feb: Purchased goods for cash ₹25,000.</li>
-          <li>5 Feb: Sold goods on credit to Mohan ₹30,000.</li>
-          <li>7 Feb: Returned goods worth ₹2,000 to supplier.</li>
-          <li>9 Feb: Received cheque from Mohan ₹20,000.</li>
-          <li>12 Feb: Paid rent ₹5,000.</li>
-          <li>14 Feb: Purchased stationery ₹1,200 cash.</li>
-        </ul>
-      </div>
-
-      <div class="practical-card">
-        <h3>Practical Question 3</h3>
-        <p>Record the following in Cash Book:</p>
-        <ul>
-          <li>1 Mar: Cash balance ₹50,000.</li>
-          <li>2 Mar: Deposited into bank ₹10,000.</li>
-          <li>3 Mar: Cash sales ₹12,000.</li>
-          <li>5 Mar: Paid wages ₹3,000.</li>
-          <li>8 Mar: Paid by cheque for advertisement ₹4,000.</li>
-          <li>10 Mar: Received cash from Ajay ₹7,000.</li>
-        </ul>
-      </div>
-
-      <div class="practical-card">
-        <h3>Practical Question 4</h3>
-        <p>Enter the following in proper books:</p>
-        <ul>
-          <li>2 Apr: Sold goods on credit to Ramesh ₹18,000.</li>
-          <li>3 Apr: Purchased goods from Sohan on credit ₹12,000.</li>
-          <li>5 Apr: Cash sales ₹5,000.</li>
-          <li>8 Apr: Returned goods by Ramesh ₹2,000.</li>
-          <li>9 Apr: Paid Sohan by cheque ₹10,000.</li>
-          <li>11 Apr: Paid electricity bill ₹3,000 cash.</li>
-        </ul>
-      </div>
-
-      <div class="practical-card">
-        <h3>Practical Question 5</h3>
-        <p>Record in Cash Book:</p>
-        <ul>
-          <li>1 May: Cash in hand ₹60,000.</li>
-          <li>2 May: Paid rent ₹6,000.</li>
-          <li>4 May: Cash sales ₹25,000.</li>
-          <li>6 May: Purchased goods for cash ₹10,000.</li>
-          <li>8 May: Deposited into bank ₹15,000.</li>
-          <li>10 May: Paid insurance premium ₹2,000.</li>
-        </ul>
-      </div>
-
-      <div class="practical-card">
-        <h3>Practical Question 6</h3>
-        <p>Enter the following in proper books of original entry:</p>
-        <ul>
-          <li>3 Jun: Purchased goods on credit from Anil ₹22,000.</li>
-          <li>4 Jun: Sold goods on credit to Sunil ₹28,000.</li>
-          <li>6 Jun: Cash sales ₹12,000.</li>
-          <li>7 Jun: Returned goods to Anil ₹2,000.</li>
-          <li>9 Jun: Received cheque from Sunil ₹20,000.</li>
-          <li>11 Jun: Paid salaries ₹7,000.</li>
-        </ul>
+      <div class="note-box">
+        <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+        <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+          Always verify that Total Debits = Total Credits for each column. The Cash Book must balance mathematically. If it doesn't balance, check for arithmetic errors, omissions, or wrong side entries.
+        </p>
       </div>
     </section>
 
+    <section id="mcq-section">
+    <h2>MCQ Practice – Books of Original Entry & Cash Book</h2>
+    <form id="mcq-form">
+      <div id="mcq-container">
+
+        <!-- Q1 -->
+        <div class="mcq">
+          <h3>1. Cash Book is both a:</h3>
+          <input type="radio" id="q1a" name="q1" value="a">
+          <label for="q1a">Book of secondary entry and ledger account</label>
+
+          <input type="radio" id="q1b" name="q1" value="b">
+          <label for="q1b">Book of original entry and ledger account</label>
+
+          <input type="radio" id="q1c" name="q1" value="c">
+          <label for="q1c">Only a book of original entry</label>
+
+          <input type="radio" id="q1d" name="q1" value="d">
+          <label for="q1d">Only a ledger account</label>
+        </div>
+
+        <!-- Q2 -->
+        <div class="mcq">
+          <h3>2. The Cash Book records:</h3>
+          <input type="radio" id="q2a" name="q2" value="a">
+          <label for="q2a">Only cash transactions</label>
+
+          <input type="radio" id="q2b" name="q2" value="b">
+          <label for="q2b">Cash and bank transactions</label>
+
+          <input type="radio" id="q2c" name="q2" value="c">
+          <label for="q2c">Only credit transactions</label>
+
+          <input type="radio" id="q2d" name="q2" value="d">
+          <label for="q2d">Only journal entries</label>
+        </div>
+
+        <!-- Q3 -->
+        <div class="mcq">
+          <h3>3. Which book is known as the primary record of transactions?</h3>
+          <input type="radio" id="q3a" name="q3" value="a">
+          <label for="q3a">Ledger</label>
+
+          <input type="radio" id="q3b" name="q3" value="b">
+          <label for="q3b">Cash Book</label>
+
+          <input type="radio" id="q3c" name="q3" value="c">
+          <label for="q3c">Journal</label>
+
+          <input type="radio" id="q3d" name="q3" value="d">
+          <label for="q3d">Trial Balance</label>
+        </div>
+
+        <!-- Q4 -->
+        <div class="mcq">
+          <h3>4. Petty Cash Book is maintained under:</h3>
+          <input type="radio" id="q4a" name="q4" value="a">
+          <label for="q4a">Imprest system</label>
+
+          <input type="radio" id="q4b" name="q4" value="b">
+          <label for="q4b">Single entry system</label>
+
+          <input type="radio" id="q4c" name="q4" value="c">
+          <label for="q4c">Double entry system</label>
+
+          <input type="radio" id="q4d" name="q4" value="d">
+          <label for="q4d">Cash management system</label>
+        </div>
+
+        <!-- Q5 -->
+        <div class="mcq">
+          <h3>5. Which book is prepared before posting into ledger?</h3>
+          <input type="radio" id="q5a" name="q5" value="a">
+          <label for="q5a">Journal</label>
+
+          <input type="radio" id="q5b" name="q5" value="b">
+          <label for="q5b">Ledger</label>
+
+          <input type="radio" id="q5c" name="q5" value="c">
+          <label for="q5c">Trial Balance</label>
+
+          <input type="radio" id="q5d" name="q5" value="d">
+          <label for="q5d">Final Accounts</label>
+        </div>
+
+        <!-- Q6 -->
+        <div class="mcq">
+          <h3>6. Contra entries are recorded in:</h3>
+          <input type="radio" id="q6a" name="q6" value="a">
+          <label for="q6a">Purchase Book</label>
+
+          <input type="radio" id="q6b" name="q6" value="b">
+          <label for="q6b">Journal Proper</label>
+
+          <input type="radio" id="q6c" name="q6" value="c">
+          <label for="q6c">Cash Book</label>
+
+          <input type="radio" id="q6d" name="q6" value="d">
+          <label for="q6d">Sales Book</label>
+        </div>
+
+        <!-- Q7 -->
+        <div class="mcq">
+          <h3>7. Which side of the Cash Book records cash payments?</h3>
+          <input type="radio" id="q7a" name="q7" value="a">
+          <label for="q7a">Debit side</label>
+
+          <input type="radio" id="q7b" name="q7" value="b">
+          <label for="q7b">Credit side</label>
+
+          <input type="radio" id="q7c" name="q7" value="c">
+          <label for="q7c">Both debit and credit</label>
+
+          <input type="radio" id="q7d" name="q7" value="d">
+          <label for="q7d">None of these</label>
+        </div>
+
+        <!-- Q8 -->
+        <div class="mcq">
+          <h3>8. Petty expenses like postage and stationery are recorded in:</h3>
+          <input type="radio" id="q8a" name="q8" value="a">
+          <label for="q8a">Ledger</label>
+
+          <input type="radio" id="q8b" name="q8" value="b">
+          <label for="q8b">Cash Book</label>
+
+          <input type="radio" id="q8c" name="q8" value="c">
+          <label for="q8c">Petty Cash Book</label>
+
+          <input type="radio" id="q8d" name="q8" value="d">
+          <label for="q8d">Trial Balance</label>
+        </div>
+
+        <!-- Q9 -->
+        <div class="mcq">
+          <h3>9. The Journal records:</h3>
+          <input type="radio" id="q9a" name="q9" value="a">
+          <label for="q9a">All credit transactions</label>
+
+          <input type="radio" id="q9b" name="q9" value="b">
+          <label for="q9b">Cash and bank transactions only</label>
+
+          <input type="radio" id="q9c" name="q9" value="c">
+          <label for="q9c">All transactions in chronological order</label>
+
+          <input type="radio" id="q9d" name="q9" value="d">
+          <label for="q9d">Only sales transactions</label>
+        </div>
+
+        <!-- Q10 -->
+        <div class="mcq">
+          <h3>10. When cash is deposited into bank, it is a:</h3>
+          <input type="radio" id="q10a" name="q10" value="a">
+          <label for="q10a">Contra entry</label>
+
+          <input type="radio" id="q10b" name="q10" value="b">
+          <label for="q10b">Adjustment entry</label>
+
+          <input type="radio" id="q10c" name="q10" value="c">
+          <label for="q10c">Transfer entry</label>
+
+          <input type="radio" id="q10d" name="q10" value="d">
+          <label for="q10d">Closing entry</label>
+        </div>
+
+        <!-- New Q11 -->
+        <div class="mcq">
+          <h3>11. Which column is NOT present in a simple Cash Book?</h3>
+          <input type="radio" id="q11a" name="q11" value="a">
+          <label for="q11a">Date</label>
+
+          <input type="radio" id="q11b" name="q11" value="b">
+          <label for="q11b">Particulars</label>
+
+          <input type="radio" id="q11c" name="q11" value="c">
+          <label for="q11c">Ledger Folio</label>
+
+          <input type="radio" id="q11d" name="q11" value="d">
+          <label for="q11d">Discount</label>
+        </div>
+
+        <!-- New Q12 -->
+        <div class="mcq">
+          <h3>12. Purchases Book is used to record:</h3>
+          <input type="radio" id="q12a" name="q12" value="a">
+          <label for="q12a">All purchases</label>
+
+          <input type="radio" id="q12b" name="q12" value="b">
+          <label for="q12b">Only credit purchases of goods</label>
+
+          <input type="radio" id="q12c" name="q12" value="c">
+          <label for="q12c">Only cash purchases of goods</label>
+
+          <input type="radio" id="q12d" name="q12" value="d">
+          <label for="q12d">Fixed assets purchases</label>
+        </div>
+
+        <!-- New Q13 -->
+        <div class="mcq">
+          <h3>13. Sales Book does not record:</h3>
+          <input type="radio" id="q13a" name="q13" value="a">
+          <label for="q13a">Cash sales</label>
+
+          <input type="radio" id="q13b" name="q13" value="b">
+          <label for="q13b">Credit sales of goods</label>
+
+          <input type="radio" id="q13c" name="q13" value="c">
+          <label for="q13c">Returns inward</label>
+
+          <input type="radio" id="q13d" name="q13" value="d">
+          <label for="q13d">None of these</label>
+        </div>
+
+        <!-- New Q14 -->
+        <div class="mcq">
+          <h3>14. Purchase Returns Book is also known as:</h3>
+          <input type="radio" id="q14a" name="q14" value="a">
+          <label for="q14a">Returns Outward Book</label>
+
+          <input type="radio" id="q14b" name="q14" value="b">
+          <label for="q14b">Returns Inward Book</label>
+
+          <input type="radio" id="q14c" name="q14" value="c">
+          <label for="q14c">Cash Book</label>
+
+          <input type="radio" id="q14d" name="q14" value="d">
+          <label for="q14d">Journal Proper</label>
+        </div>
+
+        <!-- New Q15 -->
+        <div class="mcq">
+          <h3>15. The balance of Cash Book is always:</h3>
+          <input type="radio" id="q15a" name="q15" value="a">
+          <label for="q15a">Debit or Nil</label>
+
+          <input type="radio" id="q15b" name="q15" value="b">
+          <label for="q15b">Credit only</label>
+
+          <input type="radio" id="q15c" name="q15" value="c">
+          <label for="q15c">Either debit or credit</label>
+
+          <input type="radio" id="q15d" name="q15" value="d">
+          <label for="q15d">None of these</label>
+        </div>
+
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-wrapper">
+        <div class="circular-progress">
+          <span class="progress-value">0%</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="button" class="submit-button" onclick="checkAnswers(event)">Submit</button>
+      <!-- Retry Button -->
+      <button type="button" class="retry-btn" id="retryBtn" onclick="resetQuiz()">Retry</button>
+
+    </form>
+  </section>
+
+
+    <!-- Summary Section -->
+    <section>
+      <h2>Lesson Summary</h2>
+      
+      <div class="definition-box" style="background: linear-gradient(135deg, #00e5ff 0%, #7c4dff 100%);">
+        <h3 style="margin:0 0 15px 0; color:white;">
+          <i class="fas fa-bookmark"></i> Key Takeaways
+        </h3>
+        <div style="color: rgb(250, 246, 246); line-height: 1.8;">
+          <p style="margin-bottom: 15px;">
+            The Cash Book is a crucial accounting record that serves dual purposes - as a book of original entry and as a ledger account. Understanding its various formats and proper maintenance is essential for:
+          </p>
+          <ul style="margin: 0; padding-left: 20px;">
+            <li>Effective cash management and control</li>
+            <li>Prevention of fraud and errors</li>
+            <li>Quick access to cash and bank position</li>
+            <li>Simplified accounting process</li>
+            <li>Accurate financial reporting</li>
+          </ul>
+          <p style="margin-top: 15px; margin-bottom: 0;">
+            Master the Cash Book concepts to build a strong foundation for understanding more complex accounting topics like Bank Reconciliation Statement, Final Accounts, and Cash Flow Statements.
+          </p>
+        </div>
+      </div>
+
+      <div class="note-box" style="margin-top: 25px;">
+        <h4><i class="fas fa-graduation-cap"></i> Next Steps</h4>
+        <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+          After mastering Cash Book, proceed to learn about:
+          <br>• Bank Reconciliation Statement
+          <br>• Other Subsidiary Books (Sales Book, Purchase Book, etc.)
+          <br>• Ledger Posting and Trial Balance
+          <br>• Final Accounts Preparation
+        </p>
+      </div>
+    </section>
   </main>
 
   <script>
+    // Toggle solution visibility
     function toggleSolution(exampleId) {
       const solution = document.getElementById(exampleId + '-solution');
-      const btn = event.target;
+      const button = event.target;
       
       if (solution.classList.contains('active')) {
         solution.classList.remove('active');
-        btn.textContent = 'View Solution';
+        button.textContent = 'View Solution';
       } else {
         solution.classList.add('active');
-        btn.textContent = 'Hide Solution';
+        button.textContent = 'Hide Solution';
       }
     }
 
-    (() => {
-      const mcqs = document.querySelectorAll('.mcq');
-      const submitBtn = document.getElementById('submit-mcq');
-      const retryBtn = document.getElementById('retry-btn');
-      const scoreDisplay = document.getElementById('score-display');
-      const progressBar = document.getElementById('lesson-progress');
-
-      function clearIndicators(mcq) {
-        mcq.querySelectorAll('label').forEach(l => {
-          delete l.dataset.correct;
-          delete l.dataset.wrong;
-          delete l.dataset.correctText;
-        });
-      }
-
-      function handleSubmit() {
-        let score = 0;
-        mcqs.forEach(mcq => {
-          clearIndicators(mcq);
-          const ans = mcq.dataset.answer;
-          const selected = mcq.querySelector('input:checked');
-          if (!selected) return;
-          const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-          const corrInput = mcq.querySelector(`input[value="${ans}"]`);
-          const corrLabel = corrInput ? mcq.querySelector(`label[for="${corrInput.id}"]`) : null;
-          const corrText = corrLabel ? corrLabel.textContent.trim() : '';
-          if (selected.value === ans) {
+    // MCQ functionality - FIXED
+    function checkAnswers(event) {
+      event.preventDefault();
+      
+      let score = 0;
+      let answered = 0;
+      
+      const correctAnswers = {
+        q1: 'b', q2: 'b', q3: 'c', q4: 'a', q5: 'a',
+        q6: 'c', q7: 'b', q8: 'c', q9: 'c', q10: 'a',
+        q11: 'd', q12: 'b', q13: 'a', q14: 'a', q15: 'a'
+      };
+      
+      const totalQuestions = Object.keys(correctAnswers).length;
+      
+      // Check each question
+      for (let question in correctAnswers) {
+        const selectedInput = document.querySelector(`input[name="${question}"]:checked`);
+        
+        if (selectedInput) {
+          answered++;
+          
+          // Get the associated label
+          const selectedLabel = document.querySelector(`label[for="${selectedInput.id}"]`);
+          
+          if (selectedInput.value === correctAnswers[question]) {
             score++;
-            if (selLabel) selLabel.dataset.correct = "true";
+            if (selectedLabel) selectedLabel.classList.add('correct');
           } else {
-            if (selLabel) {
-              selLabel.dataset.wrong = "true";
-              selLabel.dataset.correctText = corrText;
+            if (selectedLabel) selectedLabel.classList.add('wrong');
+            // Show correct answer
+            const correctInput = document.querySelector(`input[name="${question}"][value="${correctAnswers[question]}"]`);
+            if (correctInput) {
+              const correctLabel = document.querySelector(`label[for="${correctInput.id}"]`);
+              if (correctLabel) correctLabel.classList.add('correct');
             }
-            if (corrLabel) corrLabel.dataset.correct = "true";
           }
-        });
-        const percent = Math.round((score / mcqs.length) * 100);
-        if (progressBar) progressBar.value = percent;
-        scoreDisplay.textContent = `You got ${score} out of ${mcqs.length} correct (${percent}%).`;
-        scoreDisplay.style.display = 'block';
-        retryBtn.style.display = 'inline-block';
+        }
       }
+      
+      // Validation
+      if (answered === 0) {
+        alert('Please answer at least one question before submitting!');
+        return;
+      }
+      
+      // Calculate percentage
+      const percentage = Math.round((score / totalQuestions) * 100);
+      
+      // Update progress circle
+      const progressCircle = document.querySelector('.circular-progress');
+      const progressValue = document.querySelector('.progress-value');
+      
+      let currentProgress = 0;
+      const progressAnimation = setInterval(() => {
+        if (currentProgress <= percentage) {
+          progressCircle.style.background = `conic-gradient(var(--brand-2) ${currentProgress * 3.6}deg, rgba(255,255,255,0.05) 0deg)`;
+          progressValue.textContent = `${currentProgress}%`;
+          currentProgress++;
+        } else {
+          clearInterval(progressAnimation);
+        }
+      }, 10);
+      
+      // Create or update score display
+      let scoreDisplay = document.querySelector('.score-display');
+      if (!scoreDisplay) {
+        scoreDisplay = document.createElement('div');
+        scoreDisplay.className = 'score-display';
+        document.querySelector('#mcq-form').appendChild(scoreDisplay);
+      }
+      
+      scoreDisplay.style.display = 'block';
+      scoreDisplay.innerHTML = `
+        <i class="fas fa-trophy" style="color: #ffd700; font-size: 2rem; margin-bottom: 10px;"></i>
+        <br>
+        <strong>You scored ${score} out of ${totalQuestions}!</strong>
+        <br>
+        <span style="font-size: 0.9rem; color: var(--muted);">
+          (${answered} questions attempted)
+        </span>
+        <br>
+        <span style="font-size: 1.1rem; margin-top: 10px; display: block;">
+          ${percentage >= 80 ? '🎉 Excellent work!' : percentage >= 60 ? '👍 Good job!' : '📚 Keep practicing!'}
+        </span>
+      `;
+      
+      // Disable submit button
+      document.querySelector('.submit-button').disabled = true;
+      
+      // Show retry button
+      document.getElementById('retryBtn').style.display = 'block';
+      
+      // Scroll to results
+      setTimeout(() => {
+        scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 500);
+    }
 
-      function resetQuiz() {
-        mcqs.forEach(mcq => {
-          clearIndicators(mcq);
-          mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
-        });
-        if (progressBar) progressBar.value = 0;
+    // Reset quiz
+    function resetQuiz() {
+      // Hide score display
+      const scoreDisplay = document.querySelector('.score-display');
+      if (scoreDisplay) {
         scoreDisplay.style.display = 'none';
-        retryBtn.style.display = 'none';
       }
+      
+      // Clear all selections and styles
+      document.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.checked = false;
+      });
+      
+      document.querySelectorAll('.mcq label').forEach(label => {
+        label.classList.remove('correct', 'wrong');
+      });
+      
+      // Reset progress circle
+      const progressCircle = document.querySelector('.circular-progress');
+      const progressValue = document.querySelector('.progress-value');
+      progressCircle.style.background = 'conic-gradient(var(--brand-2) 0deg, rgba(255,255,255,0.05) 0deg)';
+      progressValue.textContent = '0%';
+      
+      // Hide retry button
+      document.getElementById('retryBtn').style.display = 'none';
+      
+      // Enable submit button
+      document.querySelector('.submit-button').disabled = false;
+      
+      // Scroll to top of MCQ section
+      document.querySelector('#mcq-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
-      submitBtn.addEventListener('click', handleSubmit);
-      retryBtn.addEventListener('click', resetQuiz);
-    })();
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('MCQ system initialized');
+      
+      // Add animation to MCQ cards
+      document.querySelectorAll('.mcq').forEach((mcq, index) => {
+        mcq.style.animationDelay = `${index * 0.1}s`;
+      });
+    });
+    </script>
 
-  </script>
 </body>
 </html>
