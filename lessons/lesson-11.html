@@ -1267,6 +1267,473 @@
       </div>
     </section>
 
+    <!-- Cash Book Totaling and Balancing Section -->
+    <section>
+      <h2>Cash Book Totaling and Balancing Procedure</h2>
+      
+      <div class="definition-box">
+        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px; position: relative; z-index: 1;">
+          <i class="fas fa-calculator" style="color:#fff;"></i>
+          Balancing the Cash Book
+        </h3>
+        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6; position: relative; z-index: 1;">
+          <strong>Balancing</strong> a Cash Book means totaling both sides (debit and credit) and finding the difference to determine the closing balance. This process is typically done at the end of each day, week, or month depending on the volume of transactions.
+        </p>
+      </div>
+
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon" style="background: linear-gradient(135deg, var(--brand), var(--accent));">
+            <i class="fas fa-list-ol"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Step-by-Step Balancing Procedure</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Complete guide to totaling and balancing any type of Cash Book</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <ol style="color: var(--text); line-height: 1.8; padding-left: 20px;">
+            <li><strong>Total the Debit Side:</strong> Add all amounts in the cash column on the debit (receipts) side.</li>
+            <li><strong>Total the Credit Side:</strong> Add all amounts in the cash column on the credit (payments) side.</li>
+            <li><strong>Calculate Closing Balance:</strong> Subtract the credit total from the debit total.</li>
+            <li><strong>Record Closing Balance:</strong> Write the closing balance on the credit side as "By Balance c/d".</li>
+            <li><strong>Equalize Both Sides:</strong> Add the closing balance to make both sides equal.</li>
+            <li><strong>Carry Forward:</strong> On the first day of the next period, bring down the balance as "To Balance b/d" on the debit side.</li>
+          </ol>
+
+          <div class="note-box" style="margin-top: 20px;">
+            <h4>Important Rules:</h4>
+            <ul style="color: var(--muted); margin: 10px 0 0 0; line-height: 1.8;">
+              <li><strong>Cash Balance:</strong> Can never be negative (credit balance)</li>
+              <li><strong>Bank Balance:</strong> Can be negative (overdraft) - shown on debit side in brackets</li>
+              <li><strong>Discount Columns:</strong> Not balanced but totaled separately</li>
+              <li><strong>Contra Entries:</strong> Do not affect the balancing process</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Example -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon" style="background: linear-gradient(135deg, var(--brand-2), var(--brand));">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Detailed Example: Single Column Cash Book Balancing</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Complete balancing process with calculations</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Transactions for January 2024:</strong>
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Jan 1: Cash in hand ₹25,000</li>
+            <li>Jan 5: Cash sales ₹15,000</li>
+            <li>Jan 8: Paid rent ₹8,000</li>
+            <li>Jan 12: Received from debtor ₹12,000</li>
+            <li>Jan 15: Paid salaries ₹10,000</li>
+            <li>Jan 20: Cash sales ₹18,000</li>
+            <li>Jan 25: Paid electricity bill ₹3,500</li>
+            <li>Jan 28: Received commission ₹4,000</li>
+            <li>Jan 31: Paid for stationery ₹2,500</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('balancing')">View Complete Solution</button>
+
+        <div class="solution" id="balancing-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Balanced Single Column Cash Book</h4>
+          
+          <table class="cash-book-table">
+            <thead>
+              <tr>
+                <th colspan="5" class="debit-side">Receipts (Dr. Side)</th>
+                <th colspan="5" class="credit-side">Payments (Cr. Side)</th>
+              </tr>
+              <tr>
+                <th class="debit-side">Date</th>
+                <th class="debit-side">Particulars</th>
+                <th class="debit-side">V.No.</th>
+                <th class="debit-side">L.F.</th>
+                <th class="debit-side">Amount (₹)</th>
+                <th class="credit-side">Date</th>
+                <th class="credit-side">Particulars</th>
+                <th class="credit-side">V.No.</th>
+                <th class="credit-side">L.F.</th>
+                <th class="credit-side">Amount (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2024<br>Jan 1</td>
+                <td>To Balance b/d</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace;">25,000</td>
+                <td>2024<br>Jan 8</td>
+                <td>By Rent A/c</td>
+                <td>1</td>
+                <td>25</td>
+                <td style="text-align: right; font-family: monospace;">8,000</td>
+              </tr>
+              <tr>
+                <td>Jan 5</td>
+                <td>To Sales A/c</td>
+                <td>2</td>
+                <td>40</td>
+                <td style="text-align: right; font-family: monospace;">15,000</td>
+                <td>Jan 15</td>
+                <td>By Salary A/c</td>
+                <td>3</td>
+                <td>50</td>
+                <td style="text-align: right; font-family: monospace;">10,000</td>
+              </tr>
+              <tr>
+                <td>Jan 12</td>
+                <td>To Debtor A/c</td>
+                <td>4</td>
+                <td>15</td>
+                <td style="text-align: right; font-family: monospace;">12,000</td>
+                <td>Jan 25</td>
+                <td>By Electricity A/c</td>
+                <td>5</td>
+                <td>30</td>
+                <td style="text-align: right; font-family: monospace;">3,500</td>
+              </tr>
+              <tr>
+                <td>Jan 20</td>
+                <td>To Sales A/c</td>
+                <td>6</td>
+                <td>40</td>
+                <td style="text-align: right; font-family: monospace;">18,000</td>
+                <td>Jan 31</td>
+                <td>By Stationery A/c</td>
+                <td>7</td>
+                <td>60</td>
+                <td style="text-align: right; font-family: monospace;">2,500</td>
+              </tr>
+              <tr>
+                <td>Jan 28</td>
+                <td>To Commission A/c</td>
+                <td>8</td>
+                <td>55</td>
+                <td style="text-align: right; font-family: monospace;">4,000</td>
+                <td>Jan 31</td>
+                <td>By Balance c/d</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace; color: var(--brand-2);">50,000</td>
+              </tr>
+              <tr style="background: rgba(124,77,255,0.15); font-weight: bold;">
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">74,000</td>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td style="text-align: right; font-family: monospace;">74,000</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.1);">
+                <td>Feb 1</td>
+                <td>To Balance b/d</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: right; font-family: monospace; font-weight: bold;">50,000</td>
+                <td colspan="5"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="background: rgba(0,229,255,0.08); padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h5 style="color: var(--brand-2); margin: 0 0 15px 0;">Step-by-Step Calculation:</h5>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h6 style="color: var(--text); margin-bottom: 10px;">Debit Side Calculation:</h6>
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;">
+                  <p style="margin: 5px 0; font-family: monospace;">
+                    Opening Balance: ₹25,000<br>
+                    + Cash Sales (Jan 5): ₹15,000<br>
+                    + Received from Debtor: ₹12,000<br>
+                    + Cash Sales (Jan 20): ₹18,000<br>
+                    + Commission: ₹4,000<br>
+                    <strong>Total Debit: ₹74,000</strong>
+                  </p>
+                </div>
+              </div>
+              
+              <div>
+                <h6 style="color: var(--text); margin-bottom: 10px;">Credit Side Calculation:</h6>
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;">
+                  <p style="margin: 5px 0; font-family: monospace;">
+                    Rent: ₹8,000<br>
+                    + Salaries: ₹10,000<br>
+                    + Electricity: ₹3,500<br>
+                    + Stationery: ₹2,500<br>
+                    <strong>Subtotal: ₹24,000</strong><br>
+                    + Balance c/d: ₹50,000<br>
+                    <strong>Total Credit: ₹74,000</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div style="margin-top: 15px; text-align: center; background: rgba(76,175,80,0.1); padding: 15px; border-radius: 8px;">
+              <p style="margin: 0; font-family: monospace; font-weight: bold;">
+                Closing Balance = Total Debit - Total Payments<br>
+                = ₹74,000 - ₹24,000 = ₹50,000
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Double Column Balancing Example -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon" style="background: linear-gradient(135deg, var(--accent), var(--brand));">
+            <i class="fas fa-columns"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Double Column Cash Book Balancing</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Balancing both Cash and Bank columns separately</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Key Points for Double Column Cash Book:</strong>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Cash and Bank columns are balanced <strong>separately</strong></li>
+            <li>Contra entries appear on both sides but don't affect the balancing</li>
+            <li>Cash balance can never be negative</li>
+            <li>Bank balance can be negative (overdraft)</li>
+            <li>Each column must balance independently</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('double-balancing')">View Double Column Example</button>
+
+        <div class="solution" id="double-balancing-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Double Column Cash Book Balancing Process</h4>
+          
+          <div style="background: rgba(124,77,255,0.05); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h5 style="color: var(--text); margin-bottom: 15px;">Balancing Procedure for Double Column Cash Book:</h5>
+            <ol style="color: var(--muted); line-height: 1.8;">
+              <li><strong>Total Cash Columns:</strong> Add both debit and credit cash columns separately</li>
+              <li><strong>Total Bank Columns:</strong> Add both debit and credit bank columns separately</li>
+              <li><strong>Calculate Cash Balance:</strong> Debit Cash - Credit Cash = Closing Cash Balance</li>
+              <li><strong>Calculate Bank Balance:</strong> Debit Bank - Credit Bank = Closing Bank Balance</li>
+              <li><strong>Record Balances:</strong> Put closing balances on credit side as "By Balance c/d"</li>
+              <li><strong>Equalize Totals:</strong> Make sure total debit = total credit for each column</li>
+              <li><strong>Carry Forward:</strong> Bring down balances as "To Balance b/d" on the next period</li>
+            </ol>
+          </div>
+
+          <div class="note-box">
+            <h4>Important:</h4>
+            <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+              In Double Column Cash Book, the <strong>Cash Column</strong> and <strong>Bank Column</strong> are balanced independently. 
+              The totals of debit and credit sides will be equal only when you consider both columns together, 
+              but each column must balance separately with its own closing balance.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Three Column Balancing -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon" style="background: linear-gradient(135deg, var(--brand), var(--brand-2));">
+            <i class="fas fa-th"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Three Column Cash Book Balancing</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Handling Discount columns along with Cash and Bank</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Special Considerations for Three Column Cash Book:</strong>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li><strong>Discount Columns:</strong> Not balanced, only totaled</li>
+            <li><strong>Discount Allowed:</strong> Totaled and posted to Discount Allowed Account</li>
+            <li><strong>Discount Received:</strong> Totaled and posted to Discount Received Account</li>
+            <li><strong>Cash and Bank Columns:</strong> Balanced separately as in double column</li>
+            <li>The discount totals help in preparing final accounts</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('three-balancing')">View Three Column Procedure</button>
+
+        <div class="solution" id="three-balancing-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Three Column Cash Book Balancing Process</h4>
+          
+          <div style="background: rgba(0,229,255,0.05); padding: 20px; border-radius: 10px;">
+            <h5 style="color: var(--text); margin-bottom: 15px;">Step-by-Step Procedure:</h5>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div>
+                <h6 style="color: var(--brand-2); margin-bottom: 10px;">For Discount Columns:</h6>
+                <ul style="color: var(--muted); line-height: 1.6;">
+                  <li>Total the "Discount Allowed" column on debit side</li>
+                  <li>Total the "Discount Received" column on credit side</li>
+                  <li>These totals are NOT balanced</li>
+                  <li>They are posted to respective ledger accounts</li>
+                  <li>No closing balance for discount columns</li>
+                </ul>
+              </div>
+              
+              <div>
+                <h6 style="color: var(--brand-2); margin-bottom: 10px;">For Cash & Bank Columns:</h6>
+                <ul style="color: var(--muted); line-height: 1.6;">
+                  <li>Balance Cash column separately</li>
+                  <li>Balance Bank column separately</li>
+                  <li>Follow same procedure as double column</li>
+                  <li>Record closing balances</li>
+                  <li>Carry forward to next period</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="note-box" style="margin-top: 15px;">
+              <h4>Remember:</h4>
+              <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+                In Three Column Cash Book, only the <strong>Cash</strong> and <strong>Bank</strong> columns are balanced. 
+                The <strong>Discount</strong> columns are only totaled and these totals are transferred to the respective 
+                ledger accounts at the end of the accounting period.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common Mistakes in Balancing -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon" style="background: linear-gradient(135deg, var(--error), var(--warning));">
+            <i class="fas fa-exclamation-circle"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Common Balancing Mistakes & Solutions</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Avoid these errors when totaling and balancing</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <div class="advantages-grid">
+            <div class="advantage-card">
+              <div class="advantage-icon" style="background: linear-gradient(135deg, var(--error), #ff6b6b);">
+                <i class="fas fa-times"></i>
+              </div>
+              <div class="advantage-title">Wrong Side Entry</div>
+              <div class="advantage-desc">
+                Recording receipts on credit side or payments on debit side. Always remember: Receipts on Debit, Payments on Credit.
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon" style="background: linear-gradient(135deg, var(--warning), #ffa726);">
+                <i class="fas fa-calculator"></i>
+              </div>
+              <div class="advantage-title">Arithmetic Errors</div>
+              <div class="advantage-desc">
+                Wrong addition or subtraction. Always double-check your calculations and use calculator for verification.
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon" style="background: linear-gradient(135deg, var(--muted), #90a4ae);">
+                <i class="fas fa-columns"></i>
+              </div>
+              <div class="advantage-title">Column Confusion</div>
+              <div class="advantage-desc">
+                Mixing up cash and bank columns in double column cash book. Keep separate totals for each column.
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon" style="background: linear-gradient(135deg, #7e57c2, #b39ddb);">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+              <div class="advantage-title">Contra Entry Errors</div>
+              <div class="advantage-desc">
+                Not recording both sides of contra entries or recording them incorrectly. Mark with "C" in L.F. column.
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon" style="background: linear-gradient(135deg, #26a69a, #80cbc4);">
+                <i class="fas fa-forward"></i>
+              </div>
+              <div class="advantage-title">Balance Carry Forward</div>
+              <div class="advantage-desc">
+                Forgetting to bring down the balance or writing it on wrong side. Balance b/d always on debit side for next period.
+              </div>
+            </div>
+
+            <div class="advantage-card">
+              <div class="advantage-icon" style="background: linear-gradient(135deg, #42a5f5, #90caf9);">
+                <i class="fas fa-percentage"></i>
+              </div>
+              <div class="advantage-title">Discount Column Errors</div>
+              <div class="advantage-desc">
+                Trying to balance discount columns or posting them incorrectly. Discount columns are only totaled, not balanced.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Reference Guide -->
+      <div class="format-box">
+        <h3><i class="fas fa-clipboard-list"></i> Quick Balancing Reference Guide</h3>
+        
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Cash Book Type</th>
+              <th>Columns to Balance</th>
+              <th>Columns to Total Only</th>
+              <th>Special Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Single Column</strong></td>
+              <td>Cash Column</td>
+              <td>None</td>
+              <td>Simple balancing - one column only</td>
+            </tr>
+            <tr>
+              <td><strong>Double Column</strong></td>
+              <td>Cash & Bank Columns</td>
+              <td>None</td>
+              <td>Balance each column separately</td>
+            </tr>
+            <tr>
+              <td><strong>Three Column</strong></td>
+              <td>Cash & Bank Columns</td>
+              <td>Discount Columns</td>
+              <td>Discount totals posted to ledger</td>
+            </tr>
+            <tr>
+              <td><strong>Petty Cash Book</strong></td>
+              <td>Receipts & Total Columns</td>
+              <td>Analysis Columns</td>
+              <td>Works on imprest system</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note-box" style="margin-top: 20px;">
+          <h4>Pro Tip for Perfect Balancing:</h4>
+          <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+            Always follow this sequence: <strong>Total Debit → Total Credit → Calculate Difference → Record Balance c/d → Equalize Totals → Carry Forward Balance b/d</strong>. 
+            If totals don't match, check arithmetic first, then verify each entry was recorded on the correct side.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Practical Examples Section -->
     <section>
       <h2>Practical Examples - Cash Book</h2>
@@ -2305,43 +2772,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </section>
-
-    <!-- Common Errors Section -->
-    <section>
-      <h2>Common Errors in Cash Book</h2>
-      
-      <div class="practical-card">
-        <div class="practical-header">
-          <div class="practical-icon" style="background: linear-gradient(135deg, var(--error), var(--warning));">
-            <i class="fas fa-exclamation-triangle"></i>
-          </div>
-          <div>
-            <h3 class="practical-title">Errors to Avoid</h3>
-            <p style="color: var(--muted); margin: 5px 0 0 0;">Common mistakes and their corrections</p>
-          </div>
-        </div>
-
-        <div style="margin-top: 20px;">
-          <ol style="color: var(--muted); line-height: 2; padding-left: 20px;">
-            <li><strong>Wrong Side Entry:</strong> Recording receipts on credit side or payments on debit side</li>
-            <li><strong>Omission of Contra Entry:</strong> Not recording both sides of cash-bank transfers</li>
-            <li><strong>Wrong Totaling:</strong> Arithmetic errors in adding columns</li>
-            <li><strong>Credit Cash Balance:</strong> Showing negative cash balance (impossible)</li>
-            <li><strong>Missing Discount Entry:</strong> Not recording cash discount allowed or received</li>
-            <li><strong>Wrong Dating:</strong> Recording transactions on wrong dates</li>
-            <li><strong>Non-Cash Items:</strong> Recording depreciation, provisions, etc. in Cash Book</li>
-            <li><strong>Bank Charges Omission:</strong> Not recording bank charges, interest, etc.</li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
-        <p style="color: var(--muted); margin: 0; line-height: 1.6;">
-          Always verify that Total Debits = Total Credits for each column. The Cash Book must balance mathematically. If it doesn't balance, check for arithmetic errors, omissions, or wrong side entries.
-        </p>
       </div>
     </section>
 

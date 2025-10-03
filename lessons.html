@@ -1,766 +1,751 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AccountsWizard — Lessons</title>
-  <meta name="description" content="AccountsWizard Lessons — Grade 11 accounting basics (self-contained lessons file)" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M7 3h10a2 2 0 0 1 2 2v2H5V5a2 2 0 0 1 2-2m12 6v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z'/%3E%3Cpath fill='%23a5b4fc' d='M8.5 12h7v1.6h-7zM8.5 15h5v1.6h-5z'/%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Lessons - Grade 11 Accounting | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <style>
-    /* ==========================
-       Theme variables (match index)
-       ========================== */
-    :root{
+    :root {
       --bg: #0b1020;
       --bg-2: #0f1733;
-      --card: #0f1330;
+      --card: #111633;
       --muted: #b8c2ff;
       --brand: #7c4dff;
       --brand-2: #00e5ff;
       --accent: #ff7ac6;
-      --glass: rgba(255,255,255,0.04);
       --text: #e9eefc;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
       --radius: 16px;
-      --radius-lg: 22px;
       --shadow: 0 18px 40px rgba(2,6,23,.55);
-      --speed: 320ms;
+      --speed: 300ms;
     }
 
-    /* Infographic styles */
-    .lesson-icon {
-      font-size: 2rem;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 15px;
-      margin-right: 16px;
-      background: linear-gradient(135deg, rgba(124,77,255,0.15), rgba(0,229,255,0.15));
-      color: var(--brand-2);
-      transition: all 0.3s ease;
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
     }
 
-    .lesson-card:hover .lesson-icon {
-      transform: scale(1.1);
-      background: linear-gradient(135deg, rgba(124,77,255,0.3), rgba(0,229,255,0.3));
+    body {
+      font-family: ui-sans-serif, system-ui, Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* Progress circle */
-    .progress-circle {
+    /* Animated Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 122, 198, 0.05) 0%, transparent 50%);
+      animation: floatingBg 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatingBg {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-20px, -20px) rotate(1deg); }
+      50% { transform: translate(20px, -10px) rotate(-1deg); }
+      75% { transform: translate(-10px, 20px) rotate(2deg); }
+    }
+
+    /* Floating Particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .particle:nth-child(1) {
+      top: 10%;
+      left: 10%;
       width: 80px;
       height: 80px;
-      border-radius: 50%;
-      background: conic-gradient(var(--brand) var(--progress), rgba(124,77,255,0.1) var(--progress));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--text);
-      position: relative;
-      margin: 20px auto;
+      background: radial-gradient(circle, var(--brand) 0%, transparent 70%);
+      animation: float1 15s infinite;
     }
 
-    .progress-circle::after {
+    .particle:nth-child(2) {
+      top: 70%;
+      right: 10%;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, var(--brand-2) 0%, transparent 70%);
+      animation: float2 20s infinite;
+    }
+
+    .particle:nth-child(3) {
+      bottom: 20%;
+      left: 30%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      animation: float3 18s infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(100px, -100px) scale(1.2); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-150px, 100px) scale(0.8); }
+    }
+
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, 80px) scale(1.1); }
+    }
+
+    /* Navigation Header */
+    .nav-header {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 24px; 
+      background: var(--card); 
+      border-radius: var(--radius);
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 10;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { 
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .nav-header a {
+      color: var(--muted); 
+      text-decoration: none; 
+      display: flex; 
+      align-items: center;
+      gap: 8px; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      transition: all var(--speed);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-header a::before {
       content: '';
       position: absolute;
-      inset: 5px;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.1);
       border-radius: 50%;
-      background: var(--bg-2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
     }
 
-    .progress-value {
+    .nav-header a:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .nav-header a:hover { 
+      color: var(--text); 
+      transform: translateY(-2px);
+    }
+
+    /* Header */
+    header { 
+      text-align: center; 
+      padding: 30px 20px 40px;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .page-title {
+      font-size: 3rem; 
+      font-weight: 900;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, var(--brand-2) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      animation: shineText 3s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes shineText {
+      to { background-position: 200% center; }
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+
+    /* Search Bar */
+    .search-container {
+      max-width: 600px;
+      margin: 30px auto 50px;
+      position: relative;
+      z-index: 1;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 16px 50px 16px 20px;
+      background: var(--card);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: all var(--speed);
+      box-shadow: var(--shadow);
+    }
+
+    .search-box:focus {
+      border-color: var(--brand-2);
+      box-shadow: 0 0 0 3px rgba(0,229,255,0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--brand-2);
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    /* Search Highlight */
+    .highlight {
+      background: linear-gradient(120deg, rgba(255,235,59,0.3) 0%, rgba(255,193,7,0.3) 100%);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Main Content */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
       position: relative;
       z-index: 1;
     }
 
-    /* T-Account style */
-    .t-account {
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      margin: 15px 0;
-      overflow: hidden;
-    }
-
-    .t-account-header {
-      background: rgba(124,77,255,0.1);
-      padding: 8px;
-      text-align: center;
-      font-weight: bold;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .t-account-body {
+    /* Lessons Grid */
+    .lessons-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      padding: 20px 0;
     }
 
-    .t-account-side {
-      padding: 10px;
-    }
-
-    .t-account-side:first-child {
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* Reset & base */
-    * { box-sizing: border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
-        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
-        linear-gradient(180deg, var(--bg), var(--bg-2));
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      min-height:100vh;
-      padding: 18px;
-    }
-
-    /* Floating shapes (subtle) */
-    .floaters { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .bubble{ position:absolute; border-radius:999px; filter: blur(0.8px); opacity:.28; mix-blend-mode: screen; animation: drift var(--dur) linear infinite; }
-    @keyframes drift { from{ transform: translateY(110vh) translateX(var(--sx)) scale(var(--sc)); } to{ transform: translateY(-20vh) translateX(calc(var(--sx) + var(--dx))) scale(var(--sc)); } }
-
-    /* Page layout */
-    .page {
-      max-width:1200px; margin: 22px auto; position: relative; z-index: 5;
-      display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items:start;
-    }
-
-    /* Header (top band) */
-    .topband{
-      grid-column: 1 / -1; display:flex; align-items:center; justify-content:space-between;
-      gap:16px; margin-bottom:6px;
-    }
-    .brand {
-      display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--text);
-    }
-    .logo {
-      width:44px; height:44px; border-radius:12px; background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent));
-      box-shadow:0 10px 30px rgba(124,77,255,.22);
-    }
-    .brand h1{ font-size:1.45rem; margin:0; font-weight:900; letter-spacing:.4px;
-      background: linear-gradient(90deg,#fff,var(--muted)); -webkit-background-clip:text; color:transparent; }
-    .top-actions{ display:flex; gap:10px; align-items:center; }
-
-    /* Sidebar */
-    aside.sidebar{
-      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      border-radius: var(--radius); padding: 18px; border:1px solid rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      height: calc(100vh - 92px); overflow:hidden; display:flex; flex-direction:column;
-      position: sticky;
-      top: 22px;
-    }
-    .search { display:flex; gap:8px; margin-bottom:12px; align-items:center; }
-    .search input{
-      flex:1; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.04);
-      background: rgba(10,14,30,.6); color:var(--text); outline:none;
-    }
-    .toc-header { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
-    .toc-title { font-weight:800; color:var(--text); }
-    .progress-mini{ color:var(--muted); font-size:.9rem; }
-
-    .toc {
-      flex:1; overflow:auto; padding-right:6px; display:flex; flex-direction:column; gap:10px;
-    }
-    .toc-item{
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
-      padding:12px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,.01), rgba(255,255,255,.02));
-      cursor:pointer; border:1px solid rgba(255,255,255,.02); transition: transform .18s ease, background .18s;
-    }
-    .toc-item:hover{ transform: translateX(6px); background: linear-gradient(90deg, rgba(124,77,255,.06), rgba(0,229,255,.04)); }
-    .toc-item.active{ background: linear-gradient(90deg,var(--brand),var(--brand-2)); color:#071025; font-weight:800; }
-    .toc-item .meta { text-align:right; min-width:72px; }
-
-    .sidebar-cta { margin-top:12px; display:flex; gap:8px; align-items:center; }
-    .btn { padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; background:linear-gradient(90deg,var(--brand),var(--brand-2)); color:#071025; box-shadow:0 10px 30px rgba(0,229,255,.08); }
-    .btn.ghost { background: transparent; color:var(--text); border:1px solid rgba(255,255,255,.06); box-shadow:none; }
-
-    /* Main content area */
-    main.viewer{
-      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      border-radius: var(--radius); padding: 22px; border:1px solid rgba(255,255,255,.04); box-shadow:var(--shadow);
-      min-height: calc(100vh - 92px); overflow:auto;
-    }
-
-    .hero-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:20px; }
-    .viewer-title { font-size:1.6rem; font-weight:900; background: linear-gradient(90deg,#fff,var(--accent)); -webkit-background-clip:text; color:transparent; }
-    .viewer-sub { color:var(--muted); font-size:.95rem; }
-
-    .cards { display:grid; grid-template-columns: 1fr; gap:18px; }
-
+    /* Lesson Card */
     .lesson-card {
-      background: linear-gradient(180deg,#0f1330,#0b0f2a);
-      border-radius: 18px; padding:18px; border:1px solid rgba(255,255,255,.03);
-      display:flex; align-items:center; justify-content:space-between;
-      transition: all .3s ease; cursor:pointer;
+      background: rgba(17, 22, 51, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
-    }
-    .lesson-card:hover{ transform: translateY(-6px); box-shadow: 0 20px 45px rgba(0,0,0,.45); }
-    .lesson-left { max-width:78%; }
-    .lesson-name { font-size:1.18rem; font-weight:800; margin-bottom:6px; color:var(--text); }
-    .lesson-desc { color:#cdd6ff; opacity:.9; font-size:.98rem; line-height:1.5; }
-    .lesson-meta { display:flex; gap:12px; align-items:center; margin-top:12px; color:var(--muted); font-size:.9rem; }
-    .badge-time { background: rgba(255,255,255,.03); padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,.02); }
-
-    .status-pill {
-      padding:8px 12px; border-radius:12px; font-weight:800; font-size:.88rem;
-      background: linear-gradient(90deg,#dff7e7,#b7f0c2); color:#0b3324;
+      cursor: pointer;
+      animation: fadeInUp 0.6s ease-out;
+      animation-fill-mode: both;
     }
 
-    /* Modal lesson viewer */
-    .modal {
-      position: fixed; inset: 0; display:none; align-items:center; justify-content:center;
-      background: linear-gradient(rgba(2,6,23,.68), rgba(2,6,23,.78));
-      z-index: 60; padding: 26px;
+    /* Shimmer Effect */
+    .lesson-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s;
+      pointer-events: none;
     }
-    .modal.show { display:flex; }
-    .modal-card {
-      width: min(980px, 96%); max-height: 92vh; overflow:auto;
-      background: linear-gradient(180deg, rgba(8,10,25,.98), rgba(12,14,35,.98));
-      border-radius: 18px; padding: 22px; border:1px solid rgba(255,255,255,.04);
-      box-shadow: 0 40px 90px rgba(2,6,23,.7);
+
+    .lesson-card:hover::after {
+      left: 100%;
     }
-    .modal-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:8px; }
-    .modal-title { font-size:1.5rem; font-weight:900; color:var(--text); }
-    .modal-sub { color:var(--muted); }
 
-    .modal-body { color:#dfe5ff; line-height:1.7; font-size:1rem; margin-top:12px; }
-    .modal-controls { display:flex; gap:8px; margin-top:18px; }
-
-    .icon-btn { padding:10px 12px; border-radius:10px; border:none; cursor:pointer; background: rgba(255,255,255,.03); color:var(--text); }
-
-    /* Small editor */
-    .editor {
-      margin-top:18px; display:none; gap:8px; flex-direction:column;
-      background: rgba(255,255,255,.02); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,.03);
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .editor textarea { width:100%; min-height:140px; border-radius:8px; padding:10px; background: rgba(10,14,30,.65); color:var(--text); border:1px solid rgba(255,255,255,.04); }
 
-    /* Footer (inside viewer) */
-    .viewer-footer { margin-top: 28px; color:var(--muted); text-align:center; font-size:.9rem; }
+    .lesson-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--brand-2);
+      box-shadow: 0 25px 50px rgba(0,229,255,0.3), 
+                  0 0 0 1px var(--brand-2);
+    }
+
+    /* Elemental Aura Effects */
+    .lesson-card[data-element="fire"]:hover {
+      box-shadow: 0 25px 50px rgba(255,87,34,0.4), 
+                  0 0 30px rgba(255,152,0,0.3),
+                  0 0 0 1px rgba(255,87,34,0.5);
+      border-color: rgba(255,87,34,0.5);
+    }
+
+    .lesson-card[data-element="water"]:hover {
+      box-shadow: 0 25px 50px rgba(0,188,212,0.4), 
+                  0 0 30px rgba(0,229,255,0.3),
+                  0 0 0 1px rgba(0,188,212,0.5);
+      border-color: rgba(0,188,212,0.5);
+    }
+
+    .lesson-card[data-element="electric"]:hover {
+      box-shadow: 0 25px 50px rgba(255,235,59,0.4), 
+                  0 0 30px rgba(255,193,7,0.3),
+                  0 0 0 1px rgba(255,235,59,0.5);
+      border-color: rgba(255,235,59,0.5);
+    }
+
+    .lesson-card[data-element="earth"]:hover {
+      box-shadow: 0 25px 50px rgba(121,85,72,0.4), 
+                  0 0 30px rgba(141,110,99,0.3),
+                  0 0 0 1px rgba(121,85,72,0.5);
+      border-color: rgba(121,85,72,0.5);
+    }
+
+    .lesson-card[data-element="wind"]:hover {
+      box-shadow: 0 25px 50px rgba(224,247,250,0.3), 
+                  0 0 30px rgba(178,235,242,0.3),
+                  0 0 0 1px rgba(178,235,242,0.5);
+      border-color: rgba(178,235,242,0.5);
+    }
+
+    .lesson-card[data-element="light"]:hover {
+      box-shadow: 0 25px 50px rgba(255,255,255,0.3), 
+                  0 0 40px rgba(255,255,255,0.2),
+                  0 0 0 1px rgba(255,255,255,0.4);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .lesson-card[data-element="nature"]:hover {
+      box-shadow: 0 25px 50px rgba(76,175,80,0.4), 
+                  0 0 30px rgba(129,199,132,0.3),
+                  0 0 0 1px rgba(76,175,80,0.5);
+      border-color: rgba(76,175,80,0.5);
+    }
+
+    .lesson-card[data-element="cosmic"]:hover {
+      box-shadow: 0 25px 50px rgba(124,77,255,0.4), 
+                  0 0 30px rgba(149,117,205,0.3),
+                  0 0 0 1px rgba(124,77,255,0.5);
+      border-color: rgba(124,77,255,0.5);
+    }
+
+    .lesson-number {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(124,77,255,0.4);
+      animation: pulse 2s infinite;
+    }
+
+    .lesson-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(0,229,255,0.2));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      transition: transform 0.3s;
+    }
+
+    .lesson-card:hover .lesson-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .lesson-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .lesson-description {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .lesson-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--brand-2);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all var(--speed);
+    }
+
+    .lesson-link:hover {
+      gap: 12px;
+      color: var(--accent);
+    }
+
+    /* No Results Message */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      display: none;
+    }
+
+    .no-results i {
+      font-size: 5rem;
+      color: var(--muted);
+      opacity: 0.3;
+      margin-bottom: 20px;
+    }
+
+    .no-results h3 {
+      color: var(--text);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .no-results p {
+      color: var(--muted);
+    }
+
+    /* Staggered Animation */
+    .lesson-card:nth-child(1) { animation-delay: 0.1s; }
+    .lesson-card:nth-child(2) { animation-delay: 0.15s; }
+    .lesson-card:nth-child(3) { animation-delay: 0.2s; }
+    .lesson-card:nth-child(4) { animation-delay: 0.25s; }
+    .lesson-card:nth-child(5) { animation-delay: 0.3s; }
+    .lesson-card:nth-child(6) { animation-delay: 0.35s; }
+    .lesson-card:nth-child(7) { animation-delay: 0.4s; }
+    .lesson-card:nth-child(8) { animation-delay: 0.45s; }
+    .lesson-card:nth-child(9) { animation-delay: 0.5s; }
+    .lesson-card:nth-child(10) { animation-delay: 0.55s; }
+    .lesson-card:nth-child(11) { animation-delay: 0.6s; }
+    .lesson-card:nth-child(12) { animation-delay: 0.65s; }
+    .lesson-card:nth-child(13) { animation-delay: 0.7s; }
 
     /* Responsive */
-    @media (max-width: 980px){
-      .page { grid-template-columns: 1fr; padding-bottom: 80px; }
-      aside.sidebar { height: auto; order: 2; }
-      main.viewer { order: 1; min-height: auto; }
+    @media (max-width: 768px) {
+      .page-title { font-size: 2rem; }
+      .lessons-grid { 
+        grid-template-columns: 1fr; 
+        gap: 20px;
+      }
+      .lesson-card { padding: 25px; }
     }
   </style>
 </head>
 <body>
-  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <!-- Floating Particles -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
 
-  <div class="page" role="application">
-    <div class="topband">
-      <a class="brand" href="index.html" title="Back to Home">
-        <span class="logo" aria-hidden="true"></span>
-        <h1>Accounts<span style="letter-spacing:.5px;">Wizard</span></h1>
+  <!-- Navigation -->
+  <div class="nav-header">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="#"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1 class="page-title">Grade 11 Accounting Lessons</h1>
+    <p class="page-subtitle">DK Goyal Syllabus - Complete Course Material</p>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="search-container">
+    <input 
+      type="text" 
+      id="searchInput" 
+      class="search-box" 
+      placeholder="Search lessons by title or chapter..."
+      autocomplete="off"
+    />
+    <i class="fas fa-search search-icon"></i>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <div class="lessons-grid" id="lessonsGrid">
+      
+      <!-- Lesson 1 -->
+      <a href="lessons/lesson-1.html" class="lesson-card" data-lesson="1" data-element="light">
+        <div class="lesson-number">1</div>
+        <div class="lesson-icon">
+          <i class="fas fa-lightbulb" style="color: var(--warning);"></i>
+        </div>
+        <h3 class="lesson-title">Meaning and Objectives of Accounting</h3>
+        <p class="lesson-description">Introduction to accounting, its objectives, and significance in business.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
       </a>
-      <div class="top-actions">
-        <button class="btn" id="resetAll">Reset Progress</button>
-      </div>
+
+      <!-- Lesson 2 -->
+      <a href="lessons/lesson-2.html" class="lesson-card" data-lesson="2" data-element="wind">
+        <div class="lesson-number">2</div>
+        <div class="lesson-icon">
+          <i class="fas fa-book-open" style="color: var(--brand-2);"></i>
+        </div>
+        <h3 class="lesson-title">Basic Accounting Terms</h3>
+        <p class="lesson-description">Understanding fundamental accounting terms like assets, liabilities, capital, revenue, and expenses.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 4 -->
+      <a href="lessons/lesson-4.html" class="lesson-card" data-lesson="4" data-element="earth">
+        <div class="lesson-number">4</div>
+        <div class="lesson-icon">
+          <i class="fas fa-cogs" style="color: var(--accent);"></i>
+        </div>
+        <h3 class="lesson-title">Process and Bases of Accounting</h3>
+        <p class="lesson-description">Exploration of the accounting process and the distinction between cash and accrual bases of accounting.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 6 -->
+      <a href="lessons/lesson-6.html" class="lesson-card" data-lesson="6" data-element="fire">
+        <div class="lesson-number">6</div>
+        <div class="lesson-icon">
+          <i class="fas fa-equals" style="color: var(--success);"></i>
+        </div>
+        <h3 class="lesson-title">Accounting Equations</h3>
+        <p class="lesson-description">Study of the basic accounting equation and its application in various transactions.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 7 -->
+      <a href="lessons/lesson-7.html" class="lesson-card" data-lesson="7" data-element="cosmic">
+        <div class="lesson-number">7</div>
+        <div class="lesson-icon">
+          <i class="fas fa-exchange-alt" style="color: var(--brand);"></i>
+        </div>
+        <h3 class="lesson-title">Double Entry System</h3>
+        <p class="lesson-description">Detailed analysis of the double-entry system and its role in maintaining accounting records.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 8 -->
+      <a href="lessons/lesson-8.html" class="lesson-card" data-lesson="8" data-element="nature">
+        <div class="lesson-number">8</div>
+        <div class="lesson-icon">
+          <i class="fas fa-file-invoice" style="color: var(--warning);"></i>
+        </div>
+        <h3 class="lesson-title">Origin of Transactions: Source Documents</h3>
+        <p class="lesson-description">Identification and significance of source documents in the accounting process.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 9 -->
+      <a href="lessons/lesson-9.html" class="lesson-card" data-lesson="9" data-element="wind">
+        <div class="lesson-number">9</div>
+        <div class="lesson-icon">
+          <i class="fas fa-journal-whills" style="color: var(--brand-2);"></i>
+        </div>
+        <h3 class="lesson-title">Books of Original Entry – Journal</h3>
+        <p class="lesson-description">Recording of transactions in the journal as the first step in the accounting cycle.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 10 -->
+      <a href="lessons/lesson-10.html" class="lesson-card" data-lesson="10" data-element="electric">
+        <div class="lesson-number">10</div>
+        <div class="lesson-icon">
+          <i class="fas fa-percent" style="color: var(--accent);"></i>
+        </div>
+        <h3 class="lesson-title">Accounting for Goods and Service Tax (GST)</h3>
+        <p class="lesson-description">Understanding the Goods and Services Tax and its impact on accounting practices.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 11 -->
+      <a href="lessons/lesson-11.html" class="lesson-card" data-lesson="11" data-element="water">
+        <div class="lesson-number">11</div>
+        <div class="lesson-icon">
+          <i class="fas fa-money-bill-wave" style="color: var(--success);"></i>
+        </div>
+        <h3 class="lesson-title">Books of Original Entry – Cash Book</h3>
+        <p class="lesson-description">Detailed study of the cash book and its role in recording cash transactions.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 12 -->
+      <a href="lessons/lesson-12.html" class="lesson-card" data-lesson="12" data-element="earth">
+        <div class="lesson-number">12</div>
+        <div class="lesson-icon">
+          <i class="fas fa-book-bookmark" style="color: var(--brand);"></i>
+        </div>
+        <h3 class="lesson-title">Special Purpose Subsidiary Books</h3>
+        <p class="lesson-description">Analysis of subsidiary books like purchase, sales, and returns books.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 13 -->
+      <a href="lessons/lesson-13.html" class="lesson-card" data-lesson="13" data-element="nature">
+        <div class="lesson-number">13</div>
+        <div class="lesson-icon">
+          <i class="fas fa-book" style="color: var(--warning);"></i>
+        </div>
+        <h3 class="lesson-title">Ledger</h3>
+        <p class="lesson-description">Posting of journal entries to individual accounts in the ledger.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 14 -->
+      <a href="lessons/lesson-14.html" class="lesson-card" data-lesson="14" data-element="light">
+        <div class="lesson-number">14</div>
+        <div class="lesson-icon">
+          <i class="fas fa-balance-scale" style="color: var(--brand-2);"></i>
+        </div>
+        <h3 class="lesson-title">Trial Balance and Errors</h3>
+        <p class="lesson-description">Preparation of trial balance and identification of errors in accounting records.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
     </div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Lessons sidebar">
-      <div class="search">
-        <input id="search" placeholder="Search topics (e.g., journal, ledger)" aria-label="Search lessons"/>
-      </div>
-
-      <div class="toc-header">
-        <div>
-          <div class="toc-title">Lessons</div>
-          <div class="small" style="color:var(--muted);">Click to open</div>
-        </div>
-        <div class="progress-mini" id="progressMini">0 / 0 done</div>
-      </div>
-
-      <div class="toc" id="toc"></div>
-
-      <div class="sidebar-cta">
-        <button id="markAll" class="btn ghost">Mark all read</button>
-        <button id="exportBtn" class="btn">Export</button>
-      </div>
-    </aside>
-
-    <!-- MAIN VIEWER -->
-    <main class="viewer" role="main">
-      <div class="hero-head">
-        <div>
-          <div class="viewer-title">Pick a lesson from the left</div>
-          <div class="viewer-sub">Lessons for Grade 11 • DK Goel friendly • Last opened: <span id="lastOpened">—</span></div>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <button id="prevLesson" class="icon-btn">← Prev</button>
-          <button id="nextLesson" class="icon-btn">Next →</button>
-        </div>
-      </div>
-
-      <div class="cards" id="cards">
-        <!-- Cards render here -->
-      </div>
-
-      <div class="viewer-footer">
-        Progress is saved locally. Want cloud sync later? We'll add GitHub/Gist or a simple backend.
-      </div>
-    </main>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-head">
-        <div>
-          <div class="modal-title" id="modalTitle"></div>
-          <div class="modal-sub" id="modalSubtitle"></div>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button class="icon-btn" id="closeModal">Close</button>
-        </div>
-      </div>
-
-      <div class="modal-body" id="modalBody">
-        <!-- lesson html content goes here -->
-      </div>
-
-      <div class="modal-controls">
-        <button class="btn ghost" id="prevInModal">← Previous</button>
-        <button class="btn" id="nextInModal">Next →</button>
-      </div>
-
-      <div class="editor" id="editor">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="color:var(--muted); font-weight:700">Quick editor (local only)</div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn ghost" id="cancelEdit">Cancel</button>
-            <button class="btn" id="saveEdit">Save</button>
-          </div>
-        </div>
-        <textarea id="editorArea" placeholder="Paste HTML for this lesson's content..."></textarea>
-      </div>
+    <!-- No Results Message -->
+    <div class="no-results" id="noResults">
+      <i class="fas fa-search"></i>
+      <h3>No lessons found</h3>
+      <p>Try searching with different keywords</p>
     </div>
-  </div>
+  </main>
 
   <script>
-    /* ===============================
-       Lessons Data
-       =============================== */
+    // Search functionality with highlighting
+    const searchInput = document.getElementById('searchInput');
+    const lessonsGrid = document.getElementById('lessonsGrid');
+    const noResults = document.getElementById('noResults');
+    const lessonCards = document.querySelectorAll('.lesson-card');
 
-    // Initialize lessons array
-    window.lessons = [
-  {
-    "lesson": 1,
-    "title": "Introduction to Accounting",
-    "description": "This chapter introduces you to the basic meaning of accounting. You will learn why accounting is important for businesses and what its main objectives are.",
-    "link": "lessons/lesson-1.html"
-  },
-  {
-    "lesson": 2,
-    "title": "Basic Accounting Terms",
-    "description": "Here, you will learn the common language of accounting. The chapter explains key terms like business, transaction, asset, liability, and capital in a simple way.",
-    "link": "lessons/lesson-2.html"
-  },
-  {
-    "lesson": 4,
-    "title": "Process and Bases of Accounting",
-    "description": "This chapter explains the steps involved in the accounting process. It also compares the Cash Basis and Accrual Basis of accounting.",
-    "link": "lessons/lesson-4.html"
-  },
-  {
-    "lesson": 6,
-    "title": "Accounting Equations",
-    "description": "This is a very important chapter where you will learn the fundamental accounting equation: Assets = Liabilities + Capital. You will practice how transactions affect this equation.",
-    "link": "lessons/lesson-6.html"
-  },
-  {
-    "lesson": 7,
-    "title": "Double Entry Book Keeping",
-    "description": "This lesson teaches the system of recording both sides of a transaction. You will learn the meaning of 'Debit' and 'Credit' and how they affect different accounts.",
-    "link": "lessons/lesson-7.html"
-  },
-  {
-    "lesson": 8,
-    "title": "Origin of Transactions: Source Documents and Vouchers",
-    "description": "Every transaction has proof. This chapter covers the various source documents like cash memos and invoices that provide evidence for recording transactions.",
-    "link": "lessons/lesson-8.html"
-  },
-  {
-    "lesson": 9,
-    "title": "Books of Original Entry: Journal",
-    "description": "The Journal is the first book where transactions are recorded. You will learn how to enter transactions into a journal using the rules of debit and credit.",
-    "link": "lessons/lesson-9.html"
-  },
-  {
-    "lesson": 10,
-    "title": "Accounting for Goods and Service Tax (GST)",
-    "description": "This chapter explains the concept of GST, an indirect tax. You will learn how to record journal entries for transactions that include GST.",
-    "link": "lessons/lesson-10.html"
-  },
-  {
-    "lesson": 11,
-    "title": "Books of Original Entry: Cash Book",
-    "description": "The Cash Book is a special journal for all cash transactions. This lesson teaches you how to prepare different types of cash books, like single and double column.",
-    "link": "lessons/lesson-11.html"
-  },
-  {
-    "lesson": 12,
-    "title": "Books of Original Entry: Special Purpose Books",
-    "description": "Besides Journal and Cash Book, businesses use other books. This chapter covers Purchase Book, Sales Book, and other books used for specific types of transactions.",
-    "link": "lessons/lesson-12.html"
-  },
-  {
-    "lesson": 13,
-    "title": "Ledger",
-    "description": "The Ledger is the main book of accounts where all transactions from the journal are classified. You will learn how to post entries and balance different ledger accounts.",
-    "link": "lessons/lesson-13.html"
-  },
-  {
-    "lesson": 14,
-    "title": "Trial Balance",
-    "description": "A Trial Balance is a statement that checks the accuracy of your bookkeeping. This chapter teaches you how to prepare a trial balance from ledger balances.",
-    "link": "lessons/lesson-14.html"
-  }
-]
+    // Store original titles
+    const originalTitles = new Map();
+    lessonCards.forEach(card => {
+      const titleElement = card.querySelector('.lesson-title');
+      originalTitles.set(card, titleElement.textContent);
+    });
 
-    /* ===============================
-       Implementation (do not rename core fns)
-       =============================== */
+    function highlightText(text, searchTerm) {
+      if (!searchTerm) return text;
+      
+      const regex = new RegExp(`(${searchTerm})`, 'gi');
+      return text.replace(regex, '<span class="highlight">$1</span>');
+    }
 
-    // Utility selectors
-    const $ = (s,r=document)=> r.querySelector(s);
-    const $$ = (s,r=document)=> [...r.querySelectorAll(s)];
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      let visibleCount = 0;
 
-    // DOM targets
-    const tocEl = $('#toc');
-    const cardsEl = $('#cards');
-    const progressMini = $('#progressMini');
-    const lastOpenedEl = $('#lastOpened');
-    const modal = $('#modal');
-    const modalTitle = $('#modalTitle');
-    const modalSubtitle = $('#modalSubtitle');
-    const modalBody = $('#modalBody');
-    const editor = $('#editor');
-    const editorArea = $('#editorArea');
+      lessonCards.forEach(card => {
+        const titleElement = card.querySelector('.lesson-title');
+        const originalTitle = originalTitles.get(card);
+        const description = card.querySelector('.lesson-description').textContent.toLowerCase();
+        const lessonNumber = card.getAttribute('data-lesson');
 
-    // State
-    let completed = new Set(JSON.parse(localStorage.getItem('aw_completed') || '[]'));
-    let currentIndex = null;
+        // Reset title to original
+        titleElement.innerHTML = originalTitle;
 
-    // Initialize lessons
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.lessons && window.lessons.length > 0) {
-        console.log('Lessons loaded:', window.lessons.length);
-        renderAll();
+        if (searchTerm && (
+            originalTitle.toLowerCase().includes(searchTerm) || 
+            description.includes(searchTerm) || 
+            lessonNumber.includes(searchTerm) ||
+            `chapter ${lessonNumber}`.includes(searchTerm))) {
+          
+          // Highlight matching text in title
+          titleElement.innerHTML = highlightText(originalTitle, searchTerm);
+          card.style.display = 'block';
+          visibleCount++;
+        } else if (!searchTerm) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show/hide no results message
+      if (visibleCount === 0) {
+        lessonsGrid.style.display = 'none';
+        noResults.style.display = 'block';
       } else {
-        console.error('No lessons found');
+        lessonsGrid.style.display = 'grid';
+        noResults.style.display = 'none';
       }
     });
 
-    /* Floating bubbles generator (re-use index style) */
-    const floaterHost = $('#floaters') || document.createElement('div');
-    (function createFloaters(){
-      const COLORS = ['#7c4dff', '#00e5ff', '#ff7ac6', '#b7ff4a', '#ffd166'];
-      for(let i=0;i<8;i++){
-        const b = document.createElement('div');
-        b.className = 'bubble';
-        const size = Math.floor(40 + Math.random()*140);
-        const startX = Math.floor(Math.random()*100) + 'vw';
-        const dx = (Math.random()*60 - 30) + 'vw';
-        const sc = (0.6 + Math.random()*1.2).toFixed(2);
-        const dur = 12 + Math.random()*22;
-        b.style.width = b.style.height = size + 'px';
-        b.style.left = startX;
-        b.style.top = (80 + Math.random()*100) + 'vh';
-        b.style.setProperty('--sx', '0');
-        b.style.setProperty('--dx', dx);
-        b.style.setProperty('--sc', sc);
-        b.style.setProperty('--dur', dur + 's');
-        b.style.background = COLORS[Math.floor(Math.random()*COLORS.length)];
-        floaterHost.appendChild(b);
-        setTimeout(()=>b.remove(), dur*1000);
-      }
-      setInterval(()=>{ for(let i=0;i<2;i++){ createFloaters(); break; } }, 14000);
-    })();
-
-    /* Render TOC & Cards */
-    function renderAll(){
-      // Ensure lessons are available
-      if(!window.lessons) {
-        console.error('Lessons array not initialized');
-        return;
-      }
-      
-      // Clear existing content
-      tocEl.innerHTML = '';
-      cardsEl.innerHTML = '';
-
-      lessons.forEach((ls, idx) => {
-        // Ensure keys
-        const title = ls.title || `Lesson ${idx+1}`;
-        const desc = ls.description || (ls.content ? stripHtml(ls.content).slice(0,160) : 'No description');
-
-        // TOC item
-        const tocItem = document.createElement('div');
-        tocItem.className = 'toc-item';
-        tocItem.dataset.idx = idx;
-        tocItem.innerHTML = `<div style="display:flex;flex-direction:column;">
-                                <strong style="font-size:1rem">${title}</strong>
-                                <span style="color:var(--muted); font-size:.9rem">${desc.slice(0,80)}${desc.length>80?'…':''}</span>
-                              </div>
-                              <div class="meta">
-                                <div class="badge-time">${ls.time || estimateReadingTime(desc) + ' min'}</div>
-                              </div>`;
-        tocItem.addEventListener('click', ()=> openLesson(idx));
-        tocEl.appendChild(tocItem);
-
-        // Card
-        const card = document.createElement('div');
-        card.className = 'lesson-card';
-        const statusClass = completed.has(idx) ? 'status-pill complete' : 'status-pill';
-        // Define icons for each lesson type
-        const lessonIcons = {
-          1: 'fa-book-open',           // Introduction
-          2: 'fa-spell-check',         // Terms
-          4: 'fa-gears',              // Process
-          6: 'fa-equals',             // Equations
-          7: 'fa-scale-balanced',      // Double Entry
-          8: 'fa-file-invoice',       // Source Documents
-          9: 'fa-book',               // Journal
-          10: 'fa-receipt',           // GST
-          11: 'fa-money-check-dollar', // Cash Book
-          12: 'fa-book-journal-whills', // Special Books - using a more appropriate icon
-          13: 'fa-bookmark',           // Ledger
-          14: 'fa-check-double'       // Trial Balance
-        };
-
-        card.innerHTML = `<div class="lesson-icon">
-                           <i class="fas ${lessonIcons[ls.lesson] || 'fa-graduation-cap'}"></i>
-                         </div>
-                         <div class="lesson-left">
-                           <div class="lesson-name">${title}</div>
-                           <div class="lesson-desc">${desc}</div>
-                           <div class="lesson-meta">
-                             <div class="badge-time"><i class="far fa-clock"></i> ~${ls.time || estimateReadingTime(desc)} min</div>
-                           </div>
-                         </div>
-                         <div>
-                           <div class="${statusClass}">
-                             <i class="fas ${completed.has(idx) ? 'fa-check-circle' : 'fa-circle'}"></i>
-                             ${completed.has(idx)?'Completed':'Pending'}
-                           </div>
-                         </div>`;
-        card.addEventListener("click", () => {
-          if (ls.link) {
-            window.location.href = ls.link;  // go to lesson page if link exists
-          } else if (ls.page) {
-            window.location.href = ls.page;  // fallback to page if it exists
-          }
-        });
-        cardsEl.appendChild(card);
-      });
-
-      updateProgressUI();
-    }
-
-    function estimateReadingTime(text){
-      const words = String(text).split(/\s+/).filter(Boolean).length;
-      return Math.max(1, Math.round(words / 140));
-    }
-    function stripHtml(html){ const d = document.createElement('div'); d.innerHTML = html || ''; return d.textContent || d.innerText || ''; }
-
-    /* Open lesson modal */
-    function openLesson(idx){
-      currentIndex = idx;
-      const ls = lessons[idx];
-      if(!ls) return;
-      modalTitle.textContent = ls.title || `Lesson ${idx+1}`;
-      modalSubtitle.textContent = (ls.time ? `${ls.time} • ` : '') + (ls.lesson ? `#${ls.lesson}` : `Lesson ${idx+1}`);
-      modalBody.innerHTML = ls.content || `<p style="opacity:.9">${ls.description || 'No detailed content yet.'}</p>`;
-      modal.classList.add('show');
-      modal.setAttribute('aria-hidden','false');
-
-      // mark complete
-      if(!completed.has(idx)){ completed.add(idx); saveCompleted(); renderAll(); }
-      localStorage.setItem('aw_lastLesson', idx);
-      lastOpenedEl.textContent = new Date().toLocaleString();
-    }
-
-    // Modal controls
-    $('#closeModal').addEventListener('click', closeModal);
-    function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); editor.style.display='none'; }
-
-    $('#nextInModal').addEventListener('click', ()=> {
-      if(currentIndex === null) return;
-      const n = Math.min(lessons.length - 1, currentIndex + 1);
-      openLesson(n);
-      scrollToTOC(n);
-    });
-    $('#prevInModal').addEventListener('click', ()=> {
-      if(currentIndex === null) return;
-      const p = Math.max(0, currentIndex - 1);
-      openLesson(p);
-      scrollToTOC(p);
-    });
-
-    // Next/Prev outside modal
-    $('#nextLesson').addEventListener('click', ()=> {
-      if(currentIndex === null) { openLesson(0); return; }
-      const n = Math.min(lessons.length - 1, currentIndex + 1);
-      openLesson(n);
-      scrollToTOC(n);
-    });
-    $('#prevLesson').addEventListener('click', ()=> {
-      if(currentIndex === null) { openLesson(0); return; }
-      const p = Math.max(0, currentIndex - 1);
-      openLesson(p);
-      scrollToTOC(p);
-    });
-
-    function scrollToTOC(idx){
-      const el = tocEl.querySelector(`[data-idx="${idx}"]`);
-      if(el) { el.scrollIntoView({ block:'center', behavior:'smooth' }); el.classList.add('pulse'); setTimeout(()=>el.classList.remove('pulse'),700); }
-    }
-
-    /* Editor */
-    $('#editBtn').addEventListener('click', ()=>{
-      if(currentIndex === null) return;
-      editor.style.display = 'flex';
-      editorArea.value = lessons[currentIndex].content || lessons[currentIndex].description || '';
-    });
-    $('#cancelEdit').addEventListener('click', ()=> { editor.style.display = 'none'; });
-    $('#saveEdit').addEventListener('click', ()=>{
-      if(currentIndex === null) return;
-      lessons[currentIndex].content = editorArea.value || '<p>(empty)</p>';
-      editor.style.display = 'none';
-      openLesson(currentIndex);
-      toast('Saved (local only). To persist, paste updated JSON back into your file.');
-    });
-
-    /* Progress handling */
-    function saveCompleted(){ localStorage.setItem('aw_completed', JSON.stringify([...completed])); }
-    function updateProgressUI(){
-      const done = completed.size;
-      const total = lessons.length;
-      progressMini.textContent = `${done} / ${total} done`;
-      // If you want a top progress bar like index, you can re-use it. For now we show mini.
-    }
-
-    $('#markAll').addEventListener('click', ()=>{
-      lessons.forEach((_, i)=> completed.add(i)); saveCompleted(); renderAll(); toast('All lessons marked complete');
-    });
-    $('#resetAll').addEventListener('click', ()=>{
-      if(!confirm('Reset progress?')) return;
-      completed = new Set(); saveCompleted(); renderAll(); toast('Progress reset');
-    });
-
-    /* Import / Export */
-    $('#openImport').addEventListener('click', ()=>{
-      const json = prompt('Paste lessons JSON array here (will replace current lessons in page).');
-      if(!json) return;
-      try {
-        const arr = JSON.parse(json);
-        if(!Array.isArray(arr)) throw new Error('Not an array');
-        // replace lessons content (local only)
-        arr.forEach((o, i)=> {
-          // basic normalization optional
-        });
-        // assign and re-render
-        // eslint-disable-next-line no-unused-vars
-        window.lessons = arr;
-        toast('Imported ' + arr.length + ' lessons (local)');
-        // replace global const? we can't reassign const, so we mutate the array
-        // simple approach: clear existing and push
-        while(lessons.length) lessons.pop();
-        arr.forEach(o=> lessons.push(o));
-        renderAll();
-      } catch(e){
-        alert('Invalid JSON: ' + e.message);
-      }
-    });
-
-    $('#exportBtn').addEventListener('click', ()=>{
-      const blob = new Blob([JSON.stringify(lessons, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'lessons-export.json'; a.click();
-      URL.revokeObjectURL(url);
-      toast('Export started');
-    });
-
-    /* Tiny toast */
-    const toastHost = document.createElement('div');
-    toastHost.style.position='fixed'; toastHost.style.right='18px'; toastHost.style.bottom='18px'; toastHost.style.zIndex='70';
-    document.body.appendChild(toastHost);
-    function toast(msg){
-      const el = document.createElement('div');
-      el.textContent = msg;
-      el.style.background = 'linear-gradient(90deg,var(--brand),var(--brand-2))';
-      el.style.color = '#071025'; el.style.fontWeight = '800'; el.style.padding = '10px 14px'; el.style.borderRadius='12px';
-      el.style.boxShadow='0 14px 30px rgba(0,0,0,.4)'; el.style.marginTop='8px';
-      toastHost.appendChild(el);
-      setTimeout(()=> { el.style.opacity = '0'; el.style.transform='translateY(10px)'; }, 1800);
-      setTimeout(()=> el.remove(), 2200);
-    }
-
-    /* Small helpers */
-    function strip(s){ return (s||'').replace(/<\/?[^>]+(>|$)/g, ""); }
-
-    /* accessibility: keyboard */
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape') closeModal();
-      if(e.key === 'j') { if(currentIndex === null) openLesson(0); else openLesson(Math.min(lessons.length-1, currentIndex+1)); }
-      if(e.key === 'k') { if(currentIndex === null) openLesson(0); else openLesson(Math.max(0, currentIndex-1)); }
-    });
-
-    // Expose importFromJSON for console usage (if you prefer)
-    function importFromJSON(arr){
-      if(!Array.isArray(arr)) { console.error('importFromJSON expects array'); return; }
-      while(lessons.length) lessons.pop();
-      arr.forEach(o=> lessons.push(o));
-      renderAll();
-      toast('Imported ' + arr.length + ' lessons (local)');
-    }
-    window.importFromJSON = importFromJSON;
-
-    // Init
-    (function init(){
-      // restore last opened index
-      const last = Number(localStorage.getItem('aw_lastLesson'));
-      if(!isNaN(last)) lastOpenedEl.textContent = new Date().toLocaleString();
-      
-      // Make sure to render the lessons
-      setTimeout(renderAll, 100);
-
-      // Search
-      $('#search').addEventListener('input', (e)=>{
-        const q = e.target.value.trim().toLowerCase();
-        [...tocEl.children].forEach(node=>{
-          const idx = Number(node.dataset.idx);
-          const title = (lessons[idx].title||'').toLowerCase();
-          const desc = (lessons[idx].description || '').toLowerCase();
-          node.style.display = (title.includes(q) || desc.includes(q)) ? 'flex' : 'none';
-        });
-      });
-
-      // if there is exactly one real lesson, open it quickly
-      if(Array.isArray(lessons) && lessons.length === 1) setTimeout(()=> openLesson(0), 260);
-    })();
-
-    /* Safety: if lessons is not an array, show friendly instruction */
-    if(!Array.isArray(window.lessons)){
-      tocEl.innerHTML = '<div style="color:var(--muted);padding:12px;">No lessons found</div>';
-    }
-
-    // Make sure to initialize immediately
+    // Prevent default link behavior for cards and handle navigation
     document.addEventListener('DOMContentLoaded', function() {
-      renderAll();
+      console.log('Lessons page loaded successfully with elemental effects');
     });
   </script>
 </body>

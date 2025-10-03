@@ -597,6 +597,213 @@
         .lf-col {
         vertical-align: top;
         }
+
+        .interactive-practice-container {
+          margin-top: 20px;
+        }
+
+        .practice-item {
+          background: rgba(255,255,255,0.02);
+          border-radius: 16px;
+          padding: 25px;
+          margin-bottom: 30px;
+          border: 2px solid rgba(255,255,255,0.1);
+          transition: all 0.3s ease;
+        }
+
+        .practice-item:hover {
+          border-color: var(--brand-2);
+          transform: translateY(-5px);
+          box-shadow: 0 15px 30px rgba(0,229,255,0.2);
+        }
+
+        .transaction-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .transaction-header h4 {
+          margin: 0;
+          color: var(--text);
+        }
+
+        .difficulty-badge {
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: bold;
+        }
+
+        .difficulty-badge.easy {
+          background: var(--success);
+          color: white;
+        }
+
+        .difficulty-badge.medium {
+          background: var(--warning);
+          color: white;
+        }
+
+        .difficulty-badge.hard {
+          background: var(--error);
+          color: white;
+        }
+
+        .transaction-description {
+          margin-bottom: 20px;
+          padding: 15px;
+          background: rgba(255,255,255,0.05);
+          border-radius: 8px;
+        }
+
+        .transaction-description p {
+          margin: 5px 0;
+          color: var(--muted);
+        }
+
+        .account-selection {
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+
+        .account-selection select {
+          background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 6px;
+          padding: 8px 12px;
+          color: var(--text);
+          font-size: 0.9rem;
+          min-width: 200px;
+          margin-right: 10px;
+        }
+
+        .account-selection select:focus {
+          outline: none;
+          border-color: var(--brand-2);
+        }
+
+        .dr-text, .to-text {
+          color: var(--muted);
+          font-size: 0.9rem;
+          white-space: nowrap;
+        }
+
+        .practice-controls {
+          display: flex;
+          gap: 10px;
+          margin-top: 20px;
+          flex-wrap: wrap;
+        }
+
+        .check-answer-btn, .hint-btn, .solution-btn {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: all 0.3s ease;
+        }
+
+        .check-answer-btn {
+          background: var(--brand);
+          color: white;
+        }
+
+        .check-answer-btn:hover {
+          background: var(--brand-2);
+          transform: translateY(-2px);
+        }
+
+        .hint-btn {
+          background: var(--warning);
+          color: white;
+        }
+
+        .hint-btn:hover {
+          background: #ffb74d;
+          transform: translateY(-2px);
+        }
+
+        .hint-btn.active {
+          background: #f57c00;
+        }
+
+        .solution-btn {
+          background: var(--accent);
+          color: white;
+        }
+
+        .solution-btn:hover {
+          background: #ff94d0;
+          transform: translateY(-2px);
+        }
+
+        .solution-btn.active {
+          background: #e91e63;
+        }
+
+        .feedback-area, .hint-area, .solution-area {
+          margin-top: 20px;
+          padding: 15px;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .feedback-area.correct {
+          background: rgba(76, 175, 80, 0.1);
+          border-left: 4px solid var(--success);
+        }
+
+        .feedback-area.incorrect {
+          background: rgba(244, 67, 54, 0.1);
+          border-left: 4px solid var(--error);
+        }
+
+        .hint-content, .solution-content {
+          background: rgba(255,255,255,0.05);
+          padding: 15px;
+          border-radius: 8px;
+        }
+
+        .hint-content h5, .solution-content h5 {
+          margin-top: 0;
+          color: var(--text);
+        }
+
+        .hint-content ul {
+          margin: 10px 0;
+          padding-left: 20px;
+        }
+
+        .hint-content li, .solution-content p {
+          color: var(--muted);
+          line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+          .account-selection {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          
+          .account-selection select {
+            min-width: 100%;
+            margin-bottom: 5px;
+          }
+          
+          .practice-controls {
+            flex-direction: column;
+          }
+          
+          .practice-controls button {
+            width: 100%;
+          }
+        }
     </style>
 </head>
 <body>
@@ -3068,6 +3275,1160 @@
         </div>
         </section>
 
+        <!-- Interactive Practice Section -->
+    <section class="animate-card">
+      <h2>Interactive Practice: Analyze & Create Journal Entries</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Practice analyzing transactions and selecting the correct accounts to debit and credit. This will help you understand the rules of debit and credit for different types of accounts.
+      </p>
+
+      <div class="interactive-practice-container">
+        
+        <!-- Transaction 1 -->
+        <div class="practice-item animate-card slide-in-left">
+          <div class="transaction-header">
+            <h4>Transaction 1</h4>
+            <span class="difficulty-badge easy">Easy</span>
+          </div>
+          <div class="transaction-description">
+            <p><strong>Date:</strong> January 5, 2024</p>
+            <p><strong>Description:</strong> Purchased goods worth ₹25,000 from Ram & Co. on credit</p>
+          </div>
+          
+          <div class="journal-entry-form">
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Jan 5</td>
+                  <td class="particulars-cell">
+                    <div class="account-selection">
+                      <select class="debit-select" data-transaction="1">
+                        <option value="">Select Account to Debit</option>
+                        <option value="purchase">Purchase A/c</option>
+                        <option value="ram">Ram & Co. A/c</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="capital">Capital A/c</option>
+                      </select>
+                      <span class="dr-text">..................... Dr.</span>
+                    </div>
+                    <div class="account-selection">
+                      <span class="to-text">To</span>
+                      <select class="credit-select" data-transaction="1">
+                        <option value="">Select Account to Credit</option>
+                        <option value="purchase">Purchase A/c</option>
+                        <option value="ram">Ram & Co. A/c</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="capital">Capital A/c</option>
+                      </select>
+                    </div>
+                    <div class="narration">(Being goods purchased on credit from Ram & Co.)</div>
+                  </td>
+                  <td>1<br>2</td>
+                  <td class="amount-cell">25,000</td>
+                  <td class="amount-cell">25,000</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="practice-controls">
+              <button class="check-answer-btn" onclick="checkJournalEntry(1)">Check Answer</button>
+              <button class="hint-btn" onclick="toggleHint(1)" id="hint-btn-1">Show Hint</button>
+              <button class="solution-btn" onclick="toggleSolution(1)" id="solution-btn-1">Show Solution</button>
+            </div>
+            
+            <div class="feedback-area" id="feedback-1">
+              <!-- Feedback will appear here -->
+            </div>
+            
+            <div class="hint-area" id="hint-1" style="display: none;">
+              <div class="hint-content">
+                <h5>💡 Hint:</h5>
+                <p>Remember: When purchasing goods on credit:</p>
+                <ul>
+                  <li>Purchase account is an expense - <strong>Debit</strong> what comes in</li>
+                  <li>Creditor's account (Ram & Co.) is a liability - <strong>Credit</strong> the giver</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="solution-area" id="solution-1" style="display: none;">
+              <div class="solution-content">
+                <h5>✅ Correct Solution:</h5>
+                <table class="journal-table">
+                  <thead>
+                    <tr>
+                      <th class="date-col">Date</th>
+                      <th class="particulars-col">Particulars</th>
+                      <th class="lf-col">L.F.</th>
+                      <th class="debit-col">Debit (₹)</th>
+                      <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024<br>Jan 5</td>
+                      <td class="particulars-cell">
+                        <div class="debit-entry">Purchase A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Ram & Co. A/c</div>
+                        <div class="narration">(Being goods purchased on credit from Ram & Co.)</div>
+                      </td>
+                      <td>1<br>2</td>
+                      <td class="amount-cell">25,000</td>
+                      <td class="amount-cell">25,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p><strong>Explanation:</strong> Purchase account is debited because goods are coming into the business (increase in expenses). Ram & Co. account is credited because they are the supplier to whom we owe money (increase in liability).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction 2 -->
+        <div class="practice-item animate-card slide-in-left">
+          <div class="transaction-header">
+            <h4>Transaction 2</h4>
+            <span class="difficulty-badge medium">Medium</span>
+          </div>
+          <div class="transaction-description">
+            <p><strong>Date:</strong> January 10, 2024</p>
+            <p><strong>Description:</strong> Sold goods worth ₹40,000 to Shyam on credit</p>
+          </div>
+          
+          <div class="journal-entry-form">
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Jan 10</td>
+                  <td class="particulars-cell">
+                    <div class="account-selection">
+                      <select class="debit-select" data-transaction="2">
+                        <option value="">Select Account to Debit</option>
+                        <option value="shyam">Shyam A/c</option>
+                        <option value="sales">Sales A/c</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="purchase">Purchase A/c</option>
+                      </select>
+                      <span class="dr-text">..................... Dr.</span>
+                    </div>
+                    <div class="account-selection">
+                      <span class="to-text">To</span>
+                      <select class="credit-select" data-transaction="2">
+                        <option value="">Select Account to Credit</option>
+                        <option value="shyam">Shyam A/c</option>
+                        <option value="sales">Sales A/c</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="purchase">Purchase A/c</option>
+                      </select>
+                    </div>
+                    <div class="narration">(Being goods sold on credit to Shyam)</div>
+                  </td>
+                  <td>3<br>4</td>
+                  <td class="amount-cell">40,000</td>
+                  <td class="amount-cell">40,000</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="practice-controls">
+              <button class="check-answer-btn" onclick="checkJournalEntry(2)">Check Answer</button>
+              <button class="hint-btn" onclick="toggleHint(2)" id="hint-btn-2">Show Hint</button>
+              <button class="solution-btn" onclick="toggleSolution(2)" id="solution-btn-2">Show Solution</button>
+            </div>
+            
+            <div class="feedback-area" id="feedback-2">
+              <!-- Feedback will appear here -->
+            </div>
+            
+            <div class="hint-area" id="hint-2" style="display: none;">
+              <div class="hint-content">
+                <h5>💡 Hint:</h5>
+                <p>Remember: When selling goods on credit:</p>
+                <ul>
+                  <li>Debtor's account (Shyam) is an asset - <strong>Debit</strong> the receiver</li>
+                  <li>Sales account is revenue - <strong>Credit</strong> what goes out</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="solution-area" id="solution-2" style="display: none;">
+              <div class="solution-content">
+                <h5>✅ Correct Solution:</h5>
+                <table class="journal-table">
+                  <thead>
+                    <tr>
+                      <th class="date-col">Date</th>
+                      <th class="particulars-col">Particulars</th>
+                      <th class="lf-col">L.F.</th>
+                      <th class="debit-col">Debit (₹)</th>
+                      <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024<br>Jan 10</td>
+                      <td class="particulars-cell">
+                        <div class="debit-entry">Shyam A/c ...................... Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold on credit to Shyam)</div>
+                      </td>
+                      <td>3<br>4</td>
+                      <td class="amount-cell">40,000</td>
+                      <td class="amount-cell">40,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p><strong>Explanation:</strong> Shyam's account is debited because he is the receiver of goods (increase in asset). Sales account is credited because revenue is increasing for the business.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction 3 -->
+        <div class="practice-item animate-card slide-in-left">
+          <div class="transaction-header">
+            <h4>Transaction 3</h4>
+            <span class="difficulty-badge easy">Easy</span>
+          </div>
+          <div class="transaction-description">
+            <p><strong>Date:</strong> January 12, 2024</p>
+            <p><strong>Description:</strong> Sold goods for ₹18,000 cash</p>
+          </div>
+          
+          <div class="journal-entry-form">
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Jan 12</td>
+                  <td class="particulars-cell">
+                    <div class="account-selection">
+                      <select class="debit-select" data-transaction="3">
+                        <option value="">Select Account to Debit</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="sales">Sales A/c</option>
+                        <option value="bank">Bank A/c</option>
+                        <option value="purchase">Purchase A/c</option>
+                      </select>
+                      <span class="dr-text">..................... Dr.</span>
+                    </div>
+                    <div class="account-selection">
+                      <span class="to-text">To</span>
+                      <select class="credit-select" data-transaction="3">
+                        <option value="">Select Account to Credit</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="sales">Sales A/c</option>
+                        <option value="bank">Bank A/c</option>
+                        <option value="purchase">Purchase A/c</option>
+                      </select>
+                    </div>
+                    <div class="narration">(Being goods sold for cash)</div>
+                  </td>
+                  <td>1<br>4</td>
+                  <td class="amount-cell">18,000</td>
+                  <td class="amount-cell">18,000</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="practice-controls">
+              <button class="check-answer-btn" onclick="checkJournalEntry(3)">Check Answer</button>
+              <button class="hint-btn" onclick="toggleHint(3)" id="hint-btn-3">Show Hint</button>
+              <button class="solution-btn" onclick="toggleSolution(3)" id="solution-btn-3">Show Solution</button>
+            </div>
+            
+            <div class="feedback-area" id="feedback-3">
+              <!-- Feedback will appear here -->
+            </div>
+            
+            <div class="hint-area" id="hint-3" style="display: none;">
+              <div class="hint-content">
+                <h5>💡 Hint:</h5>
+                <p>Remember: When selling goods for cash:</p>
+                <ul>
+                  <li>Cash account is an asset - <strong>Debit</strong> what comes in</li>
+                  <li>Sales account is revenue - <strong>Credit</strong> what goes out</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="solution-area" id="solution-3" style="display: none;">
+              <div class="solution-content">
+                <h5>✅ Correct Solution:</h5>
+                <table class="journal-table">
+                  <thead>
+                    <tr>
+                      <th class="date-col">Date</th>
+                      <th class="particulars-col">Particulars</th>
+                      <th class="lf-col">L.F.</th>
+                      <th class="debit-col">Debit (₹)</th>
+                      <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024<br>Jan 12</td>
+                      <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Sales A/c</div>
+                        <div class="narration">(Being goods sold for cash)</div>
+                      </td>
+                      <td>1<br>4</td>
+                      <td class="amount-cell">18,000</td>
+                      <td class="amount-cell">18,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p><strong>Explanation:</strong> Cash account is debited because cash is received (increase in asset). Sales account is credited because revenue is increasing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction 4 -->
+        <div class="practice-item animate-card slide-in-left">
+          <div class="transaction-header">
+            <h4>Transaction 4</h4>
+            <span class="difficulty-badge easy">Easy</span>
+          </div>
+          <div class="transaction-description">
+            <p><strong>Date:</strong> January 15, 2024</p>
+            <p><strong>Description:</strong> Owner invested ₹5,00,000 cash in the business</p>
+          </div>
+          
+          <div class="journal-entry-form">
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Jan 15</td>
+                  <td class="particulars-cell">
+                    <div class="account-selection">
+                      <select class="debit-select" data-transaction="4">
+                        <option value="">Select Account to Debit</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="capital">Capital A/c</option>
+                        <option value="bank">Bank A/c</option>
+                        <option value="drawings">Drawings A/c</option>
+                      </select>
+                      <span class="dr-text">..................... Dr.</span>
+                    </div>
+                    <div class="account-selection">
+                      <span class="to-text">To</span>
+                      <select class="credit-select" data-transaction="4">
+                        <option value="">Select Account to Credit</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="capital">Capital A/c</option>
+                        <option value="bank">Bank A/c</option>
+                        <option value="drawings">Drawings A/c</option>
+                      </select>
+                    </div>
+                    <div class="narration">(Being capital introduced by owner)</div>
+                  </td>
+                  <td>1<br>5</td>
+                  <td class="amount-cell">5,00,000</td>
+                  <td class="amount-cell">5,00,000</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="practice-controls">
+              <button class="check-answer-btn" onclick="checkJournalEntry(4)">Check Answer</button>
+              <button class="hint-btn" onclick="toggleHint(4)" id="hint-btn-4">Show Hint</button>
+              <button class="solution-btn" onclick="toggleSolution(4)" id="solution-btn-4">Show Solution</button>
+            </div>
+            
+            <div class="feedback-area" id="feedback-4">
+              <!-- Feedback will appear here -->
+            </div>
+            
+            <div class="hint-area" id="hint-4" style="display: none;">
+              <div class="hint-content">
+                <h5>💡 Hint:</h5>
+                <p>Remember: When owner invests capital:</p>
+                <ul>
+                  <li>Cash account is an asset - <strong>Debit</strong> what comes in</li>
+                  <li>Capital account is owner's equity - <strong>Credit</strong> the giver</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="solution-area" id="solution-4" style="display: none;">
+              <div class="solution-content">
+                <h5>✅ Correct Solution:</h5>
+                <table class="journal-table">
+                  <thead>
+                    <tr>
+                      <th class="date-col">Date</th>
+                      <th class="particulars-col">Particulars</th>
+                      <th class="lf-col">L.F.</th>
+                      <th class="debit-col">Debit (₹)</th>
+                      <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024<br>Jan 15</td>
+                      <td class="particulars-cell">
+                        <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                        <div class="credit-entry">To Capital A/c</div>
+                        <div class="narration">(Being capital introduced by owner)</div>
+                      </td>
+                      <td>1<br>5</td>
+                      <td class="amount-cell">5,00,000</td>
+                      <td class="amount-cell">5,00,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p><strong>Explanation:</strong> Cash account is debited because cash is received. Capital account is credited because owner's equity is increasing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction 5 -->
+        <div class="practice-item animate-card slide-in-left">
+          <div class="transaction-header">
+            <h4>Transaction 5</h4>
+            <span class="difficulty-badge medium">Medium</span>
+          </div>
+          <div class="transaction-description">
+            <p><strong>Date:</strong> January 18, 2024</p>
+            <p><strong>Description:</strong> Paid rent ₹15,000 by cheque</p>
+          </div>
+          
+          <div class="journal-entry-form">
+            <table class="journal-table">
+              <thead>
+                <tr>
+                  <th class="date-col">Date</th>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="lf-col">L.F.</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024<br>Jan 18</td>
+                  <td class="particulars-cell">
+                    <div class="account-selection">
+                      <select class="debit-select" data-transaction="5">
+                        <option value="">Select Account to Debit</option>
+                        <option value="rent">Rent Expense A/c</option>
+                        <option value="bank">Bank A/c</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="salary">Salary A/c</option>
+                      </select>
+                      <span class="dr-text">..................... Dr.</span>
+                    </div>
+                    <div class="account-selection">
+                      <span class="to-text">To</span>
+                      <select class="credit-select" data-transaction="5">
+                        <option value="">Select Account to Credit</option>
+                        <option value="rent">Rent Expense A/c</option>
+                        <option value="bank">Bank A/c</option>
+                        <option value="cash">Cash A/c</option>
+                        <option value="salary">Salary A/c</option>
+                      </select>
+                    </div>
+                    <div class="narration">(Being rent paid by cheque)</div>
+                  </td>
+                  <td>6<br>7</td>
+                  <td class="amount-cell">15,000</td>
+                  <td class="amount-cell">15,000</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="practice-controls">
+              <button class="check-answer-btn" onclick="checkJournalEntry(5)">Check Answer</button>
+              <button class="hint-btn" onclick="toggleHint(5)" id="hint-btn-5">Show Hint</button>
+              <button class="solution-btn" onclick="toggleSolution(5)" id="solution-btn-5">Show Solution</button>
+            </div>
+            
+            <div class="feedback-area" id="feedback-5">
+              <!-- Feedback will appear here -->
+            </div>
+            
+            <div class="hint-area" id="hint-5" style="display: none;">
+              <div class="hint-content">
+                <h5>💡 Hint:</h5>
+                <p>Remember: When paying expenses by cheque:</p>
+                <ul>
+                  <li>Expense account (Rent) - <strong>Debit</strong> all expenses and losses</li>
+                  <li>Bank account is an asset - <strong>Credit</strong> what goes out</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="solution-area" id="solution-5" style="display: none;">
+              <div class="solution-content">
+                <h5>✅ Correct Solution:</h5>
+                <table class="journal-table">
+                  <thead>
+                    <tr>
+                      <th class="date-col">Date</th>
+                      <th class="particulars-col">Particulars</th>
+                      <th class="lf-col">L.F.</th>
+                      <th class="debit-col">Debit (₹)</th>
+                      <th class="credit-col">Credit (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024<br>Jan 18</td>
+                      <td class="particulars-cell">
+                        <div class="debit-entry">Rent Expense A/c ............... Dr.</div>
+                        <div class="credit-entry">To Bank A/c</div>
+                        <div class="narration">(Being rent paid by cheque)</div>
+                      </td>
+                      <td>6<br>7</td>
+                      <td class="amount-cell">15,000</td>
+                      <td class="amount-cell">15,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p><strong>Explanation:</strong> Rent Expense is debited because it's an expense (increase in expenses). Bank account is credited because bank balance is decreasing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction 6 -->
+<div class="practice-item animate-card slide-in-left">
+  <div class="transaction-header">
+    <h4>Transaction 6</h4>
+    <span class="difficulty-badge medium">Medium</span>
+  </div>
+  <div class="transaction-description">
+    <p><strong>Date:</strong> January 20, 2024</p>
+    <p><strong>Description:</strong> Purchased furniture worth ₹45,000, paid ₹15,000 cash and balance on credit</p>
+  </div>
+  
+  <div class="journal-entry-form">
+    <table class="journal-table">
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="particulars-col">Particulars</th>
+          <th class="lf-col">L.F.</th>
+          <th class="debit-col">Debit (₹)</th>
+          <th class="credit-col">Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024<br>Jan 20</td>
+          <td class="particulars-cell">
+            <div class="account-selection">
+              <select class="debit-select" data-transaction="6">
+                <option value="">Select Account to Debit</option>
+                <option value="furniture">Furniture A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="creditor">Furniture Creditor A/c</option>
+                <option value="purchase">Purchase A/c</option>
+              </select>
+              <span class="dr-text">..................... Dr.</span>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select" data-transaction="6">
+                <option value="">Select Account to Credit</option>
+                <option value="furniture">Furniture A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="creditor">Furniture Creditor A/c</option>
+                <option value="purchase">Purchase A/c</option>
+              </select>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select-2" data-transaction="6">
+                <option value="">Select 2nd Credit Account</option>
+                <option value="furniture">Furniture A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="creditor">Furniture Creditor A/c</option>
+                <option value="purchase">Purchase A/c</option>
+              </select>
+            </div>
+            <div class="narration">(Being furniture purchased partly for cash)</div>
+          </td>
+          <td>8<br>1<br>9</td>
+          <td class="amount-cell">45,000</td>
+          <td class="amount-cell">
+            <div class="credit-amount">15,000</div>
+            <div class="credit-amount">30,000</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="practice-controls">
+      <button class="check-answer-btn" onclick="checkJournalEntry(6)">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint(6)" id="hint-btn-6">Show Hint</button>
+      <button class="solution-btn" onclick="toggleSolution(6)" id="solution-btn-6">Show Solution</button>
+    </div>
+    
+    <div class="feedback-area" id="feedback-6">
+      <!-- Feedback will appear here -->
+    </div>
+    
+    <div class="hint-area" id="hint-6" style="display: none;">
+      <div class="hint-content">
+        <h5>💡 Hint:</h5>
+        <p>Remember: When purchasing assets partly for cash:</p>
+        <ul>
+          <li>Asset account (Furniture) - <strong>Debit</strong> what comes in</li>
+          <li>Cash account - <strong>Credit</strong> what goes out (₹15,000)</li>
+          <li>Creditor's account - <strong>Credit</strong> the giver (₹30,000)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="solution-area" id="solution-6" style="display: none;">
+      <div class="solution-content">
+        <h5>✅ Correct Solution:</h5>
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="lf-col">L.F.</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024<br>Jan 20</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Furniture A/c ................... Dr.</div>
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="credit-entry">To Furniture Creditor A/c</div>
+                <div class="narration">(Being furniture purchased partly for cash)</div>
+              </td>
+              <td>8<br>1<br>9</td>
+              <td class="amount-cell">45,000</td>
+              <td class="amount-cell">
+                <div class="credit-amount">15,000</div>
+                <div class="credit-amount">30,000</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Explanation:</strong> Furniture account is debited as it's a fixed asset. Cash is credited for the amount paid, and Creditor account is credited for the balance amount owed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Transaction 7 -->
+<div class="practice-item animate-card slide-in-left">
+  <div class="transaction-header">
+    <h4>Transaction 7</h4>
+    <span class="difficulty-badge medium">Medium</span>
+  </div>
+  <div class="transaction-description">
+    <p><strong>Date:</strong> January 22, 2024</p>
+    <p><strong>Description:</strong> Received commission income ₹8,000 cash</p>
+  </div>
+  
+  <div class="journal-entry-form">
+    <table class="journal-table">
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="particulars-col">Particulars</th>
+          <th class="lf-col">L.F.</th>
+          <th class="debit-col">Debit (₹)</th>
+          <th class="credit-col">Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024<br>Jan 22</td>
+          <td class="particulars-cell">
+            <div class="account-selection">
+              <select class="debit-select" data-transaction="7">
+                <option value="">Select Account to Debit</option>
+                <option value="cash">Cash A/c</option>
+                <option value="commission">Commission A/c</option>
+                <option value="bank">Bank A/c</option>
+                <option value="sales">Sales A/c</option>
+              </select>
+              <span class="dr-text">..................... Dr.</span>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select" data-transaction="7">
+                <option value="">Select Account to Credit</option>
+                <option value="cash">Cash A/c</option>
+                <option value="commission">Commission A/c</option>
+                <option value="bank">Bank A/c</option>
+                <option value="sales">Sales A/c</option>
+              </select>
+            </div>
+            <div class="narration">(Being commission received in cash)</div>
+          </td>
+          <td>1<br>10</td>
+          <td class="amount-cell">8,000</td>
+          <td class="amount-cell">8,000</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="practice-controls">
+      <button class="check-answer-btn" onclick="checkJournalEntry(7)">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint(7)" id="hint-btn-7">Show Hint</button>
+      <button class="solution-btn" onclick="toggleSolution(7)" id="solution-btn-7">Show Solution</button>
+    </div>
+    
+    <div class="feedback-area" id="feedback-7">
+      <!-- Feedback will appear here -->
+    </div>
+    
+    <div class="hint-area" id="hint-7" style="display: none;">
+      <div class="hint-content">
+        <h5>💡 Hint:</h5>
+        <p>Remember: When receiving income:</p>
+        <ul>
+          <li>Cash account - <strong>Debit</strong> what comes in</li>
+          <li>Income account (Commission) - <strong>Credit</strong> all incomes and gains</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="solution-area" id="solution-7" style="display: none;">
+      <div class="solution-content">
+        <h5>✅ Correct Solution:</h5>
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="lf-col">L.F.</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024<br>Jan 22</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Cash A/c ..................... Dr.</div>
+                <div class="credit-entry">To Commission A/c</div>
+                <div class="narration">(Being commission received in cash)</div>
+              </td>
+              <td>1<br>10</td>
+              <td class="amount-cell">8,000</td>
+              <td class="amount-cell">8,000</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Explanation:</strong> Cash account is debited because cash is received. Commission account is credited because it's an income for the business.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Transaction 8 -->
+<div class="practice-item animate-card slide-in-left">
+  <div class="transaction-header">
+    <h4>Transaction 8</h4>
+    <span class="difficulty-badge hard">Hard</span>
+  </div>
+  <div class="transaction-description">
+    <p><strong>Date:</strong> January 25, 2024</p>
+    <p><strong>Description:</strong> Owner withdrew ₹12,000 cash and goods worth ₹3,000 for personal use</p>
+  </div>
+  
+  <div class="journal-entry-form">
+    <table class="journal-table">
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="particulars-col">Particulars</th>
+          <th class="lf-col">L.F.</th>
+          <th class="debit-col">Debit (₹)</th>
+          <th class="credit-col">Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024<br>Jan 25</td>
+          <td class="particulars-cell">
+            <div class="account-selection">
+              <select class="debit-select" data-transaction="8">
+                <option value="">Select Account to Debit</option>
+                <option value="drawings">Drawings A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="purchase">Purchase A/c</option>
+                <option value="capital">Capital A/c</option>
+              </select>
+              <span class="dr-text">..................... Dr.</span>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select" data-transaction="8">
+                <option value="">Select Account to Credit</option>
+                <option value="drawings">Drawings A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="purchase">Purchase A/c</option>
+                <option value="capital">Capital A/c</option>
+              </select>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select-2" data-transaction="8">
+                <option value="">Select 2nd Credit Account</option>
+                <option value="drawings">Drawings A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="purchase">Purchase A/c</option>
+                <option value="capital">Capital A/c</option>
+              </select>
+            </div>
+            <div class="narration">(Being cash and goods withdrawn for personal use)</div>
+          </td>
+          <td>11<br>1<br>2</td>
+          <td class="amount-cell">15,000</td>
+          <td class="amount-cell">
+            <div class="credit-amount">12,000</div>
+            <div class="credit-amount">3,000</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="practice-controls">
+      <button class="check-answer-btn" onclick="checkJournalEntry(8)">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint(8)" id="hint-btn-8">Show Hint</button>
+      <button class="solution-btn" onclick="toggleSolution(8)" id="solution-btn-8">Show Solution</button>
+    </div>
+    
+    <div class="feedback-area" id="feedback-8">
+      <!-- Feedback will appear here -->
+    </div>
+    
+    <div class="hint-area" id="hint-8" style="display: none;">
+      <div class="hint-content">
+        <h5>💡 Hint:</h5>
+        <p>Remember: When owner withdraws cash and goods:</p>
+        <ul>
+          <li>Drawings account - <strong>Debit</strong> all withdrawals</li>
+          <li>Cash account - <strong>Credit</strong> what goes out (₹12,000)</li>
+          <li>Purchase account - <strong>Credit</strong> for goods taken (₹3,000)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="solution-area" id="solution-8" style="display: none;">
+      <div class="solution-content">
+        <h5>✅ Correct Solution:</h5>
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="lf-col">L.F.</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024<br>Jan 25</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Drawings A/c .................. Dr.</div>
+                <div class="credit-entry">To Cash A/c</div>
+                <div class="credit-entry">To Purchase A/c</div>
+                <div class="narration">(Being cash and goods withdrawn for personal use)</div>
+              </td>
+              <td>11<br>1<br>2</td>
+              <td class="amount-cell">15,000</td>
+              <td class="amount-cell">
+                <div class="credit-amount">12,000</div>
+                <div class="credit-amount">3,000</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Explanation:</strong> Drawings account is debited for total withdrawals. Cash is credited for cash withdrawn, and Purchase account is credited for reduction in goods (since goods taken for personal use reduce the purchase cost).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Transaction 9 -->
+<div class="practice-item animate-card slide-in-left">
+  <div class="transaction-header">
+    <h4>Transaction 9</h4>
+    <span class="difficulty-badge medium">Medium</span>
+  </div>
+  <div class="transaction-description">
+    <p><strong>Date:</strong> January 28, 2024</p>
+    <p><strong>Description:</strong> Took loan from SBI ₹2,00,000 @ 12% per annum</p>
+  </div>
+  
+  <div class="journal-entry-form">
+    <table class="journal-table">
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="particulars-col">Particulars</th>
+          <th class="lf-col">L.F.</th>
+          <th class="debit-col">Debit (₹)</th>
+          <th class="credit-col">Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024<br>Jan 28</td>
+          <td class="particulars-cell">
+            <div class="account-selection">
+              <select class="debit-select" data-transaction="9">
+                <option value="">Select Account to Debit</option>
+                <option value="bank">Bank A/c</option>
+                <option value="loan">SBI Loan A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="interest">Interest A/c</option>
+              </select>
+              <span class="dr-text">..................... Dr.</span>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select" data-transaction="9">
+                <option value="">Select Account to Credit</option>
+                <option value="bank">Bank A/c</option>
+                <option value="loan">SBI Loan A/c</option>
+                <option value="cash">Cash A/c</option>
+                <option value="interest">Interest A/c</option>
+              </select>
+            </div>
+            <div class="narration">(Being loan taken from SBI)</div>
+          </td>
+          <td>7<br>12</td>
+          <td class="amount-cell">2,00,000</td>
+          <td class="amount-cell">2,00,000</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="practice-controls">
+      <button class="check-answer-btn" onclick="checkJournalEntry(9)">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint(9)" id="hint-btn-9">Show Hint</button>
+      <button class="solution-btn" onclick="toggleSolution(9)" id="solution-btn-9">Show Solution</button>
+    </div>
+    
+    <div class="feedback-area" id="feedback-9">
+      <!-- Feedback will appear here -->
+    </div>
+    
+    <div class="hint-area" id="hint-9" style="display: none;">
+      <div class="hint-content">
+        <h5>💡 Hint:</h5>
+        <p>Remember: When taking a loan from bank:</p>
+        <ul>
+          <li>Bank account - <strong>Debit</strong> what comes in</li>
+          <li>Loan account - <strong>Credit</strong> the giver (liability increases)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="solution-area" id="solution-9" style="display: none;">
+      <div class="solution-content">
+        <h5>✅ Correct Solution:</h5>
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="lf-col">L.F.</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024<br>Jan 28</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Bank A/c ..................... Dr.</div>
+                <div class="credit-entry">To SBI Loan A/c</div>
+                <div class="narration">(Being loan taken from SBI)</div>
+              </td>
+              <td>7<br>12</td>
+              <td class="amount-cell">2,00,000</td>
+              <td class="amount-cell">2,00,000</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Explanation:</strong> Bank account is debited because money is received in the bank. Loan account is credited because it's a liability that the business owes to the bank.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Transaction 10 -->
+<div class="practice-item animate-card slide-in-left">
+  <div class="transaction-header">
+    <h4>Transaction 10</h4>
+    <span class="difficulty-badge hard">Hard</span>
+  </div>
+  <div class="transaction-description">
+    <p><strong>Date:</strong> January 31, 2024</p>
+    <p><strong>Description:</strong> Paid salaries ₹25,000 and electricity bill ₹3,500 by cheque</p>
+  </div>
+  
+  <div class="journal-entry-form">
+    <table class="journal-table">
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="particulars-col">Particulars</th>
+          <th class="lf-col">L.F.</th>
+          <th class="debit-col">Debit (₹)</th>
+          <th class="credit-col">Credit (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024<br>Jan 31</td>
+          <td class="particulars-cell">
+            <div class="account-selection">
+              <select class="debit-select" data-transaction="10">
+                <option value="">Select Account to Debit</option>
+                <option value="salary">Salary A/c</option>
+                <option value="electricity">Electricity Expense A/c</option>
+                <option value="bank">Bank A/c</option>
+                <option value="cash">Cash A/c</option>
+              </select>
+              <span class="dr-text">..................... Dr.</span>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="credit-select" data-transaction="10">
+                <option value="">Select Account to Credit</option>
+                <option value="salary">Salary A/c</option>
+                <option value="electricity">Electricity Expense A/c</option>
+                <option value="bank">Bank A/c</option>
+                <option value="cash">Cash A/c</option>
+              </select>
+            </div>
+            <div class="account-selection">
+              <span class="to-text">To</span>
+              <select class="debit-select-2" data-transaction="10">
+                <option value="">Select 2nd Debit Account</option>
+                <option value="salary">Salary A/c</option>
+                <option value="electricity">Electricity Expense A/c</option>
+                <option value="bank">Bank A/c</option>
+                <option value="cash">Cash A/c</option>
+              </select>
+              <span class="dr-text">..................... Dr.</span>
+            </div>
+            <div class="narration">(Being salaries and electricity bill paid by cheque)</div>
+          </td>
+          <td>13<br>14<br>7</td>
+          <td class="amount-cell">
+            <div class="debit-amount">25,000</div>
+            <div class="debit-amount">3,500</div>
+          </td>
+          <td class="amount-cell">28,500</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="practice-controls">
+      <button class="check-answer-btn" onclick="checkJournalEntry(10)">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint(10)" id="hint-btn-10">Show Hint</button>
+      <button class="solution-btn" onclick="toggleSolution(10)" id="solution-btn-10">Show Solution</button>
+    </div>
+    
+    <div class="feedback-area" id="feedback-10">
+      <!-- Feedback will appear here -->
+    </div>
+    
+    <div class="hint-area" id="hint-10" style="display: none;">
+      <div class="hint-content">
+        <h5>💡 Hint:</h5>
+        <p>Remember: When paying multiple expenses by cheque:</p>
+        <ul>
+          <li>Expense accounts - <strong>Debit</strong> all expenses (Salary ₹25,000 + Electricity ₹3,500)</li>
+          <li>Bank account - <strong>Credit</strong> what goes out (₹28,500)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="solution-area" id="solution-10" style="display: none;">
+      <div class="solution-content">
+        <h5>✅ Correct Solution:</h5>
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th class="date-col">Date</th>
+              <th class="particulars-col">Particulars</th>
+              <th class="lf-col">L.F.</th>
+              <th class="debit-col">Debit (₹)</th>
+              <th class="credit-col">Credit (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024<br>Jan 31</td>
+              <td class="particulars-cell">
+                <div class="debit-entry">Salary A/c .................... Dr.</div>
+                <div class="debit-entry">Electricity Expense A/c ......... Dr.</div>
+                <div class="credit-entry">To Bank A/c</div>
+                <div class="narration">(Being salaries and electricity bill paid by cheque)</div>
+              </td>
+              <td>13<br>14<br>7</td>
+              <td class="amount-cell">
+                <div class="debit-amount">25,000</div>
+                <div class="debit-amount">3,500</div>
+              </td>
+              <td class="amount-cell">28,500</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Explanation:</strong> Both expense accounts are debited as they represent business expenses. Bank account is credited because payment is made by cheque, reducing the bank balance.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+  
   </main>
 
   <script>
@@ -3364,6 +4725,163 @@
         initialize();
       }
     })();
+
+    // Updated JavaScript for multiple account selections
+    window.checkJournalEntry = function(transactionId) {
+        const feedbackArea = document.getElementById(`feedback-${transactionId}`);
+        
+        // Hide other areas
+        document.getElementById(`hint-${transactionId}`).style.display = 'none';
+        document.getElementById(`solution-${transactionId}`).style.display = 'none';
+        
+        // Reset button states
+        document.getElementById(`hint-btn-${transactionId}`).classList.remove('active');
+        document.getElementById(`hint-btn-${transactionId}`).textContent = 'Show Hint';
+        document.getElementById(`solution-btn-${transactionId}`).classList.remove('active');
+        document.getElementById(`solution-btn-${transactionId}`).textContent = 'Show Solution';
+        
+        // Define correct answers for each transaction
+        const correctAnswers = {
+            1: { debit: 'purchase', credit: 'ram' },
+            2: { debit: 'shyam', credit: 'sales' },
+            3: { debit: 'cash', credit: 'sales' },
+            4: { debit: 'cash', credit: 'capital' },
+            5: { debit: 'rent', credit: 'bank' },
+            6: { debit: 'furniture', credit1: 'cash', credit2: 'creditor' },
+            7: { debit: 'cash', credit: 'commission' },
+            8: { debit: 'drawings', credit1: 'cash', credit2: 'purchase' },
+            9: { debit: 'bank', credit: 'loan' },
+            10: { debit1: 'salary', debit2: 'electricity', credit: 'bank' }
+        };
+        
+        let isCorrect = true;
+        let message = "";
+        
+        // Check single debit/credit transactions (1-5, 7, 9)
+        if ([1,2,3,4,5,7,9].includes(transactionId)) {
+            const debitSelect = document.querySelector(`.debit-select[data-transaction="${transactionId}"]`);
+            const creditSelect = document.querySelector(`.credit-select[data-transaction="${transactionId}"]`);
+            
+            if (!debitSelect.value || !creditSelect.value) {
+                feedbackArea.innerHTML = '❌ Please select both debit and credit accounts.';
+                feedbackArea.className = 'feedback-area incorrect';
+                feedbackArea.style.display = 'block';
+                return;
+            }
+            
+            isCorrect = 
+                debitSelect.value === correctAnswers[transactionId].debit && 
+                creditSelect.value === correctAnswers[transactionId].credit;
+        }
+        
+        // Check multiple credit transactions (6, 8)
+        else if ([6,8].includes(transactionId)) {
+            const debitSelect = document.querySelector(`.debit-select[data-transaction="${transactionId}"]`);
+            const creditSelect1 = document.querySelector(`.credit-select[data-transaction="${transactionId}"]`);
+            const creditSelect2 = document.querySelector(`.credit-select-2[data-transaction="${transactionId}"]`);
+            
+            if (!debitSelect.value || !creditSelect1.value || !creditSelect2.value) {
+                feedbackArea.innerHTML = '❌ Please select all debit and credit accounts.';
+                feedbackArea.className = 'feedback-area incorrect';
+                feedbackArea.style.display = 'block';
+                return;
+            }
+            
+            isCorrect = 
+                debitSelect.value === correctAnswers[transactionId].debit && 
+                creditSelect1.value === correctAnswers[transactionId].credit1 &&
+                creditSelect2.value === correctAnswers[transactionId].credit2;
+        }
+        
+        // Check multiple debit transactions (10)
+        else if (transactionId === 10) {
+            const debitSelect1 = document.querySelector(`.debit-select[data-transaction="${transactionId}"]`);
+            const debitSelect2 = document.querySelector(`.debit-select-2[data-transaction="${transactionId}"]`);
+            const creditSelect = document.querySelector(`.credit-select[data-transaction="${transactionId}"]`);
+            
+            if (!debitSelect1.value || !debitSelect2.value || !creditSelect.value) {
+                feedbackArea.innerHTML = '❌ Please select all debit and credit accounts.';
+                feedbackArea.className = 'feedback-area incorrect';
+                feedbackArea.style.display = 'block';
+                return;
+            }
+            
+            isCorrect = 
+                debitSelect1.value === correctAnswers[transactionId].debit1 && 
+                debitSelect2.value === correctAnswers[transactionId].debit2 &&
+                creditSelect.value === correctAnswers[transactionId].credit;
+        }
+        
+        if (isCorrect) {
+            feedbackArea.innerHTML = '✅ Correct! Well done. You have correctly identified the accounts to debit and credit.';
+            feedbackArea.className = 'feedback-area correct';
+        } else {
+            feedbackArea.innerHTML = '❌ Incorrect. Try again or use the hint button for guidance.';
+            feedbackArea.className = 'feedback-area incorrect';
+        }
+        
+        feedbackArea.style.display = 'block';
+    };
+
+
+  window.toggleHint = function(transactionId) {
+    const hintArea = document.getElementById(`hint-${transactionId}`);
+    const hintBtn = document.getElementById(`hint-btn-${transactionId}`);
+    const solutionArea = document.getElementById(`solution-${transactionId}`);
+    const solutionBtn = document.getElementById(`solution-btn-${transactionId}`);
+    
+    // Hide other areas
+    document.getElementById(`feedback-${transactionId}`).style.display = 'none';
+    solutionArea.style.display = 'none';
+    solutionBtn.classList.remove('active');
+    solutionBtn.textContent = 'Show Solution';
+    
+    // Toggle hint area
+    if (hintArea.style.display === 'none') {
+      hintArea.style.display = 'block';
+      hintBtn.classList.add('active');
+      hintBtn.textContent = 'Hide Hint';
+    } else {
+      hintArea.style.display = 'none';
+      hintBtn.classList.remove('active');
+      hintBtn.textContent = 'Show Hint';
+    }
+  };
+
+  window.toggleSolution = function(transactionId) {
+    const solutionArea = document.getElementById(`solution-${transactionId}`);
+    const solutionBtn = document.getElementById(`solution-btn-${transactionId}`);
+    const hintArea = document.getElementById(`hint-${transactionId}`);
+    const hintBtn = document.getElementById(`hint-btn-${transactionId}`);
+    
+    // Hide other areas
+    document.getElementById(`feedback-${transactionId}`).style.display = 'none';
+    hintArea.style.display = 'none';
+    hintBtn.classList.remove('active');
+    hintBtn.textContent = 'Show Hint';
+    
+    // Toggle solution area
+    if (solutionArea.style.display === 'none') {
+      solutionArea.style.display = 'block';
+      solutionBtn.classList.add('active');
+      solutionBtn.textContent = 'Hide Solution';
+    } else {
+      solutionArea.style.display = 'none';
+      solutionBtn.classList.remove('active');
+      solutionBtn.textContent = 'Show Solution';
+    }
+  };
+
+  // Initialize interactive elements
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add animation to practice items
+    const practiceItems = document.querySelectorAll('.practice-item');
+    practiceItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('visible');
+      }, index * 200);
+    });
+  });
   </script>
 </body>
 </html>

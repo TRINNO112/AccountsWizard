@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Quiz - Class 11 Accountancy | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --speed: 300ms;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: ui-sans-serif, system-ui, Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%);
+      animation: floatingBg 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatingBg {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(20px, -20px); }
+    }
+
+    /* Navigation */
+    .nav-header {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 24px; 
+      background: var(--card); 
+      border-radius: var(--radius);
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 10;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-header a {
+      color: var(--muted); 
+      text-decoration: none; 
+      display: flex; 
+      align-items: center;
+      gap: 8px; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      transition: all var(--speed);
+    }
+
+    .nav-header a:hover { 
+      color: var(--text); 
+      transform: translateY(-2px);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .quiz-header {
+      text-align: center;
+      padding: 30px 20px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .quiz-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, var(--brand-2) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineText 3s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes shineText {
+      to { background-position: 200% center; }
+    }
+
+    .quiz-subtitle {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    /* Steps Container */
+    .steps-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px 0;
+      padding: 0 20px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 30px;
+      border: 2px solid rgba(255,255,255,0.1);
+      transition: all var(--speed);
+    }
+
+    .step.active {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-color: var(--brand-2);
+      box-shadow: 0 5px 20px rgba(0,229,255,0.3);
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .step.active .step-number {
+      background: white;
+      color: var(--brand);
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 40px;
+      margin: 30px 0;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.05);
+      animation: fadeInUp 0.6s ease-out;
+      display: none;
+    }
+
+    .section-card.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Chapter Selection */
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .chapter-btn {
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all var(--speed);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .chapter-btn:hover::before {
+      left: 100%;
+    }
+
+    .chapter-btn:hover {
+      border-color: var(--brand-2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,229,255,0.2);
+    }
+
+    .chapter-btn.selected {
+      background: linear-gradient(135deg, rgba(124,77,255,0.3), rgba(0,229,255,0.3));
+      border-color: var(--brand-2);
+      box-shadow: 0 5px 20px rgba(0,229,255,0.3);
+    }
+
+    .chapter-number {
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 50%;
+      text-align: center;
+      line-height: 35px;
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .chapter-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /* Start Button */
+    .start-quiz-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--speed);
+      box-shadow: 0 5px 20px rgba(124,77,255,0.4);
+      margin-top: 20px;
+    }
+
+    .start-quiz-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(124,77,255,0.6);
+    }
+
+    .start-quiz-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 30px;
+      margin: 20px 0;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .question-type-badge {
+      display: inline-block;
+      padding: 6px 15px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+
+    /* Options */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .option-btn {
+      padding: 18px 25px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all var(--speed);
+      text-align: left;
+      font-size: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--brand-2);
+      transform: scaleY(0);
+      transition: transform 0.3s;
+    }
+
+    .option-btn:hover {
+      border-color: var(--brand-2);
+      background: rgba(0,229,255,0.1);
+      transform: translateX(5px);
+    }
+
+    .option-btn:hover::before {
+      transform: scaleY(1);
+    }
+
+    .option-btn.selected {
+      background: rgba(124,77,255,0.2);
+      border-color: var(--brand);
+    }
+
+    .option-btn.correct {
+      background: rgba(76,175,80,0.2);
+      border-color: var(--success);
+      animation: correctPulse 0.6s ease;
+    }
+
+    .option-btn.wrong {
+      background: rgba(244,67,54,0.2);
+      border-color: var(--error);
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes correctPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    /* Input for Fill in Blank */
+    .fill-blank-input {
+      width: 100%;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: all var(--speed);
+    }
+
+    .fill-blank-input:focus {
+      border-color: var(--brand-2);
+      box-shadow: 0 0 0 3px rgba(0,229,255,0.2);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--speed);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      box-shadow: 0 5px 15px rgba(124,77,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(124,77,255,0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-skip {
+      background: rgba(255,152,0,0.2);
+      color: var(--warning);
+      border: 2px solid var(--warning);
+    }
+
+    .btn-skip:hover {
+      background: rgba(255,152,0,0.3);
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(129,199,132,0.1));
+      border-left: 4px solid var(--success);
+      border-radius: 8px;
+      display: none;
+    }
+
+    .explanation-box.show {
+      display: block;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Results Card */
+    .results-card {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .score-circle {
+      width: 200px;
+      height: 200px;
+      margin: 30px auto;
+      border-radius: 50%;
+      background: conic-gradient(var(--brand-2) 0deg, rgba(255,255,255,0.1) 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: rotateIn 1s ease-out;
+    }
+
+    @keyframes rotateIn {
+      from { transform: rotate(-180deg) scale(0.5); opacity: 0; }
+      to { transform: rotate(0deg) scale(1); opacity: 1; }
+    }
+
+    .score-circle::before {
+      content: '';
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: var(--card);
+    }
+
+    .score-text {
+      position: relative;
+      z-index: 1;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .stat-card {
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--brand-2);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .quiz-title { font-size: 2rem; }
+      .section-card { padding: 25px; }
+      .chapter-grid { grid-template-columns: 1fr; }
+      .steps-container { flex-direction: column; }
+      .action-buttons { flex-direction: column; }
+      .action-btn { width: 100%; justify-content: center; }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top-color: var(--brand-2);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="nav-header">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="lessons.html"><i class="fa-solid fa-book"></i><span>Lessons</span></a>
+  </div>
+
+  <!-- Main Container -->
+  <main>
+    <!-- Header -->
+    <div class="quiz-header">
+      <h1 class="quiz-title">Accountancy Quiz</h1>
+      <p class="quiz-subtitle">Class 11 - DK Goel Syllabus</p>
+    </div>
+
+    <!-- Steps Indicator -->
+    <div class="steps-container">
+      <div class="step active" id="step1">
+        <div class="step-number">1</div>
+        <span>Select</span>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <span>Quiz</span>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <span>Results</span>
+      </div>
+    </div>
+
+    <!-- Section 1: Chapter Selection -->
+    <div class="section-card active" id="chapterSelection">
+      <h2 style="color: var(--brand-2); margin-bottom: 10px;">
+        <i class="fas fa-list-check"></i> Select Chapters
+      </h2>
+      <p style="color: var(--muted); margin-bottom: 30px;">
+        Choose one or more chapters to generate your personalized quiz
+      </p>
+
+      <div class="chapter-grid" id="chapterGrid">
+        <!-- Chapters will be populated by JavaScript -->
+      </div>
+
+      <div style="text-align: center; margin-top: 30px;">
+        <button class="start-quiz-btn" id="startQuizBtn" disabled>
+          <i class="fas fa-play"></i>
+          Start Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 2: Quiz -->
+    <div class="section-card" id="quizSection">
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div class="progress-info">
+          <span id="questionProgress">Question 1 of 10</span>
+          <span id="scoreDisplay">Score: 0</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="question-card" id="questionCard">
+        <div class="loading" id="loadingQuiz">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons" id="quizActions" style="display: none;">
+        <button class="action-btn btn-primary" id="submitBtn">
+          <i class="fas fa-check"></i> Submit Answer
+        </button>
+        <button class="action-btn btn-secondary" id="nextBtn" style="display: none;">
+          <i class="fas fa-arrow-right"></i> Next Question
+        </button>
+        <button class="action-btn btn-skip" id="skipBtn">
+          <i class="fas fa-forward"></i> Skip
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 3: Results -->
+    <div class="section-card" id="resultsSection">
+      <div class="results-card">
+        <h2 style="color: var(--brand-2); margin-bottom: 20px;">
+          <i class="fas fa-trophy"></i> Quiz Complete!
+        </h2>
+
+        <div class="score-circle" id="scoreCircle">
+          <div class="score-text" id="finalScore">0%</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="totalQuestions">0</div>
+            <div class="stat-label">Total Questions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="correctAnswers">0</div>
+            <div class="stat-label">Correct</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="wrongAnswers">0</div>
+            <div class="stat-label">Wrong</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="skippedQuestions">0</div>
+            <div class="stat-label">Skipped</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <button class="action-btn btn-primary" id="retryBtn">
+            <i class="fas fa-redo"></i> Try Again
+          </button>
+          <button class="action-btn btn-secondary" onclick="window.location.href='lessons.html'">
+            <i class="fas fa-book"></i> Back to Lessons
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Chapter Data
+    const chapters = [
+      { id: 1, name: "Meaning & Objectives of Accounting" },
+      { id: 2, name: "Basic Accounting Terms" },
+      { id: 4, name: "Process and Bases of Accounting" },
+      { id: 6, name: "Accounting Equations" },
+      { id: 7, name: "Double Entry System" },
+      { id: 8, name: "Source Documents" },
+      { id: 9, name: "Books of Original Entry – Journal" },
+      { id: 10, name: "Goods and Services Tax (GST)" },
+      { id: 11, name: "Books of Original Entry – Cash Book" },
+      { id: 12, name: "Special Purpose / Subsidiary Books" },
+      { id: 13, name: "Ledger" },
+      { id: 14, name: "Trial Balance & Errors" }
+    ];
+
+    // Question Bank
+    const questionBank = {
+      1: [
+        {
+          type: "mcq",
+          question: "What is the primary objective of accounting?",
+          options: [
+            "To provide financial information",
+            "To prepare tax returns",
+            "To increase profits",
+            "To hire employees"
+          ],
+          correct: 0,
+          explanation: "The primary objective of accounting is to provide financial information to stakeholders for decision-making."
+        },
+        {
+          type: "true-false",
+          question: "Accounting is called the 'language of business'.",
+          correct: true,
+          explanation: "Accounting is indeed referred to as the 'language of business' because it communicates financial information."
+        }
+      ],
+      2: [
+        {
+          type: "mcq",
+          question: "Which of the following is a current asset?",
+          options: ["Building", "Machinery", "Cash", "Land"],
+          correct: 2,
+          explanation: "Cash is a current asset as it can be converted to cash within one year."
+        },
+        {
+          type: "fill-blank",
+          question: "The amount invested by the owner in the business is called _____.",
+          correct: "capital",
+          explanation: "Capital is the amount invested by the owner in the business."
+        }
+      ],
+      4: [
+        {
+          type: "mcq",
+          question: "Under cash basis of accounting, revenue is recognized when:",
+          options: [
+            "Earned",
+            "Cash is received",
+            "Invoice is sent",
+            "Goods are delivered"
+          ],
+          correct: 1,
+          explanation: "Under cash basis, revenue is recognized only when cash is actually received."
+        }
+      ],
+      6: [
+        {
+          type: "numerical",
+          question: "If Assets = ₹50,000 and Liabilities = ₹20,000, calculate Capital.",
+          correct: 30000,
+          explanation: "Capital = Assets - Liabilities = ₹50,000 - ₹20,000 = ₹30,000"
+        },
+        {
+          type: "mcq",
+          question: "The accounting equation is:",
+          options: [
+            "Assets = Liabilities + Capital",
+            "Assets + Liabilities = Capital",
+            "Capital = Assets + Liabilities",
+            "Assets = Capital - Liabilities"
+          ],
+          correct: 0,
+          explanation: "The fundamental accounting equation is: Assets = Liabilities + Capital"
+        }
+      ],
+      7: [
+        {
+          type: "mcq",
+          question: "In double entry system, every transaction affects:",
+          options: [
+            "One account",
+            "Two accounts",
+            "Three accounts",
+            "Multiple accounts"
+          ],
+          correct: 1,
+          explanation: "Double entry system requires every transaction to affect at least two accounts."
+        },
+        {
+          type: "true-false",
+          question: "Debit means increase and credit means decrease.",
+          correct: false,
+          explanation: "This is not always true. For assets, debit increases; for liabilities, credit increases."
+        }
+      ],
+      8: [
+        {
+          type: "mcq",
+          question: "Which document is issued by seller to buyer?",
+          options: ["Receipt", "Invoice", "Voucher", "Challan"],
+          correct: 1,
+          explanation: "An invoice is issued by the seller to the buyer listing goods/services and amounts."
+        }
+      ],
+      9: [
+        {
+          type: "mcq",
+          question: "Journal is also known as:",
+          options: [
+            "Book of final entry",
+            "Book of original entry",
+            "Principal book",
+            "Subsidiary book"
+          ],
+          correct: 1,
+          explanation: "Journal is the book of original entry where transactions are first recorded."
+        }
+      ],
+      10: [
+        {
+          type: "mcq",
+          question: "GST stands for:",
+          options: [
+            "General Sales Tax",
+            "Goods and Services Tax",
+            "Government Sales Tax",
+            "Global Service Tax"
+          ],
+          correct: 1,
+          explanation: "GST stands for Goods and Services Tax, an indirect tax in India."
+        },
+        {
+          type: "fill-blank",
+          question: "CGST and SGST are charged on _____ supply.",
+          correct: "intrastate",
+          explanation: "CGST and SGST are charged on intrastate (within same state) supply."
+        }
+      ],
+      11: [
+        {
+          type: "mcq",
+          question: "Cash Book records:",
+          options: [
+            "Only cash transactions",
+            "Cash and bank transactions",

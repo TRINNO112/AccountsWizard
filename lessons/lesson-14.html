@@ -1,0 +1,3823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Trial Balance - Final Accounts Preparation | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --speed: 300ms;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: ui-sans-serif, system-ui, Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 122, 198, 0.05) 0%, transparent 50%);
+      animation: floatingBg 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatingBg {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-20px, -20px) rotate(1deg); }
+      50% { transform: translate(20px, -10px) rotate(-1deg); }
+      75% { transform: translate(-10px, 20px) rotate(2deg); }
+    }
+
+    /* Floating Particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .particle:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, var(--brand) 0%, transparent 70%);
+      animation: float1 15s infinite;
+    }
+
+    .particle:nth-child(2) {
+      top: 70%;
+      right: 10%;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, var(--brand-2) 0%, transparent 70%);
+      animation: float2 20s infinite;
+    }
+
+    .particle:nth-child(3) {
+      bottom: 20%;
+      left: 30%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      animation: float3 18s infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(100px, -100px) scale(1.2); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-150px, 100px) scale(0.8); }
+    }
+
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, 80px) scale(1.1); }
+    }
+
+    /* Header Animations */
+    header { 
+      text-align: center; 
+      padding: 30px 20px;
+      position: relative;
+      z-index: 1;
+      animation: slideDown 0.8s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { 
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .lesson-title {
+      font-size: 2.5rem; 
+      font-weight: 900;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, var(--brand-2) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      animation: shineText 3s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes shineText {
+      to { background-position: 200% center; }
+    }
+
+    .breadcrumb { 
+      color: var(--muted); 
+      font-size: .95rem;
+      animation: fadeIn 1s ease-out 0.3s backwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .breadcrumb a { 
+      color: inherit; 
+      text-decoration: none;
+      transition: all var(--speed);
+      position: relative;
+    }
+
+    .breadcrumb a:hover { 
+      color: var(--text); 
+    }
+
+    .breadcrumb a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--brand-2);
+      transition: width var(--speed);
+    }
+
+    .breadcrumb a:hover::after {
+      width: 100%;
+    }
+
+    /* Navigation Header */
+    .nav-header {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 24px; 
+      background: var(--card); 
+      border-radius: var(--radius);
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 1;
+      animation: slideIn 0.6s ease-out;
+      overflow: hidden;
+    }
+
+    .nav-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes slideIn {
+      from { 
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .nav-header a {
+      color: var(--muted); 
+      text-decoration: none; 
+      display: flex; 
+      align-items: center;
+      gap: 8px; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      transition: all var(--speed);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-header a::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .nav-header a:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .nav-header a:hover { 
+      color: var(--text); 
+      transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Section Styles */
+    section {
+      background: var(--card); 
+      border-radius: var(--radius);
+      padding: 32px; 
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--brand), var(--brand-2), var(--accent));
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: -1;
+    }
+
+    section:hover::before {
+      opacity: 0.3;
+      animation: rotateGradient 3s linear infinite;
+    }
+
+    @keyframes rotateGradient {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    section h2 {
+      margin-top: 0; 
+      font-size: 1.5rem;
+      background: linear-gradient(90deg,#fff,var(--brand-2));
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      animation: expandWidth 1s ease-out forwards;
+    }
+
+    @keyframes expandWidth {
+      from { width: 0; }
+      to { width: 50px; }
+    }
+
+    section p { 
+      line-height: 1.6; 
+      color: var(--muted);
+      animation: fadeIn 1s ease-out;
+    }
+
+    /* Definition Box */
+    .definition-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 25px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border-left: 5px solid var(--brand);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .definition-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Objectives Grid */
+    .objectives-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .objective-card {
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInScale 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .objective-card:nth-child(1) { animation-delay: 0.1s; }
+    .objective-card:nth-child(2) { animation-delay: 0.2s; }
+    .objective-card:nth-child(3) { animation-delay: 0.3s; }
+    .objective-card:nth-child(4) { animation-delay: 0.4s; }
+    .objective-card:nth-child(5) { animation-delay: 0.5s; }
+    .objective-card:nth-child(6) { animation-delay: 0.6s; }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .objective-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .objective-card:hover::before {
+      left: 100%;
+    }
+
+    .objective-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--brand-2);
+      box-shadow: 0 20px 40px rgba(0,229,255,0.2);
+    }
+
+    .objective-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      margin-bottom: 15px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .objective-title {
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .objective-desc {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Trial Balance Table */
+    .trial-balance-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      overflow: hidden;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .trial-balance-table th,
+    .trial-balance-table td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
+    }
+
+    .trial-balance-table th {
+      background: rgba(124,77,255,0.2);
+      font-weight: 700;
+      color: var(--brand-2);
+      text-align: center;
+    }
+
+    .trial-balance-table tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .trial-balance-table td:last-child,
+    .trial-balance-table td:nth-last-child(2) {
+      text-align: right;
+      font-family: monospace;
+    }
+
+    .debit-total, .credit-total {
+      background: rgba(76,175,80,0.1);
+      font-weight: bold;
+      color: var(--success);
+    }
+
+    /* Practical Cards */
+    .practical-card {
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      padding: 25px;
+      margin: 20px 0;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .practical-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,122,198,0.05) 0%, transparent 70%);
+      animation: rotate 25s linear infinite reverse;
+      pointer-events: none;
+    }
+
+    .practical-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(255,122,198,0.2);
+    }
+
+    .practical-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .practical-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      background: linear-gradient(135deg, var(--brand-2), var(--accent));
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0,229,255,0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(0,229,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,229,255,0); }
+    }
+
+    .practical-title {
+      color: var(--text);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* Solution Button */
+    .view-solution-btn {
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .view-solution-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .view-solution-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .view-solution-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(0,229,255,0.4);
+    }
+
+    .solution {
+      display: none;
+      background: rgba(124,77,255,0.05);
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 20px;
+      border: 1px solid rgba(124,77,255,.2);
+    }
+
+    .solution.active {
+      display: block;
+      animation: expandDown 0.5s ease;
+    }
+
+    @keyframes expandDown {
+      from { 
+        opacity: 0; 
+        max-height: 0;
+        transform: translateY(-20px);
+      }
+      to { 
+        opacity: 1; 
+        max-height: 5000px;
+        transform: translateY(0);
+      }
+    }
+
+    /* Note Box */
+    .note-box {
+      background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(0,229,255,0.05));
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-left: 5px solid var(--brand-2);
+      animation: slideInLeft 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .note-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: shimmer 4s infinite;
+    }
+
+    .note-box h4 {
+      color: var(--brand-2);
+      margin: 0 0 10px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .note-box p, .note-box ul {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+    }
+
+    /* Error Box */
+    .error-box {
+      background: linear-gradient(135deg, rgba(244,67,54,0.1), rgba(244,67,54,0.05));
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-left: 5px solid var(--error);
+    }
+
+    .error-box h4 {
+      color: var(--error);
+      margin: 0 0 10px 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .lesson-title { font-size: 1.8rem; }
+      .objectives-grid { grid-template-columns: 1fr; }
+      .trial-balance-table { font-size: 0.85rem; }
+      .trial-balance-table th,
+      .trial-balance-table td { padding: 8px; }
+      section { padding: 20px; }
+    }
+
+    /* Trial Balance Game Styles */
+    .game-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-top: 30px;
+    }
+
+    .transactions-panel {
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+    padding: 25px;
+    border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .transactions-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    }
+
+    .transaction-item {
+    background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.1));
+    padding: 15px;
+    border-radius: 12px;
+    cursor: grab;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    }
+
+    .transaction-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+    }
+
+    .transaction-item:hover::before {
+    left: 100%;
+    }
+
+    .transaction-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--brand-2);
+    box-shadow: 0 10px 30px rgba(0,229,255,0.3);
+    }
+
+    .transaction-item.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+    }
+
+    .transaction-amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--brand-2);
+    font-family: monospace;
+    }
+
+    .transaction-account {
+    color: var(--muted);
+    margin-top: 5px;
+    }
+
+    .trial-balance-panel {
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+    padding: 25px;
+    border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .game-trial-balance {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    }
+
+    .game-trial-balance th,
+    .game-trial-balance td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .game-trial-balance th {
+    background: rgba(124,77,255,0.2);
+    color: var(--brand-2);
+    text-align: center;
+    }
+
+    .drop-zone {
+    min-height: 40px;
+    background: rgba(255,255,255,0.02);
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: 8px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-family: monospace;
+    }
+
+    .drop-zone.drag-over {
+    background: rgba(0,229,255,0.1);
+    border-color: var(--brand-2);
+    transform: scale(1.02);
+    }
+
+    .drop-zone.has-value {
+    background: rgba(124,77,255,0.1);
+    border: 2px solid var(--brand);
+    color: var(--text);
+    font-weight: bold;
+    }
+
+    .drop-zone.incorrect {
+    animation: shake 0.5s;
+    background: rgba(244,67,54,0.2) !important;
+    border-color: var(--error) !important;
+    }
+
+    @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+    }
+
+    .totals-row {
+    background: rgba(255,255,255,0.05);
+    font-weight: bold;
+    }
+
+    .totals-row td {
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.1rem;
+    }
+
+    .game-controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    justify-content: center;
+    }
+
+    .hint-btn, .reset-btn, .check-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    }
+
+    .hint-btn {
+    background: linear-gradient(135deg, var(--warning), #ffb74d);
+    color: white;
+    }
+
+    .reset-btn {
+    background: linear-gradient(135deg, #666, #888);
+    color: white;
+    }
+
+    .check-btn {
+    background: linear-gradient(135deg, var(--brand-2), var(--brand));
+    color: white;
+    }
+
+    .hint-btn:hover, .reset-btn:hover, .check-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .game-feedback {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    display: none;
+    animation: fadeInUp 0.5s;
+    }
+
+    .game-feedback.success {
+    background: linear-gradient(135deg, rgba(76,175,80,0.2), rgba(76,175,80,0.1));
+    border: 2px solid var(--success);
+    color: var(--success);
+    }
+
+    .game-feedback.error {
+    background: linear-gradient(135deg, rgba(244,67,54,0.2), rgba(244,67,54,0.1));
+    border: 2px solid var(--error);
+    color: var(--error);
+    }
+
+    .game-feedback.hint {
+    background: linear-gradient(135deg, rgba(255,152,0,0.2), rgba(255,152,0,0.1));
+    border: 2px solid var(--warning);
+    color: var(--warning);
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    }
+
+    /* Calculator Styles */
+    .calculator-container {
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+    padding: 25px;
+    border: 2px solid rgba(255,255,255,0.1);
+    margin-top: 25px;
+    }
+
+    .calculator-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    }
+
+    .add-row-btn, .clear-all-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    }
+
+    .add-row-btn {
+    background: linear-gradient(135deg, var(--success), #81c784);
+    color: white;
+    }
+
+    .clear-all-btn {
+    background: linear-gradient(135deg, var(--error), #e57373);
+    color: white;
+    }
+
+    .calculator-table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    .calculator-table th,
+    .calculator-table td {
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .calculator-table th {
+    background: rgba(124,77,255,0.2);
+    color: var(--brand-2);
+    text-align: center;
+    }
+
+    .calculator-table input {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s;
+    }
+
+    .calculator-table input:focus {
+    outline: none;
+    border-color: var(--brand-2);
+    background: rgba(0,229,255,0.05);
+    }
+
+    .calculator-table input:invalid {
+    border-color: var(--error);
+    }
+
+    .remove-row-btn {
+    background: rgba(244,67,54,0.2);
+    border: 2px solid var(--error);
+    color: var(--error);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    }
+
+    .remove-row-btn:hover {
+    background: var(--error);
+    color: white;
+    }
+
+    .calculator-totals {
+    background: rgba(255,255,255,0.05);
+    font-weight: bold;
+    }
+
+    .calculator-totals td {
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.1rem;
+    }
+
+    .balance-status {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s;
+    }
+
+    .balance-status.balanced {
+    background: linear-gradient(135deg, rgba(76,175,80,0.2), rgba(76,175,80,0.1));
+    border: 2px solid var(--success);
+    }
+
+    .balance-status.not-balanced {
+    background: linear-gradient(135deg, rgba(244,67,54,0.2), rgba(244,67,54,0.1));
+    border: 2px solid var(--error);
+    }
+
+    .status-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    }
+
+    .balance-status.balanced .status-text {
+    color: var(--success);
+    }
+
+    .balance-status.not-balanced .status-text {
+    color: var(--error);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+    .game-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .calculator-table {
+        font-size: 0.85rem;
+    }
+    
+    .calculator-table input {
+        font-size: 0.85rem;
+        padding: 6px;
+    }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Particles -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <header>
+    <h1 class="lesson-title">Trial Balance - Final Accounts Preparation</h1>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / 
+      <a href="../lessons.html">Lessons</a> / 
+      Trial Balance
+    </div>
+  </header>
+
+  <main>
+    <!-- Introduction Section -->
+    <section>
+      <h2>What is a Trial Balance?</h2>
+      
+      <div class="definition-box">
+        <h3 style="margin:0 0 15px 0; color:white; display: flex; align-items: center; gap: 10px; position: relative; z-index: 1;">
+          <i class="fas fa-balance-scale" style="color:#fff;"></i>
+          Definition
+        </h3>
+        <p style="color:white; margin:0; font-size:1.1rem; line-height:1.6; position: relative; z-index: 1;">
+          A <strong>Trial Balance</strong> is a statement that shows the list of all ledger accounts with their debit or credit balances at a particular date. It is prepared to verify the arithmetical accuracy of ledger postings and to ensure that total debits equal total credits.
+        </p>
+      </div>
+
+      <p style="font-size:1.05rem; line-height:1.8; color: var(--muted); margin-top: 20px;">
+        The Trial Balance acts as a bridge between the books of accounts and the final accounts. It provides a consolidated view of all account balances and helps accountants detect errors before preparing financial statements. While it ensures mathematical accuracy, it does not guarantee that all transactions have been recorded correctly or in the proper accounts.
+      </p>
+
+      <div class="note-box">
+        <h4><i class="fas fa-lightbulb"></i> Key Point</h4>
+        <p style="margin:0; line-height:1.6;">
+          The fundamental principle of Trial Balance: <strong>Total Debit Balance = Total Credit Balance</strong>. This equality is based on the double-entry system where every debit has a corresponding credit. If the Trial Balance doesn't tally, it indicates errors in recording or posting transactions.
+        </p>
+      </div>
+    </section>
+
+    <!-- Objectives Section -->
+    <section>
+      <h2>Objectives of Trial Balance</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Preparing a Trial Balance serves multiple crucial purposes in the accounting process:
+      </p>
+
+      <div class="objectives-grid">
+        <div class="objective-card">
+          <div class="objective-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="objective-title">Verify Arithmetical Accuracy</div>
+          <div class="objective-desc">
+            Ensures that total debits equal total credits, confirming that the double-entry system has been followed correctly in recording transactions.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon">
+            <i class="fas fa-bug"></i>
+          </div>
+          <div class="objective-title">Detect Errors</div>
+          <div class="objective-desc">
+            Helps identify mathematical and posting errors such as wrong totaling, incorrect balancing, or posting to the wrong side of an account.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon">
+            <i class="fas fa-file-invoice"></i>
+          </div>
+          <div class="objective-title">Basis for Final Accounts</div>
+          <div class="objective-desc">
+            Provides the foundation for preparing Trading Account, Profit & Loss Account, and Balance Sheet by consolidating all ledger balances.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon">
+            <i class="fas fa-list-check"></i>
+          </div>
+          <div class="objective-title">Summary of Accounts</div>
+          <div class="objective-desc">
+            Presents a comprehensive summary of all ledger accounts in one place, making it easier to review the financial position.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon">
+            <i class="fas fa-clipboard-check"></i>
+          </div>
+          <div class="objective-title">Facilitates Comparison</div>
+          <div class="objective-desc">
+            Enables comparison of current period balances with previous periods to identify trends and make informed business decisions.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="objective-title">Internal Control</div>
+          <div class="objective-desc">
+            Acts as an internal control mechanism by regularly checking the accuracy of accounting records and reducing the risk of fraud.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Format Section -->
+    <section>
+      <h2>Format of Trial Balance</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        A Trial Balance can be prepared in two formats: <strong>Horizontal Format</strong> (most common) and <strong>Vertical Format</strong>. Below is the standard horizontal format:
+      </p>
+
+      <table class="trial-balance-table">
+        <thead>
+          <tr>
+            <th>S.No.</th>
+            <th>Particulars</th>
+            <th>L.F.</th>
+            <th>Debit Balance (₹)</th>
+            <th>Credit Balance (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Cash Account</td>
+            <td>1</td>
+            <td style="text-align: right;">XX,XXX</td>
+            <td style="text-align: right;">-</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Bank Account</td>
+            <td>2</td>
+            <td style="text-align: right;">XX,XXX</td>
+            <td style="text-align: right;">-</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Purchases Account</td>
+            <td>5</td>
+            <td style="text-align: right;">XX,XXX</td>
+            <td style="text-align: right;">-</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Sales Account</td>
+            <td>8</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">XX,XXX</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Capital Account</td>
+            <td>10</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">XX,XXX</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Debtors/Accounts Receivable</td>
+            <td>12</td>
+            <td style="text-align: right;">XX,XXX</td>
+            <td style="text-align: right;">-</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Creditors/Accounts Payable</td>
+            <td>15</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">XX,XXX</td>
+          </tr>
+          <tr>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+            <td style="text-align: right;">...</td>
+            <td style="text-align: right;">...</td>
+          </tr>
+          <tr class="debit-total">
+            <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+            <td style="text-align: right;"><strong>X,XX,XXX</strong></td>
+            <td style="text-align: right;"><strong>X,XX,XXX</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <h4><i class="fas fa-info-circle"></i> Components of Trial Balance</h4>
+        <ul style="line-height: 1.8; margin: 10px 0 0 20px;">
+          <li><strong>Serial Number:</strong> Sequential numbering of accounts</li>
+          <li><strong>Particulars:</strong> Name of the ledger account</li>
+          <li><strong>L.F. (Ledger Folio):</strong> Page number of the account in the ledger</li>
+          <li><strong>Debit Balance:</strong> Accounts with debit balance (Assets, Expenses, Drawings)</li>
+          <li><strong>Credit Balance:</strong> Accounts with credit balance (Liabilities, Capital, Income)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Rules for Debit and Credit -->
+    <section>
+      <h2>Rules for Debit and Credit in Trial Balance</h2>
+      
+      <div class="objectives-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+        <div class="objective-card">
+          <div class="objective-icon" style="background: linear-gradient(135deg, #4caf50, #81c784);">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <div class="objective-title">Accounts with DEBIT Balance</div>
+          <div class="objective-desc">
+            <ul style="list-style: none; padding: 0; margin: 10px 0 0 0; line-height: 2;">
+              <li>✓ All Assets (Cash, Bank, Stock, Furniture, etc.)</li>
+              <li>✓ All Expenses (Rent, Salary, Wages, etc.)</li>
+              <li>✓ All Losses (Loss on Sale of Assets, Bad Debts)</li>
+              <li>✓ Drawings/Withdrawals by Owner</li>
+              <li>✓ Debtors/Accounts Receivable</li>
+              <li>✓ Purchases Account</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon" style="background: linear-gradient(135deg, #f44336, #e57373);">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="objective-title">Accounts with CREDIT Balance</div>
+          <div class="objective-desc">
+            <ul style="list-style: none; padding: 0; margin: 10px 0 0 0; line-height: 2;">
+              <li>✓ All Liabilities (Loans, Bank Overdraft, etc.)</li>
+              <li>✓ Capital Account</li>
+              <li>✓ All Incomes & Revenues (Sales, Commission, etc.)</li>
+              <li>✓ All Gains (Profit on Sale of Assets)</li>
+              <li>✓ Creditors/Accounts Payable</li>
+              <li>✓ Sales Account</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Errors Detected and Not Detected -->
+    <section>
+      <h2>Errors: What Trial Balance Can and Cannot Detect</h2>
+      
+      <div class="objectives-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="objective-card" style="border-color: var(--success);">
+          <div class="objective-icon" style="background: linear-gradient(135deg, var(--success), #81c784);">
+            <i class="fas fa-check-double"></i>
+          </div>
+          <div class="objective-title" style="color: var(--success);">Errors DETECTED by Trial Balance</div>
+          <div class="objective-desc">
+            <ol style="line-height: 1.8; padding-left: 20px; margin: 10px 0 0 0;">
+              <li><strong>Error of Totaling:</strong> Wrong addition in ledger accounts</li>
+              <li><strong>Error of Balancing:</strong> Incorrect calculation of account balance</li>
+              <li><strong>Error of Posting:</strong> Wrong amount posted or posted to wrong side</li>
+              <li><strong>Error of Omission (Partial):</strong> One side of entry posted, other side omitted</li>
+              <li><strong>Single Entry:</strong> Only one aspect recorded instead of double entry</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="objective-card" style="border-color: var(--error);">
+          <div class="objective-icon" style="background: linear-gradient(135deg, var(--error), #e57373);">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="objective-title" style="color: var(--error);">Errors NOT DETECTED by Trial Balance</div>
+          <div class="objective-desc">
+            <ol style="line-height: 1.8; padding-left: 20px; margin: 10px 0 0 0;">
+              <li><strong>Error of Omission (Complete):</strong> Transaction completely omitted from books</li>
+              <li><strong>Error of Commission:</strong> Posting to wrong account (e.g., Ram instead of Shyam)</li>
+              <li><strong>Error of Principle:</strong> Capital expenditure treated as revenue or vice versa</li>
+              <li><strong>Compensating Errors:</strong> Two or more errors that cancel each other out</li>
+              <li><strong>Error of Original Entry:</strong> Wrong amount recorded in all books</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="error-box">
+        <h4><i class="fas fa-exclamation-circle"></i> Important Note</h4>
+        <p style="color: var(--muted); margin: 0; line-height: 1.6;">
+          A balanced Trial Balance does NOT guarantee 100% accuracy. It only confirms mathematical accuracy. The errors that don't affect the agreement of Trial Balance can still exist and must be detected through other means like careful review and reconciliation.
+        </p>
+      </div>
+    </section>
+
+    <!-- TYPE 1: Preparation Questions -->
+    <section>
+      <h2>Type 1: Prepare Trial Balance from Transactions</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        In these questions, you'll be given transactions and need to prepare a complete Trial Balance. Remember to identify each account type and place it on the correct side.
+      </p>
+
+      <!-- Question 1 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-1"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Question 1: Basic Business Transactions</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Prepare Trial Balance as on 31st March 2024</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Balances as on 31st March 2024:</strong>
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Capital: ₹2,00,000</li>
+            <li>Cash in Hand: ₹35,000</li>
+            <li>Bank Balance: ₹85,000</li>
+            <li>Furniture: ₹45,000</li>
+            <li>Stock: ₹60,000</li>
+            <li>Debtors: ₹75,000</li>
+            <li>Creditors: ₹40,000</li>
+            <li>Purchases: ₹1,20,000</li>
+            <li>Sales: ₹1,80,000</li>
+            <li>Rent Paid: ₹24,000</li>
+            <li>Salary Paid: ₹36,000</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q1')">View Solution</button>
+
+        <div class="solution" id="q1-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st March 2024</h4>
+          
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Particulars</th>
+                <th>L.F.</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Capital Account</td>
+                <td>1</td>
+                <td>-</td>
+                <td>2,00,000</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Cash in Hand</td>
+                <td>2</td>
+                <td>35,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Bank Account</td>
+                <td>3</td>
+                <td>85,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Furniture</td>
+                <td>4</td>
+                <td>45,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Stock</td>
+                <td>5</td>
+                <td>60,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Debtors</td>
+                <td>6</td>
+                <td>75,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Creditors</td>
+                <td>7</td>
+                <td>-</td>
+                <td>40,000</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Purchases</td>
+                <td>8</td>
+                <td>1,20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Sales</td>
+                <td>9</td>
+                <td>-</td>
+                <td>1,80,000</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Rent Account</td>
+                <td>10</td>
+                <td>24,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>Salary Account</td>
+                <td>11</td>
+                <td>36,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td colspan="3" style="text-align: right;">Total:</td>
+                <td>4,80,000</td>
+                <td>4,20,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4>Verification:</h4>
+            <p style="margin: 0;">
+              <strong>Debit Side Total:</strong> 35,000 + 85,000 + 45,000 + 60,000 + 75,000 + 1,20,000 + 24,000 + 36,000 = ₹4,80,000<br>
+              <strong>Credit Side Total:</strong> 2,00,000 + 40,000 + 1,80,000 = ₹4,20,000<br>
+              <strong>Note:</strong> This Trial Balance does NOT tally, indicating an error in the books.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-2"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Question 2: Trading Business</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">From the following balances, prepare Trial Balance</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Ledger Balances as on 31st December 2024:</strong>
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Cash: ₹25,000</li>
+            <li>Bank: ₹1,15,000</li>
+            <li>Capital: ₹3,00,000</li>
+            <li>Loan from Bank: ₹50,000</li>
+            <li>Building: ₹1,50,000</li>
+            <li>Machinery: ₹80,000</li>
+            <li>Purchases: ₹2,40,000</li>
+            <li>Sales: ₹3,50,000</li>
+            <li>Wages: ₹45,000</li>
+            <li>Salaries: ₹60,000</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q2')">View Solution</button>
+
+        <div class="solution" id="q2-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st December 2024</h4>
+          
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Particulars</th>
+                <th>L.F.</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Cash Account</td>
+                <td>1</td>
+                <td>25,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Bank Account</td>
+                <td>2</td>
+                <td>1,15,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Capital Account</td>
+                <td>3</td>
+                <td>-</td>
+                <td>3,00,000</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Loan from Bank</td>
+                <td>4</td>
+                <td>-</td>
+                <td>50,000</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Building</td>
+                <td>5</td>
+                <td>1,50,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Machinery</td>
+                <td>6</td>
+                <td>80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Purchases</td>
+                <td>7</td>
+                <td>2,40,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Sales</td>
+                <td>8</td>
+                <td>-</td>
+                <td>3,50,000</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Wages</td>
+                <td>9</td>
+                <td>45,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Salaries</td>
+                <td>10</td>
+                <td>60,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td colspan="3" style="text-align: right;">Total:</td>
+                <td>7,15,000</td>
+                <td>7,00,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="error-box" style="margin-top: 15px;">
+            <h4>Analysis:</h4>
+            <p style="margin: 0; color: var(--muted);">
+              <strong>Debit Total:</strong> ₹7,15,000<br>
+              <strong>Credit Total:</strong> ₹7,00,000<br>
+              <strong>Difference:</strong> ₹15,000 (Debit exceeds Credit)<br>
+              This indicates there's an error in the books that needs to be investigated.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-3"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Question 3: Comprehensive Business</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Prepare Trial Balance from the following</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Account Balances as on 31st January 2025:</strong>
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Capital: ₹5,00,000</li>
+            <li>Drawings: ₹40,000</li>
+            <li>Cash: ₹55,000</li>
+            <li>Bank: ₹1,95,000</li>
+            <li>Purchases: ₹3,20,000</li>
+            <li>Sales: ₹4,80,000</li>
+            <li>Returns Inward: ₹15,000</li>
+            <li>Returns Outward: ₹12,000</li>
+            <li>Rent: ₹48,000</li>
+            <li>Insurance: ₹18,000</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q3')">View Solution</button>
+
+        <div class="solution" id="q3-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st January 2025</h4>
+          
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Particulars</th>
+                <th>L.F.</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Capital Account</td>
+                <td>1</td>
+                <td>-</td>
+                <td>5,00,000</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Drawings</td>
+                <td>2</td>
+                <td>40,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Cash</td>
+                <td>3</td>
+                <td>55,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Bank</td>
+                <td>4</td>
+                <td>1,95,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Purchases</td>
+                <td>5</td>
+                <td>3,20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Sales</td>
+                <td>6</td>
+                <td>-</td>
+                <td>4,80,000</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Returns Inward (Sales Returns)</td>
+                <td>7</td>
+                <td>15,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Returns Outward (Purchase Returns)</td>
+                <td>8</td>
+                <td>-</td>
+                <td>12,000</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Rent</td>
+                <td>9</td>
+                <td>48,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Insurance</td>
+                <td>10</td>
+                <td>18,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td colspan="3" style="text-align: right;">Total:</td>
+                <td>6,91,000</td>
+                <td>9,92,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="error-box" style="margin-top: 15px;">
+            <h4>Analysis:</h4>
+            <p style="margin: 0; color: var(--muted);">
+              This Trial Balance shows a significant mismatch. Credits exceed debits by ₹3,01,000. This could indicate missing asset entries or incorrect recording. A thorough review of the ledger is required.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-4"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Question 4: Complete Business Operations</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Prepare Trial Balance with all account types</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Balances as on 30th June 2024:</strong>
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Capital: ₹6,00,000</li>
+            <li>Furniture: ₹75,000</li>
+            <li>Cash: ₹42,000</li>
+            <li>Bank: ₹2,18,000</li>
+            <li>Debtors: ₹1,25,000</li>
+            <li>Creditors: ₹85,000</li>
+            <li>Purchases: ₹2,80,000</li>
+            <li>Sales: ₹4,20,000</li>
+            <li>Carriage Inward: ₹12,000</li>
+            <li>Discount Allowed: ₹8,000</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q4')">View Solution</button>
+
+        <div class="solution" id="q4-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 30th June 2024</h4>
+          
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Particulars</th>
+                <th>L.F.</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Capital Account</td>
+                <td>1</td>
+                <td>-</td>
+                <td>6,00,000</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Furniture</td>
+                <td>2</td>
+                <td>75,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Cash</td>
+                <td>3</td>
+                <td>42,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Bank</td>
+                <td>4</td>
+                <td>2,18,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Debtors</td>
+                <td>5</td>
+                <td>1,25,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Creditors</td>
+                <td>6</td>
+                <td>-</td>
+                <td>85,000</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Purchases</td>
+                <td>7</td>
+                <td>2,80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Sales</td>
+                <td>8</td>
+                <td>-</td>
+                <td>4,20,000</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Carriage Inward</td>
+                <td>9</td>
+                <td>12,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Discount Allowed</td>
+                <td>10</td>
+                <td>8,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td colspan="3" style="text-align: right;">Total:</td>
+                <td>7,60,000</td>
+                <td>11,05,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="error-box" style="margin-top: 15px;">
+            <h4>Analysis:</h4>
+            <p style="margin: 0; color: var(--muted);">
+              The Trial Balance shows Credit side exceeding Debit side by ₹3,45,000. This significant difference suggests major errors or omissions that need immediate investigation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">
+            <i class="fas fa-5"></i>
+          </div>
+          <div>
+            <h3 class="practical-title">Question 5: Detailed Business Scenario</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Comprehensive Trial Balance preparation</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Ledger Balances as on 31st March 2025:</strong>
+          <ol style="margin: 10px 0; padding-left: 20px;">
+            <li>Capital: ₹7,50,000</li>
+            <li>Loan from HDFC Bank: ₹1,50,000</li>
+            <li>Land and Building: ₹4,00,000</li>
+            <li>Machinery: ₹1,80,000</li>
+            <li>Stock: ₹95,000</li>
+            <li>Debtors: ₹1,45,000</li>
+            <li>Creditors: ₹1,10,000</li>
+            <li>Cash: ₹38,000</li>
+            <li>Bank: ₹1,52,000</li>
+                        <li>Wages: ₹72,000</li>
+            <li>Sales: ₹6,50,000</li>
+            <li>Purchases: ₹4,20,000</li>
+            <li>Office Expenses: ₹28,000</li>
+            <li>Commission Received: ₹15,000</li>
+            <li>Interest on Loan: ₹12,000</li>
+          </ol>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q5')">View Solution</button>
+
+        <div class="solution" id="q5-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st March 2025</h4>
+          
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Particulars</th>
+                <th>L.F.</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Capital Account</td>
+                <td>1</td>
+                <td>-</td>
+                <td>7,50,000</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Loan from HDFC Bank</td>
+                <td>2</td>
+                <td>-</td>
+                <td>1,50,000</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Land and Building</td>
+                <td>3</td>
+                <td>4,00,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Machinery</td>
+                <td>4</td>
+                <td>1,80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Stock</td>
+                <td>5</td>
+                <td>95,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Debtors</td>
+                <td>6</td>
+                <td>1,45,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Creditors</td>
+                <td>7</td>
+                <td>-</td>
+                <td>1,10,000</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Cash</td>
+                <td>8</td>
+                <td>38,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Bank</td>
+                <td>9</td>
+                <td>1,52,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Wages</td>
+                <td>10</td>
+                <td>72,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>Sales</td>
+                <td>11</td>
+                <td>-</td>
+                <td>6,50,000</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>Purchases</td>
+                <td>12</td>
+                <td>4,20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td>Office Expenses</td>
+                <td>13</td>
+                <td>28,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td>Commission Received</td>
+                <td>14</td>
+                <td>-</td>
+                <td>15,000</td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td>Interest on Loan</td>
+                <td>15</td>
+                <td>12,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td colspan="3" style="text-align: right;">Total:</td>
+                <td>16,75,000</td>
+                <td>16,75,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Perfect Balance!</h4>
+            <p style="margin: 0;">
+              <strong>Debit Total:</strong> ₹16,75,000<br>
+              <strong>Credit Total:</strong> ₹16,75,000<br>
+              <strong>Result:</strong> The Trial Balance tallies perfectly, indicating arithmetical accuracy in the books of accounts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Type 2: Error Detection Questions -->
+    <section>
+      <h2>Type 2: Error Detection & Correction</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        These questions test your ability to identify why a Trial Balance doesn't tally and how to correct errors using a Suspense Account.
+      </p>
+
+      <!-- Question 6 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">6</div>
+          <div>
+            <h3 class="practical-title">Question 6: Find the Missing Amount</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Complete the Trial Balance with missing figures</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <p>The following Trial Balance has some missing figures. Calculate the missing amounts:</p>
+          <table class="trial-balance-table" style="margin-top: 15px;">
+            <thead>
+              <tr>
+                <th>Particulars</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Capital</td>
+                <td>-</td>
+                <td>?</td>
+              </tr>
+              <tr>
+                <td>Cash</td>
+                <td>45,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Bank</td>
+                <td>1,20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Debtors</td>
+                <td>85,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Creditors</td>
+                <td>-</td>
+                <td>65,000</td>
+              </tr>
+              <tr>
+                <td>Purchases</td>
+                <td>2,40,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Sales</td>
+                <td>-</td>
+                <td>3,20,000</td>
+              </tr>
+              <tr>
+                <td>Expenses</td>
+                <td>?</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td>Total:</td>
+                <td>5,50,000</td>
+                <td>5,50,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q6')">View Solution</button>
+
+        <div class="solution" id="q6-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Calculating Missing Figures</h4>
+          
+          <div class="note-box">
+            <h4>Step 1: Find Total Known Debits</h4>
+            <p>Cash (45,000) + Bank (1,20,000) + Debtors (85,000) + Purchases (2,40,000) = ₹4,90,000</p>
+          </div>
+
+          <div class="note-box">
+            <h4>Step 2: Find Missing Expenses</h4>
+            <p>Total Debit - Known Debits = Expenses<br>
+            5,50,000 - 4,90,000 = ₹60,000</p>
+          </div>
+
+          <div class="note-box">
+            <h4>Step 3: Find Total Known Credits</h4>
+            <p>Creditors (65,000) + Sales (3,20,000) = ₹3,85,000</p>
+          </div>
+
+          <div class="note-box">
+            <h4>Step 4: Find Missing Capital</h4>
+            <p>Total Credit - Known Credits = Capital<br>
+            5,50,000 - 3,85,000 = ₹1,65,000</p>
+          </div>
+
+          <div class="note-box" style="background: rgba(76,175,80,0.1); border-left-color: var(--success);">
+            <h4><i class="fas fa-check"></i> Answer</h4>
+            <p style="margin: 0;">
+              <strong>Missing Capital:</strong> ₹1,65,000 (Credit)<br>
+              <strong>Missing Expenses:</strong> ₹60,000 (Debit)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question 7 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">7</div>
+          <div>
+            <h3 class="practical-title">Question 7: Suspense Account Problem</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Correct the Trial Balance using Suspense Account</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <p>A bookkeeper prepared the following Trial Balance which doesn't tally:</p>
+          <table class="trial-balance-table" style="margin-top: 15px;">
+            <thead>
+              <tr>
+                <th>Particulars</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Capital</td>
+                <td>-</td>
+                <td>4,00,000</td>
+              </tr>
+              <tr>
+                <td>Machinery</td>
+                <td>2,50,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Stock</td>
+                <td>80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Debtors</td>
+                <td>1,20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Creditors</td>
+                <td>-</td>
+                <td>95,000</td>
+              </tr>
+              <tr>
+                <td>Sales</td>
+                <td>-</td>
+                <td>3,80,000</td>
+              </tr>
+              <tr>
+                <td>Purchases</td>
+                <td>2,60,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Salaries</td>
+                <td>48,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Rent</td>
+                <td>36,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(244,67,54,0.15); font-weight: bold;">
+                <td>Total:</td>
+                <td>7,94,000</td>
+                <td>8,75,000</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top: 10px;">Prepare a corrected Trial Balance using a Suspense Account.</p>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('q7')">View Solution</button>
+
+        <div class="solution" id="q7-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Corrected Trial Balance with Suspense Account</h4>
+          
+          <div class="error-box">
+            <h4>Step 1: Calculate the Difference</h4>
+            <p style="margin: 0; color: var(--muted);">
+              Credit Total (8,75,000) - Debit Total (7,94,000) = ₹81,000<br>
+              Since Credit > Debit, we need to add ₹81,000 to the Debit side as Suspense Account.
+            </p>
+          </div>
+
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Particulars</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Capital Account</td>
+                <td>-</td>
+                <td>4,00,000</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Machinery</td>
+                <td>2,50,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Stock</td>
+                <td>80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Debtors</td>
+                <td>1,20,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Creditors</td>
+                <td>-</td>
+                <td>95,000</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Sales</td>
+                <td>-</td>
+                <td>3,80,000</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Purchases</td>
+                <td>2,60,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Salaries</td>
+                <td>48,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Rent</td>
+                <td>36,000</td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(255,152,0,0.1);">
+                <td>10</td>
+                <td><strong>Suspense Account</strong></td>
+                <td><strong>81,000</strong></td>
+                <td>-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td colspan="2" style="text-align: right;">Total:</td>
+                <td>8,75,000</td>
+                <td>8,75,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-info-circle"></i> About Suspense Account</h4>
+            <p style="margin: 0;">
+              The Suspense Account of ₹81,000 (Dr.) represents errors in the books. Common causes include:
+              • Omission of an entry on one side
+              • Wrong posting of amounts
+              • Errors in totaling or balancing accounts
+              The errors must be located and corrected to eliminate the Suspense Account.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section>
+      <h2>Pro Tips for Trial Balance Preparation</h2>
+      
+      <div class="objectives-grid">
+        <div class="objective-card">
+          <div class="objective-icon" style="background: linear-gradient(135deg, var(--warning), #ffb74d);">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <div class="objective-title">Always Check Account Nature</div>
+          <div class="objective-desc">
+            Before placing a balance, identify if it's an asset, liability, expense, income, or capital. This determines whether it goes to debit or credit side.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon" style="background: linear-gradient(135deg, var(--brand), var(--brand-2));">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div class="objective-title">Double-Check Totals</div>
+          <div class="objective-desc">
+            Add up each column twice. Many errors occur due to simple addition mistakes. Use a calculator and verify each total carefully.
+          </div>
+        </div>
+
+        <div class="objective-card">
+          <div class="objective-icon" style="background: linear-gradient(135deg, var(--accent), #ff9fc5);">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="objective-title">Look for Common Errors</div>
+          <div class="objective-desc">
+            If Trial Balance doesn't tally, check for transposition errors (e.g., 54 written as 45), omissions, or wrong side postings.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Practice Exercise -->
+    <section>
+      <h2>Practice Exercise</h2>
+      <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Try preparing a Trial Balance from these balances. Check your answer using the solution button.
+      </p>
+
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon"><i class="fas fa-pencil-alt"></i></div>
+          <div>
+            <h3 class="practical-title">DIY Practice Problem</h3>
+            <p style="color: var(--muted); margin: 5px 0 0 0;">Test your understanding</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0;">
+          <strong>Prepare Trial Balance as on 31st March 2025 from:</strong>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+            <div>
+              <ul style="list-style: none; padding: 0;">
+                <li>✓ Capital: ₹4,50,000</li>
+                <li>✓ Building: ₹3,00,000</li>
+                <li>✓ Furniture: ₹50,000</li>
+                <li>✓ Cash: ₹25,000</li>
+                <li>✓ Bank: ₹1,75,000</li>
+                <li>✓ Stock: ₹80,000</li>
+              </ul>
+            </div>
+            <div>
+              <ul style="list-style: none; padding: 0;">
+                <li>✓ Debtors: ₹95,000</li>
+                <li>✓ Creditors: ₹70,000</li>
+                <li>✓ Sales: ₹4,00,000</li>
+                <li>✓ Purchases: ₹2,80,000</li>
+                <li>✓ Wages: ₹35,000</li>
+                <li>✓ Commission Received: ₹20,000</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('practice')">Check Answer</button>
+
+        <div class="solution" id="practice-solution">
+          <h4 style="color: var(--brand-2); margin-bottom: 20px;">Answer: Trial Balance as on 31st March 2025</h4>
+          
+          <table class="trial-balance-table">
+            <thead>
+              <tr>
+                <th>Particulars</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Capital Account</td>
+                <td>-</td>
+                <td>4,50,000</td>
+              </tr>
+              <tr>
+                <td>Building</td>
+                <td>3,00,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Furniture</td>
+                <td>50,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Cash</td>
+                <td>25,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Bank</td>
+                <td>1,75,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Stock</td>
+                <td>80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Debtors</td>
+                <td>95,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Creditors</td>
+                <td>-</td>
+                <td>70,000</td>
+              </tr>
+              <tr>
+                <td>Sales</td>
+                <td>-</td>
+                <td>4,00,000</td>
+              </tr>
+              <tr>
+                <td>Purchases</td>
+                <td>2,80,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Wages</td>
+                <td>35,000</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Commission Received</td>
+                <td>-</td>
+                <td>20,000</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td>Total:</td>
+                <td>10,40,000</td>
+                <td>9,40,000</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="error-box" style="margin-top: 15px;">
+            <h4>Oops! Trial Balance doesn't tally</h4>
+            <p style="margin: 0; color: var(--muted);">
+              Debit exceeds Credit by ₹1,00,000. In a real scenario, you would need to check the ledger for errors. 
+              For now, we could add a Suspense Account (Cr.) of ₹1,00,000 to make it balance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trial Balance Challenge Game -->
+    <section>
+    <h2>Trial Balance Challenge Game</h2>
+    <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Drag and drop the amounts into the correct debit or credit columns. Get the Trial Balance to match!
+    </p>
+
+    <div class="game-container">
+        <div class="transactions-panel">
+        <h3>Transactions</h3>
+        <div id="transactions-list" class="transactions-list"></div>
+        </div>
+
+        <div class="trial-balance-panel">
+        <h3>Trial Balance</h3>
+        <table class="game-trial-balance">
+            <thead>
+            <tr>
+                <th>Account</th>
+                <th>Debit (₹)</th>
+                <th>Credit (₹)</th>
+            </tr>
+            </thead>
+            <tbody id="game-tbody"></tbody>
+            <tfoot>
+            <tr class="totals-row">
+                <td>Total:</td>
+                <td id="debit-total">0</td>
+                <td id="credit-total">0</td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="game-controls">
+            <button class="hint-btn" onclick="showHint()">
+            <i class="fas fa-lightbulb"></i> Hint
+            </button>
+            <button class="reset-btn" onclick="resetGame()">
+            <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="check-btn" onclick="checkBalance()">
+            <i class="fas fa-check"></i> Check Balance
+            </button>
+        </div>
+
+        <div id="game-feedback" class="game-feedback"></div>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+    </section>
+
+    <!-- Trial Balance Calculator -->
+    <section>
+    <h2>Trial Balance Calculator</h2>
+    <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+        Enter debit and credit amounts to practice balancing. The calculator will validate in real-time.
+    </p>
+
+    <div class="calculator-container">
+        <div class="calculator-controls">
+        <button class="add-row-btn" onclick="addCalculatorRow()">
+            <i class="fas fa-plus"></i> Add Account
+        </button>
+        <button class="clear-all-btn" onclick="clearCalculator()">
+            <i class="fas fa-trash"></i> Clear All
+        </button>
+        </div>
+
+        <table class="calculator-table">
+        <thead>
+            <tr>
+            <th>Account Name</th>
+            <th>Debit (₹)</th>
+            <th>Credit (₹)</th>
+            <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="calculator-tbody">
+            <tr class="calculator-row">
+            <td><input type="text" class="account-name" placeholder="Enter account name"></td>
+            <td><input type="number" class="debit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
+            <td><input type="number" class="credit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
+            <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="calculator-totals">
+            <td>Total:</td>
+            <td id="calc-debit-total">0</td>
+            <td id="calc-credit-total">0</td>
+            <td></td>
+            </tr>
+        </tfoot>
+        </table>
+
+        <div class="balance-status" id="balance-status">
+        <span class="status-text">Enter amounts to check balance</span>
+        </div>
+    </div>
+    </section>
+  </main>
+
+  <!-- JavaScript for Toggle Functionality -->
+  <script>
+    function toggleSolution(id) {
+      const solution = document.getElementById(id + '-solution');
+      const button = event.target;
+      
+      if (solution.classList.contains('active')) {
+        solution.classList.remove('active');
+        button.textContent = 'View Solution';
+      } else {
+        solution.classList.add('active');
+        button.textContent = 'Hide Solution';
+      }
+    }
+
+    // Fix number icons on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Replace fa-1, fa-2, etc. with actual numbers
+      const numberIcons = document.querySelectorAll('.practical-icon i[class*="fa-"]');
+      numberIcons.forEach((icon, index) => {
+        if (icon.className.match(/fa-[1-9]/)) {
+          const number = icon.className.match(/fa-([1-9])/)[1];
+          icon.parentElement.textContent = number;
+        }
+      });
+    });
+
+    // Add accessibility for reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.setProperty('--speed', '0ms');
+      const style = document.createElement('style');
+      style.textContent = '*, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }';
+      document.head.appendChild(style);
+    }
+
+    // Trial Balance Game Data
+    const gameTransactions = [
+    { id: 1, account: "Cash", amount: 50000, type: "debit" },
+    { id: 2, account: "Capital", amount: 200000, type: "credit" },
+    { id: 3, account: "Furniture", amount: 45000, type: "debit" },
+    { id: 4, account: "Bank Loan", amount: 80000, type: "credit" },
+    { id: 5, account: "Purchases", amount: 120000, type: "debit" },
+    { id: 6, account: "Sales", amount: 180000, type: "credit" },
+    { id: 7, account: "Rent Expense", amount: 24000, type: "debit" },
+    { id: 8, account: "Debtors", amount: 65000, type: "debit" },
+    { id: 9, account: "Creditors", amount: 55000, type: "credit" },
+    { id: 10, account: "Salary Expense", amount: 36000, type: "debit" },
+    { id: 11, account: "Commission Income", amount: 15000, type: "credit" },
+    { id: 12, account: "Insurance", amount: 18000, type: "debit" }
+    ];
+
+    let currentGameState = {
+    placedItems: {},
+    attempts: 0,
+    hintsUsed: 0,
+    startTime: Date.now()
+    };
+
+    // Initialize Game
+    function initializeGame() {
+    // Load saved progress
+    const savedProgress = localStorage.getItem('trialBalanceGameProgress');
+    if (savedProgress) {
+        currentGameState = JSON.parse(savedProgress);
+    }
+
+    // Render transactions
+    const transactionsList = document.getElementById('transactions-list');
+    transactionsList.innerHTML = '';
+    
+    gameTransactions.forEach(transaction => {
+        const item = document.createElement('div');
+        item.className = 'transaction-item';
+        item.draggable = true;
+        item.dataset.id = transaction.id;
+        item.dataset.amount = transaction.amount;
+        item.dataset.type = transaction.type;
+        item.innerHTML = `
+        <div class="transaction-amount">₹${transaction.amount.toLocaleString()}</div>
+        <div class="transaction-account">${transaction.account}</div>
+        `;
+        
+        // Drag events
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragend', handleDragEnd);
+        
+        transactionsList.appendChild(item);
+    });
+
+    // Render trial balance table
+    const tbody = document.getElementById('game-tbody');
+    tbody.innerHTML = '';
+    
+    // Get unique accounts
+    const accounts = [...new Set(gameTransactions.map(t => t.account))];
+    
+    accounts.forEach(account => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${account}</td>
+        <td><div class="drop-zone" data-column="debit" data-account="${account}">Drop here</div></td>
+        <td><div class="drop-zone" data-column="credit" data-account="${account}">Drop here</div></td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Add drop zone events
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('drop', handleDrop);
+        zone.addEventListener('dragleave', handleDragLeave);
+    });
+
+    updateTotals();
+    }
+
+    // Drag and Drop Handlers
+    function handleDragStart(e) {
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.target.innerHTML);
+    }
+
+    function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+    }
+
+    function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+    e.dataTransfer.dropEffect = 'move';
+    e.target.classList.add('drag-over');
+    return false;
+    }
+
+    function handleDragLeave(e) {
+    e.target.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    
+    e.target.classList.remove('drag-over');
+    
+    const draggingItem = document.querySelector('.dragging');
+    if (!draggingItem) return;
+    
+    const amount = parseInt(draggingItem.dataset.amount);
+    const type = draggingItem.dataset.type;
+    const id = draggingItem.dataset.id;
+    const dropColumn = e.target.dataset.column;
+    const account = e.target.dataset.account;
+    
+    // Check if this is the correct placement
+    const transaction = gameTransactions.find(t => t.id == id);
+    if (transaction && transaction.account === account && transaction.type === dropColumn) {
+        e.target.textContent = `₹${amount.toLocaleString()}`;
+        e.target.classList.add('has-value');
+        
+        // Save placement
+        currentGameState.placedItems[id] = {
+        account: account,
+        column: dropColumn,
+        amount: amount
+        };
+        
+        // Hide the dragged item
+        draggingItem.style.display = 'none';
+        
+        updateTotals();
+        saveProgress();
+    } else {
+        // Wrong placement
+        e.target.classList.add('incorrect');
+        setTimeout(() => {
+        e.target.classList.remove('incorrect');
+        }, 500);
+        
+        showFeedback('Incorrect placement! Check the account type.', 'error');
+    }
+    
+    return false;
+    }
+
+    // Update totals
+    function updateTotals() {
+    let debitTotal = 0;
+    let creditTotal = 0;
+    
+    document.querySelectorAll('.drop-zone.has-value').forEach(zone => {
+        const amount = parseInt(zone.textContent.replace('₹', '').replace(/,/g, ''));
+        if (zone.dataset.column === 'debit') {
+        debitTotal += amount;
+        } else {
+        creditTotal += amount;
+        }
+    });
+    
+    document.getElementById('debit-total').textContent = `₹${debitTotal.toLocaleString()}`;
+    document.getElementById('credit-total').textContent = `₹${creditTotal.toLocaleString()}`;
+    
+    return { debitTotal, creditTotal };
+    }
+
+    // Check Balance
+    function checkBalance() {
+    currentGameState.attempts++;
+    const { debitTotal, creditTotal } = updateTotals();
+    
+    if (debitTotal === creditTotal && debitTotal > 0) {
+        // Success!
+        showFeedback('🎉 Congratulations! Trial Balance is Correct!', 'success');
+        celebrateSuccess();
+        
+        // Update progress
+        const completionData = {
+        completed: true,
+        attempts: currentGameState.attempts,
+        hintsUsed: currentGameState.hintsUsed,
+        timeTaken: Date.now() - currentGameState.startTime,
+        score: calculateScore()
+        };
+        
+        // Save to localStorage
+        localStorage.setItem('trialBalanceGameCompleted', JSON.stringify(completionData));
+        updateDashboardProgress();
+    } else {
+        showFeedback(`Not balanced! Debit: ₹${debitTotal.toLocaleString()} | Credit: ₹${creditTotal.toLocaleString()}`, 'error');
+        
+        // Highlight incorrect rows
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+        if (!zone.classList.contains('has-value')) {
+            zone.classList.add('incorrect');
+            setTimeout(() => {
+            zone.classList.remove('incorrect');
+            }, 1000);
+        }
+        });
+    }
+    
+    saveProgress();
+    }
+
+    // Show Hint
+    function showHint() {
+    currentGameState.hintsUsed++;
+    
+    // Find missing or incorrect placements
+    const missingPlacements = [];
+    
+    gameTransactions.forEach(transaction => {
+        const placed = Object.values(currentGameState.placedItems).find(
+        p => p.account === transaction.account
+        );
+        
+        if (!placed) {
+        missingPlacements.push(transaction.account);
+        }
+    });
+    
+    if (missingPlacements.length > 0) {
+        showFeedback(`Hint: You haven't placed amounts for: ${missingPlacements.slice(0, 3).join(', ')}${missingPlacements.length > 3 ? '...' : ''}`, 'hint');
+    } else {
+        const { debitTotal, creditTotal } = updateTotals();
+        const difference = Math.abs(debitTotal - creditTotal);
+        showFeedback(`Hint: Your totals differ by ₹${difference.toLocaleString()}. Check if all amounts are in the correct columns.`, 'hint');
+    }
+    
+    saveProgress();
+    }
+
+    // Reset Game
+    function resetGame() {
+    if (confirm('Are you sure you want to reset the game?')) {
+        currentGameState = {
+        placedItems: {},
+        attempts: 0,
+        hintsUsed: 0,
+        startTime: Date.now()
+        };
+        
+        localStorage.removeItem('trialBalanceGameProgress');
+        initializeGame();
+        showFeedback('Game reset. Try again!', 'hint');
+    }
+    }
+
+    // Show Feedback
+    function showFeedback(message, type) {
+    const feedback = document.getElementById('game-feedback');
+    feedback.textContent = message;
+    feedback.className = `game-feedback ${type}`;
+    feedback.style.display = 'block';
+    
+    setTimeout(() => {
+        feedback.style.display = 'none';
+    }, 5000);
+    }
+
+    // Celebrate Success
+    function celebrateSuccess() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const confetti = [];
+    const colors = ['#7c4dff', '#00e5ff', '#ff7ac6', '#4caf50', '#ff9800'];
+    
+    // Create confetti particles
+    for (let i = 0; i < 150; i++) {
+        confetti.push({
+        x: Math.random() * canvas.width,
+        y: -10,
+        vx: Math.random() * 4 - 2,
+        vy: Math.random() * 5 + 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: Math.random() * 6 + 4,
+        rotation: Math.random() * 360,
+        rotationSpeed: Math.random() * 10 - 5
+        });
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        confetti.forEach((particle, index) => {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.rotation += particle.rotationSpeed;
+        
+        ctx.save();
+        ctx.translate(particle.x, particle.y);
+        ctx.rotate(particle.rotation * Math.PI / 180);
+        ctx.fillStyle = particle.color;
+        ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+        ctx.restore();
+        
+        if (particle.y > canvas.height) {
+            confetti.splice(index, 1);
+        }
+        });
+        
+        if (confetti.length > 0) {
+        requestAnimationFrame(animate);
+        } else {
+        canvas.width = 0;
+        canvas.height = 0;
+        }
+    }
+    
+    animate();
+    }
+
+    // Calculate Score
+    function calculateScore() {
+    const baseScore = 100;
+    const attemptPenalty = (currentGameState.attempts - 1) * 5;
+    const hintPenalty = currentGameState.hintsUsed * 10;
+    const timePenalty = Math.floor((Date.now() - currentGameState.startTime) / 60000); // 1 point per minute
+    
+    return Math.max(0, baseScore - attemptPenalty - hintPenalty - timePenalty);
+    }
+
+    // Save Progress
+    function saveProgress() {
+    localStorage.setItem('trialBalanceGameProgress', JSON.stringify(currentGameState));
+    }
+
+    // Update Dashboard Progress
+    function updateDashboardProgress() {
+    // This would update the main dashboard
+    const dashboardProgress = JSON.parse(localStorage.getItem('accountsWizardProgress') || '{}');
+    dashboardProgress.trialBalanceGame = {
+        completed: true,
+        score: calculateScore(),
+        completedAt: new Date().toISOString()
+    };
+    localStorage.setItem('accountsWizardProgress', JSON.stringify(dashboardProgress));
+    }
+
+    // Trial Balance Calculator Functions
+    function addCalculatorRow() {
+    const tbody = document.getElementById('calculator-tbody');
+    const newRow = document.createElement('tr');
+    newRow.className = 'calculator-row';
+    newRow.innerHTML = `
+        <td><input type="text" class="account-name" placeholder="Enter account name"></td>
+        <td><input type="number" class="debit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
+        <td><input type="number" class="credit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
+        <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
+    `;
+    tbody.appendChild(newRow);
+    }
+
+    function removeCalculatorRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    updateCalculatorTotals();
+    }
+
+    function clearCalculator() {
+    if (confirm('Clear all entries?')) {
+        const tbody = document.getElementById('calculator-tbody');
+        tbody.innerHTML = `
+        <tr class="calculator-row">
+            <td><input type="text" class="account-name" placeholder="Enter account name"></td>
+            <td><input type="number" class="debit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
+            <td><input type="number" class="credit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
+            <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
+        </tr>
+        `;
+        updateCalculatorTotals();
+    }
+    }
+
+    function updateCalculatorTotals() {
+    let debitTotal = 0;
+    let creditTotal = 0;
+    
+    document.querySelectorAll('.debit-input').forEach(input => {
+        const value = parseFloat(input.value) || 0;
+        if (value >= 0) {
+        debitTotal += value;
+        }
+    });
+    
+    document.querySelectorAll('.credit-input').forEach(input => {
+        const value = parseFloat(input.value) || 0;
+        if (value >= 0) {
+        creditTotal += value;
+        }
+    });
+    
+    document.getElementById('calc-debit-total').textContent = `₹${debitTotal.toLocaleString()}`;
+    document.getElementById('calc-credit-total').textContent = `₹${creditTotal.toLocaleString()}`;
+    
+    // Update balance status
+    const statusDiv = document.getElementById('balance-status');
+    const statusText = statusDiv.querySelector('.status-text');
+    
+    if (debitTotal === 0 && creditTotal === 0) {
+        statusDiv.className = 'balance-status';
+        statusText.innerHTML = 'Enter amounts to check balance';
+          } else if (debitTotal === creditTotal) {
+    statusDiv.className = 'balance-status balanced';
+    statusText.innerHTML = '<i class="fas fa-check-circle"></i> Balanced ✅';
+    
+    // Save successful balance
+    const calculatorHistory = JSON.parse(localStorage.getItem('calculatorHistory') || '[]');
+    calculatorHistory.push({
+      timestamp: new Date().toISOString(),
+      debitTotal: debitTotal,
+      creditTotal: creditTotal,
+      entries: getCalculatorEntries()
+    });
+    localStorage.setItem('calculatorHistory', JSON.stringify(calculatorHistory));
+  } else {
+    statusDiv.className = 'balance-status not-balanced';
+    const difference = Math.abs(debitTotal - creditTotal);
+    const higherSide = debitTotal > creditTotal ? 'Debit' : 'Credit';
+    statusText.innerHTML = `<i class="fas fa-times-circle"></i> Not Balanced ❌<br><small>${higherSide} exceeds by ₹${difference.toLocaleString()}</small>`;
+  }
+}
+
+function getCalculatorEntries() {
+  const entries = [];
+  document.querySelectorAll('.calculator-row').forEach(row => {
+    const accountName = row.querySelector('.account-name').value;
+    const debitAmount = parseFloat(row.querySelector('.debit-input').value) || 0;
+    const creditAmount = parseFloat(row.querySelector('.credit-input').value) || 0;
+    
+    if (accountName && (debitAmount > 0 || creditAmount > 0)) {
+      entries.push({
+        account: accountName,
+        debit: debitAmount,
+        credit: creditAmount
+      });
+    }
+  });
+  return entries;
+}
+
+// Initialize game on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Only initialize if we're on the trial balance page
+  if (document.getElementById('transactions-list')) {
+    initializeGame();
+  }
+});
+
+// Additional Error Examples Section
+const errorExamples = {
+  detected: [
+    {
+      title: "Error of Totaling",
+      example: "Purchases account totaled as ₹45,000 instead of ₹54,000",
+      effect: "Trial Balance will not tally - Debit side short by ₹9,000"
+    },
+    {
+      title: "Error of Balancing",
+      example: "Cash account balance calculated as ₹25,000 instead of ₹52,000",
+      effect: "Trial Balance will not tally - Debit side short by ₹27,000"
+    },
+    {
+      title: "Error of Posting - Wrong Side",
+      example: "Rent paid ₹5,000 posted to credit side of Rent account",
+      effect: "Trial Balance will not tally - Debit short by ₹10,000 (₹5,000 × 2)"
+    },
+    {
+      title: "Error of Posting - Wrong Amount",
+      example: "Sales of ₹8,500 posted as ₹5,800",
+      effect: "Trial Balance will not tally - Credit side short by ₹2,700"
+    },
+    {
+      title: "Partial Omission",
+      example: "Cash received from debtor ₹10,000 - only credited to Cash, not debited to Debtor",
+      effect: "Trial Balance will not tally - Credit exceeds Debit by ₹10,000"
+    }
+  ],
+  notDetected: [
+    {
+      title: "Complete Omission",
+      example: "Credit purchase of ₹15,000 completely omitted from books",
+      effect: "Both debit and credit omitted equally - Trial Balance still tallies"
+    },
+    {
+      title: "Error of Commission",
+      example: "Payment to Raj ₹5,000 posted to Ravi's account",
+      effect: "Correct amount on correct side but wrong account - Trial Balance tallies"
+    },
+    {
+      title: "Error of Principle",
+      example: "Machinery purchase ₹50,000 debited to Purchases account",
+      effect: "Capital expenditure treated as revenue - Trial Balance still tallies"
+    },
+    {
+      title: "Compensating Errors",
+      example: "Purchases understated by ₹1,000 and Sales also understated by ₹1,000",
+      effect: "Errors cancel each other out - Trial Balance tallies"
+    },
+    {
+      title: "Error of Original Entry",
+      example: "Purchase invoice of ₹6,900 recorded as ₹9,600 in all books",
+      effect: "Wrong amount consistently recorded - Trial Balance tallies with wrong figures"
+    }
+  ]
+};
+
+// Function to display error examples
+function displayErrorExamples() {
+  const errorSection = document.createElement('section');
+  errorSection.innerHTML = `
+    <h2>Detailed Error Examples</h2>
+    <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+      Understanding errors through practical examples helps in better error detection and correction.
+    </p>
+    
+    <div class="error-examples-grid">
+      <div class="error-category">
+        <h3 style="color: var(--success); margin-bottom: 20px;">
+          <i class="fas fa-check-circle"></i> Errors DETECTED by Trial Balance
+        </h3>
+        <div class="error-cards" id="detected-errors"></div>
+      </div>
+      
+      <div class="error-category">
+        <h3 style="color: var(--error); margin-bottom: 20px;">
+          <i class="fas fa-times-circle"></i> Errors NOT DETECTED by Trial Balance
+        </h3>
+        <div class="error-cards" id="not-detected-errors"></div>
+      </div>
+    </div>
+  `;
+  
+  // Insert after the existing errors section
+  const existingErrorSection = document.querySelector('section:has(h2:contains("Errors"))');
+  if (existingErrorSection) {
+    existingErrorSection.after(errorSection);
+  }
+  
+  // Populate error examples
+  const detectedContainer = document.getElementById('detected-errors');
+  const notDetectedContainer = document.getElementById('not-detected-errors');
+  
+  errorExamples.detected.forEach((error, index) => {
+    const card = createErrorCard(error, index, 'detected');
+    detectedContainer.appendChild(card);
+  });
+  
+  errorExamples.notDetected.forEach((error, index) => {
+    const card = createErrorCard(error, index, 'not-detected');
+    notDetectedContainer.appendChild(card);
+  });
+}
+
+function createErrorCard(error, index, type) {
+  const card = document.createElement('div');
+  card.className = 'error-example-card';
+  card.style.animationDelay = `${index * 0.1}s`;
+  card.innerHTML = `
+    <div class="error-example-header">
+      <span class="error-number">${index + 1}</span>
+      <h4>${error.title}</h4>
+    </div>
+    <div class="error-example-content">
+      <p class="error-example-text"><strong>Example:</strong> ${error.example}</p>
+      <p class="error-effect"><strong>Effect:</strong> ${error.effect}</p>
+    </div>
+  `;
+  return card;
+}
+
+// Progress Tracking System
+const progressTracker = {
+  init() {
+    this.loadProgress();
+    this.displayProgress();
+  },
+  
+  loadProgress() {
+    this.progress = JSON.parse(localStorage.getItem('trialBalanceProgress') || '{}');
+    if (!this.progress.sections) {
+      this.progress = {
+        sections: {
+          introduction: false,
+          objectives: false,
+          format: false,
+          rules: false,
+          errors: false,
+          practice: false,
+          game: false,
+          calculator: false
+        },
+        questionsAttempted: [],
+        totalScore: 0,
+        lastVisit: new Date().toISOString()
+      };
+    }
+  },
+  
+  markSectionComplete(sectionId) {
+    this.progress.sections[sectionId] = true;
+    this.progress.lastVisit = new Date().toISOString();
+    this.saveProgress();
+    this.updateProgressBar();
+  },
+  
+  markQuestionAttempted(questionId) {
+    if (!this.progress.questionsAttempted.includes(questionId)) {
+      this.progress.questionsAttempted.push(questionId);
+      this.saveProgress();
+    }
+  },
+  
+  saveProgress() {
+    localStorage.setItem('trialBalanceProgress', JSON.stringify(this.progress));
+  },
+  
+  displayProgress() {
+    // Add progress bar to the page
+    const progressBar = document.createElement('div');
+    progressBar.className = 'progress-tracker';
+    progressBar.innerHTML = `
+      <div class="progress-header">
+        <h3>Your Progress</h3>
+        <span class="progress-percentage">0%</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <div class="progress-stats">
+        <div class="stat">
+          <i class="fas fa-book"></i>
+          <span class="stat-value">0/8</span>
+          <span class="stat-label">Sections</span>
+        </div>
+        <div class="stat">
+          <i class="fas fa-question-circle"></i>
+          <span class="stat-value">0</span>
+          <span class="stat-label">Questions</span>
+        </div>
+        <div class="stat">
+          <i class="fas fa-trophy"></i>
+          <span class="stat-value">0</span>
+          <span class="stat-label">Score</span>
+        </div>
+      </div>
+    `;
+    
+    // Insert after header
+    const header = document.querySelector('header');
+    header.after(progressBar);
+    
+    this.updateProgressBar();
+  },
+  
+  updateProgressBar() {
+    const completedSections = Object.values(this.progress.sections).filter(v => v).length;
+    const totalSections = Object.keys(this.progress.sections).length;
+    const percentage = Math.round((completedSections / totalSections) * 100);
+    
+    document.querySelector('.progress-percentage').textContent = `${percentage}%`;
+    document.querySelector('.progress-bar-fill').style.width = `${percentage}%`;
+    document.querySelector('.progress-stats .stat:nth-child(1) .stat-value').textContent = `${completedSections}/${totalSections}`;
+    document.querySelector('.progress-stats .stat:nth-child(2) .stat-value').textContent = this.progress.questionsAttempted.length;
+    document.querySelector('.progress-stats .stat:nth-child(3) .stat-value').textContent = this.progress.totalScore;
+  }
+};
+
+// Add CSS for new components
+const additionalStyles = `
+<style>
+/* Error Examples Grid */
+.error-examples-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.error-category {
+  background: rgba(255,255,255,0.02);
+  border-radius: 16px;
+  padding: 25px;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.error-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.error-example-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s;
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.error-example-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.error-example-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.error-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.error-example-header h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+.error-example-content p {
+  margin: 8px 0;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.error-effect {
+  color: var(--brand-2) !important;
+  font-style: italic;
+}
+
+/* Progress Tracker */
+.progress-tracker {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 25px;
+  margin: 20px 0;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,0.05);
+  animation: slideDown 0.6s ease-out;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.progress-header h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+.progress-percentage {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat {
+  text-align: center;
+  padding: 15px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s;
+}
+
+.stat:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-2);
+}
+
+.stat i {
+  font-size: 1.5rem;
+  color: var(--brand-2);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text);
+  margin: 5px 0;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .error-examples-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .progress-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  
+  .stat {
+    padding: 10px;
+  }
+  
+  .stat-value {
+    font-size: 1.4rem;
+  }
+}
+</style>
+`;
+
+// Add the styles to the document
+document.head.insertAdjacentHTML('beforeend', additionalStyles);
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize progress tracker
+  progressTracker.init();
+  
+  // Add error examples
+  displayErrorExamples();
+  
+  // Track section views
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const sectionTitle = entry.target.querySelector('h2')?.textContent;
+        if (sectionTitle) {
+          const sectionMap = {
+            'What is a Trial Balance?': 'introduction',
+            'Objectives of Trial Balance': 'objectives',
+            'Format of Trial Balance': 'format',
+            'Rules for Debit and Credit': 'rules',
+            'Errors': 'errors',
+            'Type 1': 'practice',
+            'Trial Balance Challenge Game': 'game',
+            'Trial Balance Calculator': 'calculator'
+          };
+          
+          const sectionId = Object.entries(sectionMap).find(([title, id]) => 
+            sectionTitle.includes(title)
+          )?.[1];
+          
+          if (sectionId) {
+            progressTracker.markSectionComplete(sectionId);
+          }
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  // Observe all sections
+  document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+  });
+  
+  // Track question attempts
+  document.querySelectorAll('.view-solution-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const questionId = this.getAttribute('onclick').match(/toggleSolutionKATEX_INLINE_OPEN'(.+)'KATEX_INLINE_CLOSE/)?.[1];
+      if (questionId) {
+        progressTracker.markQuestionAttempted(questionId);
+      }
+    });
+  });
+});
+
+// Enhanced solution toggle with progress tracking
+const originalToggleSolution = window.toggleSolution;
+window.toggleSolution = function(id) {
+  originalToggleSolution(id);
+  progressTracker.markQuestionAttempted(id);
+};
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  // Ctrl/Cmd + H for hint
+  if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+    e.preventDefault();
+    const hintBtn = document.querySelector('.hint-btn');
+    if (hintBtn) hintBtn.click();
+  }
+  
+  // Ctrl/Cmd + R for reset (override browser refresh)
+  if ((e.ctrlKey || e.metaKey) && e.key === 'r' && document.getElementById('game-tbody')) {
+    e.preventDefault();
+    resetGame();
+  }
+  
+  // Ctrl/Cmd + Enter to check balance
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    const checkBtn = document.querySelector('.check-btn');
+    if (checkBtn) checkBtn.click();
+  }
+});
+
+// Auto-save calculator data
+let calculatorAutoSaveTimer;
+document.addEventListener('input', function(e) {
+  if (e.target.matches('.calculator-table input')) {
+    clearTimeout(calculatorAutoSaveTimer);
+    calculatorAutoSaveTimer = setTimeout(() => {
+      const calculatorData = {
+        entries: getCalculatorEntries(),
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem('trialBalanceCalculatorData', JSON.stringify(calculatorData));
+    }, 1000);
+  }
+});
+
+// Load saved calculator data on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const savedCalculatorData = localStorage.getItem('trialBalanceCalculatorData');
+  if (savedCalculatorData && document.getElementById('calculator-tbody')) {
+    const data = JSON.parse(savedCalculatorData);
+    const tbody = document.getElementById('calculator-tbody');
+    tbody.innerHTML = '';
+    
+    data.entries.forEach(entry => {
+      const row = document.createElement('tr');
+      row.className = 'calculator-row';
+      row.innerHTML = `
+        <td><input type="text" class="account-name" placeholder="Enter account name" value="${entry.account}"></td>
+        <td><input type="number" class="debit-input" placeholder="0" value="${entry.debit || ''}" oninput="updateCalculatorTotals()"></td>
+        <td><input type="number" class="credit-input" placeholder="0" value="${entry.credit || ''}" oninput="updateCalculatorTotals()"></td>
+        <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
+      `;
+      tbody.appendChild(row);
+    });
+    
+    updateCalculatorTotals();
+  }
+});
+
+// Add visual feedback for correct placements in the game
+function addPlacementAnimation(element) {
+  element.style.animation = 'none';
+  setTimeout(() => {
+    element.style.animation = 'correctPlacement 0.6s ease';
+  }, 10);
+}
+
+// Add the animation to CSS
+const placementAnimation = `
+@keyframes correctPlacement {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+`;
+
+const styleElement = document.createElement('style');
+styleElement.textContent = placementAnimation;
+document.head.appendChild(styleElement);
+
+// Export progress data for dashboard integration
+window.getTrialBalanceProgress = function() {
+  return {
+    progress: progressTracker.progress,
+    gameCompleted: localStorage.getItem('trialBalanceGameCompleted') ? JSON.parse(localStorage.getItem('trialBalanceGameCompleted')) : null,
+    calculatorHistory: localStorage.getItem('calculatorHistory') ? JSON.parse(localStorage.getItem('calculatorHistory')) : []
+  };
+};
+
+// Add tooltips for better UX
+const tooltips = {
+  init() {
+    // Add tooltips to buttons
+    const tooltipData = [
+      { selector: '.hint-btn', text: 'Get a hint about missing or incorrect entries (Ctrl+H)' },
+      { selector: '.reset-btn', text: 'Reset the game and start over (Ctrl+R)' },
+      { selector: '.check-btn', text: 'Check if your Trial Balance is correct (Ctrl+Enter)' },
+      { selector: '.add-row-btn', text: 'Add a new account row to the calculator' },
+      { selector: '.clear-all-btn', text: 'Clear all calculator entries' }
+    ];
+    
+    tooltipData.forEach(({ selector, text }) => {
+      const element = document.querySelector(selector);
+      if (element) {
+        element.setAttribute('title', text);
+        element.style.position = 'relative';
+      }
+    });
+  }
+};
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', () => {
+  tooltips.init();
+});
+
+// Performance optimization: Debounce function for real-time validation
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Apply debouncing to calculator updates
+const debouncedUpdateCalculatorTotals = debounce(updateCalculatorTotals, 300);
+
+// Replace direct calls with debounced version
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.debit-input, .credit-input').forEach(input => {
+    input.removeAttribute('oninput');
+    input.addEventListener('input', debouncedUpdateCalculatorTotals);
+  });
+});
+
+// Final initialization
+console.log('Trial Balance Interactive Features Loaded Successfully! 🎉');
+  
+  </script>
+</body>
+</html>
