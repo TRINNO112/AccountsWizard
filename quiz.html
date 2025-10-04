@@ -910,3 +910,425 @@
           options: [
             "Only cash transactions",
             "Cash and bank transactions",
+            "Only credit transactions",
+            "Only bank transactions"
+          ],
+          correct: 1,
+          explanation: "Cash Book records both cash and bank transactions."
+        },
+        {
+          type: "true-false",
+          question: "Cash column of Cash Book can never show a credit balance.",
+          correct: true,
+          explanation: "Cash in hand cannot be negative, so cash column cannot have credit balance."
+        }
+      ],
+      12: [
+        {
+          type: "mcq",
+          question: "Purchase Book records:",
+          options: [
+            "All purchases",
+            "Only credit purchases of goods",
+            "Only cash purchases",
+            "Purchase of assets"
+          ],
+          correct: 1,
+          explanation: "Purchase Book records only credit purchases of goods meant for resale."
+        }
+      ],
+      13: [
+        {
+          type: "mcq",
+          question: "Ledger is called the:",
+          options: [
+            "Book of original entry",
+            "Principal book",
+            "Subsidiary book",
+            "Journal"
+          ],
+          correct: 1,
+          explanation: "Ledger is called the Principal Book as it contains all accounts."
+        },
+        {
+          type: "fill-blank",
+          question: "The process of transferring entries from journal to ledger is called _____.",
+          correct: "posting",
+          explanation: "Posting is the process of transferring journal entries to respective ledger accounts."
+        }
+      ],
+      14: [
+        {
+          type: "mcq",
+          question: "Trial Balance is prepared to:",
+          options: [
+            "Check arithmetic accuracy",
+            "Show financial position",
+            "Calculate profit",
+            "Record transactions"
+          ],
+          correct: 0,
+          explanation: "Trial Balance is prepared to check the arithmetic accuracy of ledger accounts."
+        },
+        {
+          type: "true-false",
+          question: "If Trial Balance tallies, it means there are no errors in the books.",
+          correct: false,
+          explanation: "Trial Balance tallying doesn't guarantee absence of all errors. Errors like compensating errors may still exist."
+        }
+      ]
+    };
+
+    // State Management
+    let selectedChapters = [];
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let skippedCount = 0;
+    let userAnswer = null;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      renderChapters();
+      setupEventListeners();
+    });
+
+    // Render Chapters
+    function renderChapters() {
+      const grid = document.getElementById('chapterGrid');
+      grid.innerHTML = '';
+
+      chapters.forEach(chapter => {
+        const btn = document.createElement('div');
+        btn.className = 'chapter-btn';
+        btn.innerHTML = `
+          <span class="chapter-number">${chapter.id}</span>
+          <span class="chapter-name">${chapter.name}</span>
+        `;
+        btn.onclick = () => toggleChapter(chapter.id, btn);
+        grid.appendChild(btn);
+      });
+    }
+
+    // Toggle Chapter Selection
+    function toggleChapter(chapterId, btn) {
+      const index = selectedChapters.indexOf(chapterId);
+      if (index > -1) {
+        selectedChapters.splice(index, 1);
+        btn.classList.remove('selected');
+      } else {
+        selectedChapters.push(chapterId);
+        btn.classList.add('selected');
+      }
+
+      document.getElementById('startQuizBtn').disabled = selectedChapters.length === 0;
+    }
+
+    // Setup Event Listeners
+    function setupEventListeners() {
+      document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+      document.getElementById('submitBtn').addEventListener('click', submitAnswer);
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+      document.getElementById('skipBtn').addEventListener('click', skipQuestion);
+      document.getElementById('retryBtn').addEventListener('click', resetQuiz);
+    }
+
+    // Start Quiz
+    function startQuiz() {
+      // Generate questions from selected chapters
+      currentQuestions = [];
+      selectedChapters.forEach(chapterId => {
+        if (questionBank[chapterId]) {
+          currentQuestions.push(...questionBank[chapterId]);
+        }
+      });
+
+      // Shuffle questions
+      currentQuestions = shuffleArray(currentQuestions);
+
+      // Limit to 10 questions
+      currentQuestions = currentQuestions.slice(0, 10);
+
+      // Reset state
+      currentQuestionIndex = 0;
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      skippedCount = 0;
+
+      // Show quiz section
+      showSection('quizSection');
+      updateSteps(2);
+
+      // Show first question
+      setTimeout(() => {
+        document.getElementById('loadingQuiz').style.display = 'none';
+        document.getElementById('quizActions').style.display = 'flex';
+        displayQuestion();
+      }, 1000);
+    }
+
+    // Display Question
+    function displayQuestion() {
+      if (currentQuestionIndex >= currentQuestions.length) {
+        showResults();
+        return;
+      }
+
+      const question = currentQuestions[currentQuestionIndex];
+      const card = document.getElementById('questionCard');
+      
+      // Update progress
+      document.getElementById('questionProgress').textContent = 
+        `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+      document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
+      
+      const progressPercent = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+      document.getElementById('progressFill').style.width = progressPercent + '%';
+
+      // Reset buttons
+      document.getElementById('submitBtn').style.display = 'inline-flex';
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('skipBtn').style.display = 'inline-flex';
+      userAnswer = null;
+
+      // Question type badge
+      const typeBadge = {
+        'mcq': 'Multiple Choice',
+        'true-false': 'True/False',
+        'fill-blank': 'Fill in the Blank',
+        'numerical': 'Numerical'
+      };
+
+      let questionHTML = `
+        <span class="question-type-badge">
+          <i class="fas fa-question-circle"></i> ${typeBadge[question.type]}
+        </span>
+        <div class="question-text">${question.question}</div>
+      `;
+
+      if (question.type === 'mcq') {
+        questionHTML += '<div class="options-container">';
+        const shuffledOptions = shuffleArray([...question.options.map((opt, idx) => ({ text: opt, index: idx }))]);
+        shuffledOptions.forEach((option, idx) => {
+          questionHTML += `
+            <div class="option-btn" data-index="${option.index}" onclick="selectOption(this, ${option.index})">
+              ${String.fromCharCode(65 + idx)}. ${option.text}
+            </div>
+          `;
+        });
+        questionHTML += '</div>';
+      } else if (question.type === 'true-false') {
+        questionHTML += `
+          <div class="options-container">
+            <div class="option-btn" data-value="true" onclick="selectTrueFalse(this, true)">
+              <i class="fas fa-check"></i> True
+            </div>
+            <div class="option-btn" data-value="false" onclick="selectTrueFalse(this, false)">
+              <i class="fas fa-times"></i> False
+            </div>
+          </div>
+        `;
+      } else if (question.type === 'fill-blank' || question.type === 'numerical') {
+        questionHTML += `
+          <input type="text" class="fill-blank-input" id="fillBlankInput" 
+                 placeholder="Type your answer here..." />
+        `;
+      }
+
+      questionHTML += '<div class="explanation-box" id="explanationBox"></div>';
+
+      card.innerHTML = questionHTML;
+    }
+
+    // Select MCQ Option
+    function selectOption(element, index) {
+      document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      userAnswer = index;
+    }
+
+    // Select True/False
+    function selectTrueFalse(element, value) {
+      document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      userAnswer = value;
+    }
+
+    // Submit Answer
+    function submitAnswer() {
+      const question = currentQuestions[currentQuestionIndex];
+      let isCorrect = false;
+
+      if (question.type === 'mcq') {
+        if (userAnswer === null) {
+          alert('Please select an answer!');
+          return;
+        }
+        isCorrect = userAnswer === question.correct;
+        
+        // Show correct/wrong styling
+        document.querySelectorAll('.option-btn').forEach(btn => {
+          const btnIndex = parseInt(btn.getAttribute('data-index'));
+          if (btnIndex === question.correct) {
+            btn.classList.add('correct');
+          } else if (btnIndex === userAnswer && !isCorrect) {
+            btn.classList.add('wrong');
+          }
+          btn.style.pointerEvents = 'none';
+        });
+      } else if (question.type === 'true-false') {
+        if (userAnswer === null) {
+          alert('Please select True or False!');
+          return;
+        }
+        isCorrect = userAnswer === question.correct;
+
+        document.querySelectorAll('.option-btn').forEach(btn => {
+          const btnValue = btn.getAttribute('data-value') === 'true';
+          if (btnValue === question.correct) {
+            btn.classList.add('correct');
+          } else if (btnValue === userAnswer && !isCorrect) {
+            btn.classList.add('wrong');
+          }
+          btn.style.pointerEvents = 'none';
+        });
+      } else if (question.type === 'fill-blank') {
+        const input = document.getElementById('fillBlankInput');
+        const answer = input.value.trim().toLowerCase();
+        if (!answer) {
+          alert('Please enter an answer!');
+          return;
+        }
+        isCorrect = answer === question.correct.toLowerCase();
+        input.disabled = true;
+        input.style.borderColor = isCorrect ? 'var(--success)' : 'var(--error)';
+      } else if (question.type === 'numerical') {
+        const input = document.getElementById('fillBlankInput');
+        const answer = parseFloat(input.value);
+        if (isNaN(answer)) {
+          alert('Please enter a valid number!');
+          return;
+        }
+        isCorrect = answer === question.correct;
+        input.disabled = true;
+        input.style.borderColor = isCorrect ? 'var(--success)' : 'var(--error)';
+      }
+
+      // Update score
+      if (isCorrect) {
+        score += 10;
+        correctCount++;
+      } else {
+        wrongCount++;
+      }
+
+      // Show explanation
+      const explanationBox = document.getElementById('explanationBox');
+      explanationBox.innerHTML = `
+        <div class="explanation-title">
+          <i class="fas fa-${isCorrect ? 'check-circle' : 'info-circle'}"></i>
+          ${isCorrect ? 'Correct!' : 'Incorrect'}
+        </div>
+        <p style="color: var(--muted); margin: 0;">${question.explanation}</p>
+      `;
+      explanationBox.classList.add('show');
+
+      // Update buttons
+      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('nextBtn').style.display = 'inline-flex';
+      document.getElementById('skipBtn').style.display = 'none';
+    }
+
+    // Next Question
+    function nextQuestion() {
+      currentQuestionIndex++;
+      displayQuestion();
+    }
+
+    // Skip Question
+    function skipQuestion() {
+      skippedCount++;
+      currentQuestionIndex++;
+      displayQuestion();
+    }
+
+    // Show Results
+    function showResults() {
+      showSection('resultsSection');
+      updateSteps(3);
+
+      const totalQuestions = currentQuestions.length;
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+
+      // Animate score circle
+      const scoreCircle = document.getElementById('scoreCircle');
+      const degrees = (percentage / 100) * 360;
+      scoreCircle.style.background = `conic-gradient(var(--brand-2) ${degrees}deg, rgba(255,255,255,0.1) 0deg)`;
+
+      // Update stats
+      document.getElementById('finalScore').textContent = percentage + '%';
+      document.getElementById('totalQuestions').textContent = totalQuestions;
+      document.getElementById('correctAnswers').textContent = correctCount;
+      document.getElementById('wrongAnswers').textContent = wrongCount;
+      document.getElementById('skippedQuestions').textContent = skippedCount;
+    }
+
+    // Reset Quiz
+    function resetQuiz() {
+      selectedChapters = [];
+      currentQuestions = [];
+      currentQuestionIndex = 0;
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      skippedCount = 0;
+
+      document.querySelectorAll('.chapter-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+
+      document.getElementById('startQuizBtn').disabled = true;
+      showSection('chapterSelection');
+      updateSteps(1);
+    }
+
+    // Utility Functions
+    function showSection(sectionId) {
+      document.querySelectorAll('.section-card').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    function updateSteps(activeStep) {
+      document.querySelectorAll('.step').forEach((step, index) => {
+        if (index + 1 <= activeStep) {
+          step.classList.add('active');
+        } else {
+          step.classList.remove('active');
+        }
+      });
+    }
+
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    // Make functions global for onclick handlers
+    window.selectOption = selectOption;
+    window.selectTrueFalse = selectTrueFalse;
+  </script>
+</body>
+</html>

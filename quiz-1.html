@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Platform - Modern Redesign</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            /* Color Palette - Modern & Fresh */
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #06b6d4;
+            
+            /* Neutrals */
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --surface: #1e1e3f;
+            --surface-hover: #252547;
+            
+            /* Text */
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Effects */
+            --glow: 0 0 30px rgba(99, 102, 241, 0.3);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            
+            /* Spacing */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 60%);
+            z-index: -1;
+            animation: bgShift 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary), transparent);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--secondary), transparent);
+            bottom: -250px;
+            left: -250px;
+            animation-delay: 7s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--accent), transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-50px, 50px) scale(0.9); }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '⚡';
+            -webkit-text-fill-color: var(--primary);
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-light) 50%, var(--accent) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Progress Stepper */
+        .stepper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .step-circle::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .step.active .step-circle {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            box-shadow: var(--glow);
+            transform: scale(1.1);
+        }
+
+        .step.active .step-circle::before {
+            opacity: 1;
+        }
+
+        .step.completed .step-circle {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .step.completed .step-circle::after {
+            content: '✓';
+            position: absolute;
+        }
+
+        .step-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .step.active .step-label {
+            color: var(--text-primary);
+        }
+
+        .step-divider {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.5s;
+        }
+
+        .step.completed + .step-divider::before {
+            width: 100%;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(30, 30, 63, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Chapter Grid */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        .chapter-card {
+            background: var(--surface);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .chapter-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .chapter-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .chapter-card.selected {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .chapter-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-icon {
+            width: 48px;
+            height: 48px;
+            ```html
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chapter-content h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 0.75rem;
+        }
+
+        .chapter-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--surface-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-light);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin: 2rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .progress-value {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .progress-bar-container {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 100px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmerProgress 2s infinite;
+        }
+
+        @keyframes shimmerProgress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Question Card */
+        .question-container {
+            margin: 2rem 0;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .question-badge {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-light);
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius-md);
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .option {
+            padding: 1.25rem 1.5rem;
+            background: var(--surface);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: var(--surface-hover);
+            transform: translateX(8px);
+        }
+
+        .option:hover::before {
+            transform: scaleY(1);
+        }
+
+        .option-marker {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .option-marker::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            transform: scale(0);
+            transition: transform 0.2s;
+        }
+
+        .option.selected {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+        }
+
+        .option.selected .option-marker {
+            border-color: var(--primary);
+        }
+
+        .option.selected .option-marker::after {
+            transform: scale(1);
+        }
+
+        .option.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--success);
+            animation: correctShake 0.5s ease;
+        }
+
+        .option.correct .option-marker {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .option.correct .option-marker::after {
+            content: '✓';
+            color: white;
+            font-weight: 700;
+            transform: scale(1);
+            background: none;
+        }
+
+        @keyframes correctShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(8px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .option.wrong {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--error);
+            animation: wrongShake 0.5s ease;
+        }
+
+        .option.wrong .option-marker {
+            background: var(--error);
+            border-color: var(--error);
+        }
+
+        .option.wrong .option-marker::after {
+            content: '✕';
+            color: white;
+            font-weight: 700;
+            transform: scale(1);
+            background: none;
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        .option-text {
+            font-size: 1rem;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        /* Fill in the Blank Input */
+        .fill-input {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            background: var(--surface);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-size: 1.125rem;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .fill-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .fill-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Explanation Box */
+        .explanation {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+            border-radius: var(--radius-lg);
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 0.75rem;
+            font-size: 1.125rem;
+        }
+
+        .explanation-title::before {
+            content: '💡';
+            font-size: 1.25rem;
+        }
+
+        .explanation-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Results Card */
+        .results-container {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .score-display {
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .score-circle-container {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            position: relative;
+            animation: scaleRotate 1s ease-out;
+        }
+
+        @keyframes scaleRotate {
+            from { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .score-circle-bg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary) 0deg,
+                var(--accent) calc(var(--score-percent) * 3.6deg),
+                rgba(255, 255, 255, 0.05) calc(var(--score-percent) * 3.6deg)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: rotateGradient 2s ease-out;
+        }
+
+        @keyframes rotateGradient {
+            from { transform: rotate(-180deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        .score-circle-inner {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .score-percentage {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .performance-badge {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            margin: 2rem 0;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            animation: bounceIn 0.8s ease-out 0.5s both;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .```html
+performance-excellent {
+            background: linear-gradient(135deg, var(--success), #34d399);
+            color: white;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .performance-good {
+            background: linear-gradient(135deg, var(--info), #22d3ee);
+            color: white;
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.4);
+        }
+
+        .performance-average {
+            background: linear-gradient(135deg, var(--warning), #fbbf24);
+            color: white;
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .performance-poor {
+            background: linear-gradient(135deg, var(--error), #f87171);
+            color: white;
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            text-align: center;
+            transition: var(--transition);
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .stat-icon.total { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .stat-icon.correct { background: linear-gradient(135deg, var(--success), #34d399); }
+        .stat-icon.wrong { background: linear-gradient(135deg, var(--error), #f87171); }
+        .stat-icon.skipped { background: linear-gradient(135deg, var(--warning), #fbbf24); }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Review Section */
+        .review-list {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .review-item {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .review-item:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateX(8px);
+        }
+
+        .review-item.correct {
+            border-left: 4px solid var(--success);
+        }
+
+        .review-item.wrong {
+            border-left: 4px solid var(--error);
+        }
+
+        .review-question {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .review-answer {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .review-answer-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .review-answer-row.correct-answer { color: var(--success); }
+        .review-answer-row.wrong-answer { color: var(--error); }
+        .review-answer-row.user-answer { color: var(--text-secondary); }
+
+        /* Timer */
+        .timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--warning);
+            animation: pulse 2s infinite;
+        }
+
+        .timer.urgent {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--error);
+            color: var(--error);
+            animation: urgentPulse 1s infinite;
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            gap: 1.5rem;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 400px;
+            transform: translateX(500px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .toast.success .toast-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error);
+        }
+
+        .toast.info .toast-icon {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--info);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stepper {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 1rem;
+            }
+
+            .step-label {
+                display: none;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .score-circle-container {
+                width: 200px;
+                height: 200px;
+            }
+
+            .score-circle-inner {
+                width: 170px;
+                height: 170px;
+            }
+
+            .score-percentage {
+                font-size: 3rem;
+            }
+
+            .toast {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus States */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 4px;
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(99, 102, 241, 0.3);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">QuizMaster</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-badge">🎯 Interactive Learning Platform</div>
+            <h1 class="hero-title">Master Your Knowledge</h1>
+            <p class="hero-subtitle">Challenge yourself with our comprehensive quiz system. Track your progress and improve your skills.</p>
+        </div>
+
+        <!-- Progress Stepper -->
+        <div class="stepper">
+            <div class="step active">
+                <div class="step-circle">1</div>
+                <span class="step-label">Select Chapter</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-circle">2</div>
+                <span class="step-label">Take Quiz</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-circle">3</div>
+                <span class="step-label">View Results</span>
+            </div>
+        </div>
+
+        <!-- Chapter Selection Card -->
+        <div class="card active" id="chapterCard">
+            <div class="card-header">
+                <h2 class="card-title">Choose Your Chapter</h2>
+                <p class="card-description">Select one or more chapters to begin your quiz journey</p>
+            </div>
+
+            <div class="chapter-grid">
+            <div class="chapter-card" data-chapter="1">
+                <div class="chapter-header">
+                    <div class="chapter-icon">01</div>
+                    <div class="chapter-content">
+                        <h3>Meaning & Objectives of Accounting</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 12 Questions</span>
+                    <span>⏱️ 15 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="2">
+                <div class="chapter-header">
+                    <div class="chapter-icon">02</div>
+                    <div class="chapter-content">
+                        <h3>Basic Accounting Terms</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 15 Questions</span>
+                    <span>⏱️ 18 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="4">
+                <div class="chapter-header">
+                    <div class="chapter-icon">04</div>
+                    <div class="chapter-content">
+                        <h3>Process and Bases of Accounting</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 10 Questions</span>
+                    <span>⏱️ 12 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="6">
+                <div class="chapter-header">
+                    <div class="chapter-icon">06</div>
+                    <div class="chapter-content">
+                        <h3>Accounting Equations</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 18 Questions</span>
+                    <span>⏱️ 22 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="7">
+                <div class="chapter-header">
+                    <div class="chapter-icon">07</div>
+                    <div class="chapter-content">
+                        <h3>Double Entry System</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 16 Questions</span>
+                    <span>⏱️ 20 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="8">
+                <div class="chapter-header">
+                    <div class="chapter-icon">08</div>
+                    <div class="chapter-content">
+                        <h3>Source Documents & Vouchers</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 12 Questions</span>
+                    <span>⏱️ 15 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="9">
+                <div class="chapter-header">
+                    <div class="chapter-icon">09</div>
+                    <div class="chapter-content">
+                        <h3>Books of Original Entry – Journal</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 20 Questions</span>
+                    <span>⏱️ 25 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="10">
+                <div class="chapter-header">
+                    <div class="chapter-icon">10</div>
+                    <div class="chapter-content">
+                        <h3>Goods and Services Tax (GST)</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 14 Questions</span>
+                    <span>⏱️ 17 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="11">
+                <div class="chapter-header">
+                    <div class="chapter-icon">11</div>
+                    <div class="chapter-content">
+                        <h3>Books of Original Entry – Cash Book</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 16 Questions</span>
+                    <span>⏱️ 20 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="12">
+                <div class="chapter-header">
+                    <div class="chapter-icon">12</div>
+                    <div class="chapter-content">
+                        <h3>Special Purpose Subsidiary Books</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 15 Questions</span>
+                    <span>⏱️ 18 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="13">
+                <div class="chapter-header">
+                    <div class="chapter-icon">13</div>
+                    <div class="chapter-content">
+                        <h3>Ledger</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 18 Questions</span>
+                    <span>⏱️ 22 min</span>
+                </div>
+            </div>
+
+            <div class="chapter-card" data-chapter="14">
+                <div class="chapter-header">
+                    <div class="chapter-icon">14</div>
+                    <div class="chapter-content">
+                        <h3>Trial Balance & Errors</h3>
+                    </div>
+                </div>
+                <div class="chapter-meta">
+                    <span>📚 20 Questions</span>
+                    <span>⏱️ 25 min</span>
+                </div>
+            </div>
+        </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="startQuizBtn" disabled>
+                    <span>Start Quiz</span>
+                    <span>→</span>
+                </button>
+                <button class="btn btn-secondary">
+                    <span>Random Selection</span>
+                    <span>🎲</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div class="card" id="quizCard">
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-label">Question Progress</span>
+                    <span class="progress-value">1 / 15</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 6.67%"></div>
+                </div>
+            </div>
+
+        <!-- Question 1 -->
+        <div class="question-container">
+            <div class="question-header">
+                <span class="question-badge">Multiple Choice</span>
+                <span class="timer">⏱️ 15:00</span>
+            </div>
+
+            <div class="question-text">
+                What is the primary objective of accounting?
+            </div>
+
+            <div class="options-grid">
+                <div class="option" data-option="a">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To provide financial information to stakeholders</div>
+                </div>
+                <div class="option" data-option="b">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To prepare tax returns only</div>
+                </div>
+                <div class="option" data-option="c">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To increase company profits</div>
+                </div>
+                <div class="option" data-option="d">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To hire accountants</div>
+                </div>
+            </div>
+
+            <div class="explanation">
+                <div class="explanation-title">Explanation</div>
+                <div class="explanation-text">
+                    The primary objective of accounting is to provide financial information to stakeholders for decision-making purposes.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-container">
+            <div class="question-header">
+                <span class="question-badge">True/False</span>
+                <span class="timer">⏱️ 15:00</span>
+            </div>
+
+            <div class="question-text">
+                Accounting is called the 'language of business'.
+            </div>
+
+            <div class="options-grid">
+                <div class="option" data-option="a">
+                    <div class="option-marker"></div>
+                    <div class="option-text">True</div>
+                </div>
+                <div class="option" data-option="b">
+                    <div class="option-marker"></div>
+                    <div class="option-text">False</div>
+                </div>
+            </div>
+
+            <div class="explanation">
+                <div class="explanation-title">Explanation</div>
+                <div class="explanation-text">
+                    Yes, accounting is often called the 'language of business' because it communicates financial information.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-container">
+            <div class="question-header">
+                <span class="question-badge">Multiple Choice</span>
+                <span class="timer">⏱️ 15:00</span>
+            </div>
+
+            <div class="question-text">
+                Which of the following is NOT an objective of accounting?
+            </div>
+
+            <div class="options-grid">
+                <div class="option" data-option="a">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To maintain systematic records</div>
+                </div>
+                <div class="option" data-option="b">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To ascertain financial position</div>
+                </div>
+                <div class="option" data-option="c">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To predict stock market prices</div>
+                </div>
+                <div class="option" data-option="d">
+                    <div class="option-marker"></div>
+                    <div class="option-text">To communicate results to users</div>
+                </div>
+            </div>
+
+            <div class="explanation">
+                <div class="explanation-title">Explanation</div>
+                <div class="explanation-text">
+                    Predicting stock market prices is not an objective of accounting. Accounting provides historical data, not future predictions.
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue with remaining 9 questions for Chapter 1 in same format -->
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="submitAnswerBtn">
+                    <span>Submit Answer</span>
+                    <span>✓</span>
+                </button>
+                <button class="btn btn-outline" id="skipBtn">
+                    <span>Skip Question</span>
+                    <span>→</span>
+                </button>
+                <button class="btn btn-secondary" id="prevBtn">
+                    <span>← Previous</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card" id="resultsCard">
+            <div class="results-container">
+                <h2 class="card-title">Quiz Completed! 🎉</h2>
+                <p class="card-description">Here's how you performed</p>
+
+                <div class="score-display">
+                    <div class="score-circle-container" style="--score-percent: 85">
+                        <div class="score-circle-bg">
+                            <div class="score-circle-inner">
+                                <div class="score-percentage">85%</div>
+                                <div class="score-label">Score</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-badge performance-excellent">
+                    🏆 Excellent Performance!
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon total">📊</div>
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Total Questions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon correct">✓</div>
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon wrong">✕</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Wrong</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon skipped">⊘</div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Skipped</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary">
+                        <span>Review Answers</span>
+                        <span>📋</span>
+                    </button>
+                    <button class="btn btn-secondary">
+                        <span>Retake Quiz</span>
+                        <span>🔄</span>
+                    </button>
+                    <button class="btn btn-outline">
+                        <span>New Quiz</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Card (Optional) -->
+        <div class="card" id="reviewCard">
+            <div class="card-header">
+                <h2 class="card-title">Answer Review</h2>
+                <p class="card-description">Review all your answers and explanations</p>
+            </div>
+
+            <div class="review-list">
+                <div class="review-item correct">
+                    <div class="review-question">
+                        <strong>Q1:</strong> What is the time complexity of binary search?
+                    </div>
+                    <div class="review-answer">
+                        <div class="review-answer-row correct-answer">
+                            <span>✓</span>
+                            <span>Correct Answer: O(log n)</span>
+                        </div>
+                        <div class="review-answer-row user-answer">
+                            <span>Your Answer: O(log n)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-item wrong">
+                    <div class="review-question">
+                        <strong>Q2:</strong> Which data structure uses LIFO principle?
+                    </div>
+                    <div class="review-answer">
+                        <div class="review-answer-row correct-answer">
+                            <span>✓</span>
+                            <span>Correct Answer: Stack</span>
+                        </div>
+                        <div class="review-answer-row wrong-answer">
+                            <span>✕</span>
+                            <span>Your Answer: Queue</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-item correct">
+                    <div class="review-question">
+                        <strong>Q3:</strong> What does SQL stand for?
+                    </div>
+                    <div class="review-answer">
+                        <div class="review-answer-row correct-answer">
+                            <span>✓</span>
+                            <span>Correct Answer: Structured Query Language</span>
+                        </div>
+                        <div class="review-answer-row user-answer">
+                            <span>Your Answer: Structured Query Language</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary">
+                    <span>Back to Results</span>
+                    <span>←</span>
+                </button>
+                <button class="btn btn-secondary">
+                    <span>Download Report</span>
+                    <span>📥</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast success" id="toast">
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">
+            <div style="font-weight: 600;">Success!</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Your answer has been saved</div>
+        </div>
+    </div>
+
+    <script>
+        // Chapter Selection
+        const chapterCards = document.querySelectorAll('.chapter-card');
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        let selectedChapters = [];
+
+        chapterCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const chapter = card.dataset.chapter;
+                card.classList.toggle('selected');
+                
+                if (card.classList.contains('selected')) {
+                    selectedChapters.push(chapter);
+                } else {
+                    selectedChapters = selectedChapters.filter(c => c !== chapter);
+                }
+                
+                startQuizBtn.disabled = selectedChapters.length === 0;
+            });
+        });
+
+        // Option Selection
+        const options = document.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                options.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+            });
+        });
+
+        // Submit Answer (Demo)
+        const submitAnswerBtn = document.getElementById('submitAnswerBtn');
+        const explanation = document.querySelector('.explanation');
+        
+        submitAnswerBtn?.addEventListener('click', () => {
+            const selectedOption = document.querySelector('.option.selected');
+            if (selectedOption) {
+                // Demo: Mark option B as correct
+                const correctOption = document.querySelector('[data-option="b"]');
+                correctOption.classList.add('correct');
+                
+                if (selectedOption !== correctOption) {
+                    selectedOption.classList.add('wrong');
+                }
+                
+                explanation.classList.add('show');
+                showToast('Answer submitted!', 'success');
+            } else {
+                showToast('Please select an answer', 'error');
+            }
+        });
+
+        // Toast Notification Function
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.className = `toast ${type}`;
+            toast.querySelector('.toast-content div:first-child').textContent = 
+                type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Info';
+            toast.querySelector('.toast-content div:last-child').textContent = message;
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Card Navigation (Demo)
+        startQuizBtn?.addEventListener('click', () => {
+            document.getElementById('chapterCard').classList.remove('active');
+            document.getElementById('quizCard').classList.add('active');
+            updateStepper(2);
+        });
+
+        // Update Stepper
+        function updateStepper(activeStep) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < activeStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === activeStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Timer Countdown (Demo)
+        let timeLeft = 900; // 15 minutes
+        const timerElement = document.querySelector('.timer');
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `⏱️ ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 60) {
+                timerElement.classList.add('urgent');
+            }
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+        
+        // Uncomment to start timer
+        updateTimer();
+
+
+        // Progress Bar Update
+        function updateProgress(current, total) {
+            const percentage = (current / total) * 100;
+            document.querySelector('.progress-bar-fill').style.width = `${percentage}%`;
+            document.querySelector('.progress-value').textContent = `${current} / ${total}`;
+        }
+    </script>
+</body>
+</html>

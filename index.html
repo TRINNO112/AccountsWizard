@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AccountsWizard — Learn Accounting the Fun Way</title>
+  <title>AccountsWizard – Learn Accounting the Fun Way</title>
   <meta name="description" content="AccountsWizard helps Grade 11 students learn accounting basics with interactive, colorful lessons and quizzes." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M7 3h10a2 2 0 0 1 2 2v2H5V5a2 2 0 0 1 2-2m12 6v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z'/%3E%3Cpath fill='%23a5b4fc' d='M8.5 12h7v1.6h-7zM8.5 15h5v1.6h-5z'/%3E%3C/svg%3E" />
   <style>
     :root{
-      --bg: #0b1020;           /* deep space */
+      --bg: #0b1020;
       --bg-2:#0f1733;
-      --text:#f7f9ff;          /* near-white */
-      --muted:#b8c2ff;         /* soft periwinkle */
-      --brand:#7c4dff;         /* violet */
-      --brand-2:#00e5ff;       /* aqua */
-      --accent:#ff7ac6;        /* pink */
-      --lime:#b7ff4a;          /* fun lime */
-      --card:#141b38;          /* card background */
+      --text:#f7f9ff;
+      --muted:#b8c2ff;
+      --brand:#7c4dff;
+      --brand-2:#00e5ff;
+      --accent:#ff7ac6;
+      --lime:#b7ff4a;
+      --card:#141b38;
       --ok:#27e1a3;
       --warn:#ffd166;
       --shadow: 0 15px 30px rgba(0,0,0,.35), 0 6px 10px rgba(0,0,0,.2);
@@ -37,7 +37,6 @@
       overflow-x: hidden;
     }
 
-    /* Floating background shapes */
     .floaters { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
     .bubble{
       position: absolute; border-radius: 999px; filter: blur(1px);
@@ -50,7 +49,6 @@
       to  { transform: translateY(-20vh) translateX(calc(var(--sx) + var(--dx))) scale(var(--sc)); }
     }
 
-    /* Header / Navbar */
     header{
       position: sticky; top: 0; z-index: 20;
       backdrop-filter: blur(10px);
@@ -93,7 +91,6 @@
     .pill:hover{ transform: translateY(-1px) scale(1.02); filter: brightness(1.1); }
     .hamb{ display:none; background:none; border:none; color:var(--text); font-size: 1.6rem; cursor:pointer;}
 
-    /* Mobile menu */
     .mobile{
       display:none; padding: 6px 16px 14px;
       border-top: 1px solid rgba(255,255,255,.06);
@@ -105,7 +102,6 @@
     }
     .mobile a:hover{ background: rgba(255,255,255,.06); }
 
-    /* Hero */
     .hero{
       max-width: 1200px; margin: 42px auto 0; padding: 0 18px 30px;
       display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center;
@@ -159,7 +155,11 @@
     .stat.ok{ color: var(--ok); }
     .stat.warn{ color: var(--warn); }
 
-    /* Feature Cards */
+    @keyframes float{
+      0%, 100%{ transform: translateY(0) rotate(0); }
+      50%{ transform: translateY(-12px) rotate(5deg); }
+    }
+
     .features{
       max-width: 1200px; margin: 22px auto 0; padding: 0 18px 60px;
       display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
@@ -168,7 +168,7 @@
       position:relative; background: linear-gradient(180deg, #0f1330, #0b0f2a);
       border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius);
       box-shadow: var(--shadow); overflow: clip; transition: transform .18s ease, filter .25s ease;
-      min-height: 180px; padding: 18px;
+      min-height: 180px; padding: 18px; cursor: pointer;
     }
     .card:hover{ transform: translateY(-4px) scale(1.01); filter: brightness(1.06); }
     .card .badge{
@@ -185,7 +185,6 @@
     }
     .card .go:hover{ background: rgba(255,255,255,.15); transform: translateX(2px); }
 
-    /* Topics Grid */
     .section{
       max-width: 1200px; margin: 28px auto 0; padding: 0 18px 70px;
     }
@@ -202,13 +201,12 @@
       background: linear-gradient(180deg, #0e1636, #0b122c);
       border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 14px;
       min-height: 110px; display:flex; flex-direction: column; justify-content: space-between;
-      transition: transform .18s ease;
+      transition: transform .18s ease; cursor: pointer;
     }
     .topic:hover{ transform: translateY(-3px); }
     .topic b{ font-size: .98rem; }
     .topic small{ color:#cbd3ff; opacity:.85; }
 
-    /* CTA band */
     .cta-band{
       margin-top: 24px; border-radius: var(--radius-lg);
       background: linear-gradient(90deg, rgba(124,77,255,.32), rgba(0,229,255,.28));
@@ -220,13 +218,62 @@
     .cta-band p{ margin:8px 0 0; color:#e9edff; opacity:.95; }
     .cta-band .actions{ display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* Footer */
+    /* Modal Styles */
+    .modal-overlay{
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(5,8,20,.85); backdrop-filter: blur(8px);
+      animation: fadeIn .3s ease;
+    }
+    .modal-overlay.show{ display: grid; place-items: center; }
+    .modal{
+      background: linear-gradient(180deg, #0f1733, #0b1020);
+      border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-lg);
+      box-shadow: 0 25px 60px rgba(0,0,0,.6);
+      max-width: 600px; width: 92vw; max-height: 85vh; overflow-y: auto;
+      padding: 24px; animation: slideUp .35s ease;
+    }
+    .modal-header{
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .modal-header h3{
+      margin: 0; font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--lime), var(--brand-2));
+      -webkit-background-clip:text; background-clip:text; color: transparent;
+    }
+    .modal-close{
+      background: rgba(255,255,255,.08); border: none; color: var(--text);
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      font-size: 1.2rem; transition: .2s ease;
+    }
+    .modal-close:hover{ background: rgba(255,255,255,.15); transform: rotate(90deg); }
+    .modal-content{
+      color: #dfe5ff; line-height: 1.7; font-size: .98rem;
+    }
+    .modal-content h4{
+      color: var(--accent); margin: 18px 0 8px; font-size: 1.1rem;
+    }
+    .modal-content ul{
+      padding-left: 20px; margin: 8px 0;
+    }
+    .modal-content li{
+      margin: 6px 0;
+    }
+
+    @keyframes fadeIn{
+      from{ opacity: 0; }
+      to{ opacity: 1; }
+    }
+    @keyframes slideUp{
+      from{ transform: translateY(30px); opacity: 0; }
+      to{ transform: translateY(0); opacity: 1; }
+    }
+
     footer{
       border-top: 1px solid rgba(255,255,255,.06);
       padding: 20px 18px 60px; color:#c9d0ff; opacity:.9; text-align:center;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .hero{ grid-template-columns: 1fr; }
       .hero-media{ order:-1; min-height: 240px; }
@@ -242,7 +289,6 @@
       .cta-band{ flex-direction: column; align-items: flex-start; }
     }
 
-    /* Cute micro-animations */
     .pop{ animation: pop .5s ease forwards; }
     @keyframes pop{
       0%{ transform: scale(.9); opacity:.0 }
@@ -251,13 +297,19 @@
     }
     .reveal{ opacity:0; transform: translateY(14px); transition: .6s ease; }
     .reveal.on{ opacity:1; transform: translateY(0); }
+
+    .user-info{
+      display: flex; align-items: center; gap: 8px;
+    }
+    .user-avatar{
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--brand-2);
+    }
   </style>
 </head>
 <body>
-  <!-- Floating colorful bubbles for fun vibe -->
   <div class="floaters" id="floaters" aria-hidden="true"></div>
 
-  <!-- Header -->
   <header>
     <nav class="nav">
       <a class="brand" href="#">
@@ -266,23 +318,20 @@
       </a>
       <div class="menu" id="menu">
         <a href="#learn">Learn</a>
-        <a href="lessons.html">Lessons</a>
         <a href="quiz.html">Quiz</a>
         <a href="about.html">About</a>
-        <button class="pill" id="sayHiBtn" title="Set your name">Hi, <span id="who">Student</span>!</button>
+        <button class="pill" id="authBtn">Sign In with Google</button>
       </div>
       <button class="hamb" id="hamb" aria-label="Open menu">☰</button>
     </nav>
     <div class="mobile" id="mobile">
       <a href="#learn">Learn</a>
-      <a href="lessons.html">Lessons</a>
       <a href="quiz.html">Quiz</a>
       <a href="about.html">About</a>
-      <a href="#" id="mset">Set your name</a>
+      <a href="#" id="mobileAuthBtn">Sign In</a>
     </div>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
     <div>
       <span class="tag reveal"><span class="spark"></span> Grade 11 • CBSE / DK Goel basics</span>
@@ -315,89 +364,86 @@
     </div>
   </section>
 
-  <!-- Feature Cards -->
   <section class="features" id="learn">
-    <article class="card reveal" style="border-left:4px solid var(--brand)">
+    <article class="card reveal" style="border-left:4px solid var(--brand)" onclick="window.location.href='lessons.html'">
       <span class="badge">Step 1</span>
       <h3>Learn with Mini-Lessons</h3>
       <p>Short, colorful explanations with diagrams and quick checks so you never get lost.</p>
-      <a class="go" href="lessons.html">Open Lessons →</a>
+      <a class="go" href="lessons.html" onclick="event.stopPropagation()">Open Lessons →</a>
     </article>
 
-    <article class="card reveal" style="border-left:4px solid var(--accent)">
+    <article class="card reveal" style="border-left:4px solid var(--accent)" onclick="window.location.href='practice.html'">
       <span class="badge">Step 2</span>
       <h3>Practice Journal Entries</h3>
       <p>Interactive prompts: pick accounts, choose debit/credit, and see instant feedback.</p>
-      <a class="go" href="lessons.html#journal">Try Journal Practice →</a>
+      <a class="go" href="practice.html" onclick="event.stopPropagation()">Try Journal Practice →</a>
     </article>
 
-    <article class="card reveal" style="border-left:4px solid var(--lime)">
+    <article class="card reveal" style="border-left:4px solid var(--lime)" onclick="window.location.href='quiz.html'">
       <span class="badge">Step 3</span>
       <h3>Test Yourself</h3>
-      <p>MCQs aligned to Grade 11 syllabus. Save your score locally to track progress.</p>
-      <a class="go" href="quiz.html">Go to Quiz →</a>
+      <p>MCQs aligned to Grade 11 syllabus. Track your progress and improve your scores.</p>
+      <a class="go" href="quiz.html" onclick="event.stopPropagation()">Go to Quiz →</a>
     </article>
   </section>
 
-  <!-- Topics -->
   <section class="section" id="topics">
     <h2 class="reveal">Popular Topics</h2>
     <div class="topics">
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="basic-concepts">
         <b>Basic Concepts</b>
         <small>Entity, Money Measurement, Going Concern, Dual Aspect.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="accounting-equation">
         <b>Accounting Equation</b>
         <small>Assets = Capital + Liabilities.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="source-documents">
         <b>Source Documents</b>
         <small>Invoice, Cash Memo, Debit/Credit Note, Voucher.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="journal">
         <b>Journal</b>
         <small>General journal entries &amp; narration.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="ledger">
         <b>Ledger</b>
         <small>Posting from journal, balancing accounts.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="cash-book">
         <b>Cash Book</b>
         <small>Single, double, triple column cash book.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="trial-balance">
         <b>Trial Balance</b>
         <small>Methods of preparation, error types.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="depreciation">
         <b>Depreciation</b>
         <small>Straight-line, WDV, disposal of asset.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="bank-reconciliation">
         <b>Bank Reconciliation</b>
         <small>Causes of difference &amp; statement.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="rectification">
         <b>Rectification of Errors</b>
         <small>Before/after trial balance.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="gst">
         <b>Accounting for GST</b>
         <small>CGST, SGST, IGST basics.</small>
       </div>
-      <div class="topic reveal">
+      <div class="topic reveal" data-topic="final-accounts">
         <b>Final Accounts (Intro)</b>
         <small>Trading, P&amp;L, Balance Sheet basics.</small>
       </div>
     </div>
 
-    <!-- CTA band -->
     <div class="cta-band reveal">
       <div class="left">
         <h3 style="margin:0 0 6px">Ready to become an Accounting Wizard? 🧙‍♂️</h3>
-        <p>Jump into lessons or try a quick quiz. Your name and best score will be saved on this device.</p>
+        <p>Jump into lessons or try a quick quiz. Your progress will be saved to your account.</p>
       </div>
       <div class="actions">
         <a class="pill" href="lessons.html">Start Lessons</a>
@@ -406,82 +452,659 @@
     </div>
   </section>
 
+  <!-- Topic Modal -->
+  <div class="modal-overlay" id="topicModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Topic Title</h3>
+        <button class="modal-close" id="modalClose">×</button>
+      </div>
+      <div class="modal-content" id="modalContent">
+        <!-- Dynamic content will be inserted here -->
+      </div>
+    </div>
+  </div>
+
   <footer>
     © <span id="year"></span> AccountsWizard • Made for Grade 11 learners • Trinno Asphalt • <a href="about.html" style="color:#fff">About</a>
   </footer>
 
-  <script>
-    /* ========= Utilities ========= */
-    const $ = (q,root=document)=>root.querySelector(q);
-    const $$ = (q,root=document)=>[...root.querySelectorAll(q)];
+  <!-- Firebase SDK -->
+  <script type="module">
+// Import Firebase modules
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
 
-    /* ========= Mobile menu ========= */
-    const hamb = $('#hamb');
-    const mobile = $('#mobile');
-    hamb.addEventListener('click', ()=>{
+// Your Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBGOz3UUPcADFyNcPlkP-qk8WwYPaOnB1o",
+  authDomain: "accountswizard-70571.firebaseapp.com",
+  projectId: "accountswizard-70571",
+  storageBucket: "accountswizard-70571.firebasestorage.app",
+  messagingSenderId: "435745784169",
+  appId: "1:435745784169:web:52baea854e564bf30dfdf8",
+  measurementId: "G-7P8Q8N4JQ8"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);      // optional, can remove if not used
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+
+  // Exported handles
+  window.firebaseAuth = auth;
+  window.firebaseDb = db;
+
+  /* ========= Helpers ========= */
+  const query = (sel, root = document) => root.querySelector(sel);
+  const queryAll = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+  /* ========= DOM elements (defensive) ========= */
+  const authBtn = query('#authBtn');
+  const mobileAuthBtn = query('#mobileAuthBtn');
+  const hamb = query('#hamb');
+  const mobile = query('#mobile');
+  const yearEl = query('#year');
+  const topicModal = query('#topicModal');
+  const modalTitle = query('#modalTitle');
+  const modalContent = query('#modalContent');
+  const modalClose = query('#modalClose');
+  const floaterHost = query('#floaters');
+
+  /* ========= Topic data (preserved exactly) ========= */
+  const topicData = {
+    'basic-concepts': {
+      title: 'Basic Accounting Concepts',
+      content: `
+        <p>Accounting concepts are fundamental principles that guide how financial transactions are recorded and reported.</p>
+        
+        <h4>Key Concepts:</h4>
+        <ul>
+          <li><strong>Business Entity Concept:</strong> The business is treated as separate from its owner. Personal transactions of the owner are not recorded in business books.</li>
+          <li><strong>Money Measurement Concept:</strong> Only transactions that can be expressed in monetary terms are recorded. Non-monetary events (like employee morale) are not recorded.</li>
+          <li><strong>Going Concern Concept:</strong> It is assumed that the business will continue for an indefinite period. Assets are valued based on continued use, not liquidation value.</li>
+          <li><strong>Dual Aspect Concept:</strong> Every transaction has two aspects - debit and credit. This forms the basis of double-entry bookkeeping.</li>
+          <li><strong>Cost Concept:</strong> Assets are recorded at their purchase price (historical cost), not current market value.</li>
+          <li><strong>Accounting Period Concept:</strong> Business life is divided into equal periods (usually one year) for reporting purposes.</li>
+        </ul>
+        
+        <h4>Why These Matter:</h4>
+        <p>These concepts ensure consistency, reliability, and comparability in financial statements across different businesses and time periods.</p>
+      `
+    },
+    'accounting-equation': {
+      title: 'Accounting Equation',
+      content: `
+        <p>The accounting equation is the foundation of double-entry bookkeeping and shows the relationship between assets, liabilities, and capital.</p>
+        
+        <h4>The Basic Equation:</h4>
+        <p style="text-align:center; font-size:1.3rem; color:var(--ok); font-weight:900; margin:16px 0;">
+          Assets = Capital + Liabilities
+        </p>
+        
+        <h4>Understanding Each Component:</h4>
+        <ul>
+          <li><strong>Assets:</strong> Resources owned by the business (cash, inventory, equipment, building)</li>
+          <li><strong>Capital:</strong> Owner's investment in the business (also called equity or net worth)</li>
+          <li><strong>Liabilities:</strong> Amounts owed to outsiders (loans, creditors, outstanding expenses)</li>
+        </ul>
+        
+        <h4>Alternative Forms:</h4>
+        <ul>
+          <li>Capital = Assets - Liabilities</li>
+          <li>Liabilities = Assets - Capital</li>
+        </ul>
+        
+        <h4>Key Point:</h4>
+        <p>This equation always remains balanced. Every transaction affects at least two items, but the equation stays in balance.</p>
+        
+        <h4>Example:</h4>
+        <p>If you start a business with ₹50,000 cash:</p>
+        <p>Assets (Cash) = ₹50,000 | Capital = ₹50,000 | Liabilities = ₹0</p>
+        <p>The equation balances: ₹50,000 = ₹50,000 + ₹0 ✓</p>
+      `
+    },
+    'source-documents': {
+      title: 'Source Documents',
+      content: `
+        <p>Source documents are the original records that provide evidence of business transactions. They form the basis for all accounting entries.</p>
+        
+        <h4>Common Source Documents:</h4>
+        <ul>
+          <li><strong>Invoice:</strong> Issued by seller to buyer showing details of goods sold on credit. Contains date, items, quantities, prices, and payment terms.</li>
+          <li><strong>Cash Memo:</strong> Proof of cash sales. Simpler than invoice, used for immediate payment transactions.</li>
+          <li><strong>Receipt:</strong> Proof of money received. Given by the party receiving cash.</li>
+          <li><strong>Debit Note:</strong> Sent by buyer to seller when returning goods or when seller is to be debited for any reason.</li>
+          <li><strong>Credit Note:</strong> Sent by seller to buyer when goods are returned or when buyer is to be credited.</li>
+          <li><strong>Voucher:</strong> Internal document prepared for cash/bank transactions. Supports payment authorization.</li>
+          <li><strong>Pay-in-slip:</strong> Used when depositing money into bank.</li>
+          <li><strong>Cheque:</strong> Written order to bank to pay a specific amount to a person.</li>
+        </ul>
+        
+        <h4>Importance:</h4>
+        <p>Source documents provide legal evidence, help in verification, prevent fraud, and ensure accurate record-keeping. Always preserve originals!</p>
+      `
+    },
+    'journal': {
+      title: 'Journal - Book of Original Entry',
+      content: `
+        <p>The journal is the first book where transactions are recorded in chronological order. It's called the "book of original entry" or "book of prime entry."</p>
+        
+        <h4>Format of Journal Entry:</h4>
+        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-family:monospace; font-size:.9rem;">
+          Date | Particulars | L.F. | Debit (₹) | Credit (₹)<br>
+          ────────────────────────────────────────────<br>
+          2025 Jan 1 | Cash A/c ........... Dr. | | 50,000 | <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c | | | 50,000<br>
+          (Being capital introduced in cash)
+        </p>
+        
+        <h4>Rules for Journal Entries:</h4>
+        <ul>
+          <li><strong>For Real Accounts:</strong> Debit what comes in, Credit what goes out</li>
+          <li><strong>For Personal Accounts:</strong> Debit the receiver, Credit the giver</li>
+          <li><strong>For Nominal Accounts:</strong> Debit all expenses/losses, Credit all incomes/gains</li>
+        </ul>
+        
+        <h4>Components:</h4>
+        <ul>
+          <li><strong>Date:</strong> When the transaction occurred</li>
+          <li><strong>Particulars:</strong> Accounts affected (Dr. account first, then Cr. account indented)</li>
+          <li><strong>L.F. (Ledger Folio):</strong> Page number in ledger (filled during posting)</li>
+          <li><strong>Debit & Credit:</strong> Amounts in respective columns</li>
+          <li><strong>Narration:</strong> Brief explanation in brackets</li>
+        </ul>
+      `
+    },
+    'ledger': {
+      title: 'Ledger - Principal Book',
+      content: `
+        <p>The ledger is the principal book that contains all accounts. Each account summarizes all transactions related to that particular item.</p>
+        
+        <h4>Ledger Account Format (T-Format):</h4>
+        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-family:monospace; font-size:.85rem;">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash Account<br>
+          Dr. ────────────────────────── Cr.<br>
+          Date | Particulars | Amt | Date | Particulars | Amt<br>
+        </p>
+        
+        <h4>Posting from Journal to Ledger:</h4>
+        <ol>
+          <li>Open separate accounts for each item mentioned in journal</li>
+          <li>Post debit entries on debit side and credit entries on credit side</li>
+          <li>Write the name of the corresponding account in particulars</li>
+          <li>Fill the L.F. column with journal page number</li>
+        </ol>
+        
+        <h4>Balancing Accounts:</h4>
+        <ul>
+          <li>Total both debit and credit sides</li>
+          <li>If debit > credit: Debit balance (write "By Balance c/d" on credit side)</li>
+          <li>If credit > debit: Credit balance (write "To Balance c/d" on debit side)</li>
+          <li>Opening balance of next period: Opposite side as closing balance</li>
+        </ul>
+        
+        <h4>Types of Accounts:</h4>
+        <ul>
+          <li><strong>Personal:</strong> Individuals, firms (Sundry Debtors, Creditors)</li>
+          <li><strong>Real:</strong> Assets (Cash, Furniture, Stock)</li>
+          <li><strong>Nominal:</strong> Expenses & Incomes (Rent, Salary, Commission)</li>
+        </ul>
+      `
+    },
+    'cash-book': {
+      title: 'Cash Book',
+      content: `
+        <p>Cash Book is a special journal that records all cash and bank transactions. It serves as both a journal and a ledger.</p>
+        
+        <h4>Types of Cash Books:</h4>
+        
+        <p><strong>1. Single Column Cash Book:</strong></p>
+        <ul>
+          <li>Records only cash transactions</li>
+          <li>Has one amount column on each side</li>
+          <li>Always shows debit balance (cash in hand)</li>
+        </ul>
+        
+        <p><strong>2. Double Column Cash Book:</strong></p>
+        <ul>
+          <li>Has Cash and Bank columns on both sides</li>
+          <li>Records both cash and bank transactions</li>
+          <li>Contra entries: When cash is deposited or withdrawn from bank</li>
+          <li>Marked with 'C' in L.F. column</li>
+        </ul>
+        
+        <p><strong>3. Triple Column Cash Book:</strong></p>
+        <ul>
+          <li>Adds a Discount column on both sides</li>
+          <li>Debit side: Discount allowed to debtors</li>
+          <li>Credit side: Discount received from creditors</li>
+          <li>Discount columns are NOT balanced (only totaled)</li>
+        </ul>
+        
+        <h4>Important Points:</h4>
+        <ul>
+          <li>Cash book always starts with opening balance on debit side</li>
+          <li>Never shows credit balance in cash column</li>
+          <li>Bank column can show credit balance (overdraft)</li>
+          <li>All receipts on debit side, all payments on credit side</li>
+        </ul>
+      `
+    },
+    'trial-balance': {
+      title: 'Trial Balance',
+      content: `
+        <p>Trial Balance is a statement showing debit and credit balances of all ledger accounts to verify arithmetical accuracy of books.</p>
+        
+        <h4>Format:</h4>
+        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-family:monospace; font-size:.85rem;">
+          Trial Balance as on ________<br>
+          Account Name | L.F. | Debit (₹) | Credit (₹)<br>
+          ────────────────────────────────────<br>
+          [List all accounts]<br>
+          ────────────────────────────────────<br>
+          Total | | XXXXX | XXXXX
+        </p>
+        
+        <h4>Methods of Preparation:</h4>
+        <ol>
+          <li><strong>Balance Method:</strong> Show only balances of accounts</li>
+          <li><strong>Total Method:</strong> Show total of debit and credit sides</li>
+          <li><strong>Balance & Total Method:</strong> Show both balances and totals</li>
+        </ol>
+        
+        <h4>Objectives:</h4>
+        <ul>
+          <li>Check arithmetical accuracy of books</li>
+          <li>Summarize all ledger accounts</li>
+          <li>Help in preparing financial statements</li>
+          <li>Locate errors (if totals don't match)</li>
+        </ul>
+        
+        <h4>Types of Errors:</h4>
+        <p><strong>Errors disclosed by Trial Balance:</strong></p>
+        <ul>
+          <li>Posting wrong amount</li>
+          <li>Posting to wrong side</li>
+          <li>Omitting to post one aspect</li>
+          <li>Wrong balancing of account</li>
+          <li>Wrong totaling in trial balance</li>
+        </ul>
+        
+        <p><strong>Errors NOT disclosed by Trial Balance:</strong></p>
+        <ul>
+          <li>Error of omission (transaction not recorded)</li>
+          <li>Error of commission (posted to wrong account of same type)</li>
+          <li>Error of principle (wrong classification)</li>
+          <li>Compensating errors (errors canceling each other)</li>
+        </ul>
+      `
+    },
+    'depreciation': {
+      title: 'Depreciation',
+      content: `
+        <p>Depreciation is the systematic allocation of the cost of a fixed asset over its useful life. It represents wear and tear, obsolescence, or passage of time.</p>
+        
+        <h4>Methods of Depreciation:</h4>
+        
+        <p><strong>1. Straight Line Method (SLM):</strong></p>
+        <ul>
+          <li>Equal amount charged every year</li>
+          <li>Formula: (Cost - Scrap Value) / Useful Life</li>
+          <li>Simple and widely used</li>
+          <li>Example: Machine costs ₹1,00,000, life 10 years, scrap ₹10,000</li>
+          <li>Annual Depreciation = (1,00,000 - 10,000) / 10 = ₹9,000</li>
+        </ul>
+        
+        <p><strong>2. Written Down Value Method (WDV):</strong></p>
+        <ul>
+          <li>Fixed percentage on reducing balance</li>
+          <li>Higher depreciation in early years, lower in later years</li>
+          <li>Also called Diminishing Balance Method</li>
+          <li>Formula: Rate% on Book Value at start of year</li>
+          <li>Example: Machine ₹1,00,000, rate 10%</li>
+          <li>Year 1: ₹10,000 | Year 2: ₹9,000 | Year 3: ₹8,100...</li>
+        </ul>
+        
+        <h4>Journal Entries:</h4>
+        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
+          Depreciation A/c ................ Dr.<br>
+          &nbsp;&nbsp;To Asset A/c<br>
+          (Being depreciation charged)
+        </p>
+        
+        <h4>Disposal of Asset:</h4>
+        <p>When asset is sold, calculate profit/loss and transfer to Asset Disposal A/c or P&L A/c</p>
+      `
+    },
+    'bank-reconciliation': {
+      title: 'Bank Reconciliation Statement',
+      content: `
+        <p>Bank Reconciliation Statement (BRS) is prepared to reconcile the difference between bank balance as per cash book and bank balance as per bank statement.</p>
+        
+        <h4>Causes of Difference:</h4>
+        <ul>
+          <li><strong>Cheques issued but not yet presented:</strong> Cheques given to suppliers but not yet cleared by bank</li>
+          <li><strong>Cheques deposited but not yet collected:</strong> Cheques received and deposited but not yet cleared</li>
+          <li><strong>Direct deposits by customers:</strong> Customer paid directly into bank, not yet recorded in cash book</li>
+          <li><strong>Bank charges:</strong> Recorded by bank but not yet in cash book</li>
+          <li><strong>Interest credited:</strong> Bank added interest, not yet in cash book</li>
+          <li><strong>Standing instructions:</strong> Auto-debit for insurance, loan EMI etc.</li>
+          <li><strong>Dishonor of cheques:</strong> Cheque deposited but returned due to insufficient funds</li>
+          <li><strong>Errors:</strong> Recording mistakes in cash book or by bank</li>
+        </ul>
+        
+        <h4>Format (Starting from Cash Book Balance):</h4>
+        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-size:.9rem;">
+          Balance as per Cash Book .................... ₹ XXX<br>
+          Add: Cheques issued but not presented ........ ₹ XXX<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interest credited by bank .............. ₹ XXX<br>
+          Less: Cheques deposited but not collected .... ₹ XXX<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bank charges ............................ ₹ XXX<br>
+          Balance as per Bank Statement ................ ₹ XXX
+        </p>
+        
+        <h4>Remember:</h4>
+        <p>Items known to bank but not in cash book should be adjusted in cash book. BRS only helps identify these differences.</p>
+      `
+    },
+    'rectification': {
+      title: 'Rectification of Errors',
+      content: `
+        <p>Errors discovered after posting need to be corrected through rectification entries to ensure accurate financial statements.</p>
+        
+        <h4>When Trial Balance Agrees (One-sided errors):</h4>
+        <p>Simple journal entry to correct:</p>
+        <ul>
+          <li><strong>Error of Omission:</strong> Pass the omitted entry</li>
+          <li><strong>Wrong Account (Same Type):</strong> Debit/Credit the correct account, Debit/Credit the wrong account (reverse)</li>
+        </ul>
+        
+        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
+          Example: Salary paid ₹5,000 to Ram wrongly debited to Shyam<br>
+          Ram A/c ..................... Dr. 5,000<br>
+          &nbsp;&nbsp;To Shyam A/c .................. 5,000
+        </p>
+        
+        <h4>When Trial Balance Doesn't Agree (Two-sided errors):</h4>
+        <p>Use Suspense Account temporarily:</p>
+        <ol>
+          <li>Open Suspense A/c for the difference</li>
+          <li>Pass rectification entries</li>
+          <li>Suspense A/c will close automatically</li>
+        </ol>
+        
+        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
+          Example: Sale ₹8,000 recorded as ₹800<br>
+          Debtors A/c ................. Dr. 7,200<br>
+          &nbsp;&nbsp;To Suspense A/c ............... 7,200
+        </p>
+        
+        <h4>Common Error Types:</h4>
+        <ul>
+          <li><strong>Partial omission:</strong> One side posted, other side missed</li>
+          <li><strong>Wrong amount:</strong> Incorrect figure posted</li>
+          <li><strong>Wrong side:</strong> Debit posted as credit or vice versa (double effect)</li>
+          <li><strong>Carrying forward error:</strong> Wrong balance carried forward</li>
+        </ul>
+      `
+    },
+    'gst': {
+      title: 'Accounting for GST',
+      content: `
+        <p>GST (Goods and Services Tax) is an indirect tax levied on supply of goods and services. It has replaced multiple indirect taxes in India.</p>
+        
+        <h4>Types of GST:</h4>
+        <ul>
+          <li><strong>CGST (Central GST):</strong> Collected by Central Government on intra-state sales</li>
+          <li><strong>SGST (State GST):</strong> Collected by State Government on intra-state sales</li>
+          <li><strong>IGST (Integrated GST):</strong> Collected by Central Government on inter-state sales</li>
+        </ul>
+        
+        <h4>Example Rates:</h4>
+        <p>If GST rate is 18% on intra-state sale of ₹10,000:</p>
+        <ul>
+          <li>CGST = 9% of ₹10,000 = ₹900</li>
+          <li>SGST = 9% of ₹10,000 = ₹900</li>
+          <li>Total = ₹10,000 + ₹1,800 = ₹11,800</li>
+        </ul>
+        
+        <h4>Journal Entries for Purchase:</h4>
+        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
+          Purchase A/c ................. Dr. 10,000<br>
+          CGST Input A/c ............... Dr. 900<br>
+          SGST Input A/c ............... Dr. 900<br>
+          &nbsp;&nbsp;To Supplier A/c .............. 11,800
+        </p>
+        
+        <h4>Journal Entries for Sale:</h4>
+        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
+          Customer A/c ................. Dr. 11,800<br>
+          &nbsp;&nbsp;To Sales A/c ................. 10,000<br>
+          &nbsp;&nbsp;To CGST Output A/c ........... 900<br>
+          &nbsp;&nbsp;To SGST Output A/c ........... 900
+        </p>
+        
+        <h4>Input Tax Credit:</h4>
+        <p>GST paid on purchases (Input GST) can be set off against GST collected on sales (Output GST). Only the net amount is paid to government.</p>
+      `
+    },
+    'final-accounts': {
+      title: 'Final Accounts Introduction',
+      content: `
+        <p>Final Accounts are prepared at the end of accounting period to know financial performance and position of the business.</p>
+        
+        <h4>Components of Final Accounts:</h4>
+        
+        <p><strong>1. Trading Account:</strong></p>
+        <ul>
+          <li>Shows Gross Profit or Gross Loss</li>
+          <li>Formula: Gross Profit = Net Sales - Cost of Goods Sold</li>
+          <li>Debit side: Opening stock, Purchases, Direct expenses</li>
+          <li>Credit side: Sales, Closing stock</li>
+        </ul>
+        
+        <p><strong>2. Profit & Loss Account:</strong></p>
+        <ul>
+          <li>Shows Net Profit or Net Loss</li>
+          <li>Formula: Net Profit = Gross Profit + Indirect Income - Indirect Expenses</li>
+          <li>Debit side: Operating expenses (Rent, Salary, Depreciation)</li>
+          <li>Credit side: Gross Profit, Other incomes</li>
+        </ul>
+        
+        <p><strong>3. Balance Sheet:</strong></p>
+        <ul>
+          <li>Shows financial position on a particular date</li>
+          <li>Assets = Liabilities + Capital</li>
+          <li>Assets: Fixed assets, Current assets, Investments</li>
+          <li>Liabilities: Capital, Reserves, Long-term loans, Current liabilities</li>
+        </ul>
+        
+        <h4>Flow:</h4>
+        <p style="text-align:center; font-size:1.1rem; color:var(--lime); font-weight:700; margin:14px 0;">
+          Trial Balance → Trading A/c → P&L A/c → Balance Sheet
+        </p>
+        
+        <h4>Key Points:</h4>
+        <ul>
+          <li>Trading and P&L together called Income Statement</li>
+          <li>All nominal accounts close to P&L</li>
+          <li>Net Profit added to Capital in Balance Sheet</li>
+          <li>Balance Sheet must always balance</li>
+        </ul>
+      `
+    }
+  };
+
+  /* ========= Auth state observer and user storage ========= */
+  let currentUser = null;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      updateAuthUI(user);
+      saveUserData(user);
+    } else {
+      currentUser = null;
+      updateAuthUI(null);
+    }
+  });
+
+  window.currentUser = () => currentUser;
+
+  async function signInWithGoogle() {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      toast(`Welcome ${result.user.displayName}! 🎉`);
+      return result.user;
+    } catch (error) {
+      console.error('Error signing in:', error);
+      toast('Failed to sign in. Please try again.');
+      return null;
+    }
+  }
+
+  async function signOutUser() {
+    try {
+      await signOut(auth);
+      toast('Signed out successfully!');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast('Sign out failed.');
+    }
+  }
+
+  async function saveUserData(user) {
+    if (!user || !db) return;
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+          progress: {
+            lessonsCompleted: [],
+            quizScores: [],
+            practiceAttempts: 0
+          }
+        });
+      } else {
+        await setDoc(userRef, {
+          lastLogin: new Date().toISOString()
+        }, { merge: true });
+      }
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
+  }
+
+  function updateAuthUI(user) {
+    // Defensive: if authBtn missing, skip updates but keep behavior
+    if (authBtn) {
+      if (user) {
+        const firstName = (user.displayName || '').split(' ')[0] || 'User';
+        authBtn.innerHTML = `
+          <div class="user-info">
+            <img src="${user.photoURL || ''}" alt="${user.displayName || ''}" class="user-avatar">
+            <span>${firstName}</span>
+          </div>
+        `;
+        authBtn.onclick = signOutUser;
+      } else {
+        authBtn.textContent = 'Sign In with Google';
+        authBtn.onclick = signInWithGoogle;
+      }
+    }
+
+    if (mobileAuthBtn) {
+      if (user) {
+        const firstName = (user.displayName || '').split(' ')[0] || 'User';
+        mobileAuthBtn.textContent = `Sign Out (${firstName})`;
+        mobileAuthBtn.onclick = (e) => { e.preventDefault(); signOutUser(); };
+      } else {
+        mobileAuthBtn.textContent = 'Sign In';
+        mobileAuthBtn.onclick = (e) => { e.preventDefault(); signInWithGoogle(); };
+      }
+    }
+  }
+
+  /* ========= Utilities & UI Behaviors ========= */
+
+  // Mobile menu toggle
+  if (hamb && mobile) {
+    hamb.addEventListener('click', () => {
       mobile.classList.toggle('show');
       hamb.textContent = mobile.classList.contains('show') ? '✕' : '☰';
     });
-    $('#mset').addEventListener('click', (e)=>{ e.preventDefault(); setName(); });
+  }
 
-    /* ========= Year ========= */
-    $('#year').textContent = new Date().getFullYear();
+  // Year
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    /* ========= Greeting name with localStorage ========= */
-    const whoEl = $('#who');
-    const sayHiBtn = $('#sayHiBtn');
-    function setName(){
-      const current = localStorage.getItem('aw_name') || '';
-      const name = prompt('Enter your name to personalize AccountsWizard:', current) || '';
-      const clean = name.trim().slice(0, 24);
-      if(clean){
-        localStorage.setItem('aw_name', clean);
-        whoEl.textContent = clean.split(' ')[0];
-        toast(`Hi ${clean}! Let’s learn smart ✨`);
-      }else{
-        localStorage.removeItem('aw_name');
-        whoEl.textContent = 'Student';
+  // Topic modal openers
+  const topicEls = queryAll('.topic');
+  topicEls.forEach(topic => {
+    topic.addEventListener('click', () => {
+      const topicKey = topic.dataset.topic;
+      const data = topicData[topicKey];
+      if (data && topicModal && modalTitle && modalContent) {
+        modalTitle.textContent = data.title;
+        modalContent.innerHTML = data.content;
+        topicModal.classList.add('show');
       }
-    }
-    function loadName(){
-      const saved = localStorage.getItem('aw_name');
-      if(saved){
-        whoEl.textContent = saved.split(' ')[0];
-      }
-    }
-    sayHiBtn.addEventListener('click', setName);
-    loadName();
+    });
+  });
 
-    /* ========= Floating bubbles generator ========= */
-    const floaterHost = $('#floaters');
-    const COLORS = ['#7c4dff', '#00e5ff', '#ff7ac6', '#b7ff4a', '#ffd166'];
-    function mkBubble(){
-      const b = document.createElement('div');
-      b.className = 'bubble';
-      const size = Math.floor(40 + Math.random()*160);
-      const color = COLORS[Math.floor(Math.random()*COLORS.length)];
-      const startX = Math.floor(Math.random()*100) + 'vw';
-      const driftX = (Math.random()*60 - 30) + 'vw';
-      const scale = (0.6 + Math.random()*1.2).toFixed(2);
-      const duration = 14 + Math.random()*22;
-      b.style.width = b.style.height = size+'px';
-      b.style.left = startX;
-      b.style.setProperty('--sx', '0');
-      b.style.setProperty('--dx', driftX);
-      b.style.setProperty('--sc', scale);
-      b.style.setProperty('--dur', duration+'s');
-      b.style.color = color;
-      floaterHost.appendChild(b);
-      setTimeout(()=> b.remove(), duration*1000);
-    }
-    // Launch waves of bubbles
-    setInterval(()=>{ for(let i=0;i<2;i++) mkBubble(); }, 1600);
+  // Close modal
+  if (modalClose && topicModal) {
+    modalClose.addEventListener('click', () => topicModal.classList.remove('show'));
+    topicModal.addEventListener('click', (e) => {
+      if (e.target === topicModal) topicModal.classList.remove('show');
+    });
+  }
+
+  /* ========= Floating bubbles generator ========= */
+  const COLORS = ['#7c4dff', '#00e5ff', '#ff7ac6', '#b7ff4a', '#ffd166'];
+  function mkBubble(){
+    if (!floaterHost) return;
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = Math.floor(40 + Math.random()*160);
+    const color = COLORS[Math.floor(Math.random()*COLORS.length)];
+    const startX = Math.floor(Math.random()*100) + 'vw';
+    const driftX = (Math.random()*60 - 30) + 'vw';
+    const scale = (0.6 + Math.random()*1.2).toFixed(2);
+    const duration = 14 + Math.random()*22;
+    b.style.width = b.style.height = size+'px';
+    b.style.left = startX;
+    b.style.setProperty('--sx', '0');
+    b.style.setProperty('--dx', driftX);
+    b.style.setProperty('--sc', scale);
+    b.style.setProperty('--dur', duration+'s');
+    b.style.color = color;
+    floaterHost.appendChild(b);
+    setTimeout(()=> b.remove(), duration*1000);
+  }
+
+  // create initial bubbles safely
+  if (floaterHost) {
     for(let i=0;i<8;i++) mkBubble();
+    setInterval(()=>{ for(let i=0;i<2;i++) mkBubble(); }, 1600);
+  }
 
-    /* ========= Coin float ========= */
-    // (already animated with CSS keyframes via .coin)
-
-    /* ========= Reveal-on-scroll ========= */
+  /* ========= Reveal-on-scroll (IntersectionObserver) ========= */
+  const revealEls = queryAll('.reveal');
+  if (revealEls.length > 0) {
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         if(e.isIntersecting){
@@ -490,78 +1113,108 @@
         }
       });
     }, { threshold:.14 });
-    $$('.reveal').forEach(el=> observer.observe(el));
+    revealEls.forEach(el=> observer.observe(el));
+  }
 
-    /* ========= Friendly toast ========= */
-    const toastHost = document.createElement('div');
-    toastHost.style.position='fixed';
-    toastHost.style.inset='auto 0 24px 0';
-    toastHost.style.display='grid';
-    toastHost.style.placeItems='center';
-    toastHost.style.pointerEvents='none';
-    toastHost.style.zIndex='50';
-    document.body.appendChild(toastHost);
-    function toast(msg){
-      const t = document.createElement('div');
-      t.textContent = msg;
-      t.style.pointerEvents='auto';
-      t.style.maxWidth='92vw';
-      t.style.background='linear-gradient(90deg, rgba(124,77,255,.95), rgba(0,229,255,.95))';
-      t.style.color='#0b1020';
-      t.style.fontWeight='900';
-      t.style.padding='12px 16px';
-      t.style.borderRadius='14px';
-      t.style.boxShadow='0 14px 30px rgba(0,0,0,.35)';
-      t.style.margin='8px auto';
-      t.style.transform='translateY(16px)';
-      t.style.opacity='0';
-      t.style.transition='.35s ease';
-      toastHost.appendChild(t);
-      requestAnimationFrame(()=>{
-        t.style.transform='translateY(0)'; t.style.opacity='1';
-      });
-      setTimeout(()=>{
-        t.style.transform='translateY(12px)'; t.style.opacity='.0';
-        setTimeout(()=> t.remove(), 350);
-      }, 2200);
-    }
+  /* ========= Friendly toast ========= */
+  const toastHost = document.createElement('div');
+  toastHost.style.position='fixed';
+  toastHost.style.inset='auto 0 24px 0';
+  toastHost.style.display='grid';
+  toastHost.style.placeItems='center';
+  toastHost.style.pointerEvents='none';
+  toastHost.style.zIndex='50';
+  document.body.appendChild(toastHost);
 
-    /* ========= Fun ripple on card click ========= */
-    $$('.card').forEach(card=>{
-      card.addEventListener('click', (e)=>{
-        const r = document.createElement('span');
-        const d = Math.max(card.clientWidth, card.clientHeight);
-        r.style.position='absolute';
-        r.style.width = r.style.height = d+'px';
-        r.style.left = (e.offsetX - d/2)+'px';
-        r.style.top  = (e.offsetY - d/2)+'px';
-        r.style.borderRadius='50%';
-        r.style.background='radial-gradient(circle, rgba(255,255,255,.25), transparent 60%)';
-        r.style.pointerEvents='none';
-        r.style.transform='scale(.6)';
-        r.style.opacity='.0';
-        r.style.transition='.6s ease';
-        card.appendChild(r);
-        requestAnimationFrame(()=>{
-          r.style.transform='scale(1.25)';
-          r.style.opacity='.9';
-        });
-        setTimeout(()=>r.remove(), 620);
-      });
+  function toast(msg){
+    if (!msg) return;
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.style.pointerEvents='auto';
+    t.style.maxWidth='92vw';
+    t.style.background='linear-gradient(90deg, rgba(124,77,255,.95), rgba(0,229,255,.95))';
+    t.style.color='#0b1020';
+    t.style.fontWeight='900';
+    t.style.padding='12px 16px';
+    t.style.borderRadius='14px';
+    t.style.boxShadow='0 14px 30px rgba(0,0,0,.35)';
+    t.style.margin='8px auto';
+    t.style.transform='translateY(16px)';
+    t.style.opacity='0';
+    t.style.transition='.35s ease';
+    toastHost.appendChild(t);
+    requestAnimationFrame(()=>{
+      t.style.transform='translateY(0)'; t.style.opacity='1';
     });
+    setTimeout(()=>{
+      t.style.transform='translateY(12px)'; t.style.opacity='0';
+      setTimeout(()=> t.remove(), 350);
+    }, 2200);
+  }
 
-    /* ========= Keyboard accessibility ========= */
-    document.addEventListener('keyup', (e)=>{
-      if(e.key === 'Escape' && mobile.classList.contains('show')){
-        mobile.classList.remove('show'); hamb.textContent='☰';
+  /* ========= Fun ripple on .card click ========= */
+  const cardEls = queryAll('.card');
+  cardEls.forEach(card=>{
+    // ensure card is positioned relatively for absolute ripple to work
+    if (getComputedStyle(card).position === 'static') {
+      card.style.position = 'relative';
+    }
+    card.addEventListener('click', (e)=>{
+      const r = document.createElement('span');
+      const d = Math.max(card.clientWidth, card.clientHeight);
+      r.style.position='absolute';
+      r.style.width = r.style.height = d+'px';
+      r.style.left = (e.offsetX - d/2)+'px';
+      r.style.top  = (e.offsetY - d/2)+'px';
+      r.style.borderRadius='50%';
+      r.style.background='radial-gradient(circle, rgba(255,255,255,.25), transparent 60%)';
+      r.style.pointerEvents='none';
+      r.style.transform='scale(.6)';
+      r.style.opacity='0';
+      r.style.transition='.6s ease';
+      card.appendChild(r);
+      requestAnimationFrame(()=>{
+        r.style.transform='scale(1.25)';
+        r.style.opacity='.9';
+      });
+      setTimeout(()=>r.remove(), 620);
+    });
+  });
+
+  /* ========= Keyboard accessibility (Escape key) ========= */
+  document.addEventListener('keyup', (e)=>{
+    if(e.key === 'Escape'){
+      if(mobile && mobile.classList.contains('show')){
+        mobile.classList.remove('show');
+        if (hamb) hamb.textContent='☰';
+      }
+      if(topicModal && topicModal.classList.contains('show')){
+        topicModal.classList.remove('show');
+      }
+    }
+  });
+
+  /* ========= Welcome toast for first-time visitors ========= */
+  setTimeout(() => {
+    const user = window.currentUser ? window.currentUser() : null;
+    if (!user) {
+      toast('Welcome! Sign in with Google to save your progress ✨');
+    }
+  }, 1000);
+
+  /* ========= Keyboard-enter accessibility for topic cards ========= */
+  topicEls.forEach(topic => {
+    topic.setAttribute('tabindex', topic.getAttribute('tabindex') || '0');
+    topic.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        topic.click();
       }
     });
+  });
 
-    // Small welcome on first visit
-    if(!localStorage.getItem('aw_seen')){
-      setTimeout(()=> toast('Welcome! Tap “Hi, Student!” to personalize.'), 700);
-      localStorage.setItem('aw_seen','1');
-    }
-  </script>
+  /* ========= Minimal safety: avoid uncaught errors on missing elements ========= */
+  // Already handled via null checks above for all event attachments.
+</script>
 </body>
 </html>
