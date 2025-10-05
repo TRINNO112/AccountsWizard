@@ -934,7 +934,13 @@
 
           // --- FIREBASE INTEGRATION ---
           if (currentUser) {
-            saveQuizResult('lesson-1-intro', score, totalQuestions, userAnswers);
+            // Create simplified answers array (Lesson 4 style)
+            const simplifiedAnswers = questions.map((q, i) => {
+              const userAnswerNode = document.querySelector(`input[name="q${i}"]:checked`);
+              return userAnswerNode ? userAnswerNode.value : null;
+            });
+            
+            saveQuizResult('lesson-1-intro', score, totalQuestions, simplifiedAnswers);
           }
           
           // --- RESTORED: Your existing result display logic ---

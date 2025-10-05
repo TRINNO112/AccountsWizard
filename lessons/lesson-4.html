@@ -1675,8 +1675,12 @@
             // ======================================================
             // 1. IMPORT FIREBASE FUNCTIONS
             // ======================================================
-            import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
-
+            import { 
+                onAuthChange, 
+                saveQuizResult, 
+                initializeUserProfile, 
+                saveLessonProgress
+            } from '../firebase-config.js';
             // ======================================================
             // 2. TRACK CURRENT USER
             // ======================================================
@@ -1929,9 +1933,30 @@
 
         async function handleSubmit() {
         let score = 0;
+        const userAnswers = []; // Array for user's answer choices
+        const correctAnswers = []; // Array for correct answers
+        const detailedAnswers = []; // Array for detailed analytics (optional)
+        
         mcqs.forEach(mcq => {
             const correctAns = mcq.dataset.answer;
             const selected = mcq.querySelector('input:checked');
+            
+            // Store simple answer choices for easy comparison
+            const userAnswer = selected ? selected.value : null;
+            userAnswers.push(userAnswer);
+            correctAnswers.push(correctAns);
+            
+            // Optional: Keep detailed analytics if needed
+            const questionText = mcq.querySelector('h3').textContent;
+            const isCorrect = selected ? selected.value === correctAns : false;
+            
+            detailedAnswers.push({
+                question: questionText,
+                selected: userAnswer || "Not Answered",
+                correct: correctAns,
+                isCorrect: isCorrect
+            });
+            
             if (!selected) return;
             
             const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
@@ -1969,16 +1994,25 @@
 
         if (retryBtn) retryBtn.style.display = 'inline-block';
 
-        // 🔥 FIREBASE SAVE
+        // 🔥 FIREBASE SAVE - CORRECTED VERSION
         if (currentUser) {
-            await saveQuizResult(`lesson4-quiz`, score, totalQuestions, mcqs.map(mcq => {
-                const sel = mcq.querySelector('input:checked');
-                return sel ? sel.value : null;
-            }));
-            console.log('✅ Quiz result saved to Firebase for Lesson 4');
+            try {
+                // Save with both user answers and correct answers
+                await saveQuizResult('lesson-4-process-basis', score, totalQuestions, userAnswers, correctAnswers);
+                console.log('✅ Quiz result saved to Firebase for Lesson 4');
+                
+                // Also save lesson progress
+                const progressPercent = Math.round(pct);
+                await saveLessonProgress('lesson-4', progressPercent, score, totalQuestions);
+                console.log('✅ Lesson 4 progress saved to Firebase');
+                
+            } catch (error) {
+                console.error('❌ Error saving to Firebase:', error);
+            }
+        } else {
+            console.warn('⚠️ User not logged in. Data not saved.');
         }
     }
-
 
         function resetQuiz() {
             correctAnswered.clear();

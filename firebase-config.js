@@ -34,16 +34,48 @@ let currentUser = null;
  * Sign in with Google
  * @returns {Promise<Object>} User object
  */
-export async function signInWithGoogle() {
+export async function saveQuizResult(quizId, score, totalQuestions, answers = [], correctAnswers = []) {
+  if (!currentUser) {
+    console.warn('User not logged in. Quiz result not saved.');
+    showToast('⚠️ Sign in to save your quiz results!');
+    return false;
+  }
+
   try {
-    const result = await signInWithPopup(auth, provider);
-    currentUser = result.user;
-    showToast(`Welcome ${result.user.displayName}! 🎉`);
-    return result.user;
+    const userRef = doc(db, 'users', currentUser.uid);
+    const userDoc = await getDoc(userRef);
+
+    let quizzesData = {};
+    if (userDoc.exists() && userDoc.data().quizzes) {
+      quizzesData = userDoc.data().quizzes;
+    }
+
+    // Initialize quiz array if doesn't exist
+    if (!quizzesData[quizId]) {
+      quizzesData[quizId] = [];
+    }
+
+    // Add new attempt WITH CORRECT ANSWERS
+    quizzesData[quizId].push({
+      score: score,
+      totalQuestions: totalQuestions,
+      percentage: Math.round((score / totalQuestions) * 100),
+      answers: answers, // User's answer choices
+      correctAnswers: correctAnswers, // Correct answer choices
+      timestamp: new Date().toISOString()
+    });
+
+    await setDoc(userRef, {
+      quizzes: quizzesData,
+      lastActivity: new Date().toISOString()
+    }, { merge: true });
+
+    console.log(`✅ Quiz ${quizId} result saved with correct answers!`);
+    return true;
   } catch (error) {
-    console.error('Error signing in:', error);
-    showToast('Failed to sign in. Please try again.');
-    return null;
+    console.error('Error saving quiz result:', error);
+    showToast('❌ Failed to save quiz result. Please try again.');
+    return false;
   }
 }
 
