@@ -329,21 +329,22 @@
         transform: translateX(5px);
         }
 
-        /* REMOVE OR COMMENT OUT these conflicting rules: */
-        /*
         .animate-card:not(.visible) {
         opacity: 0;
         transform: translateY(30px) scale(0.95);
+        /* Remove any properties that might hide content completely */
         visibility: visible !important;
         display: block !important;
         }
 
+        /* Ensure all content is visible by default, then animate */
         .animate-card {
-        opacity: 1;
+        opacity: 1; /* Default to visible */
         transform: translateY(0) scale(1);
         transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
+        /* Only hide cards that haven't been animated yet */
         .animate-card.animate-pending {
         opacity: 0;
         transform: translateY(30px) scale(0.95);
@@ -353,11 +354,10 @@
         opacity: 1;
         transform: translateY(0) scale(1);
         }
-        */
 
         /* Remove horizontal scroll from tables */
         .table-container {
-        overflow-x: hidden !important;
+        overflow-x: hidden !important; /* Remove horizontal scroll */
         width: 100%;
         max-width: 100%;
         }
@@ -365,8 +365,8 @@
         /* Make tables responsive without horizontal scroll */
         table {
         width: 100% !important;
-        min-width: auto !important;
-        table-layout: fixed;
+        min-width: auto !important; /* Remove min-width that causes scroll */
+        table-layout: fixed; /* Force table to fit container */
         overflow-wrap: break-word;
         }
 
@@ -374,12 +374,12 @@
         word-wrap: break-word;
         overflow-wrap: break-word;
         hyphens: auto;
-        min-width: 0;
+        min-width: 0; /* Allow cells to shrink */
         }
 
         /* Specific fix for your comparison table */
         div[style*="overflow: auto"] {
-        overflow: visible !important;
+        overflow: visible !important; /* Remove the overflow auto that creates scroll */
         overflow-x: visible !important;
         }
 
@@ -395,13 +395,14 @@
             word-break: break-word;
         }
         
+        /* Stack table headers and data on mobile if needed */
         .responsive-table {
             display: block;
             overflow-x: visible;
         }
         
         .responsive-table thead {
-            display: none;
+            display: none; /* Hide headers on mobile */
         }
         
         .responsive-table tr {
@@ -435,13 +436,11 @@
         overflow: visible !important;
         }
 
-        /* COMMENT OUT or REMOVE this rule as it's breaking animations */
-        /*
+        /* Ensure text content is always visible */
         h3, h4, p, ul, ol, li {
         opacity: 1 !important;
         visibility: visible !important;
         }
-        */
 
         /* Fix for hidden content in examples section */
         div[style*="display: flex; gap: 20px; flex-wrap: wrap"] {
@@ -454,7 +453,7 @@
         }
 
         body {
-        overflow-x: hidden;
+        overflow-x: hidden; /* Only hide horizontal scroll on body */
         }
 
         /* Specific fix for table containers */
@@ -1086,6 +1085,96 @@
                 </div>
             </div>
 
+            <script type="module">
+            // ======================================================
+            // 1. IMPORT FIREBASE FUNCTIONS
+            // ======================================================
+            import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
+
+            // ======================================================
+            // 2. TRACK CURRENT USER
+            // ======================================================
+            let currentUser = null;
+            onAuthChange(user => {
+            if (user) {
+                currentUser = user;
+                console.log("Lesson 4: User is logged in:", user.displayName);
+                initializeUserProfile(user);
+            } else {
+                currentUser = null;
+                console.log("Lesson 4: User is logged out.");
+            }
+            });
+
+            // ======================================================
+            // 3. FIREBASE QUIZ SUBMISSION INTEGRATION
+            // ======================================================
+            
+            // Wait for your existing MCQ system to initialize
+            setTimeout(() => {
+                // Get the submit button from your existing system
+                const submitButton = document.getElementById('submit-mcq');
+                const mcqs = document.querySelectorAll('.mcq');
+                
+                if (submitButton) {
+                    // Store the original submit function
+                    const originalSubmitFunction = submitButton.onclick;
+                    
+                    // Wrap with Firebase integration
+                    submitButton.addEventListener('click', function() {
+                        // First, let the original system handle the UI updates
+                        if (originalSubmitFunction) {
+                            originalSubmitFunction();
+                        }
+                        
+                        // Then collect data for Firebase
+                        let score = 0;
+                        const userAnswers = [];
+                        const correctAnswers = [];
+
+                        mcqs.forEach((mcq, index) => {
+                            const answer = mcq.dataset.answer;
+                            const selected = mcq.querySelector('input:checked');
+                            const questionText = mcq.querySelector('h3').textContent.trim();
+                            
+                            const selectedLabel = selected ? mcq.querySelector(`label[for="${selected.id}"]`) : null;
+                            const correctInput = mcq.querySelector(`input[value="${answer}"]`);
+                            const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
+                            
+                            const isCorrect = selected && selected.value === answer;
+                            if (isCorrect) score++;
+                            
+                            userAnswers.push({
+                                question: questionText,
+                                selected: selectedLabel ? selectedLabel.textContent.trim() : "Not Answered",
+                                correct: correctLabel ? correctLabel.textContent.trim() : "",
+                                isCorrect: isCorrect
+                            });
+
+                            correctAnswers.push({
+                                question: questionText,
+                                correctAnswer: correctLabel ? correctLabel.textContent.trim() : "",
+                                correctValue: answer
+                            });
+                        });
+
+                        const totalQuestions = mcqs.length;
+                        
+                        // Save to Firebase if user is logged in
+                        if (currentUser) {
+                            saveQuizResult('lesson-4-process-basis', score, totalQuestions, userAnswers, correctAnswers)
+                                .then(success => {
+                                    if (success) {
+                                        console.log('✅ Lesson 4 quiz results saved to Firebase!');
+                                    }
+                                });
+                        } else {
+                            console.log('⚠️ User not logged in - quiz results not saved to Firebase');
+                        }
+                    });
+                }
+            }, 1000);
+        </script>
             <!-- JavaScript for interactive cards -->
             <script>
                 function toggleTerm(card) {
@@ -1672,28 +1761,9 @@
             </div>
         </section>
 
-        <script type="module">
-            import { 
-            onAuthChange, 
-            saveQuizResult, 
-            initializeUserProfile, 
-            saveLessonProgress 
-        } from '../firebase-config.js';
-        
-        (() => {
-        /* ADD USER TRACKING */
-        let currentUser = null;
-        onAuthChange(user => {
-            if (user) {
-                currentUser = user;
-                console.log("Lesson 4: User is logged in:", user.displayName);
-                initializeUserProfile(user);
-            } else {
-                currentUser = null;
-                console.log("Lesson 4: User is logged out.");
-            }
-        });
+        <script>
 
+        (() => {
         const $ = sel => document.querySelector(sel);
         const $$ = sel => Array.from(document.querySelectorAll(sel));
 
@@ -1749,28 +1819,33 @@
             }
 
             fixContentIssues() {
-                // Remove horizontal scroll from tables
-                $$('table').forEach(table => {
-                    table.style.minWidth = 'auto';
-                    table.style.width = '100%';
-                    table.style.tableLayout = 'fixed';
-                    
-                    // Fix parent container overflow
-                    let parent = table.parentElement;
-                    if (parent && parent.style.overflow === 'auto') {
-                    parent.style.overflow = 'visible';
-                    parent.style.overflowX = 'visible';
-                    }
-                });
+            // Remove horizontal scroll from tables
+            $$('table').forEach(table => {
+                table.style.minWidth = 'auto';
+                table.style.width = '100%';
+                table.style.tableLayout = 'fixed';
+                
+                // Fix parent container overflow
+                let parent = table.parentElement;
+                if (parent && parent.style.overflow === 'auto') {
+                parent.style.overflow = 'visible';
+                parent.style.overflowX = 'visible';
+                }
+            });
 
-                // Fix all overflow containers
-                $$('[style*="overflow: auto"]').forEach(container => {
-                    container.style.overflow = 'visible';
-                    container.style.overflowX = 'visible';
-                });
+            // Fix all overflow containers
+            $$('[style*="overflow: auto"]').forEach(container => {
+                container.style.overflow = 'visible';
+                container.style.overflowX = 'visible';
+            });
 
-                // NOTE: Removed the direct style overrides for opacity and visibility
-                // to allow CSS animations to function correctly.
+            // Ensure all content is visible
+            $$('h3, p, ul, li, div').forEach(el => {
+                if (!el.classList.contains('term-details') && !el.classList.contains('mcq')) {
+                el.style.visibility = 'visible';
+                el.style.opacity = '1';
+                }
+            });
             }
 
             addAnimationClasses() {
@@ -1824,8 +1899,9 @@
                 entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // NOTE: Removed direct style assignments. The '.visible' class
-                    // will now correctly trigger the CSS transition.
+                    // Ensure content is always visible
+                    entry.target.style.opacity = '1';
+                    entry.target.style.visibility = 'visible';
                     this.observer.unobserve(entry.target);
                 }
                 });
@@ -1844,7 +1920,8 @@
                 if (introSection) {
                 introSection.querySelectorAll('.animate-card').forEach(card => {
                     card.classList.add('visible');
-                    // NOTE: Removed direct style assignments to let CSS control animations.
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
                 });
                 }
             }, 300);
@@ -1855,7 +1932,8 @@
                 const rect = card.getBoundingClientRect();
                 if (rect.top < window.innerHeight && rect.bottom > 0) {
                     card.classList.add('visible');
-                    // NOTE: Removed direct style assignments to let CSS control animations.
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
                 }
                 });
             }, 600);
@@ -1920,50 +1998,29 @@
             enableSubmitCheck();
         }
 
-        /* MODIFY THE handleSubmit FUNCTION */
-        async function handleSubmit() {
+        function handleSubmit() {
             let score = 0;
             mcqs.forEach(mcq => {
-                const correctAns = mcq.dataset.answer;
-                const selected = mcq.querySelector('input:checked');
-                if (!selected) return;
-                
-                const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-                const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-                const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
-
-                if (selected.value === correctAns) {
-                    score++;
-                    if (corrLabel) corrLabel.classList.add('aw-pop');
-                } else {
-                    if (selLabel) {
-                    selLabel.classList.add('aw-shake');
-                    selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
-                    }
-                    if (corrLabel) corrLabel.classList.add('aw-pop');
-                }
-            });
+            const correctAns = mcq.dataset.answer;
+            const selected = mcq.querySelector('input:checked');
+            if (!selected) return;
             
-            // Add Firebase save logic
-            if (currentUser) {
-                try {
-                    const lessonId = 'lesson4'; // Hardcoded for this specific lesson
-                    console.log(`User ${currentUser.uid} submitting quiz for ${lessonId}. Score: ${score}/${totalQuestions}`);
-                    
-                    // Save quiz score and mark lesson as complete
-                    await saveQuizResult(currentUser.uid, lessonId, score, totalQuestions);
-                    await saveLessonProgress(currentUser.uid, lessonId);
-                    
-                    console.log('Firebase: Quiz result and lesson progress saved successfully.');
-                } catch (error) {
-                    console.error("Firebase: Error saving quiz progress:", error);
-                    // Non-blocking error: the user will still see their score even if Firebase fails.
-                }
-            } else {
-                console.log("User not logged in. Quiz results will not be saved to the database.");
-            }
+            const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+            const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
+            const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
 
-            // Continue with UI updates
+            if (selected.value === correctAns) {
+                score++;
+                if (corrLabel) corrLabel.classList.add('aw-pop');
+            } else {
+                if (selLabel) {
+                selLabel.classList.add('aw-shake');
+                selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
+                }
+                if (corrLabel) corrLabel.classList.add('aw-pop');
+            }
+            });
+
             const pct = (score / totalQuestions) * 100;
             let msg = '';
             if (pct >= 80) msg = `<strong>Excellent!</strong> You scored ${score}/${totalQuestions}`;
@@ -1971,18 +2028,18 @@
             else msg = `<strong>Keep Learning!</strong> You scored ${score}/${totalQuestions}`;
 
             if (scoreDisplay) {
-                scoreDisplay.innerHTML = msg;
-                scoreDisplay.style.display = 'block';
-                scoreDisplay.style.opacity = '0';
-                setTimeout(() => {
-                    scoreDisplay.style.transition = 'all .5s ease';
-                    scoreDisplay.style.opacity = '1';
-                    scoreDisplay.classList.add('aw-pop');
-                }, 50);
+            scoreDisplay.innerHTML = msg;
+            scoreDisplay.style.display = 'block';
+            scoreDisplay.style.opacity = '0';
+            setTimeout(() => {
+                scoreDisplay.style.transition = 'all .5s ease';
+                scoreDisplay.style.opacity = '1';
+                scoreDisplay.classList.add('aw-pop');
+            }, 50);
             }
 
             if (retryBtn) {
-                retryBtn.style.display = 'inline-block';
+            retryBtn.style.display = 'inline-block';
             }
         }
 
