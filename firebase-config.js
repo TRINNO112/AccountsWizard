@@ -16,7 +16,6 @@ const firebaseConfig = {
   measurementId: "G-YLYVNGL5T7"
 };
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -34,48 +33,16 @@ let currentUser = null;
  * Sign in with Google
  * @returns {Promise<Object>} User object
  */
-export async function saveQuizResult(quizId, score, totalQuestions, answers = [], correctAnswers = []) {
-  if (!currentUser) {
-    console.warn('User not logged in. Quiz result not saved.');
-    showToast('⚠️ Sign in to save your quiz results!');
-    return false;
-  }
-
+export async function signInWithGoogle() {
   try {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-
-    let quizzesData = {};
-    if (userDoc.exists() && userDoc.data().quizzes) {
-      quizzesData = userDoc.data().quizzes;
-    }
-
-    // Initialize quiz array if doesn't exist
-    if (!quizzesData[quizId]) {
-      quizzesData[quizId] = [];
-    }
-
-    // Add new attempt WITH CORRECT ANSWERS
-    quizzesData[quizId].push({
-      score: score,
-      totalQuestions: totalQuestions,
-      percentage: Math.round((score / totalQuestions) * 100),
-      answers: answers, // User's answer choices
-      correctAnswers: correctAnswers, // Correct answer choices
-      timestamp: new Date().toISOString()
-    });
-
-    await setDoc(userRef, {
-      quizzes: quizzesData,
-      lastActivity: new Date().toISOString()
-    }, { merge: true });
-
-    console.log(`✅ Quiz ${quizId} result saved with correct answers!`);
-    return true;
+    const result = await signInWithPopup(auth, provider);
+    currentUser = result.user;
+    showToast(`Welcome ${currentUser.displayName}!`);
+    return currentUser;
   } catch (error) {
-    console.error('Error saving quiz result:', error);
-    showToast('❌ Failed to save quiz result. Please try again.');
-    return false;
+    console.error('Error signing in with Google:', error);
+    showToast('❌ Sign in failed. Please try again.');
+    throw error;
   }
 }
 
@@ -210,13 +177,14 @@ export async function getAllLessonsProgress() {
 }
 
 /**
- * Save quiz results to Firestore
+ * Save quiz results to Firestore (ENHANCED VERSION)
  * @param {string} quizId - Quiz ID
  * @param {number} score - Score achieved
  * @param {number} totalQuestions - Total questions
  * @param {Array} answers - User's answers
+ * @param {Array} correctAnswers - Correct answers for reference
  */
-export async function saveQuizResult(quizId, score, totalQuestions, answers = []) {
+export async function saveQuizResult(quizId, score, totalQuestions, answers = [], correctAnswers = []) {
   if (!currentUser) {
     console.warn('User not logged in. Quiz result not saved.');
     showToast('⚠️ Sign in to save your quiz results!');
@@ -237,12 +205,13 @@ export async function saveQuizResult(quizId, score, totalQuestions, answers = []
       quizzesData[quizId] = [];
     }
 
-    // Add new attempt
+    // Add new attempt WITH CORRECT ANSWERS
     quizzesData[quizId].push({
       score: score,
       totalQuestions: totalQuestions,
       percentage: Math.round((score / totalQuestions) * 100),
-      answers: answers,
+      answers: answers, // User's answer choices
+      correctAnswers: correctAnswers, // Correct answer choices for reference
       timestamp: new Date().toISOString()
     });
 
@@ -251,7 +220,8 @@ export async function saveQuizResult(quizId, score, totalQuestions, answers = []
       lastActivity: new Date().toISOString()
     }, { merge: true });
 
-    console.log(`✅ Quiz ${quizId} result saved!`);
+    console.log(`✅ Quiz ${quizId} result saved with correct answers!`);
+    showToast('✅ Quiz results saved!');
     return true;
   } catch (error) {
     console.error('Error saving quiz result:', error);
@@ -357,7 +327,12 @@ export async function calculateTotalProgress() {
  * @param {string} message - Message to display
  */
 function showToast(message) {
+  // Remove existing toasts
+  const existingToasts = document.querySelectorAll('.firebase-toast');
+  existingToasts.forEach(toast => toast.remove());
+
   const toast = document.createElement('div');
+  toast.className = 'firebase-toast';
   toast.style.cssText = `
     position: fixed;
     bottom: 20px;
@@ -376,35 +351,42 @@ function showToast(message) {
 
   setTimeout(() => {
     toast.style.animation = 'slideOut 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.remove();
+      }
+    }, 300);
   }, 3000);
 }
 
-// Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideIn {
-    from {
-      transform: translateX(400px);
-      opacity: 0;
+// Add CSS animations for toast
+if (!document.querySelector('#firebase-toast-styles')) {
+  const style = document.createElement('style');
+  style.id = 'firebase-toast-styles';
+  style.textContent = `
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
-    to {
-      transform: translateX(0);
-      opacity: 1;
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
     }
-  }
-  @keyframes slideOut {
-    from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(400px);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(style);
+  `;
+  document.head.appendChild(style);
+}
 
 // Export auth and db for advanced usage
-export { auth, db };
+export { auth, db, provider };
