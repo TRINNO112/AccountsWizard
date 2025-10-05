@@ -1545,9 +1545,9 @@
         </div>
         </div>
 
-         <!-- Submit Button -->
+      <!-- Submit Button & Results -->
       <div style="text-align: center; margin: 30px 0;">
-        <button id="submit-mcq" class="submit-button" disabled style="
+        <button id="submit-mcq" class="submit-button" style="
           display: block;
           width: 200px;
           margin: 0 auto;
@@ -1557,10 +1557,43 @@
           border: none;
           border-radius: 8px;
           font-size: 1rem;
-          cursor: pointer;
+          cursor: not-allowed;
           transition: all var(--speed);
           opacity: 0.5;
         ">Submit Answers</button>
+        
+        <!-- Results Display -->
+        <div id="score-display" style="
+          display: none;
+          text-align: center;
+          padding: 20px;
+          margin: 20px 0;
+          background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.1));
+          border-radius: 12px;
+          border-left: 4px solid var(--brand);
+          font-size: 1.1rem;
+          color: var(--text);
+        "></div>
+        
+        <button id="retry-btn" style="
+          display: none;
+          margin: 10px auto;
+          padding: 10px 20px;
+          background: var(--brand-2);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all var(--speed);
+        ">Try Again</button>
+      </div>
+
+      <!-- Circular Progress Bar Container -->
+      <div class="progress-wrapper">
+        <div class="circular-progress" id="circularProgress">
+          <span class="progress-value" id="progressValue">0%</span>
+        </div>
       </div>
       </section>
 
@@ -1640,14 +1673,7 @@
         </ul>
       </div>
     </section>
-
-
-      <!-- Circular Progress Bar Container -->
-      <div class="progress-wrapper">
-        <div class="circular-progress" id="circularProgress">
-          <span class="progress-value" id="progressValue">0%</span>
-        </div>
-      </div>
+    <!-- End of Practical Examples Section -->
     </section>
 
   </main>
@@ -1874,124 +1900,174 @@
 
       function enableSubmitCheck() {
         const answered = $$('#mcq-container input[type=radio]:checked').length;
+        console.log('Questions answered:', answered); // Debug log
+
         if (submitButton) {
-          submitButton.disabled = answered === 0;   // allow submit if >=1
-          submitButton.style.opacity = answered ? '1' : '0.5';
-          if (answered) {
-            submitButton.style.transform = 'scale(1.05)';
-            setTimeout(() => submitButton.style.transform = '', 150);
-          }
+            submitButton.disabled = answered === 0;
+            submitButton.style.opacity = answered === 0 ? '0.5' : '1';
+            submitButton.style.cursor = answered === 0 ? 'not-allowed' : 'pointer';
         }
-      }
-
-      function handleRadio(e) {
-        const input = e.target;
-        if (input.type !== 'radio') return;
-        const mcq = input.closest('.mcq');
-        const correctAns = mcq.dataset.answer;
-        const label = mcq.querySelector(`label[for="${input.id}"]`);
-
-        if (label) {
-          label.classList.add('aw-pop');
-          setTimeout(() => label.classList.remove('aw-pop'), 350);
-        }
-        
-        if (input.value === correctAns) {
-          correctAnswered.add(mcq);
-        } else {
-          correctAnswered.delete(mcq);
-        }
-        
-        animateProgressTo((correctAnswered.size / totalQuestions) * 100);
-        enableSubmitCheck();
-      }
-
-      function handleSubmit() {
-      let score = 0;
-      let attempted = 0;
-      const userAnswers = [];
-
-      mcqs.forEach(mcq => {
-        const correctAns = mcq.dataset.answer;
-        const selected = mcq.querySelector('input:checked');
-        if (!selected) return; // skip unattempted
-        attempted++;
-
-        const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-        const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-        const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
-
-        if (selected.value === correctAns) {
-          score++;
-          if (corrLabel) corrLabel.classList.add('aw-pop');
-        } else {
-          if (selLabel) {
-            selLabel.classList.add('aw-shake');
-            selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
-          }
-          if (corrLabel) corrLabel.classList.add('aw-pop');
-        }
-
-        // === ADD FIREBASE CODE HERE (INSIDE LOOP) ===
-        const questionText = mcq.querySelector('h3').textContent.trim();
-        const selectedText = selLabel ? selLabel.textContent.trim() : "Not Answered";
-        const correctText = corrLabel ? corrLabel.textContent.trim() : "";
-
-        userAnswers.push({
-          question: questionText,
-          selected: selectedText,
-          correct: correctText,
-          isCorrect: selected.value === correctAns
-        });
-        // === END FIREBASE CODE ===
-      });
-
-      // === ADD FIREBASE SAVE HERE (AFTER LOOP) ===
-      if (currentUser) {
-        saveQuizResult('lesson-6-equation', score, attempted, userAnswers);
-      }
-      // === END FIREBASE SAVE ===
-
-      // % based on attempted
-      const pct = attempted ? (score / attempted) * 100 : 0;
-      let msg = '';
-
-      if (pct >= 80) {
-        msg = `🌟 <strong>Excellent!</strong> You nailed ${score}/${attempted}. Keep it up!`;
-      } else if (pct >= 60) {
-        msg = `👍 <strong>Good Job!</strong> You got ${score}/${attempted}. You're improving steadily.`;
-      } else if (pct > 0) {
-        msg = `💡 <strong>Keep Practicing!</strong> You got ${score}/${attempted}. Every mistake is a step to mastery.`;
-      } else {
-        msg = `⚡ <strong>No attempts yet!</strong> Try at least one question.`;
-      }
-
-      if (scoreDisplay) {
-        scoreDisplay.innerHTML = msg;
-        scoreDisplay.style.display = 'block';
-        scoreDisplay.style.opacity = '0';
-        setTimeout(() => {
-          scoreDisplay.style.transition = 'all .5s ease';
-          scoreDisplay.style.opacity = '1';
-          scoreDisplay.classList.add('aw-pop');
-        }, 50);
-      }
-
-      if (retryBtn) {
-        retryBtn.style.display = 'inline-block';
-      }
     }
 
-      function resetQuiz() {
-        correctAnswered.clear();
-        mcqs.forEach(mcq => {
-          mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+    function handleRadio(e) {
+        const input = e.target;
+        if (input.type !== 'radio') return;
+
+        const mcq = input.closest('.mcq');
+        const correctAns = mcq.dataset.answer;
+        
+        // FIRST: Reset all labels in this MCQ to default state
+        mcq.querySelectorAll('label').forEach(label => {
+            label.style.background = 'rgba(255,255,255,.05)';
+            label.style.color = 'var(--muted)';
+            label.style.borderColor = 'transparent';
         });
-        animateProgressTo(0);
-        if (scoreDisplay) scoreDisplay.style.display = 'none';
-        if (retryBtn) retryBtn.style.display = 'none';
+
+        // THEN: Apply style to the selected label
+        const selectedLabel = mcq.querySelector(`label[for="${input.id}"]`);
+        if (selectedLabel) {
+            selectedLabel.style.background = 'rgba(255,255,255,.08)';
+            selectedLabel.style.borderColor = 'var(--brand-2)';
+            selectedLabel.style.color = 'var(--text)';
+            selectedLabel.classList.add('aw-pop');
+            setTimeout(() => selectedLabel.classList.remove('aw-pop'), 350);
+        }
+
+        if (input.value === correctAns) {
+            correctAnswered.add(mcq);
+        } else {
+            correctAnswered.delete(mcq);
+        }
+
+        animateProgressTo((correctAnswered.size / totalQuestions) * 100);
         enableSubmitCheck();
-      }
+    }
+
+    function handleSubmit() {
+        console.log('Submit button clicked!'); // Debug log
+
+        let score = 0;
+        let attempted = 0;
+
+        // Reset all labels to default state
+        mcqs.forEach(mcq => {
+            mcq.querySelectorAll('label').forEach(label => {
+                label.style.background = 'rgba(255,255,255,.05)';
+                label.style.color = 'var(--muted)';
+                label.style.borderColor = 'transparent';
+                label.style.opacity = '1';
+                label.style.visibility = 'visible';
+                label.classList.remove('aw-pop', 'aw-shake');
+            });
+        });
+
+        mcqs.forEach(mcq => {
+            const correctAns = mcq.dataset.answer;
+            const selected = mcq.querySelector('input:checked');
+            if (selected) {
+                attempted++;
+                const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+                const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
+                const corrLabel = corrInput ? mcq.querySelector(`label[for="${corrInput.id}"]`) : null;
+
+                // Ensure labels are visible
+                if (selLabel) { selLabel.style.visibility = 'visible'; selLabel.style.opacity = '1'; }
+                if (corrLabel) { corrLabel.style.visibility = 'visible'; corrLabel.style.opacity = '1'; }
+
+                if (selected.value === correctAns) {
+                    score++;
+                    if (corrLabel) {
+                        corrLabel.style.background = 'var(--brand)';
+                        corrLabel.style.color = 'white';
+                        corrLabel.style.borderColor = 'var(--brand)';
+                        corrLabel.classList.add('aw-pop');
+                    }
+                } else {
+                    if (selLabel) {
+                        selLabel.style.background = '#f87171';
+                        selLabel.style.color = 'white';
+                        selLabel.style.borderColor = '#f87171';
+                        selLabel.classList.add('aw-shake');
+                    }
+                    if (corrLabel) {
+                        corrLabel.style.background = '#4ade80';
+                        corrLabel.style.color = 'white';
+                        corrLabel.style.borderColor = '#4ade80';
+                        corrLabel.classList.add('aw-pop');
+                    }
+                }
+            }
+        });
+
+        // Show results
+        const pct = attempted ? (score / attempted) * 100 : 0;
+        let msg = '';
+        if (pct >= 80) {
+            msg = `🌟 <strong>Excellent!</strong> You scored ${score} out of ${attempted} attempted questions. Keep it up!`;
+        } else if (pct >= 60) {
+            msg = `👍 <strong>Good Job!</strong> You scored ${score} out of ${attempted} attempted questions.`;
+        } else if (pct > 0) {
+            msg = `💡 <strong>Keep Practicing!</strong> You scored ${score} out of ${attempted} attempted questions. Review the material and try again!`;
+        } else {
+            msg = `⚡ <strong>No questions attempted!</strong> Please answer at least one question.`;
+        }
+
+        if (scoreDisplay) {
+            scoreDisplay.innerHTML = msg;
+            scoreDisplay.style.display = 'block';
+            scoreDisplay.classList.add('aw-pop');
+        }
+
+        if (retryBtn) retryBtn.style.display = 'inline-block';
+
+        console.log(`Score: ${score}/${attempted} (${pct}%)`); // Debug log
+    }
+
+    function resetQuiz() {
+    console.log('Resetting quiz...');
+
+    // COMPLETELY reset all state
+    correctAnswered.clear();
+    currentProgress = 0;
+    targetProgress = 0;
+
+    // Reset all MCQ elements
+    mcqs.forEach(mcq => {
+        // Reset radio buttons
+        const radios = mcq.querySelectorAll('input[type=radio]');
+        radios.forEach(radio => {
+            radio.checked = false;
+        });
+
+        // Reset labels - COMPLETE visual reset
+        const labels = mcq.querySelectorAll('label');
+        labels.forEach(label => {
+            label.style.background = 'rgba(255,255,255,.05)';
+            label.style.color = 'var(--muted)';
+            label.style.borderColor = 'transparent';
+            label.classList.remove('aw-shake', 'aw-pop');
+        });
+    });
+
+    // Reset progress display
+    updateCircularUI(0);
+    
+    // Hide results and retry button
+    if (scoreDisplay) {
+        scoreDisplay.style.display = 'none';
+        scoreDisplay.innerHTML = '';
+    }
+    
+    if (retryBtn) {
+        retryBtn.style.display = 'none';
+    }
+
+    // Re-enable submit button
+    enableSubmitCheck();
+    
+    console.log('Quiz fully reset');
+}
+
 
       /* Enhanced Hover Effects */
       function addHoverEffects() {
@@ -2047,6 +2123,7 @@
         const mcqContainer = $('#mcq-container');
         if (mcqContainer) {
           mcqContainer.addEventListener('change', handleRadio);
+          console.log('MCQ Container found:', mcqContainer);
         }
         
         if (submitButton) {
