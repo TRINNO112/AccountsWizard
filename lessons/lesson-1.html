@@ -842,6 +842,7 @@
             setTimeout(()=>b.remove(),dur*1000);
           }
           setInterval(createFloaters,15000);
+          setTimeout(() => bubble.remove(), 15000); // remove bubble after 15s
         })();
       }
 

@@ -1671,7 +1671,26 @@
             </div>
         </section>
 
-        <script>
+        <script type="module">
+            // ======================================================
+            // 1. IMPORT FIREBASE FUNCTIONS
+            // ======================================================
+            import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
+
+            // ======================================================
+            // 2. TRACK CURRENT USER
+            // ======================================================
+            let currentUser = null;
+            onAuthChange(user => {
+            if (user) {
+                currentUser = user;
+                console.log("Lesson 1: User is logged in:", user.displayName);
+                initializeUserProfile(user);
+            } else {
+                currentUser = null;
+                console.log("Lesson 1: User is logged out.");
+            }
+            });
 
         (() => {
         const $ = sel => document.querySelector(sel);
@@ -1908,9 +1927,9 @@
             enableSubmitCheck();
         }
 
-        function handleSubmit() {
-            let score = 0;
-            mcqs.forEach(mcq => {
+        async function handleSubmit() {
+        let score = 0;
+        mcqs.forEach(mcq => {
             const correctAns = mcq.dataset.answer;
             const selected = mcq.querySelector('input:checked');
             if (!selected) return;
@@ -1924,20 +1943,20 @@
                 if (corrLabel) corrLabel.classList.add('aw-pop');
             } else {
                 if (selLabel) {
-                selLabel.classList.add('aw-shake');
-                selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
+                    selLabel.classList.add('aw-shake');
+                    selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
                 }
                 if (corrLabel) corrLabel.classList.add('aw-pop');
             }
-            });
+        });
 
-            const pct = (score / totalQuestions) * 100;
-            let msg = '';
-            if (pct >= 80) msg = `<strong>Excellent!</strong> You scored ${score}/${totalQuestions}`;
-            else if (pct >= 60) msg = `<strong>Good Job!</strong> You scored ${score}/${totalQuestions}`;
-            else msg = `<strong>Keep Learning!</strong> You scored ${score}/${totalQuestions}`;
+        const pct = (score / totalQuestions) * 100;
+        let msg = '';
+        if (pct >= 80) msg = `<strong>Excellent!</strong> You scored ${score}/${totalQuestions}`;
+        else if (pct >= 60) msg = `<strong>Good Job!</strong> You scored ${score}/${totalQuestions}`;
+        else msg = `<strong>Keep Learning!</strong> You scored ${score}/${totalQuestions}`;
 
-            if (scoreDisplay) {
+        if (scoreDisplay) {
             scoreDisplay.innerHTML = msg;
             scoreDisplay.style.display = 'block';
             scoreDisplay.style.opacity = '0';
@@ -1946,12 +1965,20 @@
                 scoreDisplay.style.opacity = '1';
                 scoreDisplay.classList.add('aw-pop');
             }, 50);
-            }
-
-            if (retryBtn) {
-            retryBtn.style.display = 'inline-block';
-            }
         }
+
+        if (retryBtn) retryBtn.style.display = 'inline-block';
+
+        // 🔥 FIREBASE SAVE
+        if (currentUser) {
+            await saveQuizResult(`lesson4-quiz`, score, totalQuestions, mcqs.map(mcq => {
+                const sel = mcq.querySelector('input:checked');
+                return sel ? sel.value : null;
+            }));
+            console.log('✅ Quiz result saved to Firebase for Lesson 4');
+        }
+    }
+
 
         function resetQuiz() {
             correctAnswered.clear();
@@ -2057,6 +2084,14 @@
             }, 1000);
         });
         })();
+
+        async function saveLessonProgressFirebase() {
+            if (currentUser) {
+                const progressPercent = (correctAnswered.size / totalQuestions) * 100;
+                await saveLessonProgress('lesson-4', progressPercent, correctAnswered.size, totalQuestions);
+                console.log('✅ Lesson 4 progress saved to Firebase');
+            }
+        }
         </script>
   </main>
 </body>
