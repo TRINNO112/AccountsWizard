@@ -5884,6 +5884,19 @@
     resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function toggleSolution(solutionId) {
+      const solutionContent = document.getElementById(solutionId);
+      const toggleBtn = solutionContent.previousElementSibling;
+      
+      if (solutionContent.classList.contains('active')) {
+          solutionContent.classList.remove('active');
+          toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Show Solution';
+      } else {
+          solutionContent.classList.add('active');
+          toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Solution';
+      }
+  }
+
   // Add hint section
   const hintHTML = `
     <div class="transaction-hint">

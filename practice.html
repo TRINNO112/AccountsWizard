@@ -711,15 +711,15 @@
     for(let i=0;i<8;i++) mkBubble();
 
     // Reveal animations
-    const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-        if(e.isIntersecting){
-        e.target.classList.add('on');
-        observer.unobserve(e.target);
-        }
-    });
-    }, { threshold:.14 });
-    $$('.reveal').forEach(el=> observer.observe(el));  // ← Fixed: changed $ to $$
+        const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+            if(e.isIntersecting){
+            e.target.classList.add('on');
+            observer.unobserve(e.target);
+            }
+        });
+        }, { threshold:.14 });
+        $$('.reveal').forEach(el=> observer.observe(el));  // ← Fixed: changed $ to $$
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
