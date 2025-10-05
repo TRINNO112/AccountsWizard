@@ -1462,6 +1462,11 @@
             <div class="logo">AccountsWizard</div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
+                <li><a href="TF.html">True/False</a></li>
+                <li><a href="quiz-files/GTA.html">Guess The Account</a></li>
+                <li><a href="quiz-files/SC.html">Scenario</a></li>
+                <li><a href="quiz-files/LG.html">Legder game</a></li>
+                <li><a href="quiz-files/RF.html">Rapid Fire</a></li>
             </ul>
         </div>
     </nav>
@@ -3905,78 +3910,122 @@
     const newQuizBtn = document.getElementById('newQuizBtn');
     const reviewAnswersBtn = document.getElementById('reviewAnswersBtn');
 
-    // Chapter Selection
+    // Chapter Selection - Multiple
     chapterCards.forEach(card => {
         card.addEventListener('click', () => {
-            chapterCards.forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
+            card.classList.toggle('selected');
             
-            const chapterId = card.dataset.chapter;
-            currentQuiz.chapter = chapterId;
-            startQuizBtn.disabled = false;
+            const selectedChapters = Array.from(document.querySelectorAll('.chapter-card.selected'))
+                .map(card => card.dataset.chapter);
+            
+            currentQuiz.chapters = selectedChapters;
+            startQuizBtn.disabled = selectedChapters.length === 0;
         });
     });
 
-    // Start Quiz Button
+    // Start Quiz Button - FIXED VERSION
     startQuizBtn.addEventListener('click', () => {
-        if (!currentQuiz.chapter) return;
+        if (!currentQuiz.chapters || currentQuiz.chapters.length === 0) return;
         
-        loadChapterQuiz(currentQuiz.chapter);
+        loadChapterQuiz(currentQuiz.chapters); // Pass the array of chapters
         chapterCard.classList.remove('active');
         quizCard.classList.add('active');
         updateStepper(2);
     });
 
-    // Random Quiz Button
+    // Random Quiz Button - Selects 2-3 random chapters
     randomQuizBtn.addEventListener('click', () => {
         const availableChapters = Object.keys(chapterQuestions);
-        const randomChapter = availableChapters[Math.floor(Math.random() * availableChapters.length)];
+        const numChapters = Math.min(3, Math.max(2, Math.floor(Math.random() * 3) + 2));
         
-        chapterCards.forEach(c => c.classList.remove('selected'));
-        const selectedCard = document.querySelector(`[data-chapter="${randomChapter}"]`);
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
+        // Select random chapters
+        const selectedChapters = [];
+        const tempChapters = [...availableChapters];
+        
+        for (let i = 0; i < numChapters; i++) {
+            const randomIndex = Math.floor(Math.random() * tempChapters.length);
+            selectedChapters.push(tempChapters.splice(randomIndex, 1)[0]);
         }
         
-        currentQuiz.chapter = randomChapter;
+        // Update UI
+        chapterCards.forEach(c => c.classList.remove('selected'));
+        selectedChapters.forEach(chapterId => {
+            const card = document.querySelector(`[data-chapter="${chapterId}"]`);
+            if (card) card.classList.add('selected');
+        });
+        
+        currentQuiz.chapters = selectedChapters;
         startQuizBtn.disabled = false;
         
-        loadChapterQuiz(randomChapter);
+        loadChapterQuiz(selectedChapters);
         chapterCard.classList.remove('active');
         quizCard.classList.add('active');
         updateStepper(2);
     });
 
-    // Load Chapter Quiz
-    function loadChapterQuiz(chapterId) {
-        const chapter = chapterQuestions[chapterId];
-        if (!chapter) return;
+    // Utility function to shuffle array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
 
+    function loadChapterQuiz(chapterIds) {
+        // Combine questions from all selected chapters
+        const allQuestions = [];
+        chapterIds.forEach(chapterId => {
+            const chapter = chapterQuestions[chapterId];
+            if (chapter) {
+                chapter.questions.forEach(q => {
+                    allQuestions.push({
+                        ...q,
+                        sourceChapter: chapterId,
+                        sourceChapterTitle: chapter.title
+                    });
+                });
+            }
+        });
+        
+    // Shuffle questions for random order
+        currentQuiz.allQuestions = shuffleArray(allQuestions);
         currentQuiz.currentQuestion = 0;
         currentQuiz.score = 0;
         currentQuiz.userAnswers = [];
         currentQuiz.skippedQuestions = [];
         currentQuiz.startTime = new Date();
 
-        quizChapterTitle.textContent = `Chapter ${chapterId}: ${chapter.title}`;
-        quizChapterDescription.textContent = chapter.description;
+        // Update quiz title for multiple chapters
+        if (chapterIds.length === 1) {
+            const chapter = chapterQuestions[chapterIds[0]];
+            quizChapterTitle.textContent = `Chapter ${chapterIds[0]}: ${chapter.title}`;
+            quizChapterDescription.textContent = chapter.description;
+        } else {
+            quizChapterTitle.textContent = `${chapterIds.length} Chapters Combined Quiz`;
+            quizChapterDescription.textContent = `Questions from chapters: ${chapterIds.join(', ')}`;
+        }
 
         loadQuestion();
     }
 
-    // Load Question
     function loadQuestion() {
-        const chapter = chapterQuestions[currentQuiz.chapter];
-        const question = chapter.questions[currentQuiz.currentQuestion];
+        if (!currentQuiz.allQuestions || currentQuiz.allQuestions.length === 0) {
+            showResults();
+            return;
+        }
+
+        const question = currentQuiz.allQuestions[currentQuiz.currentQuestion];
         
         if (!question) {
             showResults();
             return;
         }
 
-        const progress = ((currentQuiz.currentQuestion + 1) / chapter.questions.length) * 100;
+        const progress = ((currentQuiz.currentQuestion + 1) / currentQuiz.allQuestions.length) * 100;
         progressBar.style.width = `${progress}%`;
-        progressText.textContent = `${currentQuiz.currentQuestion + 1} / ${chapter.questions.length}`;
+        progressText.textContent = `${currentQuiz.currentQuestion + 1} / ${currentQuiz.allQuestions.length}`;
 
         const isMultiple = question.type === 'multiple';
         const questionTypeHtml = isMultiple ? 
@@ -3987,8 +4036,9 @@
                 <div style="display: flex; align-items: center;">
                     <div class="question-badge">${isMultiple ? 'Multiple Selection' : 'Single Choice'}</div>
                     ${questionTypeHtml}
+                    ${question.sourceChapter ? `<span class="question-type-badge">Chapter ${question.sourceChapter}</span>` : ''}
                 </div>
-                <div class="question-number">Question ${currentQuiz.currentQuestion + 1} of ${chapter.questions.length}</div>
+                <div class="question-number">Question ${currentQuiz.currentQuestion + 1} of ${currentQuiz.allQuestions.length}</div>
             </div>
             
             <div class="question-text">
@@ -4005,7 +4055,7 @@
             </div>
 
             <div class="explanation" id="explanation">
-                <div class="explanation-title">Explanation</div>
+                <div class="explanation-title">Detailed Explanation</div>
                 <div class="explanation-text">${question.explanation}</div>
             </div>
         `;
@@ -4015,7 +4065,6 @@
         if (isMultiple) {
             options.forEach(option => {
                 option.addEventListener('click', () => {
-                    // Better way to check if answer was submitted
                     const explanation = document.getElementById('explanation');
                     if (explanation.classList.contains('show')) return;
                     
@@ -4044,8 +4093,7 @@
 
     // Submit Answer
     submitAnswerBtn.addEventListener('click', () => {
-        const chapter = chapterQuestions[currentQuiz.chapter];
-        const question = chapter.questions[currentQuiz.currentQuestion];
+        const question = currentQuiz.allQuestions[currentQuiz.currentQuestion];
         const isMultiple = question.type === 'multiple';
         
         if (isMultiple) {
@@ -4130,9 +4178,7 @@
 
     // Next Question
     nextBtn.addEventListener('click', () => {
-        const chapter = chapterQuestions[currentQuiz.chapter];
-        
-        if (currentQuiz.currentQuestion < chapter.questions.length - 1) {
+        if (currentQuiz.currentQuestion < currentQuiz.allQuestions.length - 1) {
             currentQuiz.currentQuestion++;
             loadQuestion();
         } else {
@@ -4148,12 +4194,27 @@
         }
     });
 
+    // Skip Question
+    skipBtn.addEventListener('click', () => {
+        currentQuiz.skippedQuestions.push(currentQuiz.currentQuestion);
+        currentQuiz.userAnswers[currentQuiz.currentQuestion] = -1;
+        
+        if (currentQuiz.currentQuestion < currentQuiz.allQuestions.length - 1) {
+            currentQuiz.currentQuestion++;
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    });
+
     // Show Results
     function showResults() {
-        const chapter = chapterQuestions[currentQuiz.chapter];
-        const scorePercent = Math.round((currentQuiz.score / chapter.questions.length) * 100);
+        if (!currentQuiz.allQuestions || currentQuiz.allQuestions.length === 0) return;
+        
+        const totalQuestions = currentQuiz.allQuestions.length;
+        const scorePercent = Math.round((currentQuiz.score / totalQuestions) * 100);
         const skippedCount = currentQuiz.skippedQuestions.length;
-        const wrongCount = chapter.questions.length - currentQuiz.score - skippedCount;
+        const wrongCount = totalQuestions - currentQuiz.score - skippedCount;
         
         const scoreCircle = document.querySelector('.score-circle-container');
         scoreCircle.style.setProperty('--score-percent', scorePercent);
@@ -4161,7 +4222,7 @@
         document.querySelector('.score-percentage').textContent = `${scorePercent}%`;
         
         const statCards = document.querySelectorAll('.stat-card');
-        statCards[0].querySelector('.stat-value').textContent = chapter.questions.length;
+        statCards[0].querySelector('.stat-value').textContent = totalQuestions;
         statCards[1].querySelector('.stat-value').textContent = currentQuiz.score;
         statCards[2].querySelector('.stat-value').textContent = wrongCount;
         statCards[3].querySelector('.stat-value').textContent = skippedCount;

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scenario Challenge – AccountsWizard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root{
+        --primary:#6366f1;          /* Indigo */
+        --primary-dark:#4f46e5;
+        --secondary:#8b5cf6;
+        --success:#10b981;          /* Emerald */
+        --error:#ef4444;            /* Red */
+
+        --bg-primary:#0f172a;       /* Slate‑900 */
+        --surface:#1e293b;          /* Slate‑800 */
+        --surface-hover:#334155;    /* Slate‑700 */
+
+        --text-primary:#f8fafc;
+        --text-secondary:#cbd5e1;
+        --text-muted:#94a3b8;
+
+        --radius-md:12px;
+        --radius-lg:16px;
+        --transition:all .25s ease;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+        font-family:'Inter',sans-serif;
+        background:var(--bg-primary);
+        color:var(--text-primary);
+        min-height:100vh;
+        line-height:1.6;
+    }
+    body::before{
+        content:"";
+        position:fixed;top:0;left:0;width:100%;height:100%;
+        background:
+            radial-gradient(circle at 10% 10%,rgba(99,102,241,.1)0%,transparent 40%),
+            radial-gradient(circle at 90% 90%,rgba(139,92,246,.08)0%,transparent 40%);
+        z-index:-1;
+    }
+    nav{
+        background:rgba(15,23,42,.95);
+        backdrop-filter:blur(12px);
+        border-bottom:1px solid rgba(255,255,255,.1);
+        padding:1rem 0;
+        position:sticky;top:0;z-index:100;
+    }
+    .nav-container{
+        max-width:900px;margin:auto;padding:0 1.5rem;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    .logo{font-size:1.5rem;font-weight:800;color:var(--primary);}
+    .nav-links{display:flex;gap:1.5rem;list-style:none}
+    .nav-links a{
+        color:var(--text-muted);text-decoration:none;font-weight:500;
+        transition:color .2s;
+    }
+    .nav-links a:hover{color:var(--text-primary);}
+
+    .container{max-width:900px;margin:auto;padding:2.5rem 1.5rem}
+    .header{text-align:center;margin-bottom:2rem}
+    .header h1{
+        font-size:2.5rem;font-weight:900;
+        background:linear-gradient(135deg,var(--primary),var(--secondary));
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .header p{color:var(--text-muted);}
+
+    .quiz-card{
+        background:var(--surface);
+        border-radius:var(--radius-lg);
+        padding:2rem;
+        box-shadow:0 10px 30px rgba(0,0,0,.3);
+        border:1px solid rgba(255,255,255,.1);
+        animation:fadeIn .5s ease-out;
+    }
+    @keyframes fadeIn{
+        from{opacity:0;transform:translateY(20px)}
+        to{opacity:1;transform:translateY(0)}
+    }
+
+    .question-counter{
+        text-align:right;color:var(--primary);font-weight:700;margin-bottom:1.5rem;
+    }
+    .scenario-box{
+        background:var(--bg-secondary);
+        border-left:5px solid var(--primary-dark);
+        padding:1.5rem;margin-bottom:1.5rem;
+        border-radius:var(--radius-md);
+        font-style:italic;color:var(--text-secondary);
+        font-size:1.1rem;
+    }
+    .question-text{
+        font-size:1.4rem;font-weight:600;margin-bottom:1rem;color:var(--text-primary);
+    }
+
+    /* ---------- BIGGER MCQ OPTIONS ---------- */
+    .options-list{
+        display:flex;flex-direction:column;gap:1rem;margin:2rem 0;
+    }
+    .option-item{
+        padding:1.75rem;               /* larger click area   */
+        font-size:1.2rem;              /* bigger text        */
+        font-weight:500;
+        background:rgba(255,255,255,.05);
+        border:2px solid rgba(255,255,255,.1);
+        border-radius:var(--radius-md);
+        cursor:pointer;
+        transition:var(--transition);
+    }
+    .option-item:hover{
+        background:var(--surface-hover);
+        border-color:var(--primary);
+        transform:translateX(5px);
+    }
+    .option-item.correct{
+        background:rgba(16,185,129,.15);
+        border-color:var(--success);
+        color:var(--success);
+        font-weight:700;
+    }
+    .option-item.wrong{
+        background:rgba(239,68,68,.15);
+        border-color:var(--error);
+        color:var(--error);
+    }
+
+    .feedback{
+        padding:1.5rem;border-radius:var(--radius-lg);
+        margin-top:1.5rem;display:none;
+    }
+    .feedback.show{display:block}
+    .feedback-content{display:flex;gap:1rem;align-items:center}
+    .feedback-icon{font-size:2rem}
+    .feedback.correct{
+        background:rgba(16,185,129,.1);
+        border:2px solid var(--success);
+    }
+    .feedback.wrong{
+        background:rgba(239,68,68,.1);
+        border:2px solid var(--error);
+    }
+    .feedback.correct .feedback-icon{color:var(--success)}
+    .feedback.wrong .feedback-icon{color:var(--error)}
+    .feedback-title{font-weight:700;font-size:1.25rem;margin-bottom:.5rem}
+    .feedback-text{font-size:1rem}
+
+    .btn{
+        padding:.75rem 1.75rem;border:none;border-radius:var(--radius-md);
+        font-weight:600;cursor:pointer;transition:var(--transition);
+        display:inline-flex;align-items:center;gap:.5rem;
+    }
+    .btn-primary{
+        background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+        color:#fff;box-shadow:0 4px 15px rgba(99,102,241,.4);
+    }
+    .btn-primary:hover{
+        transform:translateY(-2px);
+        box-shadow:0 6px 20px rgba(99,102,241,.6);
+    }
+    .btn-container{display:flex;justify-content:center;gap:1rem;margin-top:2rem}
+
+    .stats-summary{
+        display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0;
+    }
+    .stat-box{
+        background:var(--bg-secondary);padding:1.5rem 1rem;
+        border-radius:var(--radius-lg);text-align:center;
+        border:1px solid rgba(255,255,255,.1);
+    }
+    .stat-number{
+        font-size:2.2rem;font-weight:900;
+        background:linear-gradient(135deg,var(--success),var(--primary));
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .stat-label{color:var(--text-muted);font-size:.875rem;text-transform:uppercase;letter-spacing:1px}
+    .hidden{display:none}
+
+    @media(max-width:600px){
+        .stats-summary{grid-template-columns:1fr}
+    }
+</style>
+</head>
+<body>
+<nav>
+    <div class="nav-container">
+        <div class="logo">AccountsWizard</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="quiz.html">Main Quiz</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header">
+        <h1>Scenario Challenge</h1>
+        <p>Test your practical accounting knowledge</p>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+        <div class="question-counter" id="questionCounter">Question 1 of 10</div>
+
+        <div id="questionContent"><!-- filled by JS --></div>
+
+        <div class="feedback" id="feedback">
+            <div class="feedback-content">
+                <div class="feedback-icon" id="feedbackIcon"></div>
+                <div>
+                    <div class="feedback-title" id="feedbackTitle"></div>
+                    <div id="feedbackText"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container" id="actionBtns"></div>
+    </div>
+
+    <div class="quiz-card hidden" id="resultsCard">
+        <h2 style="text-align:center;margin-bottom:2rem;font-size:2rem;">Quiz Complete!</h2>
+
+        <div class="stats-summary">
+            <div class="stat-box"><div class="stat-number" id="correctCount">0</div><div class="stat-label">Correct</div></div>
+            <div class="stat-box"><div class="stat-number" id="wrongCount">0</div><div class="stat-label">Wrong</div></div>
+            <div class="stat-box"><div class="stat-number" id="scorePercent">0%</div><div class="stat-label">Score</div></div>
+        </div>
+
+        <div id="performanceMsg" style="text-align:center;font-size:1.5rem;font-weight:600;margin:2rem 0;color:var(--text-secondary);"></div>
+
+        <div class="btn-container">
+            <button class="btn btn-primary" onclick="location.reload()"><i class="fas fa-redo"></i> Try Again</button>
+            <button class="btn btn-primary" onclick="location.href='quiz.html'"><i class="fas fa-book"></i> Main Quiz</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ---------- ENHANCED SCENARIO QUESTIONS ---------- */
+    const scenarioQuestions = [
+        {
+            scenario:"Ramesh Aggarwal commenced a wholesale electronics business on April 1, 2023. He invested ₹50,000 in a current account with State Bank of India, transferred inventory of electronic components valued at ₹20,000 from his previous proprietorship (which had been dissolved), and also contributed his personal laptop worth ₹15,000 for business use. The business operates under the entity concept, wherein the proprietor's personal assets must be distinguished from business assets.",
+            question:"Which accounts are affected in the initial investment transaction?",
+            options:[
+                "Cash A/c, Goods A/c, Capital A/c",
+                "Bank A/c, Purchase A/c, Capital A/c",
+                "Bank A/c, Goods A/c, Debtors A/c",
+                "Cash A/c, Sales A/c, Capital A/c"
+            ],
+            correct:0,
+            explanation:"Cash and Goods (assets) are debited; Capital (owner's equity) is credited."
+        },
+        {
+            scenario:"Paramount Electronics Ltd. renovated their corporate headquarters, requiring several fixed asset acquisitions. On May 15, 2023, they purchased executive furniture worth ₹10,000 plus GST @18% on credit from XYZ Furniture with payment terms of 2/10, n/30 (2% discount if paid within 10 days, net amount due in 30 days). The company accountant must determine the appropriate book of original entry for this transaction, considering that inventory purchases and fixed asset acquisitions follow different recording protocols as per the entity's accounting policy manual.",
+            question:"Which book of entry should record this furniture purchase transaction?",
+            options:[
+                "Cash Book",
+                "Purchase Book (Goods)",
+                "Journal Proper",
+                "Bills Payable Book"
+            ],
+            correct:2,
+            explanation:"Fixed‑asset purchases on credit are recorded in the Journal Proper."
+        },
+        {
+            scenario:"Supertech Ltd. sold enterprise-grade networking equipment to Mohan Enterprises on 90-day credit terms for ₹15,000 (exclusive of GST) on June 3, 2023. The sale was recorded at standard industry margins. On June 28, Mohan discovered that some components were incompatible with their existing infrastructure and returned goods invoiced at ₹2,000. Supertech issued a credit note for the same amount on July 1. Before the return, Mohan had already made a partial payment of ₹5,000 on June 15. The CFO now needs to determine the outstanding receivable balance for month-end reconciliation.",
+            question:"What will be the final balance in Mohan Enterprises' account after all these transactions?",
+            options:[
+                "₹15,000 Debit (Dr)",
+                "₹13,000 Debit (Dr)",
+                "₹15,000 Credit (Cr)",
+                "₹13,000 Credit (Cr)"
+            ],
+            correct:1,
+            explanation:"Mohan is a debtor: Dr ₹15,000 – Cr ₹2,000 = Dr ₹13,000."
+        },
+        {
+            scenario:"Apex Consultancy operates on accrual basis accounting as per IND-AS requirements. For the month of August 2023, the firm processed the following expenses: (i) Monthly staff salaries amounting to ₹8,000 transferred electronically via RTGS from their corporate account with HDFC Bank on August 30, (ii) Office premises rent of ₹5,000 paid in cash to the landlord, Mr. Saxena, on August 28, (iii) Electricity charges of ₹3,000 for July that remained outstanding, and (iv) Advance insurance premium of ₹12,000 for the next fiscal year. The firm's financial controller is preparing month-end adjusting entries and must determine which nominal accounts require debits.",
+            question:"Which accounts will be debited in the August expense transactions?",
+            options:[
+                "Salary A/c and Rent A/c",
+                "Cash A/c and Bank A/c",
+                "Bank A/c and Rent A/c",
+                "Salary A/c only"
+            ],
+            correct:0,
+            explanation:"Both Salary and Rent are expense (nominal) accounts – they are debited."
+        },
+        {
+            scenario:"Global Traders maintains separate cash and banking operations for efficient treasury management. On September 18, 2023, the firm's working capital manager initiated a fund transfer of ₹3,000 from their overdraft account with Axis Bank (account no. 58743219) to replenish the petty cash fund maintained by the administrative department for routine office expenses. The firm follows a double-entry imprest system for petty cash and utilizes an integrated ERP system that requires proper classification of inter-account transfers. This transaction occurred just before the quarterly audit review.",
+            question:"This cash transfer entry is classified as:",
+            options:[
+                "Simple entry",
+                "Contra entry",
+                "Compound entry",
+                "Opening entry"
+            ],
+            correct:1,
+            explanation:"Cash A/c Dr, Bank A/c Cr – a contra entry within the cash book."
+        },
+        {
+            scenario:"Universal Exports had outstanding receivables from Kumar Industries for ₹12,000 for goods supplied in July 2023, which remained unpaid despite multiple follow-ups. After negotiation, on October 5, 2023, Kumar Industries' finance director issued a 3-month bill of exchange (No. BEX-2023/481) for the full amount bearing interest at 12% per annum, drawn on State Bank of India, Nariman Point Branch. Universal's credit controller accepted this negotiable instrument as settlement of the open account receivable. The bill matures on January 5, 2024, and Universal's accounting department must record this financial instrument properly in their accounts as per relevant accounting standards governing financial instruments.",
+            question:"What is the appropriate journal entry for recording this bill receivable?",
+            options:[
+                "Bills Receivable A/c Dr, To Kumar Industries A/c",
+                "Kumar Industries A/c Dr, To Bills Receivable A/c",
+                "Cash A/c Dr, To Bills Receivable A/c",
+                "Bills Receivable A/c Dr, To Cash A/c"
+            ],
+            correct:0,
+            explanation:"Bills Receivable (asset) is debited; Kumar's account is credited."
+        },
+        {
+            scenario:"Himalayan Manufacturing acquired specialized industrial machinery components on November 10, 2023, from Precision Engineering Ltd. The purchase invoice detailed: Base price ₹25,000, Special packaging ₹1,200, Delivery charges ₹800, Trade discount 5% on base price only, followed by 18% IGST on the post-discount value (including packaging and delivery). The transaction was conducted interstate, from Maharashtra to Gujarat, hence attracting integrated tax rather than split CGST/SGST. The company accountant needs to determine the total liability to be recorded in the supplier's account in accordance with GST valuation rules while ensuring input tax credit eligibility is properly documented.",
+            question:"What is the total amount to be credited to Precision Engineering Ltd.'s account?",
+            options:[
+                "₹25,000 (Cost only)",
+                "₹29,500 (Cost + GST)",
+                "₹4,500 (GST only)",
+                "₹27,500"
+            ],
+            correct:1,
+            explanation:"₹25,000 + 18% of ₹25,000 = ₹29,500."
+        },
+        {
+            scenario:"Everest Distributors implemented a sales promotion strategy to liquidate slow-moving inventory before fiscal year-end. On December 12, 2023, they sold premium appliances to Royal Retailers for a catalog price of ₹20,000 with stated terms of 2/10, n/30. Royal settled ₹18,000 within the discount period (December 19) and Everest allowed them the full ₹2,000 as settlement discount, though technically the mathematical discount at 2% should have been only ₹400. The additional ₹1,600 was granted as a special volume rebate to maintain the business relationship. Everest's CFO must now determine the correct accounting treatment of this non-standard discount, considering the substance of the transaction over its form, and whether it represents a financial discount or a marketing expense.",
+            question:"Which account should be debited for the ₹2,000 price reduction?",
+            options:[
+                "Discount Received A/c",
+                "Discount Allowed A/c",
+                "Debtor's A/c",
+                "Sales A/c"
+            ],
+            correct:1,
+            explanation:"Discount Allowed is an expense for the seller."
+        },
+        {
+            scenario:"Omega Technologies Ltd. acquired specialized semiconductor manufacturing equipment on January 15, 2022, at a cost of ₹50,000, with an estimated useful life of 10 years and residual value of ₹5,000. The company follows the straight-line method of depreciation as per its accounting policy. On December 31, 2023, during the fiscal year-end closing process, the company's asset management committee conducted an impairment review in accordance with IND-AS 36 and determined that no impairment was necessary. However, the regular depreciation charge of ₹5,000 for the financial year 2023 (calculated as [₹50,000 - ₹5,000] ÷ 10 × 1) still needs to be recorded. The financial controller must determine the appropriate type of year-end entry required.",
+            question:"What type of accounting entry is needed for recording this annual depreciation?",
+            options:[
+                "Rectifying entry",
+                "Closing entry",
+                "Adjusting entry",
+                "Transfer entry"
+            ],
+            correct:2,
+            explanation:"Depreciation is an adjusting entry."
+        },
+        {
+            scenario:"Innovative Marketing Solutions launched a comprehensive promotional campaign for their new enterprise resource planning (ERP) software aimed at the manufacturing sector. As part of the strategy, on February 25, 2023, they distributed fully functional 30-day trial versions of their software (valued at ₹8,000 per license in their inventory system) to 10 potential high-value clients identified through industry exhibitions. The company uses perpetual inventory system with FIFO method and maintains separate accounts for different types of marketing expenditures. The marketing director needs guidance on the appropriate accounting treatment for these free trials, considering both the inventory reduction and marketing expense recognition, while complying with matching principle under accrual basis accounting.",
+            question:"Which account should be debited for the ₹8,000 worth of software distributed as free trials?",
+            options:[
+                "Sales A/c",
+                "Advertisement A/c",
+                "Drawings A/c",
+                "Loss by Theft A/c"
+            ],
+            correct:1,
+            explanation:"Free samples are a marketing expense – Advertisement A/c."
+        }
+    ];
+
+/* ---------- QUIZ LOGIC ---------- */
+let currentQuestion = 0;
+let score = 0;
+let questions = [];
+
+function initQuiz(){
+    document.getElementById('resultsCard').classList.add('hidden');
+    document.getElementById('quizCard').classList.remove('hidden');
+
+    questions = shuffleArray(scenarioQuestions).slice(0,10);   // 10 random questions
+    currentQuestion = 0;
+    score = 0;
+    loadQuestion();
+}
+function shuffleArray(arr){
+    const a = [...arr];
+    for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()* (i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+}
+function loadQuestion(){
+    if(currentQuestion>=questions.length){showResults();return;}
+
+    const q = questions[currentQuestion];
+    document.getElementById('questionCounter').textContent = 
+        `Question ${currentQuestion+1} of ${questions.length}`;
+    document.getElementById('feedback').classList.remove('show');
+
+    const html = `
+        <div class="scenario-box"><i class="fas fa-hand-holding-usd"></i> ${q.scenario}</div>
+        <div class="question-text">${q.question}</div>
+        <div class="options-list">
+            ${q.options.map((opt,i)=>`
+                <div class="option-item" data-index="${i}">${opt}</div>
+            `).join('')}
+        </div>
+    `;
+    document.getElementById('questionContent').innerHTML = html;
+
+    document.querySelectorAll('.option-item').forEach(item=>{
+        item.addEventListener('click',handleOptionClick);
+    });
+    document.getElementById('actionBtns').innerHTML = '';
+}
+function handleOptionClick(e){
+    const selectedIdx = parseInt(e.currentTarget.dataset.index);
+    const q = questions[currentQuestion];
+    const isCorrect = selectedIdx===q.correct;
+
+    // lock all options
+    document.querySelectorAll('.option-item').forEach(o=>o.style.pointerEvents='none');
+
+    // highlight
+    document.querySelectorAll('.option-item').forEach((o,i)=>{
+        if(i===q.correct) o.classList.add('correct');
+        if(i===selectedIdx && !isCorrect) o.classList.add('wrong');
+    });
+
+    showFeedback(isCorrect,q.explanation);
+}
+function showFeedback(isCorrect,explanation){
+    if(isCorrect){score++;createConfetti();}
+    const fb = document.getElementById('feedback');
+    fb.className = `feedback ${isCorrect?'correct':'wrong'} show`;
+    document.getElementById('feedbackTitle').textContent = isCorrect?'✓ Correct!':'✗ Incorrect';
+    document.getElementById('feedbackText').textContent = explanation;
+    document.getElementById('feedbackIcon').innerHTML = isCorrect?
+        '<i class="fas fa-thumbs-up"></i>':'<i class="fas fa-lightbulb"></i>';
+
+    document.getElementById('actionBtns').innerHTML = `
+        <button class="btn btn-primary" onclick="nextQuestion()">
+            Next Question <i class="fas fa-arrow-right"></i>
+        </button>
+    `;
+}
+function nextQuestion(){
+    currentQuestion++;
+    loadQuestion();
+}
+function showResults(){
+    const percent = Math.round(score/questions.length*100);
+    document.getElementById('quizCard').classList.add('hidden');
+    document.getElementById('resultsCard').classList.remove('hidden');
+
+    document.getElementById('correctCount').textContent = score;
+    document.getElementById('wrongCount').textContent = questions.length-score;
+    document.getElementById('scorePercent').textContent = percent+'%';
+
+    let msg='';
+    if(percent>=80){msg="Outstanding! You've mastered the concepts!";createConfetti(100);}
+    else if(percent>=60){msg="Great job! Keep refining your skills.";}
+    else{msg="Good effort! Review the scenarios again.";}
+    document.getElementById('performanceMsg').textContent = msg;
+}
+
+/* ---------- CONFETTI (simple) ---------- */
+function createConfetti(count=30){
+    const colors = ['var(--primary)','var(--success)','var(--error)','var(--secondary)'];
+    for(let i=0;i<count;i++){
+        setTimeout(()=>{
+            const c=document.createElement('div');
+            c.className='confetti';
+            c.style.left=Math.random()*100+'vw';
+            c.style.top='-10px';
+            c.style.width=Math.random()*8+4+'px';
+            c.style.height=c.style.width;
+            c.style.background=colors[Math.floor(Math.random()*colors.length)];
+            c.style.position='fixed';
+            c.style.pointerEvents='none';
+            c.style.zIndex=1000;
+            c.style.animation='confettiFall 3s linear forwards';
+            document.body.appendChild(c);
+            setTimeout(()=>c.remove(),3000);
+        },i*20);
+    }
+}
+
+/* ---------- INITIALISE ---------- */
+initQuiz();
+</script>
+</body>
+</html>

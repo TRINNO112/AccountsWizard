@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Fire & Ledger Challenge - AccountsWizard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --surface: #1e1e3f;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        nav {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '⚡';
+            -webkit-text-fill-color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .mode-btn {
+            padding: 1rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            background: rgba(30, 30, 63, 0.6);
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-4px);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .quiz-card {
+            background: rgba(30, 30, 63, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timer-container {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timer {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--warning);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .timer.urgent {
+            color: var(--error);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .question-number {
+            text-align: center;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .ledger-table {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .ledger-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(99, 102, 241, 0.2);
+            font-weight: 700;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .ledger-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ledger-cell {
+            padding: 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ledger-cell:last-child {
+            border-right: none;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .option-btn {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            background: var(--surface);
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--success);
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--error);
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .feedback.wrong {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--error);
+            color: var(--error);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-card {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .results-card.hidden {
+            display: none;
+        }
+
+        .rating-stars {
+            font-size: 3rem;
+            margin: 2rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-container {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">AccountsWizard</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Main Quiz</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Rapid Fire & Ledger Challenge</h1>
+            <p>Test your speed and accuracy</p>
+        </div>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="rapid">Rapid Fire</button>
+            <button class="mode-btn" data-mode="ledger">Ledger Identification</button>
+        </div>
+
+        <div class="quiz-card" id="quizCard">
+            <div class="timer-container" id="timerContainer">
+                <span style="color: var(--text-muted);">⏱️</span>
+                <div class="timer" id="timer">10</div>
+            </div>
+
+            <div class="question-number" id="questionNumber">Question 1 of 10</div>
+            
+            <div id="questionContent"></div>
+
+            <div class="feedback" id="feedback">
+                <div class="feedback-title" id="feedbackTitle"></div>
+                <div id="feedbackText"></div>
+            </div>
+        </div>
+
+        <div class="quiz-card results-card hidden" id="resultsCard">
+            <h2 style="margin-bottom: 1rem;">Quiz Complete!</h2>
+            <div class="rating-stars" id="ratingStars">⭐⭐⭐</div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number" id="correctStat">0</div>
+                    <div class="stat-label">Correct Answers</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="scoreStat">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="bonusStat">+0</div>
+                    <div class="stat-label">Time Bonus</div>
+                </div>
+            </div>
+
+            <div id="performanceMsg" style="font-size: 1.5rem; font-weight: 700; margin: 2rem 0;"></div>
+
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="location.reload()">Play Again</button>
+                <button class="btn btn-primary" onclick="location.href='quiz.html'">Main Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rapidFireQuestions = [
+            {
+                question: "What is the full form of GST?",
+                options: ["General Sales Tax", "Goods and Service Tax", "Government Sales Tax", "Goods Sales Tax"],
+                correct: 1
+            },
+            {
+                question: "Trial Balance is prepared from:",
+                options: ["Journal", "Cash Book", "Ledger", "Balance Sheet"],
+                correct: 2
+            },
+            {
+                question: "Which is a current asset?",
+                options: ["Building", "Machinery", "Stock", "Goodwill"],
+                correct: 2
+            },
+            {
+                question: "Depreciation is charged on:",
+                options: ["Current Assets", "Fixed Assets", "Liabilities", "Capital"],
+                correct: 1
+            },
+            {
+                question: "What is the accounting equation?",
+                options: ["A = L - C", "A = L + C", "A + L = C", "C = A - L"],
+                correct: 1
+            },
+            {
+                question: "Double entry system was developed by:",
+                options: ["Adam Smith", "Luca Pacioli", "Karl Marx", "Henry Fayol"],
+                correct: 1
+            },
+            {
+                question: "Cash book records:",
+                options: ["Only cash", "Only bank", "Both cash and bank", "Credit transactions"],
+                correct: 2
+            },
+            {
+                question: "Debit note is sent when:",
+                options: ["Goods sold", "Goods returned to supplier", "Cash received", "Payment made"],
+                correct: 1
+            },
+            {
+                question: "CGST + SGST is equivalent to:",
+                options: ["UGST", "IGST", "VAT", "Service Tax"],
+                correct: 1
+            },
+            {
+                question: "Outstanding salary is a:",
+                options: ["Asset", "Liability", "Expense", "Income"],
+                correct: 1
+            },
+            {
+                question: "Journal is called book of:",
+                options: ["Original entry", "Final entry", "Secondary entry", "Last entry"],
+                correct: 0
+            },
+            {
+                question: "For nominal accounts, we debit:",
+                options: ["What comes in", "All expenses", "The receiver", "All assets"],
+                correct: 1
+            }
+        ];
+
+        const ledgerQuestions = [
+            {
+                ledgerData: {
+                    debit: [
+                        { particular: "To Balance b/d", amount: 5000 },
+                        { particular: "To Sales", amount: 3000 }
+                    ],
+                    credit: [
+                        { particular: "By Bank", amount: 4000 },
+                        { particular: "By Balance c/d", amount: 4000 }
+                    ]
+                },
+                options: ["Sales Account", "Debtor's Account", "Bank Account", "Cash Account"],
+                correct: 1,
+                explanation: "This is a Debtor's Account showing opening balance, sales on credit, payment received, and closing balance."
+            },
+            {
+                ledgerData: {
+                    debit: [
+                        { particular: "To Cash", amount: 10000 },
+                        { particular: "To Interest", amount: 500 }
+                    ],
+                    credit: [
+                        { particular: "By Cheque", amount: 8000 },
+                        { particular: "By Balance c/d", amount: 2500 }
+                    ]
+                },
+                options: ["Cash Account", "Bank Account", "Interest Account", "Capital Account"],
+                correct: 1,
+                explanation: "Bank Account shows cash deposited, interest received, cheque issued, and closing balance."
+            },
+            {
+                ledgerData: {
+                    debit: [
+                        { particular: "To Rent", amount: 2000 },
+                        { particular: "To Salary", amount: 5000 },
+                        { particular: "To Balance c/d", amount: 1000 }
+                    ],
+                    credit: [
+                        { particular: "By Profit & Loss", amount: 8000 }
+                    ]
+                },
+                options: ["Expenses Account", "Profit & Loss Account", "Trading Account", "Capital Account"],
+                correct: 1,
+                explanation: "Profit & Loss Account shows expenses debited and transferred to P&L on credit side."
+            },
+            {
+                ledgerData: {
+                    debit: [
+                        { particular: "To Balance b/d", amount: 15000 }
+                    ],
+                    credit: [
+                        { particular: "By Purchases", amount: 3000 },
+                        { particular: "By Bank", amount: 10000 },
+                        { particular: "By Balance c/d", amount: 2000 }
+                    ]
+                },
+                options: ["Purchase Account", "Creditor's Account", "Bank Account", "Supplier's Account"],
+                correct: 1,
+                explanation: "Creditor's Account shows amount owed, purchases on credit, payment made, and balance carried down."
+            },
+            {
+                ledgerData: {
+                    debit: [
+                        { particular: "To Drawings", amount: 2000 },
+                        { particular: "To Balance c/d", amount: 23000 }
+                    ],
+                    credit: [
+                        { particular: "By Balance b/d", amount: 20000 },
+                        { particular: "By Net Profit", amount: 5000 }
+                    ]
+                },
+                options: ["Drawings Account", "Capital Account", "Profit & Loss Account", "Cash Account"],
+                correct: 1,
+                explanation: "Capital Account shows opening capital, additions from profit, deductions for drawings, and closing balance."
+            }
+        ];
+
+        let currentMode = 'rapid';
+        let currentQuestion = 0;
+        let score = 0;
+        let timeLeft = 10;
+        let timerInterval = null;
+        let questions = [];
+        let timeBonus = 0;
+        let answeredInTime = 0;
+
+        function initQuiz() {
+            questions = currentMode === 'rapid' ? 
+                shuffleArray(rapidFireQuestions).slice(0, 10) : 
+                shuffleArray(ledgerQuestions).slice(0, 10);
+            currentQuestion = 0;
+            score = 0;
+            timeBonus = 0;
+            answeredInTime = 0;
+            loadQuestion();
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResults();
+                return;
+            }
+
+            clearInterval(timerInterval);
+            timeLeft = currentMode === 'rapid' ? 10 : 15;
+            document.getElementById('timer').textContent = timeLeft;
+            document.getElementById('timer').classList.remove('urgent');
+            
+            if (currentMode === 'rapid') {
+                startTimer();
+            } else {
+                document.getElementById('timerContainer').style.display = 'none';
+            }
+
+            document.getElementById('questionNumber').textContent = 
+                `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('feedback').classList.remove('show');
+
+            const q = questions[currentQuestion];
+            const content = document.getElementById('questionContent');
+
+            if (currentMode === 'rapid') {
+                content.innerHTML = `
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-grid">
+                        ${q.options.map((opt, i) => `
+                            <button class="option-btn" data-index="${i}">${opt}</button>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="ledger-table">
+                        <div class="ledger-header">
+                            <div>Dr</div>
+                            <div>Cr</div>
+                        </div>
+                        ${Math.max(q.ledgerData.debit.length, q.ledgerData.credit.length) > 0 ? 
+                            Array.from({length: Math.max(q.ledgerData.debit.length, q.ledgerData.credit.length)}).map((_, i) => `
+                                <div class="ledger-row">
+                                    <div class="ledger-cell">
+                                        ${q.ledgerData.debit[i] ? `${q.ledgerData.debit[i].particular} ₹${q.ledgerData.debit[i].amount}` : ''}
+                                    </div>
+                                    <div class="ledger-cell">
+                                        ${q.ledgerData.credit[i] ? `${q.ledgerData.credit[i].particular} ₹${q.ledgerData.credit[i].amount}` : ''}
+                                    </div>
+                                </div>
+                            `).join('') : ''
+                        }
+                    </div>
+                    <div class="question-text">Which ledger account is this?</div>
+                    <div class="options-grid">
+                        ${q.options.map((opt, i) => `
+                            <button class="option-btn" data-index="${i}">${opt}</button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', handleAnswer);
+            });
+        }
+
+        function startTimer() {
+            document.getElementById('timerContainer').style.display = 'flex';
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                
+                if (timeLeft <= 3) {
+                    document.getElementById('timer').classList.add('urgent');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    autoNextQuestion();
+                }
+            }, 1000);
+        }
+
+        function handleAnswer(e) {
+            clearInterval(timerInterval);
+            const selected = parseInt(e.target.dataset.index);
+            const q = questions[currentQuestion];
+            const isCorrect = selected === q.correct;
+
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.style.pointerEvents = 'none';
+                if (i === q.correct) btn.classList.add('correct');
+                if (i === selected && !isCorrect) btn.classList.add('wrong');
+            });
+
+            if (isCorrect) {
+                score++;
+                if (currentMode === 'rapid' && timeLeft >= 5) {
+                    timeBonus += timeLeft;
+                    answeredInTime++;
+                }
+                showFeedback(true, q.explanation || "Correct answer!");
+            } else {
+                showFeedback(false, q.explanation || `The correct answer is: ${q.options[q.correct]}`);
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 2500);
+        }
+
+        function autoNextQuestion() {
+            const q = questions[currentQuestion];
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.style.pointerEvents = 'none';
+                if (i === q.correct) btn.classList.add('correct');
+            });
+            
+            showFeedback(false, "Time's up! The correct answer is highlighted.");
+            
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 2000);
+        }
+
+        function showFeedback(isCorrect, text) {
+            const feedback = document.getElementById('feedback');
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'} show`;
+            document.getElementById('feedbackTitle').textContent = isCorrect ? '✓ Correct!' : '✗ Wrong';
+            document.getElementById('feedbackText').textContent = text;
+        }
+
+        function showResults() {
+            clearInterval(timerInterval);
+            const percentage = Math.round((score / questions.length) * 100);
+            
+            document.getElementById('quizCard').classList.add('hidden');
+            document.getElementById('resultsCard').classList.remove('hidden');
+            
+            document.getElementById('correctStat').textContent = score;
+            document.getElementById('scoreStat').textContent = percentage + '%';
+            document.getElementById('bonusStat').textContent = currentMode === 'rapid' ? `+${timeBonus}` : 'N/A';
+            
+            let stars = '';
+            if (percentage >= 80 && timeBonus >= 30) stars = '⭐⭐⭐⭐';
+            else if (percentage >= 70) stars = '⭐⭐⭐';
+            else if (percentage >= 50) stars = '⭐⭐';
+            else stars = '⭐';
+            
+            document.getElementById('ratingStars').textContent = stars;
+            
+            let message = '';
+            if (percentage >= 80) message = "Outstanding Performance!";
+            else if (percentage >= 60) message = "Great Job!";
+            else message = "Keep Practicing!";
+            
+            document.getElementById('performanceMsg').textContent = message;
+        }
+
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+                initQuiz();
+            });
+        });
+
+        initQuiz();
+    </script>
+</body>
+</html>

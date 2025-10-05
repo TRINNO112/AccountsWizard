@@ -1201,20 +1201,40 @@
     <button id="retry-btn" class="submit-button" style="display:none;">Retry Quiz</button>
   </main>
 
-  <script>
+  <script type="module">
+    // ======================================================
+    // 1. IMPORT FIREBASE FUNCTIONS
+    // ======================================================
+    import { onAuthChange, saveQuizResult, initializeUserProfile } from './firebase-config.js';
+
+    // ======================================================
+    // 2. TRACK CURRENT USER
+    // ======================================================
+    let currentUser = null;
+    onAuthChange(user => {
+      if (user) {
+        currentUser = user;
+        console.log("Lesson 2: User is logged in:", user.displayName);
+        initializeUserProfile(user);
+      } else {
+        currentUser = null;
+        console.log("Lesson 2: User is logged out.");
+      }
+    });
+
+    // --- RESTORED: Your original accordion and quiz UI logic ---
     (function(){
       const mcqs = document.querySelectorAll('.mcq');
       const submitButton = document.getElementById('submit-mcq');
       const scoreDisplay = document.getElementById('score-display');
-      const progressCircle = document.getElementById('progress'); // optional; safe if not present
+      const progressCircle = document.getElementById('progress');
+      const retryBtn = document.getElementById('retry-btn');
 
-      // Enable submit if at least one MCQ is answered
       function updateSubmitState() {
         const anyAnswered = Array.from(mcqs).some(mcq => mcq.querySelector('input:checked'));
         if (submitButton) submitButton.disabled = !anyAnswered;
       }
 
-      // Clear previous data-* indicators for a given mcq
       function clearIndicators(mcq){
         mcq.querySelectorAll('label').forEach(l => {
           delete l.dataset.correct;
@@ -1224,26 +1244,29 @@
         mcq.classList.remove('correct', 'wrong');
       }
 
-      // Submit handler - reveal only for answered MCQs
+      // ======================================================
+      // 3. MERGED SUBMIT BUTTON LOGIC
+      // ======================================================
       function submitAnswers() {
         let score = 0;
+        const userAnswers = []; // Array for Firebase
+
         mcqs.forEach(mcq => {
           clearIndicators(mcq);
           const answer = mcq.dataset.answer;
           const selected = mcq.querySelector('input:checked');
+          const questionText = mcq.querySelector('h3').textContent.trim();
 
-          if (!selected) return;
-
-          const selectedLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+          const selectedLabel = selected ? mcq.querySelector(`label[for="${selected.id}"]`) : null;
           const correctInput = mcq.querySelector(`input[value="${answer}"]`);
           const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
           const correctText = correctLabel ? correctLabel.textContent.trim() : '';
 
-          if (selected.value === answer) {
+          if (selected && selected.value === answer) {
             if (selectedLabel) selectedLabel.dataset.correct = "true";
             mcq.classList.add('correct');
             score++;
-          } else {
+          } else if (selected) {
             if (selectedLabel) {
               selectedLabel.dataset.wrong = "true";
               selectedLabel.dataset.correctText = correctText;
@@ -1251,82 +1274,78 @@
             if (correctLabel) correctLabel.dataset.correct = "true";
             mcq.classList.add('wrong');
           }
-        });
 
-        // Show score
+          userAnswers.push({
+            question: questionText,
+            selected: selectedLabel ? selectedLabel.textContent.trim() : "Not Answered",
+            correct: correctText,
+            isCorrect: selected ? selected.value === answer : false
+          });
+        });
+        
+        const totalQuestions = mcqs.length;
+
+        // --- FIREBASE INTEGRATION ---
+        if (currentUser) {
+          saveQuizResult('lesson-2-terms', score, totalQuestions, userAnswers);
+        }
+
+        // --- RESTORED: Your result display logic ---
         if (scoreDisplay) {
           scoreDisplay.classList.add('show');
           scoreDisplay.classList.remove('success','partial');
-          if (score === mcqs.length) {
+          if (score === totalQuestions) {
             scoreDisplay.classList.add('success');
-            scoreDisplay.innerHTML = `<strong>Perfect!</strong> ${score}/${mcqs.length}`;
+            scoreDisplay.innerHTML = `<strong>Perfect!</strong> ${score}/${totalQuestions}`;
           } else {
             scoreDisplay.classList.add('partial');
-            scoreDisplay.innerHTML = `${score} out of ${mcqs.length} correct.`;
+            scoreDisplay.innerHTML = `${score} out of ${totalQuestions} correct.`;
           }
         }
 
-        // Update progress circle if exists
         if (progressCircle) {
-          const percent = Math.round((score / mcqs.length) * 100);
+          const percent = Math.round((score / totalQuestions) * 100);
           progressCircle.style.background = `conic-gradient(var(--brand-2) ${percent * 3.6}deg, #333 0deg)`;
           progressCircle.textContent = percent + "%";
         }
 
-        // Show retry button
-        showRetryButton();
-
-        // Auto-clear feedback after 15 seconds
-        setTimeout(resetQuizFeedback, 15000);
+        if (retryBtn) retryBtn.style.display = "block";
       }
 
       function resetQuizFeedback() {
-      mcqs.forEach(mcq => {
-        clearIndicators(mcq);
-        mcq.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-      });
-      if (scoreDisplay) scoreDisplay.classList.remove('show','success','partial');
-      if (progressCircle) {
-        progressCircle.style.background = `conic-gradient(var(--brand-2) 0deg, #333 0deg)`;
-        progressCircle.textContent = "0%";
+        mcqs.forEach(mcq => {
+          clearIndicators(mcq);
+          mcq.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+        });
+        if (scoreDisplay) scoreDisplay.classList.remove('show','success','partial');
+        if (progressCircle) {
+          progressCircle.style.background = `conic-gradient(var(--brand-2) 0deg, #333 0deg)`;
+          progressCircle.textContent = "0%";
+        }
+        if (submitButton) submitButton.disabled = true;
+        if (retryBtn) retryBtn.style.display = "none";
       }
-      submitButton.disabled = true;
-      document.getElementById('retry-btn').style.display = "none";
-    }
-
-    function showRetryButton() {
-      const retryBtn = document.getElementById('retry-btn');
-      retryBtn.style.display = "block";
-      retryBtn.onclick = resetQuizFeedback;
-    }
-
-      // Wire up radio change events
+      
+      if (retryBtn) retryBtn.onclick = resetQuizFeedback;
+      
       document.querySelectorAll('input[type="radio"]').forEach(radio => {
         radio.addEventListener('change', updateSubmitState);
       });
 
-      // Wire submit button
       if (submitButton) submitButton.addEventListener('click', submitAnswers);
-      // Initial state
       updateSubmitState();
     })();
 
-      document.querySelectorAll(".accordion-header").forEach(header => {
-        header.addEventListener("click", () => {
-          const item = header.parentElement;
-          const body = item.querySelector(".accordion-body");
-
-          // Close all other open accordions
-          document.querySelectorAll(".accordion-body.open").forEach(openBody => {
-            if (openBody !== body) {
-              openBody.classList.remove("open");
-            }
-          });
-
-          // Toggle current one
-          body.classList.toggle("open");
+    document.querySelectorAll(".accordion-header").forEach(header => {
+      header.addEventListener("click", () => {
+        const item = header.parentElement;
+        const body = item.querySelector(".accordion-body");
+        document.querySelectorAll(".accordion-body.open").forEach(openBody => {
+          if (openBody !== body) openBody.classList.remove("open");
         });
+        body.classList.toggle("open");
       });
+    });
 </script>
 
 </body>

@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger Game - AccountsWizard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --bg-primary: #0f0f23;
+            --surface: #1e1e3f;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            z-index: -1;
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.05); }
+        }
+
+        nav {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '⚡';
+            -webkit-text-fill-color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary), var(--accent));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(30, 30, 63, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .quiz-card {
+            background: rgba(30, 30, 63, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .ledger-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .ledger-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .ledger-table {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: floatIn 1s ease-out;
+        }
+
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ledger-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-weight: 700;
+            font-size: 1.25rem;
+            text-align: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ledger-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: slideLight 3s ease-in-out infinite;
+        }
+
+        @keyframes slideLight {
+            to { left: 200%; }
+        }
+
+        .ledger-side {
+            position: relative;
+        }
+
+        .ledger-side::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ledger-side:last-child::after {
+            display: none;
+        }
+
+        .ledger-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .ledger-row:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .ledger-cell {
+            padding: 1.25rem 1.5rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.5s ease-out backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .ledger-cell:last-child {
+            border-right: none;
+        }
+
+        .ledger-particular {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .ledger-amount {
+            float: right;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .ledger-total {
+            background: rgba(99, 102, 241, 0.15);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .infographic-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px dashed var(--success);
+            border-radius: 16px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .hint-icon {
+            font-size: 3rem;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .hint-text {
+            flex: 1;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .question-prompt {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(99, 102, 241, 0.1));
+            border-radius: 16px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .option-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .option-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .option-card:hover::before {
+            left: 100%;
+        }
+
+        .option-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .option-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .option-card.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            border-color: var(--success);
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .option-card.wrong {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05));
+            border-color: var(--error);
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            display: none;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success);
+        }
+
+        .feedback.wrong {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback-icon {
+            font-size: 2rem;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .feedback-text {
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFall 2s linear forwards;
+        }
+
+        @keyframes particleFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">AccountsWizard</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Main Quiz</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Ledger Identification Game</h1>
+            <p>Analyze ledger entries and identify the account</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="currentQ">1</div>
+                <div class="stat-label">Question</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">✓</div>
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="quizCard">
+            <div class="ledger-container">
+                <div class="ledger-title">Analyze This Ledger Account</div>
+                <div class="ledger-table" id="ledgerTable"></div>
+            </div>
+
+            <div class="infographic-hint">
+                <div class="hint-icon">💡</div>
+                <div class="hint-text">
+                    <strong>Hint:</strong> Look at the transaction flow - what's coming in vs going out? Check opening and closing balances!
+                </div>
+            </div>
+
+            <div class="question-prompt">
+                Which ledger account is this?
+            </div>
+
+            <div class="options-grid" id="optionsGrid"></div>
+
+            <div class="feedback" id="feedback">
+                <div class="feedback-title">
+                    <span class="feedback-icon"></span>
+                    <span id="feedbackTitle"></span>
+                </div>
+                <div class="feedback-text" id="feedbackText"></div>
+            </div>
+
+            <div class="btn-container" id="nextBtnContainer" style="display: none;">
+                <button class="btn btn-primary" id="nextBtn">
+                    <span>Next Question →</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="quiz-card" id="resultsCard" style="display: none;">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem;">
+                Quiz Complete!
+            </h2>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value" id="finalScore">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value" id="finalAccuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" id="rating">-</div>
+                    <div class="stat-label">Rating</div>
+                </div>
+            </div>
+            <div id="performanceMsg" style="text-align: center; font-size: 2rem; font-weight: 700; margin: 2rem 0;"></div>
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="location.reload()">
+                    <span>Play Again</span>
+                </button>
+                <button class="btn btn-primary" onclick="location.href='quiz.html'">
+                    <span>Main Quiz</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ledgerQuestions = [
+            {
+                debit: [
+                    { particular: "To Balance b/d", amount: 5000 },
+                    { particular: "To Sales", amount: 8000 },
+                    { particular: "To Sales", amount: 4000 }
+                ],
+                credit: [
+                    { particular: "By Bank", amount: 7000 },
+                    { particular: "By Cash", amount: 3000 },
+                    { particular: "By Balance c/d", amount: 7000 }
+                ],
+                options: [
+                    { text: "Sales Account", icon: "💰" },
+                    { text: "Debtor's Account", icon: "👤" },
+                    { text: "Bank Account", icon: "🏦" },
+                    { text: "Cash Account", icon: "💵" }
+                ],
+                correct: 1,
+                explanation: "This is a Debtor's (Customer's) Account showing opening balance, credit sales made to customer, payments received in bank and cash, and closing balance owed."
+            },
+            {
+                debit: [
+                    { particular: "To Cash", amount: 15000 },
+                    { particular: "To Cheque", amount: 10000 },
+                    { particular: "To Interest Received", amount: 500 }
+                ],
+                credit: [
+                    { particular: "By Cheques Issued", amount: 12000 },
+                    { particular: "By Withdrawals", amount: 8000 },
+                    { particular: "By Balance c/d", amount: 5500 }
+                ],
+                options: [
+                    { text: "Cash Account", icon: "💵" },
+                    { text: "Bank Account", icon: "🏦" },
+                    { text: "Interest Account", icon: "📈" },
+                    { text: "Capital Account", icon: "💼" }
+                ],
+                correct: 1,
+                explanation: "Bank Account shows cash and cheques deposited (debit), interest earned (debit), cheques issued and cash withdrawn (credit), with closing balance."
+            },
+            {
+                debit: [
+                    { particular: "To Rent", amount: 3000 },
+                    { particular: "To Salary", amount: 8000 },
+                    { particular: "To Depreciation", amount: 2000 },
+                    { particular: "To Net Profit", amount: 5000 }
+                ],
+                credit: [
+                    { particular: "By Gross Profit", amount: 18000 }
+                ],
+                options: [
+                    { text: "Trading Account", icon: "📊" },
+                    { text: "Profit & Loss Account", icon: "💹" },
+                    { text: "Expense Account", icon: "💸" },
+                    { text: "Income Account", icon: "💰" }
+                ],
+                correct: 1,
+                explanation: "Profit & Loss Account shows all indirect expenses on debit side, gross profit on credit side, and net profit is the balancing figure."
+            },
+            {
+                debit: [
+                    { particular: "To Balance b/d", amount: 20000 }
+                ],
+                credit: [
+                    { particular: "By Purchases", amount: 5000 },
+                    { particular: "By Bank", amount: 10000 },
+                    { particular: "By Discount Received", amount: 500 },
+                    { particular: "By Balance c/d", amount: 4500 }
+                ],
+                options: [
+                    { text: "Purchase Account", icon: "🛒" },
+                    { text: "Supplier Account", icon: "🏭" },
+                    { text: "Creditor's Account", icon: "👥" },
+                    { text: "Bank Account", icon: "🏦" }
+                ],
+                correct: 2,
+                explanation: "Creditor's Account shows opening balance owed, additional credit purchases, payments made, discount received, and closing balance payable."
+            },
+            {
+                debit: [
+                    { particular: "To Drawings", amount: 3000 },
+                    { particular: "To Balance c/d", amount: 47000 }
+                ],
+                credit: [
+                    { particular: "By Balance b/d", amount: 40000 },
+                    { particular: "By Net Profit", amount: 10000 }
+                ],
+                options: [
+                    { text: "Drawings Account", icon: "💳" },
+                    { text: "Capital Account", icon: "💼" },
+                    { text: "Profit & Loss Account", icon: "💹" },
+                    { text: "Bank Account", icon: "🏦" }
+                ],
+                correct: 1,
+                explanation: "Capital Account shows opening capital, additions from net profit on credit side, deductions for drawings on debit side, and closing capital balance."
+            },
+            {
+                debit: [
+                    { particular: "To Balance b/d", amount: 8000 },
+                    { particular: "To Purchases", amount: 12000 },
+                    { particular: "To Purchases", amount: 7000 }
+                ],
+                credit: [
+                    { particular: "By Bank", amount: 15000 },
+                    { particular: "By Discount Allowed", amount: 1000 },
+                    { particular: "By Balance c/d", amount: 11000 }
+                ],
+                options: [
+                    { text: "Purchase Account", icon: "🛒" },
+                    { text: "Supplier Account", icon: "🏭" },
+                    { text: "Expense Account", icon: "💸" },
+                    { text: "Bank Account", icon: "🏦" }
+                ],
+                correct: 1,
+                explanation: "Supplier Account (Creditor) shows balance brought down, credit purchases made, payments through bank, and discount received, with closing balance."
+            },
+            {
+                debit: [
+                    { particular: "To Balance b/d", amount: 25000 },
+                    { particular: "To Bank (Deposit)", amount: 10000 }
+                ],
+                credit: [
+                    { particular: "By Purchases", amount: 8000 },
+                    { particular: "By Expenses", amount: 5000 },
+                    { particular: "By Balance c/d", amount: 22000 }
+                ],
+                options: [
+                    { text: "Bank Account", icon: "🏦" },
+                    { text: "Cash Account", icon: "💵" },
+                    { text: "Capital Account", icon: "💼" },
+                    { text: "Purchase Account", icon: "🛒" }
+                ],
+                correct: 1,
+                explanation: "Cash Account shows opening cash balance, cash from bank withdrawal on debit side, cash paid for purchases and expenses on credit side."
+            },
+            {
+                debit: [
+                    { particular: "To Opening Stock", amount: 10000 },
+                    { particular: "To Purchases", amount: 50000 },
+                    { particular: "To Carriage Inward", amount: 2000 },
+                    { particular: "To Gross Profit", amount: 18000 }
+                ],
+                credit: [
+                    { particular: "By Sales", amount: 70000 },
+                    { particular: "By Closing Stock", amount: 10000 }
+                ],
+                options: [
+                    { text: "Purchase Account", icon: "🛒" },
+                    { text: "Sales Account", icon: "💰" },
+                    { particular: "Trading Account", icon: "📊" },
+                    { text: "Stock Account", icon: "📦" }
+                ],
+                correct: 2,
+                explanation: "Trading Account shows cost of goods sold on debit side (opening stock + purchases + direct expenses), sales and closing stock on credit side, with gross profit."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let questions = [];
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function createParticles(x, y) {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = ['#6366f1', '#ec4899', '#10b981'][Math.floor(Math.random() * 3)];
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        function startQuiz() {
+            questions = shuffleArray(ledgerQuestions).slice(0, 8);
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+
+            // Build ledger table with animation delays
+            const maxRows = Math.max(q.debit.length, q.credit.length);
+            let ledgerHTML = `
+                <div class="ledger-header">
+                    <div class="ledger-side">Dr (Debit Side)</div>
+                    <div class="ledger-side">Cr (Credit Side)</div>
+                </div>
+            `;
+
+            let debitTotal = 0;
+            let creditTotal = 0;
+
+            for (let i = 0; i < maxRows; i++) {
+                ledgerHTML += '<div class="ledger-row">';
+                
+                if (q.debit[i]) {
+                    debitTotal += q.debit[i].amount;
+                    ledgerHTML += `
+                        <div class="ledger-cell" style="animation-delay: ${i * 0.1}s">
+                            <span class="ledger-particular">${q.debit[i].particular}</span>
+                            <span class="ledger-amount">₹${q.debit[i].amount.toLocaleString()}</span>
+                        </div>
+                    `;
+                } else {
+                    ledgerHTML += '<div class="ledger-cell"></div>';
+                }
+
+                if (q.credit[i]) {
+                    creditTotal += q.credit[i].amount;
+                    ledgerHTML += `
+                        <div class="ledger-cell" style="animation-delay: ${i * 0.1}s">
+                            <span class="ledger-particular">${q.credit[i].particular}</span>
+                            <span class="ledger-amount">₹${q.credit[i].amount.toLocaleString()}</span>
+                        </div>
+                    `;
+                } else {
+                    ledgerHTML += '<div class="ledger-cell"></div>';
+                }
+
+                ledgerHTML += '</div>';
+            }
+
+            ledgerHTML += `
+                <div class="ledger-row ledger-total">
+                    <div class="ledger-cell">
+                        <span class="ledger-particular">Total</span>
+                        <span class="ledger-amount">₹${debitTotal.toLocaleString()}</span>
+                    </div>
+                    <div class="ledger-cell">
+                        <span class="ledger-particular">Total</span>
+                        <span class="ledger-amount">₹${creditTotal.toLocaleString()}</span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('ledgerTable').innerHTML = ledgerHTML;
+
+            // Build options
+            const optionsHTML = q.options.map((opt, i) => `
+                <div class="option-card" data-index="${i}">
+                    <span class="option-icon">${opt.icon}</span>
+                    <div class="option-text">${opt.text}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('optionsGrid').innerHTML = optionsHTML;
+
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', handleAnswer);
+            });
+
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('nextBtnContainer').style.display = 'none';
+        }
+
+        function handleAnswer(e) {
+            const card = e.currentTarget;
+            const selected = parseInt(card.dataset.index);
+            const q = questions[currentQuestion];
+            const isCorrect = selected === q.correct;
+
+            document.querySelectorAll('.option-card').forEach((c, i) => {
+                c.style.pointerEvents = 'none';
+                if (i === q.correct) c.classList.add('correct');
+                if (i === selected && !isCorrect) c.classList.add('wrong');
+            });
+
+            if (isCorrect) {
+                score++;
+                createParticles(window.innerWidth / 2, window.innerHeight / 2);
+            }
+
+            document.getElementById('score').textContent = score;
+            const accuracy = Math.round((score / (currentQuestion + 1)) * 100);
+            document.getElementById('accuracy').textContent = accuracy + '%';
+
+            const feedback = document.getElementById('feedback');
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'} show`;
+            
+            const icon = document.querySelector('.feedback-icon');
+            icon.textContent = isCorrect ? '✓' : '✗';
+            
+            document.getElementById('feedbackTitle').textContent = isCorrect ? 'Correct!' : 'Incorrect';
+            document.getElementById('feedbackText').textContent = q.explanation;
+
+            document.getElementById('nextBtnContainer').style.display = 'flex';
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentQuestion++;
+            loadQuestion();
+        });
+
+        function showResults() {
+            const accuracy = Math.round((score / questions.length) * 100);
+            
+            document.getElementById('quizCard').style.display = 'none';
+            document.getElementById('resultsCard').style.display = 'block';
+            
+            document.getElementById('finalScore').textContent = score + '/' + questions.length;
+            document.getElementById('finalAccuracy').textContent = accuracy + '%';
+            
+            let rating, message;
+            if (accuracy >= 90) {
+                rating = 'A+';
+                message = "Outstanding! You're mastering ledger insights!";
+            } else if (accuracy >= 75) {
+                rating = 'A';
+                message = "Excellent work! Keep it up!";
+            } else if (accuracy >= 60) {
+                rating = 'B';
+                message = "Good job! Practice more!";
+            } else {
+                rating = 'C';
+                message = "Keep learning! You'll improve!";
+            }
+            
+            document.getElementById('rating').textContent = rating;
+            document.getElementById('performanceMsg').textContent = message;
+        }
+
+        startQuiz();
+    </script>
+</body>
+</html>

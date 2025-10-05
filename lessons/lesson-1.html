@@ -793,8 +793,28 @@
     <i class="fas fa-arrow-up"></i>
   </div>
 
-  <script>
-    /* Floating bubbles generator */
+  <script type="module">
+    // ======================================================
+    // 1. IMPORT FIREBASE FUNCTIONS
+    // ======================================================
+    import { onAuthChange, saveQuizResult, initializeUserProfile } from './firebase-config.js';
+
+    // ======================================================
+    // 2. TRACK CURRENT USER
+    // ======================================================
+    let currentUser = null;
+    onAuthChange(user => {
+      if (user) {
+        currentUser = user;
+        console.log("Lesson 1: User is logged in:", user.displayName);
+        initializeUserProfile(user);
+      } else {
+        currentUser = null;
+        console.log("Lesson 1: User is logged out.");
+      }
+    });
+
+    /* --- RESTORED: Your original floating bubbles generator --- */
     const floaterHost = document.getElementById("floaters");
     (function createFloaters(){
       const COLORS = ['#7c4dff','#00e5ff','#ff7ac6','#b7ff4a','#ffd166'];
@@ -820,108 +840,28 @@
       setInterval(createFloaters,15000);
     })();
 
-    /* MCQ Quiz */
+    /* --- RESTORED: Your original MCQ Quiz questions and logic --- */
     const questions = [
-      {
-        q: "Accounting is also called the ______ of business?",
-        options: ["Backbone", "Language", "System", "Equation"],
-        answer: "Language"
-      },
-      {
-        q: "Which of these is NOT an objective of accounting?",
-        options: ["Record Transactions", "Ascertain Profit", "Reduce Competition", "Financial Position"],
-        answer: "Reduce Competition"
-      },
-      {
-        q: "Which system does accounting follow?",
-        options: ["Single Entry", "Double Entry", "Hybrid", "Triple Entry"],
-        answer: "Double Entry"
-      },
-      {
-        q: "According to which concept are transactions recorded in monetary terms?",
-        options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"],
-        answer: "Money Measurement"
-      },
-      {
-        q: "Who is considered as the primary user of accounting information?",
-        options: ["Government", "Employees", "Owner", "Creditors"],
-        answer: "Owner"
-      },
-      {
-        q: "What is the main purpose of accounting?",
-        options: ["Tax Calculation", "Decision Making", "Salary Payment", "Stock Maintenance"],
-        answer: "Decision Making"
-      },
-      {
-        q: "Financial position of a business is shown by:",
-        options: ["Trial Balance", "Balance Sheet", "Journal", "Profit & Loss Account"],
-        answer: "Balance Sheet"
-      },
-      {
-        q: "Which accounting concept treats business separate from its owner?",
-        options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"],
-        answer: "Business Entity"
-      },
-      {
-        q: "The art of recording business transactions is known as:",
-        options: ["Book Keeping", "Accounting", "Auditing", "Financial Management"],
-        answer: "Book Keeping"
-      },
-      {
-        q: "Who are external users of accounting information?",
-        options: ["Managers", "Owners", "Creditors", "Employees"],
-        answer: "Creditors"
-      },
-      {
-        q: "Which statement shows the financial performance of a business?",
-        options: ["Balance Sheet", "Trial Balance", "Cash Flow", "Profit & Loss Account"],
-        answer: "Profit & Loss Account"
-      },
-      {
-        q: "What type of information does accounting provide?",
-        options: ["Qualitative Only", "Quantitative Only", "Both Qualitative & Quantitative", "Neither"],
-        answer: "Both Qualitative & Quantitative"
-      },
-      {
-        q: "Which of these is a limitation of accounting?",
-        options: ["Records All Transactions", "Based on Evidence", "Uses Historical Cost", "Shows Financial Position"],
-        answer: "Uses Historical Cost"
-      },
-      {
-        q: "Who defined accounting as 'Language of Business'?",
-        options: ["AICPA", "ICAI", "ACCA", "ICA"],
-        answer: "AICPA"
-      },
-      {
-        q: "What is the primary basis for recording transactions?",
-        options: ["Verbal Agreement", "Source Document", "Memory", "Past Experience"],
-        answer: "Source Document"
-      },
-      {
-        q: "Which of these is NOT recorded in accounting?",
-        options: ["Purchase of Machinery", "Owner's Investment", "Employee Behavior", "Sale of Goods"],
-        answer: "Employee Behavior"
-      },
-      {
-        q: "What is the final step in the accounting process?",
-        options: ["Recording", "Classifying", "Summarizing", "Interpreting"],
-        answer: "Interpreting"
-      },
-      {
-        q: "Which accounting concept assumes business will continue indefinitely?",
-        options: ["Going Concern", "Business Entity", "Money Measurement", "Dual Aspect"],
-        answer: "Going Concern"
-      },
-      {
-        q: "What does the dual aspect concept state?",
-        options: ["Profit equals Loss", "Assets equal Liabilities", "Every debit has a credit", "Business equals Owner"],
-        answer: "Every debit has a credit"
-      },
-      {
-        q: "Which financial statement is prepared first?",
-        options: ["Balance Sheet", "Trading Account", "Profit & Loss Account", "Trial Balance"],
-        answer: "Trading Account"
-      }
+      { q: "Accounting is also called the ______ of business?", options: ["Backbone", "Language", "System", "Equation"], answer: "Language" },
+      { q: "Which of these is NOT an objective of accounting?", options: ["Record Transactions", "Ascertain Profit", "Reduce Competition", "Financial Position"], answer: "Reduce Competition" },
+      { q: "Which system does accounting follow?", options: ["Single Entry", "Double Entry", "Hybrid", "Triple Entry"], answer: "Double Entry" },
+      { q: "According to which concept are transactions recorded in monetary terms?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Money Measurement" },
+      { q: "Who is considered as the primary user of accounting information?", options: ["Government", "Employees", "Owner", "Creditors"], answer: "Owner" },
+      { q: "What is the main purpose of accounting?", options: ["Tax Calculation", "Decision Making", "Salary Payment", "Stock Maintenance"], answer: "Decision Making" },
+      { q: "Financial position of a business is shown by:", options: ["Trial Balance", "Balance Sheet", "Journal", "Profit & Loss Account"], answer: "Balance Sheet" },
+      { q: "Which accounting concept treats business separate from its owner?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Business Entity" },
+      { q: "The art of recording business transactions is known as:", options: ["Book Keeping", "Accounting", "Auditing", "Financial Management"], answer: "Book Keeping" },
+      { q: "Who are external users of accounting information?", options: ["Managers", "Owners", "Creditors", "Employees"], answer: "Creditors" },
+      { q: "Which statement shows the financial performance of a business?", options: ["Balance Sheet", "Trial Balance", "Cash Flow", "Profit & Loss Account"], answer: "Profit & Loss Account" },
+      { q: "What type of information does accounting provide?", options: ["Qualitative Only", "Quantitative Only", "Both Qualitative & Quantitative", "Neither"], answer: "Both Qualitative & Quantitative" },
+      { q: "Which of these is a limitation of accounting?", options: ["Records All Transactions", "Based on Evidence", "Uses Historical Cost", "Shows Financial Position"], answer: "Uses Historical Cost" },
+      { q: "Who defined accounting as 'Language of Business'?", options: ["AICPA", "ICAI", "ACCA", "ICA"], answer: "AICPA" },
+      { q: "What is the primary basis for recording transactions?", options: ["Verbal Agreement", "Source Document", "Memory", "Past Experience"], answer: "Source Document" },
+      { q: "Which of these is NOT recorded in accounting?", options: ["Purchase of Machinery", "Owner's Investment", "Employee Behavior", "Sale of Goods"], answer: "Employee Behavior" },
+      { q: "What is the final step in the accounting process?", options: ["Recording", "Classifying", "Summarizing", "Interpreting"], answer: "Interpreting" },
+      { q: "Which accounting concept assumes business will continue indefinitely?", options: ["Going Concern", "Business Entity", "Money Measurement", "Dual Aspect"], answer: "Going Concern" },
+      { q: "What does the dual aspect concept state?", options: ["Profit equals Loss", "Assets equal Liabilities", "Every debit has a credit", "Business equals Owner"], answer: "Every debit has a credit" },
+      { q: "Which financial statement is prepared first?", options: ["Balance Sheet", "Trading Account", "Profit & Loss Account", "Trial Balance"], answer: "Trading Account" }
     ];
 
     const quizContainer=document.getElementById("quiz");
@@ -948,75 +888,64 @@
         quizContainer.appendChild(div);
       });
     }
-    loadQuiz();
+    loadQuiz(); // This function is crucial and was missing before.
 
-    submitBtn.addEventListener("click",()=>{
+    // ======================================================
+    // 3. MERGED SUBMIT BUTTON LOGIC
+    // ======================================================
+    submitBtn.addEventListener("click", () => {
       let score = 0;
-      questions.forEach((q,i)=>{
-        const ans = document.querySelector(`input[name="q${i}"]:checked`);
-        if(ans && ans.value===q.answer){ score++; }
+      const userAnswers = []; // Array for Firebase
+
+      questions.forEach((q, i) => {
+        const userAnswerNode = document.querySelector(`input[name="q${i}"]:checked`);
+        const userAnswer = userAnswerNode ? userAnswerNode.value : "Not Answered";
+        
+        if (userAnswer === q.answer) {
+          score++;
+        }
+        
+        userAnswers.push({
+          question: q.q,
+          selected: userAnswer,
+          correct: q.answer,
+          isCorrect: userAnswer === q.answer
+        });
       });
       
-      const percentage = (score / questions.length) * 100;
+      const totalQuestions = questions.length;
+      const percentage = Math.round((score / totalQuestions) * 100);
+
+      // --- FIREBASE INTEGRATION ---
+      if (currentUser) {
+        saveQuizResult('lesson-1-intro', score, totalQuestions, userAnswers);
+      }
+      
+      // --- RESTORED: Your existing result display logic ---
       let resultMessage = "";
       let resultColor = "";
-      
-      if(percentage === 100) {
-        resultMessage = "🌟 Perfect Score! Excellent understanding!";
-        resultColor = "#4CAF50";
-        localStorage.setItem("lesson1_done", "true");
-        setProgress(100);
-      } else if(percentage >= 80) {
-        resultMessage = "🎉 Great job! Very good understanding!";
-        resultColor = "#8BC34A";
-        setProgress(80);
-      } else if(percentage >= 60) {
-        resultMessage = "👍 Good effort! Keep practicing!";
-        resultColor = "#FFC107";
-        setProgress(60);
-      } else {
-        resultMessage = "📚 Keep studying! You'll improve!";
-        resultColor = "#FF5722";
-        setProgress(Math.max(20, percentage));
-      }
+      if(percentage === 100) { resultMessage = "🌟 Perfect Score!"; resultColor = "#4CAF50"; }
+      else if(percentage >= 80) { resultMessage = "🎉 Great job!"; resultColor = "#8BC34A"; }
+      else if(percentage >= 60) { resultMessage = "👍 Good effort!"; resultColor = "#FFC107"; }
+      else { resultMessage = "📚 Keep studying!"; resultColor = "#FF5722"; }
 
       resultBox.innerHTML = `
         <div style="font-size: 1.2rem; margin-bottom: 10px;">
           You scored <span style="color:${resultColor};font-size:1.4rem;font-weight:bold;">
-            ${score} / ${questions.length}
-          </span>
-          (${percentage}%)
+            ${score} / ${totalQuestions}
+          </span> (${percentage}%)
         </div>
         <div style="color:${resultColor};">${resultMessage}</div>
-        ${percentage < 100 ? '<div style="margin-top:15px;font-size:0.9rem;color:var(--muted);">Keep practicing! You need 100% to complete the lesson.</div>' : ''}
       `;
+      
+      // Update the progress circle
+      setProgress(percentage);
     });
 
-    /* Progress Tracker */
+    /* --- RESTORED: Your original Progress Tracker & Back to Top logic --- */
     const statusEl = document.getElementById("lessonStatus");
     const progressRing = document.querySelector(".progress-ring-circle");
     const progressText = document.getElementById("progressText");
-    const markDoneBtn = document.getElementById("markDone");
-
-    // Calculate progress based on quiz and interaction
-    function calculateProgress() {
-      let progress = 0;
-      
-      // Check quiz answers
-      const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
-      const quizProgress = (answeredQuestions / questions.length) * 50; // Quiz is 50% of total progress
-      
-      // Check if notes sections have been read (scrolled)
-      const notesProgress = 30; // Notes section visibility adds 30%
-      
-      // Check if practical examples were interacted with
-      const practicalProgress = 20; // Practical examples add 20%
-      
-      progress = Math.min(100, Math.round(quizProgress + notesProgress + practicalProgress));
-      return progress;
-    }
-
-    // Calculate progress circle parameters
     const circle = document.querySelector('.progress-ring-circle');
     const radius = circle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
@@ -1026,8 +955,6 @@
       const offset = circumference - (percent / 100 * circumference);
       progressRing.style.strokeDashoffset = offset;
       progressText.textContent = `${percent}%`;
-      
-      // Add animation class based on progress
       if (percent === 100) {
         progressRing.style.stroke = '#4CAF50';
         statusEl.innerHTML = '✅ <span style="color: #4CAF50">Completed</span>';
@@ -1036,76 +963,25 @@
         statusEl.innerHTML = `⏳ <span style="color: var(--brand-2)">${percent}% Complete</span>`;
       }
     }
+    setProgress(0); // Initialize progress at 0
 
-    // Initialize progress
-    if(localStorage.getItem("lesson1_done")){
-      setProgress(100);
-    } else {
-      setProgress(calculateProgress());
-    }
-
-    // Update progress when quiz is answered
-    quizContainer.addEventListener('change', () => {
-      if(!localStorage.getItem("lesson1_done")) {
-        setProgress(calculateProgress());
-      }
-    });
-
-    // Progress is now tied to MCQ performance
-
-    // Reset Progress Button
     const resetBtn = document.getElementById("resetProgress");
     resetBtn.addEventListener("click", () => {
       if (confirm("Are you sure you want to reset your progress for this lesson?")) {
-        localStorage.removeItem("lesson1_done");
         setProgress(0);
-        
-        // Reset UI states
-        markDoneBtn.innerHTML = 'Mark Lesson as Done';
-        markDoneBtn.style.background = 'linear-gradient(90deg,var(--brand),var(--brand-2))';
-        markDoneBtn.style.transform = 'scale(1)';
-        
-        // Show confirmation
-        const toast = document.createElement('div');
-        toast.style.position = 'fixed';
-        toast.style.bottom = '20px';
-        toast.style.right = '20px';
-        toast.style.background = 'linear-gradient(90deg,var(--brand),var(--brand-2))';
-        toast.style.color = '#071025';
-        toast.style.padding = '12px 20px';
-        toast.style.borderRadius = '8px';
-        toast.style.fontWeight = 'bold';
-        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-        toast.innerHTML = '🔄 Progress Reset Successfully!';
-        document.body.appendChild(toast);
-        
-        // Remove toast after 3 seconds
-        setTimeout(() => {
-          toast.style.opacity = '0';
-          toast.style.transform = 'translateY(10px)';
-          toast.style.transition = 'all 0.3s ease';
-          setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        loadQuiz(); // This reloads the questions to clear selections
+        resultBox.innerHTML = ""; // Clear old results
       }
     });
 
-    /* Back to Top functionality */
     const backToTop = document.getElementById('backToTop');
-    
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
+      if (window.scrollY > 300) backToTop.classList.add('visible');
+      else backToTop.classList.remove('visible');
     });
-
     backToTop.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-  </script>
+</script>
 </body>
 </html>
