@@ -797,7 +797,7 @@
     // ======================================================
     // 1. IMPORT FIREBASE FUNCTIONS
     // ======================================================
-    import { onAuthChange, saveQuizResult, initializeUserProfile } from './firebase-config.js';
+    import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
 
     // ======================================================
     // 2. TRACK CURRENT USER
@@ -814,173 +814,216 @@
       }
     });
 
-    /* --- RESTORED: Your original floating bubbles generator --- */
-    const floaterHost = document.getElementById("floaters");
-    (function createFloaters(){
-      const COLORS = ['#7c4dff','#00e5ff','#ff7ac6','#b7ff4a','#ffd166'];
-      for(let i=0;i<8;i++){
-        const b=document.createElement('div');
-        b.className='bubble';
-        const size=Math.floor(40+Math.random()*100);
-        const startX=Math.floor(Math.random()*100)+'vw';
-        const dx=(Math.random()*60-30)+'vw';
-        const sc=(0.6+Math.random()*1.2).toFixed(2);
-        const dur=12+Math.random()*20;
-        b.style.width=b.style.height=size+'px';
-        b.style.left=startX;
-        b.style.top=(80+Math.random()*100)+'vh';
-        b.style.setProperty('--sx','0');
-        b.style.setProperty('--dx',dx);
-        b.style.setProperty('--sc',sc);
-        b.style.setProperty('--dur',dur+'s');
-        b.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
-        floaterHost.appendChild(b);
-        setTimeout(()=>b.remove(),dur*1000);
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      /* --- RESTORED: Your original floating bubbles generator --- */
+      const floaterHost = document.getElementById("floaters");
+      if (floaterHost) {
+        (function createFloaters(){
+          const COLORS = ['#7c4dff','#00e5ff','#ff7ac6','#b7ff4a','#ffd166'];
+          for(let i=0;i<8;i++){
+            const b=document.createElement('div');
+            b.className='bubble';
+            const size=Math.floor(40+Math.random()*100);
+            const startX=Math.floor(Math.random()*100)+'vw';
+            const dx=(Math.random()*60-30)+'vw';
+            const sc=(0.6+Math.random()*1.2).toFixed(2);
+            const dur=12+Math.random()*20;
+            b.style.width=b.style.height=size+'px';
+            b.style.left=startX;
+            b.style.top=(80+Math.random()*100)+'vh';
+            b.style.setProperty('--sx','0');
+            b.style.setProperty('--dx',dx);
+            b.style.setProperty('--sc',sc);
+            b.style.setProperty('--dur',dur+'s');
+            b.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
+            floaterHost.appendChild(b);
+            setTimeout(()=>b.remove(),dur*1000);
+          }
+          setInterval(createFloaters,15000);
+        })();
       }
-      setInterval(createFloaters,15000);
-    })();
 
-    /* --- RESTORED: Your original MCQ Quiz questions and logic --- */
-    const questions = [
-      { q: "Accounting is also called the ______ of business?", options: ["Backbone", "Language", "System", "Equation"], answer: "Language" },
-      { q: "Which of these is NOT an objective of accounting?", options: ["Record Transactions", "Ascertain Profit", "Reduce Competition", "Financial Position"], answer: "Reduce Competition" },
-      { q: "Which system does accounting follow?", options: ["Single Entry", "Double Entry", "Hybrid", "Triple Entry"], answer: "Double Entry" },
-      { q: "According to which concept are transactions recorded in monetary terms?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Money Measurement" },
-      { q: "Who is considered as the primary user of accounting information?", options: ["Government", "Employees", "Owner", "Creditors"], answer: "Owner" },
-      { q: "What is the main purpose of accounting?", options: ["Tax Calculation", "Decision Making", "Salary Payment", "Stock Maintenance"], answer: "Decision Making" },
-      { q: "Financial position of a business is shown by:", options: ["Trial Balance", "Balance Sheet", "Journal", "Profit & Loss Account"], answer: "Balance Sheet" },
-      { q: "Which accounting concept treats business separate from its owner?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Business Entity" },
-      { q: "The art of recording business transactions is known as:", options: ["Book Keeping", "Accounting", "Auditing", "Financial Management"], answer: "Book Keeping" },
-      { q: "Who are external users of accounting information?", options: ["Managers", "Owners", "Creditors", "Employees"], answer: "Creditors" },
-      { q: "Which statement shows the financial performance of a business?", options: ["Balance Sheet", "Trial Balance", "Cash Flow", "Profit & Loss Account"], answer: "Profit & Loss Account" },
-      { q: "What type of information does accounting provide?", options: ["Qualitative Only", "Quantitative Only", "Both Qualitative & Quantitative", "Neither"], answer: "Both Qualitative & Quantitative" },
-      { q: "Which of these is a limitation of accounting?", options: ["Records All Transactions", "Based on Evidence", "Uses Historical Cost", "Shows Financial Position"], answer: "Uses Historical Cost" },
-      { q: "Who defined accounting as 'Language of Business'?", options: ["AICPA", "ICAI", "ACCA", "ICA"], answer: "AICPA" },
-      { q: "What is the primary basis for recording transactions?", options: ["Verbal Agreement", "Source Document", "Memory", "Past Experience"], answer: "Source Document" },
-      { q: "Which of these is NOT recorded in accounting?", options: ["Purchase of Machinery", "Owner's Investment", "Employee Behavior", "Sale of Goods"], answer: "Employee Behavior" },
-      { q: "What is the final step in the accounting process?", options: ["Recording", "Classifying", "Summarizing", "Interpreting"], answer: "Interpreting" },
-      { q: "Which accounting concept assumes business will continue indefinitely?", options: ["Going Concern", "Business Entity", "Money Measurement", "Dual Aspect"], answer: "Going Concern" },
-      { q: "What does the dual aspect concept state?", options: ["Profit equals Loss", "Assets equal Liabilities", "Every debit has a credit", "Business equals Owner"], answer: "Every debit has a credit" },
-      { q: "Which financial statement is prepared first?", options: ["Balance Sheet", "Trading Account", "Profit & Loss Account", "Trial Balance"], answer: "Trading Account" }
-    ];
+      /* --- RESTORED: Your original MCQ Quiz questions and logic --- */
+      const questions = [
+        { q: "Accounting is also called the ______ of business?", options: ["Backbone", "Language", "System", "Equation"], answer: "Language" },
+        { q: "Which of these is NOT an objective of accounting?", options: ["Record Transactions", "Ascertain Profit", "Reduce Competition", "Financial Position"], answer: "Reduce Competition" },
+        { q: "Which system does accounting follow?", options: ["Single Entry", "Double Entry", "Hybrid", "Triple Entry"], answer: "Double Entry" },
+        { q: "According to which concept are transactions recorded in monetary terms?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Money Measurement" },
+        { q: "Who is considered as the primary user of accounting information?", options: ["Government", "Employees", "Owner", "Creditors"], answer: "Owner" },
+        { q: "What is the main purpose of accounting?", options: ["Tax Calculation", "Decision Making", "Salary Payment", "Stock Maintenance"], answer: "Decision Making" },
+        { q: "Financial position of a business is shown by:", options: ["Trial Balance", "Balance Sheet", "Journal", "Profit & Loss Account"], answer: "Balance Sheet" },
+        { q: "Which accounting concept treats business separate from its owner?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Business Entity" },
+        { q: "The art of recording business transactions is known as:", options: ["Book Keeping", "Accounting", "Auditing", "Financial Management"], answer: "Book Keeping" },
+        { q: "Who are external users of accounting information?", options: ["Managers", "Owners", "Creditors", "Employees"], answer: "Creditors" },
+        { q: "Which statement shows the financial performance of a business?", options: ["Balance Sheet", "Trial Balance", "Cash Flow", "Profit & Loss Account"], answer: "Profit & Loss Account" },
+        { q: "What type of information does accounting provide?", options: ["Qualitative Only", "Quantitative Only", "Both Qualitative & Quantitative", "Neither"], answer: "Both Qualitative & Quantitative" },
+        { q: "Which of these is a limitation of accounting?", options: ["Records All Transactions", "Based on Evidence", "Uses Historical Cost", "Shows Financial Position"], answer: "Uses Historical Cost" },
+        { q: "Who defined accounting as 'Language of Business'?", options: ["AICPA", "ICAI", "ACCA", "ICA"], answer: "AICPA" },
+        { q: "What is the primary basis for recording transactions?", options: ["Verbal Agreement", "Source Document", "Memory", "Past Experience"], answer: "Source Document" },
+        { q: "Which of these is NOT recorded in accounting?", options: ["Purchase of Machinery", "Owner's Investment", "Employee Behavior", "Sale of Goods"], answer: "Employee Behavior" },
+        { q: "What is the final step in the accounting process?", options: ["Recording", "Classifying", "Summarizing", "Interpreting"], answer: "Interpreting" },
+        { q: "Which accounting concept assumes business will continue indefinitely?", options: ["Going Concern", "Business Entity", "Money Measurement", "Dual Aspect"], answer: "Going Concern" },
+        { q: "What does the dual aspect concept state?", options: ["Profit equals Loss", "Assets equal Liabilities", "Every debit has a credit", "Business equals Owner"], answer: "Every debit has a credit" },
+        { q: "Which financial statement is prepared first?", options: ["Balance Sheet", "Trading Account", "Profit & Loss Account", "Trial Balance"], answer: "Trading Account" }
+      ];
 
-    const quizContainer=document.getElementById("quiz");
-    const submitBtn=document.getElementById("submitQuiz");
-    const resultBox=document.getElementById("quizResult");
+      const quizContainer = document.getElementById("quiz");
+      const submitBtn = document.getElementById("submitQuiz");
+      const resultBox = document.getElementById("quizResult");
 
-    function loadQuiz(){
-      quizContainer.innerHTML = "";
-      questions.forEach((q,i)=>{
-        const div = document.createElement("div");
-        div.className = "mcq-card";
-        div.innerHTML = `
-          <div class="mcq-number">Question ${i+1}</div>
-          <p style="margin-bottom:15px;"><strong>${q.q}</strong></p>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            ${q.options.map(opt=>
-              `<label style="display:block;">
-                <input type="radio" name="q${i}" value="${opt}">
-                <span style="margin-left:8px;">${opt}</span>
-              </label>`
-            ).join("")}
-          </div>
-        `;
-        quizContainer.appendChild(div);
-      });
-    }
-    loadQuiz(); // This function is crucial and was missing before.
+      // Check if elements exist before using them
+      if (!quizContainer) {
+        console.error("Quiz container not found!");
+        return;
+      }
 
-    // ======================================================
-    // 3. MERGED SUBMIT BUTTON LOGIC
-    // ======================================================
-    submitBtn.addEventListener("click", () => {
-      let score = 0;
-      const userAnswers = []; // Array for Firebase
-
-      questions.forEach((q, i) => {
-        const userAnswerNode = document.querySelector(`input[name="q${i}"]:checked`);
-        const userAnswer = userAnswerNode ? userAnswerNode.value : "Not Answered";
-        
-        if (userAnswer === q.answer) {
-          score++;
-        }
-        
-        userAnswers.push({
-          question: q.q,
-          selected: userAnswer,
-          correct: q.answer,
-          isCorrect: userAnswer === q.answer
+      function loadQuiz(){
+        quizContainer.innerHTML = "";
+        questions.forEach((q, i) => {
+          const div = document.createElement("div");
+          div.className = "mcq-card";
+          div.innerHTML = `
+            <div class="mcq-number">Question ${i+1}</div>
+            <p style="margin-bottom:15px;"><strong>${q.q}</strong></p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${q.options.map(opt =>
+                `<label style="display:block;">
+                  <input type="radio" name="q${i}" value="${opt}">
+                  <span style="margin-left:8px;">${opt}</span>
+                </label>`
+              ).join("")}
+            </div>
+          `;
+          quizContainer.appendChild(div);
         });
-      });
-      
-      const totalQuestions = questions.length;
-      const percentage = Math.round((score / totalQuestions) * 100);
-
-      // --- FIREBASE INTEGRATION ---
-      if (currentUser) {
-        saveQuizResult('lesson-1-intro', score, totalQuestions, userAnswers);
+        console.log("MCQs loaded successfully!");
       }
-      
-      // --- RESTORED: Your existing result display logic ---
-      let resultMessage = "";
-      let resultColor = "";
-      if(percentage === 100) { resultMessage = "🌟 Perfect Score!"; resultColor = "#4CAF50"; }
-      else if(percentage >= 80) { resultMessage = "🎉 Great job!"; resultColor = "#8BC34A"; }
-      else if(percentage >= 60) { resultMessage = "👍 Good effort!"; resultColor = "#FFC107"; }
-      else { resultMessage = "📚 Keep studying!"; resultColor = "#FF5722"; }
 
-      resultBox.innerHTML = `
-        <div style="font-size: 1.2rem; margin-bottom: 10px;">
-          You scored <span style="color:${resultColor};font-size:1.4rem;font-weight:bold;">
-            ${score} / ${totalQuestions}
-          </span> (${percentage}%)
-        </div>
-        <div style="color:${resultColor};">${resultMessage}</div>
-      `;
-      
-      // Update the progress circle
-      setProgress(percentage);
-    });
+      // Load the quiz immediately
+      loadQuiz();
 
-    /* --- RESTORED: Your original Progress Tracker & Back to Top logic --- */
-    const statusEl = document.getElementById("lessonStatus");
-    const progressRing = document.querySelector(".progress-ring-circle");
-    const progressText = document.getElementById("progressText");
-    const circle = document.querySelector('.progress-ring-circle');
-    const radius = circle.r.baseVal.value;
-    const circumference = radius * 2 * Math.PI;
-    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+      // ======================================================
+      // 3. MERGED SUBMIT BUTTON LOGIC
+      // ======================================================
+      if (submitBtn) {
+        submitBtn.addEventListener("click", () => {
+          let score = 0;
+          const userAnswers = []; // Array for Firebase
 
-    function setProgress(percent) {
-      const offset = circumference - (percent / 100 * circumference);
-      progressRing.style.strokeDashoffset = offset;
-      progressText.textContent = `${percent}%`;
-      if (percent === 100) {
-        progressRing.style.stroke = '#4CAF50';
-        statusEl.innerHTML = '✅ <span style="color: #4CAF50">Completed</span>';
+          questions.forEach((q, i) => {
+            const userAnswerNode = document.querySelector(`input[name="q${i}"]:checked`);
+            const userAnswer = userAnswerNode ? userAnswerNode.value : "Not Answered";
+            
+            if (userAnswer === q.answer) {
+              score++;
+            }
+            
+            userAnswers.push({
+              question: q.q,
+              selected: userAnswer,
+              correct: q.answer,
+              isCorrect: userAnswer === q.answer
+            });
+          });
+          
+          const totalQuestions = questions.length;
+          const percentage = Math.round((score / totalQuestions) * 100);
+
+          // --- FIREBASE INTEGRATION ---
+          if (currentUser) {
+            saveQuizResult('lesson-1-intro', score, totalQuestions, userAnswers);
+          }
+          
+          // --- RESTORED: Your existing result display logic ---
+          let resultMessage = "";
+          let resultColor = "";
+          if(percentage === 100) { resultMessage = "🌟 Perfect Score!"; resultColor = "#4CAF50"; }
+          else if(percentage >= 80) { resultMessage = "🎉 Great job!"; resultColor = "#8BC34A"; }
+          else if(percentage >= 60) { resultMessage = "👍 Good effort!"; resultColor = "#FFC107"; }
+          else { resultMessage = "📚 Keep studying!"; resultColor = "#FF5722"; }
+
+          if (resultBox) {
+            resultBox.innerHTML = `
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">
+                You scored <span style="color:${resultColor};font-size:1.4rem;font-weight:bold;">
+                  ${score} / ${totalQuestions}
+                </span> (${percentage}%)
+              </div>
+              <div style="color:${resultColor};">${resultMessage}</div>
+            `;
+          }
+          
+          // Update the progress circle
+          setProgress(percentage);
+        });
       } else {
-        progressRing.style.stroke = 'var(--brand-2)';
-        statusEl.innerHTML = `⏳ <span style="color: var(--brand-2)">${percent}% Complete</span>`;
+        console.error("Submit button not found!");
       }
-    }
-    setProgress(0); // Initialize progress at 0
 
-    const resetBtn = document.getElementById("resetProgress");
-    resetBtn.addEventListener("click", () => {
-      if (confirm("Are you sure you want to reset your progress for this lesson?")) {
-        setProgress(0);
-        loadQuiz(); // This reloads the questions to clear selections
-        resultBox.innerHTML = ""; // Clear old results
+      /* --- RESTORED: Your original Progress Tracker & Back to Top logic --- */
+      const statusEl = document.getElementById("lessonStatus");
+      const progressRing = document.querySelector(".progress-ring-circle");
+      const progressText = document.getElementById("progressText");
+
+      function setProgress(percent) {
+        if (progressRing && progressText) {
+          const circle = document.querySelector('.progress-ring-circle');
+          if (circle) {
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            
+            const offset = circumference - (percent / 100 * circumference);
+            progressRing.style.strokeDashoffset = offset;
+            progressText.textContent = `${percent}%`;
+            
+            if (percent === 100) {
+              progressRing.style.stroke = '#4CAF50';
+              if (statusEl) {
+                statusEl.innerHTML = '✅ <span style="color: #4CAF50">Completed</span>';
+              }
+            } else {
+              progressRing.style.stroke = 'var(--brand-2)';
+              if (statusEl) {
+                statusEl.innerHTML = `⏳ <span style="color: var(--brand-2)">${percent}% Complete</span>`;
+              }
+            }
+          }
+        }
       }
-    });
 
-    const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) backToTop.classList.add('visible');
-      else backToTop.classList.remove('visible');
-    });
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Initialize progress at 0
+      setProgress(0);
+
+      const resetBtn = document.getElementById("resetProgress");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          if (confirm("Are you sure you want to reset your progress for this lesson?")) {
+            setProgress(0);
+            loadQuiz(); // This reloads the questions to clear selections
+            if (resultBox) {
+              resultBox.innerHTML = ""; // Clear old results
+            }
+          }
+        });
+      }
+
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        
+        backToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
     });
 </script>
 </body>
