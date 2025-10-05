@@ -1679,375 +1679,200 @@
   </main>
 
   <script type="module">
-    // Import Firebase functions
-    import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
+      // ======================================================
+      // 1. IMPORT FIREBASE FUNCTIONS
+      // ======================================================
+      import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
 
-    // Track current user
-    let currentUser = null;
-    onAuthChange(user => {
-      if (user) {
-        currentUser = user;
-        console.log("Lesson 6: User is logged in");
-        initializeUserProfile(user);
-      }
-    });
-    </script>
-
-  <script>
-    // Complete JavaScript Code for Chapter 6 - Accounting Equation
-    (() => {
-      // Selectors
-      const $  = sel => document.querySelector(sel);                       // single element
-      const $$ = sel => Array.from(document.querySelectorAll(sel));        // multiple elements
-
-      /* Animation CSS injection */
-      const css = `
-        @keyframes shakeX {
-          0%,100%{transform:translateX(0)}
-          20%{transform:translateX(-8px)}
-          40%{transform:translateX(8px)}
-          60%{transform:translateX(-6px)}
-          80%{transform:translateX(6px)}
-        }
-        .aw-shake{animation:shakeX 0.4s ease}
-        .aw-pop{animation:popIn 0.35s ease both}
-        @keyframes popIn {
-          0%{opacity:0;transform:translateY(10px) scale(.96)}
-          60%{opacity:1;transform:translateY(-4px) scale(1.02)}
-          100%{opacity:1;transform:translateY(0) scale(1)}
-        }
-      `;
-      const st = document.createElement("style");
-      st.textContent = css;
-      document.head.appendChild(st);
-
-      // Global variables
-      const mcqs = $$('.mcq');
-      const submitButton = $('#submit-mcq');
-      const scoreDisplay = $('#score-display');
-      const retryBtn = $('#retry-btn');
-      const circularProgress = $('#circularProgress');
-      const progressValueSpan = $('#progressValue');
-      const totalQuestions = mcqs.length;
-      let correctAnswered = new Set();
-      let currentProgress = 0, targetProgress = 0, raf;
-
-      /* Card Animation System */
-      class CardAnimator {
-        constructor() {
-          this.observer = null;
-          this.init();
-        }
-
-        init() {
-          this.fixContentIssues();
-          setTimeout(() => {
-            this.addAnimationClasses();
-            this.setupObserver();
-            this.animateOnLoad();
-          }, 100);
-        }
-
-        fixContentIssues() {
-          // Remove horizontal scroll from tables
-          $$('table').forEach(table => {
-            table.style.minWidth = 'auto';
-            table.style.width = '100%';
-            table.style.tableLayout = 'fixed';
-            
-            let parent = table.parentElement;
-            if (parent && parent.style.overflow === 'auto') {
-              parent.style.overflow = 'visible';
-              parent.style.overflowX = 'visible';
-            }
-          });
-
-          // Fix all overflow containers
-          $$('[style*="overflow: auto"]').forEach(container => {
-            container.style.overflow = 'visible';
-            container.style.overflowX = 'visible';
-          });
-
-          // Ensure all content is visible
-          $$('h3, p, ul, li, div').forEach(el => {
-            if (!el.classList.contains('term-details') && !el.classList.contains('mcq')) {
-              el.style.visibility = 'visible';
-              el.style.opacity = '1';
-            }
-          });
-        }
-
-        addAnimationClasses() {
-          // Main equation components (3 big cards)
-          $$('[style*="min-width: 200px"][style*="padding: 30px 20px"]').forEach(card => {
-            card.classList.add('animate-card', 'equation-card');
-          });
-
-          // Component explanation cards
-          $$('[style*="padding: 20px"][style*="border-left: 4px solid var(--brand)"], [style*="border-left: 4px solid var(--brand-2)"], [style*="border-left: 4px solid var(--accent)"]').forEach(card => {
-            if (!card.closest('.mcq')) {
-              card.classList.add('animate-card', 'process-card');
-            }
-          });
-
-          // Expanded equation components (Revenue, Expenses, Drawings)
-          $$('[style*="padding: 24px"][style*="border-left: 4px solid #4ade80"], [style*="border-left: 4px solid #f87171"], [style*="border-left: 4px solid #fbbf24"]').forEach(card => {
-            card.classList.add('animate-card', 'equation-card');
-          });
-
-          // Example cards
-          $$('[style*="padding: 24px"][style*="background: var(--card)"][style*="border-left: 4px solid"]').forEach(card => {
-            if (!card.closest('.mcq')) {
-              card.classList.add('animate-card', 'example-card');
-            }
-          });
-
-          // Key terms cards
-          $$('.term-card').forEach(card => {
-            card.classList.add('animate-card', 'term-card');
-          });
-
-          // Summary cards
-          $$('[style*="border-left: 5px solid"], [style*="border-left: 4px solid"]').forEach(card => {
-            if (!card.closest('.mcq')) {
-              card.classList.add('animate-card', 'summary-card');
-            }
-          });
-
-          // Special intro card
-          $$('[style*="background:rgba(255,255,255,0.04)"]').forEach(card => {
-            card.classList.add('animate-card', 'intro-card');
-          });
-
-          // Expanded equation display
-          $$('[style*="background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.1))"]').forEach(card => {
-            card.classList.add('animate-card', 'equation-card');
-          });
-        }
-
-        setupObserver() {
-          const options = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-          };
-
-          this.observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                entry.target.style.opacity = '1';
-                entry.target.style.visibility = 'visible';
-                this.observer.unobserve(entry.target);
-              }
-            });
-          }, options);
-
-          $$('.animate-card').forEach(card => {
-            this.observer.observe(card);
-          });
-        }
-
-        animateOnLoad() {
-          // Show intro section immediately
-          setTimeout(() => {
-            const introSection = $('section:first-of-type');
-            if (introSection) {
-              introSection.querySelectorAll('.animate-card').forEach(card => {
-                card.classList.add('visible');
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-              });
-            }
-          }, 300);
-
-          // Show cards that are in viewport
-          setTimeout(() => {
-            $$('.animate-card').forEach(card => {
-              const rect = card.getBoundingClientRect();
-              if (rect.top < window.innerHeight && rect.bottom > 0) {
-                card.classList.add('visible');
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-              }
-            });
-          }, 600);
-        }
-      }
-
-      /* MCQ System */
-      function animateProgressTo(percent) {
-        targetProgress = Math.round(percent);
-        cancelAnimationFrame(raf);
-        const step = () => {
-          currentProgress += (targetProgress - currentProgress) * 0.18;
-          updateCircularUI(currentProgress);
-          if (Math.abs(targetProgress - currentProgress) > 0.5) {
-            raf = requestAnimationFrame(step);
-          } else {
-            currentProgress = targetProgress;
-            updateCircularUI(currentProgress);
-          }
-        };
-        raf = requestAnimationFrame(step);
-      }
-
-      function updateCircularUI(percent) {
-        if (!circularProgress || !progressValueSpan) return;
-        const deg = (percent/100)*360;
-        circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
-        progressValueSpan.textContent = `${Math.round(percent)}%`;
-      }
-
-      function enableSubmitCheck() {
-        const answered = $$('#mcq-container input[type=radio]:checked').length;
-        console.log('Questions answered:', answered); // Debug log
-
-        if (submitButton) {
-            submitButton.disabled = answered === 0;
-            submitButton.style.opacity = answered === 0 ? '0.5' : '1';
-            submitButton.style.cursor = answered === 0 ? 'not-allowed' : 'pointer';
-        }
-    }
-
-    function handleRadio(e) {
-        const input = e.target;
-        if (input.type !== 'radio') return;
-
-        const mcq = input.closest('.mcq');
-        const correctAns = mcq.dataset.answer;
-        
-        // FIRST: Reset all labels in this MCQ to default state
-        mcq.querySelectorAll('label').forEach(label => {
-            label.style.background = 'rgba(255,255,255,.05)';
-            label.style.color = 'var(--muted)';
-            label.style.borderColor = 'transparent';
-        });
-
-        // THEN: Apply style to the selected label
-        const selectedLabel = mcq.querySelector(`label[for="${input.id}"]`);
-        if (selectedLabel) {
-            selectedLabel.style.background = 'rgba(255,255,255,.08)';
-            selectedLabel.style.borderColor = 'var(--brand-2)';
-            selectedLabel.style.color = 'var(--text)';
-            selectedLabel.classList.add('aw-pop');
-            setTimeout(() => selectedLabel.classList.remove('aw-pop'), 350);
-        }
-
-        if (input.value === correctAns) {
-            correctAnswered.add(mcq);
+      // ======================================================
+      // 2. TRACK CURRENT USER
+      // ======================================================
+      let currentUser = null;
+      onAuthChange(user => {
+        if(user){
+          currentUser = user;
+          console.log("Chapter 6: User logged in:", user.displayName);
+          initializeUserProfile(user);
         } else {
-            correctAnswered.delete(mcq);
+          currentUser = null;
+          console.log("Chapter 6: User logged out");
+        }
+      });
+
+      // ======================================================
+      // 3. QUIZ + ANIMATION LOGIC
+      // ======================================================
+      (() => {
+        const $ = sel => document.querySelector(sel);
+        const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+        const mcqs = $$('.mcq');
+        const submitButton = $('#submit-mcq');
+        const scoreDisplay = $('#score-display');
+        const retryBtn = $('#retry-btn');
+        const circularProgress = $('#circularProgress');
+        const progressValueSpan = $('#progressValue');
+        const totalQuestions = mcqs.length;
+
+        let correctAnswered = new Set();
+        let currentProgress = 0, targetProgress = 0, raf;
+
+        // --- Animation CSS ---
+        const css = `
+          @keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+          @keyframes popIn{0%{opacity:0;transform:translateY(10px) scale(.96)}60%{opacity:1;transform:translateY(-4px) scale(1.02)}100%{opacity:1;transform:translateY(0) scale(1)}}
+          .aw-shake{animation:shakeX 0.4s ease}
+          .aw-pop{animation:popIn 0.35s ease both}
+        `;
+        const st = document.createElement("style");
+        st.textContent = css;
+        document.head.appendChild(st);
+
+        // --- Card Animation ---
+        class CardAnimator {
+          constructor(){ this.observer=null; this.init();}
+          init(){
+            setTimeout(()=>{
+              $$('.animate-card').forEach(card => card.classList.add('equation-card','process-card'));
+              this.setupObserver();
+            },100);
+          }
+          setupObserver(){
+            this.observer = new IntersectionObserver(entries=>{
+              entries.forEach(entry=>{
+                if(entry.isIntersecting){
+                  entry.target.classList.add('visible');
+                  this.observer.unobserve(entry.target);
+                }
+              });
+            }, {threshold:0.1, rootMargin:'0px 0px -50px 0px'});
+            $$('.animate-card').forEach(card=>this.observer.observe(card));
+          }
+        }
+        new CardAnimator();
+
+        // --- Circular Progress ---
+        function animateProgressTo(percent){
+          targetProgress = Math.round(percent);
+          cancelAnimationFrame(raf);
+          const step = () => {
+            currentProgress += (targetProgress-currentProgress)*0.18;
+            updateCircularUI(currentProgress);
+            if(Math.abs(targetProgress-currentProgress) > 0.5) raf=requestAnimationFrame(step);
+            else {currentProgress=targetProgress; updateCircularUI(currentProgress);}
+          };
+          raf=requestAnimationFrame(step);
+        }
+        function updateCircularUI(percent){
+          if(!circularProgress || !progressValueSpan) return;
+          const deg = (percent/100)*360;
+          circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
+          progressValueSpan.textContent = `${Math.round(percent)}%`;
         }
 
-        animateProgressTo((correctAnswered.size / totalQuestions) * 100);
-        enableSubmitCheck();
-    }
+        function enableSubmitCheck(){
+          const answered = $$('#mcq-container input[type=radio]:checked').length;
+          if(submitButton){
+            submitButton.disabled = answered===0;
+            submitButton.style.opacity = answered===0?'0.5':'1';
+            submitButton.style.cursor = answered===0?'not-allowed':'pointer';
+          }
+        }
 
-    function handleSubmit() {
-        console.log('Submit button clicked!'); // Debug log
+        function handleRadio(e){
+          const input = e.target;
+          if(input.type!=='radio') return;
+          const mcq = input.closest('.mcq');
+          const correctAns = mcq.dataset.answer;
 
-        let score = 0;
-        let attempted = 0;
+          mcq.querySelectorAll('label').forEach(label=>{
+            label.style.background='rgba(255,255,255,.05)';
+            label.style.color='var(--muted)';
+            label.style.borderColor='transparent';
+          });
 
-        // Reset all labels to default state
-        mcqs.forEach(mcq => {
-            mcq.querySelectorAll('label').forEach(label => {
-                label.style.background = 'rgba(255,255,255,.05)';
-                label.style.color = 'var(--muted)';
-                label.style.borderColor = 'transparent';
-                label.style.opacity = '1';
-                label.style.visibility = 'visible';
-                label.classList.remove('aw-pop', 'aw-shake');
-            });
-        });
+          const selLabel = mcq.querySelector(`label[for="${input.id}"]`);
+          if(selLabel){ selLabel.style.background='rgba(255,255,255,.08)'; selLabel.style.borderColor='var(--brand-2)'; selLabel.style.color='var(--text)'; selLabel.classList.add('aw-pop'); setTimeout(()=>selLabel.classList.remove('aw-pop'),350);}
+          
+          if(input.value===correctAns) correctAnswered.add(mcq);
+          else correctAnswered.delete(mcq);
 
-        mcqs.forEach(mcq => {
+          animateProgressTo((correctAnswered.size/totalQuestions)*100);
+          enableSubmitCheck();
+        }
+
+        mcqs.forEach(mcq=>mcq.addEventListener('click',handleRadio));
+
+        function handleSubmit(){
+          let score=0, attempted=0, userAnswers=[];
+
+          mcqs.forEach(mcq=>{
             const correctAns = mcq.dataset.answer;
             const selected = mcq.querySelector('input:checked');
-            if (selected) {
-                attempted++;
-                const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-                const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-                const corrLabel = corrInput ? mcq.querySelector(`label[for="${corrInput.id}"]`) : null;
+            if(!selected) return;
+            attempted++;
 
-                // Ensure labels are visible
-                if (selLabel) { selLabel.style.visibility = 'visible'; selLabel.style.opacity = '1'; }
-                if (corrLabel) { corrLabel.style.visibility = 'visible'; corrLabel.style.opacity = '1'; }
+            const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
+            const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
+            const corrLabel = corrInput ? mcq.querySelector(`label[for="${corrInput.id}"]`) : null;
 
-                if (selected.value === correctAns) {
-                    score++;
-                    if (corrLabel) {
-                        corrLabel.style.background = 'var(--brand)';
-                        corrLabel.style.color = 'white';
-                        corrLabel.style.borderColor = 'var(--brand)';
-                        corrLabel.classList.add('aw-pop');
-                    }
-                } else {
-                    if (selLabel) {
-                        selLabel.style.background = '#f87171';
-                        selLabel.style.color = 'white';
-                        selLabel.style.borderColor = '#f87171';
-                        selLabel.classList.add('aw-shake');
-                    }
-                    if (corrLabel) {
-                        corrLabel.style.background = '#4ade80';
-                        corrLabel.style.color = 'white';
-                        corrLabel.style.borderColor = '#4ade80';
-                        corrLabel.classList.add('aw-pop');
-                    }
-                }
+            if(selected.value===correctAns){
+              score++;
+              if(corrLabel){ corrLabel.style.background='var(--brand)'; corrLabel.style.color='white'; corrLabel.style.borderColor='var(--brand)'; corrLabel.classList.add('aw-pop'); }
+            } else {
+              if(selLabel){ selLabel.style.background='#f87171'; selLabel.style.color='white'; selLabel.style.borderColor='#f87171'; selLabel.classList.add('aw-shake'); }
+              if(corrLabel){ corrLabel.style.background='#4ade80'; corrLabel.style.color='white'; corrLabel.style.borderColor='#4ade80'; corrLabel.classList.add('aw-pop'); }
             }
-        });
 
-        // Show results
-        const pct = attempted ? (score / attempted) * 100 : 0;
-        let msg = '';
-        if (pct >= 80) {
-            msg = `🌟 <strong>Excellent!</strong> You scored ${score} out of ${attempted} attempted questions. Keep it up!`;
-        } else if (pct >= 60) {
-            msg = `👍 <strong>Good Job!</strong> You scored ${score} out of ${attempted} attempted questions.`;
-        } else if (pct > 0) {
-            msg = `💡 <strong>Keep Practicing!</strong> You scored ${score} out of ${attempted} attempted questions. Review the material and try again!`;
-        } else {
-            msg = `⚡ <strong>No questions attempted!</strong> Please answer at least one question.`;
+            userAnswers.push({
+              question: mcq.querySelector('h3')?.textContent.trim()||'',
+              selected: selLabel?.textContent.trim()||'Not Answered',
+              correct: corrLabel?.textContent.trim()||'',
+              isCorrect: selected.value===correctAns
+            });
+          });
+
+          // --- Save to Firebase ---
+          if(currentUser){
+            saveQuizResult('chapter-6-accounting-equation', score, totalQuestions, userAnswers);
+          }
+
+          const pct = attempted?(score/attempted)*100:0;
+          let msg='';
+          if(pct>=80) msg=`🌟 <strong>Excellent!</strong> You scored ${score}/${attempted}.`;
+          else if(pct>=60) msg=`👍 <strong>Good Job!</strong> You scored ${score}/${attempted}.`;
+          else if(pct>0) msg=`💡 Keep practicing! You scored ${score}/${attempted}.`;
+          else msg=`⚡ No questions attempted!`;
+
+          if(scoreDisplay){ scoreDisplay.innerHTML=msg; scoreDisplay.style.display='block'; scoreDisplay.classList.add('aw-pop'); }
+          if(retryBtn) retryBtn.style.display='inline-block';
         }
 
-        if (scoreDisplay) {
-            scoreDisplay.innerHTML = msg;
-            scoreDisplay.style.display = 'block';
-            scoreDisplay.classList.add('aw-pop');
+        if(submitButton) submitButton.addEventListener('click', handleSubmit);
+
+        function resetQuiz(){
+          correctAnswered.clear();
+          currentProgress=0; targetProgress=0;
+
+          mcqs.forEach(mcq=>{
+            mcq.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+            mcq.querySelectorAll('label').forEach(label=>{
+              label.style.background='rgba(255,255,255,.05)';
+              label.style.color='var(--muted)';
+              label.style.borderColor='transparent';
+              label.classList.remove('aw-shake','aw-pop');
+            });
+          });
+
+          animateProgressTo(0);
+          if(scoreDisplay) scoreDisplay.style.display='none';
+          if(retryBtn) retryBtn.style.display='none';
+          enableSubmitCheck();
         }
 
-        if (retryBtn) retryBtn.style.display = 'inline-block';
-
-        console.log(`Score: ${score}/${attempted} (${pct}%)`); // Debug log
-    }
-
-    function resetQuiz() {
-    console.log('Resetting quiz...');
-
-    // COMPLETELY reset all state
-    correctAnswered.clear();
-    currentProgress = 0;
-    targetProgress = 0;
-
-    // Reset all MCQ elements
-    mcqs.forEach(mcq => {
-        // Reset radio buttons
-        const radios = mcq.querySelectorAll('input[type=radio]');
-        radios.forEach(radio => {
-            radio.checked = false;
-        });
-
-        // Reset labels - COMPLETE visual reset
-        const labels = mcq.querySelectorAll('label');
-        labels.forEach(label => {
-            label.style.background = 'rgba(255,255,255,.05)';
-            label.style.color = 'var(--muted)';
-            label.style.borderColor = 'transparent';
-            label.classList.remove('aw-shake', 'aw-pop');
-        });
-    });
+        if(retryBtn) retryBtn.addEventListener('click', resetQuiz);
+        enableSubmitCheck();
+      })();
 
     // Reset progress display
     updateCircularUI(0);

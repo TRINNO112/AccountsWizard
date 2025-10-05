@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About – AccountsWizard</title>
-  <meta name="description" content="Learn about the creator's journey behind AccountsWizard" />
+  <title>About AccountsWizard – My Journey</title>
+  <meta name="description" content="The story behind AccountsWizard and why I built this learning platform." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M7 3h10a2 2 0 0 1 2 2v2H5V5a2 2 0 0 1 2-2m12 6v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z'/%3E%3Cpath fill='%23a5b4fc' d='M8.5 12h7v1.6h-7zM8.5 15h5v1.6h-5z'/%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg: #0b1020;
@@ -20,9 +17,7 @@
       --accent:#ff7ac6;
       --lime:#b7ff4a;
       --card:#141b38;
-      --minecraft: #8B4513;
-      --minecraft-light: #D2691E;
-      --grass: #7CB342;
+      --ok:#27e1a3;
       --shadow: 0 15px 30px rgba(0,0,0,.35), 0 6px 10px rgba(0,0,0,.2);
       --radius: 18px;
       --radius-lg: 28px;
@@ -31,7 +26,7 @@
     * { box-sizing: border-box; }
     html, body { margin:0; padding:0; }
     body{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
       color: var(--text);
       background: radial-gradient(1200px 800px at 80% -10%, rgba(124,77,255,.35), transparent 60%),
                   radial-gradient(1000px 700px at 10% 10%, rgba(0,229,255,.25), transparent 55%),
@@ -40,10 +35,22 @@
       overflow-x: hidden;
     }
 
-    .minecraft-font {
-      font-family: 'Press Start 2P', cursive;
-      line-height: 1.6;
-      letter-spacing: 1px;
+    /* Fixed background image */
+    .bg-image {
+      position: fixed;
+      top: 50%;
+      right: 5%;
+      transform: translateY(-50%);
+      width: 380px;
+      height: 380px;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+      background-image: url('data:image/upload');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: blur(1px);
     }
 
     header{
@@ -83,498 +90,322 @@
       color: #0b1020; font-weight: 800; border: none;
       padding: 10px 16px; border-radius: 999px; cursor: pointer;
       box-shadow: 0 12px 25px rgba(0,229,255,.25), inset 0 -2px 0 rgba(0,0,0,.2);
-      transition: transform .15s ease, filter .3s ease;
+      transition: transform .15s ease;
     }
-    .pill:hover{ transform: translateY(-1px) scale(1.02); filter: brightness(1.1); }
+    .pill:hover{ transform: translateY(-1px) scale(1.02); }
 
-    .container{
-      max-width: 1400px;
-      margin: 40px auto;
-      padding: 0 20px 60px;
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 40px;
-      align-items: start;
-    }
-
-    .content-area{
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .story-box{
-      background: linear-gradient(180deg, #0f1330, #0b0f2a);
-      border: 3px solid var(--minecraft);
-      border-radius: var(--radius);
-      padding: 30px;
-      box-shadow: var(--shadow),
-                  inset 0 0 0 1px rgba(210,105,30,.3);
+    main{
       position: relative;
-      overflow: hidden;
+      z-index: 1;
+      max-width: 900px;
+      margin: 40px auto 80px;
+      padding: 0 20px;
     }
 
-    .story-box::before{
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 8px;
-      background: repeating-linear-gradient(
-        90deg,
-        var(--minecraft) 0px,
-        var(--minecraft) 16px,
-        var(--minecraft-light) 16px,
-        var(--minecraft-light) 32px
-      );
+    .intro{
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .intro h2{
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin: 0 0 16px;
+      background: linear-gradient(90deg, #fff, var(--accent), var(--lime));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 900;
+    }
+    .intro p{
+      font-size: 1.1rem;
+      color: var(--muted);
+      opacity: 0.9;
+      line-height: 1.7;
     }
 
-    .story-box h2{
-      font-size: 1.2rem;
-      margin: 0 0 24px;
+    .story{
+      background: linear-gradient(180deg, rgba(15,23,51,.6), rgba(11,16,32,.5));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-lg);
+      padding: 40px 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+
+    .story h3{
+      font-size: 1.6rem;
+      margin: 0 0 20px;
       color: var(--lime);
-      text-shadow: 2px 2px 0 rgba(0,0,0,.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .story h3::before{
+      content: '✨';
+      font-size: 1.4rem;
     }
 
-    .story-box p{
-      font-size: 0.75rem;
+    .story p{
+      font-size: 1.05rem;
       line-height: 1.8;
-      margin-bottom: 20px;
-      color: #e6ebff;
-      text-shadow: 1px 1px 0 rgba(0,0,0,.3);
+      color: #dfe5ff;
+      margin: 0 0 18px;
     }
 
-    .story-box p:last-child{
+    .story p:last-child{
       margin-bottom: 0;
     }
 
-    .contact-box{
-      background: linear-gradient(180deg, #0f1330, #0b0f2a);
-      border: 3px solid var(--brand-2);
-      border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .contact-box h3{
-      font-size: 1rem;
-      margin: 0 0 20px;
-      color: var(--brand-2);
-      text-shadow: 2px 2px 0 rgba(0,0,0,.5);
-    }
-
-    .contact-links{
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .contact-link{
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      background: rgba(255,255,255,.05);
-      border: 2px solid rgba(0,229,255,.3);
+    .highlight{
+      background: rgba(124,77,255,.15);
+      border-left: 4px solid var(--brand);
+      padding: 20px 24px;
       border-radius: 12px;
-      text-decoration: none;
-      color: var(--text);
-      transition: all .25s ease;
-      font-size: 0.7rem;
+      margin: 30px 0;
     }
 
-    .contact-link:hover{
-      background: rgba(0,229,255,.15);
-      border-color: var(--brand-2);
-      transform: translateX(4px);
-      box-shadow: 0 8px 20px rgba(0,229,255,.2);
+    .highlight p{
+      margin: 0;
+      font-size: 1.1rem;
+      color: #e6ebff;
+      font-style: italic;
     }
 
-    .contact-icon{
-      font-size: 1.3rem;
-      flex-shrink: 0;
+    .tech-stack{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 30px 0;
     }
 
-    .sidebar{
-      position: sticky;
-      top: 100px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .minecraft-character{
-      background: linear-gradient(180deg, rgba(124,77,255,.15), rgba(0,229,255,.1));
-      border: 3px solid var(--minecraft);
-      border-radius: var(--radius);
-      padding: 30px 20px;
-      box-shadow: var(--shadow);
+    .tech-item{
+      background: linear-gradient(135deg, rgba(124,77,255,.2), rgba(0,229,255,.15));
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px;
+      padding: 16px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      transition: transform .2s ease;
+    }
+    .tech-item:hover{
+      transform: translateY(-3px);
+    }
+    .tech-item strong{
+      display: block;
+      font-size: 1.1rem;
+      color: var(--brand-2);
+      margin-bottom: 4px;
+    }
+    .tech-item span{
+      font-size: 0.9rem;
+      color: var(--muted);
     }
 
-    .minecraft-character::before{
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 12px;
-      background: repeating-linear-gradient(
-        90deg,
-        var(--grass) 0px,
-        var(--grass) 16px,
-        #689F38 16px,
-        #689F38 32px
-      );
+    .cta-section{
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(90deg, rgba(124,77,255,.25), rgba(0,229,255,.2));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,.1);
+      margin-top: 50px;
     }
 
-    .character-container{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
-      position: relative;
+    .cta-section h3{
+      font-size: 1.8rem;
+      margin: 0 0 16px;
+      background: linear-gradient(90deg, var(--lime), var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .steve-character{
-      width: 200px;
-      height: 280px;
-      position: relative;
-      animation: wave 2s ease-in-out infinite;
+    .cta-section p{
+      font-size: 1.05rem;
+      color: #dfe5ff;
+      margin-bottom: 24px;
     }
 
-    @keyframes wave{
-      0%, 100% { transform: rotate(-5deg); }
-      50% { transform: rotate(5deg); }
-    }
-
-    .steve-head{
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, #8B6D47 0%, #6B5437 100%);
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 
-        inset -4px -4px 0 rgba(0,0,0,.3),
-        inset 4px 4px 0 rgba(255,255,255,.1);
-    }
-
-    .steve-face{
-      position: absolute;
-      width: 48px;
-      height: 48px;
-      top: 8px;
-      left: 8px;
-      background: #C19A6B;
-    }
-
-    .steve-eyes{
+    .btn-row{
       display: flex;
       gap: 12px;
-      position: absolute;
-      top: 14px;
-      left: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .eye{
-      width: 10px;
-      height: 10px;
-      background: #4A90E2;
-      box-shadow: inset 2px 2px 0 rgba(0,0,0,.3);
-    }
-
-    .steve-body{
-      width: 64px;
-      height: 96px;
-      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-      position: absolute;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 
-        inset -4px -4px 0 rgba(0,0,0,.3),
-        inset 4px 4px 0 rgba(255,255,255,.2);
-    }
-
-    .steve-arm{
-      width: 32px;
-      height: 80px;
-      background: linear-gradient(135deg, #C19A6B 0%, #A67C52 100%);
-      position: absolute;
-      top: 75px;
-      box-shadow: 
-        inset -3px -3px 0 rgba(0,0,0,.3),
-        inset 3px 3px 0 rgba(255,255,255,.1);
-    }
-
-    .steve-arm.left{
-      left: 16px;
-      transform: rotate(-45deg);
-      transform-origin: top right;
-      animation: waveArm 2s ease-in-out infinite;
-    }
-
-    .steve-arm.right{
-      right: 16px;
-      transform: rotate(25deg);
-      transform-origin: top left;
-    }
-
-    @keyframes waveArm{
-      0%, 100% { transform: rotate(-45deg); }
-      50% { transform: rotate(-65deg); }
-    }
-
-    .steve-leg{
-      width: 32px;
-      height: 80px;
-      background: linear-gradient(135deg, #2C5AA0 0%, #1E3A6B 100%);
-      position: absolute;
-      top: 170px;
-      box-shadow: 
-        inset -3px -3px 0 rgba(0,0,0,.3),
-        inset 3px 3px 0 rgba(255,255,255,.1);
-    }
-
-    .steve-leg.left{
-      left: 52px;
-    }
-
-    .steve-leg.right{
-      right: 52px;
-    }
-
-    .speech-bubble{
-      background: rgba(255,255,255,.95);
-      color: #1a1a2e;
-      padding: 12px 16px;
-      border-radius: 12px;
-      position: relative;
-      margin-top: 15px;
-      font-size: 0.65rem;
+    .ghost{
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.2);
+      padding: 12px 20px;
+      border-radius: 14px;
       font-weight: 700;
-      box-shadow: 0 8px 20px rgba(0,0,0,.3);
+      text-decoration: none;
+      display: inline-block;
+      transition: .2s ease;
     }
-
-    .speech-bubble::before{
-      content: '';
-      position: absolute;
-      top: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 10px solid rgba(255,255,255,.95);
-    }
-
-    .pixel-decoration{
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      background: var(--accent);
-      opacity: .4;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .pixel-decoration:nth-child(1){ top: 20px; left: 20px; animation-delay: 0s; }
-    .pixel-decoration:nth-child(2){ top: 50px; right: 30px; animation-delay: .5s; }
-    .pixel-decoration:nth-child(3){ bottom: 60px; left: 40px; animation-delay: 1s; }
-
-    @keyframes float{
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .ghost:hover{
+      background: rgba(255,255,255,.06);
+      transform: translateY(-2px);
     }
 
     footer{
       border-top: 1px solid rgba(255,255,255,.06);
-      padding: 20px 18px 40px;
-      color:#c9d0ff;
-      opacity:.9;
-      text-align:center;
-      font-size: 0.9rem;
+      padding: 20px;
+      color: #c9d0ff;
+      opacity: .9;
+      text-align: center;
     }
 
-    @media (max-width: 1024px){
-      .container{
-        grid-template-columns: 1fr;
+    @media (max-width: 768px){
+      .bg-image{
+        width: 280px;
+        height: 280px;
+        opacity: 0.08;
       }
-      
-      .sidebar{
-        position: static;
-        order: -1;
+      .story{
+        padding: 30px 20px;
       }
-
-      .steve-character{
-        width: 160px;
-        height: 240px;
-      }
-
-      .steve-head{ width: 52px; height: 52px; }
-      .steve-face{ width: 40px; height: 40px; top: 6px; left: 6px; }
-      .steve-eyes{ top: 12px; left: 8px; gap: 10px; }
-      .eye{ width: 8px; height: 8px; }
-      .steve-body{ width: 52px; height: 78px; top: 58px; }
-      .steve-arm{ width: 26px; height: 65px; top: 62px; }
-      .steve-leg{ width: 26px; height: 65px; top: 140px; }
-      .steve-leg.left{ left: 42px; }
-      .steve-leg.right{ right: 42px; }
-      .steve-arm.left{ left: 12px; }
-      .steve-arm.right{ right: 12px; }
-    }
-
-    @media (max-width: 640px){
-      .story-box h2{
-        font-size: 0.9rem;
-      }
-
-      .story-box p{
-        font-size: 0.65rem;
-      }
-
-      .contact-box h3{
-        font-size: 0.85rem;
-      }
-
-      .contact-link{
-        font-size: 0.6rem;
-        padding: 12px 14px;
+      .tech-stack{
+        grid-template-columns: 1fr 1fr;
       }
     }
 
-    .reveal{
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
+    .fade-in{
+      animation: fadeIn 0.8s ease forwards;
     }
 
-    .reveal.on{
-      opacity: 1;
-      transform: translateY(0);
+    @keyframes fadeIn{
+      from{ opacity: 0; transform: translateY(20px); }
+      to{ opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
+  <!-- Fixed decorative image -->
+  <div class="bg-image"></div>
+
   <header>
     <nav class="nav">
       <a class="brand" href="index.html">
-        <span class="logo" aria-hidden="true"></span>
+        <span class="logo"></span>
         <h1>Accounts<span style="letter-spacing:.5px;">Wizard</span> ✨</h1>
       </a>
       <div class="menu">
-        <a href="index.html#learn">Learn</a>
+        <a href="index.html">Home</a>
+        <a href="lessons.html">Learn</a>
         <a href="quiz.html">Quiz</a>
         <a href="about.html">About</a>
-        <a href="index.html" class="pill">Back to Home</a>
       </div>
     </nav>
   </header>
 
-  <div class="container">
-    <div class="content-area">
-      <div class="story-box reveal minecraft-font">
-        <h2>MY JOURNEY</h2>
-        <p>
-          Hey there! I'm Trinno Asphalt, a Grade 11 student who turned frustration into creation.
-        </p>
-        <p>
-          When I started learning accounting, I found textbooks boring and confusing. Walls of text, 
-          complicated terms, and zero engagement - it felt like grinding in Minecraft without any rewards!
-        </p>
-        <p>
-          So I thought: "What if learning accounting could be as fun as playing Minecraft?" That's when 
-          AccountsWizard was born. I combined my love for coding, gaming, and learning to build something 
-          that actually makes sense.
-        </p>
-        <p>
-          I wanted colorful visuals, interactive elements, and bite-sized lessons that don't put you to sleep. 
-          No more boring PDFs - just pure learning magic! ✨
-        </p>
-        <p>
-          This project taught me more than accounting - it taught me that if something doesn't exist, 
-          you can BUILD it yourself. Just like in Minecraft, you start with nothing and create something amazing.
-        </p>
-        <p>
-          AccountsWizard is my gift to fellow students struggling with accounting. If this helps even one 
-          person ace their exams while having fun, my mission is complete!
-        </p>
-      </div>
-
-      <div class="contact-box reveal minecraft-font" style="transition-delay: 0.2s">
-        <h3>CONNECT WITH ME</h3>
-        <div class="contact-links">
-          <a href="mailto:trinnoasphalt@gmail.com?subject=AccountsWizard%20-%20Query&body=Hi%20Trinno%2C%0A%0AI%20have%20a%20query%2Fcomplaint%20regarding%20AccountsWizard%3A%0A%0A%5BPlease%20describe%20your%20query%20or%20complaint%20here%5D%0A%0ACategory%20(please%20select%20one)%3A%0A%E2%9C%85%20Bug%20Report%0A%E2%9C%85%20Feature%20Request%0A%E2%9C%85%20Content%20Suggestion%0A%E2%9C%85%20General%20Feedback%0A%E2%9C%85%20Other%0A%0AThank%20you!" class="contact-link">
-            <span class="contact-icon">📧</span>
-            <span>Email Me</span>
-          </a>
-          <a href="mailto:trinnoasphalt@gmail.com" class="contact-link">
-            <span class="contact-icon">💬</span>
-            <span>General Inquiry</span>
-          </a>
-          <a href="https://github.com" target="_blank" rel="noopener" class="contact-link">
-            <span class="contact-icon">💻</span>
-            <span>GitHub Profile</span>
-          </a>
-          <a href="index.html" class="contact-link">
-            <span class="contact-icon">🏠</span>
-            <span>Back to Home</span>
-          </a>
-        </div>
-      </div>
+  <main>
+    <div class="intro fade-in">
+      <h2>Why AccountsWizard Exists</h2>
+      <p>The story of how frustration turned into creation</p>
     </div>
 
-    <aside class="sidebar">
-      <div class="minecraft-character reveal" style="transition-delay: 0.4s">
-        <span class="pixel-decoration"></span>
-        <span class="pixel-decoration"></span>
-        <span class="pixel-decoration"></span>
-        
-        <div class="character-container">
-          <div class="steve-character">
-            <div class="steve-head">
-              <div class="steve-face">
-                <div class="steve-eyes">
-                  <div class="eye"></div>
-                  <div class="eye"></div>
-                </div>
-              </div>
-            </div>
-            <div class="steve-arm left"></div>
-            <div class="steve-arm right"></div>
-            <div class="steve-body"></div>
-            <div class="steve-leg left"></div>
-            <div class="steve-leg right"></div>
-          </div>
+    <section class="story fade-in" style="animation-delay: 0.1s">
+      <h3>The Problem I Faced</h3>
+      <p>
+        When I was preparing for my Grade 11 accounts exams, I hit a wall. Not because accounting is inherently difficult, but because every resource I found was painfully boring. Thick textbooks with walls of text. YouTube videos that droned on for hours. PDFs that looked like they were designed in 1995.
+      </p>
+      <p>
+        I'd sit down to study, open my DK Goel book, and within 10 minutes I'd be staring at my phone. Not because I didn't want to learn, but because nothing made accounting feel alive. Everything was dry, monotonous, and honestly, soul-crushing for a teenager trying to understand debits and credits.
+      </p>
+      <p>
+        The worst part? I knew I wasn't alone. All my classmates were struggling with the same thing. We'd joke about how accounting was "boring but important," accepting defeat before we even started.
+      </p>
+    </section>
+
+    <div class="highlight fade-in" style="animation-delay: 0.2s">
+      <p>
+        "If everyone finds this boring, why hasn't anyone made it fun yet?"
+      </p>
+    </div>
+
+    <section class="story fade-in" style="animation-delay: 0.3s">
+      <h3>The Spark of an Idea</h3>
+      <p>
+        One late night, after another failed attempt at forcing myself through a chapter on Trial Balance, I thought: what if learning accounting felt like using a modern app? What if it had colors, animations, instant feedback, and actually respected your time?
+      </p>
+      <p>
+        I started sketching ideas. Not as an entrepreneur or some genius student, just as someone who was tired of suffering through bad learning experiences. I wanted something that would make my future self say, "Finally, something that doesn't put me to sleep."
+      </p>
+      <p>
+        The vision was simple: colorful, bite-sized lessons. Interactive practice. Quizzes that don't feel like punishment. And most importantly, a vibe that says "you got this" instead of "good luck surviving this textbook."
+      </p>
+    </section>
+
+    <section class="story fade-in" style="animation-delay: 0.4s">
+      <h3>Building AccountsWizard</h3>
+      <p>
+        I'm not a professional developer. I'm just a student who knows some HTML, CSS, JavaScript, and has access to AI tools. But I figured, if I can imagine it, I can build it.
+      </p>
+      <p>
+        So I did. Late nights, countless iterations, lots of trial and error. I focused on making everything visual, interactive, and honestly, fun. Every feature I added was something I wished existed when I was stuck on a concept.
+      </p>
+      
+      <div class="tech-stack">
+        <div class="tech-item">
+          <strong>HTML/CSS/JS</strong>
+          <span>Modern web foundation</span>
         </div>
-        
-        <div class="speech-bubble minecraft-font">
-          Welcome to my About page! Let's learn together! 🎮
+        <div class="tech-item">
+          <strong>Firebase</strong>
+          <span>User auth & data</span>
+        </div>
+        <div class="tech-item">
+          <strong>AI Tools</strong>
+          <span>Design & content help</span>
+        </div>
+        <div class="tech-item">
+          <strong>Pure Passion</strong>
+          <span>The secret ingredient</span>
         </div>
       </div>
-    </aside>
-  </div>
+
+      <p>
+        I tested it with friends. Fixed bugs. Redesigned sections that felt clunky. Added animations because why not make learning feel like magic? The goal was never to build something perfect. It was to build something that actually helps.
+      </p>
+    </section>
+
+    <section class="story fade-in" style="animation-delay: 0.5s">
+      <h3>My Mission</h3>
+      <p>
+        AccountsWizard isn't a startup. It's not trying to replace your teacher. It's just a tool made by a student, for students. If it helps even one person understand Journal entries without wanting to throw their book out the window, I've succeeded.
+      </p>
+      <p>
+        I'm not claiming to be an expert. I'm claiming to understand the struggle. And sometimes, that's more valuable than a PhD.
+      </p>
+      <p>
+        This project is free. It will stay free. Because education shouldn't be locked behind paywalls, and learning shouldn't feel like torture.
+      </p>
+    </section>
+
+    <div class="highlight fade-in" style="animation-delay: 0.6s">
+      <p>
+        "Built by a frustrated student. For frustrated students. Because we deserve better."
+      </p>
+    </div>
+
+    <section class="cta-section fade-in" style="animation-delay: 0.7s">
+      <h3>Let's Make Accounting Less Painful 🚀</h3>
+      <p>
+        If you're struggling with accounts, give AccountsWizard a shot. It's not perfect, but it's made with genuine care for your learning experience.
+      </p>
+      <div class="btn-row">
+        <a class="pill" href="lessons.html">Start Learning</a>
+        <a class="ghost" href="quiz.html">Try a Quiz</a>
+        <a class="ghost" href="index.html">Back Home</a>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    © <span id="year"></span> AccountsWizard • Made with ❤️ by Trinno Asphalt • <a href="index.html" style="color:#fff; text-decoration:none;">Home</a>
+    © <span id="year"></span> AccountsWizard • Made with frustration & hope • Trinno Asphalt
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Reveal on scroll animation
-    const revealElements = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('on');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    revealElements.forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
