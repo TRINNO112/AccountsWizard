@@ -6,7 +6,8 @@
   <title>Lesson 1 — Introduction to Accounting | AccountsWizard</title>
   <meta name="description" content="Lesson 1 - Introduction to Accounting for Class 11 (DK Goel). Notes, short revision, and MCQ practice with progress tracking.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-
+  <!-- Import centralized quiz CSS -->
+  <link rel="stylesheet" href="main.css">
   <style>
     /* =======================
        Neon / Glass Theme
@@ -189,68 +190,6 @@
       color: var(--muted);
       font-size: 0.95rem;
       line-height: 1.5;
-    }
-
-    /* MCQ Styles */
-    .mcq-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 25px;
-      margin: 20px 0;
-    }
-
-    .mcq-card {
-      background: rgba(255,255,255,0.02);
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .mcq-number {
-      color: var(--brand-2);
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    /* Progress Tracker */
-    #progressBox {
-      background: rgba(0,0,0,0.2);
-      padding: 20px;
-      border-radius: 12px;
-      margin: 15px 0;
-    }
-
-    progress {
-      border-radius: 10px;
-      overflow: hidden;
-      height: 24px;
-    }
-
-    progress::-webkit-progress-bar {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-    }
-
-    progress::-webkit-progress-value {
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      transition: width 0.5s ease;
-    }
-
-    /* Buttons */
-    .btn {
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      color: var(--bg);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform var(--speed), box-shadow var(--speed);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(124,77,255,0.3);
     }
 
     /* Accounting Diagrams */
@@ -743,37 +682,335 @@
   <!-- MCQ Practice Section -->
   <section class="card" id="mcqSection">
     <h2>🧩 MCQ Practice</h2>
-    <div class="mcq-grid" id="quiz"></div>
-    <button id="submitQuiz" class="btn" style="margin-top:20px;">Submit Answers</button>
-    <div id="quizResult" style="margin-top:20px; font-weight:700; text-align:center;"></div>
-  </section>
-
-
-  <!-- Progress Tracker -->
-  <section class="card">
-    <h2>📊 Progress Tracker</h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
-      <div id="progressBox">
-        <div class="progress-ring">
-          <svg width="120" height="120">
-            <circle class="progress-ring-background" r="54" cx="60" cy="60" fill="transparent" stroke-width="8"/>
-            <circle class="progress-ring-circle" r="54" cx="60" cy="60" fill="transparent" stroke-width="8" 
-                    stroke-dasharray="339.292" stroke-dashoffset="339.292"/>
-            <text class="progress-text" id="progressText" x="60" y="60" text-anchor="middle" dy=".3em">0%</text>
-          </svg>
-        </div>
+    <div id="quiz-progress"></div>
+    
+    <div class="mcq-grid" id="quiz">
+      
+      <!-- Question 1 -->
+      <div class="mcq" data-answer="c">
+        <h3>1. What is accounting primarily concerned with?</h3>
+        <input type="radio" name="q1" id="q1a" value="a">
+        <label for="q1a">Marketing products</label>
+        
+        <input type="radio" name="q1" id="q1b" value="b">
+        <label for="q1b">Manufacturing goods</label>
+        
+        <input type="radio" name="q1" id="q1c" value="c">
+        <label for="q1c">Recording financial transactions</label>
+        
+        <input type="radio" name="q1" id="q1d" value="d">
+        <label for="q1d">Managing employees</label>
       </div>
-      <div>
-        <h3 style="color: var(--brand-2); margin-bottom: 15px;">Your Progress</h3>
-        <p style="margin-bottom: 10px;">Lesson Status: <span id="lessonStatus" style="font-weight: bold;">❌ Not Completed</span></p>
-        <p style="margin-bottom: 20px;">Complete the MCQs to track your progress!</p>
-        <div style="display: flex; gap: 10px; flex-direction: column;">
-          <button id="resetProgress" class="btn ghost" style="width: 100%;">
-            <i class="fas fa-undo"></i> Reset Progress
-          </button>
-        </div>
+
+      <!-- Question 2 -->
+      <div class="mcq" data-answer="a">
+        <h3>2. The basic accounting equation is:</h3>
+        <input type="radio" name="q2" id="q2a" value="a">
+        <label for="q2a">Assets = Liabilities + Capital</label>
+        
+        <input type="radio" name="q2" id="q2b" value="b">
+        <label for="q2b">Assets = Liabilities - Capital</label>
+        
+        <input type="radio" name="q2" id="q2c" value="c">
+        <label for="q2c">Assets + Liabilities = Capital</label>
+        
+        <input type="radio" name="q2" id="q2d" value="d">
+        <label for="q2d">Assets = Capital - Liabilities</label>
       </div>
+
+      <!-- Question 3 -->
+      <div class="mcq" data-answer="b">
+        <h3>3. Which of the following is a personal account?</h3>
+        <input type="radio" name="q3" id="q3a" value="a">
+        <label for="q3a">Cash Account</label>
+        
+        <input type="radio" name="q3" id="q3b" value="b">
+        <label for="q3b">Creditors Account</label>
+        
+        <input type="radio" name="q3" id="q3c" value="c">
+        <label for="q3c">Sales Account</label>
+        
+        <input type="radio" name="q3" id="q3d" value="d">
+        <label for="q3d">Rent Account</label>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="mcq" data-answer="d">
+        <h3>4. The rule for nominal account is:</h3>
+        <input type="radio" name="q4" id="q4a" value="a">
+        <label for="q4a">Debit what comes in, credit what goes out</label>
+        
+        <input type="radio" name="q4" id="q4b" value="b">
+        <label for="q4b">Debit the receiver, credit the giver</label>
+        
+        <input type="radio" name="q4" id="q4c" value="c">
+        <label for="q4c">Debit all expenses and losses, credit all incomes and gains</label>
+        
+        <input type="radio" name="q4" id="q4d" value="d">
+        <label for="q4d">Both b and c</label>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="mcq" data-answer="c">
+        <h3>5. Which of the following is not a book of original entry?</h3>
+        <input type="radio" name="q5" id="q5a" value="a">
+        <label for="q5a">Cash Book</label>
+        
+        <input type="radio" name="q5" id="q5b" value="b">
+        <label for="q5b">Purchase Book</label>
+        
+        <input type="radio" name="q5" id="q5c" value="c">
+        <label for="q5c">Ledger</label>
+        
+        <input type="radio" name="q5" id="q5d" value="d">
+        <label for="q5d">Sales Book</label>
+      </div>
+
+      <!-- Question 6 -->
+      <div class="mcq" data-answer="b">
+        <h3>6. Goods returned by customers are recorded in:</h3>
+        <input type="radio" name="q6" id="q6a" value="a">
+        <label for="q6a">Purchase Return Book</label>
+        
+        <input type="radio" name="q6" id="q6b" value="b">
+        <label for="q6b">Sales Return Book</label>
+        
+        <input type="radio" name="q6" id="q6c" value="c">
+        <label for="q6c">Journal Proper</label>
+        
+        <input type="radio" name="q6" id="q6d" value="d">
+        <label for="q6d">Cash Book</label>
+      </div>
+
+      <!-- Question 7 -->
+      <div class="mcq" data-answer="a">
+        <h3>7. The process of recording transactions in the ledger is called:</h3>
+        <input type="radio" name="q7" id="q7a" value="a">
+        <label for="q7a">Posting</label>
+        
+        <input type="radio" name="q7" id="q7b" value="b">
+        <label for="q7b">Journalizing</label>
+        
+        <input type="radio" name="q7" id="q7c" value="c">
+        <label for="q7c">Balancing</label>
+        
+        <input type="radio" name="q7" id="q7d" value="d">
+        <label for="q7d">Classifying</label>
+      </div>
+
+      <!-- Question 8 -->
+      <div class="mcq" data-answer="c">
+        <h3>8. Which of the following is a current asset?</h3>
+        <input type="radio" name="q8" id="q8a" value="a">
+        <label for="q8a">Land</label>
+        
+        <input type="radio" name="q8" id="q8b" value="b">
+        <label for="q8b">Building</label>
+        
+        <input type="radio" name="q8" id="q8c" value="c">
+        <label for="q8c">Inventory</label>
+        
+        <input type="radio" name="q8" id="q8d" value="d">
+        <label for="q8d">Machinery</label>
+      </div>
+
+      <!-- Question 9 -->
+      <div class="mcq" data-answer="b">
+        <h3>9. The trial balance checks:</h3>
+        <input type="radio" name="q9" id="q9a" value="a">
+        <label for="q9a">Arithmetical accuracy of ledger accounts</label>
+        
+        <input type="radio" name="q9" id="q9b" value="b">
+        <label for="q9b">Arithmetical accuracy of posting</label>
+        
+        <input type="radio" name="q9" id="q9c" value="c">
+        <label for="q9c">Accuracy of transactions</label>
+        
+        <input type="radio" name="q9" id="q9d" value="d">
+        <label for="q9d">All of the above</label>
+      </div>
+
+      <!-- Question 10 -->
+      <div class="mcq" data-answer="d">
+        <h3>10. Depreciation is:</h3>
+        <input type="radio" name="q10" id="q10a" value="a">
+        <label for="q10a">A fall in the market value of an asset</label>
+        
+        <input type="radio" name="q10" id="q10b" value="b">
+        <label for="q10b">A physical deterioration of an asset</label>
+        
+        <input type="radio" name="q10" id="q10c" value="c">
+        <label for="q10c">A fall in the value of money</label>
+        
+        <input type="radio" name="q10" id="q10d" value="d">
+        <label for="q10d">Allocation of the cost of a fixed asset over its useful life</label>
+      </div>
+
+      <!-- Question 11 -->
+      <div class="mcq" data-answer="a">
+        <h3>11. Bad debts are:</h3>
+        <input type="radio" name="q11" id="q11a" value="a">
+        <label for="q11a">Debts which cannot be recovered</label>
+        
+        <input type="radio" name="q11" id="q11b" value="b">
+        <label for="q11b">Debts which are doubtful</label>
+        
+        <input type="radio" name="q11" id="q11c" value="c">
+        <label for="q11c">Debts which are due for a long time</label>
+        
+        <input type="radio" name="q11" id="q11d" value="d">
+        <label for="q11d">All of the above</label>
+      </div>
+
+      <!-- Question 12 -->
+      <div class="mcq" data-answer="c">
+        <h3>12. The provision for discount on creditors is:</h3>
+        <input type="radio" name="q12" id="q12a" value="a">
+        <label for="q12a">A loss</label>
+        
+        <input type="radio" name="q12" id="q12b" value="b">
+        <label for="q12b">An expense</label>
+        
+        <input type="radio" name="q12" id="q12c" value="c">
+        <label for="q12c">A gain</label>
+        
+        <input type="radio" name="q12" id="q12d" value="d">
+        <label for="q12d">An asset</label>
+      </div>
+
+      <!-- Question 13 -->
+      <div class="mcq" data-answer="b">
+        <h3>13. Which financial statement shows the financial position of a business?</h3>
+        <input type="radio" name="q13" id="q13a" value="a">
+        <label for="q13a">Income Statement</label>
+        
+        <input type="radio" name="q13" id="q13b" value="b">
+        <label for="q13b">Balance Sheet</label>
+        
+        <input type="radio" name="q13" id="q13c" value="c">
+        <label for="q13c">Cash Flow Statement</label>
+        
+        <input type="radio" name="q13" id="q13d" value="d">
+        <label for="q13d">Trial Balance</label>
+      </div>
+
+      <!-- Question 14 -->
+      <div class="mcq" data-answer="a">
+        <h3>14. Capital expenditure is:</h3>
+        <input type="radio" name="q14" id="q14a" value="a">
+        <label for="q14a">Expenditure incurred to acquire fixed assets</label>
+        
+        <input type="radio" name="q14" id="q14b" value="b">
+        <label for="q14b">Expenditure incurred on day-to-day operations</label>
+        
+        <input type="radio" name="q14" id="q14c" value="c">
+        <label for="q14c">Expenditure which is non-recurring</label>
+        
+        <input type="radio" name="q14" id="q14d" value="d">
+        <label for="q14d">Both a and c</label>
+      </div>
+
+      <!-- Question 15 -->
+      <div class="mcq" data-answer="d">
+        <h3>15. The accounting cycle ends with:</h3>
+        <input type="radio" name="q15" id="q15a" value="a">
+        <label for="q15a">Journal</label>
+        
+        <input type="radio" name="q15" id="q15b" value="b">
+        <label for="q15b">Ledger</label>
+        
+        <input type="radio" name="q15" id="q15c" value="c">
+        <label for="q15c">Trial Balance</label>
+        
+        <input type="radio" name="q15" id="q15d" value="d">
+        <label for="q15d">Financial Statements</label>
+      </div>
+
+      <!-- Question 16 -->
+      <div class="mcq" data-answer="b">
+        <h3>16. Bank reconciliation statement is prepared to:</h3>
+        <input type="radio" name="q16" id="q16a" value="a">
+        <label for="q16a">Correct the cash book</label>
+        
+        <input type="radio" name="q16" id="q16b" value="b">
+        <label for="q16b">Reconcile the cash book balance with the pass book balance</label>
+        
+        <input type="radio" name="q16" id="q16c" value="c">
+        <label for="q16c">Correct the pass book</label>
+        
+        <input type="radio" name="q16" id="q16d" value="d">
+        <label for="q16d">All of the above</label>
+      </div>
+
+      <!-- Question 17 -->
+      <div class="mcq" data-answer="c">
+        <h3>17. Which of the following is not a subsidiary book?</h3>
+        <input type="radio" name="q17" id="q17a" value="a">
+        <label for="q17a">Purchase Book</label>
+        
+        <input type="radio" name="q17" id="q17b" value="b">
+        <label for="q17b">Sales Book</label>
+        
+        <input type="radio" name="q17" id="q17c" value="c">
+        <label for="q17c">Ledger</label>
+        
+        <input type="radio" name="q17" id="q17d" value="d">
+        <label for="q17d">Cash Book</label>
+      </div>
+
+      <!-- Question 18 -->
+      <div class="mcq" data-answer="a">
+        <h3>18. The concept which assumes that a business will continue for a long time is:</h3>
+        <input type="radio" name="q18" id="q18a" value="a">
+        <label for="q18a">Going Concern Concept</label>
+        
+        <input type="radio" name="q18" id="q18b" value="b">
+        <label for="q18b">Business Entity Concept</label>
+        
+        <input type="radio" name="q18" id="q18c" value="c">
+        <label for="q18c">Money Measurement Concept</label>
+        
+        <input type="radio" name="q18" id="q18d" value="d">
+        <label for="q18d">Dual Aspect Concept</label>
+      </div>
+
+      <!-- Question 19 -->
+      <div class="mcq" data-answer="b">
+        <h3>19. Goods taken by the proprietor for personal use are called:</h3>
+        <input type="radio" name="q19" id="q19a" value="a">
+        <label for="q19a">Sales</label>
+        
+        <input type="radio" name="q19" id="q19b" value="b">
+        <label for="q19b">Drawings</label>
+        
+        <input type="radio" name="q19" id="q19c" value="c">
+        <label for="q19c">Purchases</label>
+        
+        <input type="radio" name="q19" id="q19d" value="d">
+        <label for="q19d">Expenses</label>
+      </div>
+
+      <!-- Question 20 -->
+      <div class="mcq" data-answer="d">
+        <h3>20. Which of the following is not a type of cash book?</h3>
+        <input type="radio" name="q20" id="q20a" value="a">
+        <label for="q20a">Single Column Cash Book</label>
+        
+        <input type="radio" name="q20" id="q20b" value="b">
+        <label for="q20b">Double Column Cash Book</label>
+        
+        <input type="radio" name="q20" id="q20c" value="c">
+        <label for="q20c">Triple Column Cash Book</label>
+        
+        <input type="radio" name="q20" id="q20d" value="d">
+        <label for="q20d">Four Column Cash Book</label>
+      </div>
+      
     </div>
+    
+    <button id="submitQuiz">Submit Answers</button>
+    <div id="quizResult"></div>
+    <button id="retry-btn">Try Again</button>
   </section>
 
   <footer style="text-align:center; margin:40px auto; color:var(--muted); font-size:0.9rem;">
@@ -794,244 +1031,82 @@
   </div>
 
   <script type="module">
-    // ======================================================
-    // 1. IMPORT FIREBASE FUNCTIONS
-    // ======================================================
-    import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
+  import { initQuiz, handleSubmit, enableRetry } from './script.js';
 
-    // ======================================================
-    // 2. TRACK CURRENT USER
-    // ======================================================
-    let currentUser = null;
-    onAuthChange(user => {
-      if (user) {
-        currentUser = user;
-        console.log("Lesson 1: User is logged in:", user.displayName);
-        initializeUserProfile(user);
-      } else {
-        currentUser = null;
-        console.log("Lesson 1: User is logged out.");
-      }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize quiz
+    initQuiz('quiz');
+
+    // Submit button
+    document.getElementById('submitQuiz').addEventListener('click', () => {
+      handleSubmit('quiz');
     });
-
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      
-      /* --- RESTORED: Your original floating bubbles generator --- */
-      const floaterHost = document.getElementById("floaters");
-      if (floaterHost) {
-        (function createFloaters(){
-          const COLORS = ['#7c4dff','#00e5ff','#ff7ac6','#b7ff4a','#ffd166'];
-          for(let i=0;i<8;i++){
-            const b=document.createElement('div');
-            b.className='bubble';
-            const size=Math.floor(40+Math.random()*100);
-            const startX=Math.floor(Math.random()*100)+'vw';
-            const dx=(Math.random()*60-30)+'vw';
-            const sc=(0.6+Math.random()*1.2).toFixed(2);
-            const dur=12+Math.random()*20;
-            b.style.width=b.style.height=size+'px';
-            b.style.left=startX;
-            b.style.top=(80+Math.random()*100)+'vh';
-            b.style.setProperty('--sx','0');
-            b.style.setProperty('--dx',dx);
-            b.style.setProperty('--sc',sc);
-            b.style.setProperty('--dur',dur+'s');
-            b.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
-            floaterHost.appendChild(b);
-            setTimeout(()=>b.remove(),dur*1000);
-          }
-          setInterval(createFloaters,15000);
-          setTimeout(() => bubble.remove(), 15000); // remove bubble after 15s
-        })();
-      }
-
-      /* --- RESTORED: Your original MCQ Quiz questions and logic --- */
-      const questions = [
-        { q: "Accounting is also called the ______ of business?", options: ["Backbone", "Language", "System", "Equation"], answer: "Language" },
-        { q: "Which of these is NOT an objective of accounting?", options: ["Record Transactions", "Ascertain Profit", "Reduce Competition", "Financial Position"], answer: "Reduce Competition" },
-        { q: "Which system does accounting follow?", options: ["Single Entry", "Double Entry", "Hybrid", "Triple Entry"], answer: "Double Entry" },
-        { q: "According to which concept are transactions recorded in monetary terms?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Money Measurement" },
-        { q: "Who is considered as the primary user of accounting information?", options: ["Government", "Employees", "Owner", "Creditors"], answer: "Owner" },
-        { q: "What is the main purpose of accounting?", options: ["Tax Calculation", "Decision Making", "Salary Payment", "Stock Maintenance"], answer: "Decision Making" },
-        { q: "Financial position of a business is shown by:", options: ["Trial Balance", "Balance Sheet", "Journal", "Profit & Loss Account"], answer: "Balance Sheet" },
-        { q: "Which accounting concept treats business separate from its owner?", options: ["Money Measurement", "Business Entity", "Going Concern", "Dual Aspect"], answer: "Business Entity" },
-        { q: "The art of recording business transactions is known as:", options: ["Book Keeping", "Accounting", "Auditing", "Financial Management"], answer: "Book Keeping" },
-        { q: "Who are external users of accounting information?", options: ["Managers", "Owners", "Creditors", "Employees"], answer: "Creditors" },
-        { q: "Which statement shows the financial performance of a business?", options: ["Balance Sheet", "Trial Balance", "Cash Flow", "Profit & Loss Account"], answer: "Profit & Loss Account" },
-        { q: "What type of information does accounting provide?", options: ["Qualitative Only", "Quantitative Only", "Both Qualitative & Quantitative", "Neither"], answer: "Both Qualitative & Quantitative" },
-        { q: "Which of these is a limitation of accounting?", options: ["Records All Transactions", "Based on Evidence", "Uses Historical Cost", "Shows Financial Position"], answer: "Uses Historical Cost" },
-        { q: "Who defined accounting as 'Language of Business'?", options: ["AICPA", "ICAI", "ACCA", "ICA"], answer: "AICPA" },
-        { q: "What is the primary basis for recording transactions?", options: ["Verbal Agreement", "Source Document", "Memory", "Past Experience"], answer: "Source Document" },
-        { q: "Which of these is NOT recorded in accounting?", options: ["Purchase of Machinery", "Owner's Investment", "Employee Behavior", "Sale of Goods"], answer: "Employee Behavior" },
-        { q: "What is the final step in the accounting process?", options: ["Recording", "Classifying", "Summarizing", "Interpreting"], answer: "Interpreting" },
-        { q: "Which accounting concept assumes business will continue indefinitely?", options: ["Going Concern", "Business Entity", "Money Measurement", "Dual Aspect"], answer: "Going Concern" },
-        { q: "What does the dual aspect concept state?", options: ["Profit equals Loss", "Assets equal Liabilities", "Every debit has a credit", "Business equals Owner"], answer: "Every debit has a credit" },
-        { q: "Which financial statement is prepared first?", options: ["Balance Sheet", "Trading Account", "Profit & Loss Account", "Trial Balance"], answer: "Trading Account" }
-      ];
-
-      const quizContainer = document.getElementById("quiz");
-      const submitBtn = document.getElementById("submitQuiz");
-      const resultBox = document.getElementById("quizResult");
-
-      // Check if elements exist before using them
-      if (!quizContainer) {
-        console.error("Quiz container not found!");
-        return;
-      }
-
-      function loadQuiz(){
-        quizContainer.innerHTML = "";
-        questions.forEach((q, i) => {
-          const div = document.createElement("div");
-          div.className = "mcq-card";
-          div.innerHTML = `
-            <div class="mcq-number">Question ${i+1}</div>
-            <p style="margin-bottom:15px;"><strong>${q.q}</strong></p>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              ${q.options.map(opt =>
-                `<label style="display:block;">
-                  <input type="radio" name="q${i}" value="${opt}">
-                  <span style="margin-left:8px;">${opt}</span>
-                </label>`
-              ).join("")}
-            </div>
-          `;
-          quizContainer.appendChild(div);
-        });
-        console.log("MCQs loaded successfully!");
-      }
-
-      // Load the quiz immediately
-      loadQuiz();
-
-      // ======================================================
-      // 3. MERGED SUBMIT BUTTON LOGIC
-      // ======================================================
-      if (submitBtn) {
-        submitBtn.addEventListener("click", () => {
-          let score = 0;
-          const userAnswers = []; // Array for Firebase
-
-          questions.forEach((q, i) => {
-            const userAnswerNode = document.querySelector(`input[name="q${i}"]:checked`);
-            const userAnswer = userAnswerNode ? userAnswerNode.value : "Not Answered";
-            
-            if (userAnswer === q.answer) {
-              score++;
-            }
-            
-            userAnswers.push({
-              question: q.q,
-              selected: userAnswer,
-              correct: q.answer,
-              isCorrect: userAnswer === q.answer
-            });
-          });
-          
-          const totalQuestions = questions.length;
-          const percentage = Math.round((score / totalQuestions) * 100);
-
-          // --- FIREBASE INTEGRATION ---
-          if (currentUser) {
-            // Create simplified answers array (Lesson 4 style)
-            const simplifiedAnswers = questions.map((q, i) => {
-              const userAnswerNode = document.querySelector(`input[name="q${i}"]:checked`);
-              return userAnswerNode ? userAnswerNode.value : null;
-            });
-            
-            saveQuizResult('lesson-1-intro', score, totalQuestions, simplifiedAnswers);
-          }
-          
-          // --- RESTORED: Your existing result display logic ---
-          let resultMessage = "";
-          let resultColor = "";
-          if(percentage === 100) { resultMessage = "🌟 Perfect Score!"; resultColor = "#4CAF50"; }
-          else if(percentage >= 80) { resultMessage = "🎉 Great job!"; resultColor = "#8BC34A"; }
-          else if(percentage >= 60) { resultMessage = "👍 Good effort!"; resultColor = "#FFC107"; }
-          else { resultMessage = "📚 Keep studying!"; resultColor = "#FF5722"; }
-
-          if (resultBox) {
-            resultBox.innerHTML = `
-              <div style="font-size: 1.2rem; margin-bottom: 10px;">
-                You scored <span style="color:${resultColor};font-size:1.4rem;font-weight:bold;">
-                  ${score} / ${totalQuestions}
-                </span> (${percentage}%)
-              </div>
-              <div style="color:${resultColor};">${resultMessage}</div>
-            `;
-          }
-          
-          // Update the progress circle
-          setProgress(percentage);
-        });
-      } else {
-        console.error("Submit button not found!");
-      }
-
-      /* --- RESTORED: Your original Progress Tracker & Back to Top logic --- */
-      const statusEl = document.getElementById("lessonStatus");
-      const progressRing = document.querySelector(".progress-ring-circle");
-      const progressText = document.getElementById("progressText");
-
-      function setProgress(percent) {
-        if (progressRing && progressText) {
-          const circle = document.querySelector('.progress-ring-circle');
-          if (circle) {
-            const radius = circle.r.baseVal.value;
-            const circumference = radius * 2 * Math.PI;
-            circle.style.strokeDasharray = `${circumference} ${circumference}`;
-            
-            const offset = circumference - (percent / 100 * circumference);
-            progressRing.style.strokeDashoffset = offset;
-            progressText.textContent = `${percent}%`;
-            
-            if (percent === 100) {
-              progressRing.style.stroke = '#4CAF50';
-              if (statusEl) {
-                statusEl.innerHTML = '✅ <span style="color: #4CAF50">Completed</span>';
-              }
-            } else {
-              progressRing.style.stroke = 'var(--brand-2)';
-              if (statusEl) {
-                statusEl.innerHTML = `⏳ <span style="color: var(--brand-2)">${percent}% Complete</span>`;
-              }
-            }
-          }
+    
+    // Retry button
+    document.getElementById('retry-btn').addEventListener('click', () => {
+      enableRetry('quiz');
+    });
+  });
+  </script>
+  <script>
+    // Floating bubbles (keep your existing code)
+    const floaterHost = document.getElementById("floaters");
+    if (floaterHost) {
+      (function createFloaters(){
+        const COLORS = ['#7c4dff','#00e5ff','#ff7ac6','#b7ff4a','#ffd166'];
+        for(let i=0;i<8;i++){
+          const b=document.createElement('div');
+          b.className='bubble';
+          const size=Math.floor(40+Math.random()*100);
+          const startX=Math.floor(Math.random()*100)+'vw';
+          const dx=(Math.random()*60-30)+'vw';
+          const sc=(0.6+Math.random()*1.2).toFixed(2);
+          const dur=12+Math.random()*20;
+          b.style.width=b.style.height=size+'px';
+          b.style.left=startX;
+          b.style.top=(80+Math.random()*100)+'vh';
+          b.style.setProperty('--sx','0');
+          b.style.setProperty('--dx',dx);
+          b.style.setProperty('--sc',sc);
+          b.style.setProperty('--dur',dur+'s');
+          b.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
+          floaterHost.appendChild(b);
+          setTimeout(()=>b.remove(),dur*1000);
         }
-      }
+        setInterval(createFloaters,15000);
+      })();
+    }
 
-      // Initialize progress at 0
-      setProgress(0);
+    // Initialize the quiz validation system
+    initQuiz('quiz');
 
-      const resetBtn = document.getElementById("resetProgress");
-      if (resetBtn) {
-        resetBtn.addEventListener("click", () => {
-          if (confirm("Are you sure you want to reset your progress for this lesson?")) {
-            setProgress(0);
-            loadQuiz(); // This reloads the questions to clear selections
-            if (resultBox) {
-              resultBox.innerHTML = ""; // Clear old results
-            }
-          }
-        });
-      }
+    // Add event listeners for buttons
+    const submitBtn = document.getElementById('submitQuiz');
+    const retryBtn = document.getElementById('retry-btn');
+    
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => handleSubmit('quiz'));
+    }
+    
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => enableRetry('quiz'));
+    }
 
-      const backToTop = document.getElementById('backToTop');
-      if (backToTop) {
-        window.addEventListener('scroll', () => {
-          if (window.scrollY > 300) {
-            backToTop.classList.add('visible');
-          } else {
-            backToTop.classList.remove('visible');
-          }
-        });
-        
-        backToTop.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-    });
+    // Back to Top functionality
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      });
+      
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
 </script>
 </body>
 </html>

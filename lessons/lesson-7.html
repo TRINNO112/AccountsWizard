@@ -1339,260 +1339,189 @@
 
   </main>
 
-  <script type="module">
-      // ======================================================
-      // 1. IMPORT FIREBASE FUNCTIONS
-      // ======================================================
-      import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
+  <script>
+(() => {
+  // ======================================================
+  // 1. SELECTORS
+  // ======================================================
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-      // ======================================================
-      // 2. TRACK CURRENT USER
-      // ======================================================
-      let currentUser = null;
-      onAuthChange(user => {
-        if (user) {
-          currentUser = user;
-          console.log("Chapter 7: User logged in:", user.displayName);
-          initializeUserProfile(user);
-        } else {
-          currentUser = null;
-          console.log("Chapter 7: User logged out.");
+  // ======================================================
+  // 2. ANIMATION CSS INJECTION
+  // ======================================================
+  const css = `
+    @keyframes shakeX {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-8px)}
+      40%{transform:translateX(8px)}
+      60%{transform:translateX(-6px)}
+      80%{transform:translateX(6px)}
+    }
+    .aw-shake{animation:shakeX 0.4s ease}
+    .aw-pop{animation:popIn 0.35s ease both}
+    @keyframes popIn {
+      0%{opacity:0;transform:translateY(10px) scale(.96)}
+      60%{opacity:1;transform:translateY(-4px) scale(1.02)}
+      100%{opacity:1;transform:translateY(0) scale(1)}
+    }
+  `;
+  const st = document.createElement("style");
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  // ======================================================
+  // 3. CARD ANIMATION SYSTEM
+  // ======================================================
+  class CardAnimator {
+    constructor() {
+      this.observer = null;
+      this.init();
+    }
+
+    init() {
+      setTimeout(() => {
+        this.addAnimationClasses();
+        this.setupObserver();
+        this.animateOnLoad();
+      }, 100);
+    }
+
+    addAnimationClasses() {
+      // Main account type cards
+      $$('.account-type').forEach(card => {
+        card.classList.add('animate-card', 'equation-card');
+      });
+
+      // Principle cards
+      $$('.principle-card').forEach(card => {
+        card.classList.add('animate-card', 'process-card');
+      });
+
+      // Stage cards
+      $$('.stage-card').forEach(card => {
+        card.classList.add('animate-card', 'process-card');
+      });
+
+      // Example cards
+      $$('.example-card').forEach(card => {
+        card.classList.add('animate-card', 'process-card');
+      });
+    }
+
+    setupObserver() {
+      const options = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+      this.observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this.observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      $$('.animate-card').forEach(card => this.observer.observe(card));
+    }
+
+    animateOnLoad() {
+      setTimeout(() => {
+        const introSection = $('section:first-of-type');
+        if (introSection) {
+          introSection.querySelectorAll('.animate-card').forEach(card => {
+            card.classList.add('visible');
+          });
+        }
+      }, 300);
+
+      setTimeout(() => {
+        $$('.animate-card').forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            card.classList.add('visible');
+          }
+        });
+      }, 600);
+    }
+  }
+
+  // ======================================================
+  // 4. ENHANCED HOVER EFFECTS
+  // ======================================================
+  function addHoverEffects() {
+    $$('.animate-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)';
+        const colors = ['var(--brand)', 'var(--brand-2)', 'var(--accent)'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        card.style.boxShadow = `0 25px 50px rgba(2,6,23,.8), 0 0 30px ${randomColor}40`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.boxShadow = 'var(--shadow)';
+      });
+    });
+  }
+
+  // ======================================================
+  // 5. TERM CARD TOGGLE FUNCTION
+  // ======================================================
+  window.toggleTerm = function(card) {
+    const details = card.querySelector('.term-details');
+    const indicator = card.querySelector('.term-indicator');
+
+    if (details.style.maxHeight === '0px' || !details.style.maxHeight) {
+      // Close other cards
+      $$('.term-card').forEach(otherCard => {
+        if (otherCard !== card) {
+          otherCard.querySelector('.term-details').style.maxHeight = '0px';
+          otherCard.querySelector('.term-indicator').style.transform = 'scaleX(0)';
+          otherCard.style.background = 'var(--card)';
         }
       });
 
-      // ======================================================
-      // 3. QUIZ + ANIMATION LOGIC
-      // ======================================================
-      (() => {
-        const $ = sel => document.querySelector(sel);
-        const $$ = sel => Array.from(document.querySelectorAll(sel));
+      // Open this card
+      details.style.maxHeight = details.scrollHeight + 'px';
+      indicator.style.transform = 'scaleX(1)';
+      card.style.background = 'linear-gradient(145deg, var(--card), rgba(255,255,255,0.05))';
+    } else {
+      // Close this card
+      details.style.maxHeight = '0px';
+      indicator.style.transform = 'scaleX(0)';
+      card.style.background = 'var(--card)';
+    }
+  };
 
-        const mcqs = $$('.mcq');
-        const submitButton = $('#submit-mcq');
-        const scoreDisplay = $('#score-display');
-        const retryBtn = $('#retry-btn');
-        const circularProgress = $('#circularProgress');
-        const progressValueSpan = $('#progressValue');
-        const totalQuestions = mcqs.length;
-
-        let correctAnswered = new Set();
-        let currentProgress = 0, targetProgress = 0, raf;
-
-        // --- Animation CSS ---
-        const css = `
-          @keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-          @keyframes popIn{0%{opacity:0;transform:translateY(10px) scale(.96)}60%{opacity:1;transform:translateY(-4px) scale(1.02)}100%{opacity:1;transform:translateY(0) scale(1)}}
-          .aw-shake{animation:shakeX 0.4s ease}
-          .aw-pop{animation:popIn 0.35s ease both}
-        `;
-        const st = document.createElement("style");
-        st.textContent = css;
-        document.head.appendChild(st);
-
-        // --- Card Animation ---
-        class CardAnimator {
-          constructor(){
-            this.observer = null;
-            this.init();
-          }
-          init(){
-            setTimeout(()=>{
-              $$('.animate-card').forEach(card => card.classList.add('equation-card','process-card'));
-              this.setupObserver();
-            },100);
-          }
-          setupObserver(){
-            this.observer = new IntersectionObserver(entries=>{
-              entries.forEach(entry=>{
-                if(entry.isIntersecting){
-                  entry.target.classList.add('visible');
-                  this.observer.unobserve(entry.target);
-                }
-              });
-            }, {threshold:0.1, rootMargin:'0px 0px -50px 0px'});
-            $$('.animate-card').forEach(card=>this.observer.observe(card));
-          }
+  // ======================================================
+  // 6. EMERGENCY CONTENT FIX (VISIBILITY)
+  // ======================================================
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      $$('h3, p, ul, li, div').forEach(el => {
+        if (!el.classList.contains('term-details') && getComputedStyle(el).opacity === '0') {
+          el.style.opacity = '1';
+          el.style.visibility = 'visible';
         }
-        new CardAnimator();
+      });
+    }, 1000);
+  });
 
-        // --- Circular Progress ---
-        function animateProgressTo(percent){
-          targetProgress = Math.round(percent);
-          cancelAnimationFrame(raf);
-          const step = () => {
-            currentProgress += (targetProgress-currentProgress)*0.18;
-            updateCircularUI(currentProgress);
-            if(Math.abs(targetProgress-currentProgress) > 0.5) raf=requestAnimationFrame(step);
-            else {currentProgress=targetProgress;updateCircularUI(currentProgress);}
-          };
-          raf=requestAnimationFrame(step);
-        }
-        function updateCircularUI(percent){
-          if(!circularProgress || !progressValueSpan) return;
-          const deg = (percent/100)*360;
-          circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
-          progressValueSpan.textContent = `${Math.round(percent)}%`;
-        }
+  // ======================================================
+  // 7. INITIALIZE EVERYTHING
+  // ======================================================
+  function initialize() {
+    new CardAnimator();
+    addHoverEffects();
+    console.log('Chapter 7 - Double Entry System (animations only) loaded successfully!');
+  }
 
-        function enableSubmitCheck(){
-          const answered = $$('#mcq-container input[type=radio]:checked').length;
-          if(submitButton){
-            submitButton.disabled = answered===0;
-            submitButton.style.opacity = answered===0 ? '0.5':'1';
-            submitButton.style.cursor = answered===0 ? 'not-allowed':'pointer';
-          }
-        }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+  } else {
+    initialize();
+  }
+})();
+</script>
 
-        function handleRadio(e){
-          const input = e.target;
-          if(input.type!=='radio') return;
-          const mcq = input.closest('.mcq');
-          const correctAns = mcq.dataset.answer;
-          const label = mcq.querySelector(`label[for="${input.id}"]`);
-          if(label){label.classList.add('aw-pop'); setTimeout(()=>label.classList.remove('aw-pop'),350);}
-          if(input.value===correctAns) correctAnswered.add(mcq);
-          else correctAnswered.delete(mcq);
-          animateProgressTo((correctAnswered.size/totalQuestions)*100);
-          enableSubmitCheck();
-        }
-
-        mcqs.forEach(mcq=>mcq.addEventListener('click',handleRadio));
-
-        function handleSubmit(){
-          let score = 0;
-          let attempted = 0;
-          const userAnswers = [];
-
-          mcqs.forEach(mcq=>{
-            const correctAns = mcq.dataset.answer;
-            const selected = mcq.querySelector('input:checked');
-            if(!selected) return;
-            attempted++;
-
-            const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-            const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-            const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
-
-            if(selected.value===correctAns){
-              score++;
-              if(corrLabel) corrLabel.classList.add('aw-pop');
-            } else {
-              if(selLabel){ selLabel.classList.add('aw-shake'); selLabel.addEventListener('animationend',()=>selLabel.classList.remove('aw-shake'),{once:true});}
-              if(corrLabel) corrLabel.classList.add('aw-pop');
-            }
-
-            userAnswers.push({
-              question: mcq.querySelector('h3')?.textContent.trim()||'',
-              selected: selLabel?.textContent.trim()||'Not Answered',
-              correct: corrLabel?.textContent.trim()||'',
-              isCorrect: selected.value===correctAns
-            });
-          });
-
-          // --- Save to Firebase ---
-          if(currentUser){
-            saveQuizResult('chapter-7-double-entry', score, totalQuestions, userAnswers);
-          }
-
-          const pct = attempted?(score/attempted)*100:0;
-          let msg = '';
-          if(pct>=80) msg=`🌟 <strong>Excellent!</strong> You scored ${score}/${attempted}.`;
-          else if(pct>=60) msg=`👍 <strong>Good Job!</strong> You got ${score}/${attempted}.`;
-          else if(pct>0) msg=`💡 <strong>Keep Learning!</strong> You got ${score}/${attempted}.`;
-          else msg=`⚡ <strong>Start Learning!</strong> Try answering the questions.`;
-
-          if(scoreDisplay){ scoreDisplay.innerHTML=msg; scoreDisplay.style.display='block'; scoreDisplay.style.opacity='0'; setTimeout(()=>{scoreDisplay.style.transition='all .5s ease'; scoreDisplay.style.opacity='1'; scoreDisplay.classList.add('aw-pop');},50);}
-          if(retryBtn) retryBtn.style.display='inline-block';
-        }
-
-        if(submitButton) submitButton.addEventListener('click',handleSubmit);
-
-        function resetQuiz(){
-          correctAnswered.clear();
-          mcqs.forEach(mcq=>mcq.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false));
-          animateProgressTo(0);
-          if(scoreDisplay) scoreDisplay.style.display='none';
-          if(retryBtn) retryBtn.style.display='none';
-          enableSubmitCheck();
-        }
-
-        if(retryBtn) retryBtn.addEventListener('click',resetQuiz);
-        enableSubmitCheck();
-      })();
-      
-      /* Classification Exercise */
-      function handleClassification() {
-        const checkBtn = $('#check-classification');
-        const resultDiv = $('#classification-result');
-        
-        if (!checkBtn || !resultDiv) return;
-
-        checkBtn.addEventListener('click', () => {
-          const selects = $$('#classification-container select');
-          let correct = 0;
-          let total = 0;
-
-          selects.forEach(select => {
-            if (select.value) {
-              total++;
-              if (select.value === select.dataset.correct) {
-                correct++;
-                select.style.borderColor = '#4caf50';
-              } else {
-                select.style.borderColor = '#f44336';
-              }
-            }
-          });
-
-          const percentage = total ? (correct / total) * 100 : 0;
-          let message = '';
-
-          if (percentage >= 80) {
-            message = `🎉 <strong>Perfect!</strong> You classified ${correct}/${total} accounts correctly!`;
-          } else if (percentage >= 60) {
-            message = `👏 <strong>Great job!</strong> You got ${correct}/${total} right. Review the incorrect ones.`;
-          } else {
-            message = `📚 <strong>Keep practicing!</strong> You got ${correct}/${total}. Review the golden rules.`;
-          }
-
-          resultDiv.innerHTML = message;
-          resultDiv.style.display = 'block';
-          resultDiv.classList.add('aw-pop');
-        });
-      }
-
-      /* Initialize Everything */
-      function initialize() {
-        const animator = new CardAnimator();
-
-        const mcqContainer = $('#mcq-container');
-        if (mcqContainer) {
-          mcqContainer.addEventListener('change', handleRadio);
-        }
-        
-        if (submitButton) {
-          submitButton.addEventListener('click', handleSubmit);
-        }
-        
-        if (retryBtn) {
-          retryBtn.addEventListener('click', resetQuiz);
-        }
-
-        handleClassification();
-        animateProgressTo(0);
-        enableSubmitCheck();
-
-        console.log('Chapter 7 - Double Entry System loaded successfully!');
-      }
-
-      /* Event Listeners */
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initialize);
-      } else {
-        initialize();
-      }
-    ();
-  </script>
 
 </body>
 </html>

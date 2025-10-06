@@ -1643,113 +1643,37 @@
   </section>
 
   <script>
-    // Correct answers
-    const correctAnswers = {
-      q1: 'b',
-      q2: 'b', 
-      q3: 'b',
-      q4: 'c',
-      q5: 'b',
-      q6: 'd',
-      q7: 'a',
-      q8: 'b',
-      q9: 'c',
-      q10: 'b'
-    };
-
-    function checkAnswers() {
-      let score = 0;
-      let answered = 0;
-      
-      for (let i = 1; i <= 10; i++) {
-        const question = document.querySelector(`input[name="q${i}"]:checked`);
-        if (question) {
-          answered++;
-          if (question.value === correctAnswers[`q${i}`]) {
-            score++;
-            question.parentElement.style.background = 'rgba(16,185,129,0.2)';
-            question.parentElement.style.borderColor = '#10b981';
-          } else {
-            question.parentElement.style.background = 'rgba(239,68,68,0.2)';
-            question.parentElement.style.borderColor = '#ef4444';
-            // Highlight correct answer
-            const correctOption = document.querySelector(`input[name="q${i}"][value="${correctAnswers[`q${i}`]}"]`);
-            if (correctOption) {
-              correctOption.parentElement.style.background = 'rgba(16,185,129,0.2)';
-              correctOption.parentElement.style.borderColor = '#10b981';
-            }
-          }
-        }
-      }
-
-      const scoreDisplay = document.getElementById('scoreDisplay');
-      scoreDisplay.style.display = 'block';
-      
-      let message = '';
-      const percentage = (score / 10) * 100;
-      
-      if (percentage === 100) {
-        message = `🎉 Perfect Score! ${score}/10 - You're a master of Subsidiary Books!`;
-      } else if (percentage >= 80) {
-        message = `🌟 Excellent! ${score}/10 - Great understanding of the concepts!`;
-      } else if (percentage >= 60) {
-        message = `👍 Good job! ${score}/10 - Keep practicing to improve!`;
-      } else {
-        message = `📚 Keep studying! ${score}/10 - Review the concepts and try again!`;
-      }
-      
-      scoreDisplay.innerHTML = `
-        <h3 style="color: var(--brand-2); margin-bottom: 10px;">Your Results</h3>
-        <p style="font-size: 1.2rem; margin-bottom: 10px;">${message}</p>
-        <p style="color: var(--muted);">Questions Attempted: ${answered}/10</p>
-        <button onclick="resetQuiz()" style="margin-top: 15px; padding: 10px 20px; background: var(--brand); color: white; border: none; border-radius: 8px; cursor: pointer;">Try Again</button>
-      `;
-    }
-
-    function resetQuiz() {
-      // Clear all selections
-      const allInputs = document.querySelectorAll('input[type="radio"]');
-      allInputs.forEach(input => {
-        input.checked = false;
-        input.parentElement.style.background = '';
-        input.parentElement.style.borderColor = '';
-      });
-      
-      // Hide score display
-      document.getElementById('scoreDisplay').style.display = 'none';
-    }
-
-    // Add smooth scroll behavior
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
+  // Add smooth scroll behavior
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
       });
     });
+  });
 
-    // Add animation on scroll
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
+  // Add animation on scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('section').forEach(section => {
-      section.style.opacity = '0';
-      section.style.transform = 'translateY(20px)';
-      section.style.transition = 'all 0.6s ease';
-      observer.observe(section);
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
     });
-  </script>
+  }, observerOptions);
+
+  document.querySelectorAll('section').forEach(section => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(20px)';
+    section.style.transition = 'all 0.6s ease';
+    observer.observe(section);
+  });
+</script>
 </body>
 </html>

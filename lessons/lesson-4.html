@@ -1762,7 +1762,6 @@
         </section>
 
         <script>
-
         (() => {
         const $ = sel => document.querySelector(sel);
         const $$ = sel => Array.from(document.querySelectorAll(sel));
@@ -1787,17 +1786,6 @@
         const st = document.createElement("style");
         st.textContent = css;
         document.head.appendChild(st);
-
-        // Global variables
-        const mcqs = $$('.mcq');
-        const submitButton = $('#submit-mcq');
-        const scoreDisplay = $('#score-display');
-        const retryBtn = $('#retry-btn');
-        const circularProgress = $('#circularProgress');
-        const progressValueSpan = $('#progressValue');
-        const totalQuestions = mcqs.length;
-        let correctAnswered = new Set();
-        let currentProgress = 0, targetProgress = 0, raf;
 
         /* Card Animation System - Clean Version */
         class CardAnimator {
@@ -1841,7 +1829,7 @@
 
             // Ensure all content is visible
             $$('h3, p, ul, li, div').forEach(el => {
-                if (!el.classList.contains('term-details') && !el.classList.contains('mcq')) {
+                if (!el.classList.contains('term-details')) {
                 el.style.visibility = 'visible';
                 el.style.opacity = '1';
                 }
@@ -1851,9 +1839,7 @@
             addAnimationClasses() {
             // Process flow cards (6 step cards)
             $$('[style*="padding: 20px"][style*="text-align: center"][style*="min-width: 160px"]').forEach(card => {
-                if (!card.closest('.mcq')) {
                 card.classList.add('animate-card', 'process-card');
-                }
             });
 
             // Basis cards (3 main accounting basis cards)
@@ -1868,9 +1854,7 @@
 
             // Summary cards (all cards with border-left styling)
             $$('[style*="border-left: 4px solid"]').forEach(card => {
-                if (!card.closest('.mcq')) {
                 card.classList.add('animate-card', 'summary-card');
-                }
             });
 
             // Key terms cards
@@ -1940,120 +1924,6 @@
             }
         }
 
-        /* MCQ System */
-        function animateProgressTo(percent) {
-            targetProgress = Math.round(percent);
-            cancelAnimationFrame(raf);
-            const step = () => {
-            currentProgress += (targetProgress - currentProgress) * 0.18;
-            updateCircularUI(currentProgress);
-            if (Math.abs(targetProgress - currentProgress) > 0.5) {
-                raf = requestAnimationFrame(step);
-            } else {
-                currentProgress = targetProgress;
-                updateCircularUI(currentProgress);
-            }
-            };
-            raf = requestAnimationFrame(step);
-        }
-
-        function updateCircularUI(percent) {
-            if (!circularProgress || !progressValueSpan) return;
-            const deg = (percent/100)*360;
-            circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
-            progressValueSpan.textContent = `${Math.round(percent)}%`;
-        }
-
-        function enableSubmitCheck() {
-            const answered = $$('#mcq-container input[type=radio]:checked').length;
-            if (submitButton) {
-            submitButton.disabled = answered === 0;
-            submitButton.style.opacity = answered ? '1' : '0.5';
-            if (answered) {
-                submitButton.style.transform = 'scale(1.05)';
-                setTimeout(() => submitButton.style.transform = '', 150);
-            }
-            }
-        }
-
-        function handleRadio(e) {
-            const input = e.target;
-            if (input.type !== 'radio') return;
-            const mcq = input.closest('.mcq');
-            const correctAns = mcq.dataset.answer;
-            const label = mcq.querySelector(`label[for="${input.id}"]`);
-
-            if (label) {
-            label.classList.add('aw-pop');
-            setTimeout(() => label.classList.remove('aw-pop'), 350);
-            }
-            
-            if (input.value === correctAns) {
-            correctAnswered.add(mcq);
-            } else {
-            correctAnswered.delete(mcq);
-            }
-            
-            animateProgressTo((correctAnswered.size / totalQuestions) * 100);
-            enableSubmitCheck();
-        }
-
-        function handleSubmit() {
-            let score = 0;
-            mcqs.forEach(mcq => {
-            const correctAns = mcq.dataset.answer;
-            const selected = mcq.querySelector('input:checked');
-            if (!selected) return;
-            
-            const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-            const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-            const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
-
-            if (selected.value === correctAns) {
-                score++;
-                if (corrLabel) corrLabel.classList.add('aw-pop');
-            } else {
-                if (selLabel) {
-                selLabel.classList.add('aw-shake');
-                selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
-                }
-                if (corrLabel) corrLabel.classList.add('aw-pop');
-            }
-            });
-
-            const pct = (score / totalQuestions) * 100;
-            let msg = '';
-            if (pct >= 80) msg = `<strong>Excellent!</strong> You scored ${score}/${totalQuestions}`;
-            else if (pct >= 60) msg = `<strong>Good Job!</strong> You scored ${score}/${totalQuestions}`;
-            else msg = `<strong>Keep Learning!</strong> You scored ${score}/${totalQuestions}`;
-
-            if (scoreDisplay) {
-            scoreDisplay.innerHTML = msg;
-            scoreDisplay.style.display = 'block';
-            scoreDisplay.style.opacity = '0';
-            setTimeout(() => {
-                scoreDisplay.style.transition = 'all .5s ease';
-                scoreDisplay.style.opacity = '1';
-                scoreDisplay.classList.add('aw-pop');
-            }, 50);
-            }
-
-            if (retryBtn) {
-            retryBtn.style.display = 'inline-block';
-            }
-        }
-
-        function resetQuiz() {
-            correctAnswered.clear();
-            mcqs.forEach(mcq => {
-            mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
-            });
-            animateProgressTo(0);
-            if (scoreDisplay) scoreDisplay.style.display = 'none';
-            if (retryBtn) retryBtn.style.display = 'none';
-            enableSubmitCheck();
-        }
-
         /* Enhanced Hover Effects */
         function addHoverEffects() {
             $$('.animate-card').forEach(card => {
@@ -2107,25 +1977,7 @@
             addHoverEffects();
             }, 500);
 
-            // Setup MCQ functionality
-            const mcqContainer = $('#mcq-container');
-            if (mcqContainer) {
-            mcqContainer.addEventListener('change', handleRadio);
-            }
-            
-            if (submitButton) {
-            submitButton.addEventListener('click', handleSubmit);
-            }
-            
-            if (retryBtn) {
-            retryBtn.addEventListener('click', resetQuiz);
-            }
-
-            // Initialize progress
-            animateProgressTo(0);
-            enableSubmitCheck();
-
-            console.log('Card animations and MCQ system loaded successfully!');
+            console.log('Card animations loaded successfully!');
         }
 
         /* Event Listeners */
@@ -2147,7 +1999,7 @@
             }, 1000);
         });
         })();
-        </script>
+</script>
   </main>
 </body>
 </html>

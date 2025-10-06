@@ -1035,7 +1035,7 @@
       <h2>Multiple Choice Questions</h2>
       <div class="progress-container"><div id="progress" class="progress-circle">0%</div></div>
       <div id="mcq-container">
-        <div class="mcq" data-answer="c">
+      <div class="mcq" data-answer="c">
       <h3>1. What is capital?</h3>
       <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Money kept in bank</label>
       <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Total assets of business</label>
@@ -1201,141 +1201,10 @@
     <button id="retry-btn" class="submit-button" style="display:none;">Retry Quiz</button>
   </main>
 
-  <script type="module">
+    <script type="module">
     // ======================================================
-    // 1. IMPORT FIREBASE FUNCTIONS
+    // ACCORDION LOGIC (PRESERVED)
     // ======================================================
-    import { onAuthChange, saveQuizResult, initializeUserProfile } from '../firebase-config.js';
-
-    // ======================================================
-    // 2. TRACK CURRENT USER
-    // ======================================================
-    let currentUser = null;
-    onAuthChange(user => {
-      if (user) {
-        currentUser = user;
-        console.log("Lesson 2: User is logged in:", user.displayName);
-        initializeUserProfile(user);
-      } else {
-        currentUser = null;
-        console.log("Lesson 2: User is logged out.");
-      }
-    });
-
-    // --- RESTORED: Your original accordion and quiz UI logic ---
-    (function(){
-      const mcqs = document.querySelectorAll('.mcq');
-      const submitButton = document.getElementById('submit-mcq');
-      const scoreDisplay = document.getElementById('score-display');
-      const progressCircle = document.getElementById('progress');
-      const retryBtn = document.getElementById('retry-btn');
-
-      function updateSubmitState() {
-        const anyAnswered = Array.from(mcqs).some(mcq => mcq.querySelector('input:checked'));
-        if (submitButton) submitButton.disabled = !anyAnswered;
-      }
-
-      function clearIndicators(mcq){
-        mcq.querySelectorAll('label').forEach(l => {
-          delete l.dataset.correct;
-          delete l.dataset.wrong;
-          delete l.dataset.correctText;
-        });
-        mcq.classList.remove('correct', 'wrong');
-      }
-
-      // ======================================================
-      // 3. MERGED SUBMIT BUTTON LOGIC
-      // ======================================================
-      function submitAnswers() {
-        let score = 0;
-        const userAnswers = []; // Array for Firebase
-
-        mcqs.forEach(mcq => {
-          clearIndicators(mcq);
-          const answer = mcq.dataset.answer;
-          const selected = mcq.querySelector('input:checked');
-          const questionText = mcq.querySelector('h3').textContent.trim();
-
-          const selectedLabel = selected ? mcq.querySelector(`label[for="${selected.id}"]`) : null;
-          const correctInput = mcq.querySelector(`input[value="${answer}"]`);
-          const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
-          const correctText = correctLabel ? correctLabel.textContent.trim() : '';
-
-          if (selected && selected.value === answer) {
-            if (selectedLabel) selectedLabel.dataset.correct = "true";
-            mcq.classList.add('correct');
-            score++;
-          } else if (selected) {
-            if (selectedLabel) {
-              selectedLabel.dataset.wrong = "true";
-              selectedLabel.dataset.correctText = correctText;
-            }
-            if (correctLabel) correctLabel.dataset.correct = "true";
-            mcq.classList.add('wrong');
-          }
-
-          userAnswers.push({
-            question: questionText,
-            selected: selectedLabel ? selectedLabel.textContent.trim() : "Not Answered",
-            correct: correctText,
-            isCorrect: selected ? selected.value === answer : false
-          });
-        });
-        
-        const totalQuestions = mcqs.length;
-
-        // --- FIREBASE INTEGRATION ---
-        if (currentUser) {
-          saveQuizResult('lesson-2-terms', score, totalQuestions, userAnswers);
-        }
-
-        // --- RESTORED: Your result display logic ---
-        if (scoreDisplay) {
-          scoreDisplay.classList.add('show');
-          scoreDisplay.classList.remove('success','partial');
-          if (score === totalQuestions) {
-            scoreDisplay.classList.add('success');
-            scoreDisplay.innerHTML = `<strong>Perfect!</strong> ${score}/${totalQuestions}`;
-          } else {
-            scoreDisplay.classList.add('partial');
-            scoreDisplay.innerHTML = `${score} out of ${totalQuestions} correct.`;
-          }
-        }
-
-        if (progressCircle) {
-          const percent = Math.round((score / totalQuestions) * 100);
-          progressCircle.style.background = `conic-gradient(var(--brand-2) ${percent * 3.6}deg, #333 0deg)`;
-          progressCircle.textContent = percent + "%";
-        }
-
-        if (retryBtn) retryBtn.style.display = "block";
-      }
-
-      function resetQuizFeedback() {
-        mcqs.forEach(mcq => {
-          clearIndicators(mcq);
-          mcq.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-        });
-        if (scoreDisplay) scoreDisplay.classList.remove('show','success','partial');
-        if (progressCircle) {
-          progressCircle.style.background = `conic-gradient(var(--brand-2) 0deg, #333 0deg)`;
-          progressCircle.textContent = "0%";
-        }
-        if (submitButton) submitButton.disabled = true;
-        if (retryBtn) retryBtn.style.display = "none";
-      }
-      
-      if (retryBtn) retryBtn.onclick = resetQuizFeedback;
-      
-      document.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.addEventListener('change', updateSubmitState);
-      });
-
-      if (submitButton) submitButton.addEventListener('click', submitAnswers);
-      updateSubmitState();
-    })();
-
     document.querySelectorAll(".accordion-header").forEach(header => {
       header.addEventListener("click", () => {
         const item = header.parentElement;
@@ -1347,6 +1216,9 @@
       });
     });
 </script>
+
+</body>
+</html>
 
 </body>
 </html>

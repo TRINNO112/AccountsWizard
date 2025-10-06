@@ -1,0 +1,390 @@
+/* quiz-styles.css - Redesigned Quiz Styles */
+
+/* ==========================
+   MCQ CONTAINER & GRID
+   ========================== */
+.mcq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+  margin: 30px 0;
+}
+
+@media (max-width: 768px) {
+  .mcq-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ==========================
+   INDIVIDUAL MCQ CARD
+   ========================== */
+.mcq {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.mcq::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mcq:hover::before {
+  opacity: 1;
+}
+
+.mcq:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* Visual feedback after submission - Subtle glow effect */
+.mcq[style*="border-left: 4px solid rgb(74, 222, 128)"] {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(74, 222, 128, 0.02));
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.15);
+}
+
+.mcq[style*="border-left: 4px solid rgb(248, 113, 113)"] {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.1), rgba(248, 113, 113, 0.02));
+  box-shadow: 0 0 30px rgba(248, 113, 113, 0.15);
+}
+
+/* ==========================
+   QUESTION HEADER - REDESIGNED
+   ========================== */
+.mcq h3 {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+/* Gradient underline instead of border */
+.mcq h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand), transparent);
+  opacity: 0.5;
+}
+
+
+/* ==========================
+   OPTIONS STYLING - COMPLETELY REDESIGNED
+   ========================== */
+.mcq label {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  margin: 12px 0;
+  background: rgba(255,255,255,0.02);
+  border: 2px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: rgba(255,255,255,0.8);
+  position: relative;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+/* Hover effect */
+.mcq label:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(124,77,255,0.3);
+  transform: translateX(8px);
+  color: #ffffff;
+}
+
+/* Hide the actual radio button completely */
+.mcq input[type="radio"] {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Custom indicator - appears as a line on the left */
+.mcq label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Selected state - Modern gradient effect */
+.mcq input[type="radio"]:checked + label {
+  background: linear-gradient(135deg, rgba(124,77,255,0.15), rgba(124,77,255,0.05));
+  border-color: var(--brand);
+  color: #ffffff;
+  font-weight: 500;
+  padding-left: 28px;
+}
+
+.mcq input[type="radio"]:checked + label::before {
+  background: linear-gradient(180deg, var(--brand), var(--brand-2));
+  width: 6px;
+}
+
+/* Checkmark icon for selected option */
+.mcq input[type="radio"]:checked + label::after {
+  content: '✓';
+  position: absolute;
+  right: 20px;
+  color: var(--brand);
+  font-weight: bold;
+  font-size: 1.2rem;
+  animation: checkIn 0.3s ease;
+}
+
+@keyframes checkIn {
+  from {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* Disabled state after submission */
+.mcq input[type="radio"]:disabled + label {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.mcq input[type="radio"]:disabled + label:hover {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.05);
+  transform: none;
+}
+
+/* ==========================
+   PROGRESS BAR - ENHANCED
+   ========================== */
+.progress-info {
+  text-align: center;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.progress-bar {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  height: 24px;
+  margin: 15px 0;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.progress-bar-inner {
+  background: linear-gradient(90deg, #7c4dff, #b388ff);
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 2px 10px rgba(124,77,255,0.4);
+}
+
+/* Pulse animation on progress */
+.progress-bar-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+  animation: slide 1.5s infinite;
+}
+
+@keyframes slide {
+  0% { transform: translateX(-30px); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(0); opacity: 0; }
+}
+
+/* ==========================
+   SUBMIT BUTTON - MODERNIZED
+   ========================== */
+#submitQuiz {
+  background: linear-gradient(135deg, #7c4dff, #b388ff);
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.05rem;
+  margin: 30px auto;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+#submitQuiz::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+#submitQuiz:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+#submitQuiz:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(124,77,255,0.4);
+}
+
+#submitQuiz:active {
+  transform: translateY(-1px);
+}
+
+#submitQuiz:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==========================
+   QUIZ RESULT DISPLAY - ENHANCED
+   ========================== */
+#quizResult {
+  background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(179,136,255,0.05));
+  border-radius: 16px;
+  padding: 30px;
+  margin: 30px 0;
+  border: 2px solid rgba(124,77,255,0.3);
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  animation: resultSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(124,77,255,0.2);
+  color: #ffffff;
+}
+
+@keyframes resultSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================
+   RETRY BUTTON - REDESIGNED
+   ========================== */
+#retry-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff8787);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
+  margin: 20px auto;
+  display: none;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+#retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+  background: linear-gradient(135deg, #ff8787, #ff6b6b);
+}
+
+/* ==========================
+   FADE-IN ANIMATION
+   ========================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+/* Staggered animation */
+.mcq:nth-child(1) { animation-delay: 0.05s; }
+.mcq:nth-child(2) { animation-delay: 0.1s; }
+.mcq:nth-child(3) { animation-delay: 0.15s; }
+.mcq:nth-child(4) { animation-delay: 0.2s; }
+.mcq:nth-child(5) { animation-delay: 0.25s; }
+.mcq:nth-child(6) { animation-delay: 0.3s; }
+.mcq:nth-child(7) { animation-delay: 0.35s; }
+.mcq:nth-child(8) { animation-delay: 0.4s; }
+.mcq:nth-child(9) { animation-delay: 0.45s; }
+.mcq:nth-child(10) { animation-delay: 0.5s; }
+
+/* ==========================
+   LOADING STATE
+   ========================== */
+.mcq-grid:empty::after {
+  content: 'Loading questions...';
+  display: block;
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+  padding: 60px;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}

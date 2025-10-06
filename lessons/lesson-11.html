@@ -3169,148 +3169,16 @@
       }
     }
 
-    // MCQ functionality - FIXED
-    function checkAnswers(event) {
-      event.preventDefault();
-      
-      let score = 0;
-      let answered = 0;
-      
-      const correctAnswers = {
-        q1: 'b', q2: 'b', q3: 'c', q4: 'a', q5: 'a',
-        q6: 'c', q7: 'b', q8: 'c', q9: 'c', q10: 'a',
-        q11: 'd', q12: 'b', q13: 'a', q14: 'a', q15: 'a'
-      };
-      
-      const totalQuestions = Object.keys(correctAnswers).length;
-      
-      // Check each question
-      for (let question in correctAnswers) {
-        const selectedInput = document.querySelector(`input[name="${question}"]:checked`);
-        
-        if (selectedInput) {
-          answered++;
-          
-          // Get the associated label
-          const selectedLabel = document.querySelector(`label[for="${selectedInput.id}"]`);
-          
-          if (selectedInput.value === correctAnswers[question]) {
-            score++;
-            if (selectedLabel) selectedLabel.classList.add('correct');
-          } else {
-            if (selectedLabel) selectedLabel.classList.add('wrong');
-            // Show correct answer
-            const correctInput = document.querySelector(`input[name="${question}"][value="${correctAnswers[question]}"]`);
-            if (correctInput) {
-              const correctLabel = document.querySelector(`label[for="${correctInput.id}"]`);
-              if (correctLabel) correctLabel.classList.add('correct');
-            }
-          }
-        }
-      }
-      
-      // Validation
-      if (answered === 0) {
-        alert('Please answer at least one question before submitting!');
-        return;
-      }
-      
-      // Calculate percentage
-      const percentage = Math.round((score / totalQuestions) * 100);
-      
-      // Update progress circle
-      const progressCircle = document.querySelector('.circular-progress');
-      const progressValue = document.querySelector('.progress-value');
-      
-      let currentProgress = 0;
-      const progressAnimation = setInterval(() => {
-        if (currentProgress <= percentage) {
-          progressCircle.style.background = `conic-gradient(var(--brand-2) ${currentProgress * 3.6}deg, rgba(255,255,255,0.05) 0deg)`;
-          progressValue.textContent = `${currentProgress}%`;
-          currentProgress++;
-        } else {
-          clearInterval(progressAnimation);
-        }
-      }, 10);
-      
-      // Create or update score display
-      let scoreDisplay = document.querySelector('.score-display');
-      if (!scoreDisplay) {
-        scoreDisplay = document.createElement('div');
-        scoreDisplay.className = 'score-display';
-        document.querySelector('#mcq-form').appendChild(scoreDisplay);
-      }
-      
-      scoreDisplay.style.display = 'block';
-      scoreDisplay.innerHTML = `
-        <i class="fas fa-trophy" style="color: #ffd700; font-size: 2rem; margin-bottom: 10px;"></i>
-        <br>
-        <strong>You scored ${score} out of ${totalQuestions}!</strong>
-        <br>
-        <span style="font-size: 0.9rem; color: var(--muted);">
-          (${answered} questions attempted)
-        </span>
-        <br>
-        <span style="font-size: 1.1rem; margin-top: 10px; display: block;">
-          ${percentage >= 80 ? '🎉 Excellent work!' : percentage >= 60 ? '👍 Good job!' : '📚 Keep practicing!'}
-        </span>
-      `;
-      
-      // Disable submit button
-      document.querySelector('.submit-button').disabled = true;
-      
-      // Show retry button
-      document.getElementById('retryBtn').style.display = 'block';
-      
-      // Scroll to results
-      setTimeout(() => {
-        scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 500);
-    }
-
-    // Reset quiz
-    function resetQuiz() {
-      // Hide score display
-      const scoreDisplay = document.querySelector('.score-display');
-      if (scoreDisplay) {
-        scoreDisplay.style.display = 'none';
-      }
-      
-      // Clear all selections and styles
-      document.querySelectorAll('input[type="radio"]').forEach(input => {
-        input.checked = false;
-      });
-      
-      document.querySelectorAll('.mcq label').forEach(label => {
-        label.classList.remove('correct', 'wrong');
-      });
-      
-      // Reset progress circle
-      const progressCircle = document.querySelector('.circular-progress');
-      const progressValue = document.querySelector('.progress-value');
-      progressCircle.style.background = 'conic-gradient(var(--brand-2) 0deg, rgba(255,255,255,0.05) 0deg)';
-      progressValue.textContent = '0%';
-      
-      // Hide retry button
-      document.getElementById('retryBtn').style.display = 'none';
-      
-      // Enable submit button
-      document.querySelector('.submit-button').disabled = false;
-      
-      // Scroll to top of MCQ section
-      document.querySelector('#mcq-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
     // Initialize when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('MCQ system initialized');
+      console.log('Page initialized');
       
-      // Add animation to MCQ cards
+      // Add animation to cards
       document.querySelectorAll('.mcq').forEach((mcq, index) => {
         mcq.style.animationDelay = `${index * 0.1}s`;
       });
     });
-    </script>
+</script>
 
 </body>
 </html>

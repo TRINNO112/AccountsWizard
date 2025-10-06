@@ -2493,36 +2493,8 @@
       const $ = sel => document.querySelector(sel);
       const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-      // --- Config ---
-      const revealOnSelect = false; // if true, selecting wrong option immediately reveals correct answer
-
-      // --- Inject CSS for highlights & small animations ---
+      // --- Inject CSS for animations ---
       const css = `
-        /* MCQ highlight styles */
-        .mcq label[data-correct] {
-          background: rgba(76,175,80,0.12) !important;
-          border: 1px solid rgba(76,175,80,0.9) !important;
-          color: #4caf50 !important;
-        }
-        .mcq label[data-wrong] {
-          background: rgba(244,67,54,0.08) !important;
-          border: 1px solid rgba(244,67,54,0.9) !important;
-          color: #f44336 !important;
-        }
-        /* Show a small 'Correct: ...' hint when wrong */
-        .mcq label[data-wrong]::after {
-          content: " → Correct: " attr(data-correctText);
-          font-size: 0.85rem;
-          color: rgba(255,255,255,0.75);
-          margin-left: 8px;
-          font-style: italic;
-          display: inline-block;
-          vertical-align: middle;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          max-width: 40%;
-          overflow: hidden;
-        }
         /* Small UX animations used by the script */
         @keyframes shakeX { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
         .aw-shake { animation: shakeX 0.4s ease; }
@@ -2534,25 +2506,6 @@
       const st = document.createElement('style');
       st.textContent = css;
       document.head.appendChild(st);
-
-      // --- DOM references ---
-      const mcqs = $$('.mcq');
-      const submitButton = $('#submit-mcq');
-      const scoreDisplay = $('#score-display');
-      const retryBtn = $('#retry-btn');
-      const mcqContainer = $('#mcq-container');
-      const progressBar = $('#lesson-progress');          // horizontal progress (preferred)
-      const circularProgress = $('#circularProgress');    // fallback circular widget
-      const progressValueSpan = $('#progressValue');      // text inside circular
-
-      const totalQuestions = mcqs.length;
-
-      // --- State for smooth progress animation ---
-      let correctAnswered = new Set(); // set of mcq DOM nodes marked correct (for real-time progress)
-      let currentProgress = 0;
-      let targetProgress = 0;
-      let raf = null;
-      let autoClearTimeout = null;
 
       // ---------- Card animator (keeps your previous animation hooks) ----------
       class CardAnimator {
@@ -2606,228 +2559,10 @@
         }
       };
 
-      // ---------- Progress animation helpers ----------
-      function animateProgressTo(percent) {
-        // clamp
-        targetProgress = Math.max(0, Math.min(100, Math.round(percent)));
-        if (raf) cancelAnimationFrame(raf);
-        const step = () => {
-          currentProgress += (targetProgress - currentProgress) * 0.18;
-          if (Math.abs(targetProgress - currentProgress) < 0.5) currentProgress = targetProgress;
-          updateProgressUI(currentProgress);
-          if (currentProgress !== targetProgress) {
-            raf = requestAnimationFrame(step);
-          }
-        };
-        raf = requestAnimationFrame(step);
-      }
-
-      function updateProgressUI(percent) {
-        const p = Math.round(percent);
-        if (progressBar) {
-          // ensure progress element configured
-          if (!progressBar.max || Number(progressBar.max) !== 100) progressBar.max = 100;
-          progressBar.value = p;
-        } else if (circularProgress && progressValueSpan) {
-          const deg = (p / 100) * 360;
-          circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
-          progressValueSpan.textContent = `${p}%`;
-        }
-      }
-
-      // ---------- MCQ helpers ----------
-      function clearMcqIndicators(mcq) {
-        mcq.querySelectorAll('label').forEach(l => {
-          delete l.dataset.correct;
-          delete l.dataset.wrong;
-          delete l.dataset.correctText;
-        });
-        mcq.classList.remove('correct', 'wrong');
-      }
-
-      function enableSubmitCheck() {
-        const anyAnswered = !!mcqContainer && mcqContainer.querySelectorAll('input[type="radio"]:checked').length > 0;
-        if (submitButton) {
-          submitButton.disabled = !anyAnswered;
-          submitButton.style.opacity = anyAnswered ? '1' : '0.5';
-        }
-      }
-
-      // Real-time selection handler (updates progress and optionally reveals correct answer)
-      function handleRadioChange(e) {
-        const input = e.target;
-        if (!input || input.type !== 'radio') return;
-        const mcq = input.closest('.mcq');
-        if (!mcq) return;
-
-        // Clear previous visual indicators for this mcq
-        clearMcqIndicators(mcq);
-
-        const correctAns = mcq.dataset.answer?.toString() ?? '';
-        const selectedValue = input.value?.toString() ?? '';
-        const selectedLabel = mcq.querySelector(`label[for="${input.id}"]`);
-        const correctInput = mcq.querySelector(`input[value="${correctAns}"]`);
-        const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
-        const correctText = correctLabel ? correctLabel.textContent.trim() : '';
-
-        // Immediate reveal logic if configured
-        if (revealOnSelect) {
-          if (selectedValue === correctAns) {
-            if (selectedLabel) selectedLabel.dataset.correct = "true";
-            mcq.classList.add('correct');
-            correctAnswered.add(mcq);
-          } else {
-            if (selectedLabel) {
-              selectedLabel.dataset.wrong = "true";
-              selectedLabel.dataset.correctText = correctText;
-              selectedLabel.classList.add('aw-shake');
-              selectedLabel.addEventListener('animationend', () => selectedLabel.classList.remove('aw-shake'), { once: true });
-            }
-            if (correctLabel) correctLabel.dataset.correct = "true";
-            mcq.classList.add('wrong');
-            correctAnswered.delete(mcq);
-          }
-        } else {
-          // only update Set — don't reveal labels
-          if (selectedValue === correctAns) correctAnswered.add(mcq);
-          else correctAnswered.delete(mcq);
-        }
-
-        // Update smooth progress
-        const percent = totalQuestions ? (correctAnswered.size / totalQuestions) * 100 : 0;
-        animateProgressTo(percent);
-
-        // Enable or disable submit button
-        enableSubmitCheck();
-      }
-
-      // Submit answers (final marking + score)
-      function handleSubmit() {
-        if (!mcqs.length) return;
-
-        // Clear any leftover auto-clear
-        if (autoClearTimeout) {
-          clearTimeout(autoClearTimeout);
-          autoClearTimeout = null;
-        }
-
-        let attempted = 0, score = 0;
-
-        mcqs.forEach(mcq => {
-          // clear previous per-MCQ indicator attributes (we will set them freshly)
-          mcq.querySelectorAll('label').forEach(l => {
-            delete l.dataset.correct;
-            delete l.dataset.wrong;
-            delete l.dataset.correctText;
-          });
-
-          const correctAns = mcq.dataset.answer?.toString() ?? '';
-          const selected = mcq.querySelector('input[type="radio"]:checked');
-          if (!selected) return;
-
-          attempted++;
-          const selectedLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-          const correctInput = mcq.querySelector(`input[value="${correctAns}"]`);
-          const correctLabel = correctInput ? mcq.querySelector(`label[for="${correctInput.id}"]`) : null;
-          const correctText = correctLabel ? correctLabel.textContent.trim() : '';
-
-          if (selected.value === correctAns) {
-            score++;
-            if (selectedLabel) selectedLabel.dataset.correct = "true";
-            mcq.classList.add('correct');
-          } else {
-            if (selectedLabel) {
-              selectedLabel.dataset.wrong = "true";
-              selectedLabel.dataset.correctText = correctText;
-              selectedLabel.classList.add('aw-shake');
-              selectedLabel.addEventListener('animationend', () => selectedLabel.classList.remove('aw-shake'), { once: true });
-            }
-            if (correctLabel) correctLabel.dataset.correct = "true";
-            mcq.classList.add('wrong');
-          }
-        });
-
-        // update progress to reflect final score (percent of correct out of total)
-        const percent = totalQuestions ? Math.round((score / totalQuestions) * 100) : 0;
-        animateProgressTo(percent);
-
-        // Display message
-        if (scoreDisplay) {
-          let msg = '';
-          if (score === totalQuestions && attempted === totalQuestions) {
-            msg = `🌟 <strong>Excellent!</strong> You scored ${score}/${totalQuestions}. Perfect score!`;
-          } else if (totalQuestions && (score / totalQuestions) >= 0.8) {
-            msg = `👏 <strong>Great Job!</strong> ${score}/${totalQuestions}. Keep it up.`;
-          } else if (totalQuestions && (score / totalQuestions) >= 0.6) {
-            msg = `👍 <strong>Good!</strong> ${score}/${totalQuestions}. Review missed ones.`;
-          } else if (attempted > 0) {
-            msg = `💡 <strong>Keep Learning!</strong> ${score}/${attempted} correct. Try again.`;
-          } else {
-            msg = `⚡ <strong>Start Learning!</strong> Answer some questions first.`;
-          }
-
-          scoreDisplay.innerHTML = msg;
-          scoreDisplay.style.display = 'block';
-          scoreDisplay.style.opacity = 0;
-          setTimeout(() => {
-            scoreDisplay.style.transition = 'all .45s ease';
-            scoreDisplay.style.opacity = 1;
-            scoreDisplay.classList.add('aw-pop');
-          }, 20);
-        }
-
-        // Show retry
-        if (retryBtn) retryBtn.style.display = 'inline-block';
-
-        // Optional: auto-clear the feedback after 15 seconds (you can comment this out)
-        autoClearTimeout = setTimeout(() => {
-          resetQuizFeedback();
-        }, 15000);
-      }
-
-      // Reset quiz entirely (called by Retry)
-      function resetQuiz() {
-        // clear set and UI
-        correctAnswered.clear();
-        mcqs.forEach(mcq => {
-          mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
-          clearMcqIndicators(mcq);
-        });
-        animateProgressTo(0);
-        if (scoreDisplay) scoreDisplay.style.display = 'none';
-        if (retryBtn) retryBtn.style.display = 'none';
-        enableSubmitCheck();
-        if (autoClearTimeout) { clearTimeout(autoClearTimeout); autoClearTimeout = null; }
-      }
-
-      // Reset only feedback (keeps answers cleared)
-      function resetQuizFeedback() {
-        mcqs.forEach(mcq => clearMcqIndicators(mcq));
-        if (scoreDisplay) scoreDisplay.style.display = 'none';
-        animateProgressTo(0);
-        enableSubmitCheck();
-      }
-
       // --- Initialization ---
       function initialize() {
         new CardAnimator();
-
-        // Wire radio change handling (real-time)
-        if (mcqContainer) {
-          mcqContainer.addEventListener('change', handleRadioChange);
-        } else {
-          // fallback: bind to each radio (if mcq-container id not present)
-          document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', handleRadioChange));
-        }
-
-        if (submitButton) submitButton.addEventListener('click', handleSubmit);
-        if (retryBtn) retryBtn.addEventListener('click', resetQuiz);
-
-        // initial progress zero
-        animateProgressTo(0);
-        enableSubmitCheck();
-
-        console.log('GST chapter JS initialized — MCQs:', totalQuestions);
+        console.log('GST chapter animations initialized');
       }
 
       if (document.readyState === 'loading') {
@@ -2836,8 +2571,7 @@
         initialize();
       }
     })();
-
-  </script>
+</script>
 
 </body>
 </html>

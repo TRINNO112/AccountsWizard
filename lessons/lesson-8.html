@@ -1602,300 +1602,152 @@
   </main>
 
   <script>
-    // Complete JavaScript Code for Chapter 8 - Source Documents
-    (() => {
-      // Selectors
-      const $ = sel => document.querySelector(sel);
-      const $$ = sel => Array.from(document.querySelectorAll(sel));
+// Complete JavaScript Code for Chapter 8 - Source Documents
+(() => {
+  // Selectors
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-      /* Animation CSS injection */
-      const css = `
-        @keyframes shakeX {
-          0%,100%{transform:translateX(0)}
-          20%{transform:translateX(-8px)}
-          40%{transform:translateX(8px)}
-          60%{transform:translateX(-6px)}
-          80%{transform:translateX(6px)}
-        }
-        .aw-shake{animation:shakeX 0.4s ease}
-        .aw-pop{animation:popIn 0.35s ease both}
-        @keyframes popIn {
-          0%{opacity:0;transform:translateY(10px) scale(.96)}
-          60%{opacity:1;transform:translateY(-4px) scale(1.02)}
-          100%{opacity:1;transform:translateY(0) scale(1)}
-        }
-      `;
-      const st = document.createElement("style");
-      st.textContent = css;
-      document.head.appendChild(st);
+  /* Animation CSS injection */
+  const css = `
+    @keyframes shakeX {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-8px)}
+      40%{transform:translateX(8px)}
+      60%{transform:translateX(-6px)}
+      80%{transform:translateX(6px)}
+    }
+    .aw-shake{animation:shakeX 0.4s ease}
+    .aw-pop{animation:popIn 0.35s ease both}
+    @keyframes popIn {
+      0%{opacity:0;transform:translateY(10px) scale(.96)}
+      60%{opacity:1;transform:translateY(-4px) scale(1.02)}
+      100%{opacity:1;transform:translateY(0) scale(1)}
+    }
+  `;
+  const st = document.createElement("style");
+  st.textContent = css;
+  document.head.appendChild(st);
 
-      // Global variables
-      const mcqs = $$('.mcq');
-      const submitButton = $('#submit-mcq');
-      const scoreDisplay = $('#score-display');
-      const retryBtn = $('#retry-btn');
-      const circularProgress = $('#circularProgress');
-      const progressValueSpan = $('#progressValue');
-      const totalQuestions = mcqs.length;
-      let correctAnswered = new Set();
-      let currentProgress = 0, targetProgress = 0, raf;
+  /* Card Animation System */
+  class CardAnimator {
+    constructor() {
+      this.observer = null;
+      this.init();
+    }
 
-      /* Card Animation System */
-      class CardAnimator {
-        constructor() {
-          this.observer = null;
-          this.init();
-        }
+    init() {
+      setTimeout(() => {
+        this.addAnimationClasses();
+        this.setupObserver();
+        this.animateOnLoad();
+      }, 100);
+    }
 
-        init() {
-          setTimeout(() => {
-            this.addAnimationClasses();
-            this.setupObserver();
-            this.animateOnLoad();
-          }, 100);
-        }
+    addAnimationClasses() {
+      // Document cards
+      $$('.document-card').forEach(card => {
+        card.classList.add('slide-in-left');
+      });
 
-        addAnimationClasses() {
-          // Document cards
-          $$('.document-card').forEach(card => {
-            card.classList.add('slide-in-left');
-          });
+      // Benefit cards
+      $$('.benefit-card').forEach(card => {
+        card.classList.add('fade-up');
+      });
 
-          // Benefit cards
-          $$('.benefit-card').forEach(card => {
-            card.classList.add('fade-up');
-          });
+      // Definition boxes
+      $$('.definition-box').forEach(box => {
+        box.classList.add('fade-up');
+      });
 
-          // Definition boxes
-          $$('.definition-box').forEach(box => {
-            box.classList.add('fade-up');
-          });
+      // Comparison table
+      $$('.comparison-table').forEach(table => {
+        table.classList.add('fade-up');
+      });
+    }
 
-          // Comparison table
-          $$('.comparison-table').forEach(table => {
-            table.classList.add('fade-up');
-          });
-        }
-
-        setupObserver() {
-          const options = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-          };
-
-          this.observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                this.observer.unobserve(entry.target);
-              }
-            });
-          }, options);
-
-          $$('.slide-in-left, .fade-up').forEach(element => {
-            this.observer.observe(element);
-          });
-        }
-
-        animateOnLoad() {
-          setTimeout(() => {
-            const introSection = $('section:first-of-type');
-            if (introSection) {
-              introSection.querySelectorAll('.fade-up').forEach(card => {
-                card.classList.add('visible');
-              });
-            }
-          }, 300);
-        }
-      }
-
-      window.showSample = function(documentType) {
-        const sample = document.getElementById(`${documentType}-sample`);
-        const btn = document.querySelector(`[onclick="showSample('${documentType}')"]`);
-
-        if (btn) {
-          btn.classList.add('btn-animate');
-          btn.addEventListener('animationend', () => btn.classList.remove('btn-animate'), { once: true });
-        }
-
-        if (sample) {
-          sample.style.display = '';
-          
-          if (sample.classList.contains('active')) {
-            sample.classList.remove('active');
-            setTimeout(() => {
-              sample.style.display = 'none';
-            }, 500);
-          } else {
-            document.querySelectorAll('.document-sample').forEach(otherSample => {
-              otherSample.classList.remove('active');
-              setTimeout(() => {
-                if (!otherSample.classList.contains('active')) {
-                  otherSample.style.display = 'none';
-                }
-              }, 500);
-            });
-            sample.style.display = '';
-            setTimeout(() => {
-              sample.classList.add('active');
-              sample.classList.add('aw-pop');
-            }, 10);
-          }
-        }
+    setupObserver() {
+      const options = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       };
 
-      /* MCQ System */
-      function animateProgressTo(percent) {
-        targetProgress = Math.round(percent);
-        cancelAnimationFrame(raf);
-        const step = () => {
-          currentProgress += (targetProgress - currentProgress) * 0.18;
-          updateCircularUI(currentProgress);
-          if (Math.abs(targetProgress - currentProgress) > 0.5) {
-            raf = requestAnimationFrame(step);
-          } else {
-            currentProgress = targetProgress;
-            updateCircularUI(currentProgress);
-          }
-        };
-        raf = requestAnimationFrame(step);
-      }
-
-      function updateCircularUI(percent) {
-        if (!circularProgress || !progressValueSpan) return;
-        const deg = (percent/100)*360;
-        circularProgress.style.background = `conic-gradient(var(--brand-2) ${deg}deg, rgba(255,255,255,0.1) ${deg}deg)`;
-        progressValueSpan.textContent = `${Math.round(percent)}%`;
-      }
-
-      function enableSubmitCheck() {
-        const answered = $$('#mcq-container input[type=radio]:checked').length;
-        if (submitButton) {
-          submitButton.disabled = answered === 0;
-          submitButton.style.opacity = answered ? '1' : '0.5';
-        }
-      }
-
-      function handleRadio(e) {
-        const input = e.target;
-        if (input.type !== 'radio') return;
-        const mcq = input.closest('.mcq');
-        const correctAns = mcq.dataset.answer;
-        const label = mcq.querySelector(`label[for="${input.id}"]`);
-
-        if (label) {
-          label.classList.add('aw-pop');
-          setTimeout(() => label.classList.remove('aw-pop'), 350);
-        }
-        
-        if (input.value === correctAns) {
-          correctAnswered.add(mcq);
-        } else {
-          correctAnswered.delete(mcq);
-        }
-        
-        animateProgressTo((correctAnswered.size / totalQuestions) * 100);
-        enableSubmitCheck();
-      }
-
-      function handleSubmit() {
-        let score = 0;
-        let attempted = 0;
-
-        mcqs.forEach(mcq => {
-          const correctAns = mcq.dataset.answer;
-          const selected = mcq.querySelector('input:checked');
-          if (!selected) return;
-          attempted++;
-
-          const selLabel = mcq.querySelector(`label[for="${selected.id}"]`);
-          const corrInput = mcq.querySelector(`input[value="${correctAns}"]`);
-          const corrLabel = mcq.querySelector(`label[for="${corrInput?.id}"]`);
-
-          if (selected.value === correctAns) {
-            score++;
-            if (corrLabel) corrLabel.classList.add('aw-pop');
-          } else {
-            if (selLabel) {
-              selLabel.classList.add('aw-shake');
-              selLabel.addEventListener('animationend', () => selLabel.classList.remove('aw-shake'), {once: true});
-            }
-            if (corrLabel) corrLabel.classList.add('aw-pop');
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this.observer.unobserve(entry.target);
           }
         });
+      }, options);
 
-        const pct = attempted ? (score / attempted) * 100 : 0;
-        let msg = '';
+      $$('.slide-in-left, .fade-up').forEach(element => {
+        this.observer.observe(element);
+      });
+    }
 
-        // Updated scoring logic - Excellent only when ALL questions are answered correctly
-        if (score === totalQuestions && attempted === totalQuestions) {
-          msg = `🌟 <strong>Excellent!</strong> You scored ${score}/${totalQuestions}. Perfect score! You have mastered Source Documents!`;
-        } else if (pct >= 80) {
-          msg = `👏 <strong>Great Job!</strong> You scored ${score}/${attempted}. Almost there! Review the ones you missed.`;
-        } else if (pct >= 60) {
-          msg = `👍 <strong>Good Job!</strong> You got ${score}/${attempted}. Keep reviewing the document types.`;
-        } else if (pct > 0) {
-          msg = `💡 <strong>Keep Learning!</strong> You got ${score}/${attempted}. Review the different source documents.`;
-        } else {
-          msg = `⚡ <strong>Start Learning!</strong> Try answering the questions about source documents.`;
+    animateOnLoad() {
+      setTimeout(() => {
+        const introSection = $('section:first-of-type');
+        if (introSection) {
+          introSection.querySelectorAll('.fade-up').forEach(card => {
+            card.classList.add('visible');
+          });
         }
+      }, 300);
+    }
+  }
 
-        if (scoreDisplay) {
-          scoreDisplay.innerHTML = msg;
-          scoreDisplay.style.display = 'block';
-          scoreDisplay.style.opacity = '0';
-          setTimeout(() => {
-            scoreDisplay.style.transition = 'all .5s ease';
-            scoreDisplay.style.opacity = '1';
-            scoreDisplay.classList.add('aw-pop');
-          }, 50);
-        }
+  // Toggle sample document visibility
+  window.showSample = function(documentType) {
+    const sample = document.getElementById(`${documentType}-sample`);
+    const btn = document.querySelector(`[onclick="showSample('${documentType}')"]`);
 
-        if (retryBtn) retryBtn.style.display = 'inline-block';
-      }
+    if (btn) {
+      btn.classList.add('btn-animate');
+      btn.addEventListener('animationend', () => btn.classList.remove('btn-animate'), { once: true });
+    }
 
-      function resetQuiz() {
-        correctAnswered.clear();
-        mcqs.forEach(mcq => {
-          mcq.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
-        });
-        animateProgressTo(0);
-        if (scoreDisplay) scoreDisplay.style.display = 'none';
-        if (retryBtn) retryBtn.style.display = 'none';
-        enableSubmitCheck();
-      }
-
-      /* Initialize Everything */
-      function initialize() {
-        const animator = new CardAnimator();
-
-        const mcqContainer = $('#mcq-container');
-        if (mcqContainer) {
-          mcqContainer.addEventListener('change', handleRadio);
-        }
-        
-        if (submitButton) {
-          submitButton.addEventListener('click', handleSubmit);
-        }
-        
-        if (retryBtn) {
-          retryBtn.addEventListener('click', resetQuiz);
-        }
-
-        animateProgressTo(0);
-        enableSubmitCheck();
-
-        console.log('Chapter 8 - Source Documents loaded successfully!');
-      }
-
-      /* Event Listeners */
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initialize);
+    if (sample) {
+      sample.style.display = '';
+      
+      if (sample.classList.contains('active')) {
+        sample.classList.remove('active');
+        setTimeout(() => {
+          sample.style.display = 'none';
+        }, 500);
       } else {
-        initialize();
+        document.querySelectorAll('.document-sample').forEach(otherSample => {
+          otherSample.classList.remove('active');
+          setTimeout(() => {
+            if (!otherSample.classList.contains('active')) {
+              otherSample.style.display = 'none';
+            }
+          }, 500);
+        });
+        sample.style.display = '';
+        setTimeout(() => {
+          sample.classList.add('active');
+          sample.classList.add('aw-pop');
+        }, 10);
       }
-    })();
-  </script>
+    }
+  };
+
+  /* Initialize Everything */
+  function initialize() {
+    const animator = new CardAnimator();
+    console.log('Chapter 8 - Source Documents loaded successfully!');
+  }
+
+  /* Event Listeners */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+  } else {
+    initialize();
+  }
+})();
+</script>
 
 </body>
 </html>
