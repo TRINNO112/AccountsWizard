@@ -1,5 +1,13 @@
-// script.js
+// =============================================
+// quiz-validator.js
 // Validates MCQs that are already present in HTML markup
+// =============================================
+
+// ==========================
+// IMPORTS (must be at top)
+// ==========================
+import { db, getCurrentUser } from './firebase-config.js';
+import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // ==========================
 // PROGRESS TRACKING
@@ -221,24 +229,60 @@ export function initQuiz(containerId) {
 }
 
 // ==========================
-// FIREBASE INTEGRATION (Optional)
+// FIREBASE INTEGRATION (Fixed)
 // ==========================
-export function saveToFirebase(results, userId, lessonId) {
-  // Store only essential data: chapter, question number, correct answer, user answer
-  const minimalData = results.map(r => ({
-    ch: lessonId,           // chapter/lesson ID
-    q: r.questionNumber,    // question number
-    c: r.correctAnswer,     // correct answer
-    u: r.userAnswer,        // user answer
-    ok: r.isCorrect ? 1 : 0 // 1 = correct, 0 = wrong
-  }));
-  
-  console.log('Data ready for Firebase:', {
-    user: userId,
-    timestamp: new Date().toISOString(),
-    attempts: minimalData
-  });
-  
-  // Add your Firebase save logic here
-  // Example: firebase.database().ref(`users/${userId}/attempts`).push(minimalData);
+export async function saveToFirebase(results, userId, lessonId) {
+  try {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      console.warn("⚠️ User not logged in — cannot save quiz results.");
+      return;
+    }
+
+    // Prepare minimal data structure
+    const minimalData = results.map(r => ({
+      questionNumber: r.questionNumber,
+      userAnswer: r.userAnswer,
+      correctAnswer: r.correctAnswer,
+      isCorrect: r.isCorrect,
+    }));
+
+    const userRef = doc(db, 'users', currentUser.uid);
+    const userDoc = await getDoc(userRef);
+    let quizzesData = {};
+
+    if (userDoc.exists() && userDoc.data().quizzes) {
+      quizzesData = userDoc.data().quizzes;
+    }
+
+    // Initialize lesson array if missing
+    if (!quizzesData[lessonId]) {
+      quizzesData[lessonId] = [];
+    }
+
+    // Add new attempt
+    quizzesData[lessonId].push({
+      timestamp: new Date().toISOString(),
+      attempts: minimalData,
+      score: results.filter(r => r.isCorrect).length,
+      totalQuestions: results.length,
+      percentage: Math.round(
+        (results.filter(r => r.isCorrect).length / results.length) * 100
+      )
+    });
+
+    // Save back to Firestore
+    await setDoc(
+      userRef,
+      {
+        quizzes: quizzesData,
+        lastActivity: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+
+    console.log(`✅ Quiz data saved for ${lessonId}!`);
+  } catch (error) {
+    console.error('❌ Error saving to Firebase:', error);
+  }
 }

@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Lesson 2 — Basic Accounting Terms | AccountsWizard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <!-- Import centralized quiz CSS -->
+  <link rel="stylesheet" href="main.css">
   <style>
     :root {
       --bg: #0b1020;
@@ -77,84 +79,6 @@
       padding: 0 20px;
     }
     .accordion-body.open { max-height: 500px; padding: 14px 20px; }
-    /* MCQs */
-    .mcq { margin-bottom: 24px; padding: 24px; background: rgba(255,255,255,.03); border-radius: calc(var(--radius) / 2); }
-    .mcq h3 { margin-top: 0; font-size: 1.1rem; }
-    .mcq label { display: block; margin: 12px 0; padding: 12px 20px; background: rgba(255,255,255,.05);
-      border-radius: 8px; cursor: pointer; transition: all var(--speed);}
-    .mcq label:hover { background: rgba(255,255,255,.08);}
-    .mcq input[type="radio"] { display: none;}
-    .mcq input[type="radio"]:checked + label { background: var(--brand); color: #fff;}
-    .mcq.correct { background: rgba(0,255,0,.05);}
-    .mcq.wrong { background: rgba(255,0,0,.05);}
-    .submit-button {
-      display: block; width: 200px; margin: 24px auto; padding: 12px 24px;
-      background: var(--brand); color: white; border: none; border-radius: 8px;
-      font-size: 1rem; cursor: pointer; transition: all var(--speed);
-    }
-    .submit-button:hover { background: var(--brand-2); transform: translateY(-2px);}
-    .score-display { text-align: center; margin-top: 20px; padding: 16px; border-radius: 8px; display: none; }
-    .score-display.show { display: block;}
-    .score-display.success { background: rgba(0,255,0,.1); color: #00ff00;}
-    .score-display.partial { background: rgba(255,165,0,.1); color: #ffa500;}
-    /* Progress Circle */
-    .progress-container { display: flex; justify-content: center; margin: 20px 0;}
-    .progress-circle { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(var(--brand-2) 0deg, #333 0deg);
-      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text); }
-      /* MCQ reveal styling — paste into your existing <style> */
-    .mcq label[data-correct="true"] {
-      background: linear-gradient(90deg, rgba(0,255,200,0.06), rgba(124,77,255,0.03));
-      border: 1px solid rgba(0,255,200,0.12);
-      color: #eafbe8;
-      position: relative;
-      padding-right: 14px;
-    }
-    .mcq label[data-wrong="true"] {
-      background: rgba(255,0,0,0.06);
-      border: 1px solid rgba(255,0,0,0.10);
-      color: #ffecec;
-      position: relative;
-      padding-right: 14px;
-    }
-
-    /* Bad / Good indicators appended to labels */
-    .mcq label[data-correct="true"]::after {
-      content: " ✓ Correct";
-      font-size: .85rem;
-      display: block;
-      margin-top: 8px;
-      color: #bfffcf;
-    }
-    .mcq label[data-wrong="true"]::after {
-      content: " ✕  Correct: " attr(data-correct-text);
-      font-size: .85rem;
-      display: block;
-      margin-top: 8px;
-      color: #ffd6d6;
-      white-space: normal;
-    }
-
-    /* Retry Button Styles */
-    #retry-btn {
-      display: none;
-      width: 180px;
-      margin: 16px auto;
-      padding: 12px 22px;
-      font-size: 1rem;
-      border-radius: 50px;
-      border: 2px solid var(--accent);
-      background: transparent;
-      color: var(--accent);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 8px rgba(255, 122, 198, 0.4);
-    }
-    #retry-btn:hover {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(255, 122, 198, 0.8);
-      transform: scale(1.05);
-    }
 
     /* Accordion Container */
     .accordion {
@@ -1031,10 +955,12 @@
 
 
     <!-- MCQs -->
-    <section>
-      <h2>Multiple Choice Questions</h2>
-      <div class="progress-container"><div id="progress" class="progress-circle">0%</div></div>
-      <div id="mcq-container">
+    <section class="card" id="mcqSection">
+    <h2>🧩 MCQ Practice</h2>
+    <div id="quiz-progress"></div>
+    
+    <div class="mcq-grid" id="quiz">
+      
       <div class="mcq" data-answer="c">
       <h3>1. What is capital?</h3>
       <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Money kept in bank</label>
@@ -1202,6 +1128,24 @@
   </main>
 
     <script type="module">
+    import { initQuiz, handleSubmit, enableRetry } from './script.js';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize quiz
+      initQuiz('quiz');
+
+      // Submit button
+      document.getElementById('submitQuiz').addEventListener('click', () => {
+        handleSubmit('quiz');
+      });
+      
+      // Retry button
+      document.getElementById('retry-btn').addEventListener('click', () => {
+        enableRetry('quiz');
+      });
+    });
+    </script>
+    <script>
     // ======================================================
     // ACCORDION LOGIC (PRESERVED)
     // ======================================================
