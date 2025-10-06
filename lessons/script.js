@@ -16,24 +16,139 @@ let setDoc = null;
 let isFirebaseAvailable = false;
 
 // Try to load Firebase (but don't break if it fails)
-(async function loadFirebase() {
-  try {
-    const firebaseModule = await import('./firebase-config.js');
-    db = firebaseModule.db;
-    getCurrentUser = firebaseModule.getCurrentUser;
-    
-    const firestoreModule = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-    doc = firestoreModule.doc;
-    getDoc = firestoreModule.getDoc;
-    setDoc = firestoreModule.setDoc;
-    
-    isFirebaseAvailable = true;
-    console.log('✅ Firebase loaded');
-  } catch (error) {
-    console.log('ℹ️ Firebase not available - working offline');
-    isFirebaseAvailable = false;
+// ==========================
+// FIREBASE SAVE (FIXED FOR YOUR STRUCTURE)
+// ==========================
+export async function saveToFirebase(results, lessonId) {
+  if (!isFirebaseLoaded) {
+    console.log('ℹ️ Firebase not loaded - skipping save');
+    return false;
   }
-})();
+
+  try {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      console.log("ℹ️ Not logged in - skipping save");
+      return false;
+    }
+
+    // Calculate score
+    const correctCount = results.filter(r => r.isCorrect).length;
+    const totalQuestions = results.length;
+    const percentage = Math.round((correctCount / totalQuestions) * 100);
+
+    // Prepare quiz data
+    const quizData = {
+      lessonId: lessonId,
+      score: correctCount,
+      totalQuestions: totalQuestions,
+      percentage: percentage,
+      timestamp: new Date().toISOString(),
+      answers: results.map(r => ({
+        questionNumber: r.questionNumber,
+        userAnswer: r.userAnswer,
+        correctAnswer: r.correctAnswer,
+        isCorrect: r.isCorrect
+      }))
+    };
+
+    console.log('📤 Attempting to save quiz data:', quizData);
+
+    // Get user document reference
+    const userRef = doc(db, 'users', currentUser.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (!userDoc.exists()) {
+      console.error('❌ User document not found!');
+      return false;
+    }
+
+    // Get existing data
+    const userData = userDoc.data();
+    let quizScores = userData.quizScores || [];
+
+    // Add new quiz attempt
+    quizScores.push(quizData);
+
+    // Update practice attempts
+    const practiceAttempts = (userData.practiceAttempts || 0) + 1;
+
+    // Update lessons completed (if not already there)
+    let lessonsCompleted = userData.lessonsCompleted || [];
+    if (!lessonsCompleted.includes(lessonId) && percentage >= 70) {
+      lessonsCompleted.push(lessonId);
+    }
+
+    // Save back to Firestore
+    await setDoc(
+      userRef,
+      {
+        quizScores: quizScores,
+        practiceAttempts: practiceAttempts,
+        lessonsCompleted: lessonsCompleted,
+        lastActivity: new Date().toISOString()
+      },
+      { merge: true }
+    );
+
+    console.log(`✅ Quiz saved successfully!`);
+    console.log(`📊 Score: ${correctCount}/${totalQuestions} (${percentage}%)`);
+    console.log(`📈 Total attempts: ${practiceAttempts}`);
+    
+    // Show success toast
+    showSuccessMessage(`Quiz saved! Score: ${percentage}%`);
+    
+    return true;
+
+  } catch (error) {
+    console.error('❌ Error saving to Firebase:', error);
+    console.error('Error details:', error.message);
+    return false;
+  }
+}
+
+// Helper function to show success message
+function showSuccessMessage(message) {
+  // Create a temporary success message
+  const successDiv = document.createElement('div');
+  successDiv.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+  `;
+  successDiv.textContent = '✅ ' + message;
+  document.body.appendChild(successDiv);
+
+  setTimeout(() => {
+    successDiv.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => successDiv.remove(), 300);
+  }, 3000);
+}
+
+// Add animations if not already present
+if (!document.querySelector('#success-animations')) {
+  const style = document.createElement('style');
+  style.id = 'success-animations';
+  style.textContent = `
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(400px); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 // ==========================
 // PROGRESS TRACKING
