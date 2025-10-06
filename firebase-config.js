@@ -1,5 +1,5 @@
 // firebase-config.js
-// Place this file in your root directory (same level as index.html)
+// Enhanced version with offline support
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
@@ -17,10 +17,20 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+let app, auth, db, provider;
+let isFirebaseInitialized = false;
+
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  provider = new GoogleAuthProvider();
+  isFirebaseInitialized = true;
+  console.log('✅ Firebase initialized successfully');
+} catch (error) {
+  console.warn('⚠️ Firebase initialization failed (offline mode):', error.message);
+  isFirebaseInitialized = false;
+}
 
 // Current user variable
 let currentUser = null;
@@ -30,13 +40,27 @@ let currentUser = null;
 // ============================================
 
 /**
+ * Check if Firebase is available
+ * @returns {boolean}
+ */
+export function isFirebaseAvailable() {
+  return isFirebaseInitialized;
+}
+
+/**
  * Sign in with Google
  * @returns {Promise<Object>} User object
  */
 export async function signInWithGoogle() {
+  if (!isFirebaseInitialized) {
+    showToast('⚠️ Firebase not available. Working offline.');
+    return null;
+  }
+
   try {
     const result = await signInWithPopup(auth, provider);
     currentUser = result.user;
+    await initializeUserProfile(currentUser);
     showToast(`Welcome ${currentUser.displayName}!`);
     return currentUser;
   } catch (error) {
@@ -50,6 +74,10 @@ export async function signInWithGoogle() {
  * Sign out user
  */
 export async function signOutUser() {
+  if (!isFirebaseInitialized) {
+    return;
+  }
+
   try {
     await signOut(auth);
     currentUser = null;
@@ -61,10 +89,13 @@ export async function signOutUser() {
 }
 
 /**
- * Get current user
+ * Get current user (SAFE VERSION)
  * @returns {Object|null} Current user object or null
  */
 export function getCurrentUser() {
+  if (!isFirebaseInitialized) {
+    return null;
+  }
   return currentUser;
 }
 
@@ -73,6 +104,11 @@ export function getCurrentUser() {
  * @param {Function} callback - Function to call when auth state changes
  */
 export function onAuthChange(callback) {
+  if (!isFirebaseInitialized) {
+    callback(null);
+    return;
+  }
+
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     callback(user);
@@ -85,12 +121,13 @@ export function onAuthChange(callback) {
 
 /**
  * Save lesson progress to Firestore
- * @param {string} lessonId - Lesson ID (e.g., "lesson-1")
- * @param {number} progress - Progress percentage (0-100)
- * @param {number} score - Quiz score
- * @param {number} totalQuestions - Total number of questions
  */
 export async function saveLessonProgress(lessonId, progress, score, totalQuestions) {
+  if (!isFirebaseInitialized) {
+    console.log('ℹ️ Firebase not available - progress not saved');
+    return false;
+  }
+
   if (!currentUser) {
     console.warn('User not logged in. Progress not saved.');
     showToast('⚠️ Sign in to save your progress!');
@@ -106,7 +143,6 @@ export async function saveLessonProgress(lessonId, progress, score, totalQuestio
       lessonsData = userDoc.data().lessons;
     }
 
-    // Update lesson data
     lessonsData[lessonId] = {
       progress: progress,
       score: score,
@@ -131,11 +167,9 @@ export async function saveLessonProgress(lessonId, progress, score, totalQuestio
 
 /**
  * Get lesson progress from Firestore
- * @param {string} lessonId - Lesson ID
- * @returns {Promise<Object|null>} Lesson progress data
  */
 export async function getLessonProgress(lessonId) {
-  if (!currentUser) {
+  if (!isFirebaseInitialized || !currentUser) {
     return null;
   }
 
@@ -155,10 +189,9 @@ export async function getLessonProgress(lessonId) {
 
 /**
  * Get all lessons progress
- * @returns {Promise<Object>} All lessons progress data
  */
 export async function getAllLessonsProgress() {
-  if (!currentUser) {
+  if (!isFirebaseInitialized || !currentUser) {
     return {};
   }
 
@@ -177,17 +210,16 @@ export async function getAllLessonsProgress() {
 }
 
 /**
- * Save quiz results to Firestore (ENHANCED VERSION)
- * @param {string} quizId - Quiz ID
- * @param {number} score - Score achieved
- * @param {number} totalQuestions - Total questions
- * @param {Array} answers - User's answers
- * @param {Array} correctAnswers - Correct answers for reference
+ * Save quiz results to Firestore
  */
 export async function saveQuizResult(quizId, score, totalQuestions, answers = [], correctAnswers = []) {
+  if (!isFirebaseInitialized) {
+    console.log('ℹ️ Firebase not available - quiz results not saved');
+    return false;
+  }
+
   if (!currentUser) {
     console.warn('User not logged in. Quiz result not saved.');
-    showToast('⚠️ Sign in to save your quiz results!');
     return false;
   }
 
@@ -200,18 +232,16 @@ export async function saveQuizResult(quizId, score, totalQuestions, answers = []
       quizzesData = userDoc.data().quizzes;
     }
 
-    // Initialize quiz array if doesn't exist
     if (!quizzesData[quizId]) {
       quizzesData[quizId] = [];
     }
 
-    // Add new attempt WITH CORRECT ANSWERS
     quizzesData[quizId].push({
       score: score,
       totalQuestions: totalQuestions,
       percentage: Math.round((score / totalQuestions) * 100),
-      answers: answers, // User's answer choices
-      correctAnswers: correctAnswers, // Correct answer choices for reference
+      answers: answers,
+      correctAnswers: correctAnswers,
       timestamp: new Date().toISOString()
     });
 
@@ -220,23 +250,20 @@ export async function saveQuizResult(quizId, score, totalQuestions, answers = []
       lastActivity: new Date().toISOString()
     }, { merge: true });
 
-    console.log(`✅ Quiz ${quizId} result saved with correct answers!`);
+    console.log(`✅ Quiz ${quizId} result saved!`);
     showToast('✅ Quiz results saved!');
     return true;
   } catch (error) {
     console.error('Error saving quiz result:', error);
-    showToast('❌ Failed to save quiz result. Please try again.');
     return false;
   }
 }
 
 /**
  * Get quiz history
- * @param {string} quizId - Quiz ID
- * @returns {Promise<Array>} Array of quiz attempts
  */
 export async function getQuizHistory(quizId) {
-  if (!currentUser) {
+  if (!isFirebaseInitialized || !currentUser) {
     return [];
   }
 
@@ -256,17 +283,15 @@ export async function getQuizHistory(quizId) {
 
 /**
  * Initialize or update user profile
- * @param {Object} user - Firebase user object
  */
 export async function initializeUserProfile(user) {
-  if (!user) return;
+  if (!user || !isFirebaseInitialized) return;
 
   try {
     const userRef = doc(db, 'users', user.uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-      // Create new user profile
       await setDoc(userRef, {
         name: user.displayName,
         email: user.email,
@@ -279,7 +304,6 @@ export async function initializeUserProfile(user) {
       });
       console.log('✅ New user profile created!');
     } else {
-      // Update last login
       await updateDoc(userRef, {
         lastLogin: new Date().toISOString()
       });
@@ -291,11 +315,10 @@ export async function initializeUserProfile(user) {
 }
 
 /**
- * Calculate total progress across all lessons
- * @returns {Promise<number>} Total progress percentage
+ * Calculate total progress
  */
 export async function calculateTotalProgress() {
-  if (!currentUser) {
+  if (!isFirebaseInitialized || !currentUser) {
     return 0;
   }
 
@@ -322,12 +345,7 @@ export async function calculateTotalProgress() {
 // UTILITY FUNCTIONS
 // ============================================
 
-/**
- * Show toast notification
- * @param {string} message - Message to display
- */
 function showToast(message) {
-  // Remove existing toasts
   const existingToasts = document.querySelectorAll('.firebase-toast');
   existingToasts.forEach(toast => toast.remove());
 
@@ -359,34 +377,20 @@ function showToast(message) {
   }, 3000);
 }
 
-// Add CSS animations for toast
 if (!document.querySelector('#firebase-toast-styles')) {
   const style = document.createElement('style');
   style.id = 'firebase-toast-styles';
   style.textContent = `
     @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
     @keyframes slideOut {
-      from {
-        transform: translateX(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateX(400px);
-        opacity: 0;
-      }
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(400px); opacity: 0; }
     }
   `;
   document.head.appendChild(style);
 }
 
-// Export auth and db for advanced usage
 export { auth, db, provider };

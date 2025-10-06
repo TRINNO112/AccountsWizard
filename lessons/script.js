@@ -1,13 +1,39 @@
 // =============================================
 // quiz-validator.js
-// Validates MCQs that are already present in HTML markup
+// SIMPLIFIED - Works 100% offline
 // =============================================
 
+console.log('🔄 Loading quiz validator...');
+
 // ==========================
-// IMPORTS (must be at top)
+// FIREBASE SAFE LOADING
 // ==========================
-import { db, getCurrentUser } from './firebase-config.js';
-import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+let db = null;
+let getCurrentUser = null;
+let doc = null;
+let getDoc = null;
+let setDoc = null;
+let isFirebaseAvailable = false;
+
+// Try to load Firebase (but don't break if it fails)
+(async function loadFirebase() {
+  try {
+    const firebaseModule = await import('./firebase-config.js');
+    db = firebaseModule.db;
+    getCurrentUser = firebaseModule.getCurrentUser;
+    
+    const firestoreModule = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    doc = firestoreModule.doc;
+    getDoc = firestoreModule.getDoc;
+    setDoc = firestoreModule.setDoc;
+    
+    isFirebaseAvailable = true;
+    console.log('✅ Firebase loaded');
+  } catch (error) {
+    console.log('ℹ️ Firebase not available - working offline');
+    isFirebaseAvailable = false;
+  }
+})();
 
 // ==========================
 // PROGRESS TRACKING
@@ -41,7 +67,7 @@ function updateProgress(containerId) {
 }
 
 // ==========================
-// DESELECT FUNCTIONALITY (Misclick Fix)
+// DESELECT FUNCTIONALITY
 // ==========================
 function enableDeselect(containerId) {
   const container = document.getElementById(containerId);
@@ -51,7 +77,6 @@ function enableDeselect(containerId) {
     if (e.target.type === 'radio') {
       const radio = e.target;
       
-      // If already checked, uncheck it
       if (radio.dataset.checked === 'true') {
         radio.checked = false;
         radio.dataset.checked = 'false';
@@ -59,7 +84,6 @@ function enableDeselect(containerId) {
         return;
       }
       
-      // Mark this one as checked, unmark others in same group
       const name = radio.name;
       container.querySelectorAll(`input[name="${name}"]`).forEach(r => {
         r.dataset.checked = 'false';
@@ -94,18 +118,33 @@ function validateAnswers(containerId) {
 // ==========================
 // SUBMIT QUIZ
 // ==========================
-export function handleSubmit(containerId) {
+export function handleSubmit(containerId, lessonId = null) {
+  console.log('🎯 Submit button clicked!');
+  console.log('Container ID:', containerId);
+  console.log('Lesson ID:', lessonId);
+
   const unanswered = validateAnswers(containerId);
   
   if (unanswered.length > 0) {
     const proceed = confirm(
       `You have ${unanswered.length} unanswered question(s): ${unanswered.join(', ')}. Submit anyway?`
     );
-    if (!proceed) return;
+    if (!proceed) {
+      console.log('❌ User cancelled submission');
+      return;
+    }
   }
 
   const container = document.getElementById(containerId);
+  if (!container) {
+    console.error(`❌ Container '${containerId}' not found!`);
+    alert('Error: Quiz container not found!');
+    return;
+  }
+
   const mcqs = container.querySelectorAll('.mcq');
+  console.log(`📝 Found ${mcqs.length} questions`);
+
   let score = 0;
   let total = mcqs.length;
   const results = [];
@@ -125,7 +164,6 @@ export function handleSubmit(containerId) {
       isCorrect: isCorrect
     });
 
-    // Visual feedback
     mcq.style.borderLeft = isCorrect ? '4px solid #4ade80' : '4px solid #f87171';
     mcq.style.transition = 'border-left 0.3s ease';
   });
@@ -145,23 +183,38 @@ export function handleSubmit(containerId) {
     } else if (percentage >= 50) {
       message = `📚 Keep practicing! You scored ${score}/${total} (${percentage}%)`;
     } else {
-      message = `💪 Don't give up! You scored ${score}/${total} (${percentage}%). Review the notes and try again!`;
+      message = `💪 Don't give up! You scored ${score}/${total} (${percentage}%). Review and try again!`;
     }
     
     resultDiv.innerHTML = message;
     resultDiv.style.display = "block";
+    console.log('✅ Result displayed:', message);
+  } else {
+    console.warn('⚠️ Result div not found!');
   }
 
   if (retryBtn) {
     retryBtn.style.display = "inline-block";
   }
 
-  // Disable further changes
   container.querySelectorAll('input[type="radio"]').forEach(input => {
     input.disabled = true;
   });
 
-  console.log('Quiz Results:', results);
+  console.log('📊 Quiz Results:', {
+    score: `${score}/${total}`,
+    percentage: `${Math.round((score / total) * 100)}%`
+  });
+
+  // Try to save to Firebase (non-blocking)
+  if (lessonId && isFirebaseAvailable) {
+    saveToFirebase(results, lessonId).catch(err => {
+      console.log('ℹ️ Could not save to Firebase:', err.message);
+    });
+  } else if (!isFirebaseAvailable) {
+    console.log('ℹ️ Firebase not available - results not saved (this is OK!)');
+  }
+
   return results;
 }
 
@@ -169,77 +222,83 @@ export function handleSubmit(containerId) {
 // RETRY QUIZ
 // ==========================
 export function enableRetry(containerId) {
+  console.log('🔄 Retry button clicked!');
+
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container) {
+    console.error(`❌ Container '${containerId}' not found!`);
+    return;
+  }
   
-  // Clear all selections and enable inputs
   container.querySelectorAll('input[type="radio"]').forEach(input => {
     input.checked = false;
     input.disabled = false;
     input.dataset.checked = 'false';
   });
   
-  // Remove visual feedback
   container.querySelectorAll('.mcq').forEach(mcq => {
     mcq.style.borderLeft = '';
   });
   
-  // Hide result and retry button
   const resultDiv = document.getElementById("quizResult");
   const retryBtn = document.getElementById("retry-btn");
   
   if (resultDiv) resultDiv.style.display = "none";
   if (retryBtn) retryBtn.style.display = "none";
   
-  // Reset progress
   updateProgress(containerId);
-  
-  console.log("Quiz reset");
+  console.log("✅ Quiz reset complete");
 }
 
 // ==========================
 // INITIALIZE QUIZ
 // ==========================
 export function initQuiz(containerId) {
+  console.log('🚀 Initializing quiz...');
+  console.log('Container ID:', containerId);
+
   const container = document.getElementById(containerId);
   if (!container) {
-    console.error(`Container with id '${containerId}' not found`);
+    console.error(`❌ Container '${containerId}' not found!`);
     return;
   }
 
   const mcqs = container.querySelectorAll('.mcq');
-  console.log(`Found ${mcqs.length} MCQs in the page`);
+  console.log(`✅ Found ${mcqs.length} MCQs`);
 
-  // Add change listeners for progress tracking
+  if (mcqs.length === 0) {
+    console.warn('⚠️ No MCQs found! Make sure your HTML has elements with class "mcq"');
+    return;
+  }
+
   container.addEventListener('change', () => updateProgress(containerId));
-  
-  // Enable deselect functionality
   enableDeselect(containerId);
-  
-  // Initial progress update
   updateProgress(containerId);
   
-  // Add fade-in animation to MCQs
   mcqs.forEach((mcq, index) => {
     mcq.classList.add('fade-in');
     mcq.style.animationDelay = `${index * 0.1}s`;
   });
   
-  console.log('Quiz initialized successfully');
+  console.log('✅ Quiz initialized successfully!');
 }
 
 // ==========================
-// FIREBASE INTEGRATION (Fixed)
+// FIREBASE SAVE
 // ==========================
-export async function saveToFirebase(results, userId, lessonId) {
+async function saveToFirebase(results, lessonId) {
+  if (!isFirebaseAvailable) {
+    console.log('ℹ️ Firebase not available');
+    return false;
+  }
+
   try {
     const currentUser = getCurrentUser();
     if (!currentUser) {
-      console.warn("⚠️ User not logged in — cannot save quiz results.");
-      return;
+      console.log("ℹ️ Not logged in - skipping save");
+      return false;
     }
 
-    // Prepare minimal data structure
     const minimalData = results.map(r => ({
       questionNumber: r.questionNumber,
       userAnswer: r.userAnswer,
@@ -255,23 +314,22 @@ export async function saveToFirebase(results, userId, lessonId) {
       quizzesData = userDoc.data().quizzes;
     }
 
-    // Initialize lesson array if missing
     if (!quizzesData[lessonId]) {
       quizzesData[lessonId] = [];
     }
 
-    // Add new attempt
+    const correctCount = results.filter(r => r.isCorrect).length;
+    const totalQuestions = results.length;
+    const percentage = Math.round((correctCount / totalQuestions) * 100);
+
     quizzesData[lessonId].push({
       timestamp: new Date().toISOString(),
       attempts: minimalData,
-      score: results.filter(r => r.isCorrect).length,
-      totalQuestions: results.length,
-      percentage: Math.round(
-        (results.filter(r => r.isCorrect).length / results.length) * 100
-      )
+      score: correctCount,
+      totalQuestions: totalQuestions,
+      percentage: percentage
     });
 
-    // Save back to Firestore
     await setDoc(
       userRef,
       {
@@ -281,8 +339,13 @@ export async function saveToFirebase(results, userId, lessonId) {
       { merge: true }
     );
 
-    console.log(`✅ Quiz data saved for ${lessonId}!`);
+    console.log(`✅ Saved to Firebase! Score: ${correctCount}/${totalQuestions}`);
+    return true;
+
   } catch (error) {
-    console.error('❌ Error saving to Firebase:', error);
+    console.warn('⚠️ Could not save to Firebase:', error.message);
+    return false;
   }
 }
+
+console.log('✅ Quiz Validator loaded successfully!');
