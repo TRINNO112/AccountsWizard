@@ -1,9 +1,7 @@
-// firebase-config.js
-// Enhanced version with offline support
-
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+// Firebase Configuration for AccountsWizard
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -17,380 +15,227 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app, auth, db, provider;
-let isFirebaseInitialized = false;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
 
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  provider = new GoogleAuthProvider();
-  isFirebaseInitialized = true;
-  console.log('✅ Firebase initialized successfully');
-} catch (error) {
-  console.warn('⚠️ Firebase initialization failed (offline mode):', error.message);
-  isFirebaseInitialized = false;
+// ========================================
+// USER ID MANAGEMENT (Works for both logged-in and anonymous users)
+// ========================================
+export function getUserId() {
+  // If user is logged in with Google, use their Firebase Auth UID
+  if (auth.currentUser) {
+    console.log('✅ Logged-in user:', auth.currentUser.email);
+    return auth.currentUser.uid; // Returns Firebase Auth UID
+  }
+  
+  // Otherwise, create/use anonymous user ID from localStorage
+  let userId = localStorage.getItem('accounts-wizard-user-id');
+  if (!userId) {
+    userId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('accounts-wizard-user-id', userId);
+    console.log('👤 Anonymous user created:', userId);
+  } else {
+    console.log('👤 Anonymous user loaded:', userId);
+  }
+  return userId;
 }
 
-// Current user variable
-let currentUser = null;
-
-// ============================================
+// ========================================
 // AUTHENTICATION FUNCTIONS
-// ============================================
-
-/**
- * Check if Firebase is available
- * @returns {boolean}
- */
-export function isFirebaseAvailable() {
-  return isFirebaseInitialized;
-}
-
-/**
- * Sign in with Google
- * @returns {Promise<Object>} User object
- */
+// ========================================
 export async function signInWithGoogle() {
-  if (!isFirebaseInitialized) {
-    showToast('⚠️ Firebase not available. Working offline.');
-    return null;
-  }
-
   try {
-    const result = await signInWithPopup(auth, provider);
-    currentUser = result.user;
-    await initializeUserProfile(currentUser);
-    showToast(`Welcome ${currentUser.displayName}!`);
-    return currentUser;
+    const result = await signInWithPopup(auth, googleProvider);
+    console.log('✅ Signed in:', result.user.email);
+    return { success: true, user: result.user };
   } catch (error) {
-    console.error('Error signing in with Google:', error);
-    showToast('❌ Sign in failed. Please try again.');
-    throw error;
+    console.error('❌ Sign-in error:', error);
+    return { success: false, error: error.message };
   }
 }
 
-/**
- * Sign out user
- */
 export async function signOutUser() {
-  if (!isFirebaseInitialized) {
-    return;
-  }
-
   try {
     await signOut(auth);
-    currentUser = null;
-    showToast('Signed out successfully!');
+    console.log('✅ Signed out successfully');
+    return { success: true };
   } catch (error) {
-    console.error('Error signing out:', error);
-    showToast('Sign out failed.');
+    console.error('❌ Sign-out error:', error);
+    return { success: false, error: error.message };
   }
 }
 
-/**
- * Get current user (SAFE VERSION)
- * @returns {Object|null} Current user object or null
- */
-export function getCurrentUser() {
-  if (!isFirebaseInitialized) {
-    return null;
-  }
-  return currentUser;
-}
-
-/**
- * Listen to auth state changes
- * @param {Function} callback - Function to call when auth state changes
- */
 export function onAuthChange(callback) {
-  if (!isFirebaseInitialized) {
-    callback(null);
-    return;
-  }
-
-  onAuthStateChanged(auth, (user) => {
-    currentUser = user;
-    callback(user);
-  });
+  return onAuthStateChanged(auth, callback);
 }
 
-// ============================================
-// FIRESTORE DATA FUNCTIONS
-// ============================================
-
-/**
- * Save lesson progress to Firestore
- */
-export async function saveLessonProgress(lessonId, progress, score, totalQuestions) {
-  if (!isFirebaseInitialized) {
-    console.log('ℹ️ Firebase not available - progress not saved');
-    return false;
-  }
-
-  if (!currentUser) {
-    console.warn('User not logged in. Progress not saved.');
-    showToast('⚠️ Sign in to save your progress!');
-    return false;
-  }
-
+// ========================================
+// LOAD PREVIOUS LESSON DATA
+// ========================================
+export async function loadPreviousAnswers(lessonNumber) {
   try {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-
-    let lessonsData = {};
-    if (userDoc.exists() && userDoc.data().lessons) {
-      lessonsData = userDoc.data().lessons;
-    }
-
-    lessonsData[lessonId] = {
-      progress: progress,
-      score: score,
-      totalQuestions: totalQuestions,
-      completed: progress === 100,
-      lastUpdated: new Date().toISOString()
-    };
-
-    await setDoc(userRef, {
-      lessons: lessonsData,
-      lastActivity: new Date().toISOString()
-    }, { merge: true });
-
-    console.log(`✅ Lesson ${lessonId} progress saved!`);
-    return true;
-  } catch (error) {
-    console.error('Error saving lesson progress:', error);
-    showToast('❌ Failed to save progress. Please try again.');
-    return false;
-  }
-}
-
-/**
- * Get lesson progress from Firestore
- */
-export async function getLessonProgress(lessonId) {
-  if (!isFirebaseInitialized || !currentUser) {
-    return null;
-  }
-
-  try {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists() && userDoc.data().lessons) {
-      return userDoc.data().lessons[lessonId] || null;
-    }
-    return null;
-  } catch (error) {
-    console.error('Error getting lesson progress:', error);
-    return null;
-  }
-}
-
-/**
- * Get all lessons progress
- */
-export async function getAllLessonsProgress() {
-  if (!isFirebaseInitialized || !currentUser) {
-    return {};
-  }
-
-  try {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists() && userDoc.data().lessons) {
-      return userDoc.data().lessons;
-    }
-    return {};
-  } catch (error) {
-    console.error('Error getting all lessons progress:', error);
-    return {};
-  }
-}
-
-/**
- * Save quiz results to Firestore
- */
-export async function saveQuizResult(quizId, score, totalQuestions, answers = [], correctAnswers = []) {
-  if (!isFirebaseInitialized) {
-    console.log('ℹ️ Firebase not available - quiz results not saved');
-    return false;
-  }
-
-  if (!currentUser) {
-    console.warn('User not logged in. Quiz result not saved.');
-    return false;
-  }
-
-  try {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-
-    let quizzesData = {};
-    if (userDoc.exists() && userDoc.data().quizzes) {
-      quizzesData = userDoc.data().quizzes;
-    }
-
-    if (!quizzesData[quizId]) {
-      quizzesData[quizId] = [];
-    }
-
-    quizzesData[quizId].push({
-      score: score,
-      totalQuestions: totalQuestions,
-      percentage: Math.round((score / totalQuestions) * 100),
-      answers: answers,
-      correctAnswers: correctAnswers,
-      timestamp: new Date().toISOString()
-    });
-
-    await setDoc(userRef, {
-      quizzes: quizzesData,
-      lastActivity: new Date().toISOString()
-    }, { merge: true });
-
-    console.log(`✅ Quiz ${quizId} result saved!`);
-    showToast('✅ Quiz results saved!');
-    return true;
-  } catch (error) {
-    console.error('Error saving quiz result:', error);
-    return false;
-  }
-}
-
-/**
- * Get quiz history
- */
-export async function getQuizHistory(quizId) {
-  if (!isFirebaseInitialized || !currentUser) {
-    return [];
-  }
-
-  try {
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists() && userDoc.data().quizzes && userDoc.data().quizzes[quizId]) {
-      return userDoc.data().quizzes[quizId];
-    }
-    return [];
-  } catch (error) {
-    console.error('Error getting quiz history:', error);
-    return [];
-  }
-}
-
-/**
- * Initialize or update user profile
- */
-export async function initializeUserProfile(user) {
-  if (!user || !isFirebaseInitialized) return;
-
-  try {
-    const userRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (!userDoc.exists()) {
-      await setDoc(userRef, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-        lessons: {},
-        quizzes: {},
-        totalProgress: 0
-      });
-      console.log('✅ New user profile created!');
-    } else {
-      await updateDoc(userRef, {
-        lastLogin: new Date().toISOString()
-      });
-      console.log('✅ User profile updated!');
-    }
-  } catch (error) {
-    console.error('Error initializing user profile:', error);
-  }
-}
-
-/**
- * Calculate total progress
- */
-export async function calculateTotalProgress() {
-  if (!isFirebaseInitialized || !currentUser) {
-    return 0;
-  }
-
-  try {
-    const lessonsProgress = await getAllLessonsProgress();
-    const lessonIds = Object.keys(lessonsProgress);
+    const userId = getUserId();
+    const docRef = doc(db, 'user-progress', `${userId}_lesson${lessonNumber}`);
+    const docSnap = await getDoc(docRef);
     
-    if (lessonIds.length === 0) {
-      return 0;
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      console.log('📖 Previous answers loaded:', data);
+      return data;
+    } else {
+      console.log('📝 No previous attempts found');
+      return null;
     }
-
-    const totalProgress = lessonIds.reduce((sum, lessonId) => {
-      return sum + (lessonsProgress[lessonId].progress || 0);
-    }, 0);
-
-    return Math.round(totalProgress / lessonIds.length);
   } catch (error) {
-    console.error('Error calculating total progress:', error);
-    return 0;
+    console.error('❌ Error loading previous answers:', error);
+    return null;
   }
 }
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-
-function showToast(message) {
-  const existingToasts = document.querySelectorAll('.firebase-toast');
-  existingToasts.forEach(toast => toast.remove());
-
-  const toast = document.createElement('div');
-  toast.className = 'firebase-toast';
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(90deg, #7c4dff, #00e5ff);
-    color: #0b1020;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 10000;
-    animation: slideIn 0.3s ease;
-  `;
-  toast.textContent = message;
-  document.body.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.animation = 'slideOut 0.3s ease';
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.remove();
+// ========================================
+// SUBMIT LESSON ATTEMPT (ONLY SAVES IF BETTER SCORE)
+// ========================================
+export async function submitLessonAttempt(lessonNumber, answers, score, totalQuestions) {
+  try {
+    const userId = getUserId();
+    const percentage = Math.round((score / totalQuestions) * 100);
+    const docId = `${userId}_lesson${lessonNumber}`;
+    const docRef = doc(db, 'user-progress', docId);
+    
+    // Check if previous attempt exists
+    const prevDoc = await getDoc(docRef);
+    let shouldSave = true;
+    let previousBestScore = 0;
+    let previousPercentage = 0;
+    let previousTotalQuestions = totalQuestions;
+    
+    if (prevDoc.exists()) {
+      const prevData = prevDoc.data();
+      previousBestScore = prevData.score || 0;
+      previousPercentage = prevData.percentage || 0;
+      previousTotalQuestions = prevData.totalQuestions || totalQuestions;
+      
+      // ✅ COMPARE PERCENTAGES (NOT RAW SCORES)
+      if (percentage <= previousPercentage) {
+        shouldSave = false;
+        console.log(`📊 Previous score (${previousBestScore}/${previousTotalQuestions} = ${previousPercentage}%) was equal or better. Not updating.`);
+        return { 
+          success: true, 
+          updated: false, 
+          currentScore: score,
+          bestScore: previousBestScore,
+          totalQuestions: previousTotalQuestions,
+          percentage: previousPercentage,
+          message: `Previous best: ${previousBestScore}/${previousTotalQuestions} (${previousPercentage}%)`
+        };
       }
-    }, 300);
-  }, 3000);
+    }
+    
+    if (shouldSave) {
+      const lessonData = {
+        userId: userId,
+        lessonNumber: lessonNumber,
+        answers: answers, // Object: { q1: {selected: 'a', correct: 'b', isCorrect: false}, ... }
+        score: score,
+        totalQuestions: totalQuestions,
+        percentage: percentage,
+        timestamp: serverTimestamp(),
+        attempts: prevDoc.exists() ? (prevDoc.data().attempts || 1) + 1 : 1
+      };
+
+      await setDoc(docRef, lessonData);
+      console.log('✅ New best score saved!', lessonData);
+      
+      // Update overall progress across all lessons
+      await updateOverallProgress(userId);
+      
+      return { 
+        success: true, 
+        updated: true, 
+        currentScore: score,
+        bestScore: score,
+        totalQuestions: totalQuestions,
+        percentage: percentage,
+        isNewRecord: true,
+        message: `New best score: ${score}/${totalQuestions} (${percentage}%)`
+      };
+    }
+    
+  } catch (error) {
+    console.error('❌ Error submitting lesson attempt:', error);
+    return { success: false, error: error.message };
+  }
 }
 
-if (!document.querySelector('#firebase-toast-styles')) {
-  const style = document.createElement('style');
-  style.id = 'firebase-toast-styles';
-  style.textContent = `
-    @keyframes slideIn {
-      from { transform: translateX(400px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(400px); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
+// ========================================
+// UPDATE OVERALL PROGRESS (ALL 14 LESSONS)
+// ========================================
+async function updateOverallProgress(userId) {
+  try {
+    const progressRef = collection(db, 'user-progress');
+    const q = query(progressRef, where('userId', '==', userId));
+    const querySnapshot = await getDocs(q);
+    
+    let totalScore = 0;
+    let totalQuestions = 0;
+    let completedLessons = 0;
+    
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      totalScore += data.score || 0;
+      totalQuestions += data.totalQuestions || 0;
+      completedLessons++;
+    });
+    
+    const overallPercentage = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+    
+    // Save overall progress
+    const overallDocRef = doc(db, 'overall-progress', userId);
+    await setDoc(overallDocRef, {
+      userId: userId,
+      totalScore: totalScore,
+      totalQuestions: totalQuestions,
+      overallPercentage: overallPercentage,
+      completedLessons: completedLessons,
+      totalLessons: 14, // Your total number of lessons
+      lastUpdated: serverTimestamp()
+    });
+    
+    console.log('📈 Overall progress updated:', { completedLessons, overallPercentage });
+    return { completedLessons, overallPercentage };
+    
+  } catch (error) {
+    console.error('❌ Error updating overall progress:', error);
+  }
 }
 
-export { auth, db, provider };
+// ========================================
+// GET OVERALL PROGRESS (FOR INDEX PAGE)
+// ========================================
+export async function getOverallProgress() {
+  try {
+    const userId = getUserId();
+    const docRef = doc(db, 'overall-progress', userId);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return {
+        completedLessons: 0,
+        totalLessons: 14,
+        overallPercentage: 0,
+        totalScore: 0,
+        totalQuestions: 0
+      };
+    }
+  } catch (error) {
+    console.error('❌ Error getting overall progress:', error);
+    return { completedLessons: 0, totalLessons: 14, overallPercentage: 0 };
+  }
+}
+
+// Export db and auth for other uses
+export { db, auth };

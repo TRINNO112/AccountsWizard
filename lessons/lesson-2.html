@@ -1121,31 +1121,296 @@
       <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">Capital accounts</label>
     </div>
 
-      <button id="submit-mcq" class="submit-button">Submit Answers</button>
-      <div id="score-display" class="score-display"></div>
+        
+      <!-- ✅ CHANGED: Added onclick handler -->
+      <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+      <div id="quizResult"></div>
+      
+      <!-- ✅ CHANGED: Added onclick and style -->
+      <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
     </section>
-    <button id="retry-btn" class="submit-button" style="display:none;">Retry Quiz</button>
   </main>
 
     <script type="module">
-    import { initQuiz, handleSubmit, enableRetry } from './script.js';
+    // ========================================
+    // 1. IMPORT FIREBASE (ONLY THIS LINE NEEDS EXTERNAL FILE)
+    // ========================================
+    import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize quiz
-      initQuiz('quiz');
+    // ========================================
+    // 2. CONFIGURATION (CHANGE FOR EACH LESSON)
+    // ========================================
+    const LESSON_NUMBER = '2';  // ← Change this: '1', '2', '3', etc.
+    const LESSON_ID = 'lesson-2'; // ← Change this: 'lesson-1', 'lesson-2', etc.
 
-      // Submit button
-      document.getElementById('submitQuiz').addEventListener('click', () => {
-        handleSubmit('quiz');
-      });
+    // ========================================
+    // 3. INITIALIZE QUIZ
+    // ========================================
+    function initQuiz() {
+      console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
       
-      // Retry button
-      document.getElementById('retry-btn').addEventListener('click', () => {
-        enableRetry('quiz');
+      const container = document.getElementById('quiz-container');
+      if (!container) {
+        console.error('❌ Quiz container not found');
+        return;
+      }
+
+      // Add event listeners to all radio buttons
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        // UPDATE PROGRESS BAR ON CHANGE
+        input.addEventListener('change', updateProgressBar);
+        
+        // ✨ ADD UNCLICK FUNCTIONALITY ✨
+        input.addEventListener('click', function(e) {
+          // If already checked, uncheck it
+          if (this.dataset.checked === 'true') {
+            this.checked = false;
+            this.dataset.checked = 'false';
+            updateProgressBar(); // Update progress after unclick
+          } else {
+            // Mark all radios in this group as unchecked
+            const groupName = this.name;
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+              radio.dataset.checked = 'false';
+            });
+            // Mark this one as checked
+            this.dataset.checked = 'true';
+          }
+        });
       });
-    });
-    </script>
-    <script>
+
+      console.log('✅ Quiz initialized with', allInputs.length, 'options');
+      updateProgressBar();
+    }
+
+    // ========================================
+    // 4. UPDATE PROGRESS BAR (REAL-TIME)
+    // ========================================
+    function updateProgressBar() {
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      // Count total questions
+      const allQuestions = container.querySelectorAll('.mcq');
+      const totalQuestions = allQuestions.length;
+
+      // Count answered questions
+      let answeredCount = 0;
+      allQuestions.forEach(mcq => {
+        const questionName = mcq.querySelector('input[type="radio"]').name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+        if (selected) answeredCount++;
+      });
+
+      // Calculate progress percentage
+      const progressPercentage = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+
+      // Update progress bar UI
+      const progressDiv = document.getElementById('quiz-progress');
+      if (progressDiv) {
+        progressDiv.innerHTML = `
+          <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+              <span>Questions Answered</span>
+              <span><strong style="color: var(--brand-2);">${answeredCount}/${totalQuestions}</strong></span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+              <div style="width: ${progressPercentage}%; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      console.log(`📊 Progress: ${answeredCount}/${totalQuestions} (${progressPercentage}%)`);
+    }
+
+    // ========================================
+    // 5. SUBMIT QUIZ (BULLETPROOF VERSION)
+    // ========================================
+    window.submitQuiz = async function() {
+      console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const mcqs = container.querySelectorAll('.mcq');
+      if (mcqs.length === 0) return;
+
+      let answersData = {};
+      let correctCount = 0;
+      let totalQuestions = mcqs.length;
+      let answeredCount = 0;
+
+      mcqs.forEach((mcq, index) => {
+        const correctAnswer = mcq.dataset.answer;
+        const questionNumber = `q${index + 1}`;
+        const inputs = mcq.querySelectorAll('input[type="radio"]');
+        const questionName = inputs[0].name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+        if (!selected) return;
+
+        answeredCount++;
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === correctAnswer;
+        if (isCorrect) correctCount++;
+
+        answersData[questionNumber] = {
+          selected: selectedValue,
+          correct: correctAnswer,
+          isCorrect: isCorrect
+        };
+
+        inputs.forEach(input => {
+          const label = input.nextElementSibling;
+          if (!label) return;
+          input.disabled = true;
+          if (input.value === correctAnswer) {
+            label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
+            label.style.borderLeft = '4px solid #10b981';
+            label.style.fontWeight = 'bold';
+          }
+          if (input.value === selectedValue && !isCorrect) {
+            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+            label.style.borderLeft = '4px solid #ef4444';
+          }
+        });
+      });
+
+      if (answeredCount === 0) {
+        alert('⚠️ Please answer at least 1 question before submitting!');
+        return;
+      }
+
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+      const submitBtn = document.getElementById('submitQuiz');
+      const resultDiv = document.getElementById('quizResult');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      // Show loading state
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+      }
+
+      try {
+        console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+        const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+        console.log("✅ Firebase response:", result);
+
+        // ALWAYS show result, even if Firebase fails
+        if (resultDiv) {
+          if (result && result.success) {
+            if (result.updated) {
+              // New best score!
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+            } else {
+              // Previous score was better
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+            }
+          } else {
+            // Firebase failed but still show score
+            resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console (F12) for details.</div>
+              </div>`;
+            console.error("❌ Firebase error:", result?.error || "Unknown error");
+          }
+        }
+      } catch (error) {
+        console.error("❌ Critical error during submission:", error);
+        // STILL show the score even if everything fails
+        if (resultDiv) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+              <div style="color: var(--muted); font-size: 0.8rem; margin-top: 5px;">Check browser console (F12) for details</div>
+            </div>`;
+        }
+      } finally {
+        // Always show retry button and update submit button
+        const retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) retryBtn.style.display = 'block';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = '✓ Submitted';
+        }
+      }
+    };
+
+    // ========================================
+    // 6. RETRY QUIZ
+    // ========================================
+    window.retryQuiz = function() {
+      console.log('🔄 Retrying quiz');
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      // Reset all inputs
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.disabled = false;
+        input.dataset.checked = 'false'; // Reset unclick tracking
+        
+        const label = input.nextElementSibling;
+        if (label) {
+          label.style.background = '';
+          label.style.borderLeft = '';
+          label.style.fontWeight = '';
+        }
+      });
+
+      // Reset UI
+      const resultDiv = document.getElementById('quizResult');
+      if (resultDiv) resultDiv.innerHTML = '';
+
+      const submitBtn = document.getElementById('submitQuiz');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Answers';
+      }
+
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) retryBtn.style.display = 'none';
+
+      updateProgressBar();
+      document.getElementById('mcqSection')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ========================================
+    // 7. INITIALIZE ON PAGE LOAD
+    // ========================================
+    initQuiz();
+    console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
+
     // ======================================================
     // ACCORDION LOGIC (PRESERVED)
     // ======================================================

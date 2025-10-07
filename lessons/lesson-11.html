@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Cash Book - Books of Original Entry | AccountsWizard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="main.css" />
   <style>
     :root {
       --bg: #0b1020;
@@ -718,273 +719,6 @@
     .note-box p {
       position: relative;
       z-index: 1;
-    }
-
-    /* MCQ Styles */
-    .mcq {
-      margin-bottom: 24px;
-      padding: 24px;
-      background: rgba(255,255,255,.03);
-      border-radius: calc(var(--radius) / 2);
-      border-left: 4px solid var(--muted);
-      transition: all 0.3s ease;
-      animation: fadeInUp 0.6s ease-out;
-      animation-fill-mode: both;
-    }
-
-    .mcq:nth-child(odd) { animation-delay: 0.1s; }
-    .mcq:nth-child(even) { animation-delay: 0.2s; }
-
-    .mcq:hover {
-      border-left-color: var(--brand-2);
-      background: rgba(255,255,255,.05);
-      transform: translateX(5px);
-    }
-
-    .mcq h3 {
-      margin-top: 0;
-      font-size: 1.1rem;
-      color: var(--text);
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-
-    .mcq label {
-      display: block;
-      margin: 12px 0;
-      padding: 12px 20px;
-      background: rgba(255,255,255,.05);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--speed);
-      color: var(--muted);
-      border: 1px solid transparent;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .mcq label::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.5s;
-      transform: translateY(-50%);
-    }
-
-    .mcq label:hover::before {
-      left: 100%;
-    }
-
-    .mcq label:hover {
-      background: rgba(255,255,255,.08);
-      border-color: var(--brand-2);
-      transform: translateX(5px);
-    }
-
-    .mcq input[type="radio"] {
-      margin-right: 10px;
-      cursor: pointer;
-    }
-
-    .mcq label.correct {
-      background: rgba(76,175,80,0.2) !important;
-      border-color: var(--success) !important;
-      color: var(--text) !important;
-    }
-
-    .mcq label.wrong {
-      background: rgba(244,67,54,0.2) !important;
-      border-color: var(--error) !important;
-      color: var(--text) !important;
-    }
-
-    .mcq input[type="radio"] {
-      margin-right: 10px;
-      cursor: pointer;
-      display: none;
-    }
-
-    .mcq input[type="radio"]:checked + label {
-      border-color: var(--brand-2);
-      background: rgba(0, 229, 255, 0.1);
-      color: var(--text);
-    }
-
-    /* Progress Circle */
-    .progress-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 3rem 0;
-      animation: fadeIn 1s ease-out;
-    }
-
-    .circular-progress {
-      position: relative;
-      height: 180px;
-      width: 180px;
-      border-radius: 50%;
-      background: conic-gradient(var(--brand-2) 0deg, rgba(255,255,255,0.05) 0deg);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0px 10px 30px rgba(0, 229, 255, 0.3);
-      transition: all 0.5s ease;
-      animation: rotateIn 1s ease-out;
-    }
-
-    @keyframes rotateIn {
-      from {
-        opacity: 0;
-        transform: rotate(-180deg) scale(0.5);
-      }
-      to {
-        opacity: 1;
-        transform: rotate(0deg) scale(1);
-      }
-    }
-
-    .circular-progress::before {
-      content: "";
-      position: absolute;
-      height: 150px;
-      width: 150px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--card), rgba(17,22,51,0.9));
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
-    }
-
-    .circular-progress::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 2px solid rgba(0,229,255,0.2);
-      animation: pulse 2s infinite;
-    }
-
-    .progress-value {
-      position: relative;
-      font-size: 2rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, var(--brand-2), var(--brand));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      z-index: 1;
-      animation: countUp 1s ease-out;
-    }
-
-    @keyframes countUp {
-      from {
-        opacity: 0;
-        transform: scale(0.5);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    /* Submit Button */
-    .submit-button {
-      display: inline-block;
-      padding: 12px 40px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all var(--speed);
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(124,77,255,0.3);
-    }
-
-    .submit-button::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255,255,255,0.3);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .submit-button:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .submit-button:not(:disabled):hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(124,77,255,0.4);
-    }
-
-    .submit-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* Score Display */
-    .score-display {
-      display: none;
-      margin-top: 20px;
-      padding: 20px;
-      background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(129,199,132,0.1));
-      border-radius: 12px;
-      border-left: 5px solid #4caf50;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text);
-      animation: slideInUp 0.5s ease-out;
-    }
-
-    .retry-btn {
-      display: none;
-      margin: 20px auto;
-      padding: 10px 30px;
-      background: linear-gradient(135deg, var(--accent), var(--brand));
-      color: white;
-      border: none;
-      border-radius: 25px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    .retry-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 20px rgba(255,122,198,0.4);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .lesson-title { font-size: 1.8rem; }
-      .advantages-grid { grid-template-columns: 1fr; }
-      .cash-book-table { font-size: 0.85rem; }
-      .cash-book-table th,
-      .cash-book-table td { padding: 8px; }
-      section { padding: 20px; }
-      .circular-progress { 
-        height: 150px; 
-        width: 150px; 
-      }
-      .circular-progress::before {
-        height: 120px;
-        width: 120px;
-      }
     }
 
     /* General Section Styling */
@@ -2777,265 +2511,205 @@
 
     <section id="mcq-section">
     <h2>MCQ Practice – Books of Original Entry & Cash Book</h2>
-    <form id="mcq-form">
-      <div id="mcq-container">
+    
+    <!-- This ID is important for the JavaScript to find the quiz -->
+    <div class="mcq-grid" id="quiz-container">
 
         <!-- Q1 -->
-        <div class="mcq">
-          <h3>1. Cash Book is both a:</h3>
-          <input type="radio" id="q1a" name="q1" value="a">
-          <label for="q1a">Book of secondary entry and ledger account</label>
-
-          <input type="radio" id="q1b" name="q1" value="b">
-          <label for="q1b">Book of original entry and ledger account</label>
-
-          <input type="radio" id="q1c" name="q1" value="c">
-          <label for="q1c">Only a book of original entry</label>
-
-          <input type="radio" id="q1d" name="q1" value="d">
-          <label for="q1d">Only a ledger account</label>
+        <div class="mcq" data-answer="b">
+            <h3>1. Cash Book is both a:</h3>
+            <input type="radio" id="q1a" name="q1" value="a"><label for="q1a">Book of secondary entry and ledger account</label>
+            <input type="radio" id="q1b" name="q1" value="b"><label for="q1b">Book of original entry and ledger account</label>
+            <input type="radio" id="q1c" name="q1" value="c"><label for="q1c">Only a book of original entry</label>
+            <input type="radio" id="q1d" name="q1" value="d"><label for="q1d">Only a ledger account</label>
         </div>
 
         <!-- Q2 -->
-        <div class="mcq">
-          <h3>2. The Cash Book records:</h3>
-          <input type="radio" id="q2a" name="q2" value="a">
-          <label for="q2a">Only cash transactions</label>
-
-          <input type="radio" id="q2b" name="q2" value="b">
-          <label for="q2b">Cash and bank transactions</label>
-
-          <input type="radio" id="q2c" name="q2" value="c">
-          <label for="q2c">Only credit transactions</label>
-
-          <input type="radio" id="q2d" name="q2" value="d">
-          <label for="q2d">Only journal entries</label>
+        <div class="mcq" data-answer="b">
+            <h3>2. The Cash Book records:</h3>
+            <input type="radio" id="q2a" name="q2" value="a"><label for="q2a">Only cash transactions</label>
+            <input type="radio" id="q2b" name="q2" value="b"><label for="q2b">Cash and bank transactions</label>
+            <input type="radio" id="q2c" name="q2" value="c"><label for="q2c">Only credit transactions</label>
+            <input type="radio" id="q2d" name="q2" value="d"><label for="q2d">Only journal entries</label>
         </div>
 
         <!-- Q3 -->
-        <div class="mcq">
-          <h3>3. Which book is known as the primary record of transactions?</h3>
-          <input type="radio" id="q3a" name="q3" value="a">
-          <label for="q3a">Ledger</label>
-
-          <input type="radio" id="q3b" name="q3" value="b">
-          <label for="q3b">Cash Book</label>
-
-          <input type="radio" id="q3c" name="q3" value="c">
-          <label for="q3c">Journal</label>
-
-          <input type="radio" id="q3d" name="q3" value="d">
-          <label for="q3d">Trial Balance</label>
+        <div class="mcq" data-answer="c">
+            <h3>3. Which book is known as the primary record of transactions?</h3>
+            <input type="radio" id="q3a" name="q3" value="a"><label for="q3a">Ledger</label>
+            <input type="radio" id="q3b" name="q3" value="b"><label for="q3b">Cash Book</label>
+            <input type="radio" id="q3c" name="q3" value="c"><label for="q3c">Journal</label>
+            <input type="radio" id="q3d" name="q3" value="d"><label for="q3d">Trial Balance</label>
         </div>
 
         <!-- Q4 -->
-        <div class="mcq">
-          <h3>4. Petty Cash Book is maintained under:</h3>
-          <input type="radio" id="q4a" name="q4" value="a">
-          <label for="q4a">Imprest system</label>
-
-          <input type="radio" id="q4b" name="q4" value="b">
-          <label for="q4b">Single entry system</label>
-
-          <input type="radio" id="q4c" name="q4" value="c">
-          <label for="q4c">Double entry system</label>
-
-          <input type="radio" id="q4d" name="q4" value="d">
-          <label for="q4d">Cash management system</label>
+        <div class="mcq" data-answer="a">
+            <h3>4. Petty Cash Book is maintained under:</h3>
+            <input type="radio" id="q4a" name="q4" value="a"><label for="q4a">Imprest system</label>
+            <input type="radio" id="q4b" name="q4" value="b"><label for="q4b">Single entry system</label>
+            <input type="radio" id="q4c" name="q4" value="c"><label for="q4c">Double entry system</label>
+            <input type="radio" id="q4d" name="q4" value="d"><label for="q4d">Cash management system</label>
         </div>
 
         <!-- Q5 -->
-        <div class="mcq">
-          <h3>5. Which book is prepared before posting into ledger?</h3>
-          <input type="radio" id="q5a" name="q5" value="a">
-          <label for="q5a">Journal</label>
-
-          <input type="radio" id="q5b" name="q5" value="b">
-          <label for="q5b">Ledger</label>
-
-          <input type="radio" id="q5c" name="q5" value="c">
-          <label for="q5c">Trial Balance</label>
-
-          <input type="radio" id="q5d" name="q5" value="d">
-          <label for="q5d">Final Accounts</label>
+        <div class="mcq" data-answer="a">
+            <h3>5. Which book is prepared before posting into ledger?</h3>
+            <input type="radio" id="q5a" name="q5" value="a"><label for="q5a">Journal</label>
+            <input type="radio" id="q5b" name="q5" value="b"><label for="q5b">Ledger</label>
+            <input type="radio" id="q5c" name="q5" value="c"><label for="q5c">Trial Balance</label>
+            <input type="radio" id="q5d" name="q5" value="d"><label for="q5d">Final Accounts</label>
         </div>
 
         <!-- Q6 -->
-        <div class="mcq">
-          <h3>6. Contra entries are recorded in:</h3>
-          <input type="radio" id="q6a" name="q6" value="a">
-          <label for="q6a">Purchase Book</label>
-
-          <input type="radio" id="q6b" name="q6" value="b">
-          <label for="q6b">Journal Proper</label>
-
-          <input type="radio" id="q6c" name="q6" value="c">
-          <label for="q6c">Cash Book</label>
-
-          <input type="radio" id="q6d" name="q6" value="d">
-          <label for="q6d">Sales Book</label>
+        <div class="mcq" data-answer="c">
+            <h3>6. Contra entries are recorded in:</h3>
+            <input type="radio" id="q6a" name="q6" value="a"><label for="q6a">Purchase Book</label>
+            <input type="radio" id="q6b" name="q6" value="b"><label for="q6b">Journal Proper</label>
+            <input type="radio" id="q6c" name="q6" value="c"><label for="q6c">Cash Book</label>
+            <input type="radio" id="q6d" name="q6" value="d"><label for="q6d">Sales Book</label>
         </div>
 
         <!-- Q7 -->
-        <div class="mcq">
-          <h3>7. Which side of the Cash Book records cash payments?</h3>
-          <input type="radio" id="q7a" name="q7" value="a">
-          <label for="q7a">Debit side</label>
-
-          <input type="radio" id="q7b" name="q7" value="b">
-          <label for="q7b">Credit side</label>
-
-          <input type="radio" id="q7c" name="q7" value="c">
-          <label for="q7c">Both debit and credit</label>
-
-          <input type="radio" id="q7d" name="q7" value="d">
-          <label for="q7d">None of these</label>
+        <div class="mcq" data-answer="b">
+            <h3>7. Which side of the Cash Book records cash payments?</h3>
+            <input type="radio" id="q7a" name="q7" value="a"><label for="q7a">Debit side</label>
+            <input type="radio" id="q7b" name="q7" value="b"><label for="q7b">Credit side</label>
+            <input type="radio" id="q7c" name="q7" value="c"><label for="q7c">Both debit and credit</label>
+            <input type="radio" id="q7d" name="q7" value="d"><label for="q7d">None of these</label>
         </div>
 
         <!-- Q8 -->
-        <div class="mcq">
-          <h3>8. Petty expenses like postage and stationery are recorded in:</h3>
-          <input type="radio" id="q8a" name="q8" value="a">
-          <label for="q8a">Ledger</label>
-
-          <input type="radio" id="q8b" name="q8" value="b">
-          <label for="q8b">Cash Book</label>
-
-          <input type="radio" id="q8c" name="q8" value="c">
-          <label for="q8c">Petty Cash Book</label>
-
-          <input type="radio" id="q8d" name="q8" value="d">
-          <label for="q8d">Trial Balance</label>
+        <div class="mcq" data-answer="c">
+            <h3>8. Petty expenses like postage and stationery are recorded in:</h3>
+            <input type="radio" id="q8a" name="q8" value="a"><label for="q8a">Ledger</label>
+            <input type="radio" id="q8b" name="q8" value="b"><label for="q8b">Cash Book</label>
+            <input type="radio" id="q8c" name="q8" value="c"><label for="q8c">Petty Cash Book</label>
+            <input type="radio" id="q8d" name="q8" value="d"><label for="q8d">Trial Balance</label>
         </div>
 
         <!-- Q9 -->
-        <div class="mcq">
-          <h3>9. The Journal records:</h3>
-          <input type="radio" id="q9a" name="q9" value="a">
-          <label for="q9a">All credit transactions</label>
-
-          <input type="radio" id="q9b" name="q9" value="b">
-          <label for="q9b">Cash and bank transactions only</label>
-
-          <input type="radio" id="q9c" name="q9" value="c">
-          <label for="q9c">All transactions in chronological order</label>
-
-          <input type="radio" id="q9d" name="q9" value="d">
-          <label for="q9d">Only sales transactions</label>
+        <div class="mcq" data-answer="c">
+            <h3>9. The Journal records:</h3>
+            <input type="radio" id="q9a" name="q9" value="a"><label for="q9a">All credit transactions</label>
+            <input type="radio" id="q9b" name="q9" value="b"><label for="q9b">Cash and bank transactions only</label>
+            <input type="radio" id="q9c" name="q9" value="c"><label for="q9c">All transactions in chronological order</label>
+            <input type="radio" id="q9d" name="q9" value="d"><label for="q9d">Only sales transactions</label>
         </div>
 
         <!-- Q10 -->
-        <div class="mcq">
-          <h3>10. When cash is deposited into bank, it is a:</h3>
-          <input type="radio" id="q10a" name="q10" value="a">
-          <label for="q10a">Contra entry</label>
-
-          <input type="radio" id="q10b" name="q10" value="b">
-          <label for="q10b">Adjustment entry</label>
-
-          <input type="radio" id="q10c" name="q10" value="c">
-          <label for="q10c">Transfer entry</label>
-
-          <input type="radio" id="q10d" name="q10" value="d">
-          <label for="q10d">Closing entry</label>
+        <div class="mcq" data-answer="a">
+            <h3>10. When cash is deposited into bank, it is a:</h3>
+            <input type="radio" id="q10a" name="q10" value="a"><label for="q10a">Contra entry</label>
+            <input type="radio" id="q10b" name="q10" value="b"><label for="q10b">Adjustment entry</label>
+            <input type="radio" id="q10c" name="q10" value="c"><label for="q10c">Transfer entry</label>
+            <input type="radio" id="q10d" name="q10" value="d"><label for="q10d">Closing entry</label>
         </div>
 
-        <!-- New Q11 -->
-        <div class="mcq">
-          <h3>11. Which column is NOT present in a simple Cash Book?</h3>
-          <input type="radio" id="q11a" name="q11" value="a">
-          <label for="q11a">Date</label>
-
-          <input type="radio" id="q11b" name="q11" value="b">
-          <label for="q11b">Particulars</label>
-
-          <input type="radio" id="q11c" name="q11" value="c">
-          <label for="q11c">Ledger Folio</label>
-
-          <input type="radio" id="q11d" name="q11" value="d">
-          <label for="q11d">Discount</label>
+        <!-- Q11 -->
+        <div class="mcq" data-answer="d">
+            <h3>11. Which column is NOT present in a simple Cash Book?</h3>
+            <input type="radio" id="q11a" name="q11" value="a"><label for="q11a">Date</label>
+            <input type="radio" id="q11b" name="q11" value="b"><label for="q11b">Particulars</label>
+            <input type="radio" id="q11c" name="q11" value="c"><label for="q11c">Ledger Folio</label>
+            <input type="radio" id="q11d" name="q11" value="d"><label for="q11d">Discount</label>
         </div>
 
-        <!-- New Q12 -->
-        <div class="mcq">
-          <h3>12. Purchases Book is used to record:</h3>
-          <input type="radio" id="q12a" name="q12" value="a">
-          <label for="q12a">All purchases</label>
-
-          <input type="radio" id="q12b" name="q12" value="b">
-          <label for="q12b">Only credit purchases of goods</label>
-
-          <input type="radio" id="q12c" name="q12" value="c">
-          <label for="q12c">Only cash purchases of goods</label>
-
-          <input type="radio" id="q12d" name="q12" value="d">
-          <label for="q12d">Fixed assets purchases</label>
+        <!-- Q12 -->
+        <div class="mcq" data-answer="b">
+            <h3>12. Purchases Book is used to record:</h3>
+            <input type="radio" id="q12a" name="q12" value="a"><label for="q12a">All purchases</label>
+            <input type="radio" id="q12b" name="q12" value="b"><label for="q12b">Only credit purchases of goods</label>
+            <input type="radio" id="q12c" name="q12" value="c"><label for="q12c">Only cash purchases of goods</label>
+            <input type="radio" id="q12d" name="q12" value="d"><label for="q12d">Fixed assets purchases</label>
         </div>
 
-        <!-- New Q13 -->
-        <div class="mcq">
-          <h3>13. Sales Book does not record:</h3>
-          <input type="radio" id="q13a" name="q13" value="a">
-          <label for="q13a">Cash sales</label>
-
-          <input type="radio" id="q13b" name="q13" value="b">
-          <label for="q13b">Credit sales of goods</label>
-
-          <input type="radio" id="q13c" name="q13" value="c">
-          <label for="q13c">Returns inward</label>
-
-          <input type="radio" id="q13d" name="q13" value="d">
-          <label for="q13d">None of these</label>
+        <!-- Q13 -->
+        <div class="mcq" data-answer="a">
+            <h3>13. Sales Book does not record:</h3>
+            <input type="radio" id="q13a" name="q13" value="a"><label for="q13a">Cash sales</label>
+            <input type="radio" id="q13b" name="q13" value="b"><label for="q13b">Credit sales of goods</label>
+            <input type="radio" id="q13c" name="q13" value="c"><label for="q13c">Returns inward</label>
+            <input type="radio" id="q13d" name="q13" value="d"><label for="q13d">None of these</label>
         </div>
 
-        <!-- New Q14 -->
-        <div class="mcq">
-          <h3>14. Purchase Returns Book is also known as:</h3>
-          <input type="radio" id="q14a" name="q14" value="a">
-          <label for="q14a">Returns Outward Book</label>
-
-          <input type="radio" id="q14b" name="q14" value="b">
-          <label for="q14b">Returns Inward Book</label>
-
-          <input type="radio" id="q14c" name="q14" value="c">
-          <label for="q14c">Cash Book</label>
-
-          <input type="radio" id="q14d" name="q14" value="d">
-          <label for="q14d">Journal Proper</label>
+        <!-- Q14 -->
+        <div class="mcq" data-answer="a">
+            <h3>14. Purchase Returns Book is also known as:</h3>
+            <input type="radio" id="q14a" name="q14" value="a"><label for="q14a">Returns Outward Book</label>
+            <input type="radio" id="q14b" name="q14" value="b"><label for="q14b">Returns Inward Book</label>
+            <input type="radio" id="q14c" name="q14" value="c"><label for="q14c">Cash Book</label>
+            <input type="radio" id="q14d" name="q14" value="d"><label for="q14d">Journal Proper</label>
         </div>
 
-        <!-- New Q15 -->
-        <div class="mcq">
-          <h3>15. The balance of Cash Book is always:</h3>
-          <input type="radio" id="q15a" name="q15" value="a">
-          <label for="q15a">Debit or Nil</label>
-
-          <input type="radio" id="q15b" name="q15" value="b">
-          <label for="q15b">Credit only</label>
-
-          <input type="radio" id="q15c" name="q15" value="c">
-          <label for="q15c">Either debit or credit</label>
-
-          <input type="radio" id="q15d" name="q15" value="d">
-          <label for="q15d">None of these</label>
+        <!-- Q15 -->
+        <div class="mcq" data-answer="a">
+            <h3>15. The balance of Cash Book is always:</h3>
+            <input type="radio" id="q15a" name="q15" value="a"><label for="q15a">Debit or Nil</label>
+            <input type="radio" id="q15b" name="q15" value="b"><label for="q15b">Credit only</label>
+            <input type="radio" id="q15c" name="q15" value="c"><label for="q15c">Either debit or credit</label>
+            <input type="radio" id="q15d" name="q15" value="d"><label for="q15d">None of these</label>
+        </div>
+        
+        <!-- NEW Q16 -->
+        <div class="mcq" data-answer="c">
+            <h3>16. Which of the following is recorded in the Journal Proper?</h3>
+            <input type="radio" id="q16a" name="q16" value="a"><label for="q16a">Purchase of goods on credit</label>
+            <input type="radio" id="q16b" name="q16" value="b"><label for="q16b">Sale of goods for cash</label>
+            <input type="radio" id="q16c" name="q16" value="c"><label for="q16c">Purchase of machinery on credit</label>
+            <input type="radio" id="q16d" name="q16" value="d"><label for="q16d">Payment to a creditor</label>
         </div>
 
-      </div>
-
-      <!-- Progress Bar -->
-      <div class="progress-wrapper">
-        <div class="circular-progress">
-          <span class="progress-value">0%</span>
+        <!-- NEW Q17 -->
+        <div class="mcq" data-answer="b">
+            <h3>17. The purpose of the Ledger Folio (L.F.) column in the Journal is to:</h3>
+            <input type="radio" id="q17a" name="q17" value="a"><label for="q17a">Record the page number of the cash book</label>
+            <input type="radio" id="q17b" name="q17" value="b"><label for="q17b">Record the page number of the ledger account</label>
+            <input type="radio" id="q17c" name="q17" value="c"><label for="q17c">Record the date of the transaction</label>
+            <input type="radio" id="q17d" name="q17" value="d"><label for="q17d">Record the amount of the transaction</label>
         </div>
-      </div>
 
-      <!-- Submit Button -->
-      <button type="button" class="submit-button" onclick="checkAnswers(event)">Submit</button>
-      <!-- Retry Button -->
-      <button type="button" class="retry-btn" id="retryBtn" onclick="resetQuiz()">Retry</button>
+        <!-- NEW Q18 -->
+        <div class="mcq" data-answer="c">
+            <h3>18. Which transaction will NOT be in a double-column Cash Book?</h3>
+            <input type="radio" id="q18a" name="q18" value="a"><label for="q18a">Cash paid to a supplier</label>
+            <input type="radio" id="q18b" name="q18" value="b"><label for="q18b">Cheque received from a customer</label>
+            <input type="radio" id="q18c" name="q18" value="c"><label for="q18c">Depreciation on office furniture</label>
+            <input type="radio" id="q18d" name="q18" value="d"><label for="q18d">Cash withdrawn from bank for office use</label>
+        </div>
 
-    </form>
-  </section>
+        <!-- NEW Q19 -->
+        <div class="mcq" data-answer="d">
+            <h3>19. The source document for recording an entry in the Sales Book is:</h3>
+            <input type="radio" id="q19a" name="q19" value="a"><label for="q19a">Credit note</label>
+            <input type="radio" id="q19b" name="q19" value="b"><label for="q19b">Debit note</label>
+            <input type="radio" id="q19c" name="q19" value="c"><label for="q19c">Cash memo</label>
+            <input type="radio" id="q19d" name="q19" value="d"><label for="q19d">Sales invoice</label>
+        </div>
+
+        <!-- NEW Q20 -->
+        <div class="mcq" data-answer="b">
+            <h3>20. An overdraft in the bank account means the Bank column in the Cash Book will have a:</h3>
+            <input type="radio" id="q20a" name="q20" value="a"><label for="q20a">Debit balance</label>
+            <input type="radio" id="q20b" name="q20" value="b"><label for="q20b">Credit balance</label>
+            <input type="radio" id="q20c" name="q20" value="c"><label for="q20c">Nil balance</label>
+            <input type="radio" id="q20d" name="q20" value="d"><label for="q20d">Positive balance</label>
+        </div>
+
+    </div>
+
+    <!-- Progress Bar (this can be styled or removed) -->
+    <div id="quiz-progress" style="margin-top: 20px;"></div>
+    
+    <!-- Result Display Area -->
+    <div id="quizResult"></div>
+
+    <!-- Buttons -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="button" id="submitQuiz" class="submit-button" onclick="submitQuiz()">Submit Answers</button>
+        <button type="button" id="retry-btn" class="retry-btn" style="display:none;" onclick="retryQuiz()">Retry Quiz</button>
+    </div>
+
+</section>
 
   <section id="cashbook-summary">
     <h2 class="section-title">Lesson Summary</h2>
@@ -3154,7 +2828,286 @@
 
   </main>
 
-  <script>
+<script type="module">
+    // ========================================
+    // 1. IMPORT FIREBASE (ONLY THIS LINE NEEDS EXTERNAL FILE)
+    // ========================================
+    import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
+
+    // ========================================
+    // 2. CONFIGURATION (CHANGE FOR EACH LESSON)
+    // ========================================
+    const LESSON_NUMBER = '1';  // ← Change this: '1', '2', '3', etc.
+    const LESSON_ID = 'lesson-1'; // ← Change this: 'lesson-1', 'lesson-2', etc.
+
+    // ========================================
+    // 3. INITIALIZE QUIZ
+    // ========================================
+    function initQuiz() {
+      console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) {
+        console.error('❌ Quiz container not found');
+        return;
+      }
+
+      // Add event listeners to all radio buttons
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        // UPDATE PROGRESS BAR ON CHANGE
+        input.addEventListener('change', updateProgressBar);
+        
+        // ✨ ADD UNCLICK FUNCTIONALITY ✨
+        input.addEventListener('click', function(e) {
+          // If already checked, uncheck it
+          if (this.dataset.checked === 'true') {
+            this.checked = false;
+            this.dataset.checked = 'false';
+            updateProgressBar(); // Update progress after unclick
+          } else {
+            // Mark all radios in this group as unchecked
+            const groupName = this.name;
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+              radio.dataset.checked = 'false';
+            });
+            // Mark this one as checked
+            this.dataset.checked = 'true';
+          }
+        });
+      });
+
+      console.log('✅ Quiz initialized with', allInputs.length, 'options');
+      updateProgressBar();
+    }
+
+    // ========================================
+    // 4. UPDATE PROGRESS BAR (REAL-TIME)
+    // ========================================
+    function updateProgressBar() {
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      // Count total questions
+      const allQuestions = container.querySelectorAll('.mcq');
+      const totalQuestions = allQuestions.length;
+
+      // Count answered questions
+      let answeredCount = 0;
+      allQuestions.forEach(mcq => {
+        const questionName = mcq.querySelector('input[type="radio"]').name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+        if (selected) answeredCount++;
+      });
+
+      // Calculate progress percentage
+      const progressPercentage = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+
+      // Update progress bar UI
+      const progressDiv = document.getElementById('quiz-progress');
+      if (progressDiv) {
+        progressDiv.innerHTML = `
+          <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+              <span>Questions Answered</span>
+              <span><strong style="color: var(--brand-2);">${answeredCount}/${totalQuestions}</strong></span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+              <div style="width: ${progressPercentage}%; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      console.log(`📊 Progress: ${answeredCount}/${totalQuestions} (${progressPercentage}%)`);
+    }
+
+    // ========================================
+    // 5. SUBMIT QUIZ (BULLETPROOF VERSION)
+    // ========================================
+    window.submitQuiz = async function() {
+      console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const mcqs = container.querySelectorAll('.mcq');
+      if (mcqs.length === 0) return;
+
+      let answersData = {};
+      let correctCount = 0;
+      let totalQuestions = mcqs.length;
+      let answeredCount = 0;
+
+      mcqs.forEach((mcq, index) => {
+        const correctAnswer = mcq.dataset.answer;
+        const questionNumber = `q${index + 1}`;
+        const inputs = mcq.querySelectorAll('input[type="radio"]');
+        const questionName = inputs[0].name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+        if (!selected) return;
+
+        answeredCount++;
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === correctAnswer;
+        if (isCorrect) correctCount++;
+
+        answersData[questionNumber] = {
+          selected: selectedValue,
+          correct: correctAnswer,
+          isCorrect: isCorrect
+        };
+
+        inputs.forEach(input => {
+          const label = input.nextElementSibling;
+          if (!label) return;
+          input.disabled = true;
+          if (input.value === correctAnswer) {
+            label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
+            label.style.borderLeft = '4px solid #10b981';
+            label.style.fontWeight = 'bold';
+          }
+          if (input.value === selectedValue && !isCorrect) {
+            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+            label.style.borderLeft = '4px solid #ef4444';
+          }
+        });
+      });
+
+      if (answeredCount === 0) {
+        alert('⚠️ Please answer at least 1 question before submitting!');
+        return;
+      }
+
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+      const submitBtn = document.getElementById('submitQuiz');
+      const resultDiv = document.getElementById('quizResult');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      // Show loading state
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+      }
+
+      try {
+        console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+        const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+        console.log("✅ Firebase response:", result);
+
+        // ALWAYS show result, even if Firebase fails
+        if (resultDiv) {
+          if (result && result.success) {
+            if (result.updated) {
+              // New best score!
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+            } else {
+              // Previous score was better
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+            }
+          } else {
+            // Firebase failed but still show score
+            resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console (F12) for details.</div>
+              </div>`;
+            console.error("❌ Firebase error:", result?.error || "Unknown error");
+          }
+        }
+      } catch (error) {
+        console.error("❌ Critical error during submission:", error);
+        // STILL show the score even if everything fails
+        if (resultDiv) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+              <div style="color: var(--muted); font-size: 0.8rem; margin-top: 5px;">Check browser console (F12) for details</div>
+            </div>`;
+        }
+      } finally {
+        // Always show retry button and update submit button
+        const retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) retryBtn.style.display = 'block';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = '✓ Submitted';
+        }
+      }
+    };
+
+    // ========================================
+    // 6. RETRY QUIZ
+    // ========================================
+    window.retryQuiz = function() {
+      console.log('🔄 Retrying quiz');
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      // Reset all inputs
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.disabled = false;
+        input.dataset.checked = 'false'; // Reset unclick tracking
+        
+        const label = input.nextElementSibling;
+        if (label) {
+          label.style.background = '';
+          label.style.borderLeft = '';
+          label.style.fontWeight = '';
+        }
+      });
+
+      // Reset UI
+      const resultDiv = document.getElementById('quizResult');
+      if (resultDiv) resultDiv.innerHTML = '';
+
+      const submitBtn = document.getElementById('submitQuiz');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Answers';
+      }
+
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) retryBtn.style.display = 'none';
+
+      updateProgressBar();
+      document.getElementById('mcqSection')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ========================================
+    // 7. INITIALIZE ON PAGE LOAD
+    // ========================================
+    initQuiz();
+    console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
+    
     // Toggle solution visibility
     function toggleSolution(exampleId) {
       const solution = document.getElementById(exampleId + '-solution');
@@ -3168,16 +3121,6 @@
         button.textContent = 'Hide Solution';
       }
     }
-
-    // Initialize when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('Page initialized');
-      
-      // Add animation to cards
-      document.querySelectorAll('.mcq').forEach((mcq, index) => {
-        mcq.style.animationDelay = `${index * 0.1}s`;
-      });
-    });
 </script>
 
 </body>
