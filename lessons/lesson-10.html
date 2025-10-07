@@ -2140,15 +2140,12 @@
 
       </div>
 
-      <button id="submit-mcq">Submit Answers</button>
-      <button id="retry-btn" style="display:none;">Retry</button>
-      <div id="score-display" style="display:none;"></div>
-
-      <!-- Progress Tracker -->
-      <div id="progressBox">
-        <h4>Your Progress</h4>
-        <progress id="lesson-progress" max="100" value="0"></progress>
-      </div>
+      <!-- ✅ CHANGED: Added onclick handler -->
+            <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+            <div id="quizResult"></div>
+            
+            <!-- ✅ CHANGED: Added onclick and style -->
+            <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
     </section>
 
 

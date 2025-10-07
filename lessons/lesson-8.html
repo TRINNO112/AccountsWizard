@@ -1465,21 +1465,12 @@
         </div>
       </div>
 
-      <!-- Submit Button and Progress -->
-      <div style="text-align: center; margin: 30px 0;">
-        <button id="submit-mcq" class="submit-button" disabled style="opacity: 0.5;">Submit Answers</button>
-      </div>
-
-      <div id="score-display" class="hidden-score"></div>
-      <div style="text-align: center; margin-top: 10px;">
-        <button id="retry-btn" style="display: none; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Try Again</button>
-      </div>
-
-      <div class="progress-wrapper">
-        <div class="circular-progress" id="circularProgress">
-          <span class="progress-value" id="progressValue">0%</span>
-        </div>
-      </div>
+      <!-- ✅ CHANGED: Added onclick handler -->
+            <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+            <div id="quizResult"></div>
+            
+            <!-- ✅ CHANGED: Added onclick and style -->
+            <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
     </section>
 
   </main>
