@@ -3128,519 +3128,597 @@
     if (debitTotal === 0 && creditTotal === 0) {
         statusDiv.className = 'balance-status';
         statusText.innerHTML = 'Enter amounts to check balance';
-          } else if (debitTotal === creditTotal) {
-    statusDiv.className = 'balance-status balanced';
-    statusText.innerHTML = '<i class="fas fa-check-circle"></i> Balanced ✅';
-    
-    // Save successful balance
-    const calculatorHistory = JSON.parse(localStorage.getItem('calculatorHistory') || '[]');
-    calculatorHistory.push({
-      timestamp: new Date().toISOString(),
-      debitTotal: debitTotal,
-      creditTotal: creditTotal,
-      entries: getCalculatorEntries()
-    });
-    localStorage.setItem('calculatorHistory', JSON.stringify(calculatorHistory));
-  } else {
-    statusDiv.className = 'balance-status not-balanced';
-    const difference = Math.abs(debitTotal - creditTotal);
-    const higherSide = debitTotal > creditTotal ? 'Debit' : 'Credit';
-    statusText.innerHTML = `<i class="fas fa-times-circle"></i> Not Balanced ❌<br><small>${higherSide} exceeds by ₹${difference.toLocaleString()}</small>`;
-  }
-}
+    } else if (debitTotal === creditTotal) {
+        statusDiv.className = 'balance-status balanced';
+        statusText.innerHTML = '<i class="fas fa-check-circle"></i> Balanced ✅';
+        
+        // Save successful balance
+        const calculatorHistory = JSON.parse(localStorage.getItem('calculatorHistory') || '[]');
+        calculatorHistory.push({
+          timestamp: new Date().toISOString(),
+          debitTotal: debitTotal,
+          creditTotal: creditTotal,
+          entries: getCalculatorEntries()
+        });
+        localStorage.setItem('calculatorHistory', JSON.stringify(calculatorHistory));
+    } else {
+        statusDiv.className = 'balance-status not-balanced';
+        const difference = Math.abs(debitTotal - creditTotal);
+        const higherSide = debitTotal > creditTotal ? 'Debit' : 'Credit';
+        statusText.innerHTML = `<i class="fas fa-times-circle"></i> Not Balanced ❌<br><small>${higherSide} exceeds by ₹${difference.toLocaleString()}</small>`;
+    }
+    }
 
-function getCalculatorEntries() {
-  const entries = [];
-  document.querySelectorAll('.calculator-row').forEach(row => {
-    const accountName = row.querySelector('.account-name').value;
-    const debitAmount = parseFloat(row.querySelector('.debit-input').value) || 0;
-    const creditAmount = parseFloat(row.querySelector('.credit-input').value) || 0;
-    
-    if (accountName && (debitAmount > 0 || creditAmount > 0)) {
-      entries.push({
-        account: accountName,
-        debit: debitAmount,
-        credit: creditAmount
+    function getCalculatorEntries() {
+      const entries = [];
+      document.querySelectorAll('.calculator-row').forEach(row => {
+        const accountName = row.querySelector('.account-name').value;
+        const debitAmount = parseFloat(row.querySelector('.debit-input').value) || 0;
+        const creditAmount = parseFloat(row.querySelector('.credit-input').value) || 0;
+        
+        if (accountName && (debitAmount > 0 || creditAmount > 0)) {
+          entries.push({
+            account: accountName,
+            debit: debitAmount,
+            credit: creditAmount
+          });
+        }
+      });
+      return entries;
+    }
+
+    // Initialize game on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Only initialize if we're on the trial balance page
+      if (document.getElementById('transactions-list')) {
+        initializeGame();
+      }
+    });
+
+    // Additional Error Examples Section
+    const errorExamples = {
+      detected: [
+        {
+          title: "Error of Totaling",
+          example: "Purchases account totaled as ₹45,000 instead of ₹54,000",
+          effect: "Trial Balance will not tally - Debit side short by ₹9,000"
+        },
+        {
+          title: "Error of Balancing",
+          example: "Cash account balance calculated as ₹25,000 instead of ₹52,000",
+          effect: "Trial Balance will not tally - Debit side short by ₹27,000"
+        },
+        {
+          title: "Error of Posting - Wrong Side",
+          example: "Rent paid ₹5,000 posted to credit side of Rent account",
+          effect: "Trial Balance will not tally - Debit short by ₹10,000 (₹5,000 × 2)"
+        },
+        {
+          title: "Error of Posting - Wrong Amount",
+          example: "Sales of ₹8,500 posted as ₹5,800",
+          effect: "Trial Balance will not tally - Credit side short by ₹2,700"
+        },
+        {
+          title: "Partial Omission",
+          example: "Cash received from debtor ₹10,000 - only credited to Cash, not debited to Debtor",
+          effect: "Trial Balance will not tally - Credit exceeds Debit by ₹10,000"
+        }
+      ],
+      notDetected: [
+        {
+          title: "Complete Omission",
+          example: "Credit purchase of ₹15,000 completely omitted from books",
+          effect: "Both debit and credit omitted equally - Trial Balance still tallies"
+        },
+        {
+          title: "Error of Commission",
+          example: "Payment to Raj ₹5,000 posted to Ravi's account",
+          effect: "Correct amount on correct side but wrong account - Trial Balance tallies"
+        },
+        {
+          title: "Error of Principle",
+          example: "Machinery purchase ₹50,000 debited to Purchases account",
+          effect: "Capital expenditure treated as revenue - Trial Balance still tallies"
+        },
+        {
+          title: "Compensating Errors",
+          example: "Purchases understated by ₹1,000 and Sales also understated by ₹1,000",
+          effect: "Errors cancel each other out - Trial Balance tallies"
+        },
+        {
+          title: "Error of Original Entry",
+          example: "Purchase invoice of ₹6,900 recorded as ₹9,600 in all books",
+          effect: "Wrong amount consistently recorded - Trial Balance tallies with wrong figures"
+        }
+      ]
+    };
+
+    // Function to display error examples
+    function displayErrorExamples() {
+      const errorSection = document.createElement('section');
+      errorSection.innerHTML = `
+        <h2>Detailed Error Examples</h2>
+        <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
+          Understanding errors through practical examples helps in better error detection and correction.
+        </p>
+        
+        <div class="error-examples-grid">
+          <div class="error-category">
+            <h3 style="color: var(--success); margin-bottom: 20px;">
+              <i class="fas fa-check-circle"></i> Errors DETECTED by Trial Balance
+            </h3>
+            <div class="error-cards" id="detected-errors"></div>
+          </div>
+          
+          <div class="error-category">
+            <h3 style="color: var(--error); margin-bottom: 20px;">
+              <i class="fas fa-times-circle"></i> Errors NOT DETECTED by Trial Balance
+            </h3>
+            <div class="error-cards" id="not-detected-errors"></div>
+          </div>
+        </div>
+      `;
+      
+      // Insert after the existing errors section
+      const existingErrorSection = document.querySelector('section:has(h2:contains("Errors"))');
+      if (existingErrorSection) {
+        existingErrorSection.after(errorSection);
+      }
+      
+      // Populate error examples
+      const detectedContainer = document.getElementById('detected-errors');
+      const notDetectedContainer = document.getElementById('not-detected-errors');
+      
+      errorExamples.detected.forEach((error, index) => {
+        const card = createErrorCard(error, index, 'detected');
+        detectedContainer.appendChild(card);
+      });
+      
+      errorExamples.notDetected.forEach((error, index) => {
+        const card = createErrorCard(error, index, 'not-detected');
+        notDetectedContainer.appendChild(card);
       });
     }
-  });
-  return entries;
-}
 
-// Initialize game on page load
-document.addEventListener('DOMContentLoaded', function() {
-  // Only initialize if we're on the trial balance page
-  if (document.getElementById('transactions-list')) {
-    initializeGame();
-  }
-});
-
-// Additional Error Examples Section
-const errorExamples = {
-  detected: [
-    {
-      title: "Error of Totaling",
-      example: "Purchases account totaled as ₹45,000 instead of ₹54,000",
-      effect: "Trial Balance will not tally - Debit side short by ₹9,000"
-    },
-    {
-      title: "Error of Balancing",
-      example: "Cash account balance calculated as ₹25,000 instead of ₹52,000",
-      effect: "Trial Balance will not tally - Debit side short by ₹27,000"
-    },
-    {
-      title: "Error of Posting - Wrong Side",
-      example: "Rent paid ₹5,000 posted to credit side of Rent account",
-      effect: "Trial Balance will not tally - Debit short by ₹10,000 (₹5,000 × 2)"
-    },
-    {
-      title: "Error of Posting - Wrong Amount",
-      example: "Sales of ₹8,500 posted as ₹5,800",
-      effect: "Trial Balance will not tally - Credit side short by ₹2,700"
-    },
-    {
-      title: "Partial Omission",
-      example: "Cash received from debtor ₹10,000 - only credited to Cash, not debited to Debtor",
-      effect: "Trial Balance will not tally - Credit exceeds Debit by ₹10,000"
+    function createErrorCard(error, index, type) {
+      const card = document.createElement('div');
+      card.className = 'error-example-card';
+      card.style.animationDelay = `${index * 0.1}s`;
+      card.innerHTML = `
+        <div class="error-example-header">
+          <span class="error-number">${index + 1}</span>
+          <h4>${error.title}</h4>
+        </div>
+        <div class="error-example-content">
+          <p class="error-example-text"><strong>Example:</strong> ${error.example}</p>
+          <p class="error-effect"><strong>Effect:</strong> ${error.effect}</p>
+        </div>
+      `;
+      return card;
     }
-  ],
-  notDetected: [
-    {
-      title: "Complete Omission",
-      example: "Credit purchase of ₹15,000 completely omitted from books",
-      effect: "Both debit and credit omitted equally - Trial Balance still tallies"
-    },
-    {
-      title: "Error of Commission",
-      example: "Payment to Raj ₹5,000 posted to Ravi's account",
-      effect: "Correct amount on correct side but wrong account - Trial Balance tallies"
-    },
-    {
-      title: "Error of Principle",
-      example: "Machinery purchase ₹50,000 debited to Purchases account",
-      effect: "Capital expenditure treated as revenue - Trial Balance still tallies"
-    },
-    {
-      title: "Compensating Errors",
-      example: "Purchases understated by ₹1,000 and Sales also understated by ₹1,000",
-      effect: "Errors cancel each other out - Trial Balance tallies"
-    },
-    {
-      title: "Error of Original Entry",
-      example: "Purchase invoice of ₹6,900 recorded as ₹9,600 in all books",
-      effect: "Wrong amount consistently recorded - Trial Balance tallies with wrong figures"
-    }
-  ]
-};
 
-// Function to display error examples
-function displayErrorExamples() {
-  const errorSection = document.createElement('section');
-  errorSection.innerHTML = `
-    <h2>Detailed Error Examples</h2>
-    <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
-      Understanding errors through practical examples helps in better error detection and correction.
-    </p>
-    
-    <div class="error-examples-grid">
-      <div class="error-category">
-        <h3 style="color: var(--success); margin-bottom: 20px;">
-          <i class="fas fa-check-circle"></i> Errors DETECTED by Trial Balance
-        </h3>
-        <div class="error-cards" id="detected-errors"></div>
-      </div>
+    // Progress Tracking System
+    const progressTracker = {
+      init() {
+        this.loadProgress();
+        this.displayProgress();
+      },
       
-      <div class="error-category">
-        <h3 style="color: var(--error); margin-bottom: 20px;">
-          <i class="fas fa-times-circle"></i> Errors NOT DETECTED by Trial Balance
-        </h3>
-        <div class="error-cards" id="not-detected-errors"></div>
-      </div>
-    </div>
-  `;
-  
-  // Insert after the existing errors section
-  const existingErrorSection = document.querySelector('section:has(h2:contains("Errors"))');
-  if (existingErrorSection) {
-    existingErrorSection.after(errorSection);
-  }
-  
-  // Populate error examples
-  const detectedContainer = document.getElementById('detected-errors');
-  const notDetectedContainer = document.getElementById('not-detected-errors');
-  
-  errorExamples.detected.forEach((error, index) => {
-    const card = createErrorCard(error, index, 'detected');
-    detectedContainer.appendChild(card);
-  });
-  
-  errorExamples.notDetected.forEach((error, index) => {
-    const card = createErrorCard(error, index, 'not-detected');
-    notDetectedContainer.appendChild(card);
-  });
-}
-
-function createErrorCard(error, index, type) {
-  const card = document.createElement('div');
-  card.className = 'error-example-card';
-  card.style.animationDelay = `${index * 0.1}s`;
-  card.innerHTML = `
-    <div class="error-example-header">
-      <span class="error-number">${index + 1}</span>
-      <h4>${error.title}</h4>
-    </div>
-    <div class="error-example-content">
-      <p class="error-example-text"><strong>Example:</strong> ${error.example}</p>
-      <p class="error-effect"><strong>Effect:</strong> ${error.effect}</p>
-    </div>
-  `;
-  return card;
-}
-
-// Progress Tracking System
-const progressTracker = {
-  init() {
-    this.loadProgress();
-    this.displayProgress();
-  },
-  
-  loadProgress() {
-    this.progress = JSON.parse(localStorage.getItem('trialBalanceProgress') || '{}');
-    if (!this.progress.sections) {
-      this.progress = {
-        sections: {
-          introduction: false,
-          objectives: false,
-          format: false,
-          rules: false,
-          errors: false,
-          practice: false,
-          game: false,
-          calculator: false
-        },
-        questionsAttempted: [],
-        totalScore: 0,
-        lastVisit: new Date().toISOString()
-      };
-    }
-  },
-  
-  markSectionComplete(sectionId) {
-    this.progress.sections[sectionId] = true;
-    this.progress.lastVisit = new Date().toISOString();
-    this.saveProgress();
-    this.updateProgressBar();
-  },
-  
-  markQuestionAttempted(questionId) {
-    if (!this.progress.questionsAttempted.includes(questionId)) {
-      this.progress.questionsAttempted.push(questionId);
-      this.saveProgress();
-    }
-  },
-  
-  saveProgress() {
-    localStorage.setItem('trialBalanceProgress', JSON.stringify(this.progress));
-  },
-  
-
-// Add CSS for new components
-const additionalStyles = `
-<style>
-/* Error Examples Grid */
-.error-examples-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.error-category {
-  background: rgba(255,255,255,0.02);
-  border-radius: 16px;
-  padding: 25px;
-  border: 2px solid rgba(255,255,255,0.1);
-}
-
-.error-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.error-example-card {
-  background: rgba(255,255,255,0.03);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.3s;
-  animation: fadeInUp 0.6s ease-out;
-  animation-fill-mode: both;
-}
-
-.error-example-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--brand-2);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.error-example-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-.error-number {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.error-example-header h4 {
-  margin: 0;
-  color: var(--text);
-  font-size: 1.1rem;
-}
-
-.error-example-content p {
-  margin: 8px 0;
-  line-height: 1.6;
-  color: var(--muted);
-}
-
-.error-effect {
-  color: var(--brand-2) !important;
-  font-style: italic;
-}
-</style>
-`;
-
-// Add the styles to the document
-document.head.insertAdjacentHTML('beforeend', additionalStyles);
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize progress tracker
-  progressTracker.init();
-  
-  // Add error examples
-  displayErrorExamples();
-  
-  // Track section views
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const sectionTitle = entry.target.querySelector('h2')?.textContent;
-        if (sectionTitle) {
-          const sectionMap = {
-            'What is a Trial Balance?': 'introduction',
-            'Objectives of Trial Balance': 'objectives',
-            'Format of Trial Balance': 'format',
-            'Rules for Debit and Credit': 'rules',
-            'Errors': 'errors',
-            'Type 1': 'practice',
-            'Trial Balance Challenge Game': 'game',
-            'Trial Balance Calculator': 'calculator'
+      loadProgress() {
+        this.progress = JSON.parse(localStorage.getItem('trialBalanceProgress') || '{}');
+        if (!this.progress.sections) {
+          this.progress = {
+            sections: {
+              introduction: false,
+              objectives: false,
+              format: false,
+              rules: false,
+              errors: false,
+              practice: false,
+              game: false,
+              calculator: false
+            },
+            questionsAttempted: [],
+            totalScore: 0,
+            lastVisit: new Date().toISOString()
           };
+        }
+      },
+      
+      markSectionComplete(sectionId) {
+        this.progress.sections[sectionId] = true;
+        this.progress.lastVisit = new Date().toISOString();
+        this.saveProgress();
+        this.updateProgressBar();
+      },
+      
+      markQuestionAttempted(questionId) {
+        if (!this.progress.questionsAttempted.includes(questionId)) {
+          this.progress.questionsAttempted.push(questionId);
+          this.saveProgress();
+        }
+      },
+      
+      saveProgress() {
+        localStorage.setItem('trialBalanceProgress', JSON.stringify(this.progress));
+      },
+      
+      displayProgress() {
+        const completedSections = Object.values(this.progress.sections).filter(v => v).length;
+        const totalSections = Object.keys(this.progress.sections).length;
+        const percentage = Math.round((completedSections / totalSections) * 100);
+        
+        // Create progress bar if it doesn't exist
+        if (!document.getElementById('progress-bar-container')) {
+          const progressBar = document.createElement('div');
+          progressBar.id = 'progress-bar-container';
+          progressBar.innerHTML = `
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${percentage}%"></div>
+              <span class="progress-text">${percentage}% Complete</span>
+            </div>
+          `;
           
-          const sectionId = Object.entries(sectionMap).find(([title, id]) => 
-            sectionTitle.includes(title)
-          )?.[1];
-          
-          if (sectionId) {
-            progressTracker.markSectionComplete(sectionId);
+          const firstSection = document.querySelector('section');
+          if (firstSection) {
+            firstSection.insertBefore(progressBar, firstSection.firstChild);
           }
         }
+      },
+      
+      updateProgressBar() {
+        const completedSections = Object.values(this.progress.sections).filter(v => v).length;
+        const totalSections = Object.keys(this.progress.sections).length;
+        const percentage = Math.round((completedSections / totalSections) * 100);
+        
+        const progressFill = document.querySelector('.progress-fill');
+        const progressText = document.querySelector('.progress-text');
+        
+        if (progressFill) {
+          progressFill.style.width = `${percentage}%`;
+        }
+        if (progressText) {
+          progressText.textContent = `${percentage}% Complete`;
+        }
       }
-    });
-  }, { threshold: 0.5 });
-  
-  // Observe all sections
-  document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-  });
-  
-  // Track question attempts
-  document.querySelectorAll('.view-solution-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const questionId = this.getAttribute('onclick').match(/toggleSolutionKATEX_INLINE_OPEN'(.+)'KATEX_INLINE_CLOSE/)?.[1];
-      if (questionId) {
-        progressTracker.markQuestionAttempted(questionId);
-      }
-    });
-  });
-});
-
-// Enhanced solution toggle with progress tracking
-const originalToggleSolution = window.toggleSolution;
-window.toggleSolution = function(id) {
-  originalToggleSolution(id);
-  progressTracker.markQuestionAttempted(id);
-};
-
-// Add keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-  // Ctrl/Cmd + H for hint
-  if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
-    e.preventDefault();
-    const hintBtn = document.querySelector('.hint-btn');
-    if (hintBtn) hintBtn.click();
-  }
-  
-  // Ctrl/Cmd + R for reset (override browser refresh)
-  if ((e.ctrlKey || e.metaKey) && e.key === 'r' && document.getElementById('game-tbody')) {
-    e.preventDefault();
-    resetGame();
-  }
-  
-  // Ctrl/Cmd + Enter to check balance
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-    e.preventDefault();
-    const checkBtn = document.querySelector('.check-btn');
-    if (checkBtn) checkBtn.click();
-  }
-});
-
-// Auto-save calculator data
-let calculatorAutoSaveTimer;
-document.addEventListener('input', function(e) {
-  if (e.target.matches('.calculator-table input')) {
-    clearTimeout(calculatorAutoSaveTimer);
-    calculatorAutoSaveTimer = setTimeout(() => {
-      const calculatorData = {
-        entries: getCalculatorEntries(),
-        timestamp: new Date().toISOString()
-      };
-      localStorage.setItem('trialBalanceCalculatorData', JSON.stringify(calculatorData));
-    }, 1000);
-  }
-});
-
-// Load saved calculator data on page load
-document.addEventListener('DOMContentLoaded', function() {
-  const savedCalculatorData = localStorage.getItem('trialBalanceCalculatorData');
-  if (savedCalculatorData && document.getElementById('calculator-tbody')) {
-    const data = JSON.parse(savedCalculatorData);
-    const tbody = document.getElementById('calculator-tbody');
-    tbody.innerHTML = '';
-    
-    data.entries.forEach(entry => {
-      const row = document.createElement('tr');
-      row.className = 'calculator-row';
-      row.innerHTML = `
-        <td><input type="text" class="account-name" placeholder="Enter account name" value="${entry.account}"></td>
-        <td><input type="number" class="debit-input" placeholder="0" value="${entry.debit || ''}" oninput="updateCalculatorTotals()"></td>
-        <td><input type="number" class="credit-input" placeholder="0" value="${entry.credit || ''}" oninput="updateCalculatorTotals()"></td>
-        <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
-      `;
-      tbody.appendChild(row);
-    });
-    
-    updateCalculatorTotals();
-  }
-});
-
-// Add visual feedback for correct placements in the game
-function addPlacementAnimation(element) {
-  element.style.animation = 'none';
-  setTimeout(() => {
-    element.style.animation = 'correctPlacement 0.6s ease';
-  }, 10);
-}
-
-// Add the animation to CSS
-const placementAnimation = `
-@keyframes correctPlacement {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
-  }
-}
-`;
-
-const styleElement = document.createElement('style');
-styleElement.textContent = placementAnimation;
-document.head.appendChild(styleElement);
-
-// Export progress data for dashboard integration
-window.getTrialBalanceProgress = function() {
-  return {
-    progress: progressTracker.progress,
-    gameCompleted: localStorage.getItem('trialBalanceGameCompleted') ? JSON.parse(localStorage.getItem('trialBalanceGameCompleted')) : null,
-    calculatorHistory: localStorage.getItem('calculatorHistory') ? JSON.parse(localStorage.getItem('calculatorHistory')) : []
-  };
-};
-
-// Add tooltips for better UX
-const tooltips = {
-  init() {
-    // Add tooltips to buttons
-    const tooltipData = [
-      { selector: '.hint-btn', text: 'Get a hint about missing or incorrect entries (Ctrl+H)' },
-      { selector: '.reset-btn', text: 'Reset the game and start over (Ctrl+R)' },
-      { selector: '.check-btn', text: 'Check if your Trial Balance is correct (Ctrl+Enter)' },
-      { selector: '.add-row-btn', text: 'Add a new account row to the calculator' },
-      { selector: '.clear-all-btn', text: 'Clear all calculator entries' }
-    ];
-    
-    tooltipData.forEach(({ selector, text }) => {
-      const element = document.querySelector(selector);
-      if (element) {
-        element.setAttribute('title', text);
-        element.style.position = 'relative';
-      }
-    });
-  }
-};
-
-// Initialize tooltips
-document.addEventListener('DOMContentLoaded', () => {
-  tooltips.init();
-});
-
-// Performance optimization: Debounce function for real-time validation
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
     };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
 
-// Apply debouncing to calculator updates
-const debouncedUpdateCalculatorTotals = debounce(updateCalculatorTotals, 300);
+    // Add CSS for new components
+    const additionalStyles = `
+    <style>
+    /* Error Examples Grid */
+    .error-examples-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
 
-// Replace direct calls with debounced version
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.debit-input, .credit-input').forEach(input => {
-    input.removeAttribute('oninput');
-    input.addEventListener('input', debouncedUpdateCalculatorTotals);
-  });
-});
+    .error-category {
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      padding: 25px;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
 
-// Final initialization
-console.log('Trial Balance Interactive Features Loaded Successfully! 🎉');
-  
-  </script>
+    .error-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .error-example-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
+      animation: fadeInUp 0.6s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .error-example-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--brand-2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .error-example-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .error-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .error-example-header h4 {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .error-example-content p {
+      margin: 8px 0;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .error-effect {
+      color: var(--brand-2) !important;
+      font-style: italic;
+    }
+
+    /* Progress Bar */
+    #progress-bar-container {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 30px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      transition: width 0.5s ease;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: bold;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes correctPlacement {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+      }
+    }
+    </style>
+    `;
+
+    // Add the styles to the document
+    document.head.insertAdjacentHTML('beforeend', additionalStyles);
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize progress tracker
+      progressTracker.init();
+      
+      // Add error examples
+      displayErrorExamples();
+      
+      // Track section views
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const sectionTitle = entry.target.querySelector('h2')?.textContent;
+            if (sectionTitle) {
+              const sectionMap = {
+                'What is a Trial Balance?': 'introduction',
+                'Objectives of Trial Balance': 'objectives',
+                'Format of Trial Balance': 'format',
+                'Rules for Debit and Credit': 'rules',
+                'Errors': 'errors',
+                'Type 1': 'practice',
+                'Trial Balance Challenge Game': 'game',
+                'Trial Balance Calculator': 'calculator'
+              };
+              
+              const sectionId = Object.entries(sectionMap).find(([title, id]) => 
+                sectionTitle.includes(title)
+              )?.[1];
+              
+              if (sectionId) {
+                progressTracker.markSectionComplete(sectionId);
+              }
+            }
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      // Observe all sections
+      document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+      });
+      
+      // Track question attempts
+      document.querySelectorAll('.view-solution-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const onclickAttr = this.getAttribute('onclick');
+          if (onclickAttr) {
+            const match = onclickAttr.match(/toggleSolutionKATEX_INLINE_OPEN'(.+)'KATEX_INLINE_CLOSE/);
+            if (match && match[1]) {
+              progressTracker.markQuestionAttempted(match[1]);
+            }
+          }
+        });
+      });
+    });
+
+    // Enhanced solution toggle with progress tracking
+    const originalToggleSolution = window.toggleSolution;
+    window.toggleSolution = function(id) {
+      originalToggleSolution.call(this, id);
+      progressTracker.markQuestionAttempted(id);
+    };
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + H for hint
+      if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+        e.preventDefault();
+        const hintBtn = document.querySelector('.hint-btn');
+        if (hintBtn) hintBtn.click();
+      }
+      
+      // Ctrl/Cmd + R for reset (override browser refresh)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'r' && document.getElementById('game-tbody')) {
+        e.preventDefault();
+        resetGame();
+      }
+      
+      // Ctrl/Cmd + Enter to check balance
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        const checkBtn = document.querySelector('.check-btn');
+        if (checkBtn) checkBtn.click();
+      }
+    });
+
+    // Auto-save calculator data
+    let calculatorAutoSaveTimer;
+    document.addEventListener('input', function(e) {
+      if (e.target.matches('.calculator-table input')) {
+        clearTimeout(calculatorAutoSaveTimer);
+        calculatorAutoSaveTimer = setTimeout(() => {
+          const calculatorData = {
+            entries: getCalculatorEntries(),
+            timestamp: new Date().toISOString()
+          };
+          localStorage.setItem('trialBalanceCalculatorData', JSON.stringify(calculatorData));
+        }, 1000);
+      }
+    });
+
+    // Load saved calculator data on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedCalculatorData = localStorage.getItem('trialBalanceCalculatorData');
+      if (savedCalculatorData && document.getElementById('calculator-tbody')) {
+        const data = JSON.parse(savedCalculatorData);
+        const tbody = document.getElementById('calculator-tbody');
+        tbody.innerHTML = '';
+        
+        data.entries.forEach(entry => {
+          const row = document.createElement('tr');
+          row.className = 'calculator-row';
+          row.innerHTML = `
+            <td><input type="text" class="account-name" placeholder="Enter account name" value="${entry.account}"></td>
+            <td><input type="number" class="debit-input" placeholder="0" value="${entry.debit || ''}" oninput="updateCalculatorTotals()"></td>
+            <td><input type="number" class="credit-input" placeholder="0" value="${entry.credit || ''}" oninput="updateCalculatorTotals()"></td>
+            <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
+          `;
+          tbody.appendChild(row);
+        });
+        
+        updateCalculatorTotals();
+      }
+    });
+
+    // Add visual feedback for correct placements in the game
+    function addPlacementAnimation(element) {
+      element.style.animation = 'none';
+      setTimeout(() => {
+        element.style.animation = 'correctPlacement 0.6s ease';
+      }, 10);
+    }
+
+    // Export progress data for dashboard integration
+    window.getTrialBalanceProgress = function() {
+      return {
+        progress: progressTracker.progress,
+        gameCompleted: localStorage.getItem('trialBalanceGameCompleted') ? JSON.parse(localStorage.getItem('trialBalanceGameCompleted')) : null,
+        calculatorHistory: localStorage.getItem('calculatorHistory') ? JSON.parse(localStorage.getItem('calculatorHistory')) : []
+      };
+    };
+
+    // Add tooltips for better UX
+    const tooltips = {
+      init() {
+        // Add tooltips to buttons
+        const tooltipData = [
+          { selector: '.hint-btn', text: 'Get a hint about missing or incorrect entries (Ctrl+H)' },
+          { selector: '.reset-btn', text: 'Reset the game and start over (Ctrl+R)' },
+          { selector: '.check-btn', text: 'Check if your Trial Balance is correct (Ctrl+Enter)' },
+          { selector: '.add-row-btn', text: 'Add a new account row to the calculator' },
+          { selector: '.clear-all-btn', text: 'Clear all calculator entries' }
+        ];
+        
+        tooltipData.forEach(({ selector, text }) => {
+          const element = document.querySelector(selector);
+          if (element) {
+            element.setAttribute('title', text);
+            element.style.position = 'relative';
+          }
+        });
+      }
+    };
+
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', () => {
+      tooltips.init();
+    });
+
+    // Performance optimization: Debounce function for real-time validation
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Apply debouncing to calculator updates
+    const debouncedUpdateCalculatorTotals = debounce(updateCalculatorTotals, 300);
+
+    // Replace direct calls with debounced version
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.debit-input, .credit-input').forEach(input => {
+        input.removeAttribute('oninput');
+        input.addEventListener('input', debouncedUpdateCalculatorTotals);
+      });
+    });
+
+    // Final initialization
+    console.log('Trial Balance Interactive Features Loaded Successfully! 🎉');
+      
+</script>
 </body>
 </html>

@@ -1309,10 +1309,56 @@
     };
 
     // ========================================
-    // 7. INITIALIZE ON PAGE LOAD
+    // 7. LOAD PREVIOUS ANSWERS IF ANY
     // ========================================
-    initQuiz();
-    console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => document.querySelectorAll(selector);
+
+    class CardAnimator {
+      constructor() {
+        this.elementsToAnimate = $$('.animate-card, .process-card, .equation-card, .animate-table-row, section');
+        this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.1 
+        });
+        this.observeElements();
+      }
+
+      observeElements() {
+        this.elementsToAnimate.forEach(el => {
+          el.classList.add('animate-pending');
+          this.observer.observe(el);
+        });
+      }
+
+      handleIntersect(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this.observer.unobserve(entry.target);
+          }
+        });
+      }
+    }
+
+    // Initialize everything
+    function initializePage() {
+      // Start the animations
+      new CardAnimator(); 
+      
+      // Set up the quiz
+      initQuiz();
+      
+      console.log('✅ Animations enabled & quiz ready!');
+    }
+
+    // Make sure the page runs it
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializePage);
+    } else {
+      initializePage();
+    }
 
 </script>
 </body>

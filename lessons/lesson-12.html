@@ -1583,17 +1583,12 @@
       
     </div>
 
-    <!-- Progress Bar (this can be styled or removed) -->
-    <div id="quiz-progress" style="margin-top: 20px;"></div>
-    
-    <!-- Result Display Area -->
-    <div id="quizResult"></div>
-
-    <!-- Buttons -->
-    <div style="text-align: center; margin-top: 20px;">
-        <button type="button" id="submitQuiz" class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
-        <button type="button" id="retry-btn" class="retry-btn" style="display:none;" onclick="retryQuiz()">Retry Quiz</button>
-    </div>
+     <!-- ✅ CHANGED: Added onclick handler -->
+  <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+  <div id="quizResult"></div>
+  
+  <!-- ✅ CHANGED: Added onclick and style -->
+  <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
 
 </section>
 
@@ -1618,7 +1613,7 @@
     // ========================================
     // 2. CONFIGURATION (CHANGE FOR EACH LESSON)
     // ========================================
-    const LESSON_NUMBER = '1';  // ← Change this: '1', '2', '3', etc.
+    const LESSON_NUMBER = '12';  // ← Change this: '1', '2', '3', etc.
     const LESSON_ID = 'lesson-1'; // ← Change this: 'lesson-1', 'lesson-2', etc.
 
     // ========================================
@@ -1897,28 +1892,6 @@
         behavior: 'smooth'
       });
     });
-  });
-
-  // Add animation on scroll
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(20px)';
-    section.style.transition = 'all 0.6s ease';
-    observer.observe(section);
   });
 </script>
 </body>
