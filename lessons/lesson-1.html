@@ -120,25 +120,7 @@
     li::marker {
       color: var(--brand-2);
     }
-
-    /* Quiz Styles */
-    #quiz label {
-      padding: 10px 16px;
-      margin: 8px 0;
-      background: rgba(255,255,255,0.03);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background var(--speed);
-    }
     
-    #quiz label:hover {
-      background: rgba(255,255,255,0.06);
-    }
-    
-    #quiz input[type="radio"] {
-      margin-right: 10px;
-    }
-
     /* Infographic Styles */
     .info-grid {
       display: grid;
@@ -683,8 +665,6 @@
 <section class="card" id="mcqSection">
   <h2>🧩 MCQ Practice</h2>
   <div id="quiz-progress"></div>
-  
-  <!-- ✅ CHANGED: id="quiz" → id="quiz-container" -->
   <div class="mcq-grid" id="quiz-container">
     
     <!-- Question 1 -->
@@ -1113,13 +1093,13 @@
       const progressDiv = document.getElementById('quiz-progress');
       if (progressDiv) {
         progressDiv.innerHTML = `
-          <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+          <div class="quiz-progress-container">
+            <div class="quiz-progress-header">
               <span>Questions Answered</span>
-              <span><strong style="color: var(--brand-2);">${answeredCount}/${totalQuestions}</strong></span>
+              <span class="quiz-progress-count">${answeredCount}/${totalQuestions}</span>
             </div>
-            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
-              <div style="width: ${progressPercentage}%; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.3s ease;"></div>
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" style="width: ${progressPercentage}%;"></div>
             </div>
           </div>
         `;
@@ -1169,14 +1149,12 @@
           const label = input.nextElementSibling;
           if (!label) return;
           input.disabled = true;
+          
           if (input.value === correctAnswer) {
-            label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
-            label.style.borderLeft = '4px solid #10b981';
-            label.style.fontWeight = 'bold';
+            label.classList.add('correct-answer');
           }
           if (input.value === selectedValue && !isCorrect) {
-            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
-            label.style.borderLeft = '4px solid #ef4444';
+            label.classList.add('wrong-answer');
           }
         });
       });
@@ -1198,8 +1176,8 @@
       // Show loading state
       if (resultDiv) {
         resultDiv.innerHTML = `
-          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
-            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          <div class="quiz-result-loading">
+            <div class="quiz-result-loading-text">⚙️ Saving your progress...</div>
           </div>`;
       }
 
@@ -1214,31 +1192,31 @@
             if (result.updated) {
               // New best score!
               resultDiv.innerHTML = `
-                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
-                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
-                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
-                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
-                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                <div class="quiz-result-success">
+                  <div class="quiz-result-title">🎉 New Best Score!</div>
+                  <div class="quiz-result-score">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div class="quiz-result-info">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div class="quiz-result-saved">✅ Progress saved to cloud</div>
                 </div>`;
             } else {
               // Previous score was better
               resultDiv.innerHTML = `
-                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
-                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
-                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
-                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
-                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
-                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                <div class="quiz-result-warning">
+                  <div class="quiz-result-title">📊 Quiz Completed</div>
+                  <div class="quiz-result-score">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div class="quiz-result-best">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div class="quiz-result-info">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div class="quiz-result-tip">💡 Try again to beat your best score!</div>
                 </div>`;
             }
           } else {
             // Firebase failed but still show score
             resultDiv.innerHTML = `
-              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
-                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
-                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
-                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
-                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console (F12) for details.</div>
+              <div class="quiz-result-default">
+                <div class="quiz-result-title">📊 Your Score</div>
+                <div class="quiz-result-score">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div class="quiz-result-info">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div class="quiz-result-error">⚠️ Could not save to cloud. Check console (F12) for details.</div>
               </div>`;
             console.error("❌ Firebase error:", result?.error || "Unknown error");
           }
@@ -1248,12 +1226,12 @@
         // STILL show the score even if everything fails
         if (resultDiv) {
           resultDiv.innerHTML = `
-            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
-              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
-              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
-              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
-              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
-              <div style="color: var(--muted); font-size: 0.8rem; margin-top: 5px;">Check browser console (F12) for details</div>
+            <div class="quiz-result-default">
+              <div class="quiz-result-title">📊 Your Score</div>
+              <div class="quiz-result-score">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div class="quiz-result-info">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div class="quiz-result-critical">❌ Error: ${error.message}</div>
+              <div class="quiz-result-debug">Check browser console (F12) for details</div>
             </div>`;
         }
       } finally {
@@ -1285,9 +1263,7 @@
         
         const label = input.nextElementSibling;
         if (label) {
-          label.style.background = '';
-          label.style.borderLeft = '';
-          label.style.fontWeight = '';
+          label.classList.remove('correct-answer', 'wrong-answer');
         }
       });
 

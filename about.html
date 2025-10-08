@@ -1,411 +1,1568 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About AccountsWizard – My Journey</title>
-  <meta name="description" content="The story behind AccountsWizard and why I built this learning platform." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M7 3h10a2 2 0 0 1 2 2v2H5V5a2 2 0 0 1 2-2m12 6v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z'/%3E%3Cpath fill='%23a5b4fc' d='M8.5 12h7v1.6h-7zM8.5 15h5v1.6h-5z'/%3E%3C/svg%3E" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
-    :root{
-      --bg: #0b1020;
-      --bg-2:#0f1733;
-      --text:#f7f9ff;
-      --muted:#b8c2ff;
-      --brand:#7c4dff;
-      --brand-2:#00e5ff;
-      --accent:#ff7ac6;
-      --lime:#b7ff4a;
-      --card:#141b38;
-      --ok:#27e1a3;
-      --shadow: 0 15px 30px rgba(0,0,0,.35), 0 6px 10px rgba(0,0,0,.2);
-      --radius: 18px;
-      --radius-lg: 28px;
+    :root {
+      --bg: #0a0a0f;
+      --bg-2: #12121a;
+      --bg-3: #1a1a2e;
+      --card: #16161f;
+      --card-hover: #1f1f2e;
+      --neon-cyan: #00ffff;
+      --neon-pink: #ff10f0;
+      --neon-yellow: #ffff00;
+      --neon-green: #00ff88;
+      --neon-blue: #0099ff;
+      --text: #ffffff;
+      --text-dim: #a0a0b8;
+      --radius: 20px;
+      --shadow: 0 0 40px rgba(0, 255, 255, 0.1);
+      --shadow-lg: 0 0 80px rgba(0, 255, 255, 0.2);
     }
-
-    * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; }
-    body{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: var(--text);
-      background: radial-gradient(1200px 800px at 80% -10%, rgba(124,77,255,.35), transparent 60%),
-                  radial-gradient(1000px 700px at 10% 10%, rgba(0,229,255,.25), transparent 55%),
-                  linear-gradient(180deg, var(--bg), var(--bg-2));
-      min-height: 100dvh;
+      background: var(--bg);
+      min-height: 100vh;
       overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Fixed background image */
-    .bg-image {
+    /* Animated Background */
+    body::before {
+      content: '';
       position: fixed;
-      top: 50%;
-      right: 5%;
-      transform: translateY(-50%);
-      width: 380px;
-      height: 380px;
-      opacity: 0.12;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 16, 240, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(0, 153, 255, 0.05) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
-      background-image: url('data:image/upload');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      filter: blur(1px);
+      animation: floatBackground 20s ease-in-out infinite;
     }
 
-    header{
-      position: sticky; top: 0; z-index: 20;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(13,18,40,.9), rgba(13,18,40,.5));
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .nav{
-      max-width: 1200px; margin: 0 auto; padding: 14px 18px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px;
-    }
-    .brand{
-      display: flex; align-items: center; gap: 10px; text-decoration: none;
-    }
-    .logo{
-      width: 40px; height: 40px; border-radius: 10px;
-      background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent), var(--brand));
-      box-shadow: 0 8px 18px rgba(124,77,255,.5);
-      transform: rotate(8deg);
-    }
-    .brand h1{
-      margin:0; font-size: 1.1rem; letter-spacing: .6px;
-      background: linear-gradient(90deg, #fff, var(--muted), var(--lime));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      font-weight: 800;
-    }
-    .menu{ display: flex; gap: 10px; align-items: center; }
-    .menu a{
-      text-decoration: none; color: var(--text); opacity: .9;
-      padding: 10px 14px; border-radius: 12px; transition: .2s ease;
-    }
-    .menu a:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
-    .pill{
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      color: #0b1020; font-weight: 800; border: none;
-      padding: 10px 16px; border-radius: 999px; cursor: pointer;
-      box-shadow: 0 12px 25px rgba(0,229,255,.25), inset 0 -2px 0 rgba(0,0,0,.2);
-      transition: transform .15s ease;
-    }
-    .pill:hover{ transform: translateY(-1px) scale(1.02); }
-
-    main{
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-      margin: 40px auto 80px;
-      padding: 0 20px;
+    @keyframes floatBackground {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-20px, -20px) scale(1.05); }
+      66% { transform: translate(20px, -10px) scale(0.95); }
     }
 
-    .intro{
-      text-align: center;
-      margin-bottom: 50px;
+    /* Navigation Header - Neon Style */
+    .nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
     }
-    .intro h2{
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin: 0 0 16px;
-      background: linear-gradient(90deg, #fff, var(--accent), var(--lime));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 75px;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
       font-weight: 900;
-    }
-    .intro p{
-      font-size: 1.1rem;
-      color: var(--muted);
-      opacity: 0.9;
-      line-height: 1.7;
-    }
-
-    .story{
-      background: linear-gradient(180deg, rgba(15,23,51,.6), rgba(11,16,32,.5));
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius-lg);
-      padding: 40px 30px;
-      box-shadow: var(--shadow);
-      margin-bottom: 30px;
-    }
-
-    .story h3{
-      font-size: 1.6rem;
-      margin: 0 0 20px;
-      color: var(--lime);
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-    .story h3::before{
-      content: '✨';
-      font-size: 1.4rem;
+      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+      letter-spacing: 1px;
     }
 
-    .story p{
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: #dfe5ff;
-      margin: 0 0 18px;
-    }
-
-    .story p:last-child{
-      margin-bottom: 0;
-    }
-
-    .highlight{
-      background: rgba(124,77,255,.15);
-      border-left: 4px solid var(--brand);
-      padding: 20px 24px;
-      border-radius: 12px;
-      margin: 30px 0;
-    }
-
-    .highlight p{
-      margin: 0;
-      font-size: 1.1rem;
-      color: #e6ebff;
-      font-style: italic;
-    }
-
-    .tech-stack{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin: 30px 0;
-    }
-
-    .tech-item{
-      background: linear-gradient(135deg, rgba(124,77,255,.2), rgba(0,229,255,.15));
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 14px;
-      padding: 16px;
-      text-align: center;
-      transition: transform .2s ease;
-    }
-    .tech-item:hover{
-      transform: translateY(-3px);
-    }
-    .tech-item strong{
-      display: block;
-      font-size: 1.1rem;
-      color: var(--brand-2);
-      margin-bottom: 4px;
-    }
-    .tech-item span{
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .cta-section{
-      text-align: center;
-      padding: 40px 20px;
-      background: linear-gradient(90deg, rgba(124,77,255,.25), rgba(0,229,255,.2));
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(255,255,255,.1);
-      margin-top: 50px;
-    }
-
-    .cta-section h3{
-      font-size: 1.8rem;
-      margin: 0 0 16px;
-      background: linear-gradient(90deg, var(--lime), var(--brand-2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .cta-section p{
-      font-size: 1.05rem;
-      color: #dfe5ff;
-      margin-bottom: 24px;
-    }
-
-    .btn-row{
+    .nav-links {
       display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
+      gap: 10px;
+      list-style: none;
     }
 
-    .ghost{
-      background: transparent;
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.2);
-      padding: 12px 20px;
-      border-radius: 14px;
-      font-weight: 700;
+    .nav-links a {
+      color: var(--text-dim);
       text-decoration: none;
-      display: inline-block;
-      transition: .2s ease;
-    }
-    .ghost:hover{
-      background: rgba(255,255,255,.06);
-      transform: translateY(-2px);
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      border: 1px solid transparent;
     }
 
-    footer{
-      border-top: 1px solid rgba(255,255,255,.06);
-      padding: 20px;
-      color: #c9d0ff;
-      opacity: .9;
+    .nav-links a:hover {
+      color: var(--neon-cyan);
+      background: rgba(0, 255, 255, 0.05);
+      border-color: rgba(0, 255, 255, 0.2);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .nav-links a.active {
+      color: var(--neon-cyan);
+      background: rgba(0, 255, 255, 0.1);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Main Content Wrapper */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Hero Section - Epic Neon Style */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 40px 80px;
       text-align: center;
+      position: relative;
     }
 
-    @media (max-width: 768px){
-      .bg-image{
-        width: 280px;
-        height: 280px;
-        opacity: 0.08;
+    .hero-badge {
+      display: inline-block;
+      padding: 10px 25px;
+      background: rgba(255, 16, 240, 0.1);
+      border: 2px solid var(--neon-pink);
+      border-radius: 50px;
+      color: var(--neon-pink);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 35px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 0 30px rgba(255, 16, 240, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 16, 240, 0.3); }
+      50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 16, 240, 0.5); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 35px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, 
+        var(--neon-cyan) 0%, 
+        var(--neon-pink) 25%, 
+        var(--neon-yellow) 50%, 
+        var(--neon-green) 75%, 
+        var(--neon-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      display: block;
+      text-shadow: 0 0 80px rgba(0, 255, 255, 0.5);
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--text-dim);
+      max-width: 800px;
+      margin: 0 auto 45px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* Glitch Button */
+    .glitch-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+      color: var(--bg);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 
+        0 0 40px rgba(0, 255, 255, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .glitch-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .glitch-button:hover::before {
+      left: 100%;
+    }
+
+    .glitch-button:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 
+        0 10px 60px rgba(0, 255, 255, 0.7),
+        inset 0 0 30px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Warning Box */
+    .warning-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      margin-top: 0;
+    }
+
+    .warning-box.active {
+      max-height: 500px;
+      margin-top: 60px;
+    }
+
+    .warning-content {
+      background: linear-gradient(135deg, rgba(255, 16, 240, 0.1), rgba(0, 255, 255, 0.05));
+      border: 2px solid var(--neon-pink);
+      border-radius: var(--radius);
+      padding: 45px;
+      box-shadow: 
+        0 0 60px rgba(255, 16, 240, 0.3),
+        inset 0 0 30px rgba(255, 16, 240, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .warning-content::before {
+      content: '⚠️';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .warning-content h3 {
+      font-size: 2rem;
+      color: var(--neon-yellow);
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+    }
+
+    .warning-content p {
+      color: var(--text);
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
+    /* Content Sections */
+    .content-section {
+      max-width: 1200px;
+      margin: 120px auto;
+      padding: 0 40px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 25px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+    }
+
+    .section-header p {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* About Card - Neon Style */
+    .about-card {
+      background: linear-gradient(135deg, var(--card), rgba(0, 255, 255, 0.02));
+      border-radius: var(--radius);
+      padding: 60px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, 
+        var(--neon-cyan), 
+        var(--neon-pink), 
+        var(--neon-yellow), 
+        var(--neon-green));
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+
+    .about-card:hover::before {
+      opacity: 0.5;
+      animation: rotateGradient 2s linear infinite;
+    }
+
+    @keyframes rotateGradient {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .about-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 
+        0 20px 80px rgba(0, 255, 255, 0.3),
+        0 0 120px rgba(255, 16, 240, 0.2);
+    }
+
+    .about-card p {
+      font-size: 1.2rem;
+      color: var(--text);
+      line-height: 2;
+      margin-bottom: 25px;
+    }
+
+    .about-card strong {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .about-card em {
+      color: var(--neon-pink);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* Stats Grid - Redesigned */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 35px;
+      margin-top: 70px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 45px 35px;
+      border-radius: var(--radius);
+      text-align: center;
+      border: 1px solid rgba(0, 255, 255, 0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, 
+        rgba(0, 255, 255, 0.1), 
+        rgba(255, 16, 240, 0.1));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-15px) scale(1.05);
+      border-color: var(--neon-cyan);
+      box-shadow: 
+        0 20px 60px rgba(0, 255, 255, 0.4),
+        inset 0 0 30px rgba(0, 255, 255, 0.05);
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 25px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .stat-card:nth-child(1) .stat-icon { animation-delay: 0s; }
+    .stat-card:nth-child(2) .stat-icon { animation-delay: 0.5s; }
+    .stat-card:nth-child(3) .stat-icon { animation-delay: 1s; }
+    .stat-card:nth-child(4) .stat-icon { animation-delay: 1.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+
+    .stat-label {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Journey Timeline - Modern Neon */
+    .timeline-container {
+      margin-top: 70px;
+      position: relative;
+    }
+
+    .timeline-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-yellow));
+      color: var(--bg);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 0 40px rgba(255, 16, 240, 0.4);
+    }
+
+    .timeline-toggle:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 60px rgba(255, 16, 240, 0.6);
+    }
+
+    .timeline-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+      margin-top: 0;
+    }
+
+    .timeline-content.active {
+      max-height: 3000px;
+      margin-top: 70px;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 50px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, 
+        var(--neon-cyan), 
+        var(--neon-pink), 
+        var(--neon-yellow));
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 35px;
+      margin-bottom: 35px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      transition: all 0.4s ease;
+      margin-left: 40px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -55px;
+      top: 45px;
+      width: 20px;
+      height: 20px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      box-shadow: 
+        0 0 20px var(--neon-cyan),
+        0 0 40px var(--neon-cyan);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .timeline-item:hover {
+      transform: translateX(15px);
+      border-color: var(--neon-cyan);
+      box-shadow: 
+        0 0 50px rgba(0, 255, 255, 0.3),
+        inset 0 0 30px rgba(0, 255, 255, 0.05);
+    }
+
+    .timeline-date {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--neon-pink);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-shadow: 0 0 15px rgba(255, 16, 240, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .timeline-text {
+      color: var(--text);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    /* Fun Facts Section */
+    .fun-facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 35px;
+      margin-top: 70px;
+    }
+
+    .fun-fact-card {
+      background: linear-gradient(135deg, var(--card), rgba(255, 16, 240, 0.02));
+      border-radius: var(--radius);
+      padding: 40px;
+      border: 1px solid rgba(255, 16, 240, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fun-fact-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 16, 240, 0.1), transparent);
+      animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .fun-fact-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(255, 16, 240, 0.3);
+      border-color: var(--neon-pink);
+    }
+
+    .fun-fact-emoji {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      display: inline-block;
+      animation: wiggle 2s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+    }
+
+    .fun-fact-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--neon-yellow);
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+    }
+
+    .fun-fact-text {
+      color: var(--text);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Mission Section - Redesigned */
+    .mission-card {
+      background: linear-gradient(135deg, 
+        rgba(0, 255, 255, 0.05), 
+        rgba(255, 16, 240, 0.05));
+      border-radius: var(--radius);
+      padding: 70px;
+      box-shadow: var(--shadow-lg);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      margin-top: 70px;
+    }
+
+    .mission-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: var(--radius);
+      padding: 2px;
+      background: linear-gradient(45deg, 
+        var(--neon-cyan), 
+        var(--neon-pink), 
+        var(--neon-yellow));
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .mission-card h3 {
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .mission-card p {
+      font-size: 1.2rem;
+      color: var(--text);
+      line-height: 2;
+      margin-bottom: 25px;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+      margin-top: 70px;
+    }
+
+    .faq-item {
+      background: var(--card);
+      border-radius: var(--radius);
+      margin-bottom: 25px;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-question {
+      padding: 30px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(0, 255, 255, 0.05);
+    }
+
+    .faq-question h3 {
+      font-size: 1.3rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .faq-icon {
+      font-size: 1.5rem;
+      color: var(--neon-cyan);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+
+    .faq-answer-content {
+      padding: 0 30px 30px;
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    /* Contact Section - Neon Style */
+    .contact-card {
+      background: linear-gradient(135deg, var(--card), rgba(0, 153, 255, 0.02));
+      border-radius: var(--radius);
+      padding: 70px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 153, 255, 0.2);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '📧';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      font-size: 150px;
+      opacity: 0.05;
+      transform: rotate(-15deg);
+    }
+
+    .contact-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+      color: var(--bg);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.4);
+    }
+
+    .contact-toggle-btn:hover {
+      transform: scale(1.1) rotate(-2deg);
+      box-shadow: 0 10px 60px rgba(0, 255, 136, 0.6);
+    }
+
+    .contact-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+      margin-top: 0;
+    }
+
+    .contact-details.active {
+      max-height: 500px;
+      margin-top: 45px;
+    }
+
+    .contact-info {
+      background: rgba(0, 255, 255, 0.03);
+      border-radius: 15px;
+      padding: 35px;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin: 25px 0;
+      font-size: 1.15rem;
+    }
+
+    .contact-item i {
+      font-size: 1.5rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+
+    .contact-item a {
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .contact-item a:hover {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      transform: translateX(5px);
+    }
+
+    /* Footer - Neon Style */
+    footer {
+      margin-top: 150px;
+      padding: 70px 40px 50px;
+      background: linear-gradient(180deg, var(--bg), #000);
+      border-top: 2px solid rgba(0, 255, 255, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        var(--neon-cyan), 
+        var(--neon-pink), 
+        var(--neon-yellow), 
+        var(--neon-green));
+      animation: slide 3s linear infinite;
+    }
+
+    @keyframes slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .secret-section {
+      margin-bottom: 50px;
+    }
+
+    .secret-btn {
+      padding: 14px 35px;
+      font-size: 1rem;
+      background: transparent;
+      color: var(--text-dim);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .secret-btn:hover {
+      background: rgba(255, 16, 240, 0.1);
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 0 30px rgba(255, 16, 240, 0.5);
+    }
+
+    .easter-egg-reveal {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease;
+      margin-top: 0;
+    }
+
+    .easter-egg-reveal.active {
+      max-height: 300px;
+      margin-top: 35px;
+    }
+
+    .easter-egg-content {
+      font-size: 4rem;
+      animation: crazyRotate 2s ease-in-out;
+    }
+
+    @keyframes crazyRotate {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+      100% { transform: scale(1) rotate(360deg); opacity: 1; }
+    }
+
+    .footer-text {
+      color: var(--text-dim);
+      font-size: 1rem;
+      margin-top: 35px;
+      line-height: 1.8;
+    }
+
+    .footer-text a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-text a:hover {
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .nav-container {
+        padding: 0 30px;
       }
-      .story{
-        padding: 30px 20px;
+
+      .content-section {
+        padding: 0 30px;
+        margin: 80px auto;
       }
-      .tech-stack{
-        grid-template-columns: 1fr 1fr;
+
+      .about-card,
+      .mission-card,
+      .contact-card {
+        padding: 50px 40px;
+      }
+
+      .fun-facts-grid {
+        grid-template-columns: 1fr;
       }
     }
 
-    .fade-in{
-      animation: fadeIn 0.8s ease forwards;
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        gap: 5px;
+      }
+
+      .nav-links a {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: 80px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 6vw, 3.5rem);
+      }
+
+      .content-section {
+        padding: 0 20px;
+        margin: 60px auto;
+      }
+
+      .about-card,
+      .mission-card,
+      .contact-card {
+        padding: 40px 30px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+      }
+
+      .timeline {
+        padding-left: 35px;
+      }
+
+      .timeline-item {
+        margin-left: 25px;
+        padding: 30px 25px;
+      }
+
+      .timeline-item::before {
+        left: -42px;
+      }
+
+      footer {
+        padding: 50px 20px 40px;
+      }
     }
 
-    @keyframes fadeIn{
-      from{ opacity: 0; transform: translateY(20px); }
-      to{ opacity: 1; transform: translateY(0); }
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .fun-facts-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .timeline-item {
+        padding: 25px 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Fixed decorative image -->
-  <div class="bg-image" src="main.png"></div>
-  
-  <header>
-    <nav class="nav">
-      <a class="brand" href="index.html">
-        <span class="logo"></span>
-        <h1>Accounts<span style="letter-spacing:.5px;">Wizard</span> ✨</h1>
+
+  <!-- Navigation Header -->
+  <nav class="nav-header">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-bolt"></i>
+        AccountsWizard
       </a>
-      <div class="menu">
-        <a href="index.html">Home</a>
-        <a href="lessons.html">Learn</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="about.html">About</a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="lessons.html"><i class="fas fa-book"></i> Lessons</a></li>
+        <li><a href="about.html" class="active"><i class="fas fa-user-astronaut"></i> About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">
+        <i class="fas fa-rocket"></i> WARNING: EXTREME CONTENT
       </div>
-    </nav>
-  </header>
-
-  <main>
-    <div class="intro fade-in">
-      <h2>Why AccountsWizard Exists</h2>
-      <p>The story of how frustration turned into creation</p>
-    </div>
-
-    <section class="story fade-in" style="animation-delay: 0.1s">
-      <h3>The Problem I Faced</h3>
-      <p>
-        When I was preparing for my Grade 11 accounts exams, I hit a wall. Not because accounting is inherently difficult, but because every resource I found was painfully boring. Thick textbooks with walls of text. YouTube videos that droned on for hours. PDFs that looked like they were designed in 1995.
-      </p>
-      <p>
-        I'd sit down to study, open my DK Goel book, and within 10 minutes I'd be staring at my phone. Not because I didn't want to learn, but because nothing made accounting feel alive. Everything was dry, monotonous, and honestly, soul-crushing for a teenager trying to understand debits and credits.
-      </p>
-      <p>
-        The worst part? I knew I wasn't alone. All my classmates were struggling with the same thing. We'd joke about how accounting was "boring but important," accepting defeat before we even started.
-      </p>
-    </section>
-
-    <div class="highlight fade-in" style="animation-delay: 0.2s">
-      <p>
-        "If everyone finds this boring, why hasn't anyone made it fun yet?"
-      </p>
-    </div>
-
-    <section class="story fade-in" style="animation-delay: 0.3s">
-      <h3>The Spark of an Idea</h3>
-      <p>
-        One late night, after another failed attempt at forcing myself through a chapter on Trial Balance, I thought: what if learning accounting felt like using a modern app? What if it had colors, animations, instant feedback, and actually respected your time?
-      </p>
-      <p>
-        I started sketching ideas. Not as an entrepreneur or some genius student, just as someone who was tired of suffering through bad learning experiences. I wanted something that would make my future self say, "Finally, something that doesn't put me to sleep."
-      </p>
-      <p>
-        The vision was simple: colorful, bite-sized lessons. Interactive practice. Quizzes that don't feel like punishment. And most importantly, a vibe that says "you got this" instead of "good luck surviving this textbook."
-      </p>
-    </section>
-
-    <section class="story fade-in" style="animation-delay: 0.4s">
-      <h3>Building AccountsWizard</h3>
-      <p>
-        I'm not a professional developer. I'm just a student who knows some HTML, CSS, JavaScript, and has access to AI tools. But I figured, if I can imagine it, I can build it.
-      </p>
-      <p>
-        So I did. Late nights, countless iterations, lots of trial and error. I focused on making everything visual, interactive, and honestly, fun. Every feature I added was something I wished existed when I was stuck on a concept.
-      </p>
       
-      <div class="tech-stack">
-        <div class="tech-item">
-          <strong>HTML/CSS/JS</strong>
-          <span>Modern web foundation</span>
-        </div>
-        <div class="tech-item">
-          <strong>Firebase</strong>
-          <span>User auth & data</span>
-        </div>
-        <div class="tech-item">
-          <strong>AI Tools</strong>
-          <span>Design & content help</span>
-        </div>
-        <div class="tech-item">
-          <strong>Pure Passion</strong>
-          <span>The secret ingredient</span>
+      <h1>
+        Oh, You Clicked 'About'?
+        <span class="gradient-text">Bold Move, Friend. Bold Move.</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        Most people avoid this page like their ex at a party. But not you. 
+        You're different. You're... curious. Or maybe just really, REALLY bored.
+        Either way, buckle up buttercup – this is going to be weird.
+      </p>
+
+      <button class="glitch-button" onclick="toggleWarning()">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>PRESS AT YOUR OWN RISK</span>
+      </button>
+
+      <div class="warning-box" id="warningBox">
+        <div class="warning-content">
+          <h3>🎉 CONGRATULATIONS! You've Unlocked...</h3>
+          <p>
+            Absolutely nothing. But hey, you followed instructions from a random button on the internet. 
+            Your parents must be so proud. 😂
+          </p>
+          <p style="margin-top: 20px; color: var(--text-dim); font-size: 1rem;">
+            <strong>Fun Fact:</strong> 83% of people will click any button that says "Don't Click". 
+                        The other 17% are liars. 🤥
+          </p>
         </div>
       </div>
-
-      <p>
-        I tested it with friends. Fixed bugs. Redesigned sections that felt clunky. Added animations because why not make learning feel like magic? The goal was never to build something perfect. It was to build something that actually helps.
-      </p>
     </section>
 
-    <section class="story fade-in" style="animation-delay: 0.5s">
-      <h3>My Mission</h3>
-      <p>
-        AccountsWizard isn't a startup. It's not trying to replace your teacher. It's just a tool made by a student, for students. If it helps even one person understand Journal entries without wanting to throw their book out the window, I've succeeded.
-      </p>
-      <p>
-        I'm not claiming to be an expert. I'm claiming to understand the struggle. And sometimes, that's more valuable than a PhD.
-      </p>
-      <p>
-        This project is free. It will stay free. Because education shouldn't be locked behind paywalls, and learning shouldn't feel like torture.
-      </p>
-    </section>
+    <!-- About Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>The Origin Story Nobody Asked For</h2>
+        <p>Seriously, nobody asked. But here we are anyway.</p>
+      </div>
 
-    <div class="highlight fade-in" style="animation-delay: 0.6s">
-      <p>
-        "Built by a frustrated student. For frustrated students. Because we deserve better."
-      </p>
-    </div>
+      <div class="about-card">
+        <p>
+          <strong>AccountsWizard</strong> was born from a simple observation: 
+          <em>accounting education is about as exciting as watching paint dry in slow motion.</em>
+        </p>
+        <p>
+          We figured if we're all going to suffer through debits and credits, 
+          we might as well add some <strong>RGB lighting</strong> and <em>terrible jokes</em> to the mix. 
+          Think of us as the friend who makes inappropriate comments during serious meetings – 
+          except we're teaching you how to not fail your accounting exams.
+        </p>
+        <p>
+          Our mission? To make accounting so ridiculously entertaining that you'll 
+          actually <strong>remember</strong> the difference between assets and liabilities. 
+          (Spoiler: One makes you rich, the other makes you cry. Just like relationships! 💔)
+        </p>
+      </div>
 
-    <section class="cta-section fade-in" style="animation-delay: 0.7s">
-      <h3>Let's Make Accounting Less Painful 🚀</h3>
-      <p>
-        If you're struggling with accounts, give AccountsWizard a shot. It's not perfect, but it's made with genuine care for your learning experience.
-      </p>
-      <div class="btn-row">
-        <a class="pill" href="lessons.html">Start Learning</a>
-        <a class="ghost" href="quiz.html">Try a Quiz</a>
-        <a class="ghost" href="index.html">Back Home</a>
+      <!-- Stats Section -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🎮</div>
+          <div class="stat-number">42,069</div>
+          <div class="stat-label">Students Confused</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">☕</div>
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Coffees Consumed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">😭</div>
+          <div class="stat-number">9,001</div>
+          <div class="stat-label">Mental Breakdowns</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-number">69%</div>
+          <div class="stat-label">Success Rate (Nice)</div>
+        </div>
       </div>
     </section>
-  </main>
 
+    <!-- Journey Timeline -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Our Journey to Mediocrity</h2>
+        <p>A timeline of questionable decisions and happy accidents</p>
+      </div>
+
+      <div class="timeline-container">
+        <button class="timeline-toggle" onclick="toggleTimeline()">
+          <i class="fas fa-clock"></i>
+          <span>View Our Chaotic History</span>
+        </button>
+
+        <div class="timeline-content" id="timelineContent">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">
+                <i class="fas fa-baby"></i> 2020
+              </div>
+              <div class="timeline-text">
+                Started during quarantine because we literally had nothing better to do. 
+                Turns out, teaching accounting while wearing pajamas is surprisingly effective.
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date">
+                <i class="fas fa-fire"></i> 2021
+              </div>
+              <div class="timeline-text">
+                Accidentally made accounting fun. Parents concerned. Professors confused. 
+                Students actually showing up to class. What have we done?
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date">
+                <i class="fas fa-rocket"></i> 2022
+              </div>
+              <div class="timeline-text">
+                Added neon colors because why not? If we're going to learn about depreciation, 
+                at least our retinas should be entertained.
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date">
+                <i class="fas fa-trophy"></i> 2023
+              </div>
+              <div class="timeline-text">
+                Won "Most Unnecessary Use of Memes in Education" award. 
+                We put it on our resume. Employers were not impressed.
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date">
+                <i class="fas fa-sparkles"></i> 2024
+              </div>
+              <div class="timeline-text">
+                You're reading this. We've peaked. It's all downhill from here, folks.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fun Facts Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Completely Useless Fun Facts</h2>
+        <p>Because who doesn't love random information they'll never use?</p>
+      </div>
+
+      <div class="fun-facts-grid">
+        <div class="fun-fact-card">
+          <div class="fun-fact-emoji">🍕</div>
+          <div class="fun-fact-title">Pizza-Powered Development</div>
+          <div class="fun-fact-text">
+            This entire platform was coded on a diet consisting of 73% pizza, 
+            20% energy drinks, and 7% regret. Nutritionists hate us!
+          </div>
+        </div>
+
+        <div class="fun-fact-card">
+          <div class="fun-fact-emoji">🦆</div>
+          <div class="fun-fact-title">Rubber Duck Debugging</div>
+          <div class="fun-fact-text">
+            We have a rubber duck named Gerald who reviews all our content. 
+            He has no accounting degree, but neither do half our competitors.
+          </div>
+        </div>
+
+        <div class="fun-fact-card">
+          <div class="fun-fact-emoji">🎵</div>
+          <div class="fun-fact-title">Soundtrack to Success</div>
+          <div class="fun-fact-text">
+            All lessons are written while listening to "Baby Shark" on repeat. 
+            It explains the mental state of our content creators.
+          </div>
+        </div>
+
+        <div class="fun-fact-card">
+          <div class="fun-fact-emoji">🔢</div>
+          <div class="fun-fact-title">Math is Hard</div>
+          <div class="fun-fact-text">
+            We once spent 3 hours debugging why 2+2 wasn't equaling 4. 
+            Turns out we forgot to turn on the computer. True story.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Our Mission (If You Can Call It That)</h2>
+        <p>Spoiler: It's mostly about avoiding real jobs</p>
+      </div>
+
+      <div class="mission-card">
+        <h3>Why We Do This</h3>
+        <p>
+          Look, we could give you some corporate BS about "revolutionizing education" or 
+          "empowering the next generation," but let's be real...
+        </p>
+        <p>
+          We're just a bunch of nerds who think accounting jokes are funny and believe that 
+          if you're going to learn something boring, it should at least look like a 
+          cyberpunk fever dream.
+        </p>
+        <p>
+          Our actual mission? To prove that you can teach serious subjects without taking 
+          yourself too seriously. Also, to use as many neon colors as humanly possible 
+          before someone files a complaint about eye strain.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Frequently Avoided Questions</h2>
+        <p>Questions nobody asks, but we answer anyway</p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <h3>Is this a real accounting course?</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Define "real." If by real you mean "will teach you actual accounting principles," then yes. 
+              If you mean "is taught by serious professionals in suits," then absolutely not. 
+              We wear hoodies and make dad jokes. Deal with it.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <h3>Why so many neon colors?</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Studies show that 87% of students stay awake longer when their retinas are being 
+              assaulted by RGB lighting. The other 13% develop superpowers. 
+              (Disclaimer: We made up these statistics, but the colors stay.)
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <h3>Are you qualified to teach accounting?</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              We know what a debit is. We know what a credit is. We have a calculator. 
+              By internet standards, we're basically Harvard professors. 
+              Plus, we once balanced a checkbook without crying, so there's that.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <h3>Can I get a refund if I don't like it?</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Sure! Just send us a 500-word essay on why T-accounts are actually T-shaped, 
+              written in iambic pentameter, along with a video of you doing the Macarena 
+              while reciting the accounting equation. We'll consider it.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <h3>Is this page always this weird?</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              This is actually us being professional. You should see us on Casual Friday. 
+              Last week, we taught the accounting cycle using only interpretive dance 
+              and sock puppets. It was beautiful.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Dare to Contact Us</h2>
+        <p>We promise to respond... eventually... maybe...</p>
+      </div>
+
+      <div class="contact-card">
+        <p style="font-size: 1.3rem; color: var(--text); margin-bottom: 20px;">
+          Have complaints? Suggestions? Random thoughts about the universe? 
+          We're probably not the right people to contact, but hey, shoot your shot!
+        </p>
+        
+        <button class="contact-toggle-btn" onclick="toggleContact()">
+          <i class="fas fa-envelope"></i>
+          <span>Reveal Secret Contact Info</span>
+        </button>
+
+        <div class="contact-details" id="contactDetails">
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-paper-plane"></i>
+              <a href="mailto:totally@real.email">totally@real.email</a>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>1-800-NOT-REAL</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-discord"></i>
+              <a href="#">AccountingMemeLords#6969</a>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-map-pin"></i>
+              <span>Somewhere in the Metaverse, Probably</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
   <footer>
-    © <span id="year"></span> AccountsWizard • Made with frustration & hope • Trinno Asphalt
+    <div class="footer-content">
+      <div class="secret-section">
+        <button class="secret-btn" onclick="toggleEasterEgg()">
+          🥚 Don't Click This Easter Egg 🥚
+        </button>
+        <div class="easter-egg-reveal" id="easterEgg">
+          <div class="easter-egg-content">
+            🎉🦄💃🕺🎊🌈✨
+          </div>
+          <p style="color: var(--neon-pink); margin-top: 20px; font-size: 1.2rem;">
+            You found it! Your accounting skills just increased by 0.0001%!
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-text">
+        <p>© 2024 AccountsWizard | Making Accounting Weird Since Yesterday</p>
+        <p style="margin-top: 15px; color: var(--text-dim); font-size: 0.9rem;">
+          Built with 💜, ☕, and questionable life choices by people who should know better
+        </p>
+        <p style="margin-top: 20px;">
+          <a href="#">Privacy Policy</a> • 
+          <a href="#">Terms of Confusion</a> • 
+          <a href="#">Cookie Monster</a>
+        </p>
+      </div>
+    </div>
   </footer>
 
+  <!-- JavaScript -->
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Toggle Warning Box
+    function toggleWarning() {
+      const warningBox = document.getElementById('warningBox');
+      warningBox.classList.toggle('active');
+    }
+
+    // Toggle Timeline
+    function toggleTimeline() {
+      const timeline = document.getElementById('timelineContent');
+      timeline.classList.toggle('active');
+    }
+
+    // Toggle FAQ Items
+    function toggleFAQ(element) {
+      const faqItem = element.parentElement;
+      const allItems = document.querySelectorAll('.faq-item');
+      
+      allItems.forEach(item => {
+        if (item !== faqItem) {
+          item.classList.remove('active');
+        }
+      });
+      
+      faqItem.classList.toggle('active');
+    }
+
+    // Toggle Contact Details
+    function toggleContact() {
+      const contactDetails = document.getElementById('contactDetails');
+      contactDetails.classList.toggle('active');
+    }
+
+    // Toggle Easter Egg
+    function toggleEasterEgg() {
+      const easterEgg = document.getElementById('easterEgg');
+      easterEgg.classList.toggle('active');
+      
+      // Add some chaos
+      if (easterEgg.classList.contains('active')) {
+        document.body.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+          document.body.style.animation = '';
+        }, 500);
+      }
+    }
+
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Random floating elements animation
+    document.addEventListener('DOMContentLoaded', () => {
+      const statCards = document.querySelectorAll('.stat-card');
+      statCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+      });
+
+      // Add some random console messages for the curious
+      console.log('%c🎮 Achievement Unlocked: Console Explorer! 🎮', 
+        'color: #00ffff; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px rgba(0,255,255,0.5);');
+      console.log('%cYou found the secret console messages! Your curiosity level: MAXIMUM', 
+        'color: #ff10f0; font-size: 14px;');
+      console.log('%cFun fact: This message serves no purpose whatsoever. Just like this About page! 😄', 
+        'color: #ffff00; font-size: 12px;');
+    });
+
+    // Add hover sound effect (visual feedback since we can't play audio without user interaction)
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        button.style.transform = 'scale(1.05)';
+      });
+      button.addEventListener('mouseleave', () => {
+        button.style.transform = 'scale(1)';
+      });
+    });
+
+    // Page load animation
+    window.addEventListener('load', () => {
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 1s ease';
+        document.body.style.opacity = '1';
+      }, 100);
+    });
   </script>
+
 </body>
 </html>
