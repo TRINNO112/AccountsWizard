@@ -510,6 +510,134 @@
       animation: powerupFloat 3s ease-out forwards;
     }
 
+    /* Cyberpunk Navbar */
+    .cyber-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(10, 10, 30, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--neon-cyan);
+      z-index: 1000;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 20px rgba(0, 255, 255, 0.3);
+    }
+
+    .nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-link {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .nav-link.active {
+      color: var(--neon-pink);
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+    }
+
+    .nav-cta {
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 25px;
+      font-family: 'Orbitron', monospace;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 0, 128, 0.9);
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      font-size: 1.5rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 30, 0.98);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    /* Add padding to body to account for fixed navbar */
+    body {
+      padding-top: 80px;
+    }
+
     @keyframes powerupFloat {
       0% {
         transform: translateY(0) scale(0);
@@ -562,6 +690,28 @@
   
   <!-- Floating Particles -->
   <div id="particles"></div>
+    <!-- Cyberpunk Navbar -->
+  <nav class="cyber-navbar">
+    <div class="nav-content">
+      <div class="nav-brand">
+        <i class="fas fa-bolt"></i>
+        AccountsWizard
+      </div>
+      
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="../Quiz.html" class="nav-link">Main Quiz</a></li>
+      </ul>
+
+      <button class="nav-cta">
+        <i class="fas fa-rocket"></i> Start Mission
+      </button>
+
+      <button class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
 
   <div class="container">
     <header>
@@ -638,29 +788,84 @@
       }
     }
 
-    // Quiz questions (only 2 as requested)
+    // Quiz questions - Manturo Corporations Scenario-Based
     const questions = [
       {
-        question: "In a cyberpunk corporation, when digital assets worth ₹50,000 are transferred to the company's blockchain wallet, which account type increases?",
+        question: "📦 Scenario 1: Manturo Corporations - Business Setup\n\nRahul starts Manturo Corporations on 1st April, investing ₹1,50,000 cash. On 2nd April, he purchases office furniture for ₹50,000 in cash and rents office space for ₹10,000.\n\nWhich accounts are debited and credited for the purchase of office furniture for ₹50,000 cash?",
         options: [
-          "Asset Account (Debit)",
-          "Liability Account (Credit)",
-          "Revenue Stream (Credit)",
-          "Expense Matrix (Debit)"
+          "Furniture Dr / Cash Cr",
+          "Cash Dr / Furniture Cr",
+          "Furniture Cr / Cash Dr",
+          "Cash Cr / Furniture Dr"
         ],
         correct: 0,
-        explanation: "Digital assets are company resources - Asset accounts increase with debits in the accounting matrix!"
+        explanation: "When purchasing furniture for cash, Furniture (asset) increases → Debit. Cash (asset) decreases → Credit. Rule: Asset purchased = Debit that asset, Credit Cash!"
       },
       {
-        question: "A neon-lit retail store returns damaged holo-merchandise worth ₹8,000 to their supplier. What's the journal entry?",
+        question: "🛒 Scenario 2: Manturo Corporations - First Goods Purchase\n\nRahul purchases goods worth ₹40,000 on credit from Vijay Traders. Later, he sells goods costing ₹20,000 for cash ₹25,000 and pays ₹5,000 for electricity.\n\nWhich accounts are debited and credited for purchasing goods on credit from Vijay Traders?",
         options: [
-          "Debit Supplier A/c, Credit Purchase Return",
-          "Debit Purchase Return, Credit Supplier A/c",
-          "Debit Cash Matrix, Credit Returns",
-          "Debit Inventory, Credit Supplier A/c"
+          "Purchases Dr / Cash Cr",
+          "Cash Dr / Purchases Cr",
+          "Purchases Dr / Vijay Traders Cr",
+          "Vijay Traders Dr / Purchases Cr"
+        ],
+        correct: 2,
+        explanation: "Credit purchase: Purchases (expense/asset) increases → Debit. Vijay Traders (creditor/liability) increases → Credit. We owe Vijay, so credit his account!"
+      },
+      {
+        question: "💰 Scenario 3: Manturo Corporations - Expenses & Drawings\n\nRahul pays office rent ₹10,000, electricity ₹3,000, and withdraws ₹5,000 for personal use. He also sells goods costing ₹15,000 for cash ₹18,000.\n\nWhich accounts are debited and credited for Rahul withdrawing ₹5,000 for personal use?",
+        options: [
+          "Drawings Dr / Cash Cr",
+          "Cash Dr / Drawings Cr",
+          "Drawings Cr / Cash Dr",
+          "Cash Cr / Drawings Dr"
         ],
         correct: 0,
-        explanation: "Purchase returns reduce what we owe to suppliers - Debit the Supplier's account to decrease the liability!"
+        explanation: "Owner's withdrawal: Drawings (reduces capital) → Debit. Cash (asset decreases) → Credit. Personal use = Drawings account!"
+      },
+      {
+        question: "💵 Scenario 4: Manturo Corporations - Selling Goods for Cash\n\nManturo sells goods costing ₹25,000 to a customer for cash ₹30,000. Later, they pay ₹7,000 for office supplies and receive ₹5,000 from a debtor.\n\nWhich accounts are debited and credited for selling goods for cash ₹30,000?",
+        options: [
+          "Cash Dr / Sales Cr",
+          "Sales Dr / Cash Cr",
+          "Cost of Goods Sold Dr / Cash Cr",
+          "Cash Dr / Cost of Goods Sold Cr"
+        ],
+        correct: 0,
+        explanation: "Cash sales: Cash (asset) increases → Debit. Sales (revenue) increases → Credit. Cash comes in, Sales goes up!"
+      },
+      {
+        question: "👔 Scenario 5: Manturo Corporations - Paying Expenses\n\nManturo pays salaries ₹12,000, electricity bill ₹3,500, and office rent ₹15,000. They also buy goods worth ₹20,000 on credit.\n\nWhich accounts are debited and credited for payment of salaries ₹12,000?",
+        options: [
+          "Salaries Dr / Cash Cr",
+          "Cash Dr / Salaries Cr",
+          "Salaries Cr / Cash Dr",
+          "Cash Cr / Salaries Dr"
+        ],
+        correct: 0,
+        explanation: "Expense payment: Salaries (expense) increases → Debit. Cash (asset) decreases → Credit. All expenses are debited!"
+      },
+      {
+        question: "💻 Scenario 6: Manturo Corporations - Buying Assets on Credit\n\nManturo purchases a computer worth ₹45,000 on credit from TechWorld. Later, they sell goods costing ₹10,000 for cash ₹12,000 and pay ₹4,000 electricity.\n\nWhich accounts are debited and credited for purchasing computer on credit from TechWorld?",
+        options: [
+          "Computer Dr / Cash Cr",
+          "Computer Dr / TechWorld Cr",
+          "TechWorld Dr / Computer Cr",
+          "Cash Dr / Computer Cr"
+        ],
+        correct: 1,
+        explanation: "Asset on credit: Computer (asset) increases → Debit. TechWorld (creditor/liability) increases → Credit. No cash paid, so creditor account is credited!"
+      },
+      {
+        question: "🏦 Scenario 7: Manturo Corporations - Owner's Drawings\n\nRahul withdraws ₹8,000 cash for personal use. Later, Manturo purchases goods for cash ₹18,000 and receives payment from a customer ₹7,000.\n\nWhich accounts are debited and credited for Rahul withdrawing ₹8,000 for personal use?",
+        options: [
+          "Drawings Dr / Cash Cr",
+          "Cash Dr / Drawings Cr",
+          "Drawings Cr / Cash Dr",
+          "Cash Cr / Drawings Dr"
+        ],
+        correct: 0,
+        explanation: "Personal withdrawal: Drawings (reduces owner's equity) → Debit. Cash (asset goes out) → Credit. Remember: Owner takes money = Debit Drawings!"
       }
     ];
 
