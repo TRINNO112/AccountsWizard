@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lesson 2 — Basic Accounting Terms | AccountsWizard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <!-- Import centralized quiz CSS -->
   <link rel="stylesheet" href="main.css">
   <style>
     :root {
@@ -22,6 +21,7 @@
       --speed: 300ms;
       --success: #4caf50;
       --error: #f44336;
+      --warning: #ffd166;
     }
 
     * { box-sizing: border-box; }
@@ -36,468 +36,354 @@
       min-height: 100vh;
       padding: 20px;
     }
+    
     header { text-align: center; padding: 30px 20px; }
     .lesson-title {
-      font-size: 2.2rem; font-weight: 900; margin-bottom: 10px;
-      background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size: 2.5rem; 
+      font-weight: 900; 
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2), var(--accent));
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      animation: gradient 3s ease infinite;
     }
-    .breadcrumb { color: var(--muted); font-size: .95rem; }
-    .breadcrumb a { color: inherit; text-decoration: none; }
-    .breadcrumb a:hover { color: var(--text); }
+    
+    @keyframes gradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .breadcrumb { 
+      color: var(--muted); 
+      font-size: .95rem; 
+    }
+    .breadcrumb a { 
+      color: inherit; 
+      text-decoration: none; 
+      transition: color var(--speed);
+    }
+    .breadcrumb a:hover { color: var(--brand-2); }
+    
     .nav-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 24px; background: var(--card); border-radius: var(--radius);
-      margin-bottom: 32px; box-shadow: var(--shadow);
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 24px; 
+      background: var(--card); 
+      border-radius: var(--radius);
+      margin-bottom: 32px; 
+      box-shadow: var(--shadow);
     }
     .nav-header a {
-      color: var(--muted); text-decoration: none; display: flex; align-items: center;
-      gap: 8px; padding: 8px 16px; border-radius: 8px; transition: all var(--speed);
-    }
-    .nav-header a:hover { color: var(--text); background: rgba(255,255,255,.1); }
-    section {
-      background: var(--card); border-radius: var(--radius);
-      padding: 32px; margin-bottom: 32px; box-shadow: var(--shadow);
-    }
-    section h2 {
-      margin-top: 0; font-size: 1.5rem;
-      background: linear-gradient(90deg,#fff,var(--brand-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    section p { line-height: 1.6; color: var(--muted); }
-    /* Accordion */
-    .accordion-item { margin-bottom: 12px; border-radius: var(--radius); overflow: hidden; background: rgba(255,255,255,.05); }
-    .accordion-header {
-      width: 100%; padding: 14px 20px; text-align: left; font-weight: bold;
-      background: var(--card); color: var(--brand-2); border: none; cursor: pointer;
+      color: var(--muted); 
+      text-decoration: none; 
+      display: flex; 
+      align-items: center;
+      gap: 8px; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
       transition: all var(--speed);
     }
-    .accordion-header:hover { background: rgba(255,255,255,.1); }
-    .accordion-body {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s ease;
-      padding: 0 20px;
+    .nav-header a:hover { 
+      color: var(--text); 
+      background: rgba(255,255,255,.1); 
     }
-    .accordion-body.open { max-height: 500px; padding: 14px 20px; }
-
-    /* Accordion Container */
-    .accordion {
-      margin-top: 20px;
-    }
-
-    /* Accordion Item */
-    .accordion-item {
-      margin-bottom: 12px;
+    
+    section {
+      background: var(--card); 
       border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--card);
+      padding: 32px; 
+      margin-bottom: 32px; 
       box-shadow: var(--shadow);
-      transition: transform 0.3s ease;
-    }
-    .accordion-item:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Accordion Header */
-    .accordion-header {
-      width: 100%;
-      padding: 16px 20px;
-      text-align: left;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      background: none;
-      color: var(--brand-2);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.3s ease;
-    }
-    .accordion-header:hover {
-      background: rgba(255,255,255,0.08);
-    }
-
-    /* Icon inside header */
-    .accordion-header i {
-      font-size: 1.2rem;
-      color: var(--accent);
-    }
-
-    /* Accordion Body */
-    .accordion-body {
-      max-height: 0;
-      overflow: hidden;
-      padding: 0 20px;
-      background: rgba(255,255,255,0.03);
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      transition: max-height 0.5s ease, padding 0.3s ease;
-    }
-    .accordion-body.open {
-      max-height: 500px;
-      padding: 16px 20px;
-    }
-
-
-    /* Main Container */
-    .hierarchy-container {
       position: relative;
-      padding: 50px 20px;
-      background: linear-gradient(135deg, rgba(124,77,255,0.05), rgba(0,229,255,0.05));
-      border-radius: var(--radius);
-      margin: 30px 0;
-      overflow: visible;
-    }
-
-    /* Hierarchy Levels */
-    .hierarchy-level {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 60px;
-      margin: 50px 0;
-      flex-wrap: wrap;
-    }
-
-    .level-0 { margin-bottom: 60px; }
-    .level-1 { margin: 60px 0; }
-    .level-2 { margin-top: 60px; flex-direction: column; align-items: center; gap: 40px; }
-
-    /* Card Styles */
-    .hierarchy-card {
-      position: relative;
-      background: var(--card);
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
-      transition: all 0.4s ease;
-      border: 2px solid transparent;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       overflow: hidden;
     }
-
-    .hierarchy-card::before {
+    
+    section::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      transition: height 0.3s ease;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent));
+      animation: gradient 3s ease infinite;
+    }
+    
+    section h2 {
+      margin-top: 0; 
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, #fff, var(--brand-2));
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+    }
+    section p { 
+      line-height: 1.8; 
+      color: var(--muted); 
+      font-size: 1.05rem;
     }
 
-    .hierarchy-card:hover::before {
-      height: 6px;
+    /* Enhanced Accordion */
+    .accordion {
+      margin-top: 20px;
     }
-
-    .hierarchy-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    
+    .accordion-item {
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.05);
+      transition: all var(--speed);
+    }
+    
+    .accordion-item:hover {
+      transform: translateX(5px);
       border-color: var(--brand-2);
+      box-shadow: 0 5px 20px rgba(0,229,255,.1);
     }
-
-    /* Root Card */
-    .root-card {
-      min-width: 300px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color: white;
-      border: none;
-    }
-
-    .root-card::before { display: none; }
-
-    .root-card i {
-      font-size: 3rem;
-      margin-bottom: 15px;
-      display: block;
-    }
-
-    .root-card h3 {
-      margin: 15px 0 8px 0;
-      font-size: 1.6rem;
-      font-weight: 900;
-    }
-
-    /* Type Cards */
-    .type-card {
-      min-width: 250px;
-      height: 200px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .personal-type { border-left: 6px solid #ff7ac6; }
-    .real-type { border-left: 6px solid #00e5ff; }
-    .nominal-type { border-left: 6px solid #7c4dff; }
-
-    .type-card i {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      opacity: 0.8;
-    }
-
-    .type-card h4 {
-      margin: 12px 0 8px 0;
-      font-size: 1.3rem;
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .rule-text {
-      font-size: 0.8rem;
-      color: var(--brand-2);
-      font-style: italic;
-      line-height: 1.3;
-      margin-top: 10px;
-    }
-
-    /* Account Sections */
-    .account-section {
+    
+    .accordion-header {
       width: 100%;
+      padding: 18px 24px;
+      text-align: left;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all var(--speed);
+    }
+    
+    .accordion-header:hover {
+      background: rgba(124,77,255,.08);
+    }
+    
+    .accordion-header.active {
+      background: rgba(0,229,255,.08);
+      color: var(--brand-2);
+    }
+    
+    .accordion-header i {
+      font-size: 1.3rem;
+      color: var(--accent);
+      transition: transform var(--speed);
+    }
+    
+    .accordion-header.active i {
+      transform: rotate(90deg);
+      color: var(--brand-2);
+    }
+    
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 24px;
+      background: rgba(0,0,0,.2);
+      transition: all 0.4s ease;
+    }
+    
+    .accordion-body.open {
+      max-height: 800px;
+      padding: 20px 24px;
+    }
+    
+    .accordion-body ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    
+    .accordion-body li {
+      margin: 8px 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    
+    .accordion-body strong {
+      color: var(--brand-2);
+    }
+
+    /* Visual Hierarchy Container */
+    .hierarchy-container {
+      position: relative;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(124,77,255,0.03), rgba(0,229,255,0.03));
+      border-radius: var(--radius);
       margin: 30px 0;
     }
 
-    .section-header {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 25px;
-      padding: 10px 20px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 25px;
-      display: inline-block;
-    }
-
-    .personal-section .section-header { background: rgba(255,122,198,0.1); }
-    .real-section .section-header { background: rgba(0,229,255,0.1); }
-    .nominal-section .section-header { background: rgba(124,77,255,0.1); }
-
-    /* Cards Row */
-    .cards-row {
+    /* Hierarchy Cards */
+    .hierarchy-level {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      align-items: flex-start;
+      gap: 30px;
+      margin: 40px 0;
       flex-wrap: wrap;
-      margin: 20px 0;
+    }
+    
+    .hierarchy-card {
+      position: relative;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      min-width: 200px;
+    }
+    
+    .hierarchy-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--brand-2);
+      box-shadow: 0 12px 35px rgba(0,229,255,0.2);
+    }
+    
+    .root-card {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      min-width: 280px;
+      padding: 25px;
+    }
+    
+    .root-card i {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .type-card {
+      min-width: 220px;
+    }
+    
+    .asset-card { border-left: 5px solid var(--success); }
+    .liability-card { border-left: 5px solid var(--error); }
+    .capital-card { border-left: 5px solid var(--warning); }
+    
+    .type-card h4 {
+      color: var(--text);
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+    
+    .type-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 5px 0;
     }
 
     /* Detail Cards */
-    .detail-card {
-      min-width: 180px;
-      max-width: 220px;
-      height: 160px;
-      padding: 20px 15px;
-    }
-
-    .detail-card i {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      opacity: 0.7;
-    }
-
-    .detail-card h5 {
-      margin: 8px 0 5px 0;
-      font-size: 1rem;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .detail-card p {
-      margin: 5px 0 8px 0;
-      color: var(--muted);
-      font-size: 0.8rem;
-      line-height: 1.2;
-    }
-
-    .detail-card ul {
-      margin: 8px 0 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .detail-card li {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin: 3px 0;
-      padding: 2px 8px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-    }
-
-    /* Specific Detail Card Colors */
-    .personal-detail { border-left: 4px solid #ff7ac6; }
-    .real-detail { border-left: 4px solid #00e5ff; }
-    .income-card { border-left: 4px solid #4caf50; }
-    .expense-card { border-left: 4px solid #f44336; }
-
-    /* Sub Categories */
-    .sub-category {
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
       margin: 30px 0;
     }
-
-    .sub-category h6 {
-      text-align: center;
+    
+    .detail-card {
+      background: rgba(255,255,255,.03);
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid var(--brand-2);
+      transition: all var(--speed);
+    }
+    
+    .detail-card:hover {
+      transform: translateX(5px);
+      background: rgba(255,255,255,.06);
+    }
+    
+    .detail-card h5 {
+      color: var(--brand-2);
+      margin: 0 0 10px 0;
       font-size: 1.1rem;
+    }
+    
+    .detail-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Formula Box */
+    .formula-box {
+      background: linear-gradient(135deg, rgba(124,77,255,.1), rgba(0,229,255,.1));
+      border: 2px solid var(--brand-2);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .formula-box h4 {
+      color: var(--brand-2);
+      margin: 0 0 15px 0;
+    }
+    
+    .formula {
+      font-size: 1.3rem;
       color: var(--text);
-      margin-bottom: 20px;
-      padding: 8px 15px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 20px;
+      font-weight: 600;
+      padding: 10px;
+      background: rgba(0,0,0,.3);
+      border-radius: 8px;
       display: inline-block;
     }
 
-    /* Amount Indicators */
-    .amount-indicator {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 0.7rem;
-      padding: 4px 8px;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-
-    .positive {
-      background: rgba(76,175,80,0.2);
-      color: #4caf50;
-    }
-
-    .negative {
-      background: rgba(244,67,54,0.2);
-      color: #f44336;
-    }
-
-    /* Card Badges */
-    .card-badge {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-
-    .type-card .card-badge {
-      background: var(--brand);
-    }
-
-    /* Lines */
-    .hierarchy-lines {
-      position: absolute;
-      top: 0;
-      left: 0;
+    /* Comparison Table */
+    .comparison-table {
       width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Summary Section */
-    .summary-section {
-      display: flex;
-      gap: 30px;
-      margin-top: 40px;
-      flex-wrap: wrap;
-    }
-
-    .summary-card {
-      flex: 1;
-      min-width: 300px;
-      background: var(--card);
-      padding: 25px;
+      margin: 20px 0;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
       border-radius: 12px;
-      border-left: 5px solid var(--accent);
+      box-shadow: var(--shadow);
     }
-
-    .equation-card {
-      border-left-color: var(--brand);
-    }
-
-    .equation {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      margin: 15px 0;
-      flex-wrap: wrap;
-    }
-
-    .term {
-      background: var(--brand);
+    
+    .comparison-table th {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
       color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 15px;
       font-weight: 600;
-      font-size: 0.9rem;
+      text-align: left;
     }
-
-    .operator {
-      font-size: 1.5rem;
+    
+    .comparison-table td {
+      background: rgba(255,255,255,.03);
+      padding: 15px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      color: var(--muted);
+    }
+    
+    .comparison-table tr:hover td {
+      background: rgba(255,255,255,.06);
       color: var(--text);
-      font-weight: 700;
     }
 
-    .rules-grid {
-      display: grid;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .rule-item {
-      padding: 10px 15px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      border-left: 4px solid;
-    }
-
-    .personal-rule { 
-      border-left-color: #ff7ac6; 
-      background: rgba(255,122,198,0.05);
-    }
-    .real-rule { 
-      border-left-color: #00e5ff; 
-      background: rgba(0,229,255,0.05);
-    }
-    .nominal-rule { 
-      border-left-color: #7c4dff; 
-      background: rgba(124,77,255,0.05);
+    /* Icon Badge */
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.05);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--brand-2);
+      border: 1px solid rgba(0,229,255,.3);
     }
 
     /* Responsive */
     @media (max-width: 768px) {
-      .hierarchy-level {
-        gap: 30px;
-      }
-      
-      .cards-row {
-        gap: 15px;
-      }
-      
-      .detail-card {
-        min-width: 150px;
-        height: 140px;
-      }
-      
-      .summary-section {
-        flex-direction: column;
-      }
-      
-      .hierarchy-lines {
-        display: none;
-      }
-      
-      .equation {
-        flex-direction: column;
-        gap: 10px;
-      }
+      .hierarchy-level { gap: 20px; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .lesson-title { font-size: 1.8rem; }
+      .formula { font-size: 1rem; }
     }
   </style>
 </head>
@@ -512,107 +398,294 @@
     <div class="breadcrumb">
       <a href="../index.html">Home</a> / 
       <a href="../lessons.html">Lessons</a> / 
-      Basic Accounting Terms
+      Chapter 2: Basic Accounting Terms
     </div>
   </header>
 
   <main>
+    <!-- Introduction Section -->
     <section>
-    <h2>Introduction to Basic Accounting Terms</h2>
-    <p style="font-size:1.2rem; font-weight:500; line-height:1.8;">
-      Understanding basic accounting terms is crucial. These terms form the foundation 
-      of accounting language. Without them, it’s difficult to interpret financial records 
-      or communicate in business.
-    </p>
-  </section>
+      <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+      <p>
+        Chapter 2 of DK Goel Class 11 Accountancy introduces the fundamental terminology of accounting. 
+        These terms form the language of business and are essential for understanding financial transactions. 
+        Every business activity can be expressed using these standardized terms, making communication 
+        in the business world precise and universally understood.
+      </p>
+    </section>
 
-
+    <!-- Core Business Terms Section -->
     <section>
-      <h2>Key Accounting Terms</h2>
+      <h2><i class="fas fa-briefcase"></i> Core Business Terms</h2>
       <div class="accordion">
-
-        <!-- Entity -->
+        
+        <!-- Business Transaction -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-university"></i> Entity
+            <span><i class="fas fa-exchange-alt"></i> Business Transaction</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>An entity is any unit (person, organization, or business) that carries on economic activities independently.</p>
-          </div>
-        </div>
-
-        <!-- Business Entity -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-building"></i> Business Entity
-          </button>
-          <div class="accordion-body">
-            <p>The business entity concept states that the business is treated as separate from its owner(s) for accounting purposes.</p>
+            <p><strong>Definition:</strong> An economic event that changes the financial position of a business and can be measured in monetary terms.</p>
+            <ul>
+              <li><strong>Must have:</strong> Monetary value, dual aspect (debit and credit), and documentary evidence</li>
+              <li><strong>Types:</strong>
+                <ul>
+                  <li>External Transactions: With parties outside the business (customers, suppliers)</li>
+                  <li>Internal Transactions: Within the organization (depreciation, provisions)</li>
+                </ul>
+              </li>
+              <li><strong>Example:</strong> Purchase of goods for ₹10,000, Sale of goods for ₹15,000</li>
+            </ul>
           </div>
         </div>
 
         <!-- Event -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-calendar-day"></i> Event
+            <span><i class="fas fa-calendar-check"></i> Event</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>An event is any happening that has an economic impact on the business. All events may not be transactions, but all transactions are events.</p>
+            <p><strong>Definition:</strong> The result or consequence of a transaction.</p>
+            <ul>
+              <li>It is the outcome of one or more transactions</li>
+              <li>Not directly recorded but calculated from recorded transactions</li>
+              <li><strong>Example:</strong> Calculating net profit or loss after considering all revenues and expenses</li>
+            </ul>
           </div>
         </div>
 
         <!-- Account -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-book-open"></i> Account
+            <span><i class="fas fa-book"></i> Account</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>An account is a record that summarizes all transactions relating to a particular item such as assets, liabilities, income, or expenses.</p>
+            <p><strong>Definition:</strong> A summarized record of all transactions relating to a particular person, asset, liability, expense, or income at one place.</p>
+            <ul>
+              <li>Shows both debit and credit effects</li>
+              <li>Maintains complete record under specific heads</li>
+              <li>Helps in determining the net position of any item</li>
+              <li><strong>Format:</strong> T-shaped with debit on left and credit on right</li>
+              <li><strong>Example:</strong> Cash Account, Salary Account, Ram's Account</li>
+            </ul>
           </div>
         </div>
 
         <!-- Capital -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-piggy-bank"></i> Capital
+            <span><i class="fas fa-coins"></i> Capital</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>Capital is the amount invested by the owner in the business for earning profit.</p>
+            <p><strong>Definition:</strong> The amount of money or money's worth invested by the owner(s) in the business.</p>
+            <ul>
+              <li>Represents owner's equity in the business</li>
+              <li>It's an internal liability (business owes to owner)</li>
+              <li><strong>Formula:</strong> Capital = Assets - External Liabilities</li>
+              <li>Increases with additional investment and profits</li>
+              <li>Decreases with drawings and losses</li>
+              <li><strong>Example:</strong> Owner invests ₹5,00,000 to start business</li>
+            </ul>
           </div>
         </div>
 
         <!-- Drawings -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-hand-holding-usd"></i> Drawings
+            <span><i class="fas fa-hand-holding-usd"></i> Drawings</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>Drawings are amounts or goods withdrawn by the owner for personal use. They reduce owner’s equity.</p>
-          </div>
-        </div>
-
-        <!-- Liability -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-balance-scale"></i> Liability
-          </button>
-          <div class="accordion-body">
-            <p>Liabilities are obligations that a business owes to outsiders, e.g., creditors, loans, outstanding expenses.</p>
-          </div>
-        </div>
-
-        <!-- Types of Assets -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <i class="fas fa-boxes"></i> Types of Assets
-          </button>
-          <div class="accordion-body">
-            <p>Assets are resources owned by the business which provide future economic benefits. They are classified as:</p>
+            <p><strong>Definition:</strong> Cash or value of goods withdrawn by the owner from the business for personal use.</p>
             <ul>
-              <li><strong>Tangible Assets:</strong> Physical assets such as machinery, buildings, furniture.</li>
-              <li><strong>Intangible Assets:</strong> Non-physical assets such as goodwill, patents, trademarks.</li>
-              <li><strong>Current Assets:</strong> Short-term assets like cash, debtors, stock, expected to be used within one year.</li>
-              <li><strong>Fictitious/Nominal Assets:</strong> Not real assets, but expenditure not written off (e.g., preliminary expenses).</li>
+              <li>Reduces owner's capital in the business</li>
+              <li>Not a business expense (personal withdrawal)</li>
+              <li>Recorded separately to track owner's withdrawals</li>
+              <li><strong>Example:</strong> Owner takes ₹10,000 cash for personal expenses</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assets Classification Section -->
+    <section>
+      <h2><i class="fas fa-chart-pie"></i> Complete Assets Classification</h2>
+      <div class="hierarchy-container">
+        <div class="hierarchy-level">
+          <div class="hierarchy-card root-card">
+            <i class="fas fa-coins"></i>
+            <h3>ASSETS</h3>
+            <p>Resources owned by business providing future economic benefits</p>
+          </div>
+        </div>
+        
+        <div class="hierarchy-level">
+          <div class="hierarchy-card type-card asset-card">
+            <i class="fas fa-building"></i>
+            <h4>Non-Current Assets</h4>
+            <p>Held for long-term use (>1 year)</p>
+            <div class="icon-badge">
+              <i class="fas fa-clock"></i> Long-term
+            </div>
+          </div>
+          
+          <div class="hierarchy-card type-card asset-card">
+            <i class="fas fa-sync-alt"></i>
+            <h4>Current Assets</h4>
+            <p>Convertible to cash within 1 year</p>
+            <div class="icon-badge">
+              <i class="fas fa-tachometer-alt"></i> Short-term
+            </div>
+          </div>
+          
+          <div class="hierarchy-card type-card asset-card">
+            <i class="fas fa-ghost"></i>
+            <h4>Fictitious Assets</h4>
+            <p>Deferred expenses (not real assets)</p>
+            <div class="icon-badge">
+              <i class="fas fa-exclamation-triangle"></i> Non-realizable
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5><i class="fas fa-industry"></i> Fixed Assets - Tangible</h5>
+          <p>Physical assets that can be seen and touched:</p>
+          <ul>
+            <li>Land & Building</li>
+            <li>Plant & Machinery</li>
+            <li>Furniture & Fixtures</li>
+            <li>Vehicles</li>
+          </ul>
+        </div>
+        
+        <div class="detail-card">
+          <h5><i class="fas fa-lightbulb"></i> Fixed Assets - Intangible</h5>
+          <p>Non-physical assets with value:</p>
+          <ul>
+            <li>Goodwill</li>
+            <li>Patents & Copyrights</li>
+            <li>Trademarks</li>
+            <li>Computer Software</li>
+          </ul>
+        </div>
+        
+        <div class="detail-card">
+          <h5><i class="fas fa-money-bill-wave"></i> Current Assets Examples</h5>
+          <p>Assets easily convertible to cash:</p>
+          <ul>
+            <li>Cash in hand/bank</li>
+            <li>Inventory/Stock</li>
+            <li>Trade Receivables (Debtors)</li>
+            <li>Bills Receivable</li>
+            <li>Prepaid Expenses</li>
+            <li>Accrued Income</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Liabilities Classification Section -->
+    <section>
+      <h2><i class="fas fa-balance-scale"></i> Complete Liabilities Classification</h2>
+      <div class="hierarchy-container">
+        <div class="hierarchy-level">
+          <div class="hierarchy-card root-card">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <h3>LIABILITIES</h3>
+            <p>Obligations to pay in future</p>
+          </div>
+        </div>
+        
+        <div class="hierarchy-level">
+          <div class="hierarchy-card type-card liability-card">
+            <i class="fas fa-user-tie"></i>
+            <h4>Internal Liabilities</h4>
+            <p>Amount owed to owners</p>
+            <div class="icon-badge">
+              <i class="fas fa-home"></i> Capital
+            </div>
+          </div>
+          
+          <div class="hierarchy-card type-card liability-card">
+            <i class="fas fa-users"></i>
+            <h4>External Liabilities</h4>
+            <p>Amount owed to outsiders</p>
+            <div class="icon-badge">
+              <i class="fas fa-handshake"></i> Third Parties
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5><i class="fas fa-hourglass-half"></i> Non-Current Liabilities</h5>
+          <p>Payable after more than one year:</p>
+          <ul>
+            <li>Long-term Loans</li>
+            <li>Debentures</li>
+            <li>Mortgage Loans</li>
+            <li>Long-term Provisions</li>
+          </ul>
+        </div>
+        
+        <div class="detail-card">
+          <h5><i class="fas fa-clock"></i> Current Liabilities</h5>
+          <p>Payable within one year:</p>
+          <ul>
+            <li>Trade Payables (Creditors)</li>
+            <li>Bills Payable</li>
+            <li>Bank Overdraft</li>
+            <li>Outstanding Expenses</li>
+            <li>Unearned Income</li>
+            <li>Short-term Loans</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Revenue, Expense & Profit Section -->
+    <section>
+      <h2><i class="fas fa-chart-line"></i> Revenue, Expenses & Financial Results</h2>
+      
+      <div class="accordion">
+        <!-- Revenue -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-arrow-up"></i> Revenue</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Definition:</strong> Income of recurring nature from business activities.</p>
+            <ul>
+              <li><strong>Operating Revenue:</strong> From main business (Sales)</li>
+              <li><strong>Non-Operating Revenue:</strong> From other sources (Rent, Interest, Commission)</li>
+              <li><strong>Revenue Receipts:</strong> Regular/recurring nature</li>
+              <li><strong>Capital Receipts:</strong> Non-recurring (Sale of fixed asset, Loan taken)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Expense -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-arrow-down"></i> Expense</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <p><strong>Definition:</strong> Cost incurred for generating revenue in an accounting period.</p>
+            <ul>
+              <li>Related to current period's operations</li>
+              <li><strong>Examples:</strong> Rent, Salary, Depreciation, Insurance, Utilities</li>
+              <li>Matched against revenue to determine profit</li>
             </ul>
           </div>
         </div>
@@ -620,339 +693,218 @@
         <!-- Expenditure -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-receipt"></i> Expenditure
+            <span><i class="fas fa-shopping-cart"></i> Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>Expenditure is the amount spent or liability incurred to acquire goods, services, or assets. It can be capital, revenue, or deferred expenditure.</p>
+            <p><strong>Definition:</strong> Spending of money or incurring liability for acquiring assets, goods, or services.</p>
+            <ul>
+              <li><strong>Revenue Expenditure:</strong> Benefit within one year (Rent, Wages)</li>
+              <li><strong>Capital Expenditure:</strong> Benefit beyond one year (Machinery, Building)</li>
+              <li><strong>Deferred Revenue Expenditure:</strong> Heavy expense, benefit over multiple years (Large Advertisement Campaign)</li>
+            </ul>
           </div>
         </div>
 
-        <!-- Expenses -->
+        <!-- Income, Profit & Loss -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <i class="fas fa-money-check-alt"></i> Expenses
+            <span><i class="fas fa-chart-bar"></i> Income, Profit & Loss</span>
+            <i class="fas fa-chevron-right"></i>
           </button>
           <div class="accordion-body">
-            <p>Expenses are the cost incurred in earning revenue, e.g., rent, salary, electricity. They are deducted from revenue to calculate profit.</p>
+            <p><strong>Income:</strong> The excess of Revenue over Expenses</p>
+            <p><strong>Profit:</strong> Excess of total revenues over total expenses from regular business</p>
+            <p><strong>Gain:</strong> Profit from irregular/non-recurring activities (Sale of fixed asset)</p>
+            <p><strong>Loss:</strong> When Expenses exceed Revenue</p>
+            <div class="formula-box">
+              <h4>Key Formula</h4>
+              <div class="formula">Income = Revenue - Expenses</div>
+            </div>
           </div>
         </div>
-
       </div>
     </section>
 
-
-
-    <!-- Visual Learning - Complete Account Hierarchy -->
+    <!-- Trading Terms Section -->
     <section>
-      <h2>Visual Learning: Complete Account Hierarchy System</h2>
+      <h2><i class="fas fa-store"></i> Trading Terms</h2>
+      
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5><i class="fas fa-box"></i> Goods/Merchandise</h5>
+          <p>Items purchased for resale or production. The primary items a business deals in.</p>
+          <p><strong>Note:</strong> Term 'Goods' is specific to items for trade, not assets.</p>
+        </div>
+        
+        <div class="detail-card">
+          <h5><i class="fas fa-shopping-bag"></i> Purchases</h5>
+          <p>Buying of goods (only) for resale or production.</p>
+          <ul>
+            <li>Cash Purchases: Immediate payment</li>
+            <li>Credit Purchases: Payment later</li>
+          </ul>
+        </div>
+        
+        <div class="detail-card">
+          <h5><i class="fas fa-cash-register"></i> Sales</h5>
+          <p>Selling of goods or services - main revenue source.</p>
+          <ul>
+            <li>Cash Sales: Immediate receipt</li>
+            <li>Credit Sales: Payment received later</li>
+          </ul>
+        </div>
+        
+        <div class="detail-card">
+          <h5><i class="fas fa-warehouse"></i> Stock/Inventory</h5>
+          <p>Unsold goods at the end of accounting period.</p>
+          <ul>
+            <li>Opening Stock: Beginning of period</li>
+            <li>Closing Stock: End of period</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debtors vs Creditors Section -->
+    <section>
+      <h2><i class="fas fa-exchange-alt"></i> Debtors vs Creditors</h2>
+      
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-user-plus"></i> Aspect</th>
+            <th><i class="fas fa-arrow-up"></i> Debtors (Trade Receivables)</th>
+            <th><i class="fas fa-arrow-down"></i> Creditors (Trade Payables)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Definition</strong></td>
+            <td>Persons who owe money to the business</td>
+            <td>Persons to whom business owes money</td>
+          </tr>
+          <tr>
+            <td><strong>Arises from</strong></td>
+            <td>Credit sales of goods/services</td>
+            <td>Credit purchases of goods/services</td>
+          </tr>
+          <tr>
+            <td><strong>Classification</strong></td>
+            <td>Current Asset</td>
+            <td>Current Liability</td>
+          </tr>
+          <tr>
+            <td><strong>Also called</strong></td>
+            <td>Sundry Debtors, Trade Receivables</td>
+            <td>Sundry Creditors, Trade Payables</td>
+          </tr>
+          <tr>
+            <td><strong>Bills related</strong></td>
+            <td>Bills Receivable (formal promise to receive)</td>
+            <td>Bills Payable (formal promise to pay)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Discount & Vouchers Section -->
+    <section>
+      <h2><i class="fas fa-percentage"></i> Discounts & Vouchers</h2>
+      
       <div class="hierarchy-container">
-        
-        <!-- Level 0 - Root: All Accounts -->
-        <div class="hierarchy-level level-0">
-          <div class="hierarchy-card root-card">
-            <i class="fas fa-sitemap"></i>
-            <h3>ALL ACCOUNTS</h3>
-            <p>Complete Business Account Classification</p>
-            <div class="card-badge">Foundation</div>
-          </div>
-        </div>
-
-        <!-- Level 1 - Main Account Types -->
-        <div class="hierarchy-level level-1">
-          <div class="hierarchy-card type-card personal-type">
-            <i class="fas fa-users"></i>
-            <h4>PERSONAL ACCOUNTS</h4>
-            <p>People & Organizations</p>
-            <div class="rule-text">Debit the Receiver<br>Credit the Giver</div>
-            <div class="card-badge">Type 1</div>
+        <div class="hierarchy-level">
+          <div class="hierarchy-card type-card">
+            <i class="fas fa-tag"></i>
+            <h4>Trade Discount</h4>
+            <p>Deduction from list price</p>
+            <ul style="text-align: left; font-size: 0.85rem; color: var(--muted);">
+              <li>NOT recorded in books</li>
+              <li>Given to all customers</li>
+              <li>Deducted before recording</li>
+            </ul>
           </div>
           
-          <div class="hierarchy-card type-card real-type">
-            <i class="fas fa-building"></i>
-            <h4>REAL ACCOUNTS</h4>
-            <p>Assets & Properties</p>
-            <div class="rule-text">Debit What Comes In<br>Credit What Goes Out</div>
-            <div class="card-badge">Type 2</div>
+          <div class="hierarchy-card type-card">
+            <i class="fas fa-hand-holding-dollar"></i>
+            <h4>Cash Discount</h4>
+            <p>For prompt payment</p>
+            <ul style="text-align: left; font-size: 0.85rem; color: var(--muted);">
+              <li>IS recorded in books</li>
+              <li>Motivates quick payment</li>
+              <li>Shown as expense/income</li>
+            </ul>
           </div>
           
-          <div class="hierarchy-card type-card nominal-type">
-            <i class="fas fa-chart-line"></i>
-            <h4>NOMINAL ACCOUNTS</h4>
-            <p>Income, Expenses & Trading</p>
-            <div class="rule-text">Debit All Expenses<br>Credit All Incomes</div>
-            <div class="card-badge">Type 3</div>
-          </div>
-        </div>
-
-        <!-- Level 2 - Account Categories -->
-        <div class="hierarchy-level level-2">
-          
-          <!-- Personal Account Categories -->
-          <div class="account-section personal-section">
-            <div class="section-header">Personal Account Categories</div>
-            <div class="cards-row">
-              <div class="hierarchy-card detail-card personal-detail">
-                <i class="fas fa-arrow-up"></i>
-                <h5>DEBTORS</h5>
-                <p>Customers who owe money</p>
-                <ul>
-                  <li>Trade Debtors</li>
-                  <li>Sundry Debtors</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card personal-detail">
-                <i class="fas fa-arrow-down"></i>
-                <h5>CREDITORS</h5>
-                <p>Suppliers we owe money to</p>
-                <ul>
-                  <li>Trade Creditors</li>
-                  <li>Sundry Creditors</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card personal-detail">
-                <i class="fas fa-university"></i>
-                <h5>BANK A/C</h5>
-                <p>Banking relationships</p>
-                <ul>
-                  <li>Current A/c</li>
-                  <li>Savings A/c</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Real Account Categories -->
-          <div class="account-section real-section">
-            <div class="section-header">Real Account Categories</div>
-            <div class="cards-row">
-              <div class="hierarchy-card detail-card real-detail">
-                <i class="fas fa-coins"></i>
-                <h5>CASH A/C</h5>
-                <p>Physical money in business</p>
-                <ul>
-                  <li>Cash in Hand</li>
-                  <li>Petty Cash</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card real-detail">
-                <i class="fas fa-home"></i>
-                <h5>BUILDING A/C</h5>
-                <p>Property & Real Estate</p>
-                <ul>
-                  <li>Office Building</li>
-                  <li>Factory Premises</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card real-detail">
-                <i class="fas fa-file-invoice"></i>
-                <h5>BILLS RECEIVABLE</h5>
-                <p>Promissory notes receivable</p>
-                <ul>
-                  <li>Trade Bills</li>
-                  <li>Bank Drafts</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card real-detail">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <h5>BILLS PAYABLE</h5>
-                <p>Promissory notes payable</p>
-                <ul>
-                  <li>Trade Bills</li>
-                  <li>Bank Loans</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Nominal Account Categories -->
-          <div class="account-section nominal-section">
-            <div class="section-header">Nominal Account Categories</div>
-            <div class="cards-row">
-              <div class="hierarchy-card detail-card nominal-detail">
-                <i class="fas fa-shopping-cart"></i>
-                <h5>SALES A/C</h5>
-                <p>Revenue from goods sold</p>
-                <ul>
-                  <li>Cash Sales</li>
-                  <li>Credit Sales</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card nominal-detail">
-                <i class="fas fa-chart-line"></i>
-                <h5>INCOME</h5>
-                <p>Total earnings of business</p>
-                <ul>
-                  <li>Operating Income</li>
-                  <li>Non-operating Income</li>
-                </ul>
-              </div>
-              <div class="hierarchy-card detail-card nominal-detail">
-                    <i class="fas fa-trophy"></i>
-                    <h5>PROFIT</h5>
-                    <p>Income minus expenses</p>
-                    <ul>
-                      <li>Gross Profit</li>
-                      <li>Net Profit</li>
-                    </ul>
-                  </div>
-                  <div class="hierarchy-card detail-card nominal-detail">
-                    <i class="fas fa-sync-alt"></i>
-                    <h5>TURNOVER</h5>
-                    <p>Total sales volume</p>
-                    <ul>
-                      <li>Annual Turnover</li>
-                      <li>Monthly Turnover</li>
-                    </ul>
-                  </div>
-                  <div class="hierarchy-card detail-card nominal-detail">
-                    <i class="fas fa-shopping-bag"></i>
-                    <h5>PURCHASES A/C</h5>
-                    <p>Goods bought for resale</p>
-                    <ul>
-                      <li>Cash Purchases</li>
-                      <li>Credit Purchases</li>
-                    </ul>
-                  </div>
-                  <div class="hierarchy-card detail-card nominal-detail">
-                    <i class="fas fa-undo"></i>
-                    <h5>PURCHASE RETURNS</h5>
-                    <p>Goods returned to suppliers</p>
-                    <ul>
-                      <li>Defective Goods</li>
-                      <li>Excess Stock</li>
-                    </ul>
-                  </div>
-                  <div class="hierarchy-card detail-card nominal-detail">
-                    <i class="fas fa-reply"></i>
-                    <h5>SALES RETURNS</h5>
-                    <p>Goods returned by customers</p>
-                    <ul>
-                      <li>Damaged Goods</li>
-                      <li>Wrong Items</li>
-                    </ul>
-                  </div>
-                  <div class="hierarchy-card detail-card nominal-detail">
-                    <i class="fas fa-home"></i>
-                    <h5>RENT A/C</h5>
-                    <p>Property rental expenses</p>
-                    <ul>
-                      <li>Office Rent</li>
-                      <li>Shop Rent</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          <!-- Key Definitions Section -->
-    <div class="account-section nominal-section">
-      <div class="section-header">Key Definitions</div>
-      <div class="cards-row">
-
-        <!-- Gross Profit -->
-        <div class="hierarchy-card detail-card nominal-detail">
-          <i class="fas fa-calculator"></i>
-          <h5>GROSS PROFIT</h5>
-          <p>Basic measure of trading results</p>
-          <ul>
-            <li>Gross Profit = Sales – Cost of Goods Sold (COGS)</li>
-            <li>Shows efficiency of core business</li>
-          </ul>
-        </div>
-
-        <!-- Net Profit -->
-        <div class="hierarchy-card detail-card nominal-detail">
-          <i class="fas fa-balance-scale"></i>
-          <h5>NET PROFIT</h5>
-          <p>Final earnings after expenses</p>
-          <ul>
-            <li>Net Profit = Gross Profit – Expenses</li>
-            <li>Represents true profitability</li>
-          </ul>
-        </div>
-
-        <!-- Cash Sales -->
-        <div class="hierarchy-card detail-card nominal-detail">
-          <i class="fas fa-money-bill-wave"></i>
-          <h5>CASH SALES</h5>
-          <p>Goods sold with instant payment</p>
-          <ul>
-            <li>Buyer pays cash immediately</li>
-            <li>No outstanding balance</li>
-          </ul>
-        </div>
-
-        <!-- Credit Sales -->
-        <div class="hierarchy-card detail-card nominal-detail">
-          <i class="fas fa-handshake"></i>
-          <h5>CREDIT SALES</h5>
-          <p>Goods sold with delayed payment</p>
-          <ul>
-            <li>Customer owes business</li>
-            <li>Recorded as Debtors</li>
-          </ul>
-        </div>
-
-        <!-- Cash Purchases -->
-        <div class="hierarchy-card detail-card nominal-detail">
-          <i class="fas fa-shopping-basket"></i>
-          <h5>CASH PURCHASES</h5>
-          <p>Goods bought with immediate payment</p>
-          <ul>
-            <li>Business pays instantly</li>
-            <li>No liability created</li>
-          </ul>
-        </div>
-
-        <!-- Credit Purchases -->
-        <div class="hierarchy-card detail-card nominal-detail">
-          <i class="fas fa-credit-card"></i>
-          <h5>CREDIT PURCHASES</h5>
-          <p>Goods bought with deferred payment</p>
-          <ul>
-            <li>Business owes supplier</li>
-            <li>Recorded as Creditors</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-
-      </div>
-
-      <!-- Key Summary -->
-      <div class="summary-section">
-        <div class="summary-card equation-card">
-          <i class="fas fa-balance-scale"></i>
-          <h4>Accounting Equation</h4>
-          <div class="equation">
-            <span class="term">ASSETS</span>
-            <span class="operator">=</span>
-            <span class="term">CAPITAL</span>
-            <span class="operator">+</span>
-            <span class="term">LIABILITIES</span>
-          </div>
-        </div>
-        
-        <div class="summary-card golden-rules">
-          <i class="fas fa-star"></i>
-          <h4>Golden Rules Summary</h4>
-          <div class="rules-grid">
-            <div class="rule-item personal-rule">
-              <strong>Personal:</strong> Dr. Receiver, Cr. Giver
-            </div>
-            <div class="rule-item real-rule">
-              <strong>Real:</strong> Dr. What comes in, Cr. What goes out
-            </div>
-            <div class="rule-item nominal-rule">
-              <strong>Nominal:</strong> Dr. Expenses, Cr. Income
-            </div>
+          <div class="hierarchy-card type-card">
+            <i class="fas fa-file-invoice"></i>
+            <h4>Voucher</h4>
+            <p>Source document</p>
+            <ul style="text-align: left; font-size: 0.85rem; color: var(--muted);">
+              <li>Invoice, Receipt</li>
+              <li>Cash Memo</li>
+              <li>Debit/Credit Note</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Key Formulas Summary -->
+    <section>
+      <h2><i class="fas fa-calculator"></i> Key Formulas Summary</h2>
+      
+      <div class="formula-box">
+        <h4>Fundamental Accounting Equation</h4>
+        <div class="formula">Assets = Capital + Liabilities</div>
+      </div>
+      
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5>Capital Formula</h5>
+          <p class="formula">Capital = Assets - Liabilities</p>
+        </div>
+        
+        <div class="detail-card">
+          <h5>Income Formula</h5>
+          <p class="formula">Income = Revenue - Expenses</p>
+        </div>
+        
+        <div class="detail-card">
+          <h5>Gross Profit</h5>
+          <p class="formula">GP = Sales - COGS</p>
+        </div>
+        
+        <div class="detail-card">
+          <h5>Net Profit</h5>
+          <p class="formula">NP = GP - Indirect Expenses</p>
+        </div>
+        
+        <div class="detail-card">
+          <h5>Cost of Goods Sold</h5>
+          <p class="formula">COGS = Op.Stock + Purchases - Cl.Stock</p>
+        </div>
+        
+        <div class="detail-card">
+          <h5>Working Capital</h5>
+          <p class="formula">WC = Current Assets - Current Liabilities</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operating Cycle -->
+    <section>
+      <h2><i class="fas fa-sync-alt"></i> Operating Cycle</h2>
+      <p>
+        The <strong>Operating Cycle</strong> is the time period between the acquisition of assets for processing 
+        and their final conversion into cash. This cycle helps determine whether an asset or liability 
+        is classified as "current" (within operating cycle or one year, whichever is longer) or "non-current".
+      </p>
+      <div class="formula-box">
+        <h4>Operating Cycle Flow</h4>
+        <div class="formula">Cash → Inventory → Debtors → Cash</div>
+      </div>
+    </section>
 
     <!-- MCQs -->
     <section class="card" id="mcqSection">
@@ -1411,17 +1363,45 @@
     initQuiz();
     console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
 
-    // ======================================================
-    // ACCORDION LOGIC (PRESERVED)
-    // ======================================================
-    document.querySelectorAll(".accordion-header").forEach(header => {
-      header.addEventListener("click", () => {
-        const item = header.parentElement;
-        const body = item.querySelector(".accordion-body");
-        document.querySelectorAll(".accordion-body.open").forEach(openBody => {
-          if (openBody !== body) openBody.classList.remove("open");
-        });
-        body.classList.toggle("open");
+    
+
+    // Add animation to cards on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.detail-card, .hierarchy-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.5s ease';
+      observer.observe(card);
+    });
+
+    // Accordion functionality
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const body = header.nextElementSibling;
+        const isOpen = body.classList.contains('open');
+        
+        // Close all accordion items
+        document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+        
+        // Open clicked item if it was closed
+        if (!isOpen) {
+          body.classList.add('open');
+          header.classList.add('active');
+        }
       });
     });
 </script>
