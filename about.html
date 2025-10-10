@@ -1088,397 +1088,296 @@
 
   <div class="page-wrapper">
 
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-badge">
-        <i class="fas fa-rocket"></i> WARNING: EXTREME CONTENT
-      </div>
-      
-      <h1>
-        Oh, You Clicked 'About'?
-        <span class="gradient-text">Bold Move, Friend. Bold Move.</span>
-      </h1>
-      
-      <p class="hero-subtitle">
-        Most people avoid this page like their ex at a party. But not you. 
-        You're different. You're... curious. Or maybe just really, REALLY bored.
-        Either way, buckle up buttercup – this is going to be weird.
-      </p>
+   <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-badge">
+      <i class="fas fa-rocket"></i> WARNING: EXTREME GEN Z CONTENT AHEAD
+    </div>
+    
+    <h1>
+      You Clicked 'About'?
+      <span class="gradient-text">Lowkey A Bold Move, Fam.</span>
+    </h1>
+    
+    <p class="hero-subtitle">
+      Welcome to the page most people accidentally click on. But you... you're built different.
+      You're here for the lore, the full story, the deets. Aight, bet. Let's get into it.
+    </p>
 
-      <button class="glitch-button" onclick="toggleWarning()">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>PRESS AT YOUR OWN RISK</span>
+    <button class="glitch-button" onclick="toggleWarning()">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>PRESS IF YOU DARE</span>
+    </button>
+
+    <div class="warning-box" id="warningBox">
+      <div class="warning-content">
+        <h3>🎉 CONGRATS, YOU HAVE MAIN CHARACTER ENERGY!</h3>
+        <p>
+          You actually pressed it. You absolute legend. Your reward is knowing you're not an NPC.
+          Now carry on, the real story is below. 😂
+        </p>
+        <p style="margin-top: 20px; color: var(--text-dim); font-size: 1rem;">
+          <strong>IYKYK:</strong> Clicking random buttons on the internet is a vibe. No regrets. 🤥
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>The Origin Story No One Asked For</h2>
+      <p>Seriously, meri mummy ne bhi nahi pucha. But here it is anyway.</p>
+    </div>
+
+    <div class="about-card">
+      <p>
+        <strong>AccountsWizard</strong> started as a 2 AM thought bubble: "What if accounting wasn't a total vibe kill?"
+        Mera ek chhota sa dream tha: to make learning accounting easier and more visual with graphs and cool infographics. Basically, anything to avoid reading another 50-page chapter that puts you to sleep.
+      </p>
+      <p>
+        Is this website perfect? Bro, no cap, it's not. It’s got more bugs than my code has comments. Some features are still loading... just like my brain during an 8 AM lecture. But I gave it my best shot.
+      </p>
+      <p>
+        Maine thoda humor add kiya hai, because let's be real, debit and credit ki duniya can be boring AF. So don't expect Netflix-level entertainment, but ek-do smile zaroor aayegi. 😅
+      </p>
+      <p>
+        Toh scene kya hai? <em>It's a dream, plus a lot of effort, thodi masti, and an insane amount of bugs. But maine dil se banaya hai.</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- The Creator Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>The Mastermind (JK, it's just me)</h2>
+      <p>Behold, the face of sleep deprivation and questionable life choices.</p>
+    </div>
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <img src="Dev.png" alt="The creator of the website, probably" style="max-width: 400px; width: 100%; border-radius: 15px; border: 3px solid var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan);">
+      <p style="margin-top: 1rem; font-style: italic; color: var(--text-dim);">My face when the one line of code I changed fixes 10 different bugs (a rare celestial event that has happened exactly once).</p>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="content-section">
+    <!-- Stats Section -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">💻</div>
+        <div class="stat-number">43,345</div>
+        <div class="stat-label">Lines of "Trust Me Bro" Code</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🤯</div>
+        <div class="stat-number">867</div>
+        <div class="stat-label">"Ye Kya Ho Gaya" Moments</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🙏</div>
+        <div class="stat-number">99+</div>
+        <div class="stat-label">"Prayers done", Bhagwan pls mera code chalwa dena!</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💡</div>
+        <div class="stat-number">200+</div>
+        <div class="stat-label">Ideas That Were "It" (They Weren't)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-number">999+</div>
+        <div class="stat-label">Hours Googling Error Messages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">😂</div>
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Hearing about Donald Trump putting tariffs on India</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey Timeline -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>My Chaotic Journey with AccountsWizard</h2>
+      <p>A timeline of my villain arc, powered by bugs, deadlines, and one awesome teacher.</p>
+    </div>
+
+    <div class="timeline-container">
+      <button class="timeline-toggle" onclick="toggleTimeline()">
+        <i class="fas fa-clock"></i>
+        <span>Get The Full Scoop On My Coding Journey</span>
       </button>
 
-      <div class="warning-box" id="warningBox">
-        <div class="warning-content">
-          <h3>🎉 CONGRATULATIONS! You've Unlocked...</h3>
-          <p>
-            Absolutely nothing. But hey, you followed instructions from a random button on the internet. 
-            Your parents must be so proud. 😂
-          </p>
-          <p style="margin-top: 20px; color: var(--text-dim); font-size: 1rem;">
-            <strong>Fun Fact:</strong> 83% of people will click any button that says "Don't Click". 
-                        The other 17% are liars. 🤥
-          </p>
-        </div>
-      </div>
-    </section>
+      <div class="timeline-content" id="timelineContent">
+        <div class="timeline">
 
-    <!-- About Section -->
-    <section class="content-section">
-      <div class="section-header">
-        <h2>The Origin Story Nobody Asked For</h2>
-        <p>Seriously, nobody asked. But here we are anyway.</p>
-      </div>
-
-      <div class="about-card">
-        <p>
-          <strong>AccountsWizard</strong> basically started as mera ek chhota sa dream: 
-          accounting seekhna thoda easy aur visual bana du. 
-          <br>
-          Matlab ki graphs, infographics, aur visuals ke saath concepts ko samajhna thoda simple ho jaye.
-        </p>
-        <p>
-          Ab yeh website perfect hai? Nahi yaar. Bugs hain, kuch features incomplete hain, 
-          aur shayad sabko yeh “fun” na lage. Par idea tha ki jo bhi bana sakun, 
-          best try karun aur seekhne wale ke liye thoda easy aur interactive banaun. 
-        </p>
-        <p>
-          Humor bhi add kiya hai, kyunki thodi hasi-masti ke bina accounting ki duniya 
-          thodi boring ho jati hai. Toh expect mat karo ki yeh world-class entertainment hai, 
-          par haan, thodi smile zaroor milegi. 😅
-        </p>
-        <p>
-          Is website ka main maksad? Sirf ek simple aur visual way me accounts ko present karna, 
-          taaki students concepts ko thoda easily samajh sake. Agar sapna pura nahi hua, koi baat nahi, 
-          phir bhi main continuously try karunga ki yeh aur better ho jaye. 
-          <br>
-          Short me: <em>dream, effort, thodi masti, aur kaafi bugs. Lekin pura dil laga ke banaya hai.</em>
-        </p>
-      </div>
-
-      <!-- Stats Section -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">💻</div>
-          <div class="stat-number">43,345</div>
-          <div class="stat-label">Lines of Code</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🐞</div>
-          <div class="stat-number">867</div>
-          <div class="stat-label">Bugs Encountered</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🛠️</div>
-          <div class="stat-number">150+</div>
-          <div class="stat-label">Features Tested</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">💡</div>
-          <div class="stat-number">200+</div>
-          <div class="stat-label">Ideas Tried</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">⏳</div>
-          <div class="stat-number">99</div>
-          <div class="stat-label">Hours Debugging</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">😄</div>
-          <div class="stat-number">∞</div>
-          <div class="stat-label">Smiles Created</div>
-        </div>
-      </div>
-
-
-   <!-- Journey Timeline -->
-    <section class="content-section">
-      <div class="section-header">
-        <h2>My Chaotic Journey with AccountsWizard</h2>
-        <p>A timeline full of trials, errors, personal lessons, and a little humor</p>
-      </div>
-
-      <div class="timeline-container">
-        <button class="timeline-toggle" onclick="toggleTimeline()">
-          <i class="fas fa-clock"></i>
-          <span>View My Coding Adventures</span>
-        </button>
-
-        <div class="timeline-content" id="timelineContent">
-          <div class="timeline">
-
-            <div class="timeline-item">
-              <div class="timeline-date">
-                <i class="fas fa-calendar-alt"></i> August 2025
-              </div>
-              <div class="timeline-text">
-                I started this project with high hopes and zero experience in structured web development. 
-                Dabbled in Node.js, npm, and tried component-based code. Hours of trial and error later, 
-                I had written thousands of lines of code, but only a few things actually displayed correctly. 
-                It was chaotic, frustrating, but every small fix felt like a huge personal victory. 😅
-              </div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-date">
-                <i class="fas fa-trash-alt"></i> September 2025
-              </div>
-              <div class="timeline-text">
-                After struggling with component-based code, I switched back to static HTML. 
-                It felt like a simplification, but a necessary one. Bugs still lurked everywhere, 
-                random errors made me question my sanity, yet small progress kept motivating me to continue.
-              </div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-date">
-                <i class="fas fa-book"></i> Exams Time
-              </div>
-              <div class="timeline-text">
-                During exams, I got very poor grades, especially in Economics. Honestly, it was disheartening. 
-                But Nirmit Sir constantly supported me, reminded me that learning is a journey, and encouraged me to keep working on AccountsWizard. 
-                Without that support, I honestly might have quit. His guidance became the reason I continued this project despite setbacks.
-              </div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-date">
-                <i class="fas fa-cogs"></i> October 2025
-              </div>
-              <div class="timeline-text">
-                With static HTML, I slowly rebuilt the website. I experimented with infographics, visuals, and interactive elements to make concepts easier to understand. 
-                Bugs and errors were still present, but seeing small pieces finally work gave me real motivation. Every little success felt huge.
-              </div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-date">
-                <i class="fas fa-lightbulb"></i> Present
-              </div>
-              <div class="timeline-text">
-                AccountsWizard is now functional, albeit imperfect. The journey taught me patience, persistence, and the importance of support from mentors. 
-                This project is my experiment, my personal learning, and a little bit of humor mixed in — just like my coding life. 😄
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Fun Facts Section -->
-    <section class="content-section">
-      <div class="section-header">
-        <h2>Completely Useless Fun Facts</h2>
-        <p>Things I learned while building AccountsWizard — thoda serious, thoda masti</p>
-      </div>
-
-      <div class="fun-facts-grid">
-        <div class="fun-fact-card">
-          <div class="fun-fact-emoji">🕹️</div>
-          <div class="fun-fact-title">Experimented Too Much</div>
-          <div class="fun-fact-text">
-            Tried almost every way to make the code work. Some things worked, some didn’t. 
-            If losing was a gold medal, I think I’d have won it. 
-          </div>
-        </div>
-
-        <div class="fun-fact-card">
-          <div class="fun-fact-emoji">⏰</div>
-          <div class="fun-fact-title">Lost Track of Time</div>
-          <div class="fun-fact-text">
-            Hours flew by while debugging or staring at the screen. 
-            Sometimes I felt if wasting time was an art, I would have perfected it.
-          </div>
-        </div>
-
-        <div class="fun-fact-card">
-          <div class="fun-fact-emoji">🧩</div>
-          <div class="fun-fact-title">Puzzle Solver Mode</div>
-          <div class="fun-fact-text">
-            Every small bug felt like a puzzle. Some pieces didn’t fit, but figuring them out kept me going.
-          </div>
-        </div>
-
-        <div class="fun-fact-card">
-          <div class="fun-fact-emoji">🎨</div>
-          <div class="fun-fact-title">Design Experiments</div>
-          <div class="fun-fact-text">
-            Tried layouts, colors, and infographics to make accounting visual. Some worked, some didn’t, 
-            but the process taught me what looks good and what doesn’t.
-          </div>
-        </div>
-
-        <div class="fun-fact-card">
-          <div class="fun-fact-emoji">🎮</div>
-          <div class="fun-fact-title">Sacrificed Gameplays</div>
-          <div class="fun-fact-text">
-            Gave up my Minecraft game sessions for this project. Shoutout to my friends on the server — 
-            without their patience, I wouldn’t have managed. 
-          </div>
-        </div>
-
-        <div class="fun-fact-card">
-          <div class="fun-fact-emoji">👨‍🏫</div>
-          <div class="fun-fact-title">Shoutout to Nirmit Sir</div>
-          <div class="fun-fact-text">
-            Constant support during low points kept me going. 
-            If coding had a cheerleader, it would be him.
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Mission Section -->
-    <section class="content-section">
-      <div class="section-header">
-        <h2>My Experiment (If You Can Call It That)</h2>
-        <p>Spoiler: Mostly about testing my own skills and wasting a lot of time</p>
-      </div>
-
-      <div class="mission-card">
-        <h3>Why I Did This</h3>
-        <p>
-          Look, I could write something fancy about "revolutionizing accounting education," 
-          but let’s be honest — I’m still a student and this is just my personal experiment. 
-          I wanted to see how much I can cover, how interactive a page can get, and how visuals can help explain concepts.
-        </p>
-        <p>
-          I developed this project entirely by myself, line by line, sometimes struggling, sometimes learning. 
-          Neon colors were mostly an experiment on the About page — the main pages are simpler, more functional. 
-          Think of it as me trying out crazy ideas without hurting anyone’s eyes… hopefully. 😅
-        </p>
-        <p>
-          The goal wasn’t to teach anyone officially — it was about exploring, experimenting, 
-          learning coding, layouts, interactivity, and testing my limits. 
-          And yes, maybe adding a bit of humor here and there, because why not?
-        </p>
-      </div>
-    </section>
-
-
-   <!-- FAQ Section -->
-    <section class="content-section">
-      <div class="section-header">
-        <h2>Frequently Avoided Questions</h2>
-        <p>Questions nobody asked, but I’m answering anyway</p>
-      </div>
-
-      <div class="faq-container">
-
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFAQ(this)">
-            <h3>Is this a real accounting course?</h3>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Define "real." This isn’t a certified course. Every chapter is inspired by the DK Goel syllabus, 
-              so you’ll find actual accounting principles here, but it’s mostly an experimental platform created by me 
-              to learn, test, and explore coding & accounting together. 
-              Think of it as a guided chaos experience, not a formal class.
+          <div class="timeline-item">
+            <div class="timeline-date"><i class="fas fa-calendar-alt"></i> August 2025</div>
+            <div class="timeline-text">
+              My coding journey's villain origin story. I tried to act all pro with Node.js and component-based code without any real experience. Likha hazaron lines of code, but only a few things actually worked. It was giving... chaos.
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFAQ(this)">
-            <h3>Why aren’t there neon colors everywhere?</h3>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Neon colors were mostly a testing experiment on the About page. 
-              Main pages are simpler, more readable, and focused on usability. 
-              Your eyes can relax… for now. 😎
+          <div class="timeline-item">
+            <div class="timeline-date"><i class="fas fa-trash-alt"></i> September 2025</div>
+            <div class="timeline-text">
+              I ghosted the component-based life and went back to my ex, static HTML. It felt like a step back, but zaroori tha. Bugs were still throwing hands, and random errors made me question everything. But small wins kept the motivation alive.
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFAQ(this)">
-            <h3>How did you organize the chapters and quizzes?</h3>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Each chapter follows the DK Goel syllabus, section by section. 
-              I designed quizzes (MCQs, true/false, scenario-based) to test understanding. 
-              AI helped in generating code and ideas, but the flow, structure, and questions were carefully planned by me.
+          <div class="timeline-item">
+            <div class="timeline-date"><i class="fas fa-book"></i> Exams Time</div>
+            <div class="timeline-text">
+              Real talk: I bombed my exams, especially Economics. The L was massive and I was this close to deleting the whole project. But Nirmit Sir, the real MVP, provided the clutch support. He reminded me that learning is a marathon, not a sprint, and hyped me up to keep grinding on AccountsWizard. No cap, this project wouldn't exist without him.
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFAQ(this)">
-            <h3>Will this website make me an accounting expert?</h3>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Nope. It will help you understand concepts better and see how interactive tools can enhance learning. 
-              You’ll also witness how a student experiments, deals with errors, and builds a project with a mix of AI, Google, and reference material.
+          <div class="timeline-item">
+            <div class="timeline-date"><i class="fas fa-cogs"></i> October 2025</div>
+            <div class="timeline-text">
+              With a renewed main character energy, I started rebuilding. I was laser-focused on infographics and visuals to make things make sense. The bugs were still buggin', but seeing it all come together, piece by piece, was a W.
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFAQ(this)">
-            <h3>Did you face a lot of problems while building it?</h3>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Absolutely. Animations breaking, Firebase integration issues, quiz functions not triggering — I lost days figuring it all out. 
-              AI never gets everything right the first time, so I had to explain multiple times, debug, and sometimes copy directly from DK Goel to ensure correctness. 
-              Every problem was a lesson in patience and persistence. 😅
+          <div class="timeline-item">
+            <div class="timeline-date"><i class="fas fa-lightbulb"></i> Present</div>
+            <div class="timeline-text">
+              So here we are. AccountsWizard is live, but it's forever a work in progress. This journey taught me patience, persistence, and that a good mentor is a life hack. This project is basically my whole learning curve, with a side of memes. 😄
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-question" onclick="toggleFAQ(this)">
-            <h3>Who should really take this website seriously?</h3>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Students who want to explore accounting with an experimental approach, see how interactive learning works, 
-              or just watch one student struggle and learn. If you expect perfection, you might be disappointed — 
-              but if you want creativity, mistakes, humor, and learning, this is for you.
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      
-      <!-- Fun Easter Egg Section -->
-      <div class="secret-section">
-        <button class="secret-btn" onclick="toggleEasterEgg()">
-          🥚 Don’t Click Me… Seriously 🥚
-        </button>
-        <div class="easter-egg-reveal" id="easterEgg">
-          <div class="easter-egg-content" style="font-size: 2rem; text-align: center; margin-bottom: 15px;">
-            🎮💻📚🧩🎉
-          </div>
-          <p style="color: var(--neon-pink); font-size: 1.1rem; text-align: center;">
-            Surprise! You unlocked a secret insight: <br>
-            Building a website is 10% coding, 40% debugging, and 50% learning from mistakes. 😎
-          </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Fun Facts Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>Completely Useless Fun Facts</h2>
+      <p>Gyan I gained while building this – 50% serious, 50% masti.</p>
+    </div>
+
+    <div class="fun-facts-grid">
+      <div class="fun-fact-card">
+        <div class="fun-fact-emoji">🏆</div>
+        <div class="fun-fact-title">Procrastination King</div>
+        <div class="fun-fact-text">
+          Spent more time 'researching' color palettes than coding. It was for the aesthetic, you know? The vibe had to be right.
+        </div>
+      </div>
+      <div class="fun-fact-card">
+        <div class="fun-fact-emoji">🧠</div>
+        <div class="fun-fact-title">Zero Brain Cells Mode</div>
+        <div class="fun-fact-text">
+          There were days my brain just logged off. During those times, the code was written by Google, Stack Overflow, and pure desperation.
+        </div>
+      </div>
+      <div class="fun-fact-card">
+        <div class="fun-fact-emoji">🎮</div>
+        <div class="fun-fact-title">A Gamer's Sacrifice</div>
+        <div class="fun-fact-text">
+          I sacrificed my Minecraft server for this. My friends still thinking I am studying right now ! F in the chat for my fallen diamonds and Netherite.
+        </div>
+      </div>
+      <div class="fun-fact-card">
+        <div class="fun-fact-emoji">👨‍🏫</div>
+        <div class="fun-fact-title">Shoutout to Nirmit Sir</div>
+        <div class="fun-fact-text">
+          For being the ultimate hype man when my motivation was at 1%. If coding had cheerleaders, he'd be the captain.
+        </div>
+      </div>
+      <div class="fun-fact-card">
+        <div class="fun-fact-emoji">📈</div>
+        <div class="fun-fact-title">Geopolitical Analyst</div>
+        <div class="fun-fact-text">
+          Stressed about my CSS not centering and Trump's potential tariffs on India at the same time. It's called multitasking, look it up.
+        </div>
+      </div>
+      <div class="fun-fact-card">
+        <div class="fun-fact-emoji">📑</div>
+        <div class="fun-fact-title">Tab Hoarder</div>
+        <div class="fun-fact-text">
+          My browser currently has 57 tabs open. 55 are from Github, Firebase for the same bug. The other two are for Watching latest geopolitical update.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>Frequently Avoided Questions</h2>
+      <p>Questions you didn't ask, but I have answers for anyway.</p>
+    </div>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h3>Is this a legit accounting course?</h3>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Define "legit." It's based on the DK Goel syllabus, so the info is solid. But it's more like a fun, chaotic study guide made by a fellow student, not a formal class. It's an experience, a vibe.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h3>Will this website make me an accounting topper?</h3>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Probably not, being honest. But it might make you the person in your class who actually understands what's going on. And you'll see how one student used jugaad, AI, and Google to build something from scratch.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h3>Was building this easy?</h3>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Bro, I wanted to throw my laptop out the window at least 20 times. Animations broke, Firebase gave me trust issues... AI never gets it right the first time. The struggle was real. But hey, we move.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <h3>Is this website secretly run by an AI?</h3>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Nice try. An AI would have written cleaner code. This organized chaos is 100% human-made, fueled by last-minute panic and caffeine.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <!-- Fun Easter Egg Section -->
+        <div class="secret-section">
+          <button class="secret-btn" onclick="toggleEasterEgg()">
+            🥚 Wait, a Secret Button? 🥚
+          </button>
+          <div class="easter-egg-reveal" id="easterEgg">
+            <div class="easter-egg-content" style="font-size: 2rem; text-align: center; margin-bottom: 15px;">
+              🎮💻📚🧩🎉
+            </div>
+            <p style="color: var(--neon-pink); font-size: 1.1rem; text-align: center;">
+              Sheesh, you found it. You've unlocked the secret knowledge that building stuff is 10% coding and 90% figuring out why the code isn't working. 
+              <br> You're one of us now. 😎
+            </p>
+          </div>
+        </div>
 
       <!-- Footer Info -->
       <div class="footer-text">
