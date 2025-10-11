@@ -1,269 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Lesson 1 — Introduction to Accounting | AccountsWizard</title>
-  <meta name="description" content="Lesson 1 - Introduction to Accounting for Class 11 (DK Goel). Notes, short revision, and MCQ practice with progress tracking.">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <!-- Import centralized quiz CSS -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 - Introduction to Accounting | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="main.css">
+  
   <style>
     /* =======================
-       Neon / Glass Theme
+       Enhanced Neon Theme
        ======================= */
     :root {
-      --bg: #0b1020;
-      --bg-2: #0f1733;
-      --card: #111633;
-      --muted: #b8c2ff;
-      --brand: #7c4dff;
-      --brand-2: #00e5ff;
-      --accent: #ff7ac6;
-      --text: #e9eefc;
-      --radius: 16px;
-      --shadow: 0 18px 40px rgba(2,6,23,.55);
-      --speed: 300ms;
+      --bg: #050714;
+      --bg-2: #0a0f1f;
+      --card: #0d1425;
+      --card-hover: #111936;
+      --neon-purple: #a855f7;
+      --neon-cyan: #06b6d4;
+      --neon-pink: #ec4899;
+      --neon-green: #10b981;
+      --neon-yellow: #fbbf24;
+      --neon-red: #ef4444;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --glow-intensity: 0 0 30px;
+      --radius: 20px;
+      --speed: 350ms;
     }
 
-    * { box-sizing: border-box; }
-    body {
+    * { 
+      box-sizing: border-box;
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(900px 600px at 80% -10%, rgba(124,77,255,.18), transparent 45%),
-        radial-gradient(700px 500px at 8% 12%, rgba(0,229,255,.12), transparent 40%),
+      background: 
+        radial-gradient(ellipse at top left, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
         linear-gradient(180deg, var(--bg), var(--bg-2));
       min-height: 100vh;
-      padding: 20px;
+      overflow-x: hidden;
     }
 
-    header {
-      text-align: center;
-      padding: 30px 20px;
-    }
-    .lesson-title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg,#fff,var(--accent));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .lesson-sub {
-      font-size: 1rem;
-      color: var(--muted);
+    /* Animated Background Orbs */
+    .bg-orbs {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
     }
 
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 28px;
-      margin: 30px auto;
-      max-width: 960px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: transform var(--speed), box-shadow var(--speed);
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .orb1 {
+      width: 300px;
+      height: 300px;
+      background: var(--neon-purple);
+      top: -150px;
+      left: -150px;
+      animation-duration: 25s;
+    }
+
+    .orb2 {
+      width: 400px;
+      height: 400px;
+      background: var(--neon-cyan);
+      bottom: -200px;
+      right: -200px;
+      animation-duration: 30s;
+      animation-delay: 5s;
+    }
+
+    .orb3 {
+      width: 250px;
+      height: 250px;
+      background: var(--neon-pink);
+      top: 50%;
+      left: 50%;
+      animation-duration: 35s;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -50px) scale(1.1); }
+      50% { transform: translate(-30px, 30px) scale(0.9); }
+      75% { transform: translate(30px, 50px) scale(1.05); }
+    }
+
+    /* Navigation */
+    nav {
+      position: relative;
+      z-index: 100;
+      background: rgba(13, 20, 37, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: all var(--speed);
       position: relative;
       overflow: hidden;
     }
-    .card::before {
+
+    nav a::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      opacity: 0;
-      transition: opacity var(--speed);
-    }
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 22px 44px rgba(2,6,23,.65);
-    }
-    .card:hover::before {
-      opacity: 1;
-    }
-    .card h2 {
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-      color: var(--brand-2);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .card h2::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--brand-2), transparent);
-    }
-    .card p {
-      line-height: 1.8;
-      margin-bottom: 18px;
-      font-size: 1.05rem;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
     }
 
-    ul {
-      padding-left: 24px;
-      margin: 20px 0;
+    nav a:hover::before {
+      transform: translateX(100%);
     }
-    
-    li {
-      margin: 12px 0;
-      line-height: 1.6;
+
+    nav a:hover {
+      color: var(--neon-purple);
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+
+    /* Hero Section */
+    .hero {
       position: relative;
-    }
-    
-    li::marker {
-      color: var(--brand-2);
-    }
-    
-    /* Infographic Styles */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 25px 0;
-    }
-
-    .info-card {
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      padding: 20px;
+      z-index: 10;
+      text-align: center;
+      padding: 100px 20px;
+      min-height: 60vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      transition: transform var(--speed);
-    }
-
-    .info-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .info-icon {
-      font-size: 2.5rem;
-      color: var(--brand-2);
-      margin-bottom: 15px;
-      background: rgba(124,77,255,0.1);
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      border-radius: 40px;
-      transition: transform var(--speed);
+      align-items: center;
     }
 
-    .info-card:hover .info-icon {
-      transform: scale(1.1);
+    .hero-title {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: glow-text 3s ease-in-out infinite;
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
 
-    .info-title {
-      color: var(--brand);
-      font-weight: bold;
-      margin-bottom: 10px;
+    @keyframes glow-text {
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(168, 85, 247, 0.5)); }
+      50% { filter: brightness(1.2) drop-shadow(0 0 40px rgba(168, 85, 247, 0.8)); }
     }
 
-    .info-text {
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.5;
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-dim);
+      margin-bottom: 40px;
+      animation: fadeInUp 1s ease-out;
     }
 
-    /* Accounting Diagrams */
-    .t-account-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
-    }
-
-    .t-account {
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: transform var(--speed);
-    }
-
-    .t-account:hover {
-      transform: translateY(-5px);
-    }
-
-    .t-account-header {
-      background: linear-gradient(90deg, rgba(124,77,255,0.2), rgba(0,229,255,0.2));
-      padding: 12px;
-      text-align: center;
-      font-weight: bold;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .t-account-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 120px;
-    }
-
-    .t-account-side {
-      padding: 15px;
-      position: relative;
-    }
-
-    .t-account-side:first-child {
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .t-account-side-header {
-      text-align: center;
-      color: var(--brand-2);
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .t-account-amount {
-      text-align: center;
-      color: var(--muted);
-    }
-
-    /* Progress Circle Animation */
-    .progress-ring {
-      width: 120px;
-      height: 120px;
-      position: relative;
-      margin: 20px auto;
-    }
-
-    .progress-ring-circle {
-      stroke: var(--brand-2);
-      stroke-linecap: round;
-      transform: rotate(-90deg);
-      transform-origin: 50% 50%;
-      transition: stroke-dashoffset 0.5s ease;
-    }
-
-    .progress-ring-background {
-      stroke: rgba(255,255,255,0.1);
-    }
-
-    .progress-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--brand-2);
-    }
-
-    /* Concept Cards Animation */
-    @keyframes slideIn {
+    @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
       }
       to {
         opacity: 1;
@@ -271,398 +198,1060 @@
       }
     }
 
-    .concept-card {
-      animation: slideIn 0.5s ease forwards;
-      opacity: 0;
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all var(--speed);
+      position: relative;
+      overflow: hidden;
+      animation: pulse-glow 2s infinite;
     }
 
-    .concept-card:nth-child(1) { animation-delay: 0.1s; }
-    .concept-card:nth-child(2) { animation-delay: 0.2s; }
-    .concept-card:nth-child(3) { animation-delay: 0.3s; }
-    .concept-card:nth-child(4) { animation-delay: 0.4s; }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.5); }
+      50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
+    }
 
-    /* Back to Top Button */
-    .back-to-top {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
+    .hero-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(168, 85, 247, 0.6);
+    }
+
+    /* Content Container */
+    .content {
+      position: relative;
+      z-index: 10;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px 100px;
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin: 80px 0 50px;
+      position: relative;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+      position: relative;
+    }
+
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+      border-radius: 2px;
+    }
+
+    /* Neon Cards */
+    .neon-card {
       background: var(--card);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--brand-2);
-      width: 50px;
-      height: 50px;
-      border-radius: 25px;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: var(--radius);
+      padding: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--speed);
+    }
+
+    .neon-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan), var(--neon-pink));
+      animation: scan 3s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .neon-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: 
+        0 10px 40px rgba(168, 85, 247, 0.2),
+        inset 0 0 30px rgba(168, 85, 247, 0.05);
+    }
+
+    .neon-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .neon-card h3 i {
+      font-size: 1.5rem;
+      color: var(--neon-purple);
+    }
+
+    /* Topic Grid */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin: 50px 0;
+    }
+
+    .topic-card {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.05));
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius);
+      padding: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--speed);
+      cursor: pointer;
+    }
+
+    .topic-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent);
+      transition: width 0.6s, height 0.6s;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    .topic-card:hover::after {
+      width: 300%;
+      height: 300%;
+    }
+
+    .topic-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--neon-purple);
+      box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+    }
+
+    .topic-card h4 {
+      font-size: 1.3rem;
+      color: var(--neon-purple);
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topic-card p {
+      color: var(--text-dim);
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Branches Grid */
+    .branches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 50px 0;
+    }
+
+    .branch-card {
+      background: var(--card);
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--speed);
+    }
+
+    .branch-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+      opacity: 0;
+      transition: opacity var(--speed);
+      z-index: 0;
+    }
+
+    .branch-card:hover::before {
+      opacity: 0.1;
+    }
+
+    .branch-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--neon-purple);
+      box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+    }
+
+    .branch-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--speed), transform var(--speed);
-      box-shadow: var(--shadow);
+      font-size: 2rem;
+      color: white;
+      position: relative;
+      z-index: 1;
+      animation: icon-float 3s ease-in-out infinite;
     }
 
-    .back-to-top.visible {
+    @keyframes icon-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .branch-card:nth-child(1) .branch-icon { background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink)); }
+    .branch-card:nth-child(2) .branch-icon { background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green)); }
+    .branch-card:nth-child(3) .branch-icon { background: linear-gradient(135deg, var(--neon-yellow), var(--neon-pink)); }
+    .branch-card:nth-child(4) .branch-icon { background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan)); }
+
+    .branch-card h4 {
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .branch-card p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Users Grid */
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 50px 0;
+    }
+
+    .user-card {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.05));
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: var(--radius);
+      padding: 25px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--speed);
+      cursor: pointer;
+    }
+
+    .user-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+      border-radius: var(--radius);
+      opacity: 0;
+      z-index: -1;
+      transition: opacity var(--speed);
+    }
+
+    .user-card:hover::before {
+      opacity: 1;
+      animation: rotate-border 2s linear infinite;
+    }
+
+    @keyframes rotate-border {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .user-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      background: var(--card);
+    }
+
+    .user-icon {
+      font-size: 2.5rem;
+      color: var(--neon-cyan);
+      margin-bottom: 15px;
+      transition: all var(--speed);
+    }
+
+    .user-card:hover .user-icon {
+      color: var(--neon-purple);
+      transform: scale(1.2);
+    }
+
+    .user-card h5 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .user-card p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Advantages & Limitations */
+    .pros-cons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin: 50px 0;
+    }
+
+    .advantage-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.05));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius);
+      padding: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--speed);
+    }
+
+    .advantage-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+      border-color: var(--neon-green);
+    }
+
+    .advantage-card i {
+      font-size: 2rem;
+      color: var(--neon-green);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .limitation-card {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(236, 72, 153, 0.05));
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius);
+      padding: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--speed);
+    }
+
+    .limitation-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3);
+      border-color: var(--neon-red);
+    }
+
+    .limitation-card i {
+      font-size: 2rem;
+      color: var(--neon-red);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    /* Qualitative Attributes */
+    .attributes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 50px 0;
+    }
+
+    .attribute-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      transition: all var(--speed);
+    }
+
+    .attribute-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: var(--radius);
+      padding: 2px;
+      background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan), var(--neon-pink), var(--neon-yellow));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity var(--speed);
+    }
+
+    .attribute-card:hover::before {
+      opacity: 1;
+      animation: rotate-gradient 3s linear infinite;
+    }
+
+    @keyframes rotate-gradient {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .attribute-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+    }
+
+    .attribute-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .attribute-card h5 {
+      font-size: 1.2rem;
+      color: var(--neon-cyan);
+      margin-bottom: 15px;
+    }
+
+    /* Role of Accounting Flow */
+    .role-flow {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin: 50px 0;
+      position: relative;
+    }
+
+    .role-item {
+      background: var(--card);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius);
+      padding: 25px;
+      width: 200px;
+      text-align: center;
+      position: relative;
+      transition: all var(--speed);
+    }
+
+    .role-item:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: var(--neon-purple);
+      box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+    }
+
+    .role-connector {
+      position: absolute;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+      top: 50%;
+      animation: pulse-line 2s infinite;
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.3; transform: scaleX(1); }
+      50% { opacity: 1; transform: scaleX(1.2); }
+    }
+
+    .role-item i {
+      font-size: 2rem;
+      color: var(--neon-purple);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .role-item h5 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    /* Comparison Table */
+    .comparison-table {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 50px 0;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comparison-table th {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.1));
+      color: var(--neon-cyan);
+      padding: 20px;
+      text-align: left;
+      font-size: 1.1rem;
+      border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .comparison-table td {
+      padding: 20px;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+      color: var(--text-dim);
+      transition: all var(--speed);
+    }
+
+    .comparison-table tr:hover td {
+      background: rgba(168, 85, 247, 0.05);
+      color: var(--text);
+    }
+
+    /* Tabs */
+    .tabs-container {
+      margin: 50px 0;
+    }
+
+    .tabs-header {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 12px 25px;
+      background: var(--card);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 50px;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all var(--speed);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--neon-purple);
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Smooth Scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .topic-grid,
+      .branches-grid,
+      .users-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .role-flow {
+        flex-direction: column;
+      }
+      
+      .role-connector {
+        display: none;
+      }
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .back-to-top:hover {
-      background: var(--bg-2);
-    }
-
-    /* Floating background shapes */
-    .floaters {
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      opacity: .25;
-      filter: blur(1px);
-      animation: drift var(--dur) linear infinite;
-    }
-    @keyframes drift {
-      from { transform: translateY(110vh) translateX(var(--sx)) scale(var(--sc)); }
-      to   { transform: translateY(-20vh) translateX(calc(var(--sx) + var(--dx))) scale(var(--sc)); }
     }
   </style>
 </head>
 <body>
-  <!-- Floating Shapes -->
-  <div class="floaters" id="floaters"></div>
+  <!-- Background Orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
 
-  <header>
-    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06);">
-      <a href="../index.html" style="text-decoration: none; color: var(--brand-2); display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-arrow-left"></i>
-        <span>Back to Home</span>
-      </a>
-      <a href="../lessons.html" style="text-decoration: none; color: var(--brand-2); display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-book"></i>
-        <span>All Lessons</span>
-      </a>
-    </nav>
-    <h1 class="lesson-title">Lesson 1: Introduction to Accounting</h1>
-    <div class="lesson-sub">Grade 11 • DK Goel Syllabus • AccountsWizard</div>
-  </header>
+  <!-- Navigation -->
+  <nav>
+    <a href="../index.html">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Home</span>
+    </a>
+    <a href="../lessons.html">
+      <i class="fas fa-book"></i>
+      <span>All Lessons</span>
+    </a>
+  </nav>
 
-  <!-- Notes Section -->
-  <section class="card">
-    <h2>📘 Full Notes</h2>
-    <p><strong>Accounting</strong> is often called the “language of business.” It is a process of recording, classifying, summarising, and interpreting financial information so that decisions can be made effectively.</p>
-
-    <p>According to the American Institute of Certified Public Accountants (AICPA), accounting is “the art of recording, classifying, and summarising in a significant manner and in terms of money, transactions and events which are, in part at least, of a financial character, and interpreting the results thereof.”</p>
-
-    <h3>⚡ Objectives of Accounting</h3>
-    <ul>
-      <li>To keep systematic records of financial transactions.</li>
-      <li>To determine profit or loss during an accounting period.</li>
-      <li>To ascertain financial position of the business (assets and liabilities).</li>
-      <li>To provide information for decision-making.</li>
-      <li>To safeguard business properties from misuse.</li>
-    </ul>
-
-    <h3>📑 Importance of Accounting</h3>
-    <p>Accounting plays a crucial role in every business, small or large. It helps business owners, investors, creditors, and the government by providing relevant financial information.</p>
-    <ul>
-      <li><strong>Owners:</strong> know the profitability and financial position.</li>
-      <li><strong>Investors:</strong> assess performance before investing further.</li>
-      <li><strong>Government:</strong> ensures taxation and regulations are followed.</li>
-      <li><strong>Creditors:</strong> check liquidity before giving loans or goods on credit.</li>
-    </ul>
-
-    <h3>✨ Features of Accounting</h3>
-    <ul>
-      <li>It deals with financial transactions only.</li>
-      <li>Transactions are recorded in monetary terms.</li>
-      <li>It follows systematic rules (Double Entry system).</li>
-      <li>It provides results in the form of Profit & Loss A/c and Balance Sheet.</li>
-    </ul>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="hero-title">Introduction to Accounting</h1>
+    <p class="hero-subtitle">Understand the foundation of accounting with simplicity and clarity</p>
+    <a href="#main-content" class="hero-btn">
+      <span>Start Reading</span>
+      <i class="fas fa-arrow-down"></i>
+    </a>
   </section>
-  <!-- Short Notes Section -->
-  <section class="card">
-    <h2>📝 Short Notes (Revision)</h2>
+
+  <!-- Main Content -->
+  <div class="content" id="main-content">
     
-    <div style="margin-bottom: 20px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 10px;">📌 Definition & Concept</h3>
-      <ul>
-        <li>Accounting = Language of Business (AICPA Definition)</li>
-        <li>Process: Recording → Classifying → Summarizing → Interpreting financial transactions</li>
-        <li>Only monetary transactions are recorded (Money Measurement Concept)</li>
-        <li>Business is separate from owner (Business Entity Concept)</li>
-      </ul>
+    <!-- Need & Meaning Section -->
+    <div class="section-header reveal">
+      <h2>🧱 Main Topics</h2>
     </div>
 
-    <div style="margin-bottom: 20px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 10px;">🎯 Main Objectives</h3>
-      <ul>
-        <li>Maintain systematic record of all financial transactions</li>
-        <li>Calculate profit/loss for a specific period</li>
-        <li>Determine financial position (Assets, Liabilities, Capital)</li>
-        <li>Provide information for decision-making</li>
-        <li>Protect business assets through proper records</li>
-      </ul>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 10px;">👥 Stakeholders & Their Needs</h3>
-      <ul>
-        <li>Owners: Track profitability and business growth</li>
-        <li>Investors: Evaluate investment opportunities</li>
-        <li>Government: Ensure tax compliance and regulations</li>
-        <li>Creditors: Assess creditworthiness</li>
-        <li>Managers: Make operational decisions</li>
-        <li>Employees: Understand company's stability</li>
-      </ul>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 10px;">⚡ Key Features</h3>
-      <ul>
-        <li>Monetary Terms: All transactions recorded in money</li>
-        <li>Systematic Process: Follows standard procedures</li>
-        <li>Double Entry System: Every debit has a credit</li>
-        <li>Evidence Based: Based on documents and vouchers</li>
-        <li>Period Specific: Reports for defined time periods</li>
-        <li>Universal Rules: Follows accepted principles (GAAP)</li>
-      </ul>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 10px;">📊 Output & Reports</h3>
-      <ul>
-        <li>Trading Account: Shows gross profit/loss</li>
-        <li>Profit & Loss Account: Shows net profit/loss</li>
-        <li>Balance Sheet: Shows financial position</li>
-        <li>Cash Flow Statement: Shows cash movements</li>
-      </ul>
-    </div>
-
-    <div class="info-card" style="margin-top: 25px; background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.1));">
-      <div class="info-icon">
-        <i class="fas fa-lightbulb"></i>
-      </div>
-      <div class="info-title">Exam Tips</div>
-      <div class="info-text">
-        • Focus on AICPA definition for theory questions<br>
-        • Remember the complete accounting cycle<br>
-        • Learn stakeholders and their specific needs<br>
-        • Understand basic accounting concepts clearly<br>
-        • Practice identifying transaction types
+    <div class="neon-card reveal">
+      <h3><i class="fas fa-question-circle"></i> Need for Accounting</h3>
+      <p>In today's complex business environment, accounting serves as the backbone of financial decision-making. Imagine running a business without knowing your profits, expenses, or financial position - it would be like driving blindfolded! Accounting provides the clarity businesses need to thrive.</p>
+      
+      <div style="background: rgba(168, 85, 247, 0.1); border-left: 3px solid var(--neon-purple); padding: 20px; margin-top: 20px; border-radius: 10px;">
+        <strong style="color: var(--neon-purple);">Example Scenario:</strong>
+        <p style="margin-top: 10px;">Raj owns a bookstore. Without accounting, he wouldn't know if he's making profit, which books sell best, or if he can afford to expand. Accounting helps him track every sale, expense, and make informed decisions about his business future.</p>
       </div>
     </div>
 
-    <p style="color:var(--muted); font-size:0.9rem; margin-top: 20px;">
-      💡 Pro Tip: Use these structured notes for quick revision before exams. Each section covers important exam topics! ✅
-    </p>
-  </section>
+    <div class="neon-card reveal">
+      <h3><i class="fas fa-book"></i> Definition of Accounting</h3>
+      <p>According to the American Institute of Certified Public Accountants (AICPA):</p>
+      <blockquote style="border-left: 3px solid var(--neon-cyan); padding-left: 20px; margin: 20px 0; color: var(--text);">
+        "Accounting is the art of recording, classifying, and summarising in a significant manner and in terms of money, transactions and events which are, in part at least, of a financial character, and interpreting the results thereof."
+      </blockquote>
+    </div>
 
-  <!-- Key Concepts Infographics -->
-  <section class="card">
-    <h2>🎯 Key Concepts</h2>
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-icon">
-          <i class="fas fa-language"></i>
+    <!-- Characteristics, Objectives, Functions Tabs -->
+    <div class="neon-card reveal">
+      <h3><i class="fas fa-cogs"></i> Core Aspects of Accounting</h3>
+      
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <button class="tab-btn active" onclick="showTab('characteristics')">Characteristics</button>
+          <button class="tab-btn" onclick="showTab('objectives')">Objectives</button>
+          <button class="tab-btn" onclick="showTab('functions')">Functions</button>
         </div>
-        <div class="info-title">Language of Business</div>
-        <div class="info-text">Accounting communicates financial information in a standardized way that all stakeholders can understand and use for decision-making</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon">
-          <i class="fas fa-tasks"></i>
+        
+        <div id="characteristics" class="tab-content active">
+          <h4 style="color: var(--neon-purple); margin-bottom: 15px;">Key Characteristics</h4>
+          <ul style="line-height: 2;">
+            <li>Records only monetary transactions</li>
+            <li>Follows systematic procedures and rules</li>
+            <li>Historical in nature (records past events)</li>
+            <li>Provides information for decision-making</li>
+            <li>Based on documentary evidence</li>
+            <li>Follows accounting principles and standards</li>
+          </ul>
         </div>
-        <div class="info-title">Systematic Process</div>
-        <div class="info-text">Recording → Classifying → Summarizing → Interpreting financial transactions in a structured manner</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon">
-          <i class="fas fa-users"></i>
+        
+        <div id="objectives" class="tab-content">
+          <h4 style="color: var(--neon-purple); margin-bottom: 15px;">Main Objectives</h4>
+          <ul style="line-height: 2;">
+            <li>Maintain systematic records of all financial transactions</li>
+            <li>Determine profit or loss for the accounting period</li>
+            <li>Ascertain the financial position of the business</li>
+            <li>Provide information to stakeholders for decision-making</li>
+            <li>Ensure legal compliance and tax calculations</li>
+            <li>Prevent fraud and errors in financial records</li>
+          </ul>
         </div>
-        <div class="info-title">Stakeholders</div>
-        <div class="info-text">Serves owners, investors, government, creditors, and employees with vital financial information for their needs</div>
+        
+        <div id="functions" class="tab-content">
+          <h4 style="color: var(--neon-purple); margin-bottom: 15px;">Primary Functions</h4>
+          <ul style="line-height: 2;">
+            <li><strong>Recording:</strong> Documenting all financial transactions</li>
+            <li><strong>Classifying:</strong> Grouping similar transactions together</li>
+            <li><strong>Summarizing:</strong> Preparing financial statements</li>
+            <li><strong>Analyzing:</strong> Examining financial data for insights</li>
+            <li><strong>Interpreting:</strong> Explaining financial results</li>
+            <li><strong>Communicating:</strong> Sharing information with stakeholders</li>
+          </ul>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="info-icon">
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="neon-card reveal">
+      <h3><i class="fas fa-exchange-alt"></i> Bookkeeping vs Accounting vs Accountancy</h3>
+      
+      <div class="comparison-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Bookkeeping</th>
+              <th>Accounting</th>
+              <th>Accountancy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Definition</strong></td>
+              <td>Recording of financial transactions</td>
+              <td>Recording, classifying, summarizing & interpreting</td>
+              <td>Body of knowledge and practice</td>
+            </tr>
+            <tr>
+              <td><strong>Scope</strong></td>
+              <td>Narrow - only recording</td>
+              <td>Wider - includes analysis</td>
+              <td>Widest - entire field of study</td>
+            </tr>
+            <tr>
+              <td><strong>Stage</strong></td>
+              <td>Primary/Initial stage</td>
+              <td>Secondary stage</td>
+              <td>Final/Complete stage</td>
+            </tr>
+            <tr>
+              <td><strong>Skills Required</strong></td>
+              <td>Basic recording skills</td>
+              <td>Analytical & interpretive skills</td>
+              <td>Professional expertise</td>
+            </tr>
+            <tr>
+              <td><strong>Decision Making</strong></td>
+              <td>No role</td>
+              <td>Provides information</td>
+              <td>Complete advisory role</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Branches of Accounting -->
+    <div class="section-header reveal">
+      <h2>⚙️ Branches of Accounting</h2>
+    </div>
+
+    <div class="branches-grid reveal">
+      <div class="branch-card">
+        <div class="branch-icon">
           <i class="fas fa-chart-line"></i>
         </div>
-        <div class="info-title">Decision Making</div>
-        <div class="info-text">Provides crucial data for business planning, investment decisions, and strategic management</div>
+        <h4>Financial Accounting</h4>
+        <p>Records transactions and prepares financial statements for external users like investors and creditors</p>
       </div>
-      <div class="info-card">
-        <div class="info-icon">
-          <i class="fas fa-balance-scale"></i>
-        </div>
-        <div class="info-title">Financial Position</div>
-        <div class="info-text">Shows the true picture of a business through assets, liabilities, and capital at any point in time</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon">
-          <i class="fas fa-shield-alt"></i>
-        </div>
-        <div class="info-title">Internal Control</div>
-        <div class="info-text">Helps protect business assets and ensure accuracy of records through systematic documentation</div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Practical Examples Section -->
-  <section class="card">
-    <h2>💡 Real Business Examples</h2>
-    
-    <div style="margin-bottom: 35px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 15px;">
-        <i class="fas fa-store"></i> Business Startup Example
-      </h3>
-      <p style="color: var(--muted); margin-bottom: 20px;">Rohan starts a stationery shop with the following transactions:</p>
       
-      <div class="t-account-container">
-        <div class="t-account">
-          <div class="t-account-header">Cash Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">Capital: ₹100,000</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">Furniture: ₹30,000<br>Stock: ₹40,000</div>
-            </div>
-          </div>
+      <div class="branch-card">
+        <div class="branch-icon">
+          <i class="fas fa-calculator"></i>
         </div>
-        <div class="t-account">
-          <div class="t-account-header">Capital Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">-</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">Cash: ₹100,000</div>
-            </div>
-          </div>
+        <h4>Cost Accounting</h4>
+        <p>Determines the cost of products and services, helps in cost control and reduction strategies</p>
+      </div>
+      
+      <div class="branch-card">
+        <div class="branch-icon">
+          <i class="fas fa-tasks"></i>
         </div>
+        <h4>Management Accounting</h4>
+        <p>Provides information to management for planning, controlling, and decision-making</p>
+      </div>
+      
+      <div class="branch-card">
+        <div class="branch-icon">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <h4>Social Responsibility Accounting</h4>
+        <p>Measures and reports the social costs and benefits of business activities to society</p>
       </div>
     </div>
 
-    <div style="margin-bottom: 35px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 15px;">
-        <i class="fas fa-shopping-cart"></i> Daily Transactions Example
-      </h3>
-      <p style="color: var(--muted); margin-bottom: 20px;">First week's business transactions:</p>
+    <!-- Nature of Accounting -->
+    <div class="section-header reveal">
+      <h2>🔮 Nature of Accounting</h2>
+    </div>
+
+    <div class="topic-grid reveal">
+      <div class="topic-card">
+        <h4>📊 Art and Science</h4>
+        <p>Accounting is both an art (requires skill and creativity in presenting information) and a science (follows systematic principles and methods)</p>
+      </div>
       
-      <div class="t-account-container">
-        <div class="t-account">
-          <div class="t-account-header">Sales Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">-</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">Cash Sales: ₹25,000<br>Credit Sales: ₹15,000</div>
-            </div>
-          </div>
-        </div>
-        <div class="t-account">
-          <div class="t-account-header">Purchase Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">Stock: ₹30,000</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">-</div>
-            </div>
-          </div>
-        </div>
+      <div class="topic-card">
+        <h4>📈 Information System</h4>
+        <p>Acts as an information system that collects, processes, and communicates financial data to various users for decision-making</p>
+      </div>
+      
+      <div class="topic-card">
+        <h4>🎯 Service Activity</h4>
+        <p>Provides essential financial information services to businesses, helping them operate efficiently and make informed decisions</p>
+      </div>
+      
+      <div class="topic-card">
+        <h4>🌍 Universal Application</h4>
+        <p>Applicable to all types of organizations - profit-making, non-profit, government, and individuals managing personal finances</p>
       </div>
     </div>
 
-    <div style="margin-bottom: 35px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 15px;">
-        <i class="fas fa-file-invoice"></i> Expense Recording Example
-      </h3>
-      <p style="color: var(--muted); margin-bottom: 20px;">Monthly expenses recorded:</p>
+    <!-- Users of Accounting -->
+    <div class="section-header reveal">
+      <h2>👥 Users of Accounting Information</h2>
+    </div>
+
+    <div class="users-grid reveal">
+      <div class="user-card">
+        <i class="fas fa-user-tie user-icon"></i>
+        <h5>Owners</h5>
+        <p>Need to know profitability and financial health of their investment</p>
+      </div>
       
-      <div class="t-account-container">
-        <div class="t-account">
-          <div class="t-account-header">Expenses Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">Rent: ₹8,000<br>Electricity: ₹2,000<br>Salary: ₹12,000</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">-</div>
-            </div>
-          </div>
-        </div>
-        <div class="t-account">
-          <div class="t-account-header">Cash Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">-</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">Rent: ₹8,000<br>Electricity: ₹2,000<br>Salary: ₹12,000</div>
-            </div>
-          </div>
-        </div>
+      <div class="user-card">
+        <i class="fas fa-briefcase user-icon"></i>
+        <h5>Management</h5>
+        <p>Require data for planning, controlling, and decision-making</p>
+      </div>
+      
+      <div class="user-card">
+        <i class="fas fa-hand-holding-usd user-icon"></i>
+        <h5>Creditors</h5>
+        <p>Assess creditworthiness before lending money or goods</p>
+      </div>
+      
+      <div class="user-card">
+        <i class="fas fa-chart-pie user-icon"></i>
+        <h5>Investors</h5>
+        <p>Evaluate company performance before investing</p>
+      </div>
+      
+      <div class="user-card">
+        <i class="fas fa-landmark user-icon"></i>
+        <h5>Government</h5>
+        <p>Ensure tax compliance and regulatory adherence</p>
+      </div>
+      
+      <div class="user-card">
+        <i class="fas fa-users user-icon"></i>
+        <h5>Employees</h5>
+        <p>Understand job security and growth prospects</p>
       </div>
     </div>
 
-    <div style="margin-bottom: 35px;">
-      <h3 style="color: var(--brand-2); margin-bottom: 15px;">
-        <i class="fas fa-university"></i> Bank Transactions Example
-      </h3>
-      <p style="color: var(--muted); margin-bottom: 20px;">Bank account operations:</p>
+    <!-- Advantages -->
+    <div class="section-header reveal">
+      <h2>💎 Advantages of Accounting</h2>
+    </div>
+
+    <div class="pros-cons-grid reveal">
+      <div class="advantage-card">
+        <i class="fas fa-check-circle"></i>
+        <h4 style="color: var(--neon-green);">Systematic Records</h4>
+        <p>Maintains organized records of all financial transactions, making it easy to track and retrieve information</p>
+      </div>
       
-      <div class="t-account-container">
-        <div class="t-account">
-          <div class="t-account-header">Bank Account</div>
-          <div class="t-account-body">
-            <div class="t-account-side">
-              <div class="t-account-side-header">Debit (Dr)</div>
-              <div class="t-account-amount">Cash Deposit: ₹50,000<br>Cheque from Customer: ₹15,000</div>
-            </div>
-            <div class="t-account-side">
-              <div class="t-account-side-header">Credit (Cr)</div>
-              <div class="t-account-amount">Supplier Payment: ₹25,000<br>Rent Cheque: ₹8,000</div>
-            </div>
-          </div>
-        </div>
+      <div class="advantage-card">
+        <i class="fas fa-chart-bar"></i>
+        <h4 style="color: var(--neon-green);">Performance Measurement</h4>
+        <p>Helps determine profit or loss and assess business performance over different periods</p>
+      </div>
+      
+      <div class="advantage-card">
+        <i class="fas fa-shield-alt"></i>
+        <h4 style="color: var(--neon-green);">Legal Compliance</h4>
+        <p>Ensures adherence to tax laws and regulatory requirements, avoiding legal complications</p>
+      </div>
+      
+      <div class="advantage-card">
+        <i class="fas fa-lightbulb"></i>
+        <h4 style="color: var(--neon-green);">Informed Decisions</h4>
+        <p>Provides crucial financial data that enables smart business decisions and strategic planning</p>
       </div>
     </div>
 
-    <div class="info-card" style="margin-top: 25px; background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.1));">
-      <div class="info-icon">
-        <i class="fas fa-book"></i>
+    <!-- Limitations -->
+    <div class="section-header reveal">
+      <h2>⚡ Limitations of Accounting</h2>
+    </div>
+
+    <div class="pros-cons-grid reveal">
+      <div class="limitation-card">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h4 style="color: var(--neon-red);">Ignores Non-Monetary Items</h4>
+        <p>Cannot record important factors like employee morale, market reputation, or management quality</p>
       </div>
-      <div class="info-title">Remember These Rules</div>
-      <div class="info-text" style="text-align: left;">
-        <ul style="margin: 10px 0;">
-          <li>Assets increase on Debit side</li>
-          <li>Liabilities increase on Credit side</li>
-          <li>Capital increases on Credit side</li>
-          <li>Expenses always go to Debit side</li>
-          <li>Income always goes to Credit side</li>
+      
+      <div class="limitation-card">
+        <i class="fas fa-history"></i>
+        <h4 style="color: var(--neon-red);">Historical Nature</h4>
+        <p>Records past events only, may not accurately predict future performance or trends</p>
+      </div>
+      
+      <div class="limitation-card">
+        <i class="fas fa-balance-scale-right"></i>
+        <h4 style="color: var(--neon-red);">Personal Judgment</h4>
+        <p>Involves subjective decisions in areas like depreciation methods and inventory valuation</p>
+      </div>
+      
+      <div class="limitation-card">
+        <i class="fas fa-money-bill-wave"></i>
+        <h4 style="color: var(--neon-red);">Inflation Impact</h4>
+        <p>Doesn't adjust for changing price levels, which can distort financial comparisons over time</p>
+      </div>
+    </div>
+
+    <!-- Qualitative Attributes -->
+    <div class="section-header reveal">
+      <h2>🌈 Qualitative Attributes of Accounting</h2>
+    </div>
+
+    <div class="attributes-container reveal">
+      <div class="attribute-card">
+        <div class="attribute-icon">
+          <i class="fas fa-bullseye"></i>
+        </div>
+        <h5>Relevance</h5>
+        <p>Information must be useful and timely for decision-making purposes</p>
+      </div>
+      
+      <div class="attribute-card">
+        <div class="attribute-icon">
+          <i class="fas fa-check-double"></i>
+        </div>
+        <h5>Reliability</h5>
+        <p>Data should be accurate, verifiable, and free from bias or errors</p>
+      </div>
+      
+      <div class="attribute-card">
+        <div class="attribute-icon">
+          <i class="fas fa-equals"></i>
+        </div>
+        <h5>Comparability</h5>
+        <p>Financial statements should be comparable across periods and companies</p>
+      </div>
+      
+      <div class="attribute-card">
+        <div class="attribute-icon">
+          <i class="fas fa-eye"></i>
+        </div>
+        <h5>Understandability</h5>
+        <p>Information should be clear and comprehensible to users with reasonable knowledge</p>
+      </div>
+    </div>
+
+    <!-- Role of Accounting -->
+    <div class="section-header reveal">
+      <h2>🪄 Role of Accounting</h2>
+    </div>
+
+    <div class="role-flow reveal">
+      <div class="role-item">
+        <i class="fas fa-brain"></i>
+        <h5>Decision Making</h5>
+        <p>Provides data for strategic choices</p>
+      </div>
+      
+      <div class="role-item">
+        <i class="fas fa-tachometer-alt"></i>
+        <h5>Control</h5>
+        <p>Monitors and regulates business operations</p>
+      </div>
+      
+      <div class="role-item">
+        <i class="fas fa-project-diagram"></i>
+        <h5>Planning</h5>
+        <p>Helps set goals and budgets</p>
+      </div>
+      
+      <div class="role-item">
+        <i class="fas fa-chart-line"></i>
+        <h5>Performance</h5>
+        <p>Measures success and identifies improvements</p>
+      </div>
+    </div>
+
+    <!-- Summary Card -->
+    <div class="neon-card reveal" style="margin-top: 80px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.05));">
+      <h3><i class="fas fa-graduation-cap"></i> Chapter Summary</h3>
+      <p style="line-height: 1.8;">
+        Accounting is the language of business that systematically records, classifies, summarizes, and interprets financial transactions. It serves multiple stakeholders including owners, management, creditors, investors, government, and employees. While it has limitations like ignoring non-monetary factors and being historical in nature, accounting remains essential for business success through its various branches and qualitative attributes.
+      </p>
+      
+      <div style="margin-top: 30px; padding: 20px; background: rgba(168, 85, 247, 0.1); border-radius: 15px;">
+        <h4 style="color: var(--neon-purple); margin-bottom: 15px;">🎯 Key Takeaways</h4>
+        <ul style="line-height: 2;">
+          <li>Accounting is both an art and a science</li>
+          <li>It follows the process: Record → Classify → Summarize → Interpret</li>
+          <li>Different branches serve different purposes</li>
+          <li>Multiple stakeholders depend on accounting information</li>
+          <li>Quality attributes ensure useful financial reporting</li>
         </ul>
       </div>
     </div>
-  </section>
+
+  </div>
 
   <!-- MCQ Practice Section -->
-<section class="card" id="mcqSection">
+  <section class="card" id="mcqSection">
   <h2>🧩 MCQ Practice</h2>
   <div id="quiz-progress"></div>
   <div class="mcq-grid" id="quiz-container">
@@ -672,13 +1261,13 @@
       <h3>1. What is accounting primarily concerned with?</h3>
       <input type="radio" name="q1" id="q1a" value="a">
       <label for="q1a">Marketing products</label>
-      
+
       <input type="radio" name="q1" id="q1b" value="b">
       <label for="q1b">Manufacturing goods</label>
-      
+
       <input type="radio" name="q1" id="q1c" value="c">
       <label for="q1c">Recording financial transactions</label>
-      
+
       <input type="radio" name="q1" id="q1d" value="d">
       <label for="q1d">Managing employees</label>
     </div>
@@ -688,269 +1277,269 @@
       <h3>2. The basic accounting equation is:</h3>
       <input type="radio" name="q2" id="q2a" value="a">
       <label for="q2a">Assets = Liabilities + Capital</label>
-      
+
       <input type="radio" name="q2" id="q2b" value="b">
       <label for="q2b">Assets = Liabilities - Capital</label>
-      
+
       <input type="radio" name="q2" id="q2c" value="c">
       <label for="q2c">Assets + Liabilities = Capital</label>
-      
+
       <input type="radio" name="q2" id="q2d" value="d">
       <label for="q2d">Assets = Capital - Liabilities</label>
     </div>
 
     <!-- Question 3 -->
-    <div class="mcq" data-answer="b">
-      <h3>3. Which of the following is a personal account?</h3>
+    <div class="mcq" data-answer="d">
+      <h3>3. Which of the following is a function of accounting?</h3>
       <input type="radio" name="q3" id="q3a" value="a">
-      <label for="q3a">Cash Account</label>
-      
+      <label for="q3a">Recording transactions</label>
+
       <input type="radio" name="q3" id="q3b" value="b">
-      <label for="q3b">Creditors Account</label>
-      
+      <label for="q3b">Preparing ledgers</label>
+
       <input type="radio" name="q3" id="q3c" value="c">
-      <label for="q3c">Sales Account</label>
-      
+      <label for="q3c">Providing information for decision-making</label>
+
       <input type="radio" name="q3" id="q3d" value="d">
-      <label for="q3d">Rent Account</label>
+      <label for="q3d">All of the above</label>
     </div>
 
     <!-- Question 4 -->
-    <div class="mcq" data-answer="d">
-      <h3>4. The rule for nominal account is:</h3>
+    <div class="mcq" data-answer="b">
+      <h3>4. Which of the following is not a function of accounting?</h3>
       <input type="radio" name="q4" id="q4a" value="a">
-      <label for="q4a">Debit what comes in, credit what goes out</label>
-      
+      <label for="q4a">Measurement of business transactions</label>
+
       <input type="radio" name="q4" id="q4b" value="b">
-      <label for="q4b">Debit the receiver, credit the giver</label>
-      
+      <label for="q4b">Forecasting market demand</label>
+
       <input type="radio" name="q4" id="q4c" value="c">
-      <label for="q4c">Debit all expenses and losses, credit all incomes and gains</label>
-      
+      <label for="q4c">Communication of results</label>
+
       <input type="radio" name="q4" id="q4d" value="d">
-      <label for="q4d">Both b and c</label>
+      <label for="q4d">Recording of transactions</label>
     </div>
 
     <!-- Question 5 -->
-    <div class="mcq" data-answer="c">
-      <h3>5. Which of the following is not a book of original entry?</h3>
+    <div class="mcq" data-answer="b">
+      <h3>5. Which of the following is a characteristic of accounting?</h3>
       <input type="radio" name="q5" id="q5a" value="a">
-      <label for="q5a">Cash Book</label>
-      
+      <label for="q5a">It records only qualitative data</label>
+
       <input type="radio" name="q5" id="q5b" value="b">
-      <label for="q5b">Purchase Book</label>
-      
+      <label for="q5b">It is a systematic process</label>
+
       <input type="radio" name="q5" id="q5c" value="c">
-      <label for="q5c">Ledger</label>
-      
+      <label for="q5c">It ignores money value</label>
+
       <input type="radio" name="q5" id="q5d" value="d">
-      <label for="q5d">Sales Book</label>
+      <label for="q5d">It deals with future events</label>
     </div>
 
     <!-- Question 6 -->
-    <div class="mcq" data-answer="b">
-      <h3>6. Goods returned by customers are recorded in:</h3>
+    <div class="mcq" data-answer="c">
+      <h3>6. Which of the following is an external user of accounting information?</h3>
       <input type="radio" name="q6" id="q6a" value="a">
-      <label for="q6a">Purchase Return Book</label>
-      
+      <label for="q6a">Managers</label>
+
       <input type="radio" name="q6" id="q6b" value="b">
-      <label for="q6b">Sales Return Book</label>
-      
+      <label for="q6b">Employees</label>
+
       <input type="radio" name="q6" id="q6c" value="c">
-      <label for="q6c">Journal Proper</label>
-      
+      <label for="q6c">Investors</label>
+
       <input type="radio" name="q6" id="q6d" value="d">
-      <label for="q6d">Cash Book</label>
+      <label for="q6d">Department Heads</label>
     </div>
 
     <!-- Question 7 -->
-    <div class="mcq" data-answer="a">
-      <h3>7. The process of recording transactions in the ledger is called:</h3>
+    <div class="mcq" data-answer="d">
+      <h3>7. Which of the following is an advantage of accounting?</h3>
       <input type="radio" name="q7" id="q7a" value="a">
-      <label for="q7a">Posting</label>
-      
+      <label for="q7a">It provides legal evidence</label>
+
       <input type="radio" name="q7" id="q7b" value="b">
-      <label for="q7b">Journalizing</label>
-      
+      <label for="q7b">It helps in decision-making</label>
+
       <input type="radio" name="q7" id="q7c" value="c">
-      <label for="q7c">Balancing</label>
-      
+      <label for="q7c">It records all transactions systematically</label>
+
       <input type="radio" name="q7" id="q7d" value="d">
-      <label for="q7d">Classifying</label>
+      <label for="q7d">All of the above</label>
     </div>
 
     <!-- Question 8 -->
-    <div class="mcq" data-answer="c">
-      <h3>8. Which of the following is a current asset?</h3>
+    <div class="mcq" data-answer="a">
+      <h3>8. Which of the following is a limitation of accounting?</h3>
       <input type="radio" name="q8" id="q8a" value="a">
-      <label for="q8a">Land</label>
-      
+      <label for="q8a">It records only monetary transactions</label>
+
       <input type="radio" name="q8" id="q8b" value="b">
-      <label for="q8b">Building</label>
-      
+      <label for="q8b">It considers non-financial aspects</label>
+
       <input type="radio" name="q8" id="q8c" value="c">
-      <label for="q8c">Inventory</label>
-      
+      <label for="q8c">It predicts future events</label>
+
       <input type="radio" name="q8" id="q8d" value="d">
-      <label for="q8d">Machinery</label>
+      <label for="q8d">It provides qualitative data</label>
     </div>
 
     <!-- Question 9 -->
-    <div class="mcq" data-answer="b">
-      <h3>9. The trial balance checks:</h3>
+    <div class="mcq" data-answer="c">
+      <h3>9. Which of the following best defines accounting?</h3>
       <input type="radio" name="q9" id="q9a" value="a">
-      <label for="q9a">Arithmetical accuracy of ledger accounts</label>
-      
+      <label for="q9a">Art of manufacturing goods</label>
+
       <input type="radio" name="q9" id="q9b" value="b">
-      <label for="q9b">Arithmetical accuracy of posting</label>
-      
+      <label for="q9b">Art of managing people</label>
+
       <input type="radio" name="q9" id="q9c" value="c">
-      <label for="q9c">Accuracy of transactions</label>
-      
+      <label for="q9c">Art of recording, classifying, and summarizing transactions</label>
+
       <input type="radio" name="q9" id="q9d" value="d">
-      <label for="q9d">All of the above</label>
+      <label for="q9d">Science of marketing products</label>
     </div>
 
     <!-- Question 10 -->
-    <div class="mcq" data-answer="d">
-      <h3>10. Depreciation is:</h3>
+    <div class="mcq" data-answer="b">
+      <h3>10. Which of the following shows the financial position of a business?</h3>
       <input type="radio" name="q10" id="q10a" value="a">
-      <label for="q10a">A fall in the market value of an asset</label>
-      
+      <label for="q10a">Income Statement</label>
+
       <input type="radio" name="q10" id="q10b" value="b">
-      <label for="q10b">A physical deterioration of an asset</label>
-      
+      <label for="q10b">Balance Sheet</label>
+
       <input type="radio" name="q10" id="q10c" value="c">
-      <label for="q10c">A fall in the value of money</label>
-      
+      <label for="q10c">Cash Flow Statement</label>
+
       <input type="radio" name="q10" id="q10d" value="d">
-      <label for="q10d">Allocation of the cost of a fixed asset over its useful life</label>
+      <label for="q10d">Trial Balance</label>
     </div>
 
     <!-- Question 11 -->
     <div class="mcq" data-answer="a">
-      <h3>11. Bad debts are:</h3>
+      <h3>11. A business transaction must always:</h3>
       <input type="radio" name="q11" id="q11a" value="a">
-      <label for="q11a">Debts which cannot be recovered</label>
-      
+      <label for="q11a">Affect at least two accounts</label>
+
       <input type="radio" name="q11" id="q11b" value="b">
-      <label for="q11b">Debts which are doubtful</label>
-      
+      <label for="q11b">Be non-financial in nature</label>
+
       <input type="radio" name="q11" id="q11c" value="c">
-      <label for="q11c">Debts which are due for a long time</label>
-      
+      <label for="q11c">Have no monetary value</label>
+
       <input type="radio" name="q11" id="q11d" value="d">
-      <label for="q11d">All of the above</label>
+      <label for="q11d">Be recorded once a year</label>
     </div>
 
     <!-- Question 12 -->
-    <div class="mcq" data-answer="c">
-      <h3>12. The provision for discount on creditors is:</h3>
+    <div class="mcq" data-answer="b">
+      <h3>12. Which of the following is a business transaction?</h3>
       <input type="radio" name="q12" id="q12a" value="a">
-      <label for="q12a">A loss</label>
-      
+      <label for="q12a">Owner takes goods for personal use</label>
+
       <input type="radio" name="q12" id="q12b" value="b">
-      <label for="q12b">An expense</label>
-      
+      <label for="q12b">Business pays rent</label>
+
       <input type="radio" name="q12" id="q12c" value="c">
-      <label for="q12c">A gain</label>
-      
+      <label for="q12c">Employee joins company</label>
+
       <input type="radio" name="q12" id="q12d" value="d">
-      <label for="q12d">An asset</label>
+      <label for="q12d">Manager plans a meeting</label>
     </div>
 
     <!-- Question 13 -->
     <div class="mcq" data-answer="b">
-      <h3>13. Which financial statement shows the financial position of a business?</h3>
+      <h3>13. The term 'accountancy' refers to:</h3>
       <input type="radio" name="q13" id="q13a" value="a">
-      <label for="q13a">Income Statement</label>
-      
+      <label for="q13a">Practical work of accounting</label>
+
       <input type="radio" name="q13" id="q13b" value="b">
-      <label for="q13b">Balance Sheet</label>
-      
+      <label for="q13b">Body of knowledge related to accounting principles</label>
+
       <input type="radio" name="q13" id="q13c" value="c">
-      <label for="q13c">Cash Flow Statement</label>
-      
+      <label for="q13c">Only bookkeeping</label>
+
       <input type="radio" name="q13" id="q13d" value="d">
-      <label for="q13d">Trial Balance</label>
+      <label for="q13d">Personal finance management</label>
     </div>
 
     <!-- Question 14 -->
     <div class="mcq" data-answer="a">
-      <h3>14. Capital expenditure is:</h3>
+      <h3>14. Accounting helps management in:</h3>
       <input type="radio" name="q14" id="q14a" value="a">
-      <label for="q14a">Expenditure incurred to acquire fixed assets</label>
-      
+      <label for="q14a">Decision-making</label>
+
       <input type="radio" name="q14" id="q14b" value="b">
-      <label for="q14b">Expenditure incurred on day-to-day operations</label>
-      
+      <label for="q14b">Cooking meals</label>
+
       <input type="radio" name="q14" id="q14c" value="c">
-      <label for="q14c">Expenditure which is non-recurring</label>
-      
+      <label for="q14c">Planning events</label>
+
       <input type="radio" name="q14" id="q14d" value="d">
-      <label for="q14d">Both a and c</label>
+      <label for="q14d">None of the above</label>
     </div>
 
     <!-- Question 15 -->
-    <div class="mcq" data-answer="d">
-      <h3>15. The accounting cycle ends with:</h3>
+    <div class="mcq" data-answer="c">
+      <h3>15. Which of the following best describes bookkeeping?</h3>
       <input type="radio" name="q15" id="q15a" value="a">
-      <label for="q15a">Journal</label>
-      
+      <label for="q15a">Summarizing financial results</label>
+
       <input type="radio" name="q15" id="q15b" value="b">
-      <label for="q15b">Ledger</label>
-      
+      <label for="q15b">Analyzing business performance</label>
+
       <input type="radio" name="q15" id="q15c" value="c">
-      <label for="q15c">Trial Balance</label>
-      
+      <label for="q15c">Recording financial transactions systematically</label>
+
       <input type="radio" name="q15" id="q15d" value="d">
-      <label for="q15d">Financial Statements</label>
+      <label for="q15d">Making business policies</label>
     </div>
 
     <!-- Question 16 -->
-    <div class="mcq" data-answer="b">
-      <h3>16. Bank reconciliation statement is prepared to:</h3>
+    <div class="mcq" data-answer="c">
+      <h3>16. Which of the following is an internal user of accounting information?</h3>
       <input type="radio" name="q16" id="q16a" value="a">
-      <label for="q16a">Correct the cash book</label>
-      
+      <label for="q16a">Investors</label>
+
       <input type="radio" name="q16" id="q16b" value="b">
-      <label for="q16b">Reconcile the cash book balance with the pass book balance</label>
-      
+      <label for="q16b">Creditors</label>
+
       <input type="radio" name="q16" id="q16c" value="c">
-      <label for="q16c">Correct the pass book</label>
-      
+      <label for="q16c">Management</label>
+
       <input type="radio" name="q16" id="q16d" value="d">
-      <label for="q16d">All of the above</label>
+      <label for="q16d">Government</label>
     </div>
 
     <!-- Question 17 -->
-    <div class="mcq" data-answer="c">
-      <h3>17. Which of the following is not a subsidiary book?</h3>
+    <div class="mcq" data-answer="a">
+      <h3>17. Accounting helps management by:</h3>
       <input type="radio" name="q17" id="q17a" value="a">
-      <label for="q17a">Purchase Book</label>
-      
+      <label for="q17a">Providing data for decision-making</label>
+
       <input type="radio" name="q17" id="q17b" value="b">
-      <label for="q17b">Sales Book</label>
-      
+      <label for="q17b">Avoiding tax liability</label>
+
       <input type="radio" name="q17" id="q17c" value="c">
-      <label for="q17c">Ledger</label>
-      
+      <label for="q17c">Recording personal transactions</label>
+
       <input type="radio" name="q17" id="q17d" value="d">
-      <label for="q17d">Cash Book</label>
+      <label for="q17d">Ignoring cash transactions</label>
     </div>
 
     <!-- Question 18 -->
     <div class="mcq" data-answer="a">
-      <h3>18. The concept which assumes that a business will continue for a long time is:</h3>
+      <h3>18. The concept that assumes business will continue for a long time is:</h3>
       <input type="radio" name="q18" id="q18a" value="a">
       <label for="q18a">Going Concern Concept</label>
-      
+
       <input type="radio" name="q18" id="q18b" value="b">
       <label for="q18b">Business Entity Concept</label>
-      
+
       <input type="radio" name="q18" id="q18c" value="c">
       <label for="q18c">Money Measurement Concept</label>
-      
+
       <input type="radio" name="q18" id="q18d" value="d">
       <label for="q18d">Dual Aspect Concept</label>
     </div>
@@ -960,32 +1549,33 @@
       <h3>19. Goods taken by the proprietor for personal use are called:</h3>
       <input type="radio" name="q19" id="q19a" value="a">
       <label for="q19a">Sales</label>
-      
+
       <input type="radio" name="q19" id="q19b" value="b">
       <label for="q19b">Drawings</label>
-      
+
       <input type="radio" name="q19" id="q19c" value="c">
       <label for="q19c">Purchases</label>
-      
+
       <input type="radio" name="q19" id="q19d" value="d">
       <label for="q19d">Expenses</label>
     </div>
 
     <!-- Question 20 -->
-    <div class="mcq" data-answer="d">
-      <h3>20. Which of the following is not a type of cash book?</h3>
+    <div class="mcq" data-answer="c">
+      <h3>20. Which of the following is not a limitation of accounting?</h3>
       <input type="radio" name="q20" id="q20a" value="a">
-      <label for="q20a">Single Column Cash Book</label>
-      
+      <label for="q20a">Based on historical cost</label>
+
       <input type="radio" name="q20" id="q20b" value="b">
-      <label for="q20b">Double Column Cash Book</label>
-      
+      <label for="q20b">Ignores qualitative factors</label>
+
       <input type="radio" name="q20" id="q20c" value="c">
-      <label for="q20c">Triple Column Cash Book</label>
-      
+      <label for="q20c">Provides future forecasts</label>
+
       <input type="radio" name="q20" id="q20d" value="d">
-      <label for="q20d">Four Column Cash Book</label>
+      <label for="q20d">May include personal bias</label>
     </div>
+
     
   </div>
   
@@ -1336,6 +1926,48 @@
       initializePage();
     }
 
+    // Tab Functionality
+    function showTab(tabName) {
+      // Hide all tab contents
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+      
+      // Remove active class from all buttons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+      
+      // Add active class to clicked button
+      event.target.classList.add('active');
+    }
+
+    // Scroll Reveal Animation
+    function reveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      reveals.forEach(element => {
+        const windowHeight = window.innerHeight;
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', reveal);
+    
+    // Initial check for elements in view
+    reveal();
+
+    // Smooth scroll for hero button
+    document.querySelector('.hero-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+    });
 </script>
 </body>
 </html>
