@@ -713,14 +713,413 @@
     margin-bottom: 10px;
   }
 
+  /* Mobile-Specific Fixes for Lesson 13 Examples */
   @media (max-width: 768px) {
+    /* Journal Table - Fixed structure */
+    .journal-table table {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      font-size: 0.75rem;
+    }
+
+    .journal-table thead,
+    .journal-table tbody {
+      display: table-row-group;
+    }
+
+    .journal-table tr {
+      display: table-row;
+    }
+
+    .journal-table th,
+    .journal-table td {
+      display: table-cell;
+      padding: 8px 4px;
+      font-size: 0.75rem;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      word-wrap: break-word;
+    }
+
+    /* Fixed column widths for journal table */
+    .journal-table th:first-child,
+    .journal-table td:first-child {
+      width: 15%;
+    }
+
+    .journal-table th:nth-child(2),
+    .journal-table td:nth-child(2) {
+      width: 40%;
+    }
+
+    .journal-table th:nth-child(3),
+    .journal-table td:nth-child(3) {
+      width: 12%;
+    }
+
+    .journal-table th:nth-child(4),
+    .journal-table td:nth-child(4) {
+      width: 16.5%;
+    }
+
+    .journal-table th:nth-child(5),
+    .journal-table td:nth-child(5) {
+      width: 16.5%;
+    }
+
+    /* Trial Balance Table - Fixed structure */
+    .trial-balance-table table {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      font-size: 0.75rem;
+    }
+
+    .trial-balance-table thead,
+    .trial-balance-table tbody {
+      display: table-row-group;
+    }
+
+    .trial-balance-table tr {
+      display: table-row;
+    }
+
+    .trial-balance-table th,
+    .trial-balance-table td {
+      display: table-cell;
+      padding: 8px 4px;
+      font-size: 0.75rem;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+    }
+
+    /* Fixed column widths for trial balance table */
+    .trial-balance-table th:first-child,
+    .trial-balance-table td:first-child {
+      width: 12%;
+    }
+
+    .trial-balance-table th:nth-child(2),
+    .trial-balance-table td:nth-child(2) {
+      width: 38%;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+
+    .trial-balance-table th:nth-child(3),
+    .trial-balance-table td:nth-child(3) {
+      width: 12%;
+    }
+
+    .trial-balance-table th:nth-child(4),
+    .trial-balance-table td:nth-child(4) {
+      width: 19%;
+    }
+
+    .trial-balance-table th:nth-child(5),
+    .trial-balance-table td:nth-child(5) {
+      width: 19%;
+    }
+
+    /* Ledger Grid - Stack vertically */
+    .ledger-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ledger-row {
+      grid-template-columns: 60px 1fr 50px 70px;
+      font-size: 0.75rem;
+    }
+
+    .ledger-cell {
+      padding: 6px 4px;
+      font-size: 0.7rem;
+    }
+
+    /* Example Card */
+    .example-card {
+      padding: 20px 15px;
+    }
+
+    .example-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .example-number {
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+    }
+
+    .example-title {
+      font-size: 1.2rem;
+    }
+
+    /* Question Box */
+    .question-box {
+      padding: 15px;
+    }
+
+    .question-box h4 {
+      font-size: 0.95rem;
+    }
+
+    .transactions-list {
+      font-size: 0.85rem;
+    }
+
+    /* Solution Box */
+    .solution-box {
+      padding: 15px;
+    }
+
+    /* Ledger Account */
+    .ledger-account {
+      padding: 10px;
+    }
+
+    .account-title {
+      font-size: 0.95rem;
+      padding: 8px;
+    }
+
+    /* Section Divider */
+    .section-divider {
+      padding: 12px;
+    }
+
+    .section-divider h3 {
+      font-size: 1.1rem;
+    }
+
+    /* Note Box */
+    .note-box {
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+
+    /* Nav Header */
+    .nav-header {
+      padding: 12px 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-header a {
+      padding: 8px 15px;
+      font-size: 0.85rem;
+    }
+
+    /* Header */
+    .main-title {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    /* Progress Tracker */
+    .progress-tracker {
+      padding: 15px;
+    }
+
+    .progress-bar {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .progress-step {
+      width: 100%;
+    }
+
+    /* Quick Navigation */
+    .quick-nav {
+      padding: 15px;
+    }
+
+    .nav-buttons {
+      flex-direction: column;
+    }
+
+    .nav-btn {
+      width: 100%;
+      padding: 10px;
+    }
+
+    /* Quiz Section */
+    .quiz-section {
+      padding: 20px 15px;
+    }
+
+    .quiz-title {
+      font-size: 1.5rem;
+    }
+
+    .quiz-card {
+      padding: 15px;
+    }
+
+    .quiz-question {
+      font-size: 0.95rem;
+    }
+
+    .quiz-option {
+      padding: 10px;
+      font-size: 0.85rem;
+    }
+
+    /* Matching Game - Stack vertically */
     .matching-game-container {
       grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 15px;
+      padding: 20px 15px;
     }
 
     .connection-area {
       display: none;
+    }
+
+    .matching-column {
+      padding: 15px;
+    }
+
+    .column-header {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    .match-item {
+      padding: 10px 12px;
+      font-size: 0.85rem;
+    }
+
+    .match-item i {
+      font-size: 0.9rem;
+    }
+
+    /* Game Controls */
+    .game-controls {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-btn {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    .score-display {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Results Container */
+    .results-container {
+      padding: 15px;
+    }
+
+    .results-title {
+      font-size: 1.2rem;
+    }
+
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .result-item {
+      padding: 12px;
+    }
+
+    /* Transaction Hint */
+    .transaction-hint {
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+
+    .hint-title {
+      font-size: 0.95rem;
+    }
+
+    /* Format Display */
+    .format-display {
+      padding: 15px 10px;
+    }
+
+    .format-display::before {
+      font-size: 0.7rem;
+      top: -8px;
+      right: 10px;
+      padding: 4px 10px;
+    }
+
+    /* Table Title */
+    .table-title {
+      font-size: 0.95rem;
+      padding: 8px;
+    }
+  }
+
+  /* Extra Small Screens */
+  @media (max-width: 480px) {
+    .journal-table th,
+    .journal-table td {
+      padding: 6px 3px;
+      font-size: 0.7rem;
+    }
+
+    .trial-balance-table th,
+    .trial-balance-table td {
+      padding: 6px 3px;
+      font-size: 0.7rem;
+    }
+
+    .ledger-row {
+      grid-template-columns: 50px 1fr 40px 60px;
+      font-size: 0.65rem;
+    }
+
+    .main-title {
+      font-size: 1.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+    }
+
+    .example-number {
+      width: 35px;
+      height: 35px;
+      font-size: 1rem;
+    }
+
+    .example-title {
+      font-size: 1rem;
+    }
+
+    .match-item {
+      padding: 8px 10px;
+      font-size: 0.8rem;
+    }
+
+    .control-btn {
+      padding: 8px;
+      font-size: 0.85rem;
+    }
+
+    .quiz-title {
+      font-size: 1.3rem;
     }
   }
   </style>
@@ -729,18 +1128,13 @@
   <div class="nav-header">
     <a href="lesson-13.html">
       <i class="fas fa-arrow-left"></i>
-      <span>← Theory</span>
+      <span>Theory</span>
     </a>
-    <a href="../index.html">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
+    <a href="../lessons.html">
+      <i class="fas fa-book"></i>
+      <span>All Lessons</span>
     </a>
   </div>
-
-  <header>
-    <h1 class="main-title">Ledger - Numerical Examples</h1>
-    <p class="subtitle">Complete Cycle: Transactions → Journal → Ledger → Trial Balance</p>
-  </header>
 
   <header>
     <h1 class="main-title">Ledger - Numerical Examples</h1>

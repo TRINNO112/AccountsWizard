@@ -1079,26 +1079,70 @@
 
     /* Mobile-Specific Fixes */
     @media (max-width: 768px) {
-      /* Format Table - Horizontal Scroll */
+      /* Format Table - Better structure */
       .trial-balance-table {
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        display: table;
+        width: 100%;
+        table-layout: fixed;
         font-size: 0.75rem;
       }
 
       .trial-balance-table thead,
       .trial-balance-table tbody,
+      .trial-balance-table tfoot {
+        display: table-row-group;
+      }
+
       .trial-balance-table tr {
-        display: table;
-        width: 100%;
+        display: table-row;
       }
 
       .trial-balance-table th,
       .trial-balance-table td {
+        display: table-cell;
         padding: 8px 4px;
         font-size: 0.75rem;
-        white-space: nowrap;
+        vertical-align: middle;
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+
+      /* Fixed column widths */
+      .trial-balance-table th:first-child,
+      .trial-balance-table td:first-child {
+        width: 12%;
+      }
+
+      .trial-balance-table th:nth-child(2),
+      .trial-balance-table td:nth-child(2) {
+        width: 36%;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      .trial-balance-table th:nth-child(3),
+      .trial-balance-table td:nth-child(3) {
+        width: 12%;
+      }
+
+      .trial-balance-table th:nth-child(4),
+      .trial-balance-table td:nth-child(4) {
+        width: 20%;
+      }
+
+      .trial-balance-table th:nth-child(5),
+      .trial-balance-table td:nth-child(5) {
+        width: 20%;
+      }
+
+      /* Solution Tables - Keep table structure intact */
+      .solution {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .solution .trial-balance-table {
+        width: 100%;
+        table-layout: fixed;
       }
 
       /* Errors Section - Stack Cards Vertically */
@@ -1108,16 +1152,6 @@
 
       .objective-card {
         margin-bottom: 15px;
-      }
-
-      /* Solution Tables - Horizontal Scroll */
-      .solution {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .solution .trial-balance-table {
-        min-width: 500px;
       }
 
       /* Trial Balance Game - Major Restructure */
@@ -1384,6 +1418,40 @@
 
     /* Extra small screens */
     @media (max-width: 480px) {
+      .trial-balance-table th,
+      .trial-balance-table td {
+        padding: 6px 3px;
+        font-size: 0.7rem;
+      }
+
+      /* Maintain same column distribution */
+      .trial-balance-table th:first-child,
+      .trial-balance-table td:first-child {
+        width: 12%;
+      }
+
+      .trial-balance-table th:nth-child(2),
+      .trial-balance-table td:nth-child(2) {
+        width: 36%;
+      }
+
+      .trial-balance-table th:nth-child(3),
+      .trial-balance-table td:nth-child(3) {
+        width: 12%;
+      }
+
+      .trial-balance-table th:nth-child(4),
+      .trial-balance-table td:nth-child(4) {
+        width: 20%;
+        font-size: 0.65rem;
+      }
+
+      .trial-balance-table th:nth-child(5),
+      .trial-balance-table td:nth-child(5) {
+        width: 20%;
+        font-size: 0.65rem;
+      }
+
       .game-trial-balance {
         min-width: 550px;
       }

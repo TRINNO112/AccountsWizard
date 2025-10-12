@@ -476,25 +476,330 @@
       }
     }
 
-    /* Responsive Design */
+    /* Mobile-Specific Fixes for Lesson 13 */
     @media (max-width: 768px) {
-      .main-title { font-size: 2rem; }
-      .adv-disadv-grid { grid-template-columns: 1fr; }
-      .process-flow { flex-direction: column; }
-      .process-arrow { transform: rotate(90deg); }
-      section { padding: 20px; }
-      .ledger-format { grid-template-columns: 1fr; }
-      .comparison-table { font-size: 0.85rem; }
-      .ledger-columns { font-size: 0.8rem; }
+      /* Comparison Table - Fixed structure */
+      .comparison-table {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        font-size: 0.75rem;
+      }
+
+      .comparison-table thead,
+      .comparison-table tbody {
+        display: table-row-group;
+      }
+
+      .comparison-table tr {
+        display: table-row;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        display: table-cell;
+        padding: 8px 6px;
+        font-size: 0.75rem;
+        vertical-align: middle;
+        border: 1px solid #e0e0e0;
+        word-wrap: break-word;
+      }
+
+      /* Fixed column widths for comparison table */
+      .comparison-table th:first-child,
+      .comparison-table td:first-child {
+        width: 25%;
+      }
+
+      .comparison-table th:nth-child(2),
+      .comparison-table td:nth-child(2) {
+        width: 37.5%;
+      }
+
+      .comparison-table th:nth-child(3),
+      .comparison-table td:nth-child(3) {
+        width: 37.5%;
+      }
+
+      /* Trial Balance Format Table - Fixed structure */
+      .format-display table {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        font-size: 0.75rem;
+      }
+
+      .format-display table thead,
+      .format-display table tbody {
+        display: table-row-group;
+      }
+
+      .format-display table tr {
+        display: table-row;
+      }
+
+      .format-display table th,
+      .format-display table td {
+        display: table-cell;
+        padding: 8px 4px;
+        font-size: 0.75rem;
+        vertical-align: middle;
+        border: 1px solid #ddd;
+      }
+
+      /* Fixed column widths for trial balance table */
+      .format-display table th:first-child,
+      .format-display table td:first-child {
+        width: 12%;
+      }
+
+      .format-display table th:nth-child(2),
+      .format-display table td:nth-child(2) {
+        width: 38%;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      .format-display table th:nth-child(3),
+      .format-display table td:nth-child(3) {
+        width: 12%;
+      }
+
+      .format-display table th:nth-child(4),
+      .format-display table td:nth-child(4) {
+        width: 19%;
+      }
+
+      .format-display table th:nth-child(5),
+      .format-display table td:nth-child(5) {
+        width: 19%;
+      }
+
+      /* Ledger Format - Stack vertically */
+      .ledger-format {
+        grid-template-columns: 1fr;
+      }
+
+      .ledger-columns {
+        grid-template-columns: 60px 1fr 50px 70px;
+        font-size: 0.75rem;
+      }
+
+      .ledger-header,
+      .ledger-cell {
+        padding: 6px 4px;
+        font-size: 0.7rem;
+      }
+
+      /* Format Display */
+      .format-display {
+        padding: 15px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .format-display h3 {
+        font-size: 1.1rem;
+      }
+
+      /* Process Flow - Vertical */
+      .process-flow {
+        flex-direction: column;
+        padding: 20px 15px;
+      }
+
+      .process-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+      }
+
+      .step-number {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+      }
+
+      /* Adv-Disadv Grid */
+      .adv-disadv-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .adv-box, .disadv-box {
+        padding: 15px;
+      }
+
+      /* Features List */
+      .features-list {
+        padding: 15px;
+      }
+
+      .features-list li {
+        font-size: 0.85rem;
+        padding-left: 25px;
+      }
+
+      /* Section Padding */
+      section {
+        padding: 25px 15px;
+      }
+
+      /* Headers */
+      .main-title {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      section h3 {
+        font-size: 1.2rem;
+      }
+
+      section h4 {
+        font-size: 1rem;
+      }
+
+      /* Definition Box */
+      .definition-box {
+        padding: 20px 15px;
+      }
+
+      .definition-box h3 {
+        font-size: 1.1rem;
+      }
+
+      .definition-box p {
+        font-size: 0.9rem;
+      }
+
+      /* Nav Header */
+      .nav-header {
+        padding: 12px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .nav-header a {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+      }
+
+      /* Link Button */
+      .link-button {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+      }
+
+      /* MCQ Section */
+      .mcq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mcq {
+        padding: 15px;
+      }
+
+      .mcq h3 {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+      }
+
+      .mcq label {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+      }
+
+      /* Quiz Progress Bar */
+      .quiz-progress-container {
+        padding: 12px;
+      }
+
+      .quiz-progress-header {
+        font-size: 0.85rem;
+      }
+
+      .quiz-progress-bar {
+        height: 8px;
+      }
+
+      /* Quiz Result */
+      .quiz-result-success,
+      .quiz-result-warning,
+      .quiz-result-default {
+        padding: 15px;
+      }
+
+      .quiz-result-title {
+        font-size: 1.1rem;
+      }
+
+      .quiz-result-score {
+        font-size: 0.95rem;
+      }
+
+      /* Buttons */
+      #submitQuiz,
+      #retry-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        width: 100%;
+        max-width: 300px;
+        margin: 10px auto;
+      }
+    }
+
+    /* Extra Small Screens */
+    @media (max-width: 480px) {
+      .comparison-table th,
+      .comparison-table td {
+        padding: 6px 4px;
+        font-size: 0.7rem;
+      }
+
+      .format-display table th,
+      .format-display table td {
+        padding: 6px 3px;
+        font-size: 0.7rem;
+      }
+
+      .ledger-columns {
+        grid-template-columns: 50px 1fr 40px 60px;
+        font-size: 0.65rem;
+      }
+
+      .main-title {
+        font-size: 1.5rem;
+      }
+
+      section h2 {
+        font-size: 1.3rem;
+      }
+
+      .process-step {
+        min-width: 120px;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Navigation -->
   <div class="nav-header">
-    <a href="../index.html">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
+    <a href="../lessons.html">
+      <i class="fas fa-book"></i>
+      <span>All Lessons</span>
     </a>
     <a href="lesson-13-examples.html">
       <i class="fas fa-calculator"></i>
