@@ -1,1147 +1,1559 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Account Type - AccountsWizard</title>
-    <!-- Font Awesome for Professional Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-glow: rgba(99, 102, 241, 0.6);
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.6);
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --error-glow: rgba(239, 68, 68, 0.6);
-            --info: #06b6d4;
-            
-            --bg-primary: #0f0f23;
-            --bg-secondary: #1a1a2e;
-            --surface: #1e1e3f;
-            --surface-hover: #252547;
-            
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Enhanced Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
-            z-index: -1;
-            animation: bgShift 20s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgShift {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.2) rotate(10deg); }
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-            opacity: 0.3;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
-        }
-
-        nav {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo i {
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .header h1 i {
-            color: var(--primary);
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .header p {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Enhanced Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: rgba(30, 30, 63, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            text-align: center;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
-        }
-
-        .stat-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-            color: var(--primary);
-            text-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Enhanced Quiz Card */
-        .quiz-card {
-            background: rgba(30, 30, 63, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-xl);
-            padding: 3rem;
-            margin-bottom: 2rem;
-            animation: scaleIn 0.5s ease-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quiz-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-            background-size: 200% 100%;
-            animation: shimmer 3s infinite linear;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .progress-section {
-            margin-bottom: 2rem;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .progress-label {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .progress-text {
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 100px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 100px;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmerProgress 2s infinite;
-        }
-
-        @keyframes shimmerProgress {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Enhanced Question Display */
-        .question-display {
-            text-align: center;
-            margin: 3rem 0;
-            position: relative;
-        }
-
-        .question-badge {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .question-text {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 2rem 0;
-            padding: 2.5rem;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
-            border: 2px solid rgba(99, 102, 241, 0.2);
-            border-radius: var(--radius-xl);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .question-text::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.02), transparent);
-            animation: questionGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes questionGlow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* ENHANCED OPTIONS GRID WITH ICONS */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin: 3rem 0;
-        }
-
-        .option-card {
-            padding: 2.5rem 2rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-xl);
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            text-align: center;
-        }
-
-        .option-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .option-card:hover::before {
-            opacity: 1;
-        }
-
-        /* PROFESSIONAL ICON STYLING */
-        .option-icon {
-            font-size: 4rem;
-            transition: var(--transition);
-            position: relative;
-            width: 120px;
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-bottom: 1rem;
-        }
-
-        .option-icon i {
-            position: relative;
-            z-index: 2;
-        }
-
-        .option-icon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            transform: scale(0.8);
-            transition: var(--transition);
-        }
-
-        .option-card:hover .option-icon::before {
-            transform: scale(1);
-        }
-
-        .option-card:hover .option-icon {
-            transform: scale(1.1) rotateY(10deg);
-        }
-
-        .option-label {
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .option-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        /* ACCOUNT TYPE SPECIFIC STYLES WITH ICONS */
-        .option-card.asset {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .option-card.asset .option-icon {
-            color: var(--success);
-            text-shadow: 0 0 30px var(--success-glow);
-        }
-
-        .option-card.asset .option-label {
-            color: var(--success);
-        }
-
-        .option-card.asset:hover {
-            transform: translateY(-8px);
-            border-color: var(--success);
-            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
-        }
-
-        .option-card.liability {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-
-        .option-card.liability .option-icon {
-            color: var(--error);
-            text-shadow: 0 0 30px var(--error-glow);
-        }
-
-        .option-card.liability .option-label {
-            color: var(--error);
-        }
-
-        .option-card.liability:hover {
-            transform: translateY(-8px);
-            border-color: var(--error);
-            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.3);
-        }
-
-        .option-card.expense {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .option-card.expense .option-icon {
-            color: var(--warning);
-            text-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
-        }
-
-        .option-card.expense .option-label {
-            color: var(--warning);
-        }
-
-        .option-card.expense:hover {
-            transform: translateY(-8px);
-            border-color: var(--warning);
-            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.3);
-        }
-
-        .option-card.income {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
-            border-color: rgba(99, 102, 241, 0.3);
-        }
-
-        .option-card.income .option-icon {
-            color: var(--primary);
-            text-shadow: 0 0 30px var(--primary-glow);
-        }
-
-        .option-card.income .option-label {
-            color: var(--primary);
-        }
-
-        .option-card.income:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Selection States */
-        .option-card.correct {
-            border-color: var(--success);
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.15));
-            animation: correctPulse 0.6s ease;
-            box-shadow: 0 0 30px var(--success-glow);
-        }
-
-        .option-card.wrong {
-            border-color: var(--error);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.15));
-            animation: wrongShake 0.6s ease;
-            box-shadow: 0 0 30px var(--error-glow);
-        }
-
-        @keyframes correctPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes wrongShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        /* Enhanced Feedback */
-        .feedback {
-            padding: 2rem;
-            border-radius: var(--radius-xl);
-            margin-top: 2rem;
-            display: none;
-            animation: slideInUp 0.5s ease-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .feedback.show {
-            display: block;
-        }
-
-        .feedback.correct {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
-            border: 2px solid rgba(16, 185, 129, 0.4);
-            color: var(--success);
-        }
-
-        .feedback.wrong {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
-            border: 2px solid rgba(239, 68, 68, 0.4);
-            color: var(--error);
-        }
-
-        .feedback-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .feedback-icon {
-            font-size: 2rem;
-        }
-
-        .feedback-title {
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-
-        .feedback-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-        }
-
-        /* Buttons */
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: var(--radius-lg);
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
-        }
-
-        /* Results Card */
-        .results-card {
-            text-align: center;
-            padding: 4rem 3rem;
-            background: rgba(30, 30, 63, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-xl);
-            animation: scaleIn 0.5s ease-out;
-        }
-
-        .results-card.hidden {
-            display: none;
-        }
-
-        .score-display {
-            margin: 3rem 0;
-            position: relative;
-        }
-
-        .score-circle {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
-            position: relative;
-            animation: rotateIn 1s ease-out;
-        }
-
-        @keyframes rotateIn {
-            from { transform: rotate(-180deg) scale(0.5); opacity: 0; }
-            to { transform: rotate(0deg) scale(1); opacity: 1; }
-        }
-
-        .score-circle-bg {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: conic-gradient(
-                var(--primary) 0deg,
-                var(--accent) calc(var(--score) * 3.6deg),
-                rgba(255, 255, 255, 0.05) calc(var(--score) * 3.6deg)
-            );
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            animation: rotateGradient 2s ease-out;
-        }
-
-        @keyframes rotateGradient {
-            from { transform: rotate(-180deg); }
-            to { transform: rotate(0deg); }
-        }
-
-        .score-inner {
-            width: 210px;
-            height: 210px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .score-number {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-        }
-
-        .score-label {
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .performance-message {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 2rem 0;
-            background: linear-gradient(135deg, var(--text-primary), var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .question-text {
-                font-size: 2rem;
-                padding: 2rem 1rem;
-            }
-            
-            .stats-bar {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .btn-container {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .option-icon {
-                width: 100px;
-                height: 100px;
-                font-size: 3rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCOUNTS WIZARD DX - ARCADE EDITION</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  
+  /* --- BASE & LAYOUT --- */
+  :root {
+    --color-green: #00ff00;
+    --color-dark-green: #003300;
+    --color-cyan: #00ffff;
+    --color-dark-cyan: #003344;
+    --color-magenta: #ff00ff;
+    --color-dark-magenta: #440022;
+    --color-yellow: #ffb700;
+    --color-dark-yellow: #443300;
+    --color-red: #ff006e;
+    --color-dark-red: #440022;
+    --color-blue: #00b4d8;
+    --color-dark-blue: #003344;
+    --color-bg: #0a0a0a;
+    --color-primary: #1a1a2e;
+    --color-secondary: #0f0f23;
+    --color-purple: #9d4edd;
+    --color-orange: #ff6d00;
+  }
+
+  * {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-green);
+    font-family: 'Press Start 2P', monospace;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    cursor: none; /* MOUSE HIDDEN */
+  }
+
+  @media (max-width: 768px) {
+    body {
+        font-size: 10px;
+    }
+    .logo h1, .logo span {
+        font-size: 14px !important;
+    }
+  }
+  
+  #crt-screen {
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    height: 100vh;
+    margin: auto;
+    overflow-y: auto;
+    background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    border: 4px solid var(--color-green);
+    box-shadow: 
+        0 0 40px var(--color-green),
+        inset 0 0 30px rgba(0, 255, 0, 0.1);
+    display: block;
+    transition: transform 0.1s;
+  }
+
+  /* SCREEN SHAKE ANIMATION */
+  @keyframes screenShake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-5px, -5px) rotate(-1deg); }
+    20% { transform: translate(5px, 5px) rotate(1deg); }
+    30% { transform: translate(-5px, 5px) rotate(0deg); }
+    40% { transform: translate(5px, -5px) rotate(1deg); }
+    50% { transform: translate(-5px, -5px) rotate(-1deg); }
+    60% { transform: translate(5px, 5px) rotate(0deg); }
+    70% { transform: translate(-5px, 5px) rotate(-1deg); }
+    80% { transform: translate(5px, -5px) rotate(1deg); }
+    90% { transform: translate(-5px, -5px) rotate(0deg); }
+  }
+
+  #crt-screen.shake {
+    animation: screenShake 0.5s;
+  }
+
+  #crt-screen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0) 0,
+        rgba(0,0,0,0) 2px,
+        rgba(0, 255, 0, 0.05) 2px,
+        rgba(0, 255, 0, 0.05) 4px
+      );
+    pointer-events: none;
+    z-index: 101;
+  }
+
+  #crt-screen::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 110%);
+    pointer-events: none;
+    z-index: 102;
+    box-shadow: inset 0 0 150px 20px rgba(0,0,0,0.7);
+  }
+
+  @keyframes flicker {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.98; }
+    100% { opacity: 1; }
+  }
+
+  /* --- UI COMPONENTS --- */
+  .navbar {
+    background: var(--color-secondary);
+    border-bottom: 4px solid var(--color-green);
+    box-shadow: 0 4px 20px rgba(0, 255, 0, 0.3);
+    position: relative;
+    z-index: 10;
+  }
+
+  .logo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .logo-icon {
+    width: 40px; height: 40px; background: var(--color-green); position: relative;
+    box-shadow: 0 0 10px var(--color-green), inset -2px -2px 0 #00aa00;
+  }
+  .logo-icon::before {
+    content: ""; position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px;
+    background: var(--color-bg);
+  }
+  .logo-icon::after {
+    content: "W"; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: var(--color-green);
+    font-size: 20px; font-weight: bold; text-shadow: 0 0 5px var(--color-green);
+  }
+
+  .score-display {
+    background: var(--color-bg); border: 3px solid var(--color-magenta); padding: 16px;
+    box-shadow: 0 0 20px var(--color-magenta), inset 0 0 10px rgba(255, 0, 255, 0.2);
+  }
+  .streak-display {
+    background: var(--color-bg); border: 3px solid var(--color-cyan); padding: 16px;
+    box-shadow: 0 0 20px var(--color-cyan), inset 0 0 10px rgba(0, 255, 255, 0.2);
+  }
+  .lives-display {
+    background: var(--color-bg); border: 3px solid var(--color-red); padding: 16px;
+    box-shadow: 0 0 20px var(--color-red), inset 0 0 10px rgba(255, 0, 110, 0.2);
+  }
+  .powerup-display {
+    background: var(--color-bg); border: 3px solid var(--color-purple); padding: 16px;
+    box-shadow: 0 0 20px var(--color-purple), inset 0 0 10px rgba(157, 78, 221, 0.2);
+    min-height: 80px;
+  }
+
+  .quiz-area {
+    background: var(--color-primary); border: 4px solid var(--color-green);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5), inset 0 0 30px rgba(0, 255, 0, 0.05);
+    position: relative;
+  }
+
+  .quiz-area.boss-mode {
+    border-color: var(--color-red);
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.8), inset 0 0 30px rgba(255, 0, 110, 0.1);
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(255, 0, 110, 0.8), inset 0 0 30px rgba(255, 0, 110, 0.1); }
+    50% { box-shadow: 0 0 50px rgba(255, 0, 110, 1), inset 0 0 50px rgba(255, 0, 110, 0.2); }
+  }
+
+  .retro-btn {
+    background: linear-gradient(180deg, #333 0%, #111 100%);
+    border: 3px solid; padding: 16px 24px; font-size: 12px;
+    text-transform: uppercase; position: relative;
+    transition: all 0.1s;
+    box-shadow: 0 4px 0 #000, 0 6px 10px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    outline: none;
+    pointer-events: none; /* DISABLE MOUSE CLICKS */
+  }
+  
+  /* Allow pointer events only on menu screens, NOT on answer buttons */
+  .menu-btn {
+    pointer-events: auto !important;
+  }
+  
+  .retro-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  .retro-btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* KEYBOARD SELECTOR STYLE */
+  .selected-btn {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px var(--color-yellow), 0 0 15px var(--color-yellow) inset, 0 4px 0 #000;
+    border-width: 4px !important;
+  }
+  .selected-btn::before {
+    content: "▶";
+    position: absolute;
+    left: -30px;
+    color: var(--color-yellow);
+    animation: blink 0.8s infinite;
+  }
+  
+  .retro-btn.asset { border-color: var(--color-red); color: var(--color-red); background: linear-gradient(180deg, var(--color-dark-red) 0%, #220011 100%); }
+  .retro-btn.liability { border-color: var(--color-blue); color: var(--color-blue); background: linear-gradient(180deg, var(--color-dark-blue) 0%, #001122 100%); }
+  .retro-btn.income { border-color: var(--color-green); color: var(--color-green); background: linear-gradient(180deg, var(--color-dark-green) 0%, #001100 100%); }
+  .retro-btn.expense { border-color: var(--color-yellow); color: var(--color-yellow); background: linear-gradient(180deg, var(--color-dark-yellow) 0%, #221100 100%); }
+
+  .progress-container {
+    background: #0a0a0a; border: 2px solid var(--color-green); height: 12px; position: relative;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, var(--color-green) 0%, var(--color-cyan) 50%, var(--color-magenta) 100%);
+    height: 100%; transition: width 0.05s linear; box-shadow: 0 0 10px currentColor;
+  }
+  
+  /* --- MODALS & SCREENS --- */
+  .screen {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--color-primary); z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+  .screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  
+  .blink { animation: blink 1.5s infinite steps(1, start); }
+  @keyframes blink { 50% { opacity: 0; } }
+  
+  .typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 2s steps(40, end);
+  }
+  @keyframes typing { from { width: 0 } to { width: 100% } }
+
+  .question-text { color: var(--color-cyan); text-shadow: 0 0 10px var(--color-cyan); line-height: 1.8; min-height: 60px; }
+  .question-text.boss { color: var(--color-red); text-shadow: 0 0 20px var(--color-red); font-size: 24px; animation: pulse 1s infinite; }
+  
+  #answer-feedback {
+    min-height: 30px; font-size: 16px; margin-top: 16px; text-shadow: 0 0 10px currentColor;
+  }
+  .correct { color: var(--color-green); }
+  .wrong { color: var(--color-red); }
+
+  .modal-content {
+    background: var(--color-secondary); border: 4px solid var(--color-green); padding: 40px;
+    box-shadow: 0 0 50px var(--color-green), inset 0 0 30px rgba(0, 255, 0, 0.1);
+    animation: modalAppear 0.5s;
+  }
+  @keyframes modalAppear { from { transform: scale(0) rotate(180deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+  
+  #initials-input {
+    font-family: 'Press Start 2P', monospace; background: var(--color-bg); border: 3px solid var(--color-cyan); color: var(--color-cyan);
+    text-align: center; font-size: 2rem; width: 120px; padding: 10px; margin: 20px auto; text-transform: uppercase; outline: none;
+    box-shadow: inset 0 0 10px rgba(0,255,255,0.3); cursor: text;
+  }
+  #initials-input:focus {
+    box-shadow: inset 0 0 10px rgba(0,255,255,0.3), 0 0 20px var(--color-cyan);
+  }
+  
+  #high-score-table { list-style: none; padding: 0; margin: 20px 0; width: 400px; }
+  #high-score-table li { display: flex; justify-content: space-between; padding: 8px 0; font-size: 11px; border-bottom: 1px solid #333; }
+  #high-score-table li .score { color: var(--color-yellow); }
+  #high-score-table li:nth-child(1) { color: var(--color-green); font-size: 13px; transform: scale(1.05); }
+
+  /* ACHIEVEMENTS */
+  .achievement-popup {
+    position: fixed;
+    top: 100px;
+    right: -400px;
+    background: var(--color-secondary);
+    border: 3px solid var(--color-yellow);
+    padding: 20px;
+    box-shadow: 0 0 30px var(--color-yellow);
+    z-index: 200;
+    transition: right 0.5s;
+    max-width: 300px;
+  }
+  .achievement-popup.show {
+    right: 20px;
+  }
+
+  /* POWER-UP ICONS */
+  .powerup-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 4px;
+    border: 2px solid;
+    animation: float 2s infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .powerup-icon.shield { background: var(--color-blue); border-color: var(--color-cyan); }
+  .powerup-icon.time { background: var(--color-purple); border-color: var(--color-magenta); }
+  .powerup-icon.double { background: var(--color-orange); border-color: var(--color-yellow); }
+
+  /* COMBO METER */
+  .combo-meter {
+    position: absolute;
+    top: 50%;
+    right: -200px;
+    transform: translateY(-50%);
+    width: 150px;
+    text-align: center;
+    transition: right 0.3s;
+  }
+  .combo-meter.active {
+    right: 20px;
+  }
+
+  #particle-canvas {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 100;
+  }
+
+  /* PAUSE OVERLAY */
+  #pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 10, 0.95);
+    z-index: 150;
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  #pause-overlay.active {
+    display: flex;
+  }
+
+  /* KEY HINTS */
+  .key-hint {
+    display: inline-block;
+    background: #222;
+    border: 2px solid var(--color-cyan);
+    padding: 4px 8px;
+    margin: 0 4px;
+    font-size: 10px;
+    box-shadow: 0 2px 0 #000;
+  }
+
+  /* BOSS WARNING */
+  @keyframes bossWarning {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .boss-warning {
+    animation: bossWarning 0.5s infinite;
+    color: var(--color-red);
+    font-size: 36px;
+    text-shadow: 0 0 30px var(--color-red);
+  }
+</style>
 </head>
 <body>
-    <!-- Floating Particles -->
-    <div class="particles" id="particles"></div>
 
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-bolt"></i>
-                AccountsWizard
-            </div>
-            <ul class="nav-links">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../quiz.html">Main Quiz</a></li>
-            </ul>
+<div id="crt-screen">
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- ACHIEVEMENT POPUP -->
+  <div id="achievement-popup" class="achievement-popup">
+    <div style="font-size: 10px; color: var(--color-yellow);">ACHIEVEMENT UNLOCKED!</div>
+    <div id="achievement-text" style="margin-top: 10px; font-size: 12px;"></div>
+  </div>
+
+  <!-- COMBO METER -->
+  <div id="combo-meter" class="combo-meter">
+    <div style="font-size: 10px; color: var(--color-yellow);">COMBO</div>
+    <div id="combo-display" style="font-size: 32px; color: var(--color-cyan); text-shadow: 0 0 20px var(--color-cyan);">x0</div>
+  </div>
+
+  <!-- PAUSE OVERLAY -->
+  <div id="pause-overlay">
+    <div class="modal-content">
+      <h2 class="text-2xl mb-6 blink" style="color: var(--color-cyan);">PAUSED</h2>
+      <p class="text-xs mb-4">Press <span class="key-hint">P</span> to resume</p>
+      <p class="text-xs mb-4">Press <span class="key-hint">Q</span> to quit</p>
+      <div class="mt-8">
+        <div class="text-xs" style="color: var(--color-green);">CONTROLS:</div>
+        <div class="text-xs mt-4" style="line-height: 2;">
+          <span class="key-hint">A</span> Asset<br>
+          <span class="key-hint">B</span> Liability<br>
+          <span class="key-hint">C</span> Income<br>
+          <span class="key-hint">D</span> Expense
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div id="start-screen" class="screen">
+    <div class="logo mb-8">
+      <div class="logo-icon"></div>
+      <h1 style="font-size: clamp(16px, 4vw, 28px); color: var(--color-green); text-shadow: 0 0 10px var(--color-green); white-space: nowrap;">ACCOUNTS WIZARD DX</h1> 
+    </div>
+    <p class="text-sm mb-12" style="color: var(--color-cyan);">ARCADE EDITION v2.0</p>
+    <div id="game-mode-selection" class="flex flex-col gap-4">
+        <button class="retro-btn income menu-btn" data-mode="classic">CLASSIC MODE</button>
+        <button class="retro-btn expense menu-btn" data-mode="timeAttack">TIME ATTACK</button>
+        <button class="retro-btn asset menu-btn" data-mode="suddenDeath">SUDDEN DEATH</button>
+        <button class="retro-btn liability menu-btn" data-mode="endless">ENDLESS MODE</button>
+        <button class="retro-btn expense menu-btn" data-mode="bossRush">BOSS RUSH</button>
+    </div>
+    <p class="mt-12 text-xs" style="color: var(--color-yellow);">Use <span class="key-hint">↑</span> <span class="key-hint">↓</span> to select, <span class="key-hint">ENTER</span> to confirm</p>
+    <p class="mt-4 text-xs" style="color: var(--color-cyan);">Konami Code for secret...</p>
+  </div>
+  
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen hidden">
+    <nav class="navbar p-4 w-full absolute top-0">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <span class="text-lg" style="color: var(--color-green); text-shadow: 0 0 10px var(--color-green);">WIZARD</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="game-mode-display" class="text-sm uppercase" style="color: var(--color-yellow);"></div>
+            <div class="text-xs" style="color: var(--color-cyan);">Press <span class="key-hint">P</span> Pause | <span class="key-hint">Q</span> Quit</div>
+        </div>
+      </div>
     </nav>
-
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-crosshairs"></i> Guess the Account Type</h1>
-            <p>Test your accounting knowledge by classifying items into their correct account categories</p>
+    
+    <main class="max-w-5xl mx-auto p-6 w-full mt-24">
+      <div class="grid grid-cols-4 gap-4 mb-8">
+        <div class="score-display">
+          <div class="text-xs mb-2 opacity-70">SCORE</div>
+          <div class="text-2xl" id="score" style="color: var(--color-magenta); text-shadow: 0 0 20px var(--color-magenta);">000000</div>
         </div>
-
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-list-ol"></i></div>
-                <div class="stat-value" id="currentQ">1</div>
-                <div class="stat-label">Current Question</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                <div class="stat-value" id="score">0</div>
-                <div class="stat-label">Score</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-fire-flame-curved"></i></div>
-                <div class="stat-value" id="streak">0</div>
-                <div class="stat-label">Streak</div>
-            </div>
+        <div class="streak-display">
+          <div class="text-xs mb-2 opacity-70">STREAK</div>
+          <div class="text-2xl" id="streak" style="color: var(--color-cyan); text-shadow: 0 0 20px var(--color-cyan);">x0</div>
         </div>
-
-        <div class="quiz-card" id="quizCard">
-            <div class="progress-section">
-                <div class="progress-header">
-                    <span class="progress-label">Quiz Progress</span>
-                    <span class="progress-text" id="progressText">1/12</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 8.33%"></div>
-                </div>
-            </div>
-
-            <div class="question-display">
-                <div class="question-badge">Classify This Item</div>
-                <div class="question-text" id="questionText">Loading...</div>
-            </div>
-
-            <div class="options-grid" id="optionsGrid">
-                <div class="option-card asset" data-type="asset">
-                    <div class="option-icon">💰</div>
-                    <div class="option-label">Asset</div>
-                    <div class="option-subtitle">What the business OWNS</div>
-                </div>
-                <div class="option-card liability" data-type="liability">
-                    <div class="option-icon">📊</div>
-                    <div class="option-label">Liability</div>
-                    <div class="option-subtitle">What the business OWES</div>
-                </div>
-                <div class="option-card expense" data-type="expense">
-                    <div class="option-icon">💸</div>
-                    <div class="option-label">Expense</div>
-                    <div class="option-subtitle">Costs to earn revenue</div>
-                </div>
-                <div class="option-card income" data-type="income">
-                    <div class="option-icon">💵</div>
-                    <div class="option-label">Income</div>
-                    <div class="option-subtitle">Revenue earned</div>
-                </div>
-            </div>
-
-            <div class="feedback" id="feedback">
-                <div class="feedback-header">
-                    <div class="feedback-icon" id="feedbackIcon"></div>
-                    <div class="feedback-title" id="feedbackTitle"></div>
-                </div>
-                <div class="feedback-text" id="feedbackText"></div>
-            </div>
-
-            <div class="btn-container" id="nextBtnContainer" style="display: none;">
-                <button class="btn btn-primary" id="nextBtn">
-                    <span>Next Question</span>
-                    <span>→</span>
-                </button>
-            </div>
+        <div class="lives-display" id="lives-container">
+          <div class="text-xs mb-2 opacity-70">LIVES</div>
+          <div class="text-2xl" id="lives" style="color: var(--color-red); text-shadow: 0 0 20px var(--color-red);">♥♥♥</div>
         </div>
-
-        <div class="results-card hidden" id="resultsCard">
-            <h2>Quiz Complete! 🎉</h2>
-            <p class="card-description">Here's how you performed</p>
-
-            <div class="score-display">
-                <div class="score-circle" id="scoreCircle" style="--score: 0">
-                    <div class="score-circle-bg">
-                        <div class="score-inner">
-                            <div class="score-number" id="finalScore">0%</div>
-                            <div class="score-label">Score</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="performance-message" id="performanceMsg"></div>
-            
-            <div class="btn-container">
-                <button class="btn btn-primary" onclick="location.reload()">
-                    <span>Play Again</span>
-                    <span>🔄</span>
-                </button>
-                <button class="btn btn-primary" onclick="location.href='quiz.html'">
-                    <span>Main Quiz</span>
-                    <span>📚</span>
-                </button>
-            </div>
+        <div class="powerup-display">
+          <div class="text-xs mb-2 opacity-70">POWER-UPS</div>
+          <div id="powerups-active" class="text-xs"></div>
         </div>
+      </div>
+
+      <div class="quiz-area p-8" id="quiz-area">
+        <div class="progress-container mb-6">
+          <div id="timer-bar" class="progress-fill"></div>
+        </div>
+        <div class="text-center mb-8">
+          <div class="text-xs mb-4" style="color: var(--color-green); letter-spacing: 2px;">
+            <span id="question-number">LEVEL 1/10</span>
+          </div>
+          <div id="boss-warning" class="boss-warning mb-4 hidden">⚠ BOSS BATTLE ⚠</div>
+          <div id="question-text" class="question-text text-xl">INITIALIZING...</div>
+          <div id="answer-feedback" class="text-center"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          <button class="retro-btn asset" data-option="Asset" data-key="a">[A] ASSET</button>
+          <button class="retro-btn liability" data-option="Liability" data-key="b">[B] LIABILITY</button>
+          <button class="retro-btn income" data-option="Income" data-key="c">[C] INCOME</button>
+          <button class="retro-btn expense" data-option="Expense" data-key="d">[D] EXPENSE</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- GAME OVER SCREEN -->
+  <div id="game-over-screen" class="screen hidden">
+    <div class="modal-content">
+      <h2 class="text-2xl mb-6 blink" style="color: var(--color-red); text-shadow: 0 0 20px var(--color-red);">GAME OVER</h2>
+      <div class="mb-4">
+        <div class="text-xs mb-2" style="color: var(--color-cyan);">FINAL SCORE</div>
+        <div class="text-3xl mb-4" id="final-score" style="color: var(--color-magenta); text-shadow: 0 0 20px var(--color-magenta);">0</div>
+        <div class="text-xs" style="color: var(--color-yellow);">
+          <div>Max Streak: <span id="max-streak-display">0</span></div>
+          <div>Accuracy: <span id="accuracy-display">0%</span></div>
+          <div id="achievements-earned-display"></div>
+        </div>
+      </div>
+      <div id="new-high-score-section" class="hidden">
+         <p style="color: var(--color-yellow);">NEW HIGH SCORE!</p>
+         <p class="text-xs mt-4">ENTER YOUR INITIALS:</p>
+         <input type="text" id="initials-input" maxlength="3">
+         <button id="save-score-btn" class="retro-btn income menu-btn">SAVE</button>
+      </div>
+      <div id="game-over-controls" class="flex flex-col gap-4">
+         <button id="restart-btn" class="retro-btn income menu-btn" style="margin-top: 20px;">MAIN MENU</button>
+         <button id="view-high-scores-btn" class="retro-btn expense menu-btn" style="margin-top: 10px;">HIGH SCORES</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- HIGH SCORE SCREEN -->
+  <div id="high-score-screen" class="screen hidden">
+     <div class="modal-content w-full max-w-lg">
+       <h2 class="text-2xl mb-6" style="color: var(--color-yellow); text-shadow: 0 0 20px var(--color-yellow);">HALL OF FAME</h2>
+       <ul id="high-score-table"></ul>
+       <button id="back-to-menu-btn" class="retro-btn income menu-btn" style="margin-top: 20px;">MAIN MENU</button>
+     </div>
     </div>
 
-    <script>
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+    <!-- QUIT CONFIRM SCREEN -->
+    <div id="quit-confirm-screen" class="screen hidden" style="background: rgba(10, 10, 10, 0.9); z-index: 160;">
+    <div class="modal-content">
+        <h2 class="text-lg mb-6" style="color: var(--color-yellow);">WHERE DO YOU WANT TO GO?</h2>
+        <p class="text-xs mb-8">All progress in this round will be lost.</p>
+        <div class="flex flex-col gap-4">
+        <button id="quit-to-menu-btn" class="retro-btn income menu-btn">MAIN MENU</button>
+        <button id="confirm-quit-btn" class="retro-btn asset menu-btn">MAIN QUIZ PAGE</button>
+        <button id="cancel-quit-btn" class="retro-btn expense menu-btn">CONTINUE GAME</button>
+        </div>
+        <p class="text-xs mt-8" style="color: var(--color-cyan);">Use <span class="key-hint">↑</span> <span class="key-hint">↓</span> <span class="key-hint">ENTER</span></p>
+    </div>
+    </div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// CONFIGURATION - CHANGE THIS LINK TO YOUR MAIN QUIZ PAGE
+// ═══════════════════════════════════════════════════════════════════════════
+const MAIN_QUIZ_URL = "../quiz.html"; 
+// ⚠️ IMPORTANT: Replace the above URL with your actual quiz main page link!
+// When user clicks "Quit", they will be redirected to this URL
+// ═══════════════════════════════════════════════════════════════════════════
+
+// --- SOUND MANAGER ---
+const soundManager = {
+  audioContext: null, isMuted: false,
+  init() { 
+    try { 
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)(); 
+    } catch (e) { 
+      console.error("Web Audio API is not supported"); 
+    } 
+  },
+  play(soundName) {
+    if (this.isMuted || !this.audioContext) return;
+    if (this.audioContext.state === 'suspended') { this.audioContext.resume(); }
+    const now = this.audioContext.currentTime; 
+    const oscillator = this.audioContext.createOscillator(); 
+    const gainNode = this.audioContext.createGain();
+    oscillator.connect(gainNode); 
+    gainNode.connect(this.audioContext.destination);
+    
+    switch(soundName) {
+      case 'select': 
+        oscillator.frequency.setValueAtTime(600, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(400, now + 0.1); 
+        gainNode.gain.setValueAtTime(0.3, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.1); 
+        break;
+      case 'confirm': 
+        oscillator.frequency.setValueAtTime(400, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(800, now + 0.15); 
+        gainNode.gain.setValueAtTime(0.3, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.15); 
+        break;
+      case 'correct': 
+        oscillator.frequency.setValueAtTime(400, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(900, now + 0.2); 
+        gainNode.gain.setValueAtTime(0.35, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.2); 
+        break;
+      case 'wrong': 
+        oscillator.frequency.setValueAtTime(300, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(100, now + 0.3); 
+        gainNode.gain.setValueAtTime(0.4, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.3); 
+        break;
+      case 'gameOver': 
+        oscillator.frequency.setValueAtTime(400, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(100, now + 0.6); 
+        gainNode.gain.setValueAtTime(0.5, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.6); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.6); 
+        break;
+      case 'powerup': 
+        oscillator.frequency.setValueAtTime(600, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(1200, now + 0.3); 
+        gainNode.gain.setValueAtTime(0.3, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.3); 
+        break;
+      case 'achievement': 
+        oscillator.frequency.setValueAtTime(500, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(1000, now + 0.1); 
+        oscillator.frequency.exponentialRampToValueAtTime(1500, now + 0.2); 
+        gainNode.gain.setValueAtTime(0.3, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.4); 
+        break;
+      case 'boss': 
+        oscillator.type = 'sawtooth';
+        oscillator.frequency.setValueAtTime(100, now); 
+        oscillator.frequency.exponentialRampToValueAtTime(50, now + 0.5); 
+        gainNode.gain.setValueAtTime(0.5, now); 
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5); 
+        oscillator.start(now); 
+        oscillator.stop(now + 0.5); 
+        break;
+    }
+  }
+};
+soundManager.init();
+
+// --- PARTICLE ENGINE ---
+const particleManager = {
+    canvas: document.getElementById('particle-canvas'), 
+    ctx: null, 
+    particles: [],
+    
+    init() { 
+      this.ctx = this.canvas.getContext('2d'); 
+      this.resizeCanvas(); 
+      window.addEventListener('resize', () => this.resizeCanvas()); 
+      this.animate(); 
+    },
+    
+    resizeCanvas() { 
+      this.canvas.width = this.canvas.parentElement.clientWidth; 
+      this.canvas.height = this.canvas.parentElement.clientHeight; 
+    },
+    
+    createExplosion(x, y, color, count = 50) { 
+      for (let i = 0; i < count; i++) { 
+        this.particles.push(new Particle(x, y, color)); 
+      } 
+    },
+    
+    createText(x, y, text, color) {
+      this.particles.push(new TextParticle(x, y, text, color));
+    },
+    
+    animate() { 
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
+      this.particles.forEach((p, index) => { 
+        if (p.alpha <= 0) { 
+          this.particles.splice(index, 1); 
+        } else { 
+          p.update(); 
+          p.draw(this.ctx); 
+        } 
+      }); 
+      requestAnimationFrame(() => this.animate()); 
+    }
+};
+
+class Particle { 
+  constructor(x, y, color) { 
+    this.x = x; 
+    this.y = y; 
+    this.color = color; 
+    this.size = Math.random() * 5 + 2; 
+    const angle = Math.random() * Math.PI * 2; 
+    const speed = Math.random() * 6 + 2; 
+    this.vx = Math.cos(angle) * speed; 
+    this.vy = Math.sin(angle) * speed; 
+    this.alpha = 1; 
+    this.decay = Math.random() * 0.02 + 0.01; 
+  } 
+  
+  update() { 
+    this.x += this.vx; 
+    this.y += this.vy; 
+    this.alpha -= this.decay; 
+    this.vy += 0.08; 
+  } 
+  
+  draw(ctx) { 
+    ctx.globalAlpha = this.alpha; 
+    ctx.fillStyle = this.color; 
+    ctx.fillRect(this.x, this.y, this.size, this.size); 
+    ctx.globalAlpha = 1; 
+  } 
+}
+
+class TextParticle {
+  constructor(x, y, text, color) {
+    this.x = x;
+    this.y = y;
+    this.text = text;
+    this.color = color;
+    this.vy = -2;
+    this.alpha = 1;
+    this.decay = 0.015;
+  }
+  
+  update() {
+    this.y += this.vy;
+    this.alpha -= this.decay;
+  }
+  
+  draw(ctx) {
+    ctx.globalAlpha = this.alpha;
+    ctx.font = '20px "Press Start 2P"';
+    ctx.fillStyle = this.color;
+    ctx.fillText(this.text, this.x, this.y);
+    ctx.globalAlpha = 1;
+  }
+}
+
+particleManager.init();
+
+// --- GAME DATA ---
+const questionsPool = [
+  { q: "Cash", a: "Asset", difficulty: 1 },
+  { q: "Salaries Paid", a: "Expense", difficulty: 1 },
+  { q: "Accounts Payable", a: "Liability", difficulty: 1 },
+  { q: "Service Revenue", a: "Income", difficulty: 1 },
+  { q: "Office Furniture", a: "Asset", difficulty: 1 },
+  { q: "Rent Received", a: "Income", difficulty: 1 },
+  { q: "Bank Loan", a: "Liability", difficulty: 1 },
+  { q: "Office Supplies", a: "Asset", difficulty: 1 },
+  { q: "Prepaid Insurance", a: "Asset", difficulty: 2 },
+  { q: "Owner's Capital", a: "Liability", difficulty: 2 },
+  { q: "Interest Earned", a: "Income", difficulty: 1 },
+  { q: "Accounts Receivable", a: "Asset", difficulty: 2 },
+  { q: "Electricity Bill", a: "Expense", difficulty: 1 },
+  { q: "Buildings", a: "Asset", difficulty: 1 },
+  { q: "Sales Revenue", a: "Income", difficulty: 1 },
+  { q: "Unearned Revenue", a: "Liability", difficulty: 3 },
+  { q: "Wages Expense", a: "Expense", difficulty: 1 },
+  { q: "Inventory", a: "Asset", difficulty: 1 },
+  { q: "Consulting Fees", a: "Income", difficulty: 1 },
+  { q: "Notes Payable", a: "Liability", difficulty: 2 },
+  { q: "Insurance Expense", a: "Expense", difficulty: 1 },
+  { q: "Land", a: "Asset", difficulty: 1 },
+  { q: "Commission Earned", a: "Income", difficulty: 1 },
+  { q: "Mortgage Payable", a: "Liability", difficulty: 2 },
+  { q: "Advertising Expense", a: "Expense", difficulty: 1 },
+  { q: "Equipment", a: "Asset", difficulty: 1 },
+  { q: "Rental Income", a: "Income", difficulty: 1 },
+  { q: "Bonds Payable", a: "Liability", difficulty: 2 },
+  { q: "Telephone Expense", a: "Expense", difficulty: 1 },
+  { q: "Vehicles", a: "Asset", difficulty: 1 },
+  { q: "Dividend Income", a: "Income", difficulty: 2 },
+  { q: "Accrued Expenses", a: "Liability", difficulty: 3 },
+  { q: "Depreciation Expense", a: "Expense", difficulty: 2 },
+  { q: "Patents", a: "Asset", difficulty: 2 },
+  { q: "Royalty Income", a: "Income", difficulty: 2 },
+  { q: "Taxes Payable", a: "Liability", difficulty: 2 },
+  { q: "Cost of Goods Sold", a: "Expense", difficulty: 2 },
+  { q: "Goodwill", a: "Asset", difficulty: 3 },
+  { q: "Interest Revenue", a: "Income", difficulty: 1 },
+  { q: "Salaries Payable", a: "Liability", difficulty: 2 },
+  { q: "Utilities Expense", a: "Expense", difficulty: 1 },
+  { q: "Trademarks", a: "Asset", difficulty: 2 },
+  { q: "Gain on Sale of Asset", a: "Income", difficulty: 3 },
+  { q: "Deferred Revenue", a: "Liability", difficulty: 3 },
+  { q: "Bad Debt Expense", a: "Expense", difficulty: 3 },
+  { q: "Investment in Stocks", a: "Asset", difficulty: 2 },
+  { q: "Subscription Revenue", a: "Income", difficulty: 1 },
+  { q: "Warranty Liability", a: "Liability", difficulty: 3 },
+  { q: "Office Rent", a: "Expense", difficulty: 1 },
+  { q: "Petty Cash", a: "Asset", difficulty: 1 },
+  { q: "Accumulated Depreciation", a: "Asset", difficulty: 3 },
+  { q: "Dividend Declared", a: "Liability", difficulty: 3 },
+  { q: "Foreign Exchange Gain", a: "Income", difficulty: 3 },
+  { q: "Amortization Expense", a: "Expense", difficulty: 3 },
+  { q: "Treasury Stock", a: "Asset", difficulty: 3 },
+];
+
+// Boss questions (harder)
+const bossQuestions = [
+  { q: "BOSS: Contra-Asset Account", a: "Asset", difficulty: 5 },
+  { q: "BOSS: Deferred Tax Asset", a: "Asset", difficulty: 5 },
+  { q: "BOSS: Unrealized Holding Gain", a: "Income", difficulty: 5 },
+  { q: "BOSS: Contingent Liability", a: "Liability", difficulty: 5 },
+  { q: "BOSS: Impairment Loss", a: "Expense", difficulty: 5 },
+];
+
+// --- ACHIEVEMENTS SYSTEM ---
+const achievementsSystem = {
+  achievements: {
+    firstBlood: { name: "First Blood", desc: "Answer first question correctly", unlocked: false },
+    hotStreak: { name: "Hot Streak", desc: "Get 5 streak combo", unlocked: false },
+    unstoppable: { name: "Unstoppable", desc: "Get 10 streak combo", unlocked: false },
+    centurion: { name: "Centurion", desc: "Score 10,000 points", unlocked: false },
+    perfectionist: { name: "Perfectionist", desc: "100% accuracy in a game", unlocked: false },
+    speedDemon: { name: "Speed Demon", desc: "Answer in under 2 seconds", unlocked: false },
+    bossSlayer: { name: "Boss Slayer", desc: "Defeat a boss question", unlocked: false },
+    survivor: { name: "Survivor", desc: "Survive 20 questions in Endless", unlocked: false },
+    konami: { name: "Konami Master", desc: "Enter the Konami Code", unlocked: false },
+  },
+  
+  check(achievementKey) {
+    if (!this.achievements[achievementKey].unlocked) {
+      this.achievements[achievementKey].unlocked = true;
+      this.showAchievement(achievementKey);
+      soundManager.play('achievement');
+      return true;
+    }
+    return false;
+  },
+  
+  showAchievement(key) {
+    const popup = document.getElementById('achievement-popup');
+    const text = document.getElementById('achievement-text');
+    const achievement = this.achievements[key];
+    text.innerHTML = `<strong>${achievement.name}</strong><br><span style="font-size:10px;">${achievement.desc}</span>`;
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 3000);
+  }
+};
+
+// --- POWER-UPS SYSTEM ---
+const powerUpsSystem = {
+  active: {
+    shield: false, // Protects from one wrong answer
+    timeFreeze: false, // Doubles time for one question
+    doublePoints: false, // Doubles points for one question
+  },
+  
+  grant(powerUpType) {
+    this.active[powerUpType] = true;
+    this.updateDisplay();
+    soundManager.play('powerup');
+  },
+  
+  use(powerUpType) {
+    this.active[powerUpType] = false;
+    this.updateDisplay();
+  },
+  
+  updateDisplay() {
+    const container = document.getElementById('powerups-active');
+    container.innerHTML = '';
+    if (this.active.shield) container.innerHTML += '<span class="powerup-icon shield" title="Shield Active">🛡</span>';
+    if (this.active.timeFreeze) container.innerHTML += '<span class="powerup-icon time" title="Time Freeze">⏰</span>';
+    if (this.active.doublePoints) container.innerHTML += '<span class="powerup-icon double" title="Double Points">x2</span>';
+  },
+  
+  random() {
+    const types = ['shield', 'timeFreeze', 'doublePoints'];
+    return types[Math.floor(Math.random() * types.length)];
+  }
+};
+
+// --- KONAMI CODE EASTER EGG ---
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    if (konamiIndex === konamiCode.length) {
+      achievementsSystem.check('konami');
+      // Grant all powerups!
+      powerUpsSystem.grant('shield');
+      powerUpsSystem.grant('timeFreeze');
+      powerUpsSystem.grant('doublePoints');
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+
+// --- GAME LOGIC & STATE ---
+const game = {
+    state: {
+        mode: null, 
+        score: 0, 
+        streak: 0, 
+        maxStreak: 0, 
+        correctAnswers: 0, 
+        totalAnswered: 0, 
+        currentQuestionIndex: 0, 
+        questions: [], 
+        isGameOver: false, 
+        isPaused: false,
+        timer: null, 
+        timeLeft: 0,
+        lives: 3,
+        questionsAnswered: 0,
+        bossMode: false,
+        answerStartTime: 0,
+        keyboardNavIndex: 0,
+    },
+
+    config: {
+        classic: { totalQuestions: 10, timePerQuestion: 10, name: "CLASSIC MODE", hasLives: false },
+        timeAttack: { totalTime: 60, timePerQuestion: 10, name: "TIME ATTACK", hasLives: false },
+        suddenDeath: { timePerQuestion: 7, name: "SUDDEN DEATH", hasLives: false },
+        endless: { timePerQuestion: 8, name: "ENDLESS MODE", hasLives: true, lives: 3 },
+        bossRush: { timePerQuestion: 12, name: "BOSS RUSH", hasLives: true, lives: 5 },
+        pointsPerCorrect: 100, 
+        streakBonus: 50, 
+        timeBonusMultiplier: 10, 
+        highScoreKey: 'accountsWizardHighScores'
+    },
+
+    elements: {
+        screens: { 
+          start: document.getElementById('start-screen'), 
+          quiz: document.getElementById('quiz-screen'), 
+          gameOver: document.getElementById('game-over-screen'), 
+          highScore: document.getElementById('high-score-screen'), 
+          quitConfirm: document.getElementById('quit-confirm-screen'), 
+        },
+        questionNumber: document.getElementById("question-number"), 
+        questionText: document.getElementById("question-text"), 
+        score: document.getElementById("score"), 
+        streak: document.getElementById("streak"), 
+        timerBar: document.getElementById("timer-bar"), 
+        answerButtons: document.querySelectorAll(".retro-btn[data-option]"), 
+        answerFeedback: document.getElementById('answer-feedback'), 
+        finalScore: document.getElementById('final-score'), 
+        newHighScoreSection: document.getElementById('new-high-score-section'), 
+        initialsInput: document.getElementById('initials-input'), 
+        saveScoreBtn: document.getElementById('save-score-btn'), 
+        restartBtn: document.getElementById('restart-btn'), 
+        viewHighScoresBtn: document.getElementById('view-high-scores-btn'), 
+        highScoreTable: document.getElementById('high-score-table'), 
+        backToMenuBtn: document.getElementById('back-to-menu-btn'), 
+        gameModeButtons: document.querySelectorAll('#game-mode-selection button'), 
+        gameModeDisplay: document.getElementById('game-mode-display'), 
+        gameOverControls: document.getElementById('game-over-controls'), 
+        confirmQuitBtn: document.getElementById('confirm-quit-btn'), 
+        cancelQuitBtn: document.getElementById('cancel-quit-btn'),
+        pauseOverlay: document.getElementById('pause-overlay'),
+        lives: document.getElementById('lives'),
+        livesContainer: document.getElementById('lives-container'),
+        quizArea: document.getElementById('quiz-area'),
+        bossWarning: document.getElementById('boss-warning'),
+        comboMeter: document.getElementById('combo-meter'),
+        comboDisplay: document.getElementById('combo-display'),
+        maxStreakDisplay: document.getElementById('max-streak-display'),
+        accuracyDisplay: document.getElementById('accuracy-display'),
+        achievementsEarnedDisplay: document.getElementById('achievements-earned-display'),
+    },
+
+    init() {
+        this.addEventListeners();
+        this.initKeyboardControls();
+        this.showScreen('start');
+    },
+
+    addEventListeners() {
+        this.elements.gameModeButtons.forEach(btn => btn.addEventListener('click', (e) => {
+          soundManager.play('confirm');
+          this.startQuiz(e.currentTarget.dataset.mode);
+        }));
+        this.elements.restartBtn.addEventListener('click', () => { soundManager.play('select'); this.showScreen('start'); });
+        this.elements.viewHighScoresBtn.addEventListener('click', () => { soundManager.play('select'); this.displayHighScores(); this.showScreen('highScore'); });
+        this.elements.saveScoreBtn.addEventListener('click', () => { soundManager.play('confirm'); this.saveHighScore(); });
+        this.elements.backToMenuBtn.addEventListener('click', () => { soundManager.play('select'); this.showScreen('start'); });
+        this.elements.confirmQuitBtn.addEventListener('click', () => this.quitToMainQuiz());
+        document.getElementById('quit-to-menu-btn').addEventListener('click', () => this.quitToMainMenu());
+        this.elements.cancelQuitBtn.addEventListener('click', () => { 
+        soundManager.play('select');
+        this.elements.screens.quitConfirm.classList.add('hidden'); 
+        this.resumeGame(); 
+        });
+    },
+
+    // KEYBOARD CONTROLS
+    initKeyboardControls() {
+        window.addEventListener('keydown', (e) => {
+            const activeScreen = document.querySelector('.screen:not(.hidden)');
             
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+            // Quiz screen controls
+            if (activeScreen && activeScreen.id === 'quiz-screen' && !this.state.isPaused) {
+                if (e.key.toLowerCase() === 'p') {
+                    e.preventDefault();
+                    this.pauseGame();
+                    return;
+                }
+                if (e.key.toLowerCase() === 'q') {
+                    e.preventDefault();
+                    this.pauseGame();
+                    this.elements.screens.quitConfirm.classList.remove('hidden');
+                    this.resetKeyboardNav();
+                    return;
+                }
                 
-                // Random properties
-                const size = Math.random() * 3 + 1;
-                const left = Math.random() * 100;
-                const delay = Math.random() * 15;
-                const duration = Math.random() * 10 + 10;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${left}vw`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-                
-                particlesContainer.appendChild(particle);
+                // Answer keys (A, B, C, D)
+                const key = e.key.toLowerCase();
+                const button = Array.from(this.elements.answerButtons).find(btn => btn.dataset.key === key);
+                if (button && !button.disabled) {
+                    e.preventDefault();
+                    soundManager.play('select');
+                    this.checkAnswer(button.dataset.option);
+                }
+                return;
             }
-        }
-
-        const questions = [
-            { item: "Furniture", type: "asset", explanation: "Furniture is a fixed asset used in business operations for a long period." },
-            { item: "Commission Received", type: "income", explanation: "Commission received is income earned by the business." },
-            { item: "Sundry Debtors", type: "asset", explanation: "Sundry Debtors (Accounts Receivable) are current assets - money owed to the business." },
-            { item: "Rent Paid", type: "expense", explanation: "Rent paid is an operating expense incurred in running the business." },
-            { item: "Capital", type: "liability", explanation: "Capital represents owner's equity, which is a liability from the business's perspective." },
-            { item: "Bank Loan", type: "liability", explanation: "Bank loan is a non-current liability - money owed by the business." },
-            { item: "Salary Paid", type: "expense", explanation: "Salary is an operating expense paid to employees." },
-            { item: "Sales Revenue", type: "income", explanation: "Sales revenue is the main income from selling goods or services." },
-            { item: "Machinery", type: "asset", explanation: "Machinery is a fixed asset used for production purposes." },
-            { item: "Interest Received", type: "income", explanation: "Interest received on investments or deposits is income." },
-            { item: "Creditors", type: "liability", explanation: "Creditors (Accounts Payable) are current liabilities - money owed to suppliers." },
-            { item: "Electricity Bill", type: "expense", explanation: "Electricity bill is an operating expense of the business." },
-            { item: "Cash in Hand", type: "asset", explanation: "Cash is the most liquid current asset." },
-            { item: "Discount Allowed", type: "expense", explanation: "Discount allowed to customers is treated as an expense or loss." },
-            { item: "Building", type: "asset", explanation: "Building is a fixed asset providing long-term benefit to the business." }
-        ];
-
-        let currentQuestion = 0;
-        let score = 0;
-        let streak = 0;
-        let shuffledQuestions = [];
-
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-
-        function startQuiz() {
-            createParticles();
-            shuffledQuestions = shuffleArray(questions).slice(0, 12);
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            if (currentQuestion >= shuffledQuestions.length) {
-                showResults();
+            
+            // Pause screen controls
+            // Pause screen controls
+            if (this.state.isPaused && !this.elements.screens.quitConfirm.classList.contains('hidden')) {
+                // Let it fall through to menu navigation below
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    soundManager.play('select');
+                    this.elements.screens.quitConfirm.classList.add('hidden');
+                    this.resumeGame();
+                    return;
+                }
+                // Fall through to menu navigation
+            } else if (this.state.isPaused) {
+                if (e.key.toLowerCase() === 'p') {
+                    e.preventDefault();
+                    this.resumeGame();
+                    return;
+                }
+                if (e.key.toLowerCase() === 'q') {
+                    e.preventDefault();
+                    this.elements.screens.quitConfirm.classList.remove('hidden');
+                    this.resetKeyboardNav();
+                    return;
+                }
                 return;
             }
 
-            const question = shuffledQuestions[currentQuestion];
-            document.getElementById('questionText').textContent = question.item;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
-            
-            const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = `${currentQuestion + 1}/${shuffledQuestions.length}`;
+            // Menu navigation for other screens
+            if (!activeScreen || activeScreen.id === 'quiz-screen') return;
 
-            document.getElementById('feedback').classList.remove('show');
-            document.getElementById('nextBtnContainer').style.display = 'none';
+            const navigableButtons = activeScreen.querySelectorAll('.retro-btn:not(:disabled)');
+            if (navigableButtons.length === 0) return;
 
-            const cards = document.querySelectorAll('.option-card');
-            cards.forEach(card => {
-                card.classList.remove('correct', 'wrong');
-                card.style.pointerEvents = 'auto';
-            });
-        }
+            let currentIndex = this.state.keyboardNavIndex;
 
-        document.getElementById('optionsGrid').addEventListener('click', (e) => {
-            const optionCard = e.target.closest('.option-card');
-            if (!optionCard) return;
-            
-            const selectedType = optionCard.dataset.type;
-            const question = shuffledQuestions[currentQuestion];
-            const isCorrect = selectedType === question.type;
-
-            const cards = document.querySelectorAll('.option-card');
-            cards.forEach(card => card.style.pointerEvents = 'none');
-
-            if (isCorrect) {
-                optionCard.classList.add('correct');
-                score++;
-                streak++;
-                document.getElementById('score').textContent = score;
-                document.getElementById('streak').textContent = streak;
-                
-                document.getElementById('feedbackIcon').textContent = '✅';
-                document.getElementById('feedbackTitle').textContent = 'Correct Answer!';
-                document.getElementById('feedbackText').textContent = question.explanation;
-                document.getElementById('feedback').className = 'feedback correct show';
-            } else {
-                optionCard.classList.add('wrong');
-                streak = 0;
-                document.getElementById('streak').textContent = streak;
-                
-                cards.forEach(card => {
-                    if (card.dataset.type === question.type) {
-                        card.classList.add('correct');
-                    }
-                });
-                
-                document.getElementById('feedbackIcon').textContent = '❌';
-                document.getElementById('feedbackTitle').textContent = 'Incorrect Answer';
-                document.getElementById('feedbackText').textContent = question.explanation;
-                document.getElementById('feedback').className = 'feedback wrong show';
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                soundManager.play('select');
+                currentIndex = (currentIndex + 1) % navigableButtons.length;
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                soundManager.play('select');
+                currentIndex = (currentIndex - 1 + navigableButtons.length) % navigableButtons.length;
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                soundManager.play('confirm');
+                navigableButtons[currentIndex].click();
+                return;
             }
-
-            document.getElementById('nextBtnContainer').style.display = 'flex';
+            
+            this.updateKeyboardSelection(navigableButtons, currentIndex);
         });
+    },
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            currentQuestion++;
-            loadQuestion();
+    updateKeyboardSelection(buttons, newIndex) {
+        buttons.forEach(btn => btn.classList.remove('selected-btn'));
+        buttons[newIndex].classList.add('selected-btn');
+        this.state.keyboardNavIndex = newIndex;
+    },
+    
+    resetKeyboardNav() {
+        setTimeout(() => {
+            const activeScreen = document.querySelector('.screen:not(.hidden)');
+            if (activeScreen) {
+                const navigableButtons = activeScreen.querySelectorAll('.retro-btn:not(:disabled)');
+                if (navigableButtons.length > 0) {
+                    this.updateKeyboardSelection(navigableButtons, 0);
+                }
+            }
+        }, 50);
+    },
+
+    showScreen(screenName) {
+        Object.entries(this.elements.screens).forEach(([key, screen]) => {
+            if (key !== 'quitConfirm') screen.classList.add('hidden');
         });
+        this.elements.screens[screenName].classList.remove('hidden');
+        this.resetKeyboardNav();
+    },
 
-        function showResults() {
-            const percentage = Math.round((score / shuffledQuestions.length) * 100);
-            
-            document.getElementById('quizCard').style.display = 'none';
-            document.getElementById('resultsCard').classList.remove('hidden');
-            
-            document.getElementById('scoreCircle').style.setProperty('--score', percentage);
-            document.getElementById('finalScore').textContent = percentage + '%';
-            
-            let message = '';
-            if (percentage >= 90) message = "🏆 You're an Accounting Genius!";
-            else if (percentage >= 70) message = "🌟 Excellent Understanding!";
-            else if (percentage >= 50) message = "👍 Good Effort! Keep Learning!";
-            else message = "📚 Keep Practicing!";
-            
-            document.getElementById('performanceMsg').textContent = message;
+    pauseGame() {
+        if (this.state.isGameOver) return;
+        this.state.isPaused = true;
+        clearInterval(this.state.timer);
+        this.elements.pauseOverlay.classList.add('active');
+        soundManager.play('select');
+    },
+
+    resumeGame() {
+        this.state.isPaused = false;
+        this.elements.pauseOverlay.classList.remove('active');
+        this.elements.screens.quitConfirm.classList.add('hidden');
+        this.runTimer();
+        soundManager.play('select');
+    },
+
+    quitToMainQuiz() {
+        soundManager.play('wrong');
+        // REDIRECT TO MAIN QUIZ PAGE
+        window.location.href = MAIN_QUIZ_URL;
+    },
+    
+    quitToMainMenu() {
+        soundManager.play('select');
+        clearInterval(this.state.timer);
+        this.state.isGameOver = true;
+        this.state.isPaused = false;
+        this.elements.screens.quitConfirm.classList.add('hidden');
+        this.elements.pauseOverlay.classList.remove('active');
+        this.showScreen('start');
+        },
+
+    startQuiz(mode) {
+        this.state = { 
+          ...this.state, 
+          mode, 
+          score: 0, 
+          streak: 0, 
+          maxStreak: 0, 
+          correctAnswers: 0, 
+          totalAnswered: 0, 
+          currentQuestionIndex: 0, 
+          isGameOver: false, 
+          isPaused: false,
+          questions: this.shuffle([...questionsPool]), 
+          timer: null, 
+          timeLeft: 0,
+          lives: this.config[mode].hasLives ? this.config[mode].lives : 0,
+          questionsAnswered: 0,
+          bossMode: false,
+        };
+        
+        const modeConfig = this.config[mode];
+        this.elements.gameModeDisplay.textContent = modeConfig.name;
+        
+        // Handle lives display
+        if (modeConfig.hasLives) {
+            this.elements.livesContainer.style.display = 'block';
+            this.updateLivesDisplay();
+        } else {
+            this.elements.livesContainer.style.display = 'none';
         }
+        
+        if (mode === 'timeAttack') { 
+          this.state.timeLeft = modeConfig.totalTime; 
+        }
+        
+        if (mode === 'bossRush') {
+          this.state.questions = this.shuffle([...bossQuestions]);
+        }
+        
+        this.updateScoreUI(); 
+        this.elements.answerFeedback.textContent = ''; 
+        this.enableButtons();
+        this.showScreen('quiz'); 
+        this.nextQuestion();
+    },
 
-        startQuiz();
-    </script>
+    nextQuestion() {
+        if (this.state.isGameOver || this.state.isPaused) return;
+        
+        // Boss mode trigger (every 5 questions in non-boss-rush modes)
+        if (this.state.mode !== 'bossRush' && this.state.questionsAnswered > 0 && this.state.questionsAnswered % 5 === 0) {
+            this.state.bossMode = true;
+            const bossQ = bossQuestions[Math.floor(Math.random() * bossQuestions.length)];
+            this.state.questions[this.state.currentQuestionIndex] = bossQ;
+        } else if (this.state.mode !== 'bossRush') {
+            this.state.bossMode = false;
+        } else {
+            this.state.bossMode = true; // Always boss in boss rush
+        }
+        
+        if (this.state.mode === 'classic' && this.state.currentQuestionIndex >= this.config.classic.totalQuestions) { 
+          this.endGame(); 
+          return; 
+        }
+        
+        if (this.state.currentQuestionIndex >= this.state.questions.length) {
+            if (this.state.mode === 'endless' || this.state.mode === 'bossRush') {
+                this.state.questions = this.shuffle([...(this.state.mode === 'bossRush' ? bossQuestions : questionsPool)]);
+                this.state.currentQuestionIndex = 0;
+            } else {
+                this.endGame();
+                return;
+            }
+        }
+        
+        const current = this.state.questions[this.state.currentQuestionIndex];
+        let questionNumberText = `Q: ${this.state.questionsAnswered + 1}`;
+        
+        if (this.state.mode === 'classic') { 
+          questionNumberText = `LEVEL ${this.state.currentQuestionIndex + 1}/${this.config.classic.totalQuestions}`; 
+        } else if (this.state.mode === 'endless') {
+          questionNumberText = `SURVIVED: ${this.state.questionsAnswered}`;
+        }
+        
+        this.elements.questionNumber.textContent = questionNumberText;
+        this.elements.questionText.textContent = `${current.q}:`;
+        
+        // Boss styling
+        if (this.state.bossMode) {
+            this.elements.quizArea.classList.add('boss-mode');
+            this.elements.questionText.classList.add('boss');
+            this.elements.bossWarning.classList.remove('hidden');
+            soundManager.play('boss');
+        } else {
+            this.elements.quizArea.classList.remove('boss-mode');
+            this.elements.questionText.classList.remove('boss');
+            this.elements.bossWarning.classList.add('hidden');
+        }
+        
+        this.elements.answerFeedback.textContent = ''; 
+        this.enableButtons(); 
+        this.state.answerStartTime = Date.now();
+        this.startTimer();
+    },
+
+    runTimer() {
+        clearInterval(this.state.timer);
+        const modeConfig = this.config[this.state.mode];
+        
+        if(this.state.mode === 'timeAttack') {
+             this.state.timer = setInterval(() => {
+                if (this.state.isPaused) return;
+                this.state.timeLeft -= 0.01; 
+                this.state.timeLeftInQuestion -= 0.01;
+                const questionTimePercent = (this.state.timeLeftInQuestion / modeConfig.timePerQuestion) * 100;
+                this.elements.timerBar.style.width = `${questionTimePercent}%`;
+                this.elements.questionNumber.textContent = `TIME: ${Math.ceil(this.state.timeLeft)}s`;
+                if (this.state.timeLeftInQuestion <= 0) this.handleTimeout(); 
+                if (this.state.timeLeft <= 0) this.endGame();
+             }, 10);
+        } else {
+            this.state.timer = setInterval(() => {
+                if (this.state.isPaused) return;
+                this.state.timeLeft -= 0.01;
+                const percent = (this.state.timeLeft / modeConfig.timePerQuestion) * 100;
+                this.elements.timerBar.style.width = `${percent}%`;
+                if (this.state.timeLeft <= 0) this.handleTimeout();
+            }, 10);
+        }
+    },
+
+    startTimer() {
+        const modeConfig = this.config[this.state.mode];
+        let timeForQuestion = modeConfig.timePerQuestion;
+        
+        // Apply time freeze power-up
+        if (powerUpsSystem.active.timeFreeze) {
+            timeForQuestion *= 2;
+            powerUpsSystem.use('timeFreeze');
+        }
+        
+        if(this.state.mode === 'timeAttack') { 
+          this.state.timeLeftInQuestion = timeForQuestion; 
+        } else { 
+          this.state.timeLeft = timeForQuestion; 
+          this.elements.timerBar.style.width = "100%"; 
+        }
+        
+        this.runTimer();
+    },
+
+    handleTimeout() {
+        clearInterval(this.state.timer); 
+        soundManager.play('wrong'); 
+        
+        // Check shield
+        if (powerUpsSystem.active.shield) {
+            this.elements.answerFeedback.textContent = "⚠ SHIELD PROTECTED YOU!"; 
+            this.elements.answerFeedback.className = 'correct';
+            powerUpsSystem.use('shield');
+        } else {
+            this.elements.answerFeedback.textContent = "TIME'S UP!"; 
+            this.elements.answerFeedback.className = 'wrong';
+            this.state.streak = 0;
+            this.loseLife();
+        }
+        
+        this.disableButtons();
+        this.updateComboMeter();
+        
+        if (this.state.isGameOver) {
+            setTimeout(() => this.endGame(), 1500);
+        } else {
+            this.state.currentQuestionIndex++; 
+            setTimeout(() => this.nextQuestion(), 1500);
+        }
+    },
+    
+    checkAnswer(option) {
+        clearInterval(this.state.timer); 
+        this.disableButtons();
+        
+        const current = this.state.questions[this.state.currentQuestionIndex]; 
+        this.state.totalAnswered++;
+        this.state.questionsAnswered++;
+        
+        // Check speed achievement
+        const answerTime = (Date.now() - this.state.answerStartTime) / 1000;
+        if (answerTime < 2) {
+            achievementsSystem.check('speedDemon');
+        }
+        
+        if (option === current.a) { 
+          this.handleCorrectAnswer(current); 
+        } else { 
+          this.handleWrongAnswer(current.a); 
+        }
+        
+        this.updateScoreUI();
+        this.updateComboMeter();
+        
+        if (!this.state.isGameOver) { 
+          this.state.currentQuestionIndex++; 
+          setTimeout(() => this.nextQuestion(), 1500); 
+        }
+    },
+
+    handleCorrectAnswer(question) {
+        soundManager.play('correct'); 
+        this.state.streak++; 
+        this.state.correctAnswers++;
+        
+        if (this.state.streak > this.state.maxStreak) this.state.maxStreak = this.state.streak;
+        
+        const timeBonus = Math.floor(this.state.timeLeft * this.config.timeBonusMultiplier);
+        const streakBonus = (this.state.streak - 1) * this.config.streakBonus;
+        const difficultyBonus = (question.difficulty || 1) * 50;
+        const bossBonus = this.state.bossMode ? 500 : 0;
+        
+        let pointsGained = this.config.pointsPerCorrect + timeBonus + streakBonus + difficultyBonus + bossBonus;
+        
+        // Apply double points power-up
+        if (powerUpsSystem.active.doublePoints) {
+            pointsGained *= 2;
+            powerUpsSystem.use('doublePoints');
+        }
+        
+        this.state.score += pointsGained;
+        
+        this.elements.answerFeedback.innerHTML = `${this.state.bossMode ? 'BOSS DEFEATED! ' : 'CORRECT! '}<span style="color:var(--color-yellow);">+${pointsGained}</span>`; 
+        this.elements.answerFeedback.className = 'correct';
+        
+        const rect = this.elements.questionText.getBoundingClientRect(); 
+        const crtRect = this.elements.screens.quiz.getBoundingClientRect();
+        particleManager.createExplosion(rect.left - crtRect.left + rect.width/2, rect.top - crtRect.top, '#00ff00', this.state.bossMode ? 100 : 50);
+        particleManager.createText(rect.left - crtRect.left + rect.width/2 - 50, rect.top - crtRect.top - 50, `+${pointsGained}`, '#ffb700');
+        
+        // Achievements
+        if (this.state.correctAnswers === 1) achievementsSystem.check('firstBlood');
+        if (this.state.streak === 5) achievementsSystem.check('hotStreak');
+        if (this.state.streak === 10) achievementsSystem.check('unstoppable');
+        if (this.state.score >= 10000) achievementsSystem.check('centurion');
+        if (this.state.bossMode) achievementsSystem.check('bossSlayer');
+        if (this.state.mode === 'endless' && this.state.questionsAnswered >= 20) achievementsSystem.check('survivor');
+        
+        // Random power-up grant (10% chance on streak > 3)
+        if (this.state.streak > 3 && Math.random() < 0.1) {
+            powerUpsSystem.grant(powerUpsSystem.random());
+        }
+    },
+
+    handleWrongAnswer(correctAnswer) {
+        // Check shield
+        if (powerUpsSystem.active.shield) {
+            soundManager.play('powerup');
+            this.elements.answerFeedback.textContent = `⚠ SHIELD SAVED YOU! (Answer: ${correctAnswer.toUpperCase()})`; 
+            this.elements.answerFeedback.className = 'correct';
+            powerUpsSystem.use('shield');
+            return;
+        }
+        
+        soundManager.play('wrong'); 
+        this.state.streak = 0;
+        this.elements.answerFeedback.textContent = `WRONG! IT WAS ${correctAnswer.toUpperCase()}`; 
+        this.elements.answerFeedback.className = 'wrong';
+        
+        // Screen shake
+        document.getElementById('crt-screen').classList.add('shake');
+        setTimeout(() => document.getElementById('crt-screen').classList.remove('shake'), 500);
+        
+        this.loseLife();
+    },
+
+    loseLife() {
+        const modeConfig = this.config[this.state.mode];
+        
+        if (this.state.mode === 'suddenDeath') {
+            this.state.isGameOver = true;
+        } else if (modeConfig.hasLives) {
+            this.state.lives--;
+            this.updateLivesDisplay();
+            if (this.state.lives <= 0) {
+                this.state.isGameOver = true;
+            }
+        }
+    },
+
+    updateLivesDisplay() {
+        const hearts = '♥'.repeat(this.state.lives) + '♡'.repeat(Math.max(0, this.config[this.state.mode].lives - this.state.lives));
+        this.elements.lives.textContent = hearts;
+    },
+
+    updateComboMeter() {
+        if (this.state.streak >= 3) {
+            this.elements.comboMeter.classList.add('active');
+            this.elements.comboDisplay.textContent = `x${this.state.streak}`;
+        } else {
+            this.elements.comboMeter.classList.remove('active');
+        }
+    },
+
+    endGame() {
+        this.state.isGameOver = true; 
+        clearInterval(this.state.timer); 
+        soundManager.play('gameOver');
+        
+        // Check perfectionist achievement
+        if (this.state.totalAnswered > 0 && this.state.correctAnswers === this.state.totalAnswered) {
+            achievementsSystem.check('perfectionist');
+        }
+        
+        const accuracy = this.state.totalAnswered > 0 ? Math.round((this.state.correctAnswers / this.state.totalAnswered) * 100) : 0;
+        
+        this.elements.finalScore.textContent = this.formatScore(this.state.score, 6); 
+        this.elements.maxStreakDisplay.textContent = this.state.maxStreak;
+        this.elements.accuracyDisplay.textContent = accuracy + '%';
+        
+        // Show unlocked achievements
+        const unlockedCount = Object.values(achievementsSystem.achievements).filter(a => a.unlocked).length;
+        this.elements.achievementsEarnedDisplay.innerHTML = `<div class="mt-2">Achievements: ${unlockedCount}/${Object.keys(achievementsSystem.achievements).length}</div>`;
+        
+        this.showScreen('gameOver');
+        
+        const highScores = this.getHighScores();
+        if (highScores.length < 5 || this.state.score > highScores[highScores.length - 1].score) {
+            this.elements.newHighScoreSection.classList.remove('hidden'); 
+            this.elements.initialsInput.value = ''; 
+            this.elements.initialsInput.focus();
+            this.elements.gameOverControls.classList.add('hidden');
+        } else {
+            this.elements.newHighScoreSection.classList.add('hidden'); 
+            this.elements.gameOverControls.classList.remove('hidden');
+        }
+        
+        this.resetKeyboardNav();
+    },
+
+    updateScoreUI() { 
+      this.elements.score.textContent = this.formatScore(this.state.score, 6); 
+      this.elements.streak.textContent = `x${this.state.streak}`; 
+    },
+    
+    disableButtons() { 
+      this.elements.answerButtons.forEach(btn => btn.disabled = true); 
+    },
+    
+    enableButtons() { 
+      this.elements.answerButtons.forEach(btn => btn.disabled = false); 
+    },
+    
+    shuffle(array) { 
+      for (let i = array.length - 1; i > 0; i--) { 
+        const j = Math.floor(Math.random() * (i + 1)); 
+        [array[i], array[j]] = [array[j], array[i]]; 
+      } 
+      return array; 
+    },
+    
+    formatScore(num, padding) { 
+      return String(num).padStart(padding, '0'); 
+    },
+    
+    getHighScores() { 
+      const scoresJSON = localStorage.getItem(this.config.highScoreKey); 
+      return scoresJSON ? JSON.parse(scoresJSON) : []; 
+    },
+    
+    saveHighScore() {
+        const initials = this.elements.initialsInput.value.toUpperCase() || 'AAA';
+        const newScore = { 
+          name: initials, 
+          score: this.state.score, 
+          mode: this.state.mode,
+          accuracy: this.state.totalAnswered > 0 ? Math.round((this.state.correctAnswers / this.state.totalAnswered) * 100) : 0,
+          maxStreak: this.state.maxStreak,
+        };
+        let scores = this.getHighScores(); 
+        scores.push(newScore); 
+        scores.sort((a, b) => b.score - a.score); 
+        scores = scores.slice(0, 10);
+        localStorage.setItem(this.config.highScoreKey, JSON.stringify(scores));
+        this.elements.newHighScoreSection.classList.add('hidden'); 
+        this.displayHighScores(); 
+        this.showScreen('highScore');
+    },
+    
+    displayHighScores() {
+        const scores = this.getHighScores(); 
+        this.elements.highScoreTable.innerHTML = '';
+        if (scores.length === 0) { 
+          this.elements.highScoreTable.innerHTML = '<li>NO SCORES YET...</li>'; 
+          return; 
+        }
+        scores.forEach((score, index) => {
+            const li = document.createElement('li'); 
+            const modeNames = { 
+              'classic': 'CLS', 
+              'timeAttack': 'T.A', 
+              'suddenDeath': 'S.D',
+              'endless': 'END',
+              'bossRush': 'BOSS',
+            };
+            li.innerHTML = `
+              <span>${index + 1}. ${score.name} [${modeNames[score.mode] || '???'}]</span>
+              <span class="score">${this.formatScore(score.score, 6)}</span>
+            `;
+            this.elements.highScoreTable.appendChild(li);
+        });
+    }
+};
+
+// --- INITIALIZE GAME ---
+game.init();
+
+</script>
+
 </body>
 </html>
