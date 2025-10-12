@@ -3,43 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapid Fire & Ledger Challenge - AccountsWizard</title>
+    <title>🎮 AccountsWizard - Rapid Fire Quest</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         :root {
-            --primary: #6366f1;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            
-            --bg-primary: #0f0f23;
-            --bg-secondary: #1a1a2e;
-            --surface: #1e1e3f;
-            
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            
-            --radius-lg: 16px;
-            --radius-xl: 24px;
+            --pixel-bg: #0a0a1f;
+            --pixel-purple: #8b4bc6;
+            --pixel-blue: #4a90e2;
+            --pixel-green: #4ade80;
+            --pixel-yellow: #fbbf24;
+            --pixel-red: #ef4444;
+            --pixel-pink: #ec4899;
+            --pixel-cyan: #06b6d4;
+            --pixel-orange: #f97316;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Press Start 2P', cursive;
+            background: #0a0a1f;
+            color: #fff;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* Scanline Effect */
         body::before {
             content: '';
             position: fixed;
@@ -47,20 +45,115 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 15% 25%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Pixel Grid Background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 75, 198, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 75, 198, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
             z-index: -1;
         }
 
-        nav {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 1rem 0;
-            position: sticky;
+        /* Animated Stars */
+        .stars {
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            box-shadow: 0 0 4px 2px rgba(255, 255, 255, 0.5);
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1001;
+            background: linear-gradient(180deg, #1a1a3e 0%, #0f0f2a 100%);
+            border: 4px solid var(--pixel-purple);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(139, 75, 198, 0.5);
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(139, 75, 198, 0.8);
+        }
+
+        .music-icon {
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Pixel Nav Bar */
+        nav {
+            background: linear-gradient(180deg, #1a1a3e 0%, #0f0f2a 100%);
+            border-bottom: 4px solid var(--pixel-purple);
+            padding: 1rem 0;
+            position: relative;
+            box-shadow: 0 4px 0 rgba(139, 75, 198, 0.3);
+        }
+
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--pixel-cyan) 0px,
+                var(--pixel-cyan) 10px,
+                var(--pixel-pink) 10px,
+                var(--pixel-pink) 20px
+            );
+            animation: slide 2s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(20px); }
         }
 
         .nav-container {
@@ -73,19 +166,17 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--pixel-yellow);
+            text-shadow: 
+                3px 3px 0 var(--pixel-purple),
+                -1px -1px 0 var(--pixel-cyan);
+            animation: float 3s ease-in-out infinite;
         }
 
-        .logo::before {
-            content: '⚡';
-            -webkit-text-fill-color: var(--primary);
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .nav-links {
@@ -95,331 +186,784 @@
         }
 
         .nav-links a {
-            color: var(--text-secondary);
+            color: #fff;
             text-decoration: none;
-            font-weight: 500;
+            font-size: 0.7rem;
             transition: all 0.3s;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
         }
 
         .nav-links a:hover {
-            color: var(--text-primary);
+            color: var(--pixel-cyan);
+            transform: scale(1.1);
+            text-shadow: 0 0 10px var(--pixel-cyan);
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 3rem 2rem;
+            padding: 2rem;
         }
 
+        /* Pixel Header */
         .header {
             text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .mode-selector {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .mode-btn {
-            padding: 1rem 2rem;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-lg);
-            background: rgba(30, 30, 63, 0.6);
-            color: var(--text-secondary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .mode-btn:hover {
-            transform: translateY(-4px);
-        }
-
-        .mode-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .quiz-card {
-            background: rgba(30, 30, 63, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-xl);
-            padding: 3rem;
             margin-bottom: 2rem;
             position: relative;
         }
 
+        .header h1 {
+            font-size: 2rem;
+            color: var(--pixel-yellow);
+            text-shadow: 
+                4px 4px 0 var(--pixel-purple),
+                8px 8px 0 rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            animation: glitch 5s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+        }
+
+        .pixel-subtitle {
+            font-size: 0.7rem;
+            color: var(--pixel-cyan);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Game HUD */
+        .game-hud {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hud-item {
+            background: linear-gradient(180deg, #1a1a3e 0%, #0f0f2a 100%);
+            border: 4px solid var(--pixel-purple);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 
+                0 4px 0 rgba(139, 75, 198, 0.5),
+                inset 0 0 20px rgba(139, 75, 198, 0.2);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .hud-label {
+            font-size: 0.6rem;
+            color: var(--pixel-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .hud-value {
+            font-size: 1.5rem;
+            color: var(--pixel-yellow);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Lives System */
+        .lives-container {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .life {
+            transition: all 0.3s;
+        }
+
+        .life.lost {
+            opacity: 0.3;
+            filter: grayscale(100%);
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Combo System */
+        .combo-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: var(--pixel-yellow);
+            text-shadow: 4px 4px 0 var(--pixel-purple);
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .combo-display.show {
+            animation: comboAnim 1s;
+        }
+
+        @keyframes comboAnim {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Quiz Card */
+        .quiz-card {
+            background: linear-gradient(180deg, #1a1a3e 0%, #0f0f2a 100%);
+            border: 6px solid var(--pixel-purple);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            box-shadow: 
+                0 0 0 2px var(--pixel-cyan),
+                0 0 20px rgba(139, 75, 198, 0.5),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Timer */
         .timer-container {
             position: absolute;
             top: 2rem;
             right: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            background: #0a0a1f;
+            border: 4px solid var(--pixel-purple);
+            padding: 1rem;
+            box-shadow: 0 0 20px rgba(139, 75, 198, 0.5);
         }
 
-        .timer {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--warning);
-            min-width: 80px;
-            text-align: center;
+        .timer-label {
+            font-size: 0.6rem;
+            color: var(--pixel-cyan);
+            margin-bottom: 0.5rem;
         }
 
-        .timer.urgent {
-            color: var(--error);
-            animation: pulse 1s infinite;
+        .timer-bar {
+            width: 200px;
+            height: 30px;
+            background: #1a1a3e;
+            border: 3px solid var(--pixel-cyan);
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pixel-green), var(--pixel-yellow));
+            transition: width 1s linear;
+            box-shadow: 0 0 10px var(--pixel-green);
         }
 
+        .timer-fill.urgent {
+            background: linear-gradient(90deg, var(--pixel-red), var(--pixel-orange));
+            animation: urgent-shake 0.5s infinite;
+        }
+
+        @keyframes urgent-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            color: white;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+
+        /* Question */
         .question-number {
             text-align: center;
-            color: var(--text-muted);
-            font-weight: 600;
+            color: var(--pixel-cyan);
+            font-size: 0.7rem;
             margin-bottom: 2rem;
+            padding: 0.5rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 2px solid var(--pixel-cyan);
         }
 
         .question-text {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1rem;
+            line-height: 1.8;
             margin: 2rem 0;
             text-align: center;
+            color: white;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            background: rgba(139, 75, 198, 0.1);
+            border-left: 6px solid var(--pixel-yellow);
         }
 
-        .ledger-table {
-            background: rgba(255, 255, 255, 0.02);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin: 2rem 0;
-        }
-
-        .ledger-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: rgba(99, 102, 241, 0.2);
-            font-weight: 700;
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .ledger-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .ledger-cell {
-            padding: 1rem;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .ledger-cell:last-child {
-            border-right: none;
-        }
-
+        /* Options */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 1.5rem;
             margin: 2rem 0;
         }
 
         .option-btn {
             padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-lg);
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
+            background: linear-gradient(180deg, #2a2a5e 0%, #1a1a3e 100%);
+            border: 4px solid var(--pixel-purple);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            line-height: 1.6;
+            color: white;
             cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 6px 0 #0a0a1f;
+        }
+
+        .option-btn::before {
+            content: '►';
+            position: absolute;
+            left: 1rem;
+            opacity: 0;
             transition: all 0.3s;
         }
 
         .option-btn:hover {
-            background: var(--surface);
-            border-color: var(--primary);
+            background: linear-gradient(180deg, #3a3a7e 0%, #2a2a5e 100%);
             transform: translateY(-4px);
+            box-shadow: 0 10px 0 #0a0a1f, 0 0 30px rgba(139, 75, 198, 0.5);
+        }
+
+        .option-btn:hover::before {
+            opacity: 1;
+            animation: arrow-bounce 0.6s infinite;
+        }
+
+        @keyframes arrow-bounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .option-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #0a0a1f;
         }
 
         .option-btn.correct {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: var(--success);
+            background: linear-gradient(180deg, var(--pixel-green), #059669);
+            border-color: var(--pixel-green);
+            animation: correct-flash 0.5s;
+        }
+
+        @keyframes correct-flash {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px var(--pixel-green); }
+        }
+
+        .option-btn.correct::after {
+            content: '✓';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            animation: pop 0.3s;
+        }
+
+        @keyframes pop {
+            0% { transform: translateY(-50%) scale(0); }
+            100% { transform: translateY(-50%) scale(1); }
         }
 
         .option-btn.wrong {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: var(--error);
+            background: linear-gradient(180deg, var(--pixel-red), #dc2626);
+            border-color: var(--pixel-red);
+            animation: wrong-shake 0.5s;
         }
 
+        @keyframes wrong-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .option-btn.wrong::after {
+            content: '✗';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        /* Feedback */
         .feedback {
             padding: 1.5rem;
-            border-radius: var(--radius-lg);
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             display: none;
+            border: 4px solid;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            position: relative;
         }
 
         .feedback.show {
             display: block;
-            animation: slideIn 0.5s ease-out;
+            animation: slideUp 0.5s;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         .feedback.correct {
-            background: rgba(16, 185, 129, 0.1);
-            border: 2px solid var(--success);
-            color: var(--success);
+            background: rgba(74, 222, 128, 0.1);
+            border-color: var(--pixel-green);
+            color: var(--pixel-green);
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
         }
 
         .feedback.wrong {
             background: rgba(239, 68, 68, 0.1);
-            border: 2px solid var(--error);
-            color: var(--error);
+            border-color: var(--pixel-red);
+            color: var(--pixel-red);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
         }
 
         .feedback-title {
-            font-weight: 700;
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
         }
 
+        /* Particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2rem;
+            animation: particle-float 2s forwards;
+            z-index: 999;
+        }
+
+        @keyframes particle-float {
+            0% { 
+                opacity: 1; 
+                transform: translateY(0) rotate(0deg); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-200px) rotate(360deg); 
+            }
+        }
+
+        /* Results Card */
         .results-card {
             text-align: center;
-            padding: 3rem;
+            padding: 3rem 2rem;
         }
 
         .results-card.hidden {
             display: none;
         }
 
+        .results-banner {
+            font-size: 1.5rem;
+            color: var(--pixel-yellow);
+            margin-bottom: 2rem;
+            text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .pixel-character {
+            font-size: 5rem;
+            margin: 2rem 0;
+            animation: character-dance 1s infinite;
+        }
+
+        @keyframes character-dance {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
         .rating-stars {
             font-size: 3rem;
             margin: 2rem 0;
+            animation: sparkle 1s infinite;
         }
 
+        @keyframes sparkle {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        /* Stats Display */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
         }
 
         .stat-box {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 2rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(180deg, #2a2a5e 0%, #1a1a3e 100%);
+            border: 4px solid var(--pixel-cyan);
+            padding: 2rem 1rem;
+            position: relative;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(45deg, var(--pixel-cyan), var(--pixel-purple), var(--pixel-pink));
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(10px);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2rem;
+            color: var(--pixel-yellow);
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+            margin: 0.5rem 0;
         }
 
         .stat-label {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+            font-size: 0.6rem;
+            color: var(--pixel-cyan);
+            line-height: 1.6;
         }
 
+        /* High Score */
+        .high-score {
+            background: rgba(251, 191, 36, 0.1);
+            border: 4px solid var(--pixel-yellow);
+            padding: 1rem;
+            margin: 2rem 0;
+            font-size: 0.8rem;
+            color: var(--pixel-yellow);
+        }
+
+        /* Pixel Buttons */
         .btn {
-            padding: 1rem 2rem;
+            padding: 1.5rem 3rem;
             border: none;
-            border-radius: var(--radius-lg);
-            font-weight: 600;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
             cursor: pointer;
+            position: relative;
             transition: all 0.3s;
+            border: 4px solid;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.5);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(180deg, var(--pixel-green), #059669);
             color: white;
+            border-color: var(--pixel-green);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.5), 0 0 30px var(--pixel-green);
+        }
+
+        .btn-primary:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(180deg, var(--pixel-purple), #6b21a8);
+            color: white;
+            border-color: var(--pixel-purple);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.5), 0 0 30px var(--pixel-purple);
         }
 
         .btn-container {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 2rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
         .hidden {
             display: none;
         }
 
+        /* Performance Message */
+        .performance-msg {
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 4px solid var(--pixel-yellow);
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--pixel-yellow);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+            line-height: 1.8;
+        }
+
+        /* Game Over Screen */
+        .game-over-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-over-overlay.show {
+            display: flex;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .game-over-content {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(180deg, #1a1a3e 0%, #0f0f2a 100%);
+            border: 6px solid var(--pixel-red);
+            box-shadow: 0 0 50px rgba(239, 68, 68, 0.8);
+        }
+
+        .game-over-title {
+            font-size: 3rem;
+            color: var(--pixel-red);
+            text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            animation: glitch 1s infinite;
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .pixel-subtitle {
+                font-size: 0.5rem;
+            }
+
             .options-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .timer-container {
                 position: static;
-                justify-content: center;
-                margin-bottom: 1rem;
+                margin-bottom: 2rem;
             }
+
+            .timer-bar {
+                width: 100%;
+            }
+
+            .nav-links a {
+                font-size: 0.5rem;
+            }
+
+            .logo {
+                font-size: 0.8rem;
+            }
+
+            .option-btn {
+                font-size: 0.6rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .music-control {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a1f;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            color: var(--pixel-cyan);
+            margin-bottom: 2rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 30px;
+            border: 4px solid var(--pixel-purple);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pixel-cyan), var(--pixel-purple), var(--pixel-pink));
+            animation: loading 2s ease-in-out;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
     </style>
 </head>
 <body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">LOADING QUEST...</div>
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl" title="Toggle Music">
+        <div class="music-icon">🎵</div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div class="game-over-overlay" id="gameOverOverlay">
+        <div class="game-over-content">
+            <div class="game-over-title">💀 GAME OVER 💀</div>
+            <div class="pixel-character">☠️</div>
+            <p style="font-size: 1rem; margin: 2rem 0; color: var(--pixel-red);">
+                YOU LOST ALL YOUR LIVES!
+            </p>
+            <div class="stat-box" style="margin: 2rem auto; max-width: 300px;">
+                <div class="stat-icon">⚔️</div>
+                <div class="stat-number" id="gameOverScore">0</div>
+                <div class="stat-label">ENEMIES<br>DEFEATED</div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="location.reload()">🔄 TRY AGAIN</button>
+                <button class="btn btn-secondary" onclick="location.href='../index.html'">🏠 HOME</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Combo Display -->
+    <div class="combo-display" id="comboDisplay"></div>
+
     <nav>
         <div class="nav-container">
-            <div class="logo">AccountsWizard</div>
+            <div class="logo">🎮 ACCOUNTSWIZARD</div>
             <ul class="nav-links">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../quiz.html">Main Quiz</a></li>
+                <li><a href="../index.html">HOME</a></li>
+                <li><a href="../quiz.html">MAIN QUEST</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
         <div class="header">
-            <h1>Rapid Fire & Ledger Challenge</h1>
-            <p>Test your speed and accuracy</p>
+            <h1>⚡ RAPID FIRE QUEST ⚡</h1>
+            <p class="pixel-subtitle">ANSWER FAST OR LOSE A LIFE!</p>
         </div>
 
-        <div class="mode-selector">
-            <button class="mode-btn active" data-mode="rapid">Rapid Fire</button>
-            <button class="mode-btn" data-mode="ledger">Ledger Identification</button>
+        <div class="game-hud">
+            <div class="hud-item">
+                <div class="hud-label">LEVEL</div>
+                <div class="hud-value" id="hudLevel">1</div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-label">SCORE</div>
+                <div class="hud-value">🪙 <span id="hudScore">0</span></div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-label">STREAK</div>
+                <div class="hud-value">🔥 <span id="hudStreak">0</span></div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-label">LIVES</div>
+                <div class="lives-container" id="livesContainer">
+                    <span class="life">❤️</span>
+                    <span class="life">❤️</span>
+                    <span class="life">❤️</span>
+                </div>
+            </div>
         </div>
 
         <div class="quiz-card" id="quizCard">
             <div class="timer-container" id="timerContainer">
-                <span style="color: var(--text-muted);">⏱️</span>
-                <div class="timer" id="timer">10</div>
+                <div class="timer-label">⚡ ENERGY</div>
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timerFill"></div>
+                    <div class="timer-text" id="timerText">10</div>
+                </div>
             </div>
 
-            <div class="question-number" id="questionNumber">Question 1 of 10</div>
+            <div class="question-number" id="questionNumber">ENEMY 1 OF 10</div>
             
             <div id="questionContent"></div>
 
@@ -430,192 +974,271 @@
         </div>
 
         <div class="quiz-card results-card hidden" id="resultsCard">
-            <h2 style="margin-bottom: 1rem;">Quiz Complete!</h2>
+            <div class="results-banner">🏆 QUEST COMPLETE! 🏆</div>
+            <div class="pixel-character">🧙‍♂️</div>
             <div class="rating-stars" id="ratingStars">⭐⭐⭐</div>
             
+            <div class="high-score" id="highScoreDisplay"></div>
+
             <div class="stats-grid">
                 <div class="stat-box">
+                    <div class="stat-icon">⚔️</div>
                     <div class="stat-number" id="correctStat">0</div>
-                    <div class="stat-label">Correct Answers</div>
+                    <div class="stat-label">ENEMIES<br>DEFEATED</div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-icon">🎯</div>
                     <div class="stat-number" id="scoreStat">0%</div>
-                    <div class="stat-label">Accuracy</div>
+                    <div class="stat-label">ACCURACY<br>RATE</div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-icon">⚡</div>
                     <div class="stat-number" id="bonusStat">+0</div>
-                    <div class="stat-label">Time Bonus</div>
+                    <div class="stat-label">SPEED<br>BONUS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-number" id="maxStreakStat">0</div>
+                    <div class="stat-label">MAX<br>STREAK</div>
                 </div>
             </div>
 
-            <div id="performanceMsg" style="font-size: 1.5rem; font-weight: 700; margin: 2rem 0;"></div>
+            <div class="performance-msg" id="performanceMsg"></div>
 
             <div class="btn-container">
-                <button class="btn btn-primary" onclick="location.reload()">Play Again</button>
-                <button class="btn btn-primary" onclick="location.href='quiz.html'">Main Quiz</button>
+                <button class="btn btn-primary" onclick="location.reload()">🔄 RETRY</button>
+                <button class="btn btn-secondary" onclick="location.href='../quiz.html'">🗺️ MAIN QUEST</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Audio Context
+        let audioContext;
+        let musicPlaying = false;
+        let backgroundMusic;
+
+        // Initialize Audio
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Background music oscillator (simple chiptune)
+                backgroundMusic = {
+                    oscillators: [],
+                    gainNode: audioContext.createGain(),
+                    playing: false
+                };
+                
+                backgroundMusic.gainNode.connect(audioContext.destination);
+                backgroundMusic.gainNode.gain.value = 0.1;
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        // Play background music
+        function playBackgroundMusic() {
+            if (!audioContext || backgroundMusic.playing) return;
+            
+            const notes = [262, 294, 330, 349, 392, 440, 494, 523]; // C major scale
+            const pattern = [0, 2, 4, 5, 4, 2, 0, 2];
+            
+            backgroundMusic.playing = true;
+            let index = 0;
+            
+            function playNote() {
+                if (!backgroundMusic.playing) return;
+                
+                const osc = audioContext.createOscillator();
+                osc.type = 'square';
+                osc.frequency.value = notes[pattern[index % pattern.length]];
+                osc.connect(backgroundMusic.gainNode);
+                osc.start();
+                osc.stop(audioContext.currentTime + 0.2);
+                
+                index++;
+                setTimeout(playNote, 250);
+            }
+            
+            playNote();
+        }
+
+        function stopBackgroundMusic() {
+            backgroundMusic.playing = false;
+        }
+
+        // Sound effects
+        function playSound(frequency, duration = 0.1, type = 'sine') {
+            if (!audioContext) return;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.type = type;
+            osc.frequency.value = frequency;
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            gain.gain.value = 0.3;
+            
+            osc.start();
+            osc.stop(audioContext.currentTime + duration);
+        }
+
+        function playCorrectSound() {
+            playSound(523.25, 0.1, 'square');
+            setTimeout(() => playSound(659.25, 0.1, 'square'), 100);
+            setTimeout(() => playSound(783.99, 0.2, 'square'), 200);
+        }
+
+        function playWrongSound() {
+            playSound(200, 0.1, 'sawtooth');
+            setTimeout(() => playSound(150, 0.2, 'sawtooth'), 100);
+        }
+
+        function playLoseLifeSound() {
+            playSound(100, 0.3, 'sawtooth');
+        }
+
+        function playGameOverSound() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => playSound(200 - i * 20, 0.2, 'sawtooth'), i * 150);
+            }
+        }
+
+        // Music control
+        document.getElementById('musicControl').addEventListener('click', () => {
+            if (!audioContext) initAudio();
+            
+            if (musicPlaying) {
+                stopBackgroundMusic();
+                document.querySelector('.music-icon').textContent = '🔇';
+            } else {
+                playBackgroundMusic();
+                document.querySelector('.music-icon').textContent = '🎵';
+            }
+            musicPlaying = !musicPlaying;
+        });
+
+        // Generate pixel stars
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Hide loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 2000);
+        });
+
+        generateStars();
+
         const rapidFireQuestions = [
             {
-                question: "What is the full form of GST?",
+                question: "What is the full form of GST? 🤔",
                 options: ["General Sales Tax", "Goods and Service Tax", "Government Sales Tax", "Goods Sales Tax"],
                 correct: 1
             },
             {
-                question: "Trial Balance is prepared from:",
+                question: "Trial Balance is prepared from: 📊",
                 options: ["Journal", "Cash Book", "Ledger", "Balance Sheet"],
                 correct: 2
             },
             {
-                question: "Which is a current asset?",
+                question: "Which is a current asset? 💰",
                 options: ["Building", "Machinery", "Stock", "Goodwill"],
                 correct: 2
             },
             {
-                question: "Depreciation is charged on:",
+                question: "Depreciation is charged on: 📉",
                 options: ["Current Assets", "Fixed Assets", "Liabilities", "Capital"],
                 correct: 1
             },
             {
-                question: "What is the accounting equation?",
+                question: "What is the accounting equation? ⚖️",
                 options: ["A = L - C", "A = L + C", "A + L = C", "C = A - L"],
                 correct: 1
             },
             {
-                question: "Double entry system was developed by:",
+                question: "Double entry system was developed by: 📚",
                 options: ["Adam Smith", "Luca Pacioli", "Karl Marx", "Henry Fayol"],
                 correct: 1
             },
             {
-                question: "Cash book records:",
+                question: "Cash book records: 💵",
                 options: ["Only cash", "Only bank", "Both cash and bank", "Credit transactions"],
                 correct: 2
             },
             {
-                question: "Debit note is sent when:",
+                question: "Debit note is sent when: 📝",
                 options: ["Goods sold", "Goods returned to supplier", "Cash received", "Payment made"],
                 correct: 1
             },
             {
-                question: "CGST + SGST is equivalent to:",
+                question: "CGST + SGST is equivalent to: 🏛️",
                 options: ["UGST", "IGST", "VAT", "Service Tax"],
                 correct: 1
             },
             {
-                question: "Outstanding salary is a:",
+                question: "Outstanding salary is a: 💼",
                 options: ["Asset", "Liability", "Expense", "Income"],
                 correct: 1
             },
             {
-                question: "Journal is called book of:",
+                question: "Journal is called book of: 📖",
                 options: ["Original entry", "Final entry", "Secondary entry", "Last entry"],
                 correct: 0
             },
             {
-                question: "For nominal accounts, we debit:",
+                question: "For nominal accounts, we debit: 📌",
                 options: ["What comes in", "All expenses", "The receiver", "All assets"],
                 correct: 1
+            },
+            {
+                question: "Revenue is an example of: 💹",
+                options: ["Asset", "Liability", "Income", "Expense"],
+                correct: 2
+            },
+            {
+                question: "Which is an intangible asset? 🌟",
+                options: ["Land", "Goodwill", "Stock", "Cash"],
+                correct: 1
+            },
+            {
+                question: "Bad debts are shown in: 📋",
+                options: ["Balance Sheet", "Trading Account", "Profit & Loss", "Cash Book"],
+                correct: 2
             }
         ];
 
-        const ledgerQuestions = [
-            {
-                ledgerData: {
-                    debit: [
-                        { particular: "To Balance b/d", amount: 5000 },
-                        { particular: "To Sales", amount: 3000 }
-                    ],
-                    credit: [
-                        { particular: "By Bank", amount: 4000 },
-                        { particular: "By Balance c/d", amount: 4000 }
-                    ]
-                },
-                options: ["Sales Account", "Debtor's Account", "Bank Account", "Cash Account"],
-                correct: 1,
-                explanation: "This is a Debtor's Account showing opening balance, sales on credit, payment received, and closing balance."
-            },
-            {
-                ledgerData: {
-                    debit: [
-                        { particular: "To Cash", amount: 10000 },
-                        { particular: "To Interest", amount: 500 }
-                    ],
-                    credit: [
-                        { particular: "By Cheque", amount: 8000 },
-                        { particular: "By Balance c/d", amount: 2500 }
-                    ]
-                },
-                options: ["Cash Account", "Bank Account", "Interest Account", "Capital Account"],
-                correct: 1,
-                explanation: "Bank Account shows cash deposited, interest received, cheque issued, and closing balance."
-            },
-            {
-                ledgerData: {
-                    debit: [
-                        { particular: "To Rent", amount: 2000 },
-                        { particular: "To Salary", amount: 5000 },
-                        { particular: "To Balance c/d", amount: 1000 }
-                    ],
-                    credit: [
-                        { particular: "By Profit & Loss", amount: 8000 }
-                    ]
-                },
-                options: ["Expenses Account", "Profit & Loss Account", "Trading Account", "Capital Account"],
-                correct: 1,
-                explanation: "Profit & Loss Account shows expenses debited and transferred to P&L on credit side."
-            },
-            {
-                ledgerData: {
-                    debit: [
-                        { particular: "To Balance b/d", amount: 15000 }
-                    ],
-                    credit: [
-                        { particular: "By Purchases", amount: 3000 },
-                        { particular: "By Bank", amount: 10000 },
-                        { particular: "By Balance c/d", amount: 2000 }
-                    ]
-                },
-                options: ["Purchase Account", "Creditor's Account", "Bank Account", "Supplier's Account"],
-                correct: 1,
-                explanation: "Creditor's Account shows amount owed, purchases on credit, payment made, and balance carried down."
-            },
-            {
-                ledgerData: {
-                    debit: [
-                        { particular: "To Drawings", amount: 2000 },
-                        { particular: "To Balance c/d", amount: 23000 }
-                    ],
-                    credit: [
-                        { particular: "By Balance b/d", amount: 20000 },
-                        { particular: "By Net Profit", amount: 5000 }
-                    ]
-                },
-                options: ["Drawings Account", "Capital Account", "Profit & Loss Account", "Cash Account"],
-                correct: 1,
-                explanation: "Capital Account shows opening capital, additions from profit, deductions for drawings, and closing balance."
-            }
-        ];
-
-        let currentMode = 'rapid';
         let currentQuestion = 0;
         let score = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let lives = 3;
         let timeLeft = 10;
         let timerInterval = null;
         let questions = [];
         let timeBonus = 0;
-        let answeredInTime = 0;
 
         function initQuiz() {
-            questions = currentMode === 'rapid' ? 
-                shuffleArray(rapidFireQuestions).slice(0, 10) : 
-                shuffleArray(ledgerQuestions).slice(0, 10);
+            questions = shuffleArray(rapidFireQuestions).slice(0, 10);
             currentQuestion = 0;
             score = 0;
+            streak = 0;
+            maxStreak = 0;
+            lives = 3;
             timeBonus = 0;
-            answeredInTime = 0;
+            updateHUD();
             loadQuestion();
         }
 
@@ -628,6 +1251,65 @@
             return shuffled;
         }
 
+        function updateHUD() {
+            document.getElementById('hudLevel').textContent = currentQuestion + 1;
+            document.getElementById('hudScore').textContent = score * 100;
+            document.getElementById('hudStreak').textContent = streak;
+            updateLivesDisplay();
+        }
+
+        function updateLivesDisplay() {
+            const livesElements = document.querySelectorAll('.life');
+            livesElements.forEach((life, index) => {
+                if (index >= lives) {
+                    life.classList.add('lost');
+                } else {
+                    life.classList.remove('lost');
+                }
+            });
+        }
+
+        function loseLife() {
+            lives--;
+            playLoseLifeSound();
+            updateLivesDisplay();
+            
+            if (lives <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            clearInterval(timerInterval);
+            playGameOverSound();
+            document.getElementById('gameOverScore').textContent = score;
+            document.getElementById('gameOverOverlay').classList.add('show');
+        }
+
+        function showCombo(comboCount) {
+            const comboDisplay = document.getElementById('comboDisplay');
+            comboDisplay.textContent = `${comboCount}X COMBO! 🔥`;
+            comboDisplay.classList.add('show');
+            
+            setTimeout(() => {
+                comboDisplay.classList.remove('show');
+            }, 1000);
+        }
+
+        function createParticles(x, y, emoji) {
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = emoji;
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
         function loadQuestion() {
             if (currentQuestion >= questions.length) {
                 showResults();
@@ -635,75 +1317,51 @@
             }
 
             clearInterval(timerInterval);
-            timeLeft = currentMode === 'rapid' ? 10 : 15;
-            document.getElementById('timer').textContent = timeLeft;
-            document.getElementById('timer').classList.remove('urgent');
-            
-            if (currentMode === 'rapid') {
-                startTimer();
-            } else {
-                document.getElementById('timerContainer').style.display = 'none';
-            }
+            timeLeft = 10;
+            updateTimerDisplay();
+            startTimer();
 
             document.getElementById('questionNumber').textContent = 
-                `Question ${currentQuestion + 1} of ${questions.length}`;
+                `ENEMY ${currentQuestion + 1} OF ${questions.length}`;
             document.getElementById('feedback').classList.remove('show');
 
             const q = questions[currentQuestion];
             const content = document.getElementById('questionContent');
 
-            if (currentMode === 'rapid') {
-                content.innerHTML = `
-                    <div class="question-text">${q.question}</div>
-                    <div class="options-grid">
-                        ${q.options.map((opt, i) => `
-                            <button class="option-btn" data-index="${i}">${opt}</button>
-                        `).join('')}
-                    </div>
-                `;
-            } else {
-                content.innerHTML = `
-                    <div class="ledger-table">
-                        <div class="ledger-header">
-                            <div>Dr</div>
-                            <div>Cr</div>
-                        </div>
-                        ${Math.max(q.ledgerData.debit.length, q.ledgerData.credit.length) > 0 ? 
-                            Array.from({length: Math.max(q.ledgerData.debit.length, q.ledgerData.credit.length)}).map((_, i) => `
-                                <div class="ledger-row">
-                                    <div class="ledger-cell">
-                                        ${q.ledgerData.debit[i] ? `${q.ledgerData.debit[i].particular} ₹${q.ledgerData.debit[i].amount}` : ''}
-                                    </div>
-                                    <div class="ledger-cell">
-                                        ${q.ledgerData.credit[i] ? `${q.ledgerData.credit[i].particular} ₹${q.ledgerData.credit[i].amount}` : ''}
-                                    </div>
-                                </div>
-                            `).join('') : ''
-                        }
-                    </div>
-                    <div class="question-text">Which ledger account is this?</div>
-                    <div class="options-grid">
-                        ${q.options.map((opt, i) => `
-                            <button class="option-btn" data-index="${i}">${opt}</button>
-                        `).join('')}
-                    </div>
-                `;
-            }
+            content.innerHTML = `
+                <div class="question-text">${q.question}</div>
+                <div class="options-grid">
+                    ${q.options.map((opt, i) => `
+                        <button class="option-btn" data-index="${i}">${opt}</button>
+                    `).join('')}
+                </div>
+            `;
 
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.addEventListener('click', handleAnswer);
             });
         }
 
+        function updateTimerDisplay() {
+            const timerFill = document.getElementById('timerFill');
+            const timerText = document.getElementById('timerText');
+            const maxTime = 10;
+            const percentage = (timeLeft / maxTime) * 100;
+            
+            timerFill.style.width = percentage + '%';
+            timerText.textContent = timeLeft;
+            
+            if (timeLeft <= 3) {
+                timerFill.classList.add('urgent');
+            } else {
+                timerFill.classList.remove('urgent');
+            }
+        }
+
         function startTimer() {
-            document.getElementById('timerContainer').style.display = 'flex';
             timerInterval = setInterval(() => {
                 timeLeft--;
-                document.getElementById('timer').textContent = timeLeft;
-                
-                if (timeLeft <= 3) {
-                    document.getElementById('timer').classList.add('urgent');
-                }
+                updateTimerDisplay();
                 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
@@ -726,14 +1384,33 @@
 
             if (isCorrect) {
                 score++;
-                if (currentMode === 'rapid' && timeLeft >= 5) {
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+                
+                playCorrectSound();
+                
+                if (timeLeft >= 5) {
                     timeBonus += timeLeft;
-                    answeredInTime++;
                 }
-                showFeedback(true, q.explanation || "Correct answer!");
+                
+                // Show combo for streaks
+                if (streak >= 3) {
+                    showCombo(streak);
+                }
+                
+                // Create particles
+                const rect = e.target.getBoundingClientRect();
+                createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, '✨');
+                
+                showFeedback(true, "✓ CORRECT! Enemy defeated! 💪");
             } else {
-                showFeedback(false, q.explanation || `The correct answer is: ${q.options[q.correct]}`);
+                streak = 0;
+                playWrongSound();
+                loseLife();
+                showFeedback(false, `✗ WRONG! The correct answer is: ${q.options[q.correct]}`);
             }
+
+            updateHUD();
 
             setTimeout(() => {
                 currentQuestion++;
@@ -743,12 +1420,15 @@
 
         function autoNextQuestion() {
             const q = questions[currentQuestion];
+            streak = 0;
+            loseLife();
+            
             document.querySelectorAll('.option-btn').forEach((btn, i) => {
                 btn.style.pointerEvents = 'none';
                 if (i === q.correct) btn.classList.add('correct');
             });
             
-            showFeedback(false, "Time's up! The correct answer is highlighted.");
+            showFeedback(false, "⏰ TIME'S UP! Energy depleted!");
             
             setTimeout(() => {
                 currentQuestion++;
@@ -759,7 +1439,7 @@
         function showFeedback(isCorrect, text) {
             const feedback = document.getElementById('feedback');
             feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'} show`;
-            document.getElementById('feedbackTitle').textContent = isCorrect ? '✓ Correct!' : '✗ Wrong';
+            document.getElementById('feedbackTitle').textContent = isCorrect ? '✓ VICTORY!' : '✗ DEFEAT';
             document.getElementById('feedbackText').textContent = text;
         }
 
@@ -767,37 +1447,68 @@
             clearInterval(timerInterval);
             const percentage = Math.round((score / questions.length) * 100);
             
+            // High score management
+            const highScore = localStorage.getItem('accountsWizardHighScore') || 0;
+            const currentScore = score * 100 + timeBonus;
+            
+            if (currentScore > highScore) {
+                localStorage.setItem('accountsWizardHighScore', currentScore);
+                document.getElementById('highScoreDisplay').innerHTML = 
+                    `🎉 NEW HIGH SCORE! 🎉<br>Previous: ${highScore} → New: ${currentScore}`;
+            } else {
+                document.getElementById('highScoreDisplay').innerHTML = 
+                    `High Score: ${highScore}`;
+            }
+            
             document.getElementById('quizCard').classList.add('hidden');
             document.getElementById('resultsCard').classList.remove('hidden');
             
             document.getElementById('correctStat').textContent = score;
             document.getElementById('scoreStat').textContent = percentage + '%';
-            document.getElementById('bonusStat').textContent = currentMode === 'rapid' ? `+${timeBonus}` : 'N/A';
+            document.getElementById('bonusStat').textContent = `+${timeBonus}`;
+            document.getElementById('maxStreakStat').textContent = maxStreak;
             
             let stars = '';
-            if (percentage >= 80 && timeBonus >= 30) stars = '⭐⭐⭐⭐';
-            else if (percentage >= 70) stars = '⭐⭐⭐';
-            else if (percentage >= 50) stars = '⭐⭐';
-            else stars = '⭐';
+            let character = '';
+            let message = '';
+            
+            if (percentage === 100 && maxStreak >= 5) {
+                stars = '⭐⭐⭐⭐⭐';
+                character = '👑';
+                message = '🎊 LEGENDARY MASTER! Perfect score with epic combo! You are the ultimate Accounts Wizard! 🎊';
+            } else if (percentage >= 90) {
+                stars = '⭐⭐⭐⭐⭐';
+                character = '🧙‍♂️';
+                message = '🎊 LEGENDARY WIZARD! Perfect mastery of accounting magic! 🎊';
+            } else if (percentage >= 80) {
+                stars = '⭐⭐⭐⭐';
+                character = '🦸‍♂️';
+                message = '🏆 EPIC WARRIOR! Outstanding accounting skills! 🏆';
+            } else if (percentage >= 70) {
+                stars = '⭐⭐⭐';
+                character = '⚔️';
+                message = '💪 BRAVE KNIGHT! Great job on the quest! 💪';
+            } else if (percentage >= 50) {
+                stars = '⭐⭐';
+                character = '🛡️';
+                message = '📈 APPRENTICE! Keep training to level up! 📈';
+            } else {
+                stars = '⭐';
+                character = '🗡️';
+                message = '💡 BEGINNER! Try again to gain more XP! 💡';
+            }
             
             document.getElementById('ratingStars').textContent = stars;
-            
-            let message = '';
-            if (percentage >= 80) message = "Outstanding Performance!";
-            else if (percentage >= 60) message = "Great Job!";
-            else message = "Keep Practicing!";
-            
+            document.querySelector('.pixel-character').textContent = character;
             document.getElementById('performanceMsg').textContent = message;
         }
 
-        document.querySelectorAll('.mode-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentMode = btn.dataset.mode;
-                initQuiz();
-            });
-        });
+        // Initialize audio on first user interaction
+        document.addEventListener('click', () => {
+            if (!audioContext) {
+                initAudio();
+            }
+        }, { once: true });
 
         initQuiz();
     </script>
