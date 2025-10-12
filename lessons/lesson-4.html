@@ -279,6 +279,38 @@
             font-weight: bold;
             color: var(--brand-2);
         }
+
+        /* Stack the two-column cards vertically */
+        .two-column {
+            display: flex !important;
+            flex-direction: column;
+            gap: 20px !important;
+        }
+
+        /* Essential Formulas & Quick Comparison table */
+        .formulas-table {
+            overflow-x: auto;
+        }
+
+        /* Ensure inner grids in formulas/cards stack properly */
+        .formulas-grid, 
+        .key-points-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Adjust padding/margins for small screens */
+        .summary-card {
+            padding: 20px !important;
+        }
+
+        /* Tables responsive: allow horizontal scroll */
+        table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+        }
         }
 
         /* Fix for any content that might be getting clipped */
@@ -998,7 +1030,7 @@
             </div>
 
             <!-- Two Column Layout for Key Points -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+            <div class="two-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
                 
                 <!-- Process of Accounting -->
                 <div style="
@@ -1104,7 +1136,7 @@
             </div>
 
             <!-- Key Formulas & Concepts -->
-            <div style="
+            <div class="formulas-table" style="
                 background: var(--card);
                 border-radius: 12px;
                 padding: 25px;
@@ -1167,7 +1199,7 @@
             </div>
 
             <!-- Comparison Table -->
-            <div style="
+            <div class="formulas-table" style="
                 background: var(--card);
                 border-radius: 12px;
                 padding: 25px;
@@ -1221,7 +1253,7 @@
             </div>
 
             <!-- Important Points -->
-            <div style="
+            <div class="key-points-grid" style="
                 background: linear-gradient(135deg, rgba(255,122,198,0.1), rgba(124,77,255,0.1));
                 border-radius: 12px;
                 padding: 25px;

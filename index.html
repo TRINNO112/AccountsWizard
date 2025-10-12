@@ -19,6 +19,7 @@
       --card:#141b38;
       --ok:#27e1a3;
       --warn:#ffd166;
+      --error:#ff4757;
       --shadow: 0 15px 30px rgba(0,0,0,.35), 0 6px 10px rgba(0,0,0,.2);
       --radius: 18px;
       --radius-lg: 28px;
@@ -35,6 +36,17 @@
                   linear-gradient(180deg, var(--bg), var(--bg-2));
       min-height: 100dvh;
       overflow-x: hidden;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .floaters { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
@@ -68,9 +80,10 @@
       background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent), var(--brand));
       box-shadow: 0 8px 18px rgba(124,77,255,.5);
       transform: rotate(8deg);
+      flex-shrink: 0;
     }
     .brand h1{
-      margin:0; font-size: 1.1rem; letter-spacing: .6px;
+      margin:0; font-size: clamp(1rem, 2vw + 0.5rem, 1.1rem); letter-spacing: .6px;
       background: linear-gradient(90deg, #fff, var(--muted), var(--lime));
       -webkit-background-clip: text; background-clip: text; color: transparent;
       font-weight: 800;
@@ -79,6 +92,7 @@
     .menu a{
       text-decoration: none; color: var(--text); opacity: .9;
       padding: 10px 14px; border-radius: 12px; transition: .2s ease;
+      display: none;
     }
     .menu a:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
     .pill{
@@ -87,14 +101,43 @@
       padding: 10px 16px; border-radius: 999px; cursor: pointer;
       box-shadow: 0 12px 25px rgba(0,229,255,.25), inset 0 -2px 0 rgba(0,0,0,.2);
       transition: transform .15s ease, filter .3s ease;
+      white-space: nowrap;
+      font-size: 14px;
     }
     .pill:hover{ transform: translateY(-1px) scale(1.02); filter: brightness(1.1); }
-    .hamb{ display:none; background:none; border:none; color:var(--text); font-size: 1.6rem; cursor:pointer;}
+    .hamb{ 
+      display:block; 
+      background:none; 
+      border:none; 
+      color:var(--text); 
+      font-size: 1.6rem; 
+      cursor:pointer;
+      padding: 4px;
+    }
+
+    /* User Info Styles */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
 
     .mobile{
-      display:none; padding: 6px 16px 14px;
+      display:none; 
+      padding: 6px 16px 14px;
       border-top: 1px solid rgba(255,255,255,.06);
-      background: rgba(10,14,30,.75);
+      background: rgba(10,14,30,.95);
+      backdrop-filter: blur(10px);
+    }
+    .mobile.show {
+      display: block;
     }
     .mobile a{
       display:block; text-decoration:none; color:var(--text);
@@ -104,56 +147,59 @@
 
     .hero{
       max-width: 1200px; margin: 42px auto 0; padding: 0 18px 30px;
-      display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center;
+      display: grid; grid-template-columns: 1fr; gap: 30px; align-items: center;
     }
     .tag{
       display:inline-flex; gap:10px; align-items:center; padding:6px 10px; border-radius: 999px;
       background: rgba(124,77,255,.15); border:1px solid rgba(124,77,255,.35); color:#e6e6ff; font-weight:700; letter-spacing:.3px;
+      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
     }
     .spark{ width:8px; height:8px; border-radius:50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
     .title{
-      font-size: clamp(1.9rem, 3.4vw + .8rem, 3.4rem); line-height: 1.05; margin: 14px 0 10px; font-weight: 900;
+      font-size: clamp(1.6rem, 5vw, 3.4rem); line-height: 1.15; margin: 14px 0 10px; font-weight: 900;
       background: linear-gradient(90deg, #fff, #c2d0ff, var(--accent), var(--lime));
       -webkit-background-clip:text; background-clip:text; color: transparent;
     }
-    .subtitle{ color: #dfe5ff; opacity: .85; font-size: 1.05rem; line-height: 1.7; }
+    .subtitle{ color: #dfe5ff; opacity: .85; font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.7; }
     .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
     .ghost{
       background: transparent; color: var(--text); border:1px solid rgba(255,255,255,.2);
       padding: 10px 16px; border-radius: 14px; font-weight:700; cursor:pointer; transition: .2s ease;
+      text-decoration: none; font-size: 14px;
     }
     .ghost:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
 
     .hero-media{
-      position: relative; min-height: 300px; border-radius: var(--radius-lg);
+      position: relative; min-height: 250px; border-radius: var(--radius-lg);
       background: linear-gradient(180deg, rgba(124,77,255,.22), rgba(0,229,255,.15));
       border: 1px solid rgba(255,255,255,.08); box-shadow: var(--shadow); overflow: clip;
     }
     .coin{
-      position:absolute; width: 96px; height: 96px; border-radius: 50%;
+      position:absolute; width: 60px; height: 60px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #ffe29a, #ffb703 55%, #a56b00 70%);
       box-shadow: 0 16px 30px rgba(255,183,3,.25), inset 0 2px 0 rgba(255,255,255,.5);
       animation: float 5s ease-in-out infinite;
     }
     .coin::after{
       content:"₹"; position:absolute; inset:0; display:grid; place-items:center;
-      font-weight: 900; font-size: 38px; color:#2b1900; text-shadow: 0 1px 0 #fff7, 0 2px 8px #0006;
+      font-weight: 900; font-size: 24px; color:#2b1900; text-shadow: 0 1px 0 #fff7, 0 2px 8px #0006;
     }
-    .coin.c1{ top: 26px; left: 22px; }
-    .coin.c2{ bottom: 26px; right: 22px; animation-delay: .9s; }
+    .coin.c1{ top: 16px; left: 16px; }
+    .coin.c2{ bottom: 16px; right: 16px; animation-delay: .9s; }
     .chip{
       position:absolute; inset: 20px; border-radius: 22px;
       background: rgba(10,12,30,.55); border:1px solid rgba(255,255,255,.08);
-      display:grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px;
+      display:grid; grid-template-columns: 1fr; gap: 14px; padding: 16px;
     }
     .mini{
       background: linear-gradient(180deg, #1a224a, #10163a);
       border:1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px;
     }
-    .mini h4{ margin: 0 0 6px; font-size: .95rem; color:#e6ebff; }
-    .stat{font-size: 1.35rem; font-weight: 900; letter-spacing:.5px;}
+    .mini h4{ margin: 0 0 6px; font-size: clamp(0.8rem, 2vw, 0.95rem); color:#e6ebff; }
+    .stat{font-size: clamp(1rem, 2.5vw, 1.35rem); font-weight: 900; letter-spacing:.5px;}
     .stat.ok{ color: var(--ok); }
     .stat.warn{ color: var(--warn); }
+    .mini small { font-size: clamp(0.7rem, 1.5vw, 0.85rem); }
 
     @keyframes float{
       0%, 100%{ transform: translateY(0) rotate(0); }
@@ -162,7 +208,7 @@
 
     .features{
       max-width: 1200px; margin: 22px auto 0; padding: 0 18px 60px;
-      display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+      display:grid; grid-template-columns: 1fr; gap: 18px;
     }
     .card{
       position:relative; background: linear-gradient(180deg, #0f1330, #0b0f2a);
@@ -176,12 +222,13 @@
       background: linear-gradient(90deg, var(--accent), var(--brand-2)); color:#0b1020; font-weight:900;
       padding: 6px 10px; border-radius: 999px;
     }
-    .card h3{ margin: 8px 0 6px; font-size: 1.25rem; }
-    .card p{ margin:0; color:#d6dcff; opacity:.9; line-height:1.6; }
+    .card h3{ margin: 8px 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.25rem); }
+    .card p{ margin:0; color:#d6dcff; opacity:.9; line-height:1.6; font-size: clamp(0.9rem, 2vw, 1rem); }
     .card .go{
       margin-top: 14px; display:inline-flex; align-items:center; gap:10px;
       text-decoration:none; background: rgba(255,255,255,.08); color:var(--text);
       padding: 10px 14px; border-radius: 12px; transition:.18s ease;
+      font-size: 14px;
     }
     .card .go:hover{ background: rgba(255,255,255,.15); transform: translateX(2px); }
 
@@ -189,13 +236,13 @@
       max-width: 1200px; margin: 28px auto 0; padding: 0 18px 70px;
     }
     .section h2{
-      font-size: clamp(1.4rem, 2.2vw + .9rem, 2.2rem);
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
       margin: 0 0 12px;
       background: linear-gradient(90deg, #fff, var(--accent), var(--lime));
       -webkit-background-clip:text; background-clip:text; color: transparent;
     }
     .topics{
-      display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px;
     }
     .topic{
       background: linear-gradient(180deg, #0e1636, #0b122c);
@@ -204,268 +251,553 @@
       transition: transform .18s ease; cursor: pointer;
     }
     .topic:hover{ transform: translateY(-3px); }
-    .topic b{ font-size: .98rem; }
-    .topic small{ color:#cbd3ff; opacity:.85; }
+    .topic b{ font-size: clamp(0.9rem, 2vw, 0.98rem); }
+    .topic small{ color:#cbd3ff; opacity:.85; font-size: clamp(0.75rem, 1.5vw, 0.85rem); }
 
     .cta-band{
       margin-top: 24px; border-radius: var(--radius-lg);
       background: linear-gradient(90deg, rgba(124,77,255,.32), rgba(0,229,255,.28));
-      padding: 18px; display:flex; align-items:center; justify-content: space-between; gap: 16px;
+      padding: 18px; display:flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
       border:1px solid rgba(255,255,255,.1);
       box-shadow: 0 18px 40px rgba(0,229,255,.12);
+      text-align: center;
     }
     .cta-band .left{ max-width: 760px; }
-    .cta-band p{ margin:8px 0 0; color:#e9edff; opacity:.95; }
-    .cta-band .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .cta-band h3 { font-size: clamp(1.1rem, 2.5vw, 1.4rem); }
+    .cta-band p{ margin:8px 0 0; color:#e9edff; opacity:.95; font-size: clamp(0.9rem, 2vw, 1rem); }
+    .cta-band .actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content: center; }
 
-    /* Modal Styles */
-    .modal-overlay{
-      display: none; position: fixed; inset: 0; z-index: 100;
-      background: rgba(5,8,20,.85); backdrop-filter: blur(8px);
+    /* Topic Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5,8,20,.9);
+      backdrop-filter: blur(12px);
       animation: fadeIn .3s ease;
+      padding: 20px;
+      overflow-y: auto;
     }
-    .modal-overlay.show{ display: grid; place-items: center; }
-    .modal{
+
+    .modal-overlay.show {
+      display: grid;
+      place-items: center;
+    }
+
+    .modal {
       background: linear-gradient(180deg, #0f1733, #0b1020);
-      border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-lg);
-      box-shadow: 0 25px 60px rgba(0,0,0,.6);
-      max-width: 600px; width: 92vw; max-height: 85vh; overflow-y: auto;
-      padding: 24px; animation: slideUp .35s ease;
-    }
-    .modal-header{
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 16px;
-    }
-    .modal-header h3{
-      margin: 0; font-size: 1.5rem;
-      background: linear-gradient(90deg, var(--lime), var(--brand-2));
-      -webkit-background-clip:text; background-clip:text; color: transparent;
-    }
-    .modal-close{
-      background: rgba(255,255,255,.08); border: none; color: var(--text);
-      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
-      font-size: 1.2rem; transition: .2s ease;
-    }
-    .modal-close:hover{ background: rgba(255,255,255,.15); transform: rotate(90deg); }
-    .modal-content{
-      color: #dfe5ff; line-height: 1.7; font-size: .98rem;
-    }
-    .modal-content h4{
-      color: var(--accent); margin: 18px 0 8px; font-size: 1.1rem;
-    }
-    .modal-content ul{
-      padding-left: 20px; margin: 8px 0;
-    }
-    .modal-content li{
-      margin: 6px 0;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(0,0,0,.7);
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp .4s ease;
     }
 
-    @keyframes fadeIn{
-      from{ opacity: 0; }
-      to{ opacity: 1; }
-    }
-    @keyframes slideUp{
-      from{ transform: translateY(30px); opacity: 0; }
-      to{ transform: translateY(0); opacity: 1; }
-    }
-
-    footer{
-      border-top: 1px solid rgba(255,255,255,.06);
-      padding: 20px 18px 60px; color:#c9d0ff; opacity:.9; text-align:center;
+    .modal-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    @media (max-width: 980px){
-      .hero{ grid-template-columns: 1fr; }
-      .hero-media{ order:-1; min-height: 240px; }
-      .features{ grid-template-columns: 1fr 1fr; }
-      .topics{ grid-template-columns: 1fr 1fr 1fr; }
-    }
-    @media (max-width: 680px){
-      .hamb{ display:block; }
-      .menu { display:none; }
-      .mobile.show{ display:block; }
-      .features{ grid-template-columns: 1fr; }
-      .topics{ grid-template-columns: 1fr 1fr; }
-      .cta-band{ flex-direction: column; align-items: flex-start; }
+    .modal-header h3 {
+      margin: 0;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      background: linear-gradient(90deg, var(--text), var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .pop{ animation: pop .5s ease forwards; }
-    @keyframes pop{
-      0%{ transform: scale(.9); opacity:.0 }
-      60%{ transform: scale(1.03); opacity:1 }
-      100%{ transform: scale(1) }
-    }
-    .reveal{ opacity:0; transform: translateY(14px); transition: .6s ease; }
-    .reveal.on{ opacity:1; transform: translateY(0); }
-
-    /* ========= NEW: User Info Button Styles ========= */
-    .user-info{
-      display: flex; 
-      align-items: center; 
-      gap: 8px;
-      cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 12px;
-      transition: .2s ease;
-    }
-    .user-info:hover{
-      background: rgba(255,255,255,.08);
-      transform: translateY(-1px);
-    }
-    .user-avatar{
-      width: 32px; 
-      height: 32px; 
+    .modal-close {
+      background: rgba(255,255,255,.06);
+      border: none;
+      color: var(--text);
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      border: 2px solid var(--brand-2);
+      font-size: 24px;
+      cursor: pointer;
       transition: .2s ease;
-    }
-    .user-info:hover .user-avatar{
-      border-color: var(--lime);
-      box-shadow: 0 0 12px var(--brand-2);
-    }
-
-    /* ========= NEW: Account Modal Specific Styles ========= */
-    .modal.account-modal{ 
-      max-width: 500px; 
-    }
-
-    .account-header{
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255,255,255,.1);
+      justify-content: center;
     }
 
-    .account-avatar{
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 3px solid var(--brand);
-      box-shadow: 0 8px 20px rgba(124,77,255,.3);
+    .modal-close:hover {
+      background: rgba(255,255,255,.12);
+      transform: rotate(90deg);
     }
 
-    .account-info h3{
-      margin: 0 0 4px;
-      font-size: 1.3rem;
+    .modal-content {
+      padding: 24px;
       color: var(--text);
     }
 
-    .account-info p{
-      margin: 0;
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    .username-section{
-      margin: 20px 0;
-      padding: 16px;
-      background: rgba(124,77,255,.08);
-      border: 1px solid rgba(124,77,255,.2);
-      border-radius: 12px;
-    }
-
-    .username-section label{
-      display: block;
-      margin-bottom: 8px;
+    .modal-content h4 {
       color: var(--lime);
-      font-weight: 700;
-      font-size: .9rem;
+      margin: 20px 0 10px;
+      font-size: 1.1rem;
     }
 
-    .username-input{
-      width: 100%;
-      padding: 10px 14px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 10px;
+    .modal-content ul {
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .modal-content ul strong {
       color: var(--text);
-      font-size: 1rem;
+    }
+
+    /* Account Modal */
+    .account-modal {
+      text-align: center;
+    }
+
+    .account-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      border: 3px solid var(--brand-2);
+      box-shadow: 0 10px 30px rgba(0,229,255,.3);
+    }
+
+    .account-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+
+    .account-email {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0 0 24px;
+    }
+
+    .account-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-btn {
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s ease;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .account-btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: var(--bg);
+    }
+
+    .account-btn-secondary {
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .account-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(5,8,20,.5);
+      border-top: 1px solid rgba(255,255,255,.06);
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--brand-2);
+      text-decoration: none;
+    }
+
+    /* ========= Professional Auth Modal Styles ========= */
+    .auth-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(5,8,20,.9);
+      backdrop-filter: blur(12px);
+      animation: fadeIn .3s ease;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .auth-modal-overlay.show {
+      display: grid;
+      place-items: center;
+    }
+
+    .auth-modal {
+      background: linear-gradient(180deg, #0f1733, #0b1020);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(0,0,0,.7);
+      max-width: 460px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp .4s ease;
+    }
+
+    .auth-modal-header {
+      text-align: center;
+      padding: 32px 32px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      position: relative;
+    }
+
+    .auth-close-btn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: rgba(255,255,255,.06);
+      border: none;
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: .2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-close-btn:hover {
+      background: rgba(255,255,255,.12);
+      transform: rotate(90deg);
+    }
+
+    .auth-logo {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 10px 30px rgba(124,77,255,.4);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .auth-modal-title {
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-weight: 800;
+      margin: 0 0 8px;
+      background: linear-gradient(90deg, var(--text), var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .auth-modal-subtitle {
+      color: var(--muted);
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
+      margin: 0;
+    }
+
+    .auth-form {
+      padding: 28px 32px;
+    }
+
+    .auth-form-group {
+      margin-bottom: 20px;
+    }
+
+    .auth-form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--lime);
+      margin-bottom: 8px;
+      letter-spacing: .3px;
+    }
+
+    .auth-input-wrapper {
+      position: relative;
+    }
+
+    .auth-input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      opacity: .6;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 13px 44px;
+      background: rgba(255,255,255,.04);
+      border: 1.5px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 15px;
       font-family: inherit;
       transition: .2s ease;
     }
 
-    .username-input:focus{
+    .auth-input:focus {
       outline: none;
       border-color: var(--brand-2);
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 0 12px rgba(0,229,255,.2);
-    }
-
-    .save-username-btn{
-      margin-top: 10px;
-      padding: 8px 16px;
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      color: #0b1020;
-      font-weight: 800;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .save-username-btn:hover{
-      transform: translateY(-1px);
-      filter: brightness(1.1);
-      box-shadow: 0 6px 16px rgba(0,229,255,.3);
-    }
-
-    .progress-stats{
-      margin: 20px 0;
-    }
-
-    .progress-stats h4{
-      color: var(--accent);
-      margin: 0 0 12px;
-      font-size: 1.1rem;
-    }
-
-    .stat-item{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      margin: 8px 0;
-      background: rgba(255,255,255,.03);
-      border-radius: 10px;
-      border-left: 3px solid var(--accent);
-      transition: .2s ease;
-    }
-
-    .stat-item:hover{
       background: rgba(255,255,255,.06);
-      transform: translateX(2px);
+      box-shadow: 0 0 0 3px rgba(6,182,212,.15);
     }
 
-    .stat-label{
+    .auth-input.error {
+      border-color: var(--error);
+    }
+
+    .auth-input::placeholder {
+      color: rgba(255,255,255,.3);
+    }
+
+    .auth-error {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .auth-error.show {
+      display: block;
+    }
+
+    .auth-password-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
       color: var(--muted);
-      font-size: .95rem;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px;
+      transition: .2s ease;
     }
 
-    .stat-value{
+    .auth-password-toggle:hover {
+      color: var(--text);
+    }
+
+    .auth-forgot {
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    .auth-forgot a {
+      color: var(--brand-2);
+      font-size: 13px;
+      text-decoration: none;
+      transition: .2s ease;
+    }
+
+    .auth-forgot a:hover {
       color: var(--lime);
-      font-weight: 800;
-      font-size: 1.1rem;
     }
 
-    .sign-out-btn{
+    .auth-btn {
       width: 100%;
-      padding: 12px;
-      background: rgba(255,77,77,.15);
-      border: 1px solid rgba(255,77,77,.3);
-      color: #ff6b6b;
-      font-weight: 700;
+      padding: 14px 20px;
       border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
       cursor: pointer;
       transition: .2s ease;
-      margin-top: 20px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: .3px;
     }
 
-    .sign-out-btn:hover{
-      background: rgba(255,77,77,.25);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(255,77,77,.2);
+    .auth-btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: var(--bg);
+      box-shadow: 0 8px 20px rgba(6,182,212,.3);
+    }
+
+    .auth-btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(6,182,212,.4);
+      filter: brightness(1.1);
+    }
+
+    .auth-btn-primary:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .auth-btn-google {
+      background: #fff;
+      color: #1f2937;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+
+    .auth-btn-google:hover:not(:disabled) {
+      background: #f3f4f6;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    }
+
+    .auth-spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    .auth-divider {
+      position: relative;
+      text-align: center;
+      margin: 24px 0;
+    }
+
+    .auth-divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,.1);
+    }
+
+    .auth-divider span {
+      position: relative;
+      background: linear-gradient(90deg, transparent, #0f1733 20%, #0f1733 80%, transparent);
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .auth-modal-footer {
+      padding: 20px 32px 28px;
+      background: rgba(30,41,59,.3);
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .auth-modal-footer p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .auth-modal-footer a {
+      color: var(--brand-2);
+      text-decoration: none;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .auth-modal-footer a:hover {
+      color: var(--lime);
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pop {
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Media Queries */
+    @media (min-width: 768px) {
+      .menu a {
+        display: block;
+      }
+      .hamb {
+        display: none;
+      }
+      .hero {
+        grid-template-columns: 1.1fr 1fr;
+      }
+      .features {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .chip {
+        grid-template-columns: 1fr 1fr;
+      }
+      .coin {
+        width: 96px;
+        height: 96px;
+      }
+      .coin::after {
+        font-size: 38px;
+      }
+      .coin.c1 { top: 26px; left: 22px; }
+      .coin.c2 { bottom: 26px; right: 22px; }
+      .hero-media {
+        min-height: 300px;
+      }
+      .cta-band {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .auth-modal {
+        border-radius: 18px;
+      }
+      
+      .auth-form,
+      .auth-modal-header,
+      .auth-modal-footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .brand h1 span {
+        display: none;
+      }
+
+      .pill {
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
@@ -476,13 +808,13 @@
     <nav class="nav">
       <a class="brand" href="#">
         <span class="logo" aria-hidden="true"></span>
-        <h1>Accounts<span style="letter-spacing:.5px;">Wizard</span> ✨</h1>
+        <h1>Accounts<span>Wizard</span> ✨</h1>
       </a>
       <div class="menu" id="menu">
         <a href="#learn">Learn</a>
         <a href="quiz.html">Quiz</a>
         <a href="about.html">About</a>
-        <button class="pill" id="authBtn">Sign In with Google</button>
+        <button class="pill" id="authBtn">Sign In</button>
       </div>
       <button class="hamb" id="hamb" aria-label="Open menu">☰</button>
     </nav>
@@ -497,7 +829,7 @@
   <section class="hero">
     <div>
       <span class="tag reveal"><span class="spark"></span> Grade 11 • CBSE / DK Goel basics</span>
-      <h2 class="title reveal" style="transition-delay:.06s">Learn Accounting the Fun Way with <span style="white-space:nowrap;">AccountsWizard</span>!</h2>
+      <h2 class="title reveal" style="transition-delay:.06s">Learn Accounting the Fun Way with AccountsWizard!</h2>
       <p class="subtitle reveal" style="transition-delay:.12s">
         No boring walls of text. Colorful explanations, interactive examples, quick quizzes, and a friendly wizard vibe.
         Master <b>Journal → Ledger → Trial Balance → Financial Statements</b> step by step.
@@ -627,7 +959,7 @@
     </div>
   </div>
 
-  <!-- ========= NEW: Account Modal ========= -->
+  <!-- Account Modal -->
   <div class="modal-overlay" id="accountModal">
     <div class="modal account-modal">
       <div class="modal-header">
@@ -635,1030 +967,1046 @@
         <button class="modal-close" id="accountModalClose">×</button>
       </div>
       <div class="modal-content">
-        <div class="account-header">
-          <img src="" alt="User Avatar" class="account-avatar" id="accountAvatar">
-          <div class="account-info">
-            <h3 id="accountName">Loading...</h3>
-            <p id="accountEmail">email@example.com</p>
-          </div>
+        <img id="accountAvatar" src="" alt="User Avatar" class="account-avatar">
+        <h2 id="accountName" class="account-name">User Name</h2>
+        <p id="accountEmail" class="account-email">user@example.com</p>
+        <div class="account-actions">
+          <a href="profile.html" class="account-btn account-btn-primary">View Profile</a>
+          <a href="progress.html" class="account-btn account-btn-secondary">My Progress</a>
+          <button class="account-btn account-btn-secondary" id="resendVerifyBtn" style="display:none;" onclick="resendVerification()">📧 Resend Verification Email</button>
+          <button class="account-btn account-btn-secondary" onclick="signOutUser()">Sign Out</button>
         </div>
-
-        <div class="username-section">
-          <label for="customUsername">Custom Display Name (Optional) ✨</label>
-          <input 
-            type="text" 
-            id="customUsername" 
-            class="username-input" 
-            placeholder="Enter a cool username..."
-            maxlength="20"
-          >
-          <button class="save-username-btn" id="saveUsernameBtn">💾 Save Username</button>
-        </div>
-
-        <div class="progress-stats">
-          <h4>Your Progress 📊</h4>
-          <div class="stat-item">
-            <span class="stat-label">Lessons Completed</span>
-            <span class="stat-value" id="lessonsCount">0/14</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Overall Score</span>
-            <span class="stat-value" id="overallScore">0%</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Practice Attempts</span>
-            <span class="stat-value" id="practiceCount">0</span>
-          </div>
-        </div>
-
-        <button class="sign-out-btn" id="signOutBtn">🚪 Sign Out</button>
       </div>
     </div>
   </div>
+
+  <!-- Auth Modal -->
+  <div class="auth-modal-overlay" id="authModalOverlay">
+    <div class="auth-modal">
+      <div class="auth-modal-header">
+        <button class="auth-close-btn" id="authModalClose">×</button>
+        <div class="auth-logo">🧙</div>
+        <h3 class="auth-modal-title" id="authModalTitle">Welcome Back</h3>
+        <p class="auth-modal-subtitle" id="authModalSubtitle">Sign in to continue your learning journey</p>
+      </div>
+
+      <div class="auth-form">
+        <div class="auth-form-group" id="nameGroup" style="display: none;">
+          <label class="auth-form-label">Full Name</label>
+          <div class="auth-input-wrapper">
+            <span class="auth-input-icon">👤</span>
+            <input type="text" class="auth-input" id="authName" placeholder="John Doe" autocomplete="name">
+          </div>
+          <p class="auth-error" id="nameError">Please enter your full name</p>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-form-label">Email Address</label>
+          <div class="auth-input-wrapper">
+            <span class="auth-input-icon">✉️</span>
+            <input type="email" class="auth-input" id="authEmail" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <p class="auth-error" id="emailError">Please enter a valid email</p>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-form-label">Password</label>
+          <div class="auth-input-wrapper">
+            <span class="auth-input-icon">🔒</span>
+            <input type="password" class="auth-input" id="authPassword" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="auth-password-toggle" onclick="toggleAuthPassword('authPassword', 'authPasswordIcon')">
+              <span id="authPasswordIcon">👁️</span>
+            </button>
+          </div>
+          <p class="auth-error" id="passwordError">Password must be at least 6 characters</p>
+        </div>
+
+        <div class="auth-form-group" id="confirmPasswordGroup" style="display: none;">
+          <label class="auth-form-label">Confirm Password</label>
+          <div class="auth-input-wrapper">
+            <span class="auth-input-icon">🔒</span>
+            <input type="password" class="auth-input" id="authConfirmPassword" placeholder="••••••••" autocomplete="new-password">
+            <button type="button" class="auth-password-toggle" onclick="toggleAuthPassword('authConfirmPassword', 'authConfirmPasswordIcon')">
+              <span id="authConfirmPasswordIcon">👁️</span>
+            </button>
+          </div>
+          <p class="auth-error" id="confirmPasswordError">Passwords do not match</p>
+        </div>
+
+        <div class="auth-forgot" id="forgotPasswordLink">
+          <a href="#" onclick="handleForgotPassword(); return false;">Forgot password?</a>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <button class="auth-btn auth-btn-primary" id="authSubmitBtn" onclick="handleAuthSubmit()">
+            <span id="authBtnText">Sign In</span>
+          </button>
+        </div>
+
+        <div class="auth-divider">
+          <span>Or continue with</span>
+        </div>
+
+        <button class="auth-btn auth-btn-google" onclick="handleGoogleAuth()">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <div class="auth-modal-footer">
+        <p id="authFooterText">
+          Don't have an account? 
+          <a href="#" onclick="toggleAuthMode(); return false;" id="authToggleLink">Sign Up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    © <span id="year"></span> AccountsWizard • Made for Grade 11 learners • Trinno Asphalt • <a href="about.html" style="color:#fff">About</a>
+    © <span id="year"></span> AccountsWizard • Made for Grade 11 learners • Trinno Asphalt • <a href="about.html">About</a>
   </footer>
 
   <!-- Firebase SDK -->
   <script type="module">
-// Import Firebase modules
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { 
+      getAuth, 
+      signInWithPopup, 
+      GoogleAuthProvider, 
+      onAuthStateChanged, 
+      signOut,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      sendEmailVerification, 
+      updateProfile
+    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      getDoc,
+      serverTimestamp 
+    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js';
 
-// Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyAsVXny76jcd7XeAkErqdBW7l89B5T5nws",
-  authDomain: "accountswizard-2025.firebaseapp.com",
-  projectId: "accountswizard-2025",
-  storageBucket: "accountswizard-2025.firebasestorage.app",
-  messagingSenderId: "678121384731",
-  appId: "1:678121384731:web:6c1cea60976976966f81be",
-  measurementId: "G-YLYVNGL5T7"
-};
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAsVXny76jcd7XeAkErqdBW7l89B5T5nws",
+      authDomain: "accountswizard-2025.firebaseapp.com",
+      projectId: "accountswizard-2025",
+      storageBucket: "accountswizard-2025.firebasestorage.app",
+      messagingSenderId: "678121384731",
+      appId: "1:678121384731:web:6c1cea60976976966f81be",
+      measurementId: "G-YLYVNGL5T7"
+    };
 
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);      // optional, can remove if not used
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+    // Export for global access
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
 
+    // Helpers
+    const query = (sel, root = document) => root.querySelector(sel);
+    const queryAll = (sel, root = document) => [...root.querySelectorAll(sel)];
 
-  // Exported handles
-  window.firebaseAuth = auth;
-  window.firebaseDb = db;
+    // DOM elements
+    const authBtn = query('#authBtn');
+    const mobileAuthBtn = query('#mobileAuthBtn');
+    const hamb = query('#hamb');
+    const mobile = query('#mobile');
+    const yearEl = query('#year');
+    const topicModal = query('#topicModal');
+    const modalTitle = query('#modalTitle');
+    const modalContent = query('#modalContent');
+    const modalClose = query('#modalClose');
+    const floaterHost = query('#floaters');
 
-  /* ========= Helpers ========= */
-  const query = (sel, root = document) => root.querySelector(sel);
-  const queryAll = (sel, root = document) => [...root.querySelectorAll(sel)];
+    // Auth Modal Elements
+    const authModalOverlay = query('#authModalOverlay');
+    const authModalClose = query('#authModalClose');
+    const nameGroup = query('#nameGroup');
+    const confirmPasswordGroup = query('#confirmPasswordGroup');
+    const forgotPasswordLink = query('#forgotPasswordLink');
+    const authModalTitle = query('#authModalTitle');
+    const authModalSubtitle = query('#authModalSubtitle');
+    const authBtnText = query('#authBtnText');
+    const authFooterText = query('#authFooterText');
+    const authSubmitBtn = query('#authSubmitBtn');
 
-  /* ========= DOM elements (defensive) ========= */
-  const authBtn = query('#authBtn');
-  const mobileAuthBtn = query('#mobileAuthBtn');
-  const hamb = query('#hamb');
-  const mobile = query('#mobile');
-  const yearEl = query('#year');
-  const topicModal = query('#topicModal');
-  const modalTitle = query('#modalTitle');
-  const modalContent = query('#modalContent');
-  const modalClose = query('#modalClose');
-  const floaterHost = query('#floaters');
+    // Account Modal Elements
+    const accountModal = query('#accountModal');
+    const accountModalClose = query('#accountModalClose');
+    const accountAvatar = query('#accountAvatar');
+    const accountName = query('#accountName');
+    const accountEmail = query('#accountEmail');
 
-  /* ========= Topic data (preserved exactly) ========= */
-  const topicData = {
-    'basic-concepts': {
-      title: 'Basic Accounting Concepts',
-      content: `
-        <p>Accounting concepts are fundamental principles that guide how financial transactions are recorded and reported.</p>
-        
-        <h4>Key Concepts:</h4>
-        <ul>
-          <li><strong>Business Entity Concept:</strong> The business is treated as separate from its owner. Personal transactions of the owner are not recorded in business books.</li>
-          <li><strong>Money Measurement Concept:</strong> Only transactions that can be expressed in monetary terms are recorded. Non-monetary events (like employee morale) are not recorded.</li>
-          <li><strong>Going Concern Concept:</strong> It is assumed that the business will continue for an indefinite period. Assets are valued based on continued use, not liquidation value.</li>
-          <li><strong>Dual Aspect Concept:</strong> Every transaction has two aspects - debit and credit. This forms the basis of double-entry bookkeeping.</li>
-          <li><strong>Cost Concept:</strong> Assets are recorded at their purchase price (historical cost), not current market value.</li>
-          <li><strong>Accounting Period Concept:</strong> Business life is divided into equal periods (usually one year) for reporting purposes.</li>
-        </ul>
-        
-        <h4>Why These Matter:</h4>
-        <p>These concepts ensure consistency, reliability, and comparability in financial statements across different businesses and time periods.</p>
-      `
-    },
-    'accounting-equation': {
-      title: 'Accounting Equation',
-      content: `
-        <p>The accounting equation is the foundation of double-entry bookkeeping and shows the relationship between assets, liabilities, and capital.</p>
-        
-        <h4>The Basic Equation:</h4>
-        <p style="text-align:center; font-size:1.3rem; color:var(--ok); font-weight:900; margin:16px 0;">
-          Assets = Capital + Liabilities
-        </p>
-        
-        <h4>Understanding Each Component:</h4>
-        <ul>
-          <li><strong>Assets:</strong> Resources owned by the business (cash, inventory, equipment, building)</li>
-          <li><strong>Capital:</strong> Owner's investment in the business (also called equity or net worth)</li>
-          <li><strong>Liabilities:</strong> Amounts owed to outsiders (loans, creditors, outstanding expenses)</li>
-        </ul>
-        
-        <h4>Alternative Forms:</h4>
-        <ul>
-          <li>Capital = Assets - Liabilities</li>
-          <li>Liabilities = Assets - Capital</li>
-        </ul>
-        
-        <h4>Key Point:</h4>
-        <p>This equation always remains balanced. Every transaction affects at least two items, but the equation stays in balance.</p>
-        
-        <h4>Example:</h4>
-        <p>If you start a business with ₹50,000 cash:</p>
-        <p>Assets (Cash) = ₹50,000 | Capital = ₹50,000 | Liabilities = ₹0</p>
-        <p>The equation balances: ₹50,000 = ₹50,000 + ₹0 ✓</p>
-      `
-    },
-    'source-documents': {
-      title: 'Source Documents',
-      content: `
-        <p>Source documents are the original records that provide evidence of business transactions. They form the basis for all accounting entries.</p>
-        
-        <h4>Common Source Documents:</h4>
-        <ul>
-          <li><strong>Invoice:</strong> Issued by seller to buyer showing details of goods sold on credit. Contains date, items, quantities, prices, and payment terms.</li>
-          <li><strong>Cash Memo:</strong> Proof of cash sales. Simpler than invoice, used for immediate payment transactions.</li>
-          <li><strong>Receipt:</strong> Proof of money received. Given by the party receiving cash.</li>
-          <li><strong>Debit Note:</strong> Sent by buyer to seller when returning goods or when seller is to be debited for any reason.</li>
-          <li><strong>Credit Note:</strong> Sent by seller to buyer when goods are returned or when buyer is to be credited.</li>
-          <li><strong>Voucher:</strong> Internal document prepared for cash/bank transactions. Supports payment authorization.</li>
-          <li><strong>Pay-in-slip:</strong> Used when depositing money into bank.</li>
-          <li><strong>Cheque:</strong> Written order to bank to pay a specific amount to a person.</li>
-        </ul>
-        
-        <h4>Importance:</h4>
-        <p>Source documents provide legal evidence, help in verification, prevent fraud, and ensure accurate record-keeping. Always preserve originals!</p>
-      `
-    },
-    'journal': {
-      title: 'Journal - Book of Original Entry',
-      content: `
-        <p>The journal is the first book where transactions are recorded in chronological order. It's called the "book of original entry" or "book of prime entry."</p>
-        
-        <h4>Format of Journal Entry:</h4>
-        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-family:monospace; font-size:.9rem;">
-          Date | Particulars | L.F. | Debit (₹) | Credit (₹)<br>
-          ────────────────────────────────────────────<br>
-          2025 Jan 1 | Cash A/c ........... Dr. | | 50,000 | <br>
-          &nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c | | | 50,000<br>
-          (Being capital introduced in cash)
-        </p>
-        
-        <h4>Rules for Journal Entries:</h4>
-        <ul>
-          <li><strong>For Real Accounts:</strong> Debit what comes in, Credit what goes out</li>
-          <li><strong>For Personal Accounts:</strong> Debit the receiver, Credit the giver</li>
-          <li><strong>For Nominal Accounts:</strong> Debit all expenses/losses, Credit all incomes/gains</li>
-        </ul>
-        
-        <h4>Components:</h4>
-        <ul>
-          <li><strong>Date:</strong> When the transaction occurred</li>
-          <li><strong>Particulars:</strong> Accounts affected (Dr. account first, then Cr. account indented)</li>
-          <li><strong>L.F. (Ledger Folio):</strong> Page number in ledger (filled during posting)</li>
-          <li><strong>Debit & Credit:</strong> Amounts in respective columns</li>
-          <li><strong>Narration:</strong> Brief explanation in brackets</li>
-        </ul>
-      `
-    },
-    'ledger': {
-      title: 'Ledger - Principal Book',
-      content: `
-        <p>The ledger is the principal book that contains all accounts. Each account summarizes all transactions related to that particular item.</p>
-        
-        <h4>Ledger Account Format (T-Format):</h4>
-        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-family:monospace; font-size:.85rem;">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash Account<br>
-          Dr. ────────────────────────── Cr.<br>
-          Date | Particulars | Amt | Date | Particulars | Amt<br>
-        </p>
-        
-        <h4>Posting from Journal to Ledger:</h4>
-        <ol>
-          <li>Open separate accounts for each item mentioned in journal</li>
-          <li>Post debit entries on debit side and credit entries on credit side</li>
-          <li>Write the name of the corresponding account in particulars</li>
-          <li>Fill the L.F. column with journal page number</li>
-        </ol>
-        
-        <h4>Balancing Accounts:</h4>
-        <ul>
-          <li>Total both debit and credit sides</li>
-          <li>If debit > credit: Debit balance (write "By Balance c/d" on credit side)</li>
-          <li>If credit > debit: Credit balance (write "To Balance c/d" on debit side)</li>
-          <li>Opening balance of next period: Opposite side as closing balance</li>
-        </ul>
-        
-        <h4>Types of Accounts:</h4>
-        <ul>
-          <li><strong>Personal:</strong> Individuals, firms (Sundry Debtors, Creditors)</li>
-          <li><strong>Real:</strong> Assets (Cash, Furniture, Stock)</li>
-          <li><strong>Nominal:</strong> Expenses & Incomes (Rent, Salary, Commission)</li>
-        </ul>
-      `
-    },
-    'cash-book': {
-      title: 'Cash Book',
-      content: `
-        <p>Cash Book is a special journal that records all cash and bank transactions. It serves as both a journal and a ledger.</p>
-        
-        <h4>Types of Cash Books:</h4>
-        
-        <p><strong>1. Single Column Cash Book:</strong></p>
-        <ul>
-          <li>Records only cash transactions</li>
-          <li>Has one amount column on each side</li>
-          <li>Always shows debit balance (cash in hand)</li>
-        </ul>
-        
-        <p><strong>2. Double Column Cash Book:</strong></p>
-        <ul>
-          <li>Has Cash and Bank columns on both sides</li>
-          <li>Records both cash and bank transactions</li>
-          <li>Contra entries: When cash is deposited or withdrawn from bank</li>
-          <li>Marked with 'C' in L.F. column</li>
-        </ul>
-        
-        <p><strong>3. Triple Column Cash Book:</strong></p>
-        <ul>
-          <li>Adds a Discount column on both sides</li>
-          <li>Debit side: Discount allowed to debtors</li>
-          <li>Credit side: Discount received from creditors</li>
-          <li>Discount columns are NOT balanced (only totaled)</li>
-        </ul>
-        
-        <h4>Important Points:</h4>
-        <ul>
-          <li>Cash book always starts with opening balance on debit side</li>
-          <li>Never shows credit balance in cash column</li>
-          <li>Bank column can show credit balance (overdraft)</li>
-          <li>All receipts on debit side, all payments on credit side</li>
-        </ul>
-      `
-    },
-    'trial-balance': {
-      title: 'Trial Balance',
-      content: `
-        <p>Trial Balance is a statement showing debit and credit balances of all ledger accounts to verify arithmetical accuracy of books.</p>
-        
-        <h4>Format:</h4>
-        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-family:monospace; font-size:.85rem;">
-          Trial Balance as on ________<br>
-          Account Name | L.F. | Debit (₹) | Credit (₹)<br>
-          ────────────────────────────────────<br>
-          [List all accounts]<br>
-          ────────────────────────────────────<br>
-          Total | | XXXXX | XXXXX
-        </p>
-        
-        <h4>Methods of Preparation:</h4>
-        <ol>
-          <li><strong>Balance Method:</strong> Show only balances of accounts</li>
-          <li><strong>Total Method:</strong> Show total of debit and credit sides</li>
-          <li><strong>Balance & Total Method:</strong> Show both balances and totals</li>
-        </ol>
-        
-        <h4>Objectives:</h4>
-        <ul>
-          <li>Check arithmetical accuracy of books</li>
-          <li>Summarize all ledger accounts</li>
-          <li>Help in preparing financial statements</li>
-          <li>Locate errors (if totals don't match)</li>
-        </ul>
-        
-        <h4>Types of Errors:</h4>
-        <p><strong>Errors disclosed by Trial Balance:</strong></p>
-        <ul>
-          <li>Posting wrong amount</li>
-          <li>Posting to wrong side</li>
-          <li>Omitting to post one aspect</li>
-          <li>Wrong balancing of account</li>
-          <li>Wrong totaling in trial balance</li>
-        </ul>
-        
-        <p><strong>Errors NOT disclosed by Trial Balance:</strong></p>
-        <ul>
-          <li>Error of omission (transaction not recorded)</li>
-          <li>Error of commission (posted to wrong account of same type)</li>
-          <li>Error of principle (wrong classification)</li>
-          <li>Compensating errors (errors canceling each other)</li>
-        </ul>
-      `
-    },
-    'depreciation': {
-      title: 'Depreciation',
-      content: `
-        <p>Depreciation is the systematic allocation of the cost of a fixed asset over its useful life. It represents wear and tear, obsolescence, or passage of time.</p>
-        
-        <h4>Methods of Depreciation:</h4>
-        
-        <p><strong>1. Straight Line Method (SLM):</strong></p>
-        <ul>
-          <li>Equal amount charged every year</li>
-          <li>Formula: (Cost - Scrap Value) / Useful Life</li>
-          <li>Simple and widely used</li>
-          <li>Example: Machine costs ₹1,00,000, life 10 years, scrap ₹10,000</li>
-          <li>Annual Depreciation = (1,00,000 - 10,000) / 10 = ₹9,000</li>
-        </ul>
-        
-        <p><strong>2. Written Down Value Method (WDV):</strong></p>
-        <ul>
-          <li>Fixed percentage on reducing balance</li>
-          <li>Higher depreciation in early years, lower in later years</li>
-          <li>Also called Diminishing Balance Method</li>
-          <li>Formula: Rate% on Book Value at start of year</li>
-          <li>Example: Machine ₹1,00,000, rate 10%</li>
-          <li>Year 1: ₹10,000 | Year 2: ₹9,000 | Year 3: ₹8,100...</li>
-        </ul>
-        
-        <h4>Journal Entries:</h4>
-        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
-          Depreciation A/c ................ Dr.<br>
-          &nbsp;&nbsp;To Asset A/c<br>
-          (Being depreciation charged)
-        </p>
-        
-        <h4>Disposal of Asset:</h4>
-        <p>When asset is sold, calculate profit/loss and transfer to Asset Disposal A/c or P&L A/c</p>
-      `
-    },
-    'bank-reconciliation': {
-      title: 'Bank Reconciliation Statement',
-      content: `
-        <p>Bank Reconciliation Statement (BRS) is prepared to reconcile the difference between bank balance as per cash book and bank balance as per bank statement.</p>
-        
-        <h4>Causes of Difference:</h4>
-        <ul>
-          <li><strong>Cheques issued but not yet presented:</strong> Cheques given to suppliers but not yet cleared by bank</li>
-          <li><strong>Cheques deposited but not yet collected:</strong> Cheques received and deposited but not yet cleared</li>
-          <li><strong>Direct deposits by customers:</strong> Customer paid directly into bank, not yet recorded in cash book</li>
-          <li><strong>Bank charges:</strong> Recorded by bank but not yet in cash book</li>
-          <li><strong>Interest credited:</strong> Bank added interest, not yet in cash book</li>
-          <li><strong>Standing instructions:</strong> Auto-debit for insurance, loan EMI etc.</li>
-          <li><strong>Dishonor of cheques:</strong> Cheque deposited but returned due to insufficient funds</li>
-          <li><strong>Errors:</strong> Recording mistakes in cash book or by bank</li>
-        </ul>
-        
-        <h4>Format (Starting from Cash Book Balance):</h4>
-        <p style="background:rgba(255,255,255,.05); padding:12px; border-radius:10px; font-size:.9rem;">
-          Balance as per Cash Book .................... ₹ XXX<br>
-          Add: Cheques issued but not presented ........ ₹ XXX<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interest credited by bank .............. ₹ XXX<br>
-          Less: Cheques deposited but not collected .... ₹ XXX<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bank charges ............................ ₹ XXX<br>
-          Balance as per Bank Statement ................ ₹ XXX
-        </p>
-        
-        <h4>Remember:</h4>
-        <p>Items known to bank but not in cash book should be adjusted in cash book. BRS only helps identify these differences.</p>
-      `
-    },
-    'rectification': {
-      title: 'Rectification of Errors',
-      content: `
-        <p>Errors discovered after posting need to be corrected through rectification entries to ensure accurate financial statements.</p>
-        
-        <h4>When Trial Balance Agrees (One-sided errors):</h4>
-        <p>Simple journal entry to correct:</p>
-        <ul>
-          <li><strong>Error of Omission:</strong> Pass the omitted entry</li>
-          <li><strong>Wrong Account (Same Type):</strong> Debit/Credit the correct account, Debit/Credit the wrong account (reverse)</li>
-        </ul>
-        
-        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
-          Example: Salary paid ₹5,000 to Ram wrongly debited to Shyam<br>
-          Ram A/c ..................... Dr. 5,000<br>
-          &nbsp;&nbsp;To Shyam A/c .................. 5,000
-        </p>
-        
-        <h4>When Trial Balance Doesn't Agree (Two-sided errors):</h4>
-        <p>Use Suspense Account temporarily:</p>
-        <ol>
-          <li>Open Suspense A/c for the difference</li>
-          <li>Pass rectification entries</li>
-          <li>Suspense A/c will close automatically</li>
-        </ol>
-        
-        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
-          Example: Sale ₹8,000 recorded as ₹800<br>
-          Debtors A/c ................. Dr. 7,200<br>
-          &nbsp;&nbsp;To Suspense A/c ............... 7,200
-        </p>
-        
-        <h4>Common Error Types:</h4>
-        <ul>
-          <li><strong>Partial omission:</strong> One side posted, other side missed</li>
-          <li><strong>Wrong amount:</strong> Incorrect figure posted</li>
-          <li><strong>Wrong side:</strong> Debit posted as credit or vice versa (double effect)</li>
-          <li><strong>Carrying forward error:</strong> Wrong balance carried forward</li>
-        </ul>
-      `
-    },
-    'gst': {
-      title: 'Accounting for GST',
-      content: `
-        <p>GST (Goods and Services Tax) is an indirect tax levied on supply of goods and services. It has replaced multiple indirect taxes in India.</p>
-        
-        <h4>Types of GST:</h4>
-        <ul>
-          <li><strong>CGST (Central GST):</strong> Collected by Central Government on intra-state sales</li>
-          <li><strong>SGST (State GST):</strong> Collected by State Government on intra-state sales</li>
-          <li><strong>IGST (Integrated GST):</strong> Collected by Central Government on inter-state sales</li>
-        </ul>
-        
-        <h4>Example Rates:</h4>
-        <p>If GST rate is 18% on intra-state sale of ₹10,000:</p>
-        <ul>
-          <li>CGST = 9% of ₹10,000 = ₹900</li>
-          <li>SGST = 9% of ₹10,000 = ₹900</li>
-          <li>Total = ₹10,000 + ₹1,800 = ₹11,800</li>
-        </ul>
-        
-        <h4>Journal Entries for Purchase:</h4>
-        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
-          Purchase A/c ................. Dr. 10,000<br>
-          CGST Input A/c ............... Dr. 900<br>
-          SGST Input A/c ............... Dr. 900<br>
-          &nbsp;&nbsp;To Supplier A/c .............. 11,800
-        </p>
-        
-        <h4>Journal Entries for Sale:</h4>
-        <p style="background:rgba(255,255,255,.05); padding:10px; border-radius:8px; font-size:.9rem;">
-          Customer A/c ................. Dr. 11,800<br>
-          &nbsp;&nbsp;To Sales A/c ................. 10,000<br>
-          &nbsp;&nbsp;To CGST Output A/c ........... 900<br>
-          &nbsp;&nbsp;To SGST Output A/c ........... 900
-        </p>
-        
-        <h4>Input Tax Credit:</h4>
-        <p>GST paid on purchases (Input GST) can be set off against GST collected on sales (Output GST). Only the net amount is paid to government.</p>
-      `
-    },
-    'final-accounts': {
-      title: 'Final Accounts Introduction',
-      content: `
-        <p>Final Accounts are prepared at the end of accounting period to know financial performance and position of the business.</p>
-        
-        <h4>Components of Final Accounts:</h4>
-        
-        <p><strong>1. Trading Account:</strong></p>
-        <ul>
-          <li>Shows Gross Profit or Gross Loss</li>
-          <li>Formula: Gross Profit = Net Sales - Cost of Goods Sold</li>
-          <li>Debit side: Opening stock, Purchases, Direct expenses</li>
-          <li>Credit side: Sales, Closing stock</li>
-        </ul>
-        
-        <p><strong>2. Profit & Loss Account:</strong></p>
-        <ul>
-          <li>Shows Net Profit or Net Loss</li>
-          <li>Formula: Net Profit = Gross Profit + Indirect Income - Indirect Expenses</li>
-          <li>Debit side: Operating expenses (Rent, Salary, Depreciation)</li>
-          <li>Credit side: Gross Profit, Other incomes</li>
-        </ul>
-        
-        <p><strong>3. Balance Sheet:</strong></p>
-        <ul>
-          <li>Shows financial position on a particular date</li>
-          <li>Assets = Liabilities + Capital</li>
-          <li>Assets: Fixed assets, Current assets, Investments</li>
-          <li>Liabilities: Capital, Reserves, Long-term loans, Current liabilities</li>
-        </ul>
-        
-        <h4>Flow:</h4>
-        <p style="text-align:center; font-size:1.1rem; color:var(--lime); font-weight:700; margin:14px 0;">
-          Trial Balance → Trading A/c → P&L A/c → Balance Sheet
-        </p>
-        
-        <h4>Key Points:</h4>
-        <ul>
-          <li>Trading and P&L together called Income Statement</li>
-          <li>All nominal accounts close to P&L</li>
-          <li>Net Profit added to Capital in Balance Sheet</li>
-          <li>Balance Sheet must always balance</li>
-        </ul>
-      `
+    // Auth state
+    let authMode = 'signin';
+    let currentUser = null;
+
+    // Topic data
+    const topicData = {
+      'basic-concepts': {
+        title: 'Basic Accounting Concepts',
+        content: `
+          <p>Accounting concepts are fundamental principles that guide how financial transactions are recorded and reported.</p>
+          
+          <h4>Key Concepts:</h4>
+          <ul>
+            <li><strong>Business Entity Concept:</strong> The business is treated as separate from its owner. Personal transactions of the owner are not recorded in business books.</li>
+            <li><strong>Money Measurement Concept:</strong> Only transactions that can be expressed in monetary terms are recorded. Non-monetary events (like employee morale) are not recorded.</li>
+            <li><strong>Going Concern Concept:</strong> It is assumed that the business will continue for an indefinite period. Assets are valued based on continued use, not liquidation value.</li>
+            <li><strong>Dual Aspect Concept:</strong> Every transaction has two aspects - debit and credit. This forms the basis of double-entry bookkeeping.</li>
+            <li><strong>Cost Concept:</strong> Assets are recorded at their purchase price (historical cost), not current market value.</li>
+            <li><strong>Accounting Period Concept:</strong> Business life is divided into equal periods (usually one year) for reporting purposes.</li>
+          </ul>
+          
+          <h4>Why These Matter:</h4>
+          <p>These concepts ensure consistency, reliability, and comparability in financial statements across different businesses and time periods.</p>
+        `
+      },
+      'accounting-equation': {
+        title: 'Accounting Equation',
+        content: `
+          <p>The accounting equation is the foundation of double-entry bookkeeping and shows the relationship between assets, liabilities, and capital.</p>
+          
+          <h4>The Basic Equation:</h4>
+          <p style="text-align:center; font-size:1.3rem; color:var(--ok); font-weight:900; margin:16px 0;">
+            Assets = Capital + Liabilities
+          </p>
+          
+          <h4>Understanding Each Component:</h4>
+          <ul>
+            <li><strong>Assets:</strong> Resources owned by the business (cash, inventory, equipment, building)</li>
+            <li><strong>Capital:</strong> Owner's investment in the business (also called equity or net worth)</li>
+            <li><strong>Liabilities:</strong> Amounts owed to outsiders (loans, creditors, outstanding expenses)</li>
+          </ul>
+          
+          <h4>Alternative Forms:</h4>
+          <ul>
+            <li>Capital = Assets - Liabilities</li>
+            <li>Liabilities = Assets - Capital</li>
+          </ul>
+          
+          <h4>Key Point:</h4>
+          <p>This equation always remains balanced. Every transaction affects at least two items, but the equation stays in balance.</p>
+          
+          <h4>Example:</h4>
+          <p>If you start a business with ₹50,000 cash:</p>
+          <p>Assets (Cash) = ₹50,000 | Capital = ₹50,000 | Liabilities = ₹0</p>
+          <p>The equation balances: ₹50,000 = ₹50,000 + ₹0 ✓</p>
+        `
+      },
+      'source-documents': {
+        title: 'Source Documents',
+        content: `
+          <p>Source documents are the original records of business transactions that provide evidence and details for accounting entries.</p>
+          
+          <h4>Types of Source Documents:</h4>
+          <ul>
+            <li><strong>Invoice:</strong> A document sent by the seller to the buyer detailing goods sold on credit.</li>
+            <li><strong>Cash Memo:</strong> A document for cash sales, given to the customer at the time of purchase.</li>
+            <li><strong>Receipt:</strong> Acknowledgment of money received.</li>
+            <li><strong>Debit Note:</strong> Sent by buyer to seller for return of goods or overcharge.</li>
+            <li><strong>Credit Note:</strong> Sent by seller to buyer acknowledging return of goods or overcharge.</li>
+            <li><strong>Voucher:</strong> Internal document prepared as evidence of transaction.</li>
+          </ul>
+        `
+      },
+      'journal': {
+        title: 'Journal Entries',
+        content: `
+          <p>The journal is the book of original entry where transactions are first recorded in chronological order.</p>
+          
+          <h4>Format of Journal:</h4>
+          <ul>
+            <li>Date column</li>
+            <li>Particulars (account names)</li>
+            <li>L.F. (Ledger Folio)</li>
+            <li>Debit amount column</li>
+            <li>Credit amount column</li>
+            <li>Narration (brief explanation)</li>
+          </ul>
+          
+          <h4>Rules of Debit and Credit:</h4>
+          <ul>
+            <li><strong>Personal A/c:</strong> Debit the receiver, Credit the giver</li>
+            <li><strong>Real A/c:</strong> Debit what comes in, Credit what goes out</li>
+            <li><strong>Nominal A/c:</strong> Debit expenses/losses, Credit incomes/gains</li>
+          </ul>
+        `
+      },
+      'ledger': {
+        title: 'Ledger',
+        content: `
+          <p>A ledger is the principal book where all accounts are maintained. Journal entries are posted to respective ledger accounts.</p>
+          
+          <h4>Process:</h4>
+          <ul>
+            <li>Create separate account for each item</li>
+            <li>Post debits to debit side, credits to credit side</li>
+            <li>Balance the account periodically</li>
+          </ul>
+        `
+      },
+      'cash-book': {
+        title: 'Cash Book',
+        content: `
+          <p>Cash book records all cash and bank transactions. It serves as both journal and ledger for cash/bank.</p>
+          
+          <h4>Types:</h4>
+          <ul>
+            <li><strong>Single Column:</strong> Only cash transactions</li>
+            <li><strong>Double Column:</strong> Cash and bank transactions</li>
+            <li><strong>Triple Column:</strong> Cash, bank, and discount</li>
+          </ul>
+        `
+      },
+      'trial-balance': {
+        title: 'Trial Balance',
+        content: `
+          <p>A statement showing the balances of all ledger accounts to check arithmetical accuracy.</p>
+          
+          <h4>Key Points:</h4>
+          <ul>
+            <li>Total of debit column must equal credit column</li>
+            <li>Prepared at the end of accounting period</li>
+            <li>Does not guarantee 100% accuracy (some errors may not affect trial balance)</li>
+          </ul>
+        `
+      },
+      'depreciation': {
+        title: 'Depreciation',
+        content: `
+          <p>Systematic allocation of cost of fixed asset over its useful life.</p>
+          
+          <h4>Methods:</h4>
+          <ul>
+            <li><strong>Straight Line:</strong> Fixed amount each year</li>
+            <li><strong>Written Down Value:</strong> Fixed percentage on reducing balance</li>
+          </ul>
+        `
+      },
+      'bank-reconciliation': {
+        title: 'Bank Reconciliation Statement',
+        content: `
+          <p>Statement to reconcile the difference between cash book and bank statement balance.</p>
+          
+          <h4>Common Causes of Difference:</h4>
+          <ul>
+            <li>Cheques issued but not presented</li>
+            <li>Cheques deposited but not cleared</li>
+            <li>Bank charges/interest</li>
+            <li>Direct deposits/payments by bank</li>
+          </ul>
+        `
+      },
+      'rectification': {
+        title: 'Rectification of Errors',
+        content: `
+          <p>Process of correcting errors in accounting records.</p>
+          
+          <h4>Types of Errors:</h4>
+          <ul>
+            <li><strong>Errors affecting trial balance:</strong> One-sided errors</li>
+            <li><strong>Errors not affecting trial balance:</strong> Two-sided errors with equal effect</li>
+          </ul>
+        `
+      },
+      'gst': {
+        title: 'GST Accounting',
+        content: `
+          <p>Goods and Services Tax - indirect tax on supply of goods and services.</p>
+          
+          <h4>Types:</h4>
+          <ul>
+            <li><strong>CGST:</strong> Central GST (collected by central government)</li>
+            <li><strong>SGST:</strong> State GST (collected by state government)</li>
+            <li><strong>IGST:</strong> Integrated GST (for inter-state transactions)</li>
+          </ul>
+        `
+      },
+      'final-accounts': {
+        title: 'Final Accounts',
+        content: `
+          <p>Financial statements prepared at the end of accounting period.</p>
+          
+          <h4>Components:</h4>
+          <ul>
+            <li><strong>Trading Account:</strong> Gross profit/loss</li>
+            <li><strong>Profit & Loss Account:</strong> Net profit/loss</li>
+            <li><strong>Balance Sheet:</strong> Financial position</li>
+          </ul>
+        `
+      }
+    };
+
+    // ✅ AUTH STATE OBSERVER
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        console.log('✅ User logged in:', user.email);
+        updateAuthUI(user);
+        saveUserData(user);
+      } else {
+        currentUser = null;
+        console.log('👤 No user logged in');
+        updateAuthUI(null);
+      }
+    });
+
+    window.currentUser = () => currentUser;
+
+    // ✅ SAVE USER DATA TO FIRESTORE
+    async function saveUserData(user) {
+      if (!user || !db) return;
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            createdAt: serverTimestamp(),
+            lastLogin: serverTimestamp(),
+            progress: {
+              lessonsCompleted: [],
+              quizScores: [],
+              practiceAttempts: 0
+            }
+          });
+          console.log('✅ New user created in Firestore');
+        } else {
+          await setDoc(userRef, {
+            lastLogin: serverTimestamp()
+          }, { merge: true });
+          console.log('✅ User login time updated');
+        }
+      } catch (error) {
+        console.error('❌ Error saving user:', error);
+      }
     }
-  };
 
-  /* ========= Auth state observer and user storage ========= */
-  let currentUser = null;
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user;
-      updateAuthUI(user);
-      saveUserData(user);
-    } else {
-      currentUser = null;
-      updateAuthUI(null);
+    // ✅ GOOGLE SIGN IN
+    async function signInWithGoogle() {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        console.log('✅ Google sign-in successful:', result.user.email);
+        toast(`Welcome ${result.user.displayName}! 🎉`);
+        return result.user;
+      } catch (error) {
+        console.error('❌ Google sign-in error:', error);
+        
+        if (error.code === 'auth/popup-closed-by-user') {
+          toast('Sign-in cancelled. Please try again.');
+        } else if (error.code === 'auth/popup-blocked') {
+          toast('Popup blocked! Please allow popups for this site.');
+        } else {
+          toast('Google sign-in failed. Please try again.');
+        }
+        return null;
+      }
     }
-  });
 
-  window.currentUser = () => currentUser;
-
-  async function signInWithGoogle() {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      toast(`Welcome ${result.user.displayName}! 🎉`);
-      return result.user;
-    } catch (error) {
-      console.error('Error signing in:', error);
-      toast('Failed to sign in. Please try again.');
-      return null;
+    // ✅ SIGN OUT
+    window.signOutUser = async function() {
+      try {
+        await signOut(auth);
+        console.log('✅ Signed out successfully');
+        toast('Signed out successfully!');
+        closeAccountModal();
+      } catch (error) {
+        console.error('❌ Sign out error:', error);
+        toast('Sign out failed.');
+      }
     }
-  }
 
-  async function signOutUser() {
-    try {
-      await signOut(auth);
-      toast('Signed out successfully!');
-    } catch (error) {
-      console.error('Error signing out:', error);
-      toast('Sign out failed.');
+    // ✅ OPEN AUTH MODAL
+    window.openAuthModal = function(mode = 'signin') {
+      authMode = mode;
+      updateAuthModalUI();
+      if (authModalOverlay) authModalOverlay.classList.add('show');
+    };
+
+    // ✅ CLOSE AUTH MODAL
+    function closeAuthModal() {
+      if (authModalOverlay) authModalOverlay.classList.remove('show');
+      clearAuthForm();
     }
-  }
 
-  async function saveUserData(user) {
-    if (!user || !db) return;
-    try {
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
+    // Make closeAuthModal globally accessible
+    window.closeAuthModal = closeAuthModal;
 
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          name: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          createdAt: new Date().toISOString(),
-          lastLogin: new Date().toISOString(),
-          progress: {
-            lessonsCompleted: [],
-            quizScores: [],
-            practiceAttempts: 0
+    // ✅ OPEN ACCOUNT MODAL
+    // ✅ OPEN ACCOUNT MODAL
+    window.openAccountModal = function() {
+      if (!currentUser) {
+        openAuthModal('signin');
+        return;
+      }
+      
+      if (accountModal && accountAvatar && accountName && accountEmail) {
+        accountAvatar.src = currentUser.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 24 24%22%3E%3Cpath fill=%22%236366f1%22 d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z%22/%3E%3C/svg%3E';
+        accountName.textContent = currentUser.displayName || 'User';
+        accountEmail.textContent = currentUser.email;
+
+        // Show resend button if email not verified
+        const resendBtn = query('#resendVerifyBtn');
+        if (resendBtn) {
+          resendBtn.style.display = currentUser.emailVerified ? 'none' : 'block';
+        }
+
+        accountModal.classList.add('show');
+      }
+    };  
+
+    // ✅ CLOSE ACCOUNT MODAL
+    function closeAccountModal() {
+      if (accountModal) accountModal.classList.remove('show');
+    }
+
+    if (accountModalClose) {
+      accountModalClose.addEventListener('click', closeAccountModal);
+    }
+
+    if (accountModal) {
+      accountModal.addEventListener('click', (e) => {
+        if (e.target === accountModal) closeAccountModal();
+      });
+    }
+
+    if (authModalClose) {
+      authModalClose.addEventListener('click', closeAuthModal);
+    }
+
+    if (authModalOverlay) {
+      authModalOverlay.addEventListener('click', (e) => {
+        if (e.target === authModalOverlay) closeAuthModal();
+      });
+    }
+
+    // ✅ TOGGLE SIGN IN / SIGN UP
+    window.toggleAuthMode = function() {
+      authMode = authMode === 'signin' ? 'signup' : 'signin';
+      updateAuthModalUI();
+      clearAuthForm();
+    };
+
+    // ✅ UPDATE MODAL UI
+    function updateAuthModalUI() {
+      if (authMode === 'signup') {
+        if (authModalTitle) authModalTitle.textContent = 'Create Account';
+        if (authModalSubtitle) authModalSubtitle.textContent = 'Start your accounting mastery today';
+        if (authBtnText) authBtnText.textContent = 'Create Account';
+        if (nameGroup) nameGroup.style.display = 'block';
+        if (confirmPasswordGroup) confirmPasswordGroup.style.display = 'block';
+        if (forgotPasswordLink) forgotPasswordLink.style.display = 'none';
+        if (authFooterText) authFooterText.innerHTML = 'Already have an account? <a href="#" onclick="toggleAuthMode(); return false;">Sign In</a>';
+      } else {
+        if (authModalTitle) authModalTitle.textContent = 'Welcome Back';
+        if (authModalSubtitle) authModalSubtitle.textContent = 'Sign in to continue your learning journey';
+        if (authBtnText) authBtnText.textContent = 'Sign In';
+        if (nameGroup) nameGroup.style.display = 'none';
+        if (confirmPasswordGroup) confirmPasswordGroup.style.display = 'none';
+        if (forgotPasswordLink) forgotPasswordLink.style.display = 'block';
+        if (authFooterText) authFooterText.innerHTML = "Don't have an account? <a href=\"#\" onclick=\"toggleAuthMode(); return false;\">Sign Up</a>";
+      }
+    }
+
+    // ✅ CLEAR FORM
+    function clearAuthForm() {
+      ['authName', 'authEmail', 'authPassword', 'authConfirmPassword'].forEach(id => {
+        const el = query(`#${id}`);
+        if (el) {
+          el.value = '';
+          el.classList.remove('error');
+        }
+      });
+      
+      ['nameError', 'emailError', 'passwordError', 'confirmPasswordError'].forEach(id => {
+        const el = query(`#${id}`);
+        if (el) el.classList.remove('show');
+      });
+    }
+
+    // ✅ TOGGLE PASSWORD VISIBILITY
+    window.toggleAuthPassword = function(inputId, iconId) {
+      const input = query(`#${inputId}`);
+      const icon = query(`#${iconId}`);
+      if (input && icon) {
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.textContent = '🙈';
+        } else {
+          input.type = 'password';
+          icon.textContent = '👁️';
+        }
+      }
+    };
+
+    // ✅ VALIDATE FORM
+    function validateAuthForm() {
+      let isValid = true;
+      
+      const name = query('#authName');
+      const email = query('#authEmail');
+      const password = query('#authPassword');
+      const confirmPassword = query('#authConfirmPassword');
+      
+      // Clear previous errors
+      ['nameError', 'emailError', 'passwordError', 'confirmPasswordError'].forEach(id => {
+        const el = query(`#${id}`);
+        if (el) el.classList.remove('show');
+      });
+      
+      [name, email, password, confirmPassword].forEach(el => {
+        if (el) el.classList.remove('error');
+      });
+      
+      if (authMode === 'signup' && name && !name.value.trim()) {
+        name.classList.add('error');
+        const nameError = query('#nameError');
+        if (nameError) nameError.classList.add('show');
+        isValid = false;
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (email && (!email.value.trim() || !emailRegex.test(email.value))) {
+        email.classList.add('error');
+        const emailError = query('#emailError');
+        if (emailError) emailError.classList.add('show');
+        isValid = false;
+      }
+      
+      if (password && (!password.value || password.value.length < 6)) {
+        password.classList.add('error');
+        const passwordError = query('#passwordError');
+        if (passwordError) passwordError.classList.add('show');
+        isValid = false;
+      }
+      
+      if (authMode === 'signup' && confirmPassword && password && password.value !== confirmPassword.value) {
+        confirmPassword.classList.add('error');
+        const confirmPasswordError = query('#confirmPasswordError');
+        if (confirmPasswordError) confirmPasswordError.classList.add('show');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // ✅ HANDLE EMAIL/PASSWORD SUBMIT
+    window.handleAuthSubmit = async function() {
+      if (!validateAuthForm()) return;
+      
+      const name = query('#authName')?.value.trim();
+      const email = query('#authEmail')?.value.trim();
+      const password = query('#authPassword')?.value;
+      
+      if (authSubmitBtn) authSubmitBtn.disabled = true;
+      if (authBtnText) authBtnText.innerHTML = '<div class="auth-spinner"></div> Processing...';
+      
+      try {
+        if (authMode === 'signup') {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          console.log('✅ User created:', userCredential.user.email);
+          
+          await updateProfile(userCredential.user, { displayName: name });
+          console.log('✅ Display name set:', name);
+
+          // Send verification email
+          try {
+            await sendEmailVerification(userCredential.user, {
+              url: window.location.origin + '/index.html',
+              handleCodeInApp: false
+            });
+            console.log('✅ Verification email sent to:', email);
+            
+            toast(`✅ Account created! Please check ${email} for verification link (check spam folder too).`);
+            closeAuthModal();
+          } catch (emailError) {
+            console.error('❌ Email send error:', emailError);
+            toast(`⚠️ Account created but email failed to send. Error: ${emailError.message}`);
+          }
+          return;
+        } else {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          console.log('✅ Signed in:', userCredential.user.email);
+
+          // Show warning if not verified but allow access
+          if (!userCredential.user.emailVerified) {
+            toast('⚠️ Email not verified yet. Check your inbox and spam folder!');
+          } else {
+            toast(`Welcome back, ${userCredential.user.displayName || 'User'}! ✨`);
+          }
+          closeAuthModal();
+        }
+      } catch (error) {
+        console.error('❌ Auth error:', error.code, error.message);
+        
+        let errorMsg = 'Authentication failed. Please try again.';
+        
+        if (error.code === 'auth/email-already-in-use') {
+          errorMsg = 'This email is already registered. Try signing in instead.';
+        } else if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+          errorMsg = 'Incorrect password. Please try again.';
+        } else if (error.code === 'auth/user-not-found') {
+          errorMsg = 'No account found with this email. Sign up first!';
+        } else if (error.code === 'auth/weak-password') {
+          errorMsg = 'Password should be at least 6 characters.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMsg = 'Invalid email address format.';
+        } else if (error.code === 'auth/network-request-failed') {
+          errorMsg = 'Network error. Check your internet connection.';
+        }
+        
+        toast(errorMsg);
+      } finally {
+        if (authSubmitBtn) authSubmitBtn.disabled = false;
+        if (authBtnText) authBtnText.textContent = authMode === 'signin' ? 'Sign In' : 'Create Account';
+      }
+    };
+
+    // ✅ HANDLE GOOGLE SIGN IN
+    window.handleGoogleAuth = async function() {
+      await signInWithGoogle();
+      closeAuthModal();
+    };
+
+    // ✅ FORGOT PASSWORD
+    window.handleForgotPassword = async function() {
+      const email = query('#authEmail')?.value.trim();
+      
+      if (!email) {
+        toast('Please enter your email address first.');
+        return;
+      }
+      
+      try {
+        await sendPasswordResetEmail(auth, email);
+        toast('Password reset email sent! Check your inbox.');
+      } catch (error) {
+        console.error('❌ Password reset error:', error);
+        if (error.code === 'auth/user-not-found') {
+          toast('No account found with this email address.');
+        } else {
+          toast('Failed to send reset email. Please try again.');
+        }
+      }
+    };
+
+    // ✅ UPDATE AUTH UI
+    function updateAuthUI(user) {
+      if (user) {
+        // Update buttons to show account info
+        if (authBtn) {
+          authBtn.innerHTML = `
+            <span style="display:flex;align-items:center;gap:6px;">
+              <img src="${user.photoURL || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22%3E%3Cpath fill=%22%230b1020%22 d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z%22/%3E%3C/svg%3E'}" 
+                   style="width:20px;height:20px;border-radius:50%;object-fit:cover;" 
+                   alt="User">
+              ${user.displayName?.split(' ')[0] || 'Account'}
+            </span>
+          `;
+          authBtn.onclick = () => openAccountModal();
+        }
+        
+        if (mobileAuthBtn) {
+          mobileAuthBtn.textContent = user.displayName || 'My Account';
+          mobileAuthBtn.onclick = () => {
+            mobile.classList.remove('show');
+            openAccountModal();
+          };
+        }
+      } else {
+        // Show sign in buttons
+        if (authBtn) {
+          authBtn.textContent = 'Sign In';
+          authBtn.onclick = () => openAuthModal('signin');
+        }
+        
+        if (mobileAuthBtn) {
+          mobileAuthBtn.textContent = 'Sign In';
+          mobileAuthBtn.onclick = () => {
+            mobile.classList.remove('show');
+            openAuthModal('signin');
+          };
+        }
+      }
+    }
+
+    // ✅ TOAST NOTIFICATIONS
+    function toast(message) {
+      const toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      toastEl.textContent = message;
+      document.body.appendChild(toastEl);
+      
+      setTimeout(() => toastEl.classList.add('show'), 10);
+      setTimeout(() => {
+        toastEl.classList.remove('show');
+        setTimeout(() => toastEl.remove(), 300);
+      }, 3000);
+    }
+
+    // Add toast styles
+    const toastStyles = document.createElement('style');
+    toastStyles.textContent = `
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: linear-gradient(135deg, rgba(124,77,255,.95), rgba(0,229,255,.95));
+        color: #0b1020;
+        padding: 14px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.4);
+        opacity: 0;
+        transition: all .3s ease;
+        z-index: 1000;
+        max-width: 90%;
+        text-align: center;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    `;
+    document.head.appendChild(toastStyles);
+
+    // ✅ RESEND VERIFICATION EMAIL
+    window.resendVerification = async function() {
+      const email = prompt('Enter your email address:');
+      if (!email) return;
+      
+      const password = prompt('Enter your password:');
+      if (!password) return;
+      
+      try {
+        // Sign in temporarily
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        // Send verification
+        await sendEmailVerification(userCredential.user);
+        
+        // Sign out
+        await signOut(auth);
+        
+        toast('📧 Verification email sent! Check your inbox.');
+      } catch (error) {
+        toast('Failed to resend. Check your email and password.');
+      }
+    };
+
+    // ✅ MOBILE MENU TOGGLE
+    if (hamb && mobile) {
+      hamb.addEventListener('click', () => {
+        mobile.classList.toggle('show');
+      });
+    }
+
+    // ✅ FLOATING BUBBLES
+    function createFloaters() {
+      if (!floaterHost) return;
+      
+      const colors = ['#7c4dff', '#00e5ff', '#ff7ac6', '#b7ff4a'];
+      const count = window.innerWidth > 768 ? 12 : 8;
+      
+      for (let i = 0; i < count; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        
+        const size = Math.random() * 40 + 20;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const x = Math.random() * 100;
+        const duration = Math.random() * 20 + 15;
+        const delay = Math.random() * -20;
+        
+        bubble.style.cssText = `
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}%;
+          background: ${color};
+          --dur: ${duration}s;
+          --sx: ${Math.random() * 20 - 10}px;
+          --dx: ${Math.random() * 60 - 30}px;
+          --sc: ${Math.random() * 0.3 + 0.8};
+          animation-delay: ${delay}s;
+        `;
+        
+        floaterHost.appendChild(bubble);
+      }
+    }
+
+    // ✅ REVEAL ANIMATIONS
+    function setupRevealAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('on');
           }
         });
-      } else {
-        await setDoc(userRef, {
-          lastLogin: new Date().toISOString()
-        }, { merge: true });
-      }
-    } catch (error) {
-      console.error('Error saving user data:', error);
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+      
+      queryAll('.reveal').forEach(el => observer.observe(el));
     }
-  }
 
-  /* ========= Utilities & UI Behaviors ========= */
-
-  // Mobile menu toggle
-  if (hamb && mobile) {
-    hamb.addEventListener('click', () => {
-      mobile.classList.toggle('show');
-      hamb.textContent = mobile.classList.contains('show') ? '✕' : '☰';
-    });
-  }
-
-  // Year
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // Topic modal openers
-  const topicEls = queryAll('.topic');
-  topicEls.forEach(topic => {
-    topic.addEventListener('click', () => {
-      const topicKey = topic.dataset.topic;
-      const data = topicData[topicKey];
-      if (data && topicModal && modalTitle && modalContent) {
-        modalTitle.textContent = data.title;
-        modalContent.innerHTML = data.content;
-        topicModal.classList.add('show');
-      }
-    });
-  });
-
-  // Close modal
-  if (modalClose && topicModal) {
-    modalClose.addEventListener('click', () => topicModal.classList.remove('show'));
-    topicModal.addEventListener('click', (e) => {
-      if (e.target === topicModal) topicModal.classList.remove('show');
-    });
-  }
-
-  /* ========= Floating bubbles generator ========= */
-  const COLORS = ['#7c4dff', '#00e5ff', '#ff7ac6', '#b7ff4a', '#ffd166'];
-  function mkBubble(){
-    if (!floaterHost) return;
-    const b = document.createElement('div');
-    b.className = 'bubble';
-    const size = Math.floor(40 + Math.random()*160);
-    const color = COLORS[Math.floor(Math.random()*COLORS.length)];
-    const startX = Math.floor(Math.random()*100) + 'vw';
-    const driftX = (Math.random()*60 - 30) + 'vw';
-    const scale = (0.6 + Math.random()*1.2).toFixed(2);
-    const duration = 14 + Math.random()*22;
-    b.style.width = b.style.height = size+'px';
-    b.style.left = startX;
-    b.style.setProperty('--sx', '0');
-    b.style.setProperty('--dx', driftX);
-    b.style.setProperty('--sc', scale);
-    b.style.setProperty('--dur', duration+'s');
-    b.style.color = color;
-    floaterHost.appendChild(b);
-    setTimeout(()=> b.remove(), duration*1000);
-  }
-
-  // create initial bubbles safely
-  if (floaterHost) {
-    for(let i=0;i<8;i++) mkBubble();
-    setInterval(()=>{ for(let i=0;i<2;i++) mkBubble(); }, 1600);
-  }
-
-  /* ========= Reveal-on-scroll (IntersectionObserver) ========= */
-  const revealEls = queryAll('.reveal');
-  if (revealEls.length > 0) {
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('on');
-          observer.unobserve(e.target);
+    // ✅ TOPIC MODAL
+    queryAll('.topic').forEach(topic => {
+      topic.addEventListener('click', () => {
+        const topicKey = topic.dataset.topic;
+        const data = topicData[topicKey];
+        
+        if (data && modalTitle && modalContent) {
+          modalTitle.textContent = data.title;
+          modalContent.innerHTML = data.content;
+          topicModal.classList.add('show');
         }
       });
-    }, { threshold:.14 });
-    revealEls.forEach(el=> observer.observe(el));
-  }
-
-  /* ========= Friendly toast ========= */
-  const toastHost = document.createElement('div');
-  toastHost.style.position='fixed';
-  toastHost.style.inset='auto 0 24px 0';
-  toastHost.style.display='grid';
-  toastHost.style.placeItems='center';
-  toastHost.style.pointerEvents='none';
-  toastHost.style.zIndex='50';
-  document.body.appendChild(toastHost);
-
-  function toast(msg){
-    if (!msg) return;
-    const t = document.createElement('div');
-    t.textContent = msg;
-    t.style.pointerEvents='auto';
-    t.style.maxWidth='92vw';
-    t.style.background='linear-gradient(90deg, rgba(124,77,255,.95), rgba(0,229,255,.95))';
-    t.style.color='#0b1020';
-    t.style.fontWeight='900';
-    t.style.padding='12px 16px';
-    t.style.borderRadius='14px';
-    t.style.boxShadow='0 14px 30px rgba(0,0,0,.35)';
-    t.style.margin='8px auto';
-    t.style.transform='translateY(16px)';
-    t.style.opacity='0';
-    t.style.transition='.35s ease';
-    toastHost.appendChild(t);
-    requestAnimationFrame(()=>{
-      t.style.transform='translateY(0)'; t.style.opacity='1';
     });
-    setTimeout(()=>{
-      t.style.transform='translateY(12px)'; t.style.opacity='0';
-      setTimeout(()=> t.remove(), 350);
-    }, 2200);
-  }
 
-  /* ========= Fun ripple on .card click ========= */
-  const cardEls = queryAll('.card');
-  cardEls.forEach(card=>{
-    // ensure card is positioned relatively for absolute ripple to work
-    if (getComputedStyle(card).position === 'static') {
-      card.style.position = 'relative';
-    }
-    card.addEventListener('click', (e)=>{
-      const r = document.createElement('span');
-      const d = Math.max(card.clientWidth, card.clientHeight);
-      r.style.position='absolute';
-      r.style.width = r.style.height = d+'px';
-      r.style.left = (e.offsetX - d/2)+'px';
-      r.style.top  = (e.offsetY - d/2)+'px';
-      r.style.borderRadius='50%';
-      r.style.background='radial-gradient(circle, rgba(255,255,255,.25), transparent 60%)';
-      r.style.pointerEvents='none';
-      r.style.transform='scale(.6)';
-      r.style.opacity='0';
-      r.style.transition='.6s ease';
-      card.appendChild(r);
-      requestAnimationFrame(()=>{
-        r.style.transform='scale(1.25)';
-        r.style.opacity='.9';
-      });
-      setTimeout(()=>r.remove(), 620);
-    });
-  });
-
-  /* ========= Keyboard accessibility (Escape key) ========= */
-  document.addEventListener('keyup', (e)=>{
-    if(e.key === 'Escape'){
-      if(mobile && mobile.classList.contains('show')){
-        mobile.classList.remove('show');
-        if (hamb) hamb.textContent='☰';
-      }
-      if(topicModal && topicModal.classList.contains('show')){
+    if (modalClose && topicModal) {
+      modalClose.addEventListener('click', () => {
         topicModal.classList.remove('show');
-      }
+      });
+      
+      topicModal.addEventListener('click', (e) => {
+        if (e.target === topicModal) {
+          topicModal.classList.remove('show');
+        }
+      });
     }
-  });
 
-  /* ========= Welcome toast for first-time visitors ========= */
-  setTimeout(() => {
-    const user = window.currentUser ? window.currentUser() : null;
-    if (!user) {
-      toast('Welcome! Sign in with Google to save your progress ✨');
-    }
-  }, 1000);
-
-  /* ========= Keyboard-enter accessibility for topic cards ========= */
-  topicEls.forEach(topic => {
-    topic.setAttribute('tabindex', topic.getAttribute('tabindex') || '0');
-    topic.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        topic.click();
+    // ✅ INITIALIZE
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set current year
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+      
+      // Create floating bubbles
+      createFloaters();
+      
+      // Setup reveal animations
+      setupRevealAnimations();
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        // ESC to close modals
+        if (e.key === 'Escape') {
+          if (topicModal?.classList.contains('show')) {
+            topicModal.classList.remove('show');
+          }
+          if (accountModal?.classList.contains('show')) {
+            closeAccountModal();
+          }
+          if (authModalOverlay?.classList.contains('show')) {
+            closeAuthModal();
+          }
+        }
+        
+        // Enter to submit auth form
+        if (e.key === 'Enter' && authModalOverlay?.classList.contains('show')) {
+          handleAuthSubmit();
+        }
+      });
+      
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href && href !== '#' && href !== '#0') {
+            const target = document.querySelector(href);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          }
+        });
+      });
+      
+      // Add animation to cards on hover
+      queryAll('.card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transition = 'all 0.3s ease';
+        });
+      });
+      
+      // Analytics - Track page views
+      if (window.gtag) {
+        gtag('event', 'page_view', {
+          page_title: 'Home',
+          page_location: window.location.href,
+          page_path: window.location.pathname
+        });
       }
+      
+      console.log('🧙 AccountsWizard initialized!');
     });
-  });
 
-  /* ========================================
-     NEW: ACCOUNT MODAL FUNCTIONALITY
-     ======================================== */
-
-  const accountModal = query('#accountModal');
-  const accountModalClose = query('#accountModalClose');
-  const accountAvatar = query('#accountAvatar');
-  const accountName = query('#accountName');
-  const accountEmail = query('#accountEmail');
-  const customUsername = query('#customUsername');
-  const saveUsernameBtn = query('#saveUsernameBtn');
-  const signOutBtn = query('#signOutBtn');
-  const lessonsCount = query('#lessonsCount');
-  const overallScore = query('#overallScore');
-  const practiceCount = query('#practiceCount');
-
-  // Open Account Modal when clicking on user avatar
-  function openAccountModal() {
-    const user = window.currentUser ? window.currentUser() : null;
-    if (!user) {
-      toast('Please sign in first! 🔐');
-      return;
-    }
-
-    // Set user info
-    if (accountAvatar) accountAvatar.src = user.photoURL || '';
-    if (accountEmail) accountEmail.textContent = user.email || '';
-
-    // Load custom username or use display name
-    loadCustomUsername(user);
-
-    // Load progress stats
-    loadProgressStats(user);
-
-    // Show modal
-    if (accountModal) accountModal.classList.add('show');
-  }
-
-  // Load custom username from Firestore
-  async function loadCustomUsername(user) {
-    if (!user || !db) return;
-    
-    try {
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
-      
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        const displayName = userData.customUsername || user.displayName || 'User';
-        
-        if (accountName) accountName.textContent = displayName;
-        if (customUsername) customUsername.value = userData.customUsername || '';
-      } else {
-        if (accountName) accountName.textContent = user.displayName || 'User';
-      }
-    } catch (error) {
-      console.error('Error loading username:', error);
-      if (accountName) accountName.textContent = user.displayName || 'User';
-    }
-  }
-
-  // Load progress stats from Firestore (FIXED VERSION)
-  async function loadProgressStats(user) {
-    if (!user || !db) return;
-    
-    try {
-      // Get the user's ID (matches firebase-config.js logic)
-      const userId = user.uid;
-      
-      // Try to get overall progress first (from firebase-config.js structure)
-      const overallRef = doc(db, 'overall-progress', userId);
-      const overallSnap = await getDoc(overallRef);
-      
-      if (overallSnap.exists()) {
-        // Use the firebase-config.js structure
-        const data = overallSnap.data();
-        
-        const lessons = data.completedLessons || 0;
-        const percentage = data.overallPercentage || 0;
-        
-        if (lessonsCount) lessonsCount.textContent = `${lessons}/14`;
-        if (overallScore) overallScore.textContent = `${percentage}%`;
-        
-        console.log('✅ Loaded from overall-progress:', data);
-      } else {
-        // Fallback: Try old structure from users collection
-        const userRef = doc(db, 'users', userId);
-        const userSnap = await getDoc(userRef);
-        
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          const progress = userData.progress || {};
-          
-          const lessons = progress.lessonsCompleted?.length || 0;
-          const attempts = progress.practiceAttempts || 0;
-          
-          // Calculate average quiz score
-          const quizScores = progress.quizScores || [];
-          const avgScore = quizScores.length > 0 
-            ? Math.round(quizScores.reduce((a, b) => a + b, 0) / quizScores.length)
-            : 0;
-          
-          if (lessonsCount) lessonsCount.textContent = `${lessons}/14`;
-          if (overallScore) overallScore.textContent = `${avgScore}%`;
-          if (practiceCount) practiceCount.textContent = attempts;
-          
-          console.log('📊 Loaded from users collection:', progress);
-        }
-      }
-      
-      // Get practice attempts (from users collection)
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
-      
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        const progress = userData.progress || {};
-        const attempts = progress.practiceAttempts || 0;
-        
-        if (practiceCount) practiceCount.textContent = attempts;
-      }
-      
-    } catch (error) {
-      console.error('❌ Error loading progress:', error);
-      // Show defaults on error
-      if (lessonsCount) lessonsCount.textContent = '0/14';
-      if (overallScore) overallScore.textContent = '0%';
-      if (practiceCount) practiceCount.textContent = '0';
-    }
-  }
-
-  // Save custom username to Firestore
-  async function saveCustomUsername() {
-    const user = window.currentUser ? window.currentUser() : null;
-    if (!user || !db) {
-      toast('Please sign in first! 🔐');
-      return;
-    }
-
-    const newUsername = customUsername?.value?.trim() || '';
-    
-    if (!newUsername) {
-      toast('Please enter a username! ✏️');
-      return;
-    }
-
-    if (newUsername.length < 3) {
-      toast('Username must be at least 3 characters! ⚠️');
-      return;
-    }
-
-    try {
-      const userRef = doc(db, 'users', user.uid);
-      await setDoc(userRef, {
-        customUsername: newUsername,
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
-
-      if (accountName) accountName.textContent = newUsername;
-      
-      // CALL the updateAuthUI function (don't define it here!)
-      await updateAuthUI(user);
-      
-      toast('Username saved successfully! ✅');
-      
-    } catch (error) {
-      console.error('Error saving username:', error);
-      toast('Failed to save username. Please try again! ❌');
-    }
-  }
-
-  // Define updateAuthUI as a separate function
-  async function updateAuthUI(user) {
-    // Defensive: if authBtn missing, skip updates but keep behavior
-    if (authBtn) {
-      if (user) {
-        // Try to load custom username from Firestore
-        let displayName = user.displayName || 'User';
-        
-        try {
-          const userRef = doc(db, 'users', user.uid);
-          const userSnap = await getDoc(userRef);
-          
-          if (userSnap.exists()) {
-            const userData = userSnap.data();
-            // Use custom username if available, otherwise use Google name
-            displayName = userData.customUsername || user.displayName || 'User';
-          }
-        } catch (error) {
-          console.error('Error loading custom username:', error);
-        }
-        
-        const firstName = displayName.split(' ')[0];
-        authBtn.innerHTML = `
-          <div class="user-info">
-            <img src="${user.photoURL || ''}" alt="${displayName}" class="user-avatar">
-            <span>${firstName}</span>
-          </div>
-        `;
-        authBtn.onclick = openAccountModal;  // Opens account modal instead of signing out
-      } else {
-        authBtn.textContent = 'Sign In with Google';
-        authBtn.onclick = signInWithGoogle;
-      }
-    }
-
-    if (mobileAuthBtn) {
-      if (user) {
-        let displayName = user.displayName || 'User';
-        
-        try {
-          const userRef = doc(db, 'users', user.uid);
-          const userSnap = await getDoc(userRef);
-          
-          if (userSnap.exists()) {
-            const userData = userSnap.data();
-            displayName = userData.customUsername || user.displayName || 'User';
-          }
-        } catch (error) {
-          console.error('Error loading custom username:', error);
-        }
-        
-        const firstName = displayName.split(' ')[0];
-        mobileAuthBtn.textContent = `Account (${firstName})`;
-        mobileAuthBtn.onclick = (e) => { 
-          e.preventDefault(); 
-          if (mobile) mobile.classList.remove('show');
-          if (hamb) hamb.textContent = '☰';
-          openAccountModal(); 
+    // ✅ PERFORMANCE OPTIMIZATION
+    // Debounce function for scroll/resize events
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
         };
-      } else {
-        mobileAuthBtn.textContent = 'Sign In';
-        mobileAuthBtn.onclick = (e) => { e.preventDefault(); signInWithGoogle(); };
-      }
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
     }
-  }
 
-  // Close account modal
-  if (accountModalClose && accountModal) {
-    accountModalClose.addEventListener('click', () => {
-      accountModal.classList.remove('show');
-    });
+    // Optimize floating bubbles on resize
+    window.addEventListener('resize', debounce(() => {
+      if (floaterHost && window.innerWidth < 768) {
+        const bubbles = floaterHost.querySelectorAll('.bubble');
+        if (bubbles.length > 8) {
+          for (let i = 8; i < bubbles.length; i++) {
+            bubbles[i].remove();
+          }
+        }
+      }
+    }, 250));
+
+    // ✅ EASTER EGG
+    let konamiCode = [];
+    const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     
-    accountModal.addEventListener('click', (e) => {
-      if (e.target === accountModal) {
-        accountModal.classList.remove('show');
+    document.addEventListener('keydown', (e) => {
+      konamiCode.push(e.key);
+      konamiCode = konamiCode.slice(-10);
+      
+      if (konamiCode.join('') === konamiPattern.join('')) {
+        toast('🎉 Konami Code Activated! You are a true wizard!');
+        document.body.style.animation = 'float 2s ease-in-out';
+        setTimeout(() => {
+          document.body.style.animation = '';
+        }, 2000);
       }
     });
-  }
-
-  // Save username button
-  if (saveUsernameBtn) {
-    saveUsernameBtn.addEventListener('click', saveCustomUsername);
-  }
-
-  // Sign out button in modal
-  if (signOutBtn) {
-    signOutBtn.addEventListener('click', () => {
-      if (accountModal) accountModal.classList.remove('show');
-      signOutUser();
-    });
-  }
-
-  // Make the account modal accessible globally
-  window.openAccountModal = openAccountModal;
-</script>
+  </script>
 </body>
 </html>
