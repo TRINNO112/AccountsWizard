@@ -339,6 +339,32 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* Add this media query to your existing <style> section */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 12px;
+      }
+
+      .brand h1 {
+        font-size: 0.9rem;
+        letter-spacing: 0.3px;
+      }
+
+      .menu {
+        gap: 4px;
+      }
+
+      .menu a {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .logo {
+        width: 32px;
+        height: 32px;
+      }
+    }
   </style>
 </head>
 <body>

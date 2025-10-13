@@ -358,6 +358,27 @@
     @keyframes spin{
       to{ transform: rotate(360deg); }
     }
+
+    @media (max-width: 768px) {
+
+    /* Center the logo when the menu wraps below it */
+    .nav {
+      justify-content: center;
+    }
+
+    /* Make the menu take the full width and center its links */
+    .menu {
+      width: 100%;
+      justify-content: center;
+      margin-top: 10px; /* Adds space between the logo and the menu */
+    }
+
+    /* Slightly smaller links on mobile for a better fit */
+    .menu a {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+  }
   </style>
 </head>
 <body>

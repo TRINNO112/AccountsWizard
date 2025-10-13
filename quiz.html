@@ -1448,6 +1448,99 @@
             color: var(--secondary);
             margin-left: 0.5rem;
         }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 102;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            z-index: 99;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-nav-links {
+            position: fixed;
+            top: 60px;
+            right: 0;
+            width: 280px;
+            height: calc(100vh - 60px);
+            background: var(--bg-secondary);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            list-style: none;
+            display: none; /* Changed from flex to none */
+            flex-direction: column;
+            gap: 0;
+            animation: slideInRight 0.3s ease;
+            z-index: 100;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .mobile-nav-links a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mobile-nav-links a:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-primary);
+            padding-left: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1460,16 +1553,34 @@
     <nav>
         <div class="nav-container">
             <div class="logo">AccountsWizard</div>
+            
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
+                <li><a href="Quiz-files/SC.html">Scenario</a></li>
                 <li><a href="Quiz-files/TF.html">True/False</a></li>
                 <li><a href="Quiz-files/GTA.html">Guess The Account</a></li>
-                <li><a href="Quiz-files/SC.html">Scenario</a></li>
-                <li><a href="Quiz-files/LG.html">Legder game</a></li>
+                <li><a href="Quiz-files/LG.html">Ledger game</a></li>
                 <li><a href="Quiz-files/RF.html">Rapid Fire</a></li>
             </ul>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </nav>
+
+    <div class="mobile-menu" id="mobileMenu"></div>
+
+    <ul class="mobile-nav-links" id="mobileNavLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Quiz-files/SC.html">Scenario</a></li>
+        <li><a href="Quiz-files/TF.html">True/False</a></li>
+        <li><a href="Quiz-files/GTA.html">Guess The Account</a></li>
+        <li><a href="Quiz-files/LG.html">Ledger game</a></li>
+        <li><a href="Quiz-files/RF.html">Rapid Fire</a></li>
+    </ul>
 
     <!-- Main Container -->
     <div class="container">
@@ -4349,6 +4460,33 @@
             toast.classList.remove('show');
         }, 3000);
     }
+
+    // Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNavLinks = document.getElementById('mobileNavLinks');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        mobileNavLinks.style.display = mobileNavLinks.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Close menu when link is clicked
+    document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileNavLinks.style.display = 'none';
+        });
+    });
+
+    // Close menu when clicking outside
+    mobileMenu.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileNavLinks.style.display = 'none';
+    });
     </script>
 </body>
 </html>
