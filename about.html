@@ -774,99 +774,167 @@
       line-height: 1.8;
     }
 
-    /* Contact Section - Neon Style */
-    .contact-card {
-      background: linear-gradient(135deg, var(--card), rgba(0, 153, 255, 0.02));
-      border-radius: var(--radius);
-      padding: 70px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(0, 153, 255, 0.2);
+    /* -----------------------------
+      Contact & Share Section
+    ----------------------------- */
+    .contact-section {
+      padding: 60px 20px;
+      background-color: var(--bg);
+      color: var(--text-light);
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
 
-    .contact-card::before {
-      content: '📧';
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      font-size: 150px;
-      opacity: 0.05;
-      transform: rotate(-15deg);
+    .contact-section .section-header h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
     }
 
-    .contact-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 40px;
+    .contact-section .section-header p {
       font-size: 1.1rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
-      color: var(--bg);
+      color: var(--text-dim);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .contact-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 15px rgba(0,255,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(0,255,255,0.3);
+    }
+
+    .contact-card i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--neon-cyan);
+    }
+
+    .contact-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    .contact-card p, .contact-card a, .contact-card button {
+      font-size: 1rem;
+      color: var(--text-light);
+      text-decoration: none;
+    }
+
+    .contact-card button {
+      background: var(--neon-pink);
       border: none;
-      border-radius: 50px;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 25px;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 0 40px rgba(0, 255, 136, 0.4);
+      transition: background 0.3s, transform 0.3s;
     }
 
-    .contact-toggle-btn:hover {
-      transform: scale(1.1) rotate(-2deg);
-      box-shadow: 0 10px 60px rgba(0, 255, 136, 0.6);
+    .contact-card button:hover {
+      background: var(--neon-cyan);
+      transform: scale(1.05);
+      color: #000;
     }
 
-    .contact-details {
+    /* -----------------------------
+      Easter Egg Section
+    ----------------------------- */
+    .secret-section {
+      margin: 50px 0;
+      text-align: center;
+    }
+
+    .secret-btn {
+      background: linear-gradient(135deg, #ff00ff, #00ffff);
+      border: none;
+      padding: 15px 25px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      transition: transform 0.3s, filter 0.3s;
+    }
+
+    .secret-btn:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    .easter-egg-reveal {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-      margin-top: 0;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
     }
 
-    .contact-details.active {
-      max-height: 500px;
-      margin-top: 45px;
+    .easter-egg-reveal.active {
+      max-height: 200px;
+      opacity: 1;
     }
 
-    .contact-info {
-      background: rgba(0, 255, 255, 0.03);
-      border-radius: 15px;
-      padding: 35px;
-      border: 1px solid rgba(0, 255, 255, 0.1);
+    .easter-egg-content {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 15px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 15px rgba(255,0,255,0.2);
     }
 
-    .contact-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      margin: 25px 0;
-      font-size: 1.15rem;
+    .secret-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--neon-pink);
+      text-decoration: underline;
+      font-weight: bold;
     }
 
-    .contact-item i {
-      font-size: 1.5rem;
+    /* -----------------------------
+      Footer Adjustments
+    ----------------------------- */
+    footer {
+      background-color: #05030a;
+      padding: 40px 20px;
+      color: var(--text-light);
+    }
+
+    footer a {
       color: var(--neon-cyan);
-      text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-    }
-
-    .contact-item a {
-      color: var(--text);
       text-decoration: none;
-      transition: all 0.3s ease;
-      font-weight: 500;
     }
 
-    .contact-item a:hover {
-      color: var(--neon-cyan);
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-      transform: translateX(5px);
+    footer a:hover {
+      text-decoration: underline;
     }
 
+    .footer-text {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* Optional: neon variables */
+    :root {
+      --bg: #06050a;
+      --text-light: #ffffff;
+      --text-dim: #a0a0a0;
+      --neon-pink: #ff10f0;
+      --neon-cyan: #00ffff;
+    }
+
+    
     /* Footer - Neon Style */
     footer {
       margin-top: 150px;
@@ -905,49 +973,6 @@
       z-index: 1;
     }
 
-    .secret-section {
-      margin-bottom: 50px;
-    }
-
-    .secret-btn {
-      padding: 14px 35px;
-      font-size: 1rem;
-      background: transparent;
-      color: var(--text-dim);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .secret-btn:hover {
-      background: rgba(255, 16, 240, 0.1);
-      border-color: var(--neon-pink);
-      color: var(--neon-pink);
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 0 30px rgba(255, 16, 240, 0.5);
-    }
-
-    .easter-egg-reveal {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.6s ease;
-      margin-top: 0;
-    }
-
-    .easter-egg-reveal.active {
-      max-height: 300px;
-      margin-top: 35px;
-    }
-
-    .easter-egg-content {
-      font-size: 4rem;
-      animation: crazyRotate 2s ease-in-out;
-    }
-
     @keyframes crazyRotate {
       0% { transform: scale(0) rotate(0deg); opacity: 0; }
       50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
@@ -969,6 +994,67 @@
 
     .footer-text a:hover {
       text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .ad-box {
+      margin: 30px 0;
+      padding: 25px;
+      border: 2px dashed var(--accent, #ff6b6b);
+      border-radius: 16px;
+      background: rgba(255, 107, 107, 0.1);
+      box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+      transform: rotate(-1deg);
+      transition: all 0.3s ease;
+    }
+
+    .ad-box:hover {
+      transform: rotate(0deg) scale(1.02);
+      box-shadow: 0 0 25px rgba(255, 107, 107, 0.6);
+    }
+
+    .ad-content {
+      text-align: center;
+      color: var(--text, #eee);
+    }
+
+    .ad-brand {
+      color: #ff4c4c;
+      font-weight: 700;
+      text-shadow: 0 0 6px rgba(255, 100, 100, 0.7);
+    }
+
+    .ad-image {
+      width: 220px;
+      margin-top: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 80, 80, 0.4);
+    }
+
+    .ad-end {
+      font-style: italic;
+      margin-top: 15px;
+      color: #ffaaaa;
+    }
+
+    .about-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 18px;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: var(--text, #ddd);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent, #ff6b6b);
+    }
+
+    .section-header p {
+      color: var(--text-dim, #aaa);
+      font-style: italic;
     }
 
     /* Responsive Design */
@@ -1093,63 +1179,103 @@
   <div class="page-wrapper">
 
    <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-badge">
-      <i class="fas fa-rocket"></i> WARNING: EXTREME GEN Z CONTENT AHEAD
-    </div>
-    
-    <h1>
-      You Clicked 'About'?
-      <span class="gradient-text">Lowkey A Bold Move, Fam.</span>
-    </h1>
-    
-    <p class="hero-subtitle">
-      Welcome to the page most people accidentally click on. But you... you're built different.
-      You're here for the lore, the full story, the deets. Aight, bet. Let's get into it.
-    </p>
+    <section class="hero">
+      <div class="hero-badge">
+        <i class="fas fa-rocket"></i> NOTE: THIS PAGE EXISTS FOR YOUR PEACE OF MIND
+      </div>
+      
+      <h1>
+        You Clicked ‘About’?
+        <span class="gradient-text">I Know What You Wanted To...</span>
+      </h1>
 
-    <button class="glitch-button" onclick="toggleWarning()">
-      <i class="fas fa-exclamation-triangle"></i>
-      <span>PRESS IF YOU DARE</span>
-    </button>
+      <p class="hero-subtitle">
+        You wanted to submit your complaints regarding this trash-like page, right?  
+        Let’s be serious — you’re probably here to complain about features that were never added and are obviously not working.  
+        Well, that’s the thing. I know. I know.  
+        So yeah, welcome to the page.  
+        <br><br>
+        Yeh sab katha jo likhi hai, agar mann na ho padne ka, toh mat pado.  
+        Jo contact ki jankari hai, wo page ke last mein hai.  
+        Aur waise bhi, kaun hi padega yeh? Mujhe lagta hai, jiske paas ho, unlimited time. 😏
+      </p>
 
-    <div class="warning-box" id="warningBox">
-      <div class="warning-content">
-        <h3>🎉 CONGRATS, YOU HAVE MAIN CHARACTER ENERGY!</h3>
+      <button class="glitch-button" onclick="toggleWarning()">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>PRESS IF YOU DARE</span>
+      </button>
+
+      <div class="warning-box" id="warningBox">
+        <div class="warning-content">
+          <h3>🧘‍♂️ RELAX, NOTHING SPECIAL HERE!</h3>
+          <p>
+            Acha theek hai, press if you dare.  
+            Kuch nahi hai yaha — main toh aise hi sattagiri kar raha tha.  
+            But still, you clicked upon it. Respect. 🙏
+          </p>
+          <p style="margin-top: 20px; color: var(--text-dim); font-size: 1rem;">
+            <strong>Pro Tip:</strong> Sometimes, even empty buttons have more personality than some websites. 😜
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>The Story You Didn’t Ask For — But Still, Here It Is</h2>
+        <p>Matlab seriously, mujhe bhi lagta hai yeh likhne ki koi zarurat nahi thi... par chalo likh diya. 😌</p>
+      </div>
+
+      <!-- Funny Advertisement Section -->
+      <div class="ad-box">
+        <div class="ad-content">
+          <h3>📢 Sponsored by: <span class="ad-brand">SATTA Stationery™</span></h3>
+          <p>
+            “Jaha pen likhne se pehle sochta hai, aur eraser galtiyon se zyada attitude dikhata hai.”  
+            Fun fact — unke products bhi maine hi design kiye hain. 😏  
+            <br><strong>Visual proof below:</strong>
+          </p>
+          <img src="your-image-path-here.jpg" alt="Satta Stationery Product" class="ad-image">
+          <p class="ad-end">Ad khatam ho gayi hai. Ab chalo, wapas kahani mein aate hain... 😜</p>
+        </div>
+      </div>
+
+      <!-- Main About Section -->
+      <div class="about-card">
         <p>
-          You actually pressed it. You absolute legend. Your reward is knowing you're not an NPC.
-          Now carry on, the real story is below. 😂
+          Toh kahani shuru hoti hai aaj se 5 saal pehle, jab mujhe WhatsApp par ek message aata hai —  
+          usme likha tha <em>“Click on it.”</em> Curious mind tha, maine bhi click kar diya.  
+          Fir ek page khulta hai jahan apna naam likhna hota hai, maine bhi likh diya.  
+          Aur tab jo hua, woh mere liye ek chhota sa <strong>chamatkaar</strong> tha —  
+          us page ne ek festival ke naam ke saath mera naam likh ke dikhaya, jaise <em>“Happy Diwali Trinno!”</em>  
+          Us waqt ke ek bachche ke liye, yeh ek magic moment tha. ✨  
+          Par turant hi mera brain bola — “Yeh kya bekaar page hai!  
+          Isse accha toh main khud bana sakta hoon.”  
+          Aur bas wahi se meri <strong>journey for coding</strong> shuru hoti hai. 💻🔥
         </p>
-        <p style="margin-top: 20px; color: var(--text-dim); font-size: 1rem;">
-          <strong>IYKYK:</strong> Clicking random buttons on the internet is a vibe. No regrets. 🤥
+
+        <p>
+          So scene aisa tha — mujhe ek educational page banana tha, par mere paas koi idea nahi tha.  
+          Matlab literally blank mind. Fir socha, chal jo hoga dekha jayega.  
+          Friends aur teachers bolte the, <em>“Accounts is the hardest subject in Commerce.”</em>  
+          Toh maine decide kiya — let’s make it a little less boring, thoda easy, aur thoda interesting.
+        </p>
+
+        <p>
+          Aisa nahi hai ki <strong>AccountsWizard</strong> mera pehla web page tha ya pehli website.  
+          Kyunki bhai, directly koi itna accha bana nahi sakta — uske liye saalon ki mehnat lagti hai, jo maine ki hai.  
+          And honestly, I can proudly say, <em>AccountsWizard is my best web page till date.</em>
+        </p>
+
+        <p>
+          Mujhe pata hai, isme bahut si kamiya hongi — par adjust kar lena.  
+          Aur agar nahi kar sakte... toh bhad mein jao 😌 mujhe farak nahi padta.  
+          Main toh khush hoon, kyunki ye dil se banaya hai — thoda imperfect, par 100% genuine. ❤️
         </p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- About Section -->
-  <section class="content-section">
-    <div class="section-header">
-      <h2>The Origin Story No One Asked For</h2>
-      <p>Seriously, meri mummy ne bhi nahi pucha. But here it is anyway.</p>
-    </div>
-
-    <div class="about-card">
-      <p>
-        <strong>AccountsWizard</strong> started as a 2 AM thought bubble: "What if accounting wasn't a total vibe kill?"
-        Mera ek chhota sa dream tha: to make learning accounting easier and more visual with graphs and cool infographics. Basically, anything to avoid reading another 50-page chapter that puts you to sleep.
-      </p>
-      <p>
-        Is this website perfect? Bro, no cap, it's not. It’s got more bugs than my code has comments. Some features are still loading... just like my brain during an 8 AM lecture. But I gave it my best shot.
-      </p>
-      <p>
-        Maine thoda humor add kiya hai, because let's be real, debit and credit ki duniya can be boring AF. So don't expect Netflix-level entertainment, but ek-do smile zaroor aayegi. 😅
-      </p>
-      <p>
-        Toh scene kya hai? <em>It's a dream, plus a lot of effort, thodi masti, and an insane amount of bugs. But maine dil se banaya hai.</em>
-      </p>
-    </div>
-  </section>
 
   <!-- The Creator Section -->
   <section class="content-section">
@@ -1201,205 +1327,279 @@
   </section>
 
   <!-- Journey Timeline -->
-  <section class="content-section">
-    <div class="section-header">
-      <h2>My Chaotic Journey with AccountsWizard</h2>
-      <p>A timeline of my villain arc, powered by bugs, deadlines, and one awesome teacher.</p>
+    <section class="content-section">
+      <div class="section-header">
+        <h2>My Chaotic Journey with AccountsWizard</h2>
+        <p>A timeline of my ups and downs, sleepless nights, Firebase fights, and one legendary teacher.</p>
+      </div>
+
+      <div class="timeline-container">
+        <button class="timeline-toggle" onclick="toggleTimeline()">
+          <i class="fas fa-clock"></i>
+          <span>Get The Full Scoop On My Coding Journey</span>
+        </button>
+
+        <div class="timeline-content" id="timelineContent">
+          <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-date"><i class="fas fa-calendar-alt"></i> August 2025</div>
+              <div class="timeline-text">
+                In August, I started the development of <strong>AccountsWizard</strong> using React, Node.js, and Tailwind CSS.  
+                But kya kahun bro... meri kismat hi kharab thi. After writing thousands of lines of code,  
+                <em>not even a basic text appeared on the screen.</em>  
+                I was frustrated, demotivated, and honestly depressed. That month felt like a complete L.  
+                I wasn’t even in the mood to continue further.
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date"><i class="fas fa-recycle"></i> September 2025</div>
+              <div class="timeline-text">
+                Phir ek chhoti si motivation ne mujhe zinda rakha.  
+                I took a hard step — deleted my entire project (yes, all of it 😭) and started again from scratch.  
+                This time, I went old-school with <strong>HTML, CSS, and JavaScript</strong>.  
+                It was risky but definitely my best decision ever.  
+                Slowly, things started working. Lessons took shape, bugs were still everywhere,  
+                but development was finally <em>steady and satisfying.</em>  
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date"><i class="fas fa-book-open"></i> Exams Time</div>
+              <div class="timeline-text">
+                Then came the storm — exams.  
+                I saw my results and... ouch. Few subjects went terribly wrong. I knew it was my fault —  
+                zyada focus coding pe tha, padhai pe kam. 😅  
+                But then, something magical happened.  
+                <strong>Nirmit Sir</strong>, my Accounts teacher, motivated me like no one else.  
+                He said, “Marks aren’t everything. What matters is what you truly learn.”  
+                Those words hit hard.  
+                Thank you so much, Sir. If you’re somehow reading this,  
+                just know — your motivation saved this entire project. 🙏  
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date"><i class="fas fa-cogs"></i> October 2025</div>
+              <div class="timeline-text">
+                This month was pure chaos again. 😵  
+                I started fixing major bugs, created multiple new pages,  
+                and revamped my old design completely.  
+                Switching to <strong>Firebase</strong> for database management felt like jumping into lava —  
+                tough, confusing, but worth it.  
+                Har din ek naya error aata tha, but har raat ek chhoti si victory milti thi.  
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date"><i class="fas fa-lightbulb"></i> Present</div>
+              <div class="timeline-text">
+                So here we are — the present.  
+                <strong>AccountsWizard</strong> abhi bhi complete nahi hai.  
+                It has <em>14 lessons out of 22</em>, and haan, kuch MCQs out of syllabus bhi hain.  
+                Few features are still half-baked, kuch data needs rechecking,  
+                and some buttons might just be decorative. 😅  
+                But maine apni taraf se puri koshish ki hai.  
+                If you find issues or bugs, please mail me —  
+                ya phir apni life ke kuch fun facts share kar dena.  
+                It’s always nice to know someone actually reached till the end of this page. 😂  
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fun Facts Section -->
+<section class="content-section">
+  <div class="section-header">
+    <h2>Fun Facts From My Coding Cave</h2>
+    <p>Real stories, late-night chaos, and things that made this page happen.</p>
+  </div>
+
+  <div class="fun-facts-grid">
+
+    <div class="fun-fact-card">
+      <div class="fun-fact-emoji">🎮</div>
+      <div class="fun-fact-title">A Gamer's Sacrifice</div>
+      <div class="fun-fact-text">
+        I sacrificed my Minecraft server for this.  
+        Friends still think I’m “studying” right now.  
+        F in the chat for my fallen diamonds and Netherite.
+      </div>
     </div>
 
-    <div class="timeline-container">
-      <button class="timeline-toggle" onclick="toggleTimeline()">
-        <i class="fas fa-clock"></i>
-        <span>Get The Full Scoop On My Coding Journey</span>
+    <div class="fun-fact-card">
+      <div class="fun-fact-emoji">🧩</div>
+      <div class="fun-fact-title">MCQ Overlord</div>
+      <div class="fun-fact-text">
+        I rechecked each MCQ like a detective solving a mystery.  
+        Agar koi galat question milta hai, consider it a rare collectible item. 😎
+      </div>
+    </div>
+
+    <div class="fun-fact-card">
+      <div class="fun-fact-emoji">👨‍🏫</div>
+      <div class="fun-fact-title">Shoutout to Nirmit Sir</div>
+      <div class="fun-fact-text">
+        The man who stopped me from deleting my whole project.  
+        If coding had mentors like him everywhere, bugs would fear us. 💪
+      </div>
+    </div>
+
+    <div class="fun-fact-card">
+      <div class="fun-fact-emoji">📡</div>
+      <div class="fun-fact-title">Geopolitical Analyst</div>
+      <div class="fun-fact-text">
+        Stressed about Firebase errors and global news at the same time.  
+        Multitasking at its finest. 🌍
+      </div>
+    </div>
+
+    <div class="fun-fact-card">
+      <div class="fun-fact-emoji">💻</div>
+      <div class="fun-fact-title">Browser History of Shame</div>
+      <div class="fun-fact-text">
+        67 tabs open — half Stack Overflow, half “How to fix Firebase not working.”  
+        Chrome crashes are basically part of the adventure.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="content-section">
+  <div class="section-header">
+    <h2>Frequently Avoided Questions</h2>
+    <p>Questions you didn’t ask, but I have answers anyway. 😏</p>
+  </div>
+
+  <div class="faq-container">
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">
+        <h3>Is this a proper accounting learning site?</h3>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          Bro, it’s based on DK Goel syllabus — solid info.  
+          But it’s also chaotic, full of humor, and designed by a student.  
+          Think of it as <strong>learning with vibes</strong>, not a formal class. 🎯
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">
+        <h3>Will this make me an accounting topper?</h3>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          Probably not, bro. But you might become the person in class who actually understands things.  
+          Also, witness how one student used AI, jugaad, and sheer determination to build something from scratch.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">
+        <h3>Was building this easy?</h3>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          Bro, I wanted to throw my laptop multiple times. Animations broke, Firebase gave trust issues,  
+          AI didn’t understand my intent. But eventually, things worked. The struggle was real,  
+          but the W feels amazing. 😎
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFAQ(this)">
+        <h3>Is this website secretly AI-powered?</h3>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          Nice try. AI wouldn’t have made such organized chaos.  
+          Every bug, every weird animation, every last-minute patch is 100% human-made.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Contact & Share Section -->
+<section class="content-section contact-section" id="contact">
+  <div class="section-header">
+    <h2>Let's Connect!</h2>
+    <p>Have feedback, bugs, or want to share something fun? Drop me a message or just say hi 👋</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <i class="fas fa-envelope"></i>
+      <h3>Email Me</h3>
+      <p><a href="mailto:kaushtubh457@gmail.com">Trinno Asphalt MAIL</a></p>
+    </div>
+
+    <div class="contact-card">
+      <i class="fas fa-share-alt"></i>
+      <h3>Share This Project</h3>
+      <button onclick="shareProject()">Share</button>
+    </div>
+
+    <div class="contact-card">
+      <i class="fab fa-github"></i>
+      <h3>GitHub</h3>
+      <p><a href="https://github.com/TRINNO112" target="_blank">github.com/TRINNO112</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-content">
+
+    <!-- Easter Egg -->
+    <div class="secret-section">
+      <button class="secret-btn" onclick="toggleEasterEgg()">
+        🧠 Hidden Button Detected 🧠
       </button>
-
-      <div class="timeline-content" id="timelineContent">
-        <div class="timeline">
-
-          <div class="timeline-item">
-            <div class="timeline-date"><i class="fas fa-calendar-alt"></i> August 2025</div>
-            <div class="timeline-text">
-              My coding journey's villain origin story. I tried to act all pro with Node.js and component-based code without any real experience. Likha hazaron lines of code, but only a few things actually worked. It was giving... chaos.
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date"><i class="fas fa-trash-alt"></i> September 2025</div>
-            <div class="timeline-text">
-              I ghosted the component-based life and went back to my ex, static HTML. It felt like a step back, but zaroori tha. Bugs were still throwing hands, and random errors made me question everything. But small wins kept the motivation alive.
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date"><i class="fas fa-book"></i> Exams Time</div>
-            <div class="timeline-text">
-              Real talk: I bombed my exams, especially Economics. The L was massive and I was this close to deleting the whole project. But Nirmit Sir, the real MVP, provided the clutch support. He reminded me that learning is a marathon, not a sprint, and hyped me up to keep grinding on AccountsWizard. No cap, this project wouldn't exist without him.
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date"><i class="fas fa-cogs"></i> October 2025</div>
-            <div class="timeline-text">
-              With a renewed main character energy, I started rebuilding. I was laser-focused on infographics and visuals to make things make sense. The bugs were still buggin', but seeing it all come together, piece by piece, was a W.
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date"><i class="fas fa-lightbulb"></i> Present</div>
-            <div class="timeline-text">
-              So here we are. AccountsWizard is live, but it's forever a work in progress. This journey taught me patience, persistence, and that a good mentor is a life hack. This project is basically my whole learning curve, with a side of memes. 😄
-            </div>
-          </div>
-
+      <div class="easter-egg-reveal" id="easterEgg">
+        <div class="easter-egg-content">
+          <p style="font-size:1.3rem; color:var(--neon-pink); text-align:center;">
+            Bro, you really clicked it? Respect.  
+            You’re now officially part of the AccountsWizard squad.  
+            <br><br>
+            <a href="#contact" class="secret-link">Wanna talk? Jump to the Contact Section 👆</a>
+          </p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Fun Facts Section -->
-  <section class="content-section">
-    <div class="section-header">
-      <h2>Completely Useless Fun Facts</h2>
-      <p>Gyan I gained while building this – 50% serious, 50% masti.</p>
+    <!-- Footer Info -->
+    <div class="footer-text">
+      <p>© 2025 AccountsWizard | Built with chaos, curiosity, and code.</p>
+      <p style="margin-top: 10px; color: var(--text-dim); font-size: 0.9rem;">
+        Made by Trinno – a commerce student who thought, "Let's make accounting fun."
+      </p>
+      <p style="margin-top: 15px; font-size: 0.9rem;">
+        <a href="legal/privacy.html">Privacy Policy</a> • 
+        <a href="legal/terms.html">Terms & Conditions</a> • 
+        <a href="legal/cookies.html">Cookie Policy</a>
+      </p>
     </div>
 
-    <div class="fun-facts-grid">
-      <div class="fun-fact-card">
-        <div class="fun-fact-emoji">🏆</div>
-        <div class="fun-fact-title">Procrastination King</div>
-        <div class="fun-fact-text">
-          Spent more time 'researching' color palettes than coding. It was for the aesthetic, you know? The vibe had to be right.
-        </div>
-      </div>
-      <div class="fun-fact-card">
-        <div class="fun-fact-emoji">🧠</div>
-        <div class="fun-fact-title">Zero Brain Cells Mode</div>
-        <div class="fun-fact-text">
-          There were days my brain just logged off. During those times, the code was written by Google, Stack Overflow, and pure desperation.
-        </div>
-      </div>
-      <div class="fun-fact-card">
-        <div class="fun-fact-emoji">🎮</div>
-        <div class="fun-fact-title">A Gamer's Sacrifice</div>
-        <div class="fun-fact-text">
-          I sacrificed my Minecraft server for this. My friends still thinking I am studying right now ! F in the chat for my fallen diamonds and Netherite.
-        </div>
-      </div>
-      <div class="fun-fact-card">
-        <div class="fun-fact-emoji">👨‍🏫</div>
-        <div class="fun-fact-title">Shoutout to Nirmit Sir</div>
-        <div class="fun-fact-text">
-          For being the ultimate hype man when my motivation was at 1%. If coding had cheerleaders, he'd be the captain.
-        </div>
-      </div>
-      <div class="fun-fact-card">
-        <div class="fun-fact-emoji">📈</div>
-        <div class="fun-fact-title">Geopolitical Analyst</div>
-        <div class="fun-fact-text">
-          Stressed about my CSS not centering and Trump's potential tariffs on India at the same time. It's called multitasking, look it up.
-        </div>
-      </div>
-      <div class="fun-fact-card">
-        <div class="fun-fact-emoji">📑</div>
-        <div class="fun-fact-title">Tab Hoarder</div>
-        <div class="fun-fact-text">
-          My browser currently has 57 tabs open. 55 are from Github, Firebase for the same bug. The other two are for Watching latest geopolitical update.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="content-section">
-    <div class="section-header">
-      <h2>Frequently Avoided Questions</h2>
-      <p>Questions you didn't ask, but I have answers for anyway.</p>
-    </div>
-
-    <div class="faq-container">
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h3>Is this a legit accounting course?</h3>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Define "legit." It's based on the DK Goel syllabus, so the info is solid. But it's more like a fun, chaotic study guide made by a fellow student, not a formal class. It's an experience, a vibe.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h3>Will this website make me an accounting topper?</h3>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Probably not, being honest. But it might make you the person in your class who actually understands what's going on. And you'll see how one student used jugaad, AI, and Google to build something from scratch.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h3>Was building this easy?</h3>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Bro, I wanted to throw my laptop out the window at least 20 times. Animations broke, Firebase gave me trust issues... AI never gets it right the first time. The struggle was real. But hey, we move.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <h3>Is this website secretly run by an AI?</h3>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Nice try. An AI would have written cleaner code. This organized chaos is 100% human-made, fueled by last-minute panic and caffeine.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <!-- Fun Easter Egg Section -->
-        <div class="secret-section">
-          <button class="secret-btn" onclick="toggleEasterEgg()">
-            🥚 Wait, a Secret Button? 🥚
-          </button>
-          <div class="easter-egg-reveal" id="easterEgg">
-            <div class="easter-egg-content" style="font-size: 2rem; text-align: center; margin-bottom: 15px;">
-              🎮💻📚🧩🎉
-            </div>
-            <p style="color: var(--neon-pink); font-size: 1.1rem; text-align: center;">
-              Sheesh, you found it. You've unlocked the secret knowledge that building stuff is 10% coding and 90% figuring out why the code isn't working. 
-              <br> You're one of us now. 😎
-            </p>
-          </div>
-        </div>
-
-      <!-- Footer Info -->
-      <div class="footer-text">
-        <p>© 2025 AccountsWizard | Making Accounting Weird Since Yesterday</p>
-        <p style="margin-top: 10px; color: var(--text-dim); font-size: 0.9rem;">
-          Built with 💜, creativity, and a questionable amount of patience by a student experimenting with AI, coding, and DK Goel.
-        </p>
-        <p style="margin-top: 15px; font-size: 0.9rem;">
-          <a href="legal/privacy.html">Privacy Policy</a> • 
-          <a href="legal/terms.html">Terms & Conditions</a> • 
-          <a href="legal/cookies.html">Cookie Policy</a>
-        </p>
-      </div>
-
-    </div>
-  </footer>
-
-
+  </div>
+</footer>
   <!-- JavaScript -->
   <script>
     // Toggle Warning Box
@@ -1493,6 +1693,19 @@
         document.body.style.opacity = '1';
       }, 100);
     });
+
+    // Share Function
+    function shareProject() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'AccountsWizard',
+          text: 'Check out this student-built Accounting learning site!',
+          url: window.location.href
+        });
+      } else {
+        alert("Sharing isn't supported on your device, bro 😅");
+      }
+    }
   </script>
 
 </body>
