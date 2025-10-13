@@ -1805,7 +1805,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q1')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q1', event)">View Solution</button>
 
         <div class="solution" id="q1-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st March 2024</h4>
@@ -1945,7 +1945,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q2')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q2', event)">View Solution</button>
 
         <div class="solution" id="q2-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st December 2024</h4>
@@ -2079,7 +2079,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q3')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q3', event)">View Solution</button>
 
         <div class="solution" id="q3-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st January 2025</h4>
@@ -2210,7 +2210,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q4')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q4', event)">View Solution</button>
 
         <div class="solution" id="q4-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 30th June 2024</h4>
@@ -2346,7 +2346,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q5')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q5', event)">View Solution</button>
 
         <div class="solution" id="q5-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Trial Balance as on 31st March 2025</h4>
@@ -2564,7 +2564,7 @@
           </table>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q6')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q6', event)">View Solution</button>
 
         <div class="solution" id="q6-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Calculating Missing Figures</h4>
@@ -2677,7 +2677,7 @@
           <p style="margin-top: 10px;">Prepare a corrected Trial Balance using a Suspense Account.</p>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('q7')">View Solution</button>
+        <button class="view-solution-btn" onclick="toggleSolution('q7', event)">View Solution</button>
 
         <div class="solution" id="q7-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Corrected Trial Balance with Suspense Account</h4>
@@ -2861,7 +2861,7 @@
           </div>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('practice')">Check Answer</button>
+        <button class="view-solution-btn" onclick="toggleSolution('practice', event)">View Solution</button>
 
         <div class="solution" id="practice-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Answer: Trial Balance as on 31st March 2025</h4>
@@ -3533,9 +3533,16 @@
     initQuiz();
     console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
 
-    function toggleSolution(id) {
+    // ✨ FIX: COMBINED AND CORRECTED toggleSolution FUNCTION
+    window.toggleSolution = function(id, event) {
       const solution = document.getElementById(id + '-solution');
-      const button = event.target;
+      // Use event.currentTarget to reliably get the button that was clicked
+      const button = event.currentTarget; 
+
+      if (!solution || !button) {
+          console.error('Solution or button not found for id:', id);
+          return;
+      }
       
       if (solution.classList.contains('active')) {
         solution.classList.remove('active');
@@ -3543,6 +3550,11 @@
       } else {
         solution.classList.add('active');
         button.textContent = 'Hide Solution';
+      }
+
+      // Track progress (this was the logic from the broken wrapper)
+      if (window.progressTracker) {
+        progressTracker.markQuestionAttempted(id);
       }
     }
 
@@ -3568,435 +3580,340 @@
 
     // Trial Balance Game Data
     const gameTransactions = [
-    { id: 1, account: "Cash", amount: 50000, type: "debit" },
-    { id: 2, account: "Capital", amount: 200000, type: "credit" },
-    { id: 3, account: "Furniture", amount: 45000, type: "debit" },
-    { id: 4, account: "Bank Loan", amount: 80000, type: "credit" },
-    { id: 5, account: "Purchases", amount: 120000, type: "debit" },
-    { id: 6, account: "Sales", amount: 180000, type: "credit" },
-    { id: 7, account: "Rent Expense", amount: 24000, type: "debit" },
-    { id: 8, account: "Debtors", amount: 65000, type: "debit" },
-    { id: 9, account: "Creditors", amount: 55000, type: "credit" },
-    { id: 10, account: "Salary Expense", amount: 36000, type: "debit" },
-    { id: 11, account: "Commission Income", amount: 15000, type: "credit" },
-    { id: 12, account: "Insurance", amount: 18000, type: "debit" }
+      { id: 1, account: "Cash", amount: 50000, type: "debit" },
+      { id: 2, account: "Capital", amount: 200000, type: "credit" },
+      { id: 3, account: "Furniture", amount: 45000, type: "debit" },
+      { id: 4, account: "Bank Loan", amount: 80000, type: "credit" },
+      { id: 5, account: "Purchases", amount: 120000, type: "debit" },
+      { id: 6, account: "Sales", amount: 180000, type: "credit" },
+      { id: 7, account: "Rent Expense", amount: 24000, type: "debit" },
+      { id: 8, account: "Debtors", amount: 65000, type: "debit" },
+      { id: 9, account: "Creditors", amount: 55000, type: "credit" },
+      { id: 10, account: "Salary Expense", amount: 36000, type: "debit" },
+      { id: 11, account: "Commission Income", amount: 15000, type: "credit" },
+      { id: 12, account: "Insurance", amount: 18000, type: "debit" }
     ];
 
     let currentGameState = {
-    placedItems: {},
-    attempts: 0,
-    hintsUsed: 0,
-    startTime: Date.now()
+      placedItems: {},
+      attempts: 0,
+      hintsUsed: 0,
+      startTime: Date.now()
     };
+    
+    // ✨ FIX: All functions called by onclick must be on the 'window' object
+    // because this is a script module.
 
     // Initialize Game
-    function initializeGame() {
-    // Load saved progress
-    const savedProgress = localStorage.getItem('trialBalanceGameProgress');
-    if (savedProgress) {
-        currentGameState = JSON.parse(savedProgress);
-    }
+    window.initializeGame = function() {
+      // Load saved progress
+      const savedProgress = localStorage.getItem('trialBalanceGameProgress');
+      if (savedProgress) {
+          currentGameState = JSON.parse(savedProgress);
+      }
 
-    // Render transactions
-    const transactionsList = document.getElementById('transactions-list');
-    transactionsList.innerHTML = '';
-    
-    gameTransactions.forEach(transaction => {
-        const item = document.createElement('div');
-        item.className = 'transaction-item';
-        item.draggable = true;
-        item.dataset.id = transaction.id;
-        item.dataset.amount = transaction.amount;
-        item.dataset.type = transaction.type;
-        item.innerHTML = `
-        <div class="transaction-amount">₹${transaction.amount.toLocaleString()}</div>
-        <div class="transaction-account">${transaction.account}</div>
-        `;
-        
-        // Drag events
-        item.addEventListener('dragstart', handleDragStart);
-        item.addEventListener('dragend', handleDragEnd);
-        
-        transactionsList.appendChild(item);
-    });
+      // Render transactions
+      const transactionsList = document.getElementById('transactions-list');
+      transactionsList.innerHTML = '';
+      
+      gameTransactions.forEach(transaction => {
+          const item = document.createElement('div');
+          item.className = 'transaction-item';
+          item.draggable = true;
+          item.dataset.id = transaction.id;
+          item.dataset.amount = transaction.amount;
+          item.dataset.type = transaction.type;
+          item.innerHTML = `
+          <div class="transaction-amount">₹${transaction.amount.toLocaleString()}</div>
+          <div class="transaction-account">${transaction.account}</div>
+          `;
+          
+          // Drag events
+          item.addEventListener('dragstart', handleDragStart);
+          item.addEventListener('dragend', handleDragEnd);
+          
+          transactionsList.appendChild(item);
+      });
 
-    // Render trial balance table
-    const tbody = document.getElementById('game-tbody');
-    tbody.innerHTML = '';
-    
-    // Get unique accounts
-    const accounts = [...new Set(gameTransactions.map(t => t.account))];
-    
-    accounts.forEach(account => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-        <td>${account}</td>
-        <td><div class="drop-zone" data-column="debit" data-account="${account}">Drop here</div></td>
-        <td><div class="drop-zone" data-column="credit" data-account="${account}">Drop here</div></td>
-        `;
-        tbody.appendChild(row);
-    });
+      // Render trial balance table
+      const tbody = document.getElementById('game-tbody');
+      tbody.innerHTML = '';
+      
+      // Get unique accounts
+      const accounts = [...new Set(gameTransactions.map(t => t.account))];
+      
+      accounts.forEach(account => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+          <td>${account}</td>
+          <td><div class="drop-zone" data-column="debit" data-account="${account}">Drop here</div></td>
+          <td><div class="drop-zone" data-column="credit" data-account="${account}">Drop here</div></td>
+          `;
+          tbody.appendChild(row);
+      });
 
-    // Add drop zone events
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
-        zone.addEventListener('dragleave', handleDragLeave);
-    });
+      // Add drop zone events
+      document.querySelectorAll('.drop-zone').forEach(zone => {
+          zone.addEventListener('dragover', handleDragOver);
+          zone.addEventListener('drop', handleDrop);
+          zone.addEventListener('dragleave', handleDragLeave);
+      });
 
-    updateTotals();
+      updateTotals();
     }
 
     // Drag and Drop Handlers
     function handleDragStart(e) {
-    e.target.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.target.innerHTML);
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', e.target.dataset.id); // Use text/plain for better compatibility
     }
 
     function handleDragEnd(e) {
-    e.target.classList.remove('dragging');
+      e.target.classList.remove('dragging');
     }
 
     function handleDragOver(e) {
-    if (e.preventDefault) {
-        e.preventDefault();
-    }
-    e.dataTransfer.dropEffect = 'move';
-    e.target.classList.add('drag-over');
-    return false;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.target.classList.add('drag-over');
     }
 
     function handleDragLeave(e) {
-    e.target.classList.remove('drag-over');
+      e.target.classList.remove('drag-over');
     }
 
     function handleDrop(e) {
-    if (e.stopPropagation) {
-        e.stopPropagation();
-    }
-    
-    e.target.classList.remove('drag-over');
-    
-    const draggingItem = document.querySelector('.dragging');
-    if (!draggingItem) return;
-    
-    const amount = parseInt(draggingItem.dataset.amount);
-    const type = draggingItem.dataset.type;
-    const id = draggingItem.dataset.id;
-    const dropColumn = e.target.dataset.column;
-    const account = e.target.dataset.account;
-    
-    // Check if this is the correct placement
-    const transaction = gameTransactions.find(t => t.id == id);
-    if (transaction && transaction.account === account && transaction.type === dropColumn) {
-        e.target.textContent = `₹${amount.toLocaleString()}`;
-        e.target.classList.add('has-value');
-        
-        // Save placement
-        currentGameState.placedItems[id] = {
-        account: account,
-        column: dropColumn,
-        amount: amount
-        };
-        
-        // Hide the dragged item
-        draggingItem.style.display = 'none';
-        
-        updateTotals();
-        saveProgress();
-    } else {
-        // Wrong placement
-        e.target.classList.add('incorrect');
-        setTimeout(() => {
-        e.target.classList.remove('incorrect');
-        }, 500);
-        
-        showFeedback('Incorrect placement! Check the account type.', 'error');
-    }
-    
-    return false;
+      e.preventDefault();
+      e.stopPropagation();
+      e.target.classList.remove('drag-over');
+      
+      const draggingItem = document.querySelector('.dragging');
+      if (!draggingItem) return;
+      
+      const id = draggingItem.dataset.id;
+      const amount = parseInt(draggingItem.dataset.amount);
+      const dropColumn = e.target.dataset.column;
+      const account = e.target.dataset.account;
+      
+      const transaction = gameTransactions.find(t => t.id == id);
+      if (transaction && transaction.account === account && transaction.type === dropColumn) {
+          e.target.textContent = `₹${amount.toLocaleString()}`;
+          e.target.classList.add('has-value');
+          addPlacementAnimation(e.target);
+          
+          currentGameState.placedItems[id] = { account, column: dropColumn, amount };
+          draggingItem.style.display = 'none';
+          
+          updateTotals();
+          saveProgress();
+      } else {
+          e.target.classList.add('incorrect');
+          setTimeout(() => e.target.classList.remove('incorrect'), 500);
+          showFeedback('Incorrect placement! Check the account type.', 'error');
+      }
     }
 
     // Update totals
     function updateTotals() {
-    let debitTotal = 0;
-    let creditTotal = 0;
-    
-    document.querySelectorAll('.drop-zone.has-value').forEach(zone => {
-        const amount = parseInt(zone.textContent.replace('₹', '').replace(/,/g, ''));
-        if (zone.dataset.column === 'debit') {
-        debitTotal += amount;
-        } else {
-        creditTotal += amount;
-        }
-    });
-    
-    document.getElementById('debit-total').textContent = `₹${debitTotal.toLocaleString()}`;
-    document.getElementById('credit-total').textContent = `₹${creditTotal.toLocaleString()}`;
-    
-    return { debitTotal, creditTotal };
+      let debitTotal = 0;
+      let creditTotal = 0;
+      
+      document.querySelectorAll('.drop-zone.has-value').forEach(zone => {
+          const amount = parseInt(zone.textContent.replace('₹', '').replace(/,/g, ''));
+          if (zone.dataset.column === 'debit') {
+            debitTotal += amount;
+          } else {
+            creditTotal += amount;
+          }
+      });
+      
+      document.getElementById('debit-total').textContent = `₹${debitTotal.toLocaleString()}`;
+      document.getElementById('credit-total').textContent = `₹${creditTotal.toLocaleString()}`;
+      
+      return { debitTotal, creditTotal };
     }
 
     // Check Balance
-    function checkBalance() {
-    currentGameState.attempts++;
-    const { debitTotal, creditTotal } = updateTotals();
-    
-    if (debitTotal === creditTotal && debitTotal > 0) {
-        // Success!
-        showFeedback('🎉 Congratulations! Trial Balance is Correct!', 'success');
-        celebrateSuccess();
-        
-        // Update progress
-        const completionData = {
-        completed: true,
-        attempts: currentGameState.attempts,
-        hintsUsed: currentGameState.hintsUsed,
-        timeTaken: Date.now() - currentGameState.startTime,
-        score: calculateScore()
-        };
-        
-        // Save to localStorage
-        localStorage.setItem('trialBalanceGameCompleted', JSON.stringify(completionData));
-        updateDashboardProgress();
-    } else {
-        showFeedback(`Not balanced! Debit: ₹${debitTotal.toLocaleString()} | Credit: ₹${creditTotal.toLocaleString()}`, 'error');
-        
-        // Highlight incorrect rows
-        document.querySelectorAll('.drop-zone').forEach(zone => {
-        if (!zone.classList.contains('has-value')) {
-            zone.classList.add('incorrect');
-            setTimeout(() => {
-            zone.classList.remove('incorrect');
-            }, 1000);
-        }
-        });
-    }
-    
-    saveProgress();
+    window.checkBalance = function() {
+      currentGameState.attempts++;
+      const { debitTotal, creditTotal } = updateTotals();
+      
+      if (debitTotal === creditTotal && debitTotal > 0 && Object.keys(currentGameState.placedItems).length === gameTransactions.length) {
+          showFeedback('🎉 Congratulations! Trial Balance is Correct!', 'success');
+          celebrateSuccess();
+          
+          const completionData = {
+            completed: true,
+            attempts: currentGameState.attempts,
+            hintsUsed: currentGameState.hintsUsed,
+            timeTaken: Date.now() - currentGameState.startTime,
+            score: calculateScore()
+          };
+          
+          localStorage.setItem('trialBalanceGameCompleted', JSON.stringify(completionData));
+          updateDashboardProgress();
+      } else if (debitTotal !== creditTotal) {
+          showFeedback(`Not balanced! Debit: ₹${debitTotal.toLocaleString()} | Credit: ₹${creditTotal.toLocaleString()}`, 'error');
+      } else {
+          showFeedback('Totals are balanced, but some items are missing!', 'hint');
+      }
+      
+      saveProgress();
     }
 
     // Show Hint
-    function showHint() {
-    currentGameState.hintsUsed++;
-    
-    // Find missing or incorrect placements
-    const missingPlacements = [];
-    
-    gameTransactions.forEach(transaction => {
-        const placed = Object.values(currentGameState.placedItems).find(
-        p => p.account === transaction.account
-        );
-        
-        if (!placed) {
-        missingPlacements.push(transaction.account);
-        }
-    });
-    
-    if (missingPlacements.length > 0) {
-        showFeedback(`Hint: You haven't placed amounts for: ${missingPlacements.slice(0, 3).join(', ')}${missingPlacements.length > 3 ? '...' : ''}`, 'hint');
-    } else {
-        const { debitTotal, creditTotal } = updateTotals();
-        const difference = Math.abs(debitTotal - creditTotal);
-        showFeedback(`Hint: Your totals differ by ₹${difference.toLocaleString()}. Check if all amounts are in the correct columns.`, 'hint');
-    }
-    
-    saveProgress();
+    window.showHint = function() {
+      currentGameState.hintsUsed++;
+      
+      const unplaced = gameTransactions.filter(t => !currentGameState.placedItems[t.id]);
+      
+      if (unplaced.length > 0) {
+          const hintTransaction = unplaced[0];
+          showFeedback(`Hint: The '${hintTransaction.account}' account has a ${hintTransaction.type} balance.`, 'hint');
+      } else {
+          const { debitTotal, creditTotal } = updateTotals();
+          const difference = Math.abs(debitTotal - creditTotal);
+          showFeedback(`Hint: Your totals differ by ₹${difference.toLocaleString()}. Check if all amounts are in the correct columns.`, 'hint');
+      }
+      
+      saveProgress();
     }
 
     // Reset Game
-    function resetGame() {
-    if (confirm('Are you sure you want to reset the game?')) {
-        currentGameState = {
-        placedItems: {},
-        attempts: 0,
-        hintsUsed: 0,
-        startTime: Date.now()
-        };
-        
-        localStorage.removeItem('trialBalanceGameProgress');
-        initializeGame();
-        showFeedback('Game reset. Try again!', 'hint');
-    }
+    window.resetGame = function() {
+      if (confirm('Are you sure you want to reset the game?')) {
+          currentGameState = { placedItems: {}, attempts: 0, hintsUsed: 0, startTime: Date.now() };
+          localStorage.removeItem('trialBalanceGameProgress');
+          initializeGame();
+          showFeedback('Game reset. Try again!', 'hint');
+      }
     }
 
     // Show Feedback
     function showFeedback(message, type) {
-    const feedback = document.getElementById('game-feedback');
-    feedback.textContent = message;
-    feedback.className = `game-feedback ${type}`;
-    feedback.style.display = 'block';
-    
-    setTimeout(() => {
-        feedback.style.display = 'none';
-    }, 5000);
+      const feedback = document.getElementById('game-feedback');
+      feedback.textContent = message;
+      feedback.className = `game-feedback ${type}`;
+      feedback.style.display = 'block';
+      setTimeout(() => feedback.style.display = 'none', 5000);
     }
 
     // Celebrate Success
     function celebrateSuccess() {
-    const canvas = document.getElementById('confetti-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    const confetti = [];
-    const colors = ['#7c4dff', '#00e5ff', '#ff7ac6', '#4caf50', '#ff9800'];
-    
-    // Create confetti particles
-    for (let i = 0; i < 150; i++) {
-        confetti.push({
-        x: Math.random() * canvas.width,
-        y: -10,
-        vx: Math.random() * 4 - 2,
-        vy: Math.random() * 5 + 5,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        size: Math.random() * 6 + 4,
-        rotation: Math.random() * 360,
-        rotationSpeed: Math.random() * 10 - 5
-        });
-    }
-    
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        confetti.forEach((particle, index) => {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        particle.rotation += particle.rotationSpeed;
-        
-        ctx.save();
-        ctx.translate(particle.x, particle.y);
-        ctx.rotate(particle.rotation * Math.PI / 180);
-        ctx.fillStyle = particle.color;
-        ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
-        ctx.restore();
-        
-        if (particle.y > canvas.height) {
-            confetti.splice(index, 1);
-        }
-        });
-        
-        if (confetti.length > 0) {
-        requestAnimationFrame(animate);
-        } else {
-        canvas.width = 0;
-        canvas.height = 0;
-        }
-    }
-    
-    animate();
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      const confetti = [];
+      const colors = ['#7c4dff', '#00e5ff', '#ff7ac6', '#4caf50', '#ff9800'];
+      
+      for (let i = 0; i < 150; i++) {
+          confetti.push({
+            x: Math.random() * canvas.width, y: -10,
+            vx: Math.random() * 4 - 2, vy: Math.random() * 5 + 5,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            size: Math.random() * 6 + 4,
+            rotation: Math.random() * 360, rotationSpeed: Math.random() * 10 - 5
+          });
+      }
+      
+      function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          confetti.forEach((p, i) => {
+            p.x += p.vx; p.y += p.vy; p.rotation += p.rotationSpeed;
+            ctx.save();
+            ctx.translate(p.x, p.y); ctx.rotate(p.rotation * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+            if (p.y > canvas.height) confetti.splice(i, 1);
+          });
+          if (confetti.length > 0) requestAnimationFrame(animate);
+          else { canvas.width = 0; canvas.height = 0; }
+      }
+      animate();
     }
 
     // Calculate Score
     function calculateScore() {
-    const baseScore = 100;
-    const attemptPenalty = (currentGameState.attempts - 1) * 5;
-    const hintPenalty = currentGameState.hintsUsed * 10;
-    const timePenalty = Math.floor((Date.now() - currentGameState.startTime) / 60000); // 1 point per minute
-    
-    return Math.max(0, baseScore - attemptPenalty - hintPenalty - timePenalty);
+      const baseScore = 100;
+      const attemptPenalty = (currentGameState.attempts - 1) * 5;
+      const hintPenalty = currentGameState.hintsUsed * 10;
+      const timePenalty = Math.floor((Date.now() - currentGameState.startTime) / 60000);
+      return Math.max(0, baseScore - attemptPenalty - hintPenalty - timePenalty);
     }
 
-    // Save Progress
     function saveProgress() {
-    localStorage.setItem('trialBalanceGameProgress', JSON.stringify(currentGameState));
+      localStorage.setItem('trialBalanceGameProgress', JSON.stringify(currentGameState));
     }
 
-    // Update Dashboard Progress
     function updateDashboardProgress() {
-    // This would update the main dashboard
-    const dashboardProgress = JSON.parse(localStorage.getItem('accountsWizardProgress') || '{}');
-    dashboardProgress.trialBalanceGame = {
-        completed: true,
-        score: calculateScore(),
-        completedAt: new Date().toISOString()
-    };
-    localStorage.setItem('accountsWizardProgress', JSON.stringify(dashboardProgress));
+      const dashboardProgress = JSON.parse(localStorage.getItem('accountsWizardProgress') || '{}');
+      dashboardProgress.trialBalanceGame = {
+          completed: true, score: calculateScore(), completedAt: new Date().toISOString()
+      };
+      localStorage.setItem('accountsWizardProgress', JSON.stringify(dashboardProgress));
     }
 
     // Trial Balance Calculator Functions
-    function addCalculatorRow() {
-    const tbody = document.getElementById('calculator-tbody');
-    const newRow = document.createElement('tr');
-    newRow.className = 'calculator-row';
-    newRow.innerHTML = `
-        <td><input type="text" class="account-name" placeholder="Enter account name"></td>
-        <td><input type="number" class="debit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
-        <td><input type="number" class="credit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
-        <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
-    `;
-    tbody.appendChild(newRow);
+    window.addCalculatorRow = function() {
+      const tbody = document.getElementById('calculator-tbody');
+      const newRow = document.createElement('tr');
+      newRow.className = 'calculator-row';
+      newRow.innerHTML = `
+          <td><input type="text" class="account-name" placeholder="Enter account name"></td>
+          <td><input type="number" class="debit-input" placeholder="0"></td>
+          <td><input type="number" class="credit-input" placeholder="0"></td>
+          <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
+      `;
+      tbody.appendChild(newRow);
+      // Re-apply debounced listener to new inputs
+      newRow.querySelectorAll('.debit-input, .credit-input').forEach(input => {
+        input.addEventListener('input', debouncedUpdateCalculatorTotals);
+      });
     }
 
-    function removeCalculatorRow(button) {
-    const row = button.closest('tr');
-    row.remove();
-    updateCalculatorTotals();
+    window.removeCalculatorRow = function(button) {
+      button.closest('tr').remove();
+      updateCalculatorTotals();
     }
 
-    function clearCalculator() {
-    if (confirm('Clear all entries?')) {
-        const tbody = document.getElementById('calculator-tbody');
-        tbody.innerHTML = `
-        <tr class="calculator-row">
-            <td><input type="text" class="account-name" placeholder="Enter account name"></td>
-            <td><input type="number" class="debit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
-            <td><input type="number" class="credit-input" placeholder="0" oninput="updateCalculatorTotals()"></td>
-            <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
-        </tr>
-        `;
-        updateCalculatorTotals();
-    }
+    window.clearCalculator = function() {
+      if (confirm('Clear all entries?')) {
+          const tbody = document.getElementById('calculator-tbody');
+          tbody.innerHTML = ''; // Clear everything
+          addCalculatorRow();   // Add one fresh row back
+          updateCalculatorTotals();
+      }
     }
 
     function updateCalculatorTotals() {
-    let debitTotal = 0;
-    let creditTotal = 0;
-    
-    document.querySelectorAll('.debit-input').forEach(input => {
-        const value = parseFloat(input.value) || 0;
-        if (value >= 0) {
-        debitTotal += value;
-        }
-    });
-    
-    document.querySelectorAll('.credit-input').forEach(input => {
-        const value = parseFloat(input.value) || 0;
-        if (value >= 0) {
-        creditTotal += value;
-        }
-    });
-    
-    document.getElementById('calc-debit-total').textContent = `₹${debitTotal.toLocaleString()}`;
-    document.getElementById('calc-credit-total').textContent = `₹${creditTotal.toLocaleString()}`;
-    
-    // Update balance status
-    const statusDiv = document.getElementById('balance-status');
-    const statusText = statusDiv.querySelector('.status-text');
-    
-    if (debitTotal === 0 && creditTotal === 0) {
-        statusDiv.className = 'balance-status';
-        statusText.innerHTML = 'Enter amounts to check balance';
-    } else if (debitTotal === creditTotal) {
-        statusDiv.className = 'balance-status balanced';
-        statusText.innerHTML = '<i class="fas fa-check-circle"></i> Balanced ✅';
-        
-        // Save successful balance
-        const calculatorHistory = JSON.parse(localStorage.getItem('calculatorHistory') || '[]');
-        calculatorHistory.push({
-          timestamp: new Date().toISOString(),
-          debitTotal: debitTotal,
-          creditTotal: creditTotal,
-          entries: getCalculatorEntries()
-        });
-        localStorage.setItem('calculatorHistory', JSON.stringify(calculatorHistory));
-    } else {
-        statusDiv.className = 'balance-status not-balanced';
-        const difference = Math.abs(debitTotal - creditTotal);
-        const higherSide = debitTotal > creditTotal ? 'Debit' : 'Credit';
-        statusText.innerHTML = `<i class="fas fa-times-circle"></i> Not Balanced ❌<br><small>${higherSide} exceeds by ₹${difference.toLocaleString()}</small>`;
-    }
+      let debitTotal = 0, creditTotal = 0;
+      
+      document.querySelectorAll('.debit-input').forEach(input => debitTotal += parseFloat(input.value) || 0);
+      document.querySelectorAll('.credit-input').forEach(input => creditTotal += parseFloat(input.value) || 0);
+      
+      document.getElementById('calc-debit-total').textContent = `₹${debitTotal.toLocaleString()}`;
+      document.getElementById('calc-credit-total').textContent = `₹${creditTotal.toLocaleString()}`;
+      
+      const statusDiv = document.getElementById('balance-status');
+      const statusText = statusDiv.querySelector('.status-text');
+      
+      if (debitTotal === 0 && creditTotal === 0) {
+          statusDiv.className = 'balance-status';
+          statusText.innerHTML = 'Enter amounts to check balance';
+      } else if (debitTotal === creditTotal) {
+          statusDiv.className = 'balance-status balanced';
+          statusText.innerHTML = '<i class="fas fa-check-circle"></i> Balanced ✅';
+      } else {
+          statusDiv.className = 'balance-status not-balanced';
+          const difference = Math.abs(debitTotal - creditTotal);
+          const higherSide = debitTotal > creditTotal ? 'Debit' : 'Credit';
+          statusText.innerHTML = `<i class="fas fa-times-circle"></i> Not Balanced ❌<br><small>${higherSide} exceeds by ₹${difference.toLocaleString()}</small>`;
+      }
     }
 
     function getCalculatorEntries() {
@@ -4005,85 +3922,18 @@
         const accountName = row.querySelector('.account-name').value;
         const debitAmount = parseFloat(row.querySelector('.debit-input').value) || 0;
         const creditAmount = parseFloat(row.querySelector('.credit-input').value) || 0;
-        
         if (accountName && (debitAmount > 0 || creditAmount > 0)) {
-          entries.push({
-            account: accountName,
-            debit: debitAmount,
-            credit: creditAmount
-          });
+          entries.push({ account: accountName, debit: debitAmount, credit: creditAmount });
         }
       });
       return entries;
     }
 
-    // Initialize game on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Only initialize if we're on the trial balance page
-      if (document.getElementById('transactions-list')) {
-        initializeGame();
-      }
-    });
-
-    // Additional Error Examples Section
     const errorExamples = {
-      detected: [
-        {
-          title: "Error of Totaling",
-          example: "Purchases account totaled as ₹45,000 instead of ₹54,000",
-          effect: "Trial Balance will not tally - Debit side short by ₹9,000"
-        },
-        {
-          title: "Error of Balancing",
-          example: "Cash account balance calculated as ₹25,000 instead of ₹52,000",
-          effect: "Trial Balance will not tally - Debit side short by ₹27,000"
-        },
-        {
-          title: "Error of Posting - Wrong Side",
-          example: "Rent paid ₹5,000 posted to credit side of Rent account",
-          effect: "Trial Balance will not tally - Debit short by ₹10,000 (₹5,000 × 2)"
-        },
-        {
-          title: "Error of Posting - Wrong Amount",
-          example: "Sales of ₹8,500 posted as ₹5,800",
-          effect: "Trial Balance will not tally - Credit side short by ₹2,700"
-        },
-        {
-          title: "Partial Omission",
-          example: "Cash received from debtor ₹10,000 - only credited to Cash, not debited to Debtor",
-          effect: "Trial Balance will not tally - Credit exceeds Debit by ₹10,000"
-        }
-      ],
-      notDetected: [
-        {
-          title: "Complete Omission",
-          example: "Credit purchase of ₹15,000 completely omitted from books",
-          effect: "Both debit and credit omitted equally - Trial Balance still tallies"
-        },
-        {
-          title: "Error of Commission",
-          example: "Payment to Raj ₹5,000 posted to Ravi's account",
-          effect: "Correct amount on correct side but wrong account - Trial Balance tallies"
-        },
-        {
-          title: "Error of Principle",
-          example: "Machinery purchase ₹50,000 debited to Purchases account",
-          effect: "Capital expenditure treated as revenue - Trial Balance still tallies"
-        },
-        {
-          title: "Compensating Errors",
-          example: "Purchases understated by ₹1,000 and Sales also understated by ₹1,000",
-          effect: "Errors cancel each other out - Trial Balance tallies"
-        },
-        {
-          title: "Error of Original Entry",
-          example: "Purchase invoice of ₹6,900 recorded as ₹9,600 in all books",
-          effect: "Wrong amount consistently recorded - Trial Balance tallies with wrong figures"
-        }
-      ]
+      detected: [ { title: "Error of Totaling", example: "Purchases account totaled as ₹45,000 instead of ₹54,000", effect: "Trial Balance will not tally - Debit side short by ₹9,000" }, { title: "Error of Balancing", example: "Cash account balance calculated as ₹25,000 instead of ₹52,000", effect: "Trial Balance will not tally - Debit side short by ₹27,000" }, { title: "Error of Posting - Wrong Side", example: "Rent paid ₹5,000 posted to credit side of Rent account", effect: "Trial Balance will not tally - Debit short by ₹10,000 (₹5,000 × 2)" }, { title: "Error of Posting - Wrong Amount", example: "Sales of ₹8,500 posted as ₹5,800", effect: "Trial Balance will not tally - Credit side short by ₹2,700" }, { title: "Partial Omission", example: "Cash received from debtor ₹10,000 - only credited to Cash, not debited to Debtor", effect: "Trial Balance will not tally - Credit exceeds Debit by ₹10,000" } ],
+      notDetected: [ { title: "Complete Omission", example: "Credit purchase of ₹15,000 completely omitted from books", effect: "Both debit and credit omitted equally - Trial Balance still tallies" }, { title: "Error of Commission", example: "Payment to Raj ₹5,000 posted to Ravi's account", effect: "Correct amount on correct side but wrong account - Trial Balance tallies" }, { title: "Error of Principle", example: "Machinery purchase ₹50,000 debited to Purchases account", effect: "Capital expenditure treated as revenue - Trial Balance still tallies" }, { title: "Compensating Errors", example: "Purchases understated by ₹1,000 and Sales also understated by ₹1,000", effect: "Errors cancel each other out - Trial Balance tallies" }, { title: "Error of Original Entry", example: "Purchase invoice of ₹6,900 recorded as ₹9,600 in all books", effect: "Wrong amount consistently recorded - Trial Balance tallies with wrong figures" } ]
     };
 
-    // Function to display error examples
     function displayErrorExamples() {
       const errorSection = document.createElement('section');
       errorSection.innerHTML = `
@@ -4091,484 +3941,164 @@
         <p style="color: var(--muted); line-height: 1.6; margin-bottom: 25px;">
           Understanding errors through practical examples helps in better error detection and correction.
         </p>
-        
         <div class="error-examples-grid">
-          <div class="error-category">
-            <h3 style="color: var(--success); margin-bottom: 20px;">
-              <i class="fas fa-check-circle"></i> Errors DETECTED by Trial Balance
-            </h3>
-            <div class="error-cards" id="detected-errors"></div>
-          </div>
-          
-          <div class="error-category">
-            <h3 style="color: var(--error); margin-bottom: 20px;">
-              <i class="fas fa-times-circle"></i> Errors NOT DETECTED by Trial Balance
-            </h3>
-            <div class="error-cards" id="not-detected-errors"></div>
-          </div>
-        </div>
-      `;
+          <div class="error-category"><h3 style="color: var(--success); margin-bottom: 20px;"><i class="fas fa-check-circle"></i> Errors DETECTED by Trial Balance</h3><div class="error-cards" id="detected-errors"></div></div>
+          <div class="error-category"><h3 style="color: var(--error); margin-bottom: 20px;"><i class="fas fa-times-circle"></i> Errors NOT DETECTED by Trial Balance</h3><div class="error-cards" id="not-detected-errors"></div></div>
+        </div>`;
       
-      // Insert after the existing errors section
-      const existingErrorSection = document.querySelector('section:has(h2:contains("Errors"))');
+      // ✨ FIX: Changed the invalid CSS selector to a reliable JavaScript method.
+      const allSections = document.querySelectorAll('section');
+      let existingErrorSection = null;
+      for (const section of allSections) {
+        const h2 = section.querySelector('h2');
+        if (h2 && h2.textContent.includes('Errors')) {
+            existingErrorSection = section;
+            break; 
+        }
+      }
+
       if (existingErrorSection) {
         existingErrorSection.after(errorSection);
       }
       
-      // Populate error examples
       const detectedContainer = document.getElementById('detected-errors');
       const notDetectedContainer = document.getElementById('not-detected-errors');
       
-      errorExamples.detected.forEach((error, index) => {
-        const card = createErrorCard(error, index, 'detected');
-        detectedContainer.appendChild(card);
-      });
-      
-      errorExamples.notDetected.forEach((error, index) => {
-        const card = createErrorCard(error, index, 'not-detected');
-        notDetectedContainer.appendChild(card);
-      });
+      errorExamples.detected.forEach((error, index) => detectedContainer.appendChild(createErrorCard(error, index)));
+      errorExamples.notDetected.forEach((error, index) => notDetectedContainer.appendChild(createErrorCard(error, index)));
     }
 
-    function createErrorCard(error, index, type) {
+    function createErrorCard(error, index) {
       const card = document.createElement('div');
       card.className = 'error-example-card';
       card.style.animationDelay = `${index * 0.1}s`;
       card.innerHTML = `
-        <div class="error-example-header">
-          <span class="error-number">${index + 1}</span>
-          <h4>${error.title}</h4>
-        </div>
-        <div class="error-example-content">
-          <p class="error-example-text"><strong>Example:</strong> ${error.example}</p>
-          <p class="error-effect"><strong>Effect:</strong> ${error.effect}</p>
-        </div>
-      `;
+        <div class="error-example-header"><span class="error-number">${index + 1}</span><h4>${error.title}</h4></div>
+        <div class="error-example-content"><p class="error-example-text"><strong>Example:</strong> ${error.example}</p><p class="error-effect"><strong>Effect:</strong> ${error.effect}</p></div>`;
       return card;
     }
 
-    // Progress Tracking System
     const progressTracker = {
-      init() {
-        this.loadProgress();
-        this.displayProgress();
-      },
-      
+      init() { this.loadProgress(); this.displayProgress(); },
       loadProgress() {
         this.progress = JSON.parse(localStorage.getItem('trialBalanceProgress') || '{}');
         if (!this.progress.sections) {
-          this.progress = {
-            sections: {
-              introduction: false,
-              objectives: false,
-              format: false,
-              rules: false,
-              errors: false,
-              practice: false,
-              game: false,
-              calculator: false
-            },
-            questionsAttempted: [],
-            totalScore: 0,
-            lastVisit: new Date().toISOString()
-          };
+          this.progress = { sections: { introduction: false, objectives: false, format: false, rules: false, errors: false, practice: false, game: false, calculator: false }, questionsAttempted: [], totalScore: 0, lastVisit: new Date().toISOString() };
         }
       },
-      
-      markSectionComplete(sectionId) {
-        this.progress.sections[sectionId] = true;
-        this.progress.lastVisit = new Date().toISOString();
-        this.saveProgress();
-        this.updateProgressBar();
-      },
-      
-      markQuestionAttempted(questionId) {
-        if (!this.progress.questionsAttempted.includes(questionId)) {
-          this.progress.questionsAttempted.push(questionId);
-          this.saveProgress();
-        }
-      },
-      
-      saveProgress() {
-        localStorage.setItem('trialBalanceProgress', JSON.stringify(this.progress));
-      },
-      
+      markSectionComplete(sectionId) { this.progress.sections[sectionId] = true; this.saveProgress(); this.updateProgressBar(); },
+      markQuestionAttempted(id) { if (!this.progress.questionsAttempted.includes(id)) { this.progress.questionsAttempted.push(id); this.saveProgress(); } },
+      saveProgress() { localStorage.setItem('trialBalanceProgress', JSON.stringify(this.progress)); },
       displayProgress() {
-        const completedSections = Object.values(this.progress.sections).filter(v => v).length;
-        const totalSections = Object.keys(this.progress.sections).length;
-        const percentage = Math.round((completedSections / totalSections) * 100);
-        
-        // Create progress bar if it doesn't exist
+        const completed = Object.values(this.progress.sections).filter(v => v).length;
+        const total = Object.keys(this.progress.sections).length;
+        const percentage = Math.round((completed / total) * 100);
         if (!document.getElementById('progress-bar-container')) {
           const progressBar = document.createElement('div');
           progressBar.id = 'progress-bar-container';
-          progressBar.innerHTML = `
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: ${percentage}%"></div>
-              <span class="progress-text">${percentage}% Complete</span>
-            </div>
-          `;
-          
-          const firstSection = document.querySelector('section');
-          if (firstSection) {
-            firstSection.insertBefore(progressBar, firstSection.firstChild);
-          }
+          progressBar.innerHTML = `<div class="progress-bar"><div class="progress-fill" style="width: ${percentage}%"></div><span class="progress-text">${percentage}% Complete</span></div>`;
+          document.querySelector('section')?.insertBefore(progressBar, document.querySelector('section').firstChild);
         }
       },
-      
       updateProgressBar() {
-        const completedSections = Object.values(this.progress.sections).filter(v => v).length;
-        const totalSections = Object.keys(this.progress.sections).length;
-        const percentage = Math.round((completedSections / totalSections) * 100);
-        
-        const progressFill = document.querySelector('.progress-fill');
-        const progressText = document.querySelector('.progress-text');
-        
-        if (progressFill) {
-          progressFill.style.width = `${percentage}%`;
-        }
-        if (progressText) {
-          progressText.textContent = `${percentage}% Complete`;
-        }
+        const completed = Object.values(this.progress.sections).filter(v => v).length;
+        const total = Object.keys(this.progress.sections).length;
+        const percentage = Math.round((completed / total) * 100);
+        const fill = document.querySelector('.progress-fill');
+        const text = document.querySelector('.progress-text');
+        if (fill) fill.style.width = `${percentage}%`;
+        if (text) text.textContent = `${percentage}% Complete`;
       }
     };
+    window.progressTracker = progressTracker; // Make it accessible globally if needed
 
-    // Add CSS for new components
-    const additionalStyles = `
-    <style>
-    /* Error Examples Grid */
-    .error-examples-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    .error-category {
-      background: rgba(255,255,255,0.02);
-      border-radius: 16px;
-      padding: 25px;
-      border: 2px solid rgba(255,255,255,0.1);
-    }
-
-    .error-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .error-example-card {
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.3s;
-      animation: fadeInUp 0.6s ease-out;
-      animation-fill-mode: both;
-    }
-
-    .error-example-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--brand-2);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .error-example-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .error-number {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-
-    .error-example-header h4 {
-      margin: 0;
-      color: var(--text);
-      font-size: 1.1rem;
-    }
-
-    .error-example-content p {
-      margin: 8px 0;
-      line-height: 1.6;
-      color: var(--muted);
-    }
-
-    .error-effect {
-      color: var(--brand-2) !important;
-      font-style: italic;
-    }
-
-    /* Progress Bar */
-    #progress-bar-container {
-      margin-bottom: 20px;
-      padding: 15px;
-      background: rgba(255,255,255,0.02);
-      border-radius: 12px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 30px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      transition: width 0.5s ease;
-    }
-
-    .progress-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-weight: bold;
-    }
-
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes correctPlacement {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-      }
-      50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-      }
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
-      }
-    }
-    </style>
-    `;
-
-    // Add the styles to the document
+    const additionalStyles = `<style>
+    .error-examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+    .error-category { background: rgba(255,255,255,0.02); border-radius: 16px; padding: 25px; border: 2px solid rgba(255,255,255,0.1); }
+    .error-cards { display: flex; flex-direction: column; gap: 15px; }
+    .error-example-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; animation: fadeInUp 0.6s ease-out; animation-fill-mode: both; }
+    .error-example-card:hover { transform: translateY(-3px); border-color: var(--brand-2); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .error-example-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+    .error-number { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
+    .error-example-header h4 { margin: 0; color: var(--text); font-size: 1.1rem; }
+    .error-example-content p { margin: 8px 0; line-height: 1.6; color: var(--muted); }
+    .error-effect { color: var(--brand-2) !important; font-style: italic; }
+    #progress-bar-container { margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; }
+    .progress-bar { width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden; position: relative; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.5s ease; }
+    .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold; }
+    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes correctPlacement { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); } 50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); } }
+    </style>`;
     document.head.insertAdjacentHTML('beforeend', additionalStyles);
 
-    // Initialize everything when DOM is loaded
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => { clearTimeout(timeout); func(...args); };
+        clearTimeout(timeout); timeout = setTimeout(later, wait);
+      };
+    }
+    const debouncedUpdateCalculatorTotals = debounce(updateCalculatorTotals, 300);
+
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize progress tracker
       progressTracker.init();
-      
-      // Add error examples
       displayErrorExamples();
       
-      // Track section views
+      if (document.getElementById('transactions-list')) initializeGame();
+      
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const sectionTitle = entry.target.querySelector('h2')?.textContent;
-            if (sectionTitle) {
-              const sectionMap = {
-                'What is a Trial Balance?': 'introduction',
-                'Objectives of Trial Balance': 'objectives',
-                'Format of Trial Balance': 'format',
-                'Rules for Debit and Credit': 'rules',
-                'Errors': 'errors',
-                'Type 1': 'practice',
-                'Trial Balance Challenge Game': 'game',
-                'Trial Balance Calculator': 'calculator'
-              };
-              
-              const sectionId = Object.entries(sectionMap).find(([title, id]) => 
-                sectionTitle.includes(title)
-              )?.[1];
-              
-              if (sectionId) {
-                progressTracker.markSectionComplete(sectionId);
-              }
+            const h2 = entry.target.querySelector('h2');
+            if (h2) {
+              const sectionMap = { 'What is a Trial Balance?': 'introduction', 'Objectives of Trial Balance': 'objectives', 'Format of Trial Balance': 'format', 'Rules for Debit and Credit': 'rules', 'Errors': 'errors', 'Type 1': 'practice', 'Trial Balance Challenge Game': 'game', 'Trial Balance Calculator': 'calculator' };
+              const sectionId = Object.entries(sectionMap).find(([title, id]) => h2.textContent.includes(title))?.[1];
+              if (sectionId) progressTracker.markSectionComplete(sectionId);
             }
           }
         });
       }, { threshold: 0.5 });
-      
-      // Observe all sections
-      document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
-      });
-      
-      // Track question attempts
-      document.querySelectorAll('.view-solution-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const onclickAttr = this.getAttribute('onclick');
-          if (onclickAttr) {
-            const match = onclickAttr.match(/toggleSolutionKATEX_INLINE_OPEN'(.+)'KATEX_INLINE_CLOSE/);
-            if (match && match[1]) {
-              progressTracker.markQuestionAttempted(match[1]);
-            }
-          }
-        });
-      });
-    });
+      document.querySelectorAll('section').forEach(section => observer.observe(section));
 
-    // Enhanced solution toggle with progress tracking
-    const originalToggleSolution = window.toggleSolution;
-    window.toggleSolution = function(id) {
-      originalToggleSolution.call(this, id);
-      progressTracker.markQuestionAttempted(id);
-    };
-
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-      // Ctrl/Cmd + H for hint
-      if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
-        e.preventDefault();
-        const hintBtn = document.querySelector('.hint-btn');
-        if (hintBtn) hintBtn.click();
-      }
-      
-      // Ctrl/Cmd + R for reset (override browser refresh)
-      if ((e.ctrlKey || e.metaKey) && e.key === 'r' && document.getElementById('game-tbody')) {
-        e.preventDefault();
-        resetGame();
-      }
-      
-      // Ctrl/Cmd + Enter to check balance
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        const checkBtn = document.querySelector('.check-btn');
-        if (checkBtn) checkBtn.click();
-      }
-    });
-
-    // Auto-save calculator data
-    let calculatorAutoSaveTimer;
-    document.addEventListener('input', function(e) {
-      if (e.target.matches('.calculator-table input')) {
-        clearTimeout(calculatorAutoSaveTimer);
-        calculatorAutoSaveTimer = setTimeout(() => {
-          const calculatorData = {
-            entries: getCalculatorEntries(),
-            timestamp: new Date().toISOString()
-          };
-          localStorage.setItem('trialBalanceCalculatorData', JSON.stringify(calculatorData));
-        }, 1000);
-      }
-    });
-
-    // Load saved calculator data on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      const savedCalculatorData = localStorage.getItem('trialBalanceCalculatorData');
-      if (savedCalculatorData && document.getElementById('calculator-tbody')) {
-        const data = JSON.parse(savedCalculatorData);
+      const savedCalcData = localStorage.getItem('trialBalanceCalculatorData');
+      if (savedCalcData && document.getElementById('calculator-tbody')) {
+        const data = JSON.parse(savedCalcData);
         const tbody = document.getElementById('calculator-tbody');
         tbody.innerHTML = '';
-        
-        data.entries.forEach(entry => {
-          const row = document.createElement('tr');
-          row.className = 'calculator-row';
-          row.innerHTML = `
-            <td><input type="text" class="account-name" placeholder="Enter account name" value="${entry.account}"></td>
-            <td><input type="number" class="debit-input" placeholder="0" value="${entry.debit || ''}" oninput="updateCalculatorTotals()"></td>
-            <td><input type="number" class="credit-input" placeholder="0" value="${entry.credit || ''}" oninput="updateCalculatorTotals()"></td>
-            <td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>
-          `;
-          tbody.appendChild(row);
-        });
-        
+        if (data.entries.length > 0) {
+            data.entries.forEach(entry => {
+                const row = document.createElement('tr'); row.className = 'calculator-row';
+                row.innerHTML = `<td><input type="text" class="account-name" value="${entry.account}"></td><td><input type="number" class="debit-input" value="${entry.debit || ''}"></td><td><input type="number" class="credit-input" value="${entry.credit || ''}"></td><td><button class="remove-row-btn" onclick="removeCalculatorRow(this)"><i class="fas fa-times"></i></button></td>`;
+                tbody.appendChild(row);
+            });
+        } else {
+            addCalculatorRow(); // Add one empty row if saved data was empty
+        }
         updateCalculatorTotals();
       }
-    });
 
-    // Add visual feedback for correct placements in the game
-    function addPlacementAnimation(element) {
-      element.style.animation = 'none';
-      setTimeout(() => {
-        element.style.animation = 'correctPlacement 0.6s ease';
-      }, 10);
-    }
-
-    // Export progress data for dashboard integration
-    window.getTrialBalanceProgress = function() {
-      return {
-        progress: progressTracker.progress,
-        gameCompleted: localStorage.getItem('trialBalanceGameCompleted') ? JSON.parse(localStorage.getItem('trialBalanceGameCompleted')) : null,
-        calculatorHistory: localStorage.getItem('calculatorHistory') ? JSON.parse(localStorage.getItem('calculatorHistory')) : []
-      };
-    };
-
-    // Add tooltips for better UX
-    const tooltips = {
-      init() {
-        // Add tooltips to buttons
-        const tooltipData = [
-          { selector: '.hint-btn', text: 'Get a hint about missing or incorrect entries (Ctrl+H)' },
-          { selector: '.reset-btn', text: 'Reset the game and start over (Ctrl+R)' },
-          { selector: '.check-btn', text: 'Check if your Trial Balance is correct (Ctrl+Enter)' },
-          { selector: '.add-row-btn', text: 'Add a new account row to the calculator' },
-          { selector: '.clear-all-btn', text: 'Clear all calculator entries' }
-        ];
-        
-        tooltipData.forEach(({ selector, text }) => {
-          const element = document.querySelector(selector);
-          if (element) {
-            element.setAttribute('title', text);
-            element.style.position = 'relative';
-          }
-        });
-      }
-    };
-
-    // Initialize tooltips
-    document.addEventListener('DOMContentLoaded', () => {
-      tooltips.init();
-    });
-
-    // Performance optimization: Debounce function for real-time validation
-    function debounce(func, wait) {
-      let timeout;
-      return function executedFunction(...args) {
-        const later = () => {
-          clearTimeout(timeout);
-          func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-      };
-    }
-
-    // Apply debouncing to calculator updates
-    const debouncedUpdateCalculatorTotals = debounce(updateCalculatorTotals, 300);
-
-    // Replace direct calls with debounced version
-    document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.debit-input, .credit-input').forEach(input => {
         input.removeAttribute('oninput');
         input.addEventListener('input', debouncedUpdateCalculatorTotals);
       });
+      document.body.addEventListener('input', e => {
+        if(e.target.matches('.calculator-table input')) {
+            clearTimeout(window.calcSaveTimer);
+            window.calcSaveTimer = setTimeout(() => {
+                localStorage.setItem('trialBalanceCalculatorData', JSON.stringify({ entries: getCalculatorEntries() }));
+            }, 1000);
+        }
+      });
     });
+    
+    function addPlacementAnimation(element) {
+        element.style.animation = 'correctPlacement 0.6s ease';
+        element.addEventListener('animationend', () => { element.style.animation = ''; });
+    }
 
-    // Final initialization
-    console.log('Trial Balance Interactive Features Loaded Successfully! 🎉');
-      
-</script>
+    // Make initializeGame globally accessible
+    window.initializeGame = initializeGame;
+  </script>
 </body>
 </html>

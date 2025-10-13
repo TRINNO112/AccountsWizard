@@ -776,52 +776,6 @@
             animation: glitch 1s infinite;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.2rem;
-            }
-
-            .pixel-subtitle {
-                font-size: 0.5rem;
-            }
-
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .timer-container {
-                position: static;
-                margin-bottom: 2rem;
-            }
-
-            .timer-bar {
-                width: 100%;
-            }
-
-            .nav-links a {
-                font-size: 0.5rem;
-            }
-
-            .logo {
-                font-size: 0.8rem;
-            }
-
-            .option-btn {
-                font-size: 0.6rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .music-control {
-                top: auto;
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-
         /* Loading Screen */
         .loading-screen {
             position: fixed;
@@ -872,6 +826,603 @@
         @keyframes loading {
             0% { width: 0%; }
             100% { width: 100%; }
+        }
+
+        /* Tablet and Mobile Styles */
+        @media (max-width: 768px) {
+            body {
+                font-size: 12px;
+            }
+
+            /* Navigation */
+            nav {
+                padding: 0.5rem 0;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 0.8rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.5rem;
+            }
+
+            /* Container */
+            .container {
+                padding: 1rem;
+            }
+
+            /* Header */
+            .header {
+                margin-bottom: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+                text-shadow: 2px 2px 0 var(--pixel-purple);
+            }
+
+            .pixel-subtitle {
+                font-size: 0.5rem;
+            }
+
+            /* Game HUD */
+            .game-hud {
+                gap: 0.5rem;
+            }
+
+            .hud-item {
+                padding: 0.75rem;
+                min-width: 100px;
+                border-width: 3px;
+            }
+
+            .hud-label {
+                font-size: 0.5rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .hud-value {
+                font-size: 1rem;
+            }
+
+            /* Lives */
+            .lives-container {
+                font-size: 1rem;
+            }
+
+            /* Quiz Card */
+            .quiz-card {
+                padding: 1rem;
+                border-width: 4px;
+                margin-bottom: 1rem;
+            }
+
+            /* Timer */
+            .timer-container {
+                position: static;
+                margin-bottom: 1rem;
+                padding: 0.75rem;
+                border-width: 3px;
+            }
+
+            .timer-bar {
+                width: 100%;
+                height: 25px;
+            }
+
+            .timer-text {
+                font-size: 0.6rem;
+            }
+
+            /* Question */
+            .question-number {
+                font-size: 0.5rem;
+                margin-bottom: 1rem;
+                padding: 0.3rem;
+            }
+
+            .question-text {
+                font-size: 0.7rem;
+                line-height: 1.6;
+                padding: 1rem;
+                margin: 1rem 0;
+                border-left-width: 4px;
+            }
+
+            /* Options */
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
+            .option-btn {
+                padding: 1rem;
+                font-size: 0.6rem;
+                border-width: 3px;
+                line-height: 1.4;
+            }
+
+            .option-btn::before {
+                left: 0.5rem;
+            }
+
+            /* Feedback */
+            .feedback {
+                padding: 1rem;
+                font-size: 0.6rem;
+                line-height: 1.6;
+                border-width: 3px;
+            }
+
+            .feedback-title {
+                font-size: 0.7rem;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Music Control */
+            .music-control {
+                top: auto;
+                bottom: 20px;
+                right: 10px;
+                padding: 0.75rem;
+                border-width: 3px;
+            }
+
+            .music-icon {
+                font-size: 1.2rem;
+            }
+
+            /* Combo Display */
+            .combo-display {
+                font-size: 2rem;
+            }
+
+            /* Results */
+            .results-card {
+                padding: 2rem 1rem;
+            }
+
+            .results-banner {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .pixel-character {
+                font-size: 3rem;
+                margin: 1rem 0;
+            }
+
+            .rating-stars {
+                font-size: 2rem;
+                margin: 1rem 0;
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
+            .stat-box {
+                padding: 1.5rem 1rem;
+                border-width: 3px;
+            }
+
+            .stat-icon {
+                font-size: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.5rem;
+            }
+
+            /* Performance Message */
+            .performance-msg {
+                font-size: 0.8rem;
+                margin: 1rem 0;
+                padding: 1rem;
+                border-width: 3px;
+            }
+
+            /* High Score */
+            .high-score {
+                font-size: 0.6rem;
+                padding: 0.75rem;
+                margin: 1rem 0;
+                border-width: 3px;
+            }
+
+            /* Buttons */
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 0.6rem;
+                border-width: 3px;
+                box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
+            }
+
+            .btn-container {
+                gap: 1rem;
+                flex-direction: column;
+            }
+
+            .btn-container .btn {
+                width: 100%;
+            }
+
+            /* Game Over */
+            .game-over-content {
+                padding: 2rem 1rem;
+                border-width: 4px;
+                margin: 1rem;
+            }
+
+            .game-over-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            /* Loading Screen */
+            .loading-text {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .loading-bar {
+                width: 200px;
+                height: 25px;
+                border-width: 3px;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            /* Header */
+            .header h1 {
+                font-size: 1rem;
+                text-shadow: 2px 2px 0 var(--pixel-purple);
+            }
+
+            .pixel-subtitle {
+                font-size: 0.4rem;
+            }
+
+            /* Navigation */
+            .logo {
+                font-size: 0.6rem;
+            }
+
+            .nav-links a {
+                font-size: 0.4rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            /* HUD */
+            .hud-item {
+                padding: 0.5rem;
+                min-width: 80px;
+            }
+
+            .hud-label {
+                font-size: 0.4rem;
+            }
+
+            .hud-value {
+                font-size: 0.8rem;
+            }
+
+            /* Quiz Card */
+            .quiz-card {
+                padding: 0.75rem;
+                border-width: 3px;
+            }
+
+            /* Timer */
+            .timer-container {
+                padding: 0.5rem;
+            }
+
+            .timer-bar {
+                height: 20px;
+            }
+
+            .timer-text {
+                font-size: 0.5rem;
+            }
+
+            /* Question */
+            .question-text {
+                font-size: 0.6rem;
+                padding: 0.75rem;
+                line-height: 1.5;
+            }
+
+            .question-number {
+                font-size: 0.4rem;
+            }
+
+            /* Options */
+            .option-btn {
+                padding: 0.75rem;
+                font-size: 0.5rem;
+                line-height: 1.3;
+            }
+
+            /* Feedback */
+            .feedback {
+                padding: 0.75rem;
+                font-size: 0.5rem;
+            }
+
+            .feedback-title {
+                font-size: 0.6rem;
+            }
+
+            /* Music Control */
+            .music-control {
+                padding: 0.5rem;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .music-icon {
+                font-size: 1rem;
+            }
+
+            /* Results */
+            .results-banner {
+                font-size: 0.8rem;
+            }
+
+            .pixel-character {
+                font-size: 2.5rem;
+            }
+
+            .rating-stars {
+                font-size: 1.5rem;
+            }
+
+            /* Stats */
+            .stat-box {
+                padding: 1rem;
+            }
+
+            .stat-icon {
+                font-size: 1.2rem;
+            }
+
+            .stat-number {
+                font-size: 1.2rem;
+            }
+
+            .stat-label {
+                font-size: 0.4rem;
+                line-height: 1.4;
+            }
+
+            /* Performance Message */
+            .performance-msg {
+                font-size: 0.6rem;
+                padding: 0.75rem;
+                line-height: 1.6;
+            }
+
+            /* Buttons */
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.5rem;
+            }
+
+            /* Game Over */
+            .game-over-title {
+                font-size: 1.2rem;
+            }
+
+            /* Loading */
+            .loading-text {
+                font-size: 0.8rem;
+            }
+
+            .loading-bar {
+                width: 150px;
+                height: 20px;
+            }
+
+            /* Combo Display */
+            .combo-display {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Very Small Devices */
+        @media (max-width: 360px) {
+            /* Container */
+            .container {
+                padding: 0.5rem;
+            }
+
+            /* Header */
+            .header h1 {
+                font-size: 0.8rem;
+            }
+
+            /* Navigation */
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+
+            .logo {
+                font-size: 0.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.35rem;
+            }
+
+            /* HUD */
+            .game-hud {
+                flex-direction: column;
+            }
+
+            .hud-item {
+                width: 100%;
+            }
+
+            /* Question */
+            .question-text {
+                font-size: 0.5rem;
+                padding: 0.5rem;
+            }
+
+            /* Options */
+            .option-btn {
+                font-size: 0.45rem;
+                padding: 0.6rem;
+            }
+
+            /* Stats */
+            .stat-number {
+                font-size: 1rem;
+            }
+
+            /* Buttons */
+            .btn {
+                font-size: 0.45rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+
+        /* Landscape Mode for Mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            /* Reduce vertical spacing */
+            .header {
+                margin-bottom: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .pixel-subtitle {
+                display: none;
+            }
+
+            .game-hud {
+                margin-bottom: 1rem;
+            }
+
+            .hud-item {
+                padding: 0.5rem;
+            }
+
+            .quiz-card {
+                padding: 0.75rem;
+            }
+
+            .question-text {
+                margin: 0.5rem 0;
+                padding: 0.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .option-btn {
+                padding: 0.5rem;
+                font-size: 0.5rem;
+            }
+
+            /* Hide music control in landscape to save space */
+            .music-control {
+                display: none;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            /* Remove hover effects on touch devices */
+            .option-btn:hover {
+                transform: none;
+                background: linear-gradient(180deg, #2a2a5e 0%, #1a1a3e 100%);
+                box-shadow: 0 6px 0 #0a0a1f;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+
+            /* Increase touch targets */
+            .option-btn {
+                min-height: 60px;
+            }
+
+            .btn {
+                min-height: 48px;
+            }
+
+            .nav-links a {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Prevent horizontal scroll */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        /* Fix for star animation performance on mobile */
+        @media (max-width: 768px) {
+            .star {
+                animation: none;
+                opacity: 0.5;
+            }
+
+            /* Reduce particle effects on mobile */
+            .particle {
+                display: none;
+            }
+
+            /* Simplify animations for better performance */
+            @keyframes glitch {
+                0%, 100% { transform: none; }
+            }
+
+            @keyframes float {
+                0%, 100% { transform: none; }
+            }
+
+            body::after {
+                display: none; /* Remove grid background on mobile */
+            }
+        }
+
+        /* Accessibility - Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
