@@ -1078,396 +1078,186 @@
     color: var(--error);
     }
 
-    /* Mobile-Specific Fixes */
+    /* TABLE OVERFLOW FIX - Add to all tables */
+    .trial-balance-table,
+    .game-trial-balance,
+    .calculator-table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      white-space: nowrap;
+    }
+
+    .trial-balance-table thead,
+    .trial-balance-table tbody,
+    .trial-balance-table tr,
+    .game-trial-balance thead,
+    .game-trial-balance tbody,
+    .game-trial-balance tr,
+    .calculator-table thead,
+    .calculator-table tbody,
+    .calculator-table tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    /* ERROR EXAMPLES - Stack vertically on mobile */
     @media (max-width: 768px) {
-      /* Format Table - Better structure */
-      .trial-balance-table {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-        font-size: 0.75rem;
-      }
-
-      .trial-balance-table thead,
-      .trial-balance-table tbody,
-      .trial-balance-table tfoot {
-        display: table-row-group;
-      }
-
-      .trial-balance-table tr {
-        display: table-row;
-      }
-
-      .trial-balance-table th,
-      .trial-balance-table td {
-        display: table-cell;
-        padding: 8px 4px;
-        font-size: 0.75rem;
-        vertical-align: middle;
-        border: 1px solid rgba(255,255,255,0.1);
-      }
-
-      /* Fixed column widths */
-      .trial-balance-table th:first-child,
-      .trial-balance-table td:first-child {
-        width: 12%;
-      }
-
-      .trial-balance-table th:nth-child(2),
-      .trial-balance-table td:nth-child(2) {
-        width: 36%;
-        white-space: normal;
-        word-wrap: break-word;
-      }
-
-      .trial-balance-table th:nth-child(3),
-      .trial-balance-table td:nth-child(3) {
-        width: 12%;
-      }
-
-      .trial-balance-table th:nth-child(4),
-      .trial-balance-table td:nth-child(4) {
-        width: 20%;
-      }
-
-      .trial-balance-table th:nth-child(5),
-      .trial-balance-table td:nth-child(5) {
-        width: 20%;
-      }
-
-      /* Solution Tables - Keep table structure intact */
-      .solution {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .solution .trial-balance-table {
-        width: 100%;
-        table-layout: fixed;
-      }
-
-      /* Errors Section - Stack Cards Vertically */
-      .objectives-grid[style*="grid-template-columns: 1fr 1fr"] {
-        grid-template-columns: 1fr !important;
-      }
-
-      .objective-card {
-        margin-bottom: 15px;
-      }
-
-      /* Trial Balance Game - Major Restructure */
-      .game-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .transactions-panel {
-        order: 2;
-        max-height: 300px;
-        overflow-y: auto;
-      }
-
-      .transactions-list {
-        gap: 10px;
-      }
-
-      .transaction-item {
-        padding: 10px;
-        font-size: 0.85rem;
-      }
-
-      .transaction-amount {
-        font-size: 1rem;
-      }
-
-      .transaction-account {
-        font-size: 0.8rem;
-      }
-
-      .trial-balance-panel {
-        order: 1;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .game-trial-balance {
-        min-width: 600px;
-        font-size: 0.75rem;
-      }
-
-      .game-trial-balance th,
-      .game-trial-balance td {
-        padding: 8px 4px;
-        font-size: 0.75rem;
-      }
-
-      .drop-zone {
-        min-height: 35px;
-        font-size: 0.75rem;
-        padding: 4px;
-      }
-
-      .game-controls {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .hint-btn, .reset-btn, .check-btn {
-        padding: 10px 16px;
-        font-size: 0.85rem;
-        flex: 1;
-        min-width: calc(50% - 5px);
-      }
-
-      .hint-btn span, .reset-btn span, .check-btn span {
-        display: none;
-      }
-
-      /* Trial Balance Calculator - Major Restructure */
-      .calculator-container {
-        padding: 15px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .calculator-controls {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .add-row-btn, .clear-all-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px;
-      }
-
-      .calculator-table {
-        min-width: 650px;
-        font-size: 0.75rem;
-      }
-
-      .calculator-table th,
-      .calculator-table td {
-        padding: 8px 4px;
-      }
-
-      .calculator-table input {
-        font-size: 0.75rem;
-        padding: 6px 4px;
-      }
-
-      .calculator-table input[type="text"] {
-        min-width: 120px;
-      }
-
-      .calculator-table input[type="number"] {
-        min-width: 80px;
-      }
-
-      .remove-row-btn {
-        padding: 4px 8px;
-        font-size: 0.75rem;
-      }
-
-      .calculator-totals td {
-        font-size: 0.9rem;
-      }
-
-      .balance-status {
-        margin-top: 15px;
-        padding: 15px;
-      }
-
-      .status-text {
-        font-size: 1rem;
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .status-text small {
-        font-size: 0.85rem;
-      }
-
-      /* Error Examples Grid - Stack Vertically */
       .error-examples-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important; /* Force single column */
         gap: 20px;
       }
-
+      
+      .error-category {
+        padding: 15px;
+      }
+      
       .error-example-card {
         padding: 15px;
       }
-
-      .error-example-header h4 {
-        font-size: 0.95rem;
-      }
-
+      
       .error-number {
         width: 25px;
         height: 25px;
         font-size: 0.8rem;
       }
-
-      /* Practice Exercise Grid */
-      .practical-card > div[style*="grid-template-columns"] {
-        grid-template-columns: 1fr !important;
-      }
-
-      /* Reduce padding on all sections */
-      section {
-        padding: 20px 15px;
-        margin-bottom: 20px;
-      }
-
-      /* Smaller heading for mobile */
-      .lesson-title {
-        font-size: 1.5rem;
-      }
-
-      section h2 {
-        font-size: 1.25rem;
-      }
-
-      .practical-title {
-        font-size: 1.1rem;
-      }
-
-      /* Breadcrumb smaller */
-      .breadcrumb {
-        font-size: 0.85rem;
-      }
-
-      /* Nav header adjustments */
-      .nav-header {
-        padding: 10px 15px;
-        flex-wrap: wrap;
-      }
-
-      .nav-header a {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-      }
-
-      /* Definition box */
-      .definition-box {
-        padding: 15px;
-      }
-
-      .definition-box h3 {
+      
+      .error-example-header h4 {
         font-size: 1rem;
-      }
-
-      .definition-box p {
-        font-size: 0.95rem;
-      }
-
-      /* Note and error boxes */
-      .note-box, .error-box {
-        padding: 15px;
-      }
-
-      .note-box h4, .error-box h4 {
-        font-size: 0.95rem;
-      }
-
-      /* Objective cards smaller */
-      .objective-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-      }
-
-      .objective-title {
-        font-size: 1rem;
-      }
-
-      .objective-desc {
-        font-size: 0.85rem;
-      }
-
-      /* View solution button */
-      .view-solution-btn {
-        padding: 8px 16px;
-        font-size: 0.85rem;
-        width: 100%;
-      }
-
-      /* Game feedback */
-      .game-feedback {
-        padding: 15px;
-        font-size: 0.85rem;
-      }
-
-      /* Floating particles - hide on mobile */
-      .particle {
-        display: none;
-      }
-
-      /* Progress bar */
-      #progress-bar-container {
-        padding: 10px;
-      }
-
-      .progress-bar {
-        height: 25px;
-      }
-
-      .progress-text {
-        font-size: 0.85rem;
       }
     }
 
-    /* Extra small screens */
-    @media (max-width: 480px) {
-      .trial-balance-table th,
-      .trial-balance-table td {
-        padding: 6px 3px;
-        font-size: 0.7rem;
+    /* TRIAL BALANCE GAME - Mobile optimization */
+    @media (max-width: 968px) {
+      .game-container {
+        grid-template-columns: 1fr !important; /* Stack vertically */
+        gap: 20px;
       }
-
-      /* Maintain same column distribution */
-      .trial-balance-table th:first-child,
-      .trial-balance-table td:first-child {
-        width: 12%;
+      
+      .transactions-panel,
+      .trial-balance-panel {
+        padding: 15px;
       }
-
-      .trial-balance-table th:nth-child(2),
-      .trial-balance-table td:nth-child(2) {
-        width: 36%;
+      
+      .transaction-item {
+        padding: 12px;
       }
-
-      .trial-balance-table th:nth-child(3),
-      .trial-balance-table td:nth-child(3) {
-        width: 12%;
-      }
-
-      .trial-balance-table th:nth-child(4),
-      .trial-balance-table td:nth-child(4) {
-        width: 20%;
-        font-size: 0.65rem;
-      }
-
-      .trial-balance-table th:nth-child(5),
-      .trial-balance-table td:nth-child(5) {
-        width: 20%;
-        font-size: 0.65rem;
-      }
-
-      .game-trial-balance {
-        min-width: 550px;
-      }
-
-      .calculator-table {
-        min-width: 600px;
-      }
-
+      
       .transaction-amount {
+        font-size: 1rem;
+      }
+      
+      .game-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      .hint-btn, .reset-btn, .check-btn {
+        flex: 1;
+        min-width: 120px;
+        padding: 10px 15px;
         font-size: 0.9rem;
       }
+    }
 
-      .hint-btn, .reset-btn, .check-btn {
-        min-width: 100%;
+    /* CALCULATOR - Mobile tweaks */
+    @media (max-width: 768px) {
+      .calculator-controls {
+        flex-direction: column;
+        gap: 10px;
       }
+      
+      .add-row-btn, .clear-all-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .calculator-table input {
+        padding: 6px;
+        font-size: 0.9rem;
+      }
+      
+      .calculator-table th,
+      .calculator-table td {
+        padding: 8px 4px;
+        font-size: 0.85rem;
+      }
+      
+      .remove-row-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+      
+      .balance-status {
+        padding: 15px;
+      }
+      
+      .status-text {
+        font-size: 1rem;
+      }
+    }
+
+    /* OBJECTIVES GRID - Better mobile stacking */
+    @media (max-width: 768px) {
+      .objectives-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+      }
+      
+      .objective-card {
+        padding: 20px;
+      }
+    }
+
+    /* Very small screens (360px and below) */
+    @media (max-width: 480px) {
+      .game-trial-balance th,
+      .game-trial-balance td {
+        font-size: 0.75rem;
+        padding: 6px 4px;
+      }
+      
+      .drop-zone {
+        min-height: 35px;
+        font-size: 0.8rem;
+        padding: 4px;
+      }
+      
+      .calculator-table th,
+      .calculator-table td {
+        padding: 6px 2px;
+        font-size: 0.75rem;
+      }
+      
+      .calculator-table input {
+        font-size: 0.85rem;
+        padding: 4px;
+      }
+      
+      .error-example-content p {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Add scroll indicator for tables */
+    .trial-balance-table::-webkit-scrollbar,
+    .game-trial-balance::-webkit-scrollbar,
+    .calculator-table::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .trial-balance-table::-webkit-scrollbar-thumb,
+    .game-trial-balance::-webkit-scrollbar-thumb,
+    .calculator-table::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 4px;
+    }
+
+    .trial-balance-table::-webkit-scrollbar-track,
+    .game-trial-balance::-webkit-scrollbar-track,
+    .calculator-table::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
     }
   </style>
 </head>

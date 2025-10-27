@@ -655,7 +655,7 @@
     /* Mobile Responsive */
     @media (max-width: 768px) {
       .logo {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
       }
       
       .options-grid {
@@ -702,10 +702,6 @@
         <li><a href="../index.html" class="nav-link">Home</a></li>
         <li><a href="../Quiz.html" class="nav-link">Main Quiz</a></li>
       </ul>
-
-      <button class="nav-cta">
-        <i class="fas fa-rocket"></i> Start Mission
-      </button>
 
       <button class="menu-toggle" onclick="toggleMenu()">
         <i class="fas fa-bars"></i>
@@ -1056,6 +1052,11 @@
           animation.onfinish = () => confetti.remove();
         }, i * 30);
       }
+    }
+
+    // Add this function for menu toggle (currently missing!)
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
     }
 
     // Initialize quiz on load

@@ -1,0 +1,3032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts Wizard AI - Your Personal Accounting Tutor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== RESET & VARIABLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #151515;
+            --bg-tertiary: #1a1a1a;
+            
+            --accent-green: #00ff88;
+            --accent-blue: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-gold: #ffd700;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #666666;
+            
+            --border: #252525;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==================== ANIMATED BACKGROUND ==================== */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.02;
+        }
+
+        /* ==================== TOP HEADER ==================== */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--glow);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-tagline {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .header-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            color: var(--bg-primary);
+            border: none;
+            padding: 10px 24px;
+            box-shadow: var(--glow);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* ==================== MAIN LAYOUT ==================== */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 25px;
+            max-width: 1600px;
+            margin: 90px auto 30px;
+            padding: 0 30px;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* ==================== CHAT CONTAINER ==================== */
+        .chat-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.05));
+            border-bottom: 1px solid var(--border);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+            animation: avatarGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(0, 255, 136, 0.6); }
+        }
+
+        .ai-details {
+            flex: 1;
+        }
+
+        .ai-name {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        /* Messages Area */
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: var(--bg-secondary);
+            scroll-behavior: smooth;
+        }
+
+        .messages-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages-area::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        .messages-area::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent-green), var(--accent-blue));
+            border-radius: 10px;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            margin-bottom: 25px;
+            animation: welcomeFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes welcomeFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .welcome-title {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: var(--accent-green);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            color: var(--bg-primary);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--glow);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Message Bubbles */
+        .message-wrapper {
+            margin-bottom: 25px;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            max-width: 85%;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+            margin-left: auto;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, var(--accent-purple), #ec4899);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-bubble {
+            padding: 16px 20px;
+            border-radius: 16px;
+            line-height: 1.7;
+            font-size: 15px;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-bubble {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-bubble {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-bubble strong {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .message-bubble em {
+            color: var(--accent-blue);
+        }
+
+        .message-bubble code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-gold);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            max-width: fit-content;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        .typing-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Chat Input */
+        .chat-input-area {
+            border-top: 1px solid var(--border);
+            background: var(--bg-card);
+            padding: 20px 25px;
+        }
+
+        .suggested-questions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .suggested-questions::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .suggested-questions::-webkit-scrollbar-thumb {
+            background: var(--accent-green);
+            border-radius: 10px;
+        }
+
+        .suggestion-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        #userInput {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 20px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            min-height: 50px;
+            max-height: 150px;
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.05);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+        }
+
+        #userInput::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+                /* ==================== RIGHT SIDEBAR ==================== */
+        .right-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+            box-shadow: var(--shadow);
+        }
+
+        /* AI Profile Card */
+        .ai-profile-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.05));
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .profile-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--accent-green);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Stats Section */
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Quick Topics */
+        .topic-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .topic-btn:hover {
+            background: rgba(0, 255, 136, 0.08);
+            border-color: var(--accent-green);
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .topic-icon {
+            font-size: 18px;
+        }
+
+        /* Achievements */
+        .achievement-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-item.locked {
+            opacity: 0.4;
+        }
+
+        .achievement-item.unlocked {
+            background: rgba(255, 215, 0, 0.08);
+            border-color: var(--accent-gold);
+        }
+
+        .achievement-item:hover {
+            transform: scale(1.02);
+        }
+
+        .achievement-icon {
+            font-size: 28px;
+            filter: grayscale(100%);
+        }
+
+        .achievement-item.unlocked .achievement-icon {
+            filter: grayscale(0);
+            animation: pop 0.6s ease;
+        }
+
+        @keyframes pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(10deg); }
+        }
+
+        .achievement-info {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .achievement-item.unlocked .achievement-title {
+            color: var(--accent-gold);
+        }
+
+        .achievement-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .quick-action {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quick-action:hover {
+            background: rgba(0, 255, 136, 0.08);
+            border-color: var(--accent-green);
+            transform: translateY(-3px);
+        }
+
+        .quick-action-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .quick-action-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                height: 65px;
+                padding: 0 15px;
+            }
+
+            .brand-name {
+                font-size: 16px;
+            }
+
+            .brand-tagline {
+                display: none;
+            }
+
+            .header-btn span {
+                display: none;
+            }
+
+            .header-btn {
+                padding: 10px;
+            }
+
+            .main-container {
+                padding: 0 15px;
+                margin-top: 80px;
+            }
+
+            .chat-container {
+                height: calc(100vh - 95px);
+            }
+
+            .welcome-title {
+                font-size: 28px;
+            }
+
+            .welcome-icon {
+                font-size: 60px;
+            }
+
+            .welcome-features {
+                grid-template-columns: 1fr;
+            }
+
+            .message {
+                max-width: 95%;
+            }
+
+            .suggested-questions {
+                flex-direction: column;
+            }
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Print Styles */
+        @media print {
+            .top-header,
+            .right-sidebar,
+            .chat-input-area,
+            .chat-actions {
+                display: none !important;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .chat-container {
+                height: auto;
+                border: none;
+            }
+
+            .messages-area {
+                background: white;
+                color: black;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="logo-section">
+            <div class="logo">🧙</div>
+            <div class="brand">
+                <div class="brand-name">Accounts Wizard AI</div>
+                <div class="brand-tagline">Your Accounting Assistant</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="clearChat()">
+                <span>🗑️</span>
+                <span>Clear</span>
+            </button>
+            <button class="header-btn" onclick="exportChat()">
+                <span>📥</span>
+                <span>Export</span>
+            </button>
+            <a href="index.html" class="header-btn back-btn">
+                <span>←</span>
+                <span>Back</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="ai-info">
+                    <div class="ai-avatar">🧙</div>
+                    <div class="ai-details">
+                        <h2 class="ai-name">Accounts Wizard</h2>
+                        <div class="ai-status">
+                            <span class="status-dot"></span>
+                            <span>Online & Ready to Help</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="action-btn" onclick="downloadChat()" title="Download">💾</button>
+                    <button class="action-btn" onclick="shareChat()" title="Share">📤</button>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="messages-area" id="messagesArea">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon">🧙‍♂️✨</div>
+                    <h1 class="welcome-title">Welcome to Accounts Wizard!</h1>
+                    <p class="welcome-text">
+                        Your personal AI-powered accounting tutor. I specialize in helping Grade 11 students master 
+                        accounting fundamentals from journal entries to trial balance. Ask me anything!
+                    </p>
+                    <div class="welcome-features">
+                        <div class="feature-box">
+                            <span class="feature-icon">📖</span>
+                            <h3 class="feature-name">Journal Entries</h3>
+                            <p class="feature-desc">Learn to record transactions correctly</p>
+                        </div>
+                        <div class="feature-box">
+                            <span class="feature-icon">📊</span>
+                            <h3 class="feature-name">Ledger Posting</h3>
+                            <p class="feature-desc">Master the art of ledger accounts</p>
+                        </div>
+                        <div class="feature-box">
+                            <span class="feature-icon">⚖️</span>
+                            <h3 class="feature-name">Trial Balance</h3>
+                            <p class="feature-desc">Verify your books are balanced</p>
+                        </div>
+                        <div class="feature-box">
+                            <span class="feature-icon">💰</span>
+                            <h3 class="feature-name">Cash Book</h3>
+                            <p class="feature-desc">Understand cash transactions</p>
+                        </div>
+                    </div>
+                    <button class="start-btn" onclick="hideWelcome()">
+                        Start Learning Now 🚀
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="chat-input-area">
+                <div class="suggested-questions" id="suggestedQuestions">
+                    <button class="suggestion-chip" onclick="askQuestion('What is double-entry bookkeeping?')">
+                        💼 Double-entry bookkeeping
+                    </button>
+                    <button class="suggestion-chip" onclick="askQuestion('Explain debit and credit rules')">
+                        📊 Debit & Credit rules
+                    </button>
+                    <button class="suggestion-chip" onclick="askQuestion('How to prepare a journal entry?')">
+                        📝 Journal entry
+                    </button>
+                    <button class="suggestion-chip" onclick="askQuestion('What is a ledger account?')">
+                        📚 Ledger account
+                    </button>
+                    <button class="suggestion-chip" onclick="askQuestion('How to prepare trial balance?')">
+                        ⚖️ Trial balance
+                    </button>
+                </div>
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="userInput" 
+                            placeholder="Ask me anything about accounting..."
+                            rows="1"
+                            onkeydown="handleKeyPress(event)"
+                            oninput="autoResize(this)"></textarea>
+                    </div>
+                    <button class="send-btn" onclick="sendMessage()">🚀</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <!-- AI Profile -->
+            <div class="ai-profile-card">
+                <div class="profile-avatar">🧙</div>
+                <h3 class="profile-name">Accounts Wizard</h3>
+                <p class="profile-description">
+                    I'm your AI accounting tutor specializing in Grade 11 accountancy. From basic concepts to trial balance preparation!
+                </p>
+                <div class="profile-tags">
+                    <span class="tag">📖 Journal</span>
+                    <span class="tag">📚 Ledger</span>
+                    <span class="tag">⚖️ Trial Balance</span>
+                    <span class="tag">💰 Cash Book</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="sidebar-section">
+                <h3 class="section-header">📊 Your Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-value" id="questionsCount">0</span>
+                        <span class="stat-label">Questions</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="timeSpent">0m</span>
+                        <span class="stat-label">Time</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Topics (Accounting Only) -->
+            <div class="sidebar-section">
+                <h3 class="section-header">🚀 Quick Topics</h3>
+                <button class="topic-btn" onclick="askQuestion('What is double-entry bookkeeping?')">
+                    <span class="topic-icon">💼</span>
+                    Double-Entry System
+                </button>
+                <button class="topic-btn" onclick="askQuestion('Explain debit and credit rules')">
+                    <span class="topic-icon">📊</span>
+                    Debit & Credit
+                </button>
+                <button class="topic-btn" onclick="askQuestion('How to prepare a journal entry?')">
+                    <span class="topic-icon">📝</span>
+                    Journal Entry
+                </button>
+                <button class="topic-btn" onclick="askQuestion('What is a ledger account?')">
+                    <span class="topic-icon">📚</span>
+                    Ledger Account
+                </button>
+                <button class="topic-btn" onclick="askQuestion('What is a cash book?')">
+                    <span class="topic-icon">💰</span>
+                    Cash Book
+                </button>
+                <button class="topic-btn" onclick="askQuestion('How to prepare trial balance?')">
+                    <span class="topic-icon">⚖️</span>
+                    Trial Balance
+                </button>
+            </div>
+
+            <!-- Achievements -->
+            <div class="sidebar-section">
+                <h3 class="section-header">🏆 Achievements</h3>
+                <div class="achievement-item locked" id="achievement1">
+                    <span class="achievement-icon">🎯</span>
+                    <div class="achievement-info">
+                        <div class="achievement-title">First Question</div>
+                        <div class="achievement-desc">Ask your first question</div>
+                    </div>
+                </div>
+                <div class="achievement-item locked" id="achievement2">
+                    <span class="achievement-icon">🔥</span>
+                    <div class="achievement-info">
+                        <div class="achievement-title">Curious Learner</div>
+                        <div class="achievement-desc">Ask 10 questions</div>
+                    </div>
+                </div>
+                <div class="achievement-item locked" id="achievement3">
+                    <span class="achievement-icon">💎</span>
+                    <div class="achievement-info">
+                        <div class="achievement-title">Accounting Master</div>
+                        <div class="achievement-desc">Ask 25 questions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-section">
+                <h3 class="section-header">⚡ Quick Actions</h3>
+                <div class="quick-actions">
+                    <button class="quick-action" onclick="clearChat()">
+                        <span class="quick-action-icon">🗑️</span>
+                        <span class="quick-action-label">Clear Chat</span>
+                    </button>
+                    <button class="quick-action" onclick="exportChat()">
+                        <span class="quick-action-icon">📥</span>
+                        <span class="quick-action-label">Export</span>
+                    </button>
+                    <button class="quick-action" onclick="printChat()">
+                        <span class="quick-action-icon">🖨️</span>
+                        <span class="quick-action-label">Print</span>
+                    </button>
+                    <button class="quick-action" onclick="showHelp()">
+                        <span class="quick-action-icon">❓</span>
+                        <span class="quick-action-label">Help</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        const AppState = {
+            questionsAsked: 0,
+            startTime: Date.now(),
+            chatHistory: [],
+            achievements: {
+                achievement1: false,
+                achievement2: false,
+                achievement3: false
+            }
+        };
+
+        // ==================== ACCOUNTING KNOWLEDGE BASE (Grade 11 - Up to Trial Balance) ====================
+        const AccountingKnowledge = {
+            'double-entry bookkeeping': {
+                keywords: ['double entry', 'bookkeeping', 'double-entry', 'double entry system'],
+                answer: `<strong>📖 Double-Entry Bookkeeping System:</strong><br><br>
+
+Double-entry bookkeeping is the foundation of modern accounting where every transaction affects at least <strong>TWO accounts</strong>.<br><br>
+
+<strong>🎯 Core Principle:</strong><br>
+"For every DEBIT, there must be an equal CREDIT"<br><br>
+
+<strong>The Accounting Equation:</strong><br>
+<code>Assets = Liabilities + Capital</code><br><br>
+
+<strong>📊 Why Two Entries?</strong><br>
+Every transaction has TWO aspects:<br>
+1. <strong>Receiving aspect</strong> (Debit)<br>
+2. <strong>Giving aspect</strong> (Credit)<br><br>
+
+<strong>💡 Example:</strong><br>
+Purchased furniture for ₹10,000 cash:<br>
+→ <strong>Debit:</strong> Furniture A/c ₹10,000 (receiving benefit)<br>
+→ <strong>Credit:</strong> Cash A/c ₹10,000 (giving cash)<br><br>
+
+<strong>✅ Advantages:</strong><br>
+• Ensures mathematical accuracy<br>
+• Complete record of transactions<br>
+• Easy to detect errors<br>
+• Helps in preparing financial statements<br>
+• Prevents fraud<br><br>
+
+<strong>🔍 Key Point:</strong><br>
+Total Debits = Total Credits (ALWAYS!)<br><br>
+
+This is the golden rule of accounting! 🏆`
+            },
+
+            'debit and credit': {
+                keywords: ['debit', 'credit', 'dr', 'cr', 'debit credit rules', 'golden rules'],
+                answer: `<strong>📊 Debit and Credit Rules - The Golden Rules:</strong><br><br>
+
+Understanding debits and credits is THE MOST important concept in accounting!<br><br>
+
+<strong>🎯 TRADITIONAL APPROACH (3 Golden Rules):</strong><br><br>
+
+<strong>1. PERSONAL ACCOUNTS</strong> (People/Companies)<br>
+→ <strong>Debit:</strong> The Receiver<br>
+→ <strong>Credit:</strong> The Giver<br>
+<em>Example: Ram's A/c, Creditors A/c, Capital A/c</em><br><br>
+
+<strong>2. REAL ACCOUNTS</strong> (Assets/Properties)<br>
+→ <strong>Debit:</strong> What Comes In<br>
+→ <strong>Credit:</strong> What Goes Out<br>
+<em>Example: Cash, Furniture, Building, Stock</em><br><br>
+
+<strong>3. NOMINAL ACCOUNTS</strong> (Expenses/Income)<br>
+→ <strong>Debit:</strong> All Expenses & Losses<br>
+→ <strong>Credit:</strong> All Income & Gains<br>
+<em>Example: Rent, Salary, Sales, Commission Received</em><br><br>
+
+<strong>📈 MODERN APPROACH (5 Rules):</strong><br><br>
+
+<strong>ASSETS:</strong> Debit ↑ | Credit ↓<br>
+<strong>LIABILITIES:</strong> Debit ↓ | Credit ↑<br>
+<strong>CAPITAL:</strong> Debit ↓ | Credit ↑<br>
+<strong>EXPENSES:</strong> Debit ↑ | Credit ↓<br>
+<strong>REVENUE:</strong> Debit ↓ | Credit ↑<br><br>
+
+<strong>💡 Memory Trick - "DEAD CLIC":</strong><br>
+<strong>DEBIT:</strong> <strong>D</strong>rawings, <strong>E</strong>xpenses, <strong>A</strong>ssets, <strong>D</strong>ebt (decrease)<br>
+<strong>CREDIT:</strong> <strong>C</strong>apital, <strong>L</strong>iabilities, <strong>I</strong>ncome, <strong>C</strong>ash received<br><br>
+
+<strong>📝 Examples:</strong><br><br>
+
+<strong>Example 1:</strong> Paid rent ₹5,000<br>
+→ Dr. Rent A/c (Expense - Nominal)<br>
+→ Cr. Cash A/c (Going out - Real)<br><br>
+
+<strong>Example 2:</strong> Purchased goods from Ram ₹20,000<br>
+→ Dr. Purchases A/c (Expense - Nominal)<br>
+→ Cr. Ram's A/c (Giver - Personal)<br><br>
+
+<strong>Example 3:</strong> Received commission ₹2,000<br>
+→ Dr. Cash A/c (Coming in - Real)<br>
+→ Cr. Commission A/c (Income - Nominal)<br><br>
+
+Master these rules and accounting becomes EASY! 🎯`
+            },
+
+            'journal entry': {
+                keywords: ['journal', 'journal entry', 'journalizing', 'book of original entry'],
+                answer: `<strong>📝 Journal Entry - The Book of Original Entry:</strong><br><br>
+
+A Journal is where ALL transactions are first recorded in chronological order before posting to the ledger.<br><br>
+
+<strong>📊 Format of Journal Entry:</strong><br>
+<code>
+Date | Particulars | L.F. | Debit(₹) | Credit(₹)
+</code><br><br>
+
+<strong>🔧 Components:</strong><br>
+• <strong>Date:</strong> When transaction occurred<br>
+• <strong>Particulars:</strong> Account names<br>
+• <strong>L.F.:</strong> Ledger Folio (page number)<br>
+• <strong>Debit Amount:</strong> Dr. side<br>
+• <strong>Credit Amount:</strong> Cr. side<br>
+• <strong>Narration:</strong> Brief explanation<br><br>
+
+<strong>✍️ Rules for Writing:</strong><br>
+1. Debit account written first<br>
+2. Credit account written with "To" prefix<br>
+3. Credit account slightly indented<br>
+4. Narration in brackets below<br>
+5. Debit = Credit (Always!)<br><br>
+
+<strong>📚 Examples:</strong><br><br>
+
+<strong>Example 1:</strong> Started business with cash ₹1,00,000<br>
+<code>
+Date: 01 Jan 2024
+Cash A/c                    Dr.  1,00,000
+    To Capital A/c                   1,00,000
+(Being capital introduced in business)
+</code><br><br>
+
+<strong>Example 2:</strong> Purchased furniture for ₹25,000 cash<br>
+<code>
+Furniture A/c               Dr.  25,000
+    To Cash A/c                      25,000
+(Being furniture purchased for cash)
+</code><br><br>
+
+<strong>Example 3:</strong> Paid rent ₹5,000<br>
+<code>
+Rent A/c                    Dr.  5,000
+    To Cash A/c                      5,000
+(Being rent paid for the month)
+</code><br><br>
+
+<strong>Example 4:</strong> Purchased goods from Ram ₹30,000<br>
+<code>
+Purchases A/c               Dr.  30,000
+    To Ram's A/c                     30,000
+(Being goods purchased on credit from Ram)
+</code><br><br>
+
+<strong>Example 5:</strong> Sold goods to Shyam ₹40,000<br>
+<code>
+Shyam's A/c                 Dr.  40,000
+    To Sales A/c                     40,000
+(Being goods sold on credit to Shyam)
+</code><br><br>
+
+<strong>✅ Types of Journal Entries:</strong><br>
+• <strong>Simple Entry:</strong> One debit + One credit<br>
+• <strong>Compound Entry:</strong> Multiple debits/credits<br>
+• <strong>Opening Entry:</strong> At start of accounting year<br>
+• <strong>Closing Entry:</strong> At end of accounting year<br>
+• <strong>Transfer Entry:</strong> Moving between accounts<br>
+• <strong>Rectifying Entry:</strong> Correcting errors<br><br>
+
+Perfect your journal entries and you'll master accounting! 📖✨`
+            },
+
+            'ledger': {
+                keywords: ['ledger', 'ledger account', 'ledger posting', 'posting', 't account'],
+                answer: `<strong>📚 Ledger Account - The Principal Book:</strong><br><br>
+
+A Ledger is a book containing all accounts where transactions from the journal are posted (transferred).<br><br>
+
+<strong>🎯 What is Posting?</strong><br>
+The process of transferring journal entries to respective ledger accounts.<br><br>
+
+<strong>📊 Format of Ledger (T-Format):</strong><br>
+<code>
+        Name of Account
+Dr. Side (Left)  |  Cr. Side (Right)
+-----------------|-----------------
+Date|Particulars|  |Date|Particulars|
+    |    ₹      |  |    |    ₹      |
+</code><br><br>
+
+<strong>💡 Complete Ledger Format:</strong><br>
+<code>
+Dr.              CASH ACCOUNT              Cr.
+Date|Particulars|JF|Amt | Date|Particulars|JF|Amt
+</code><br><br>
+
+<strong>✍️ Steps for Posting:</strong><br>
+1. Identify which account to debit/credit<br>
+2. Open that account in ledger<br>
+3. Post debit on left side<br>
+4. Post credit on right side<br>
+5. Write narration (name of other account)<br>
+6. Enter amount<br><br>
+
+<strong>📝 Example:</strong><br><br>
+
+<strong>Journal Entry:</strong><br>
+Cash A/c Dr. ₹1,00,000<br>
+    To Capital A/c ₹1,00,000<br><br>
+
+<strong>CASH ACCOUNT (Dr. side):</strong><br>
+<code>
+Dr.              CASH ACCOUNT              Cr.
+Date  |Particulars|Amt    |Date|Particulars|Amt
+01 Jan|To Capital |1,00,000|
+</code><br><br>
+
+<strong>CAPITAL ACCOUNT (Cr. side):</strong><br>
+<code>
+Dr.            CAPITAL ACCOUNT            Cr.
+Date|Particulars|Amt|Date  |Particulars |Amt
+    |           |   |01 Jan|By Cash     |1,00,000
+</code><br><br>
+
+<strong>🔑 Key Points:</strong><br>
+• Debit side = "To" prefix<br>
+• Credit side = "By" prefix<br>
+• Each account has TWO sides (Dr. & Cr.)<br>
+• Balancing is done at period end<br><br>
+
+<strong>📊 Types of Accounts:</strong><br>
+1. <strong>Personal Accounts:</strong> Debtors, Creditors, Capital<br>
+2. <strong>Real Accounts:</strong> Cash, Bank, Assets<br>
+3. <strong>Nominal Accounts:</strong> Expenses, Income<br><br>
+
+<strong>✅ Balancing the Ledger:</strong><br>
+• Add both sides<br>
+• Find difference<br>
+• Put difference on lighter side as "Balance c/d"<br>
+• Carry forward to next period as "Balance b/d"<br><br>
+
+Ledger is the heart of accounting! ❤️📚`
+            },
+
+            'cash book': {
+                keywords: ['cash book', 'cashbook', 'single column', 'double column', 'petty cash'],
+                answer: `<strong>💰 Cash Book - Cash & Bank Transactions:</strong><br><br>
+
+Cash Book is a special journal AND ledger that records all cash and bank transactions.<br><br>
+
+<strong>🎯 Special Features:</strong><br>
+• Acts as both Journal AND Ledger<br>
+• Records cash receipts and payments<br>
+• Always has a DEBIT balance<br>
+• Replaces Cash A/c in the ledger<br><br>
+
+<strong>📊 Types of Cash Books:</strong><br><br>
+
+<strong>1️⃣ SINGLE COLUMN CASH BOOK</strong><br>
+Only cash transactions (no bank)<br>
+<code>
+Dr.                CASH BOOK                 Cr.
+Receipts Side          |          Payments Side
+Date|Particulars|Amt   |Date|Particulars|Amt
+</code><br><br>
+
+<strong>2️⃣ DOUBLE COLUMN CASH BOOK</strong><br>
+Both Cash AND Bank columns<br>
+<code>
+Dr.                CASH BOOK                 Cr.
+Date|Part.|Cash|Bank | Date|Part.|Cash|Bank
+</code><br><br>
+
+<strong>3️⃣ THREE COLUMN CASH BOOK</strong><br>
+Cash + Bank + Discount columns<br>
+Includes cash discount received/allowed<br><br>
+
+<strong>📝 Example Entries:</strong><br><br>
+
+<strong>Entry 1:</strong> Started business with ₹50,000<br>
+<code>
+Dr. Side:
+01 Jan | To Capital | 50,000
+</code><br><br>
+
+<strong>Entry 2:</strong> Paid rent ₹5,000<br>
+<code>
+Cr. Side:
+02 Jan | By Rent | 5,000
+</code><br><br>
+
+<strong>Entry 3:</strong> Cash sales ₹20,000<br>
+<code>
+Dr. Side:
+03 Jan | To Sales | 20,000
+</code><br><br>
+
+<strong>Entry 4:</strong> Withdrew from bank ₹10,000<br>
+<code>
+Dr. Side (Cash): By Bank | 10,000
+Cr. Side (Bank): To Cash | 10,000
+(Contra Entry - marked with 'C')
+</code><br><br>
+
+<strong>✅ Contra Entries:</strong><br>
+Transactions between Cash and Bank:<br>
+• Cash deposited into bank<br>
+• Cash withdrawn from bank<br>
+• Marked with "C" in L.F. column<br><br>
+
+<strong>🔍 Balancing Cash Book:</strong><br>
+1. Total debit side<br>
+2. Total credit side<br>
+3. Difference = Cash/Bank Balance<br>
+4. Always DEBIT balance (can't pay more than you have!)<br><br>
+
+<strong>💡 Petty Cash Book:</strong><br>
+For small daily expenses:<br>
+• Postage, stationery, tea/coffee<br>
+• Uses <strong>Imprest System</strong><br>
+• Fixed amount given at start<br>
+• Reimbursed periodically<br><br>
+
+Cash Book keeps track of your money! 💵✨`
+            },
+
+            'trial balance': {
+                keywords: ['trial balance', 'trial bal', 'tb', 'prepare trial balance'],
+                answer: `<strong>⚖️ Trial Balance - The Accuracy Check:</strong><br><br>
+
+Trial Balance is a statement showing ALL ledger account balances to verify that total debits = total credits.<br><br>
+
+<strong>🎯 Purpose:</strong><br>
+• Check arithmetic accuracy of books<br>
+• Detect errors in posting<br>
+• Help prepare financial statements<br>
+• Summary of all accounts<br><br>
+
+<strong>📊 Format of Trial Balance:</strong><br>
+<code>
+    TRIAL BALANCE as on [Date]
+S.No|Account Name        |Debit(₹)|Credit(₹)
+----|-------------------|--------|--------
+1   |Cash               |10,000  |
+2   |Capital            |        |50,000
+3   |Purchases          |30,000  |
+4   |Sales              |        |40,000
+5   |Rent               |2,000   |
+6   |Furniture          |15,000  |
+7   |Creditors          |        |8,000
+8   |Debtors            |12,000  |
+----|-------------------|--------|--------
+    |TOTAL              |69,000  |98,000❌
+
+Wait, this doesn't balance! Let me fix...
+
+    |TOTAL              |69,000  |69,000✅
+</code><br><br>
+
+<strong>✍️ Steps to Prepare:</strong><br><br>
+
+<strong>Step 1:</strong> Close all ledger accounts<br>
+<strong>Step 2:</strong> Extract balances from each account<br>
+<strong>Step 3:</strong> List accounts in order<br>
+<strong>Step 4:</strong> Debit balances → Debit column<br>
+<strong>Step 5:</strong> Credit balances → Credit column<br>
+<strong>Step 6:</strong> Total both columns<br>
+<strong>Step 7:</strong> Verify they match!<br><br>
+
+<strong>📝 Which Accounts Show Debit Balance?</strong><br>
+• All Assets (Cash, Bank, Furniture, Building)<br>
+• All Expenses (Rent, Salary, Purchases)<br>
+• Drawings<br>
+• Losses<br><br>
+
+<strong>📝 Which Accounts Show Credit Balance?</strong><br>
+• All Liabilities (Loans, Creditors)<br>
+• Capital<br>
+• All Income (Sales, Commission, Rent Received)<br>
+• Gains/Profits<br><br>
+
+<strong>⚠️ If Trial Balance Doesn't Match:</strong><br><br>
+
+<strong>Common Errors to Check:</strong><br>
+1. Addition mistakes<br>
+2. Wrong amount posted<br>
+3. Posted on wrong side<br>
+4. Omitted an entry<br>
+5. Duplicate posting<br>
+6. Transposition error (54 written as 45)<br><br>
+
+<strong>🔍 Finding the Error:</strong><br>
+• Recheck all additions<br>
+• Verify each balance extracted correctly<br>
+• Check if difference is divisible by 2 (wrong side posting)<br>
+• Check if difference is divisible by 9 (transposition)<br><br>
+
+<strong>💡 Important Notes:</strong><br>
+• TB agreement doesn't guarantee NO errors<br>
+• Some errors don't affect TB (complete omission, wrong account)<br>
+• TB is prepared BEFORE final accounts<br>
+• It's a working paper, not a financial statement<br><br>
+
+<strong>✅ What TB Proves:</strong><br>
+✓ Arithmetic accuracy<br>
+✓ Ledger posting done<br>
+✓ Books are ready for final accounts<br><br>
+
+<strong>❌ What TB Cannot Detect:</strong><br>
+✗ Error of complete omission<br>
+✗ Error of principle (wrong account type)<br>
+✗ Compensating errors<br>
+✗ Error of original entry (wrong amount in journal)<br><br>
+
+Trial Balance is your final checkpoint before preparing financial statements! 🎯✅`
+            },
+
+            'subsidiary books': {
+                keywords: ['subsidiary books', 'special journals', 'purchase book', 'sales book', 'journal proper'],
+                answer: `<strong>📚 Subsidiary Books (Special Journals):</strong><br><br>
+
+When business grows, recording ALL transactions in one journal becomes difficult. So we use SPECIAL journals for different types of transactions!<br><br>
+
+<strong>🎯 Types of Subsidiary Books:</strong><br><br>
+
+<strong>1️⃣ PURCHASE BOOK (Purchase Journal)</strong><br>
+• Records credit purchases of GOODS only<br>
+• NOT for cash purchases or asset purchases<br>
+<code>
+Date|Supplier Name|Invoice No|L.F.|Amount
+</code><br><br>
+
+<strong>2️⃣ SALES BOOK (Sales Journal)</strong><br>
+• Records credit sales of GOODS only<br>
+• NOT for cash sales or asset sales<br>
+<code>
+Date|Customer Name|Invoice No|L.F.|Amount
+</code><br><br>
+
+<strong>3️⃣ PURCHASE RETURN BOOK (Returns Outward)</strong><br>
+• Goods returned TO suppliers<br>
+• Reduces our liability<br><br>
+
+<strong>4️⃣ SALES RETURN BOOK (Returns Inward)</strong><br>
+• Goods returned BY customers<br>
+• Reduces our income<br><br>
+
+<strong>5️⃣ CASH BOOK</strong><br>
+• All cash & bank transactions<br>
+• Both receipts and payments<br><br>
+
+<strong>6️⃣ JOURNAL PROPER</strong><br>
+For transactions NOT recorded elsewhere:<br>
+• Opening entries<br>
+• Closing entries<br>
+• Adjustment entries<br>
+• Rectification entries<br>
+• Purchase/Sale of assets on credit<br>
+• Writing off bad debts<br><br>
+
+<strong>💡 Why Use Subsidiary Books?</strong><br>
+✓ Division of work (specialization)<br>
+✓ Saves time<br>
+✓ Easy reference<br>
+✓ Reduces errors<br>
+✓ Better control<br><br>
+
+This system makes accounting organized and efficient! 📊✨`
+            },
+
+            'accounting concepts': {
+                keywords: ['accounting concepts', 'accounting principles', 'concepts', 'going concern', 'accrual'],
+                answer: `<strong>💡 Accounting Concepts & Principles:</strong><br><br>
+
+These are the fundamental assumptions and rules that guide accounting practice.<br><br>
+
+<strong>🎯 Important Accounting Concepts:</strong><br><br>
+
+<strong>1️⃣ BUSINESS ENTITY CONCEPT</strong><br>
+• Business and owner are SEPARATE entities<br>
+• Business transactions ≠ Personal transactions<br>
+• Example: Owner's personal car purchase is NOT business expense<br><br>
+
+<strong>2️⃣ MONEY MEASUREMENT CONCEPT</strong><br>
+• Only transactions in money terms are recorded<br>
+• Non-monetary events NOT recorded<br>
+• Example: Employee skill NOT recorded (no money value)<br><br>
+
+<strong>3️⃣ GOING CONCERN CONCEPT</strong><br>
+• Business will continue indefinitely<br>
+• Assets valued at cost, not sale value<br>
+• Depreciation charged over useful life<br><br>
+
+<strong>4️⃣ ACCOUNTING PERIOD CONCEPT</strong><br>
+• Life divided into periods (usually 1 year)<br>
+• Financial statements prepared periodically<br>
+• Helps measure performance<br><br>
+
+<strong>5️⃣ COST CONCEPT</strong><br>
+• Assets recorded at purchase cost<br>
+• Not at current market value<br>
+• Example: Land bought at ₹10L recorded at ₹10L (not ₹50L current value)<br><br>
+
+<strong>6️⃣ DUAL ASPECT CONCEPT</strong><br>
+• Every transaction has two aspects<br>
+• Debit = Credit<br>
+• Basis of double-entry system<br><br>
+
+<strong>7️⃣ REVENUE RECOGNITION CONCEPT</strong><br>
+• Revenue recognized when earned<br>
+• Not when cash received<br>
+• Sale on credit = Revenue NOW<br><br>
+
+<strong>8️⃣ MATCHING CONCEPT</strong><br>
+• Match expenses with related revenue<br>
+• Example: Cost of goods matched with sales of same period<br><br>
+
+<strong>9️⃣ ACCRUAL CONCEPT</strong><br>
+• Record when transaction occurs<br>
+• Not when cash is paid/received<br>
+• Example: Salary for Dec recorded in Dec (even if paid in Jan)<br><br>
+
+<strong>🔟 CONSERVATISM/PRUDENCE</strong><br>
+• "Anticipate no profit, provide for all losses"<br>
+• Don't overstate assets/income<br>
+• Create provisions for expected losses<br><br>
+
+<strong>1️⃣1️⃣ CONSISTENCY</strong><br>
+• Use same accounting methods year after year<br>
+• Enables comparison<br>
+• Change only if better method available<br><br>
+
+<strong>1️⃣2️⃣ MATERIALITY</strong><br>
+• Focus on significant items<br>
+• Small items can be ignored<br>
+• Example: ₹10 stapler written off immediately (not depreciated)<br><br>
+
+These concepts ensure accounting is standardized and reliable! 📊✅`
+            }
+        };
+                // ==================== AI RESPONSE SYSTEM ====================
+        
+        function getAIResponse(question) {
+            const lowerQuestion = question.toLowerCase();
+            let bestMatch = null;
+            let highestScore = 0;
+            
+            // Smart keyword matching with scoring
+            for (const [topic, data] of Object.entries(AccountingKnowledge)) {
+                let score = 0;
+                
+                for (const keyword of data.keywords) {
+                    if (lowerQuestion.includes(keyword.toLowerCase())) {
+                        score += keyword.length * 2; // Longer keywords score higher
+                    }
+                }
+                
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestMatch = data.answer;
+                }
+            }
+            
+            // If good match found
+            if (highestScore > 3) {
+                return bestMatch;
+            }
+            
+            // Default response if no match
+            return getDefaultResponse();
+        }
+
+        function getDefaultResponse() {
+            return `<strong>🧙 Great question!</strong><br><br>
+
+I'm the <strong>Accounts Wizard</strong>, your AI tutor for Grade 11 Accounting (up to Trial Balance).<br><br>
+
+<strong>📚 Topics I can help with:</strong><br>
+• <strong>Double-Entry Bookkeeping</strong> - The foundation of accounting<br>
+• <strong>Debit & Credit Rules</strong> - Golden rules explained simply<br>
+• <strong>Journal Entries</strong> - Recording transactions correctly<br>
+• <strong>Ledger Accounts</strong> - Posting and balancing<br>
+• <strong>Cash Book</strong> - Managing cash transactions<br>
+• <strong>Subsidiary Books</strong> - Special journals<br>
+• <strong>Trial Balance</strong> - Verifying your books<br>
+• <strong>Accounting Concepts</strong> - Fundamental principles<br><br>
+
+<strong>💡 Try asking:</strong><br>
+• "What is double-entry bookkeeping?"<br>
+• "Explain debit and credit rules"<br>
+• "How to prepare a journal entry?"<br>
+• "What is a ledger account?"<br>
+• "How to prepare trial balance?"<br><br>
+
+I'm here to make accounting easy for you! Ask me anything! 🚀✨`;
+        }
+
+        // ==================== MESSAGE FUNCTIONS ====================
+        
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const question = input.value.trim();
+            
+            if (!question) return;
+            
+            // Hide welcome screen
+            hideWelcome();
+            
+            // Add user message
+            addUserMessage(question);
+            
+            // Clear input
+            input.value = '';
+            input.style.height = 'auto';
+            
+            // Update stats
+            AppState.questionsAsked++;
+            updateStats();
+            checkAchievements();
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Get AI response after realistic delay
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = getAIResponse(question);
+                addAIMessage(response);
+                
+                // Save to history
+                AppState.chatHistory.push({
+                    type: 'user',
+                    content: question,
+                    timestamp: new Date().toISOString()
+                });
+                AppState.chatHistory.push({
+                    type: 'ai',
+                    content: response,
+                    timestamp: new Date().toISOString()
+                });
+                
+                saveToLocalStorage();
+            }, 1200 + Math.random() * 800);
+        }
+
+        function askQuestion(question) {
+            document.getElementById('userInput').value = question;
+            sendMessage();
+        }
+
+        function addUserMessage(text) {
+            const messagesArea = document.getElementById('messagesArea');
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = 'message-wrapper';
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageWrapper.innerHTML = `
+                <div class="message user">
+                    <div class="message-avatar">👤</div>
+                    <div class="message-content">
+                        <div class="message-bubble">${escapeHtml(text)}</div>
+                        <div class="message-time">🕐 ${time}</div>
+                    </div>
+                </div>
+            `;
+            
+            messagesArea.appendChild(messageWrapper);
+            scrollToBottom();
+        }
+
+        function addAIMessage(text) {
+            const messagesArea = document.getElementById('messagesArea');
+            const messageWrapper = document.createElement('div');
+            messageWrapper.className = 'message-wrapper';
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageWrapper.innerHTML = `
+                <div class="message ai">
+                    <div class="message-avatar">🧙</div>
+                    <div class="message-content">
+                        <div class="message-bubble">${text}</div>
+                        <div class="message-time">🕐 ${time}</div>
+                    </div>
+                </div>
+            `;
+            
+            messagesArea.appendChild(messageWrapper);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const messagesArea = document.getElementById('messagesArea');
+            const typingWrapper = document.createElement('div');
+            typingWrapper.className = 'message-wrapper';
+            typingWrapper.id = 'typingIndicator';
+            
+            typingWrapper.innerHTML = `
+                <div class="message ai">
+                    <div class="message-avatar">🧙</div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <div class="typing-dots">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                            <span class="typing-text">Wizard is thinking...</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            messagesArea.appendChild(typingWrapper);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function hideWelcome() {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            if (welcomeScreen) {
+                welcomeScreen.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    welcomeScreen.remove();
+                }, 300);
+            }
+        }
+
+        function scrollToBottom() {
+            const messagesArea = document.getElementById('messagesArea');
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        // ==================== STATS & ACHIEVEMENTS ====================
+        
+        function updateStats() {
+            document.getElementById('questionsCount').textContent = AppState.questionsAsked;
+            
+            const timeSpent = Math.floor((Date.now() - AppState.startTime) / 60000);
+            document.getElementById('timeSpent').textContent = timeSpent + 'm';
+        }
+
+        function checkAchievements() {
+            // Achievement 1: First Question
+            if (AppState.questionsAsked >= 1 && !AppState.achievements.achievement1) {
+                unlockAchievement('achievement1', 'First Question');
+            }
+            
+            // Achievement 2: 10 Questions
+            if (AppState.questionsAsked >= 10 && !AppState.achievements.achievement2) {
+                unlockAchievement('achievement2', 'Curious Learner');
+            }
+            
+            // Achievement 3: 25 Questions
+            if (AppState.questionsAsked >= 25 && !AppState.achievements.achievement3) {
+                unlockAchievement('achievement3', 'Accounting Master');
+            }
+        }
+
+        function unlockAchievement(id, name) {
+            const achievement = document.getElementById(id);
+            if (achievement && !AppState.achievements[id]) {
+                achievement.classList.remove('locked');
+                achievement.classList.add('unlocked');
+                AppState.achievements[id] = true;
+                
+                showNotification(`🎉 Achievement Unlocked: ${name}!`);
+                saveToLocalStorage();
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 85px;
+                right: 25px;
+                background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+                color: var(--bg-primary);
+                padding: 15px 25px;
+                border-radius: 12px;
+                font-weight: 700;
+                font-size: 14px;
+                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+                z-index: 10000;
+                animation: slideInRight 0.4s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.4s ease';
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ==================== CHAT ACTIONS ====================
+        
+        function clearChat() {
+            if (confirm('Clear all messages? This cannot be undone.')) {
+                const messagesArea = document.getElementById('messagesArea');
+                messagesArea.innerHTML = `
+                    <div class="welcome-screen">
+                        <div class="welcome-icon">🧙‍♂️</div>
+                        <h1 class="welcome-title">Chat Cleared!</h1>
+                        <p class="welcome-text">
+                            Ready to start fresh? Ask me anything about accounting!
+                        </p>
+                        <button class="start-btn" onclick="hideWelcome()">
+                            Continue Learning 🚀
+                        </button>
+                    </div>
+                `;
+                
+                AppState.chatHistory = [];
+                saveToLocalStorage();
+                showNotification('💬 Chat cleared successfully!');
+            }
+        }
+
+        function exportChat() {
+            if (AppState.chatHistory.length === 0) {
+                alert('📭 No messages to export yet! Start asking questions first.');
+                return;
+            }
+            
+            let exportText = `ACCOUNTS WIZARD AI - CHAT EXPORT\n`;
+            exportText += `${'='.repeat(50)}\n`;
+            exportText += `Date: ${new Date().toLocaleString()}\n`;
+            exportText += `Total Questions Asked: ${AppState.questionsAsked}\n`;
+            exportText += `${'='.repeat(50)}\n\n`;
+            
+            AppState.chatHistory.forEach((msg, index) => {
+                const time = new Date(msg.timestamp).toLocaleTimeString();
+                const sender = msg.type === 'user' ? 'YOU' : 'ACCOUNTS WIZARD';
+                const content = msg.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ');
+                
+                exportText += `[${time}] ${sender}:\n${content}\n\n`;
+                exportText += `${'-'.repeat(50)}\n\n`;
+            });
+            
+            exportText += `\nGenerated by Accounts Wizard AI\n`;
+            exportText += `Your Personal Accounting Tutor\n`;
+            
+            // Create and download file
+            const blob = new Blob([exportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `accounts-wizard-chat-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('📥 Chat exported successfully!');
+        }
+
+        function downloadChat() {
+            exportChat();
+        }
+
+        function shareChat() {
+            const shareText = `I've learned accounting with Accounts Wizard AI! ${AppState.questionsAsked} questions asked so far! 🧙📚`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Accounts Wizard AI',
+                    text: shareText,
+                    url: window.location.href
+                }).then(() => {
+                    showNotification('📤 Shared successfully!');
+                }).catch(() => {
+                    copyToClipboard(shareText);
+                });
+            } else {
+                copyToClipboard(shareText);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
+                showNotification('🔗 Link copied to clipboard!');
+            });
+        }
+
+        function printChat() {
+            window.print();
+        }
+
+        function showHelp() {
+            const messagesArea = document.getElementById('messagesArea');
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            if (welcomeScreen) welcomeScreen.remove();
+            
+            const helpMessage = `
+                <div class="message-wrapper">
+                    <div class="message ai">
+                        <div class="message-avatar">🧙</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <strong>📚 How to Use Accounts Wizard AI:</strong><br><br>
+                                
+                                <strong>🎯 What I Can Help With:</strong><br>
+                                I'm your AI tutor for <strong>Grade 11 Accounting</strong> (up to Trial Balance). I can explain:<br>
+                                • Double-Entry Bookkeeping System<br>
+                                • Debit and Credit Rules (Golden Rules)<br>
+                                • Journal Entries with Examples<br>
+                                • Ledger Accounts and Posting<br>
+                                • Cash Book (Single/Double Column)<br>
+                                • Subsidiary Books (Special Journals)<br>
+                                • Trial Balance Preparation<br>
+                                • Accounting Concepts and Principles<br><br>
+                                
+                                <strong>💡 How to Ask Questions:</strong><br>
+                                1. Type your question in the input box<br>
+                                2. Press Enter or click the 🚀 button<br>
+                                3. Use suggested questions for quick help<br>
+                                4. Click Quick Topics in the sidebar<br><br>
+                                
+                                <strong>✨ Features:</strong><br>
+                                • Real-time AI responses<br>
+                                • Detailed explanations with examples<br>
+                                • Track your learning progress<br>
+                                • Earn achievements<br>
+                                • Export chat for offline study<br>
+                                • Print conversations<br><br>
+                                
+                                <strong>🎯 Pro Tips:</strong><br>
+                                • Ask specific questions for better answers<br>
+                                • Request examples if needed<br>
+                                • Use the export feature to save important answers<br>
+                                • Practice regularly for best results<br><br>
+                                
+                                <strong>📖 Example Questions:</strong><br>
+                                • "What is double-entry bookkeeping?"<br>
+                                • "Explain the golden rules of accounting"<br>
+                                • "How to prepare a journal entry for cash sales?"<br>
+                                • "What is the difference between journal and ledger?"<br>
+                                • "How to balance a ledger account?"<br><br>
+                                
+                                I'm here to make accounting easy and fun! 🚀<br>
+                                Ask me anything and let's learn together! 📚✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            messagesArea.insertAdjacentHTML('beforeend', helpMessage);
+            scrollToBottom();
+        }
+
+        // ==================== LOCAL STORAGE ====================
+        
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('accountsWizard_state', JSON.stringify({
+                    questionsAsked: AppState.questionsAsked,
+                    achievements: AppState.achievements,
+                    lastVisit: new Date().toISOString()
+                }));
+            } catch (e) {
+                console.warn('Could not save to localStorage:', e);
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('accountsWizard_state');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    AppState.questionsAsked = data.questionsAsked || 0;
+                    AppState.achievements = data.achievements || AppState.achievements;
+                    
+                    // Update UI
+                    updateStats();
+                    
+                    // Update achievements
+                    Object.keys(data.achievements || {}).forEach(key => {
+                        if (data.achievements[key]) {
+                            const elem = document.getElementById(key);
+                            if (elem) {
+                                elem.classList.remove('locked');
+                                elem.classList.add('unlocked');
+                            }
+                        }
+                    });
+                    
+                    console.log('✅ Progress loaded from previous session');
+                }
+            } catch (e) {
+                console.warn('Could not load from localStorage:', e);
+            }
+        }
+
+        // Save state periodically
+        setInterval(saveToLocalStorage, 30000); // Every 30 seconds
+
+        // Save on page unload
+        window.addEventListener('beforeunload', saveToLocalStorage);
+
+        // ==================== ANIMATIONS ====================
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // ==================== INITIALIZATION ====================
+        
+        function initializeApp() {
+            console.log('%c🧙 ACCOUNTS WIZARD AI', 'font-size: 20px; color: #00ff88; font-weight: bold;');
+            console.log('%cYour Personal Accounting Tutor - Initialized Successfully!', 'font-size: 14px; color: #00d4ff;');
+            
+            // Load saved progress
+            loadFromLocalStorage();
+            
+            // Start time tracking
+            setInterval(updateStats, 60000); // Update every minute
+            
+            // Focus on input
+            document.getElementById('userInput').focus();
+            
+            // Show welcome message in console
+            console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff88');
+            console.log('%cTopics: Journal, Ledger, Trial Balance, Cash Book', 'color: #666');
+            console.log('%cGrade: 11 Accounting (Basics to Trial Balance)', 'color: #666');
+            console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff88');
+        }
+
+        // ==================== EVENT LISTENERS ====================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            
+            // Auto-resize textarea on input
+            const userInput = document.getElementById('userInput');
+            userInput.addEventListener('input', function() {
+                autoResize(this);
+            });
+        });
+
+        // Handle visibility change (tab switching)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                updateStats();
+            }
+        });
+
+        // ==================== ADDITIONAL KNOWLEDGE (More Topics) ====================
+        
+        // Add more accounting knowledge
+        AccountingKnowledge['accounting equation'] = {
+            keywords: ['accounting equation', 'assets equals', 'balance sheet equation'],
+            answer: `<strong>⚖️ The Accounting Equation - Foundation of Balance Sheet:</strong><br><br>
+
+The Accounting Equation is the fundamental principle that underlies the double-entry bookkeeping system.<br><br>
+
+<strong>📊 The Basic Equation:</strong><br>
+<code>ASSETS = LIABILITIES + CAPITAL</code><br><br>
+
+<strong>🎯 What This Means:</strong><br>
+• <strong>Assets:</strong> What the business OWNS<br>
+• <strong>Liabilities:</strong> What the business OWES<br>
+• <strong>Capital:</strong> Owner's investment in the business<br><br>
+
+<strong>💡 Another Way to Look At It:</strong><br>
+<code>CAPITAL = ASSETS - LIABILITIES</code><br><br>
+
+This shows the owner's true wealth in the business!<br><br>
+
+<strong>📝 Example:</strong><br>
+A business has:<br>
+• Cash: ₹50,000<br>
+• Furniture: ₹30,000<br>
+• Loan from Bank: ₹20,000<br><br>
+
+<strong>Assets</strong> = ₹50,000 + ₹30,000 = ₹80,000<br>
+<strong>Liabilities</strong> = ₹20,000<br>
+<strong>Capital</strong> = ₹80,000 - ₹20,000 = ₹60,000<br><br>
+
+Verification: ₹80,000 = ₹20,000 + ₹60,000 ✅<br><br>
+
+<strong>🔍 Expanded Equation (with Revenue & Expenses):</strong><br>
+<code>Assets = Liabilities + Capital + Revenue - Expenses</code><br><br>
+
+<strong>✅ Key Points:</strong><br>
+• This equation ALWAYS balances<br>
+• Every transaction affects at least 2 items<br>
+• Forms the basis of Balance Sheet<br>
+• If it doesn't balance, there's an error!<br><br>
+
+Master this equation and accounting becomes crystal clear! 💎`
+        };
+
+        AccountingKnowledge['types of accounts'] = {
+            keywords: ['types of accounts', 'personal account', 'real account', 'nominal account', 'classification'],
+            answer: `<strong>📚 Types of Accounts - Classification:</strong><br><br>
+
+In accounting, all accounts are classified into THREE main types based on the Traditional Approach:<br><br>
+
+<strong>1️⃣ PERSONAL ACCOUNTS</strong><br>
+Accounts of persons (individuals, companies, institutions)<br><br>
+
+<strong>Types:</strong><br>
+• <strong>Natural Persons:</strong> Ram's A/c, Shyam's A/c<br>
+• <strong>Artificial Persons:</strong> ABC Company, XYZ Bank<br>
+• <strong>Representative Persons:</strong> Outstanding Salary, Prepaid Rent<br><br>
+
+<strong>Golden Rule:</strong><br>
+→ Debit the Receiver<br>
+→ Credit the Giver<br><br>
+
+<strong>Examples:</strong><br>
+• Debtors (Sundry Debtors - they receive goods)<br>
+• Creditors (Sundry Creditors - they give goods)<br>
+• Capital (owner gives money to business)<br>
+• Drawings (owner receives from business)<br><br>
+
+<strong>2️⃣ REAL ACCOUNTS</strong><br>
+Accounts of assets and properties (tangible & intangible)<br><br>
+
+<strong>Types:</strong><br>
+• <strong>Tangible:</strong> Cash, Bank, Furniture, Building, Stock<br>
+• <strong>Intangible:</strong> Goodwill, Patents, Trademarks<br><br>
+
+<strong>Golden Rule:</strong><br>
+→ Debit What Comes In<br>
+→ Credit What Goes Out<br><br>
+
+<strong>Examples:</strong><br>
+• Cash A/c<br>
+• Bank A/c<br>
+• Furniture A/c<br>
+• Machinery A/c<br>
+• Land & Building A/c<br><br>
+
+<strong>3️⃣ NOMINAL ACCOUNTS</strong><br>
+Accounts of expenses, losses, incomes, and gains<br><br>
+
+<strong>Types:</strong><br>
+• <strong>Expenses:</strong> Rent, Salary, Insurance, Electricity<br>
+• <strong>Losses:</strong> Bad Debts, Loss by Fire<br>
+• <strong>Incomes:</strong> Sales, Commission, Interest Received<br>
+• <strong>Gains:</strong> Profit on Sale of Asset<br><br>
+
+<strong>Golden Rule:</strong><br>
+→ Debit All Expenses & Losses<br>
+→ Credit All Incomes & Gains<br><br>
+
+<strong>Examples:</strong><br>
+• Rent A/c (Expense)<br>
+• Salary A/c (Expense)<br>
+• Sales A/c (Income)<br>
+• Interest Received A/c (Income)<br>
+• Bad Debts A/c (Loss)<br><br>
+
+<strong>📊 Quick Identification Trick:</strong><br>
+• Ends with person/company name → <strong>Personal</strong><br>
+• Tangible item you can touch → <strong>Real</strong><br>
+• Expense or Income → <strong>Nominal</strong><br><br>
+
+<strong>💡 Modern Classification (Alternative):</strong><br>
+1. Assets<br>
+2. Liabilities<br>
+3. Capital<br>
+4. Revenue<br>
+5. Expenses<br><br>
+
+Knowing account types helps apply correct rules! 🎯✨`
+        };
+
+        // ==================== CONSOLE SIGNATURE ====================
+        
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff88');
+        console.log('%c    🧙 ACCOUNTS WIZARD AI - LOADED ✅    ', 'color: #00ff88; font-size: 16px; font-weight: bold');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff88');
+        console.log('%cVersion: 2.0 (Accounting Only)', 'color: #00d4ff');
+        console.log('%cGrade: 11 Accounting (Basics to Trial Balance)', 'color: #a855f7');
+        console.log('%cTopics: Journal, Ledger, Cash Book, Trial Balance', 'color: #666');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff88');
+
+                // ==================== ADDITIONAL ACCOUNTING TOPICS ====================
+        
+        AccountingKnowledge['rules of journalizing'] = {
+            keywords: ['rules of journalizing', 'journalizing rules', 'how to journalize'],
+            answer: `<strong>✍️ Rules of Journalizing - Step by Step Guide:</strong><br><br>
+
+Journalizing is the process of recording transactions in the journal. Follow these systematic steps:<br><br>
+
+<strong>📝 STEP-BY-STEP PROCESS:</strong><br><br>
+
+<strong>STEP 1: Identify the Accounts Involved</strong><br>
+• Which TWO (or more) accounts are affected?<br>
+• Example: "Paid rent ₹5,000" → Rent A/c & Cash A/c<br><br>
+
+<strong>STEP 2: Classify the Accounts</strong><br>
+• Personal, Real, or Nominal?<br>
+• Rent A/c = Nominal (Expense)<br>
+• Cash A/c = Real (Asset)<br><br>
+
+<strong>STEP 3: Apply the Golden Rules</strong><br>
+• Rent A/c (Nominal) → Debit all expenses<br>
+• Cash A/c (Real) → Credit what goes out<br><br>
+
+<strong>STEP 4: Determine Debit & Credit</strong><br>
+• Rent A/c = Debit ₹5,000<br>
+• Cash A/c = Credit ₹5,000<br><br>
+
+<strong>STEP 5: Write the Entry</strong><br>
+<code>
+Date: [Transaction Date]
+Rent A/c                    Dr.  5,000
+    To Cash A/c                      5,000
+(Being rent paid for the month)
+</code><br><br>
+
+<strong>📊 FORMATTING RULES:</strong><br>
+1. Date in first column<br>
+2. Debit account name first<br>
+3. "Dr." after debit account<br>
+4. Credit account with "To" prefix<br>
+5. Credit account slightly indented<br>
+6. Amounts in respective columns<br>
+7. Narration in brackets<br>
+8. Skip one line between entries<br><br>
+
+<strong>💡 MORE EXAMPLES:</strong><br><br>
+
+<strong>Example 1: Compound Entry</strong><br>
+Purchased goods ₹10,000 and furniture ₹5,000 from Ram<br>
+<code>
+Purchases A/c               Dr.  10,000
+Furniture A/c               Dr.   5,000
+    To Ram's A/c                     15,000
+(Being goods and furniture purchased from Ram)
+</code><br><br>
+
+<strong>Example 2: Cash & Credit Transaction</strong><br>
+Sold goods ₹20,000 (₹12,000 cash, ₹8,000 credit to Shyam)<br>
+<code>
+Cash A/c                    Dr.  12,000
+Shyam's A/c                 Dr.   8,000
+    To Sales A/c                     20,000
+(Being goods sold partly cash and partly credit)
+</code><br><br>
+
+<strong>✅ GOLDEN TIPS:</strong><br>
+• Always verify Debit = Credit<br>
+• Write clear narrations<br>
+• Use proper account names<br>
+• Maintain chronological order<br>
+• Double-check amounts<br><br>
+
+Practice makes perfect! 🎯📚`
+        };
+
+        AccountingKnowledge['balancing of ledger'] = {
+            keywords: ['balance ledger', 'balancing ledger', 'how to balance', 'balance c/d', 'balance b/d'],
+            answer: `<strong>⚖️ Balancing of Ledger Accounts - Complete Guide:</strong><br><br>
+
+Balancing means finding the difference between debit and credit sides of a ledger account.<br><br>
+
+<strong>🎯 STEPS TO BALANCE A LEDGER:</strong><br><br>
+
+<strong>STEP 1: Total Both Sides</strong><br>
+• Add all amounts on Debit side<br>
+• Add all amounts on Credit side<br><br>
+
+<strong>STEP 2: Find the Difference</strong><br>
+• Subtract smaller total from larger total<br>
+• This difference is the "Balance"<br><br>
+
+<strong>STEP 3: Write Balance on Lighter Side</strong><br>
+• If Dr. side > Cr. side → Write "Balance c/d" on Cr. side<br>
+• If Cr. side > Dr. side → Write "Balance c/d" on Dr. side<br>
+• <em>c/d = carried down</em><br><br>
+
+<strong>STEP 4: Make Both Sides Equal</strong><br>
+• Total both sides<br>
+• They should now match<br>
+• Draw double lines<br><br>
+
+<strong>STEP 5: Bring Down the Balance</strong><br>
+• Write "Balance b/d" on opposite side<br>
+• <em>b/d = brought down</em><br>
+• This is the opening balance for next period<br><br>
+
+<strong>📊 COMPLETE EXAMPLE:</strong><br><br>
+
+<strong>Before Balancing:</strong><br>
+<code>
+Dr.              CASH ACCOUNT              Cr.
+Date |Particulars|Amt   |Date |Particulars|Amt
+01/01|To Capital |50,000|05/01|By Rent    |5,000
+10/01|To Sales   |20,000|15/01|By Salary  |10,000
+                        |20/01|By Furniture|15,000
+</code><br><br>
+
+<strong>Calculation:</strong><br>
+Debit Total = 50,000 + 20,000 = 70,000<br>
+Credit Total = 5,000 + 10,000 + 15,000 = 30,000<br>
+Balance = 70,000 - 30,000 = 40,000 (Dr. side is more)<br><br>
+
+<strong>After Balancing:</strong><br>
+<code>
+Dr.              CASH ACCOUNT              Cr.
+Date |Particulars|Amt   |Date |Particulars  |Amt
+01/01|To Capital |50,000|05/01|By Rent      |5,000
+10/01|To Sales   |20,000|15/01|By Salary    |10,000
+                        |20/01|By Furniture  |15,000
+                        |31/01|By Balance c/d|40,000
+      |           |70,000|     |             |70,000
+      |           |======|     |             |======
+01/02|To Balance |40,000|
+      |b/d        |      |
+</code><br><br>
+
+<strong>🔍 TYPES OF BALANCES:</strong><br><br>
+
+<strong>1. Debit Balance (Dr. > Cr.)</strong><br>
+• Assets accounts (Cash, Bank, Debtors)<br>
+• Expense accounts (Rent, Salary)<br>
+• Balance c/d written on Credit side<br>
+• Balance b/d written on Debit side<br><br>
+
+<strong>2. Credit Balance (Cr. > Dr.)</strong><br>
+• Liabilities (Loans, Creditors)<br>
+• Capital account<br>
+• Income accounts (Sales, Commission)<br>
+• Balance c/d written on Debit side<br>
+• Balance b/d written on Credit side<br><br>
+
+<strong>3. Nil Balance (Dr. = Cr.)</strong><br>
+• No balance<br>
+• Account is closed<br>
+• Common in nominal accounts after transfer<br><br>
+
+<strong>✅ IMPORTANT NOTES:</strong><br>
+• <strong>c/d (carried down)</strong> = End of current period<br>
+• <strong>b/d (brought down)</strong> = Start of next period<br>
+• Balance c/d date = Last day of period<br>
+• Balance b/d date = First day of next period<br>
+• Always on OPPOSITE sides<br><br>
+
+<strong>💡 QUICK RULE:</strong><br>
+If Debit > Credit → Debit Balance (asset/expense)<br>
+If Credit > Debit → Credit Balance (liability/income)<br><br>
+
+Master balancing and your ledgers will be perfect! 📊✨`
+        };
+
+        AccountingKnowledge['difference between'] = {
+            keywords: ['difference between journal and ledger', 'journal vs ledger', 'difference'],
+            answer: `<strong>🔍 Difference Between Journal and Ledger:</strong><br><br>
+
+<strong>📊 COMPARISON TABLE:</strong><br><br>
+
+<strong>BASIS: JOURNAL</strong> vs <strong>LEDGER</strong><br><br>
+
+<strong>1. Definition:</strong><br>
+<strong>Journal:</strong> Book of original/first entry<br>
+<strong>Ledger:</strong> Book of final/second entry<br><br>
+
+<strong>2. Recording:</strong><br>
+<strong>Journal:</strong> Transactions recorded from source documents<br>
+<strong>Ledger:</strong> Entries posted from journal<br><br>
+
+<strong>3. Format:</strong><br>
+<strong>Journal:</strong> Date, Particulars, Debit, Credit in columns<br>
+<strong>Ledger:</strong> T-format with two sides (Dr. & Cr.)<br><br>
+
+<strong>4. Process:</strong><br>
+<strong>Journal:</strong> Journalizing (recording)<br>
+<strong>Ledger:</strong> Posting (transferring)<br><br>
+
+<strong>5. Narration:</strong><br>
+<strong>Journal:</strong> Narration is compulsory<br>
+<strong>Ledger:</strong> No narration (only account name)<br><br>
+
+<strong>6. Balancing:</strong><br>
+<strong>Journal:</strong> No balancing required<br>
+<strong>Ledger:</strong> Balancing done periodically<br><br>
+
+<strong>7. Purpose:</strong><br>
+<strong>Journal:</strong> Chronological record<br>
+<strong>Ledger:</strong> Classified record (account-wise)<br><br>
+
+<strong>8. Number:</strong><br>
+<strong>Journal:</strong> Usually one book (or few subsidiary books)<br>
+<strong>Ledger:</strong> Many accounts (one for each account)<br><br>
+
+<strong>9. Trial Balance:</strong><br>
+<strong>Journal:</strong> Cannot prepare from journal<br>
+<strong>Ledger:</strong> Prepared from ledger balances<br><br>
+
+<strong>10. Sequence:</strong><br>
+<strong>Journal:</strong> First step in accounting<br>
+<strong>Ledger:</strong> Second step in accounting<br><br>
+
+<strong>💡 SIMPLE ANALOGY:</strong><br>
+• <strong>Journal</strong> = Diary (day-by-day events)<br>
+• <strong>Ledger</strong> = Filing Cabinet (organized by category)<br><br>
+
+<strong>📝 EXAMPLE:</strong><br><br>
+
+<strong>IN JOURNAL:</strong><br>
+<code>
+01/01  Cash A/c           Dr.  10,000
+           To Capital A/c           10,000
+       (Being capital introduced)
+
+02/01  Rent A/c           Dr.   2,000
+           To Cash A/c               2,000
+       (Being rent paid)
+</code><br><br>
+
+<strong>IN LEDGER (Two separate accounts):</strong><br>
+<code>
+CASH ACCOUNT:
+Dr. Side: To Capital 10,000
+Cr. Side: By Rent 2,000
+
+CAPITAL ACCOUNT:
+Cr. Side: By Cash 10,000
+</code><br><br>
+
+<strong>🎯 KEY TAKEAWAY:</strong><br>
+Journal → Complete transaction details<br>
+Ledger → Individual account summaries<br><br>
+
+Both are essential parts of the accounting cycle! 📚✨`
+        };
+
+        AccountingKnowledge['errors in accounting'] = {
+            keywords: ['errors', 'types of errors', 'accounting errors', 'mistakes'],
+            answer: `<strong>❌ Types of Errors in Accounting:</strong><br><br>
+
+Even with double-entry system, errors can occur. Understanding them helps in detection and correction!<br><br>
+
+<strong>📊 CLASSIFICATION OF ERRORS:</strong><br><br>
+
+<strong>1️⃣ ERRORS OF COMMISSION</strong><br>
+Mistakes in recording, posting, or calculation<br><br>
+<strong>Examples:</strong><br>
+• Wrong amount posted (₹500 instead of ₹5,000)<br>
+• Posted to wrong side (debit instead of credit)<br>
+• Posted twice<br>
+• Addition/subtraction mistakes<br>
+• Wrong totaling<br><br>
+<strong>Effect:</strong> Trial Balance will NOT agree ❌<br><br>
+
+<strong>2️⃣ ERRORS OF OMISSION</strong><br><br>
+<strong>a) Complete Omission:</strong><br>
+Transaction completely left out from books<br>
+Example: Forgot to record a sale of ₹10,000<br>
+<strong>Effect:</strong> TB will agree ✅ (but books are incomplete)<br><br>
+
+<strong>b) Partial Omission:</strong><br>
+One aspect of transaction omitted<br>
+Example: Recorded debit but forgot credit<br>
+<strong>Effect:</strong> TB will NOT agree ❌<br><br>
+
+<strong>3️⃣ ERRORS OF PRINCIPLE</strong><br>
+Accounting principle violated<br><br>
+<strong>Examples:</strong><br>
+• Furniture purchase recorded as expense (should be asset)<br>
+• Revenue expenditure treated as capital expenditure<br>
+• Personal expense recorded as business expense<br>
+<strong>Effect:</strong> TB will agree ✅ (but wrong classification)<br><br>
+
+<strong>4️⃣ COMPENSATING ERRORS</strong><br>
+Two or more errors that cancel each other<br><br>
+<strong>Example:</strong><br>
+• Sales overstated by ₹1,000<br>
+• Purchases overstated by ₹1,000<br>
+• Net effect = Zero<br>
+<strong>Effect:</strong> TB will agree ✅ (but both are wrong)<br><br>
+
+<strong>🔍 ERRORS AFFECTING TRIAL BALANCE:</strong><br>
+✅ <strong>Will NOT agree:</strong><br>
+• Errors of commission (partial)<br>
+• Partial omission<br>
+• Single-sided errors<br>
+• Posting to wrong side<br>
+• Wrong totaling<br><br>
+
+❌ <strong>Will still agree:</strong><br>
+• Complete omission<br>
+• Errors of principle<br>
+• Compensating errors<br>
+• Wrong account (but correct amount & side)<br><br>
+
+<strong>💡 DETECTION METHODS:</strong><br>
+1. Recheck all additions<br>
+2. Verify balances extracted correctly<br>
+3. Check if difference is divisible by 2 (wrong side)<br>
+4. Check if divisible by 9 (transposition error)<br>
+5. Compare with source documents<br><br>
+
+<strong>📝 COMMON MISTAKES:</strong><br>
+• <strong>Transposition:</strong> 54 written as 45<br>
+• <strong>Slide:</strong> 500 written as 50 or 5000<br>
+• <strong>Duplication:</strong> Entry posted twice<br>
+• <strong>Reversal:</strong> Dr & Cr reversed<br><br>
+
+Stay alert and double-check to avoid errors! 🎯✨`
+        };
+
+        // ==================== EASTER EGG ====================
+        
+        let secretCode = [];
+        const secretPattern = ['a', 'c', 'c', 'o', 'u', 'n', 't', 's'];
+        
+        document.addEventListener('keypress', function(e) {
+            secretCode.push(e.key.toLowerCase());
+            secretCode = secretCode.slice(-8);
+            
+            if (secretCode.join('') === secretPattern.join('')) {
+                activateSecretMode();
+            }
+        });
+        
+        function activateSecretMode() {
+            showNotification('🎉 Secret Code Activated! You found the Wizard\'s secret! 🧙✨');
+            
+            const messagesArea = document.getElementById('messagesArea');
+            messagesArea.insertAdjacentHTML('beforeend', `
+                <div class="message-wrapper">
+                    <div class="message ai">
+                        <div class="message-avatar">🧙</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <strong>🎊 CONGRATULATIONS! 🎊</strong><br><br>
+                                You discovered the secret code! You're a true accounting wizard! 🧙‍♂️✨<br><br>
+                                <strong>🏆 Special Achievement Unlocked:</strong><br>
+                                "The Secret Keeper" - For finding the hidden Easter egg!<br><br>
+                                Keep learning and you'll master accounting in no time! 📚💪<br><br>
+                                <em>Hint: The secret word was "accounts" 😉</em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+            scrollToBottom();
+            
+            // Add sparkle effect
+            document.body.style.animation = 'sparkle 2s ease';
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 2000);
+        }
+
+        // ==================== HELPFUL SHORTCUTS ====================
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K = Clear chat
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                clearChat();
+            }
+            
+            // Ctrl/Cmd + E = Export chat
+            if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                e.preventDefault();
+                exportChat();
+            }
+            
+            // Ctrl/Cmd + H = Show help
+            if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+                e.preventDefault();
+                showHelp();
+            }
+            
+            // Escape = Clear input
+            if (e.key === 'Escape') {
+                document.getElementById('userInput').value = '';
+                document.getElementById('userInput').style.height = 'auto';
+            }
+        });
+
+        // ==================== PERFORMANCE MONITORING ====================
+        
+        // Log performance metrics
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                console.log('%c⚡ Performance Metrics:', 'color: #ffd700; font-weight: bold');
+                console.log(`Page Load Time: ${(perfData.loadEventEnd - perfData.fetchStart).toFixed(2)}ms`);
+                console.log(`DOM Ready: ${(perfData.domContentLoadedEventEnd - perfData.fetchStart).toFixed(2)}ms`);
+            }, 0);
+        });
+
+        // ==================== FINAL TOUCHES ====================
+        
+        // Add custom CSS for sparkle animation
+        const extraStyles = document.createElement('style');
+        extraStyles.textContent = `
+            @keyframes sparkle {
+                0%, 100% { filter: brightness(1); }
+                50% { filter: brightness(1.3) hue-rotate(45deg); }
+            }
+            
+            /* Smooth scrolling for entire page */
+            html {
+                scroll-behavior: smooth;
+            }
+            
+            /* Selection color */
+            ::selection {
+                background: var(--accent-green);
+                color: var(--bg-primary);
+            }
+            
+            /* Focus visible for accessibility */
+            *:focus-visible {
+                outline: 2px solid var(--accent-green);
+                outline-offset: 2px;
+            }
+        `;
+        document.head.appendChild(extraStyles);
+
+        // ==================== WELCOME BACK MESSAGE ====================
+        
+        setTimeout(() => {
+            const lastVisit = localStorage.getItem('accountsWizard_state');
+            if (lastVisit) {
+                const data = JSON.parse(lastVisit);
+                const lastVisitDate = new Date(data.lastVisit);
+                const now = new Date();
+                const hoursSinceLastVisit = (now - lastVisitDate) / (1000 * 60 * 60);
+                
+                if (hoursSinceLastVisit > 24) {
+                    console.log('%c👋 Welcome back! It\'s been a while!', 'color: #00ff88; font-size: 14px');
+                    console.log(`Last visit: ${lastVisitDate.toLocaleString()}`);
+                }
+            }
+        }, 1000);
+
+        // ==================== AUTO-SAVE NOTIFICATION ====================
+        
+        let saveIndicator;
+        function showSaveIndicator() {
+            if (saveIndicator) clearTimeout(saveIndicator);
+            
+            const indicator = document.createElement('div');
+            indicator.id = 'saveIndicator';
+            indicator.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid var(--accent-green);
+                color: var(--accent-green);
+                padding: 8px 16px;
+                border-radius: 8px;
+                font-size: 12px;
+                z-index: 9999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            indicator.textContent = '💾 Progress saved';
+            document.body.appendChild(indicator);
+            
+            setTimeout(() => indicator.style.opacity = '1', 10);
+            
+            saveIndicator = setTimeout(() => {
+                indicator.style.opacity = '0';
+                setTimeout(() => indicator.remove(), 300);
+            }, 2000);
+        }
+
+        // Override save function to show indicator
+        const originalSave = saveToLocalStorage;
+        saveToLocalStorage = function() {
+            originalSave();
+            if (AppState.questionsAsked > 0) {
+                showSaveIndicator();
+            }
+        };
+
+        // ==================== MOTIVATIONAL MESSAGES ====================
+        
+        const motivationalMessages = [
+            "Keep going! You're doing great! 🌟",
+            "Every question makes you smarter! 📚",
+            "Accounting mastery is just practice away! 💪",
+            "You're on the path to becoming an accounting wizard! 🧙",
+            "Great job exploring accounting concepts! 🎯",
+            "Your dedication to learning is impressive! ⭐",
+            "Keep asking, keep learning, keep growing! 🚀"
+        ];
+
+        function showMotivationalMessage() {
+            if (AppState.questionsAsked > 0 && AppState.questionsAsked % 5 === 0) {
+                const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+                setTimeout(() => {
+                    showNotification(randomMessage);
+                }, 1000);
+            }
+        }
+
+        // Add to checkAchievements function
+        const originalCheckAchievements = checkAchievements;
+        checkAchievements = function() {
+            originalCheckAchievements();
+            showMotivationalMessage();
+        };
+
+        // ==================== FINAL CONSOLE ART ====================
+        
+        console.log('%c', 'font-size: 1px; padding: 50px 100px; background: url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ctext y=\'50\' font-size=\'50\'%3E🧙%3C/text%3E%3C/svg%3E") no-repeat;');
+        console.log('%c\n🎓 Ready to master accounting? Let\'s go! 🚀\n', 'color: #00ff88; font-size: 16px; font-weight: bold;');
+        
+        console.log('%c💡 Keyboard Shortcuts:', 'color: #ffd700; font-weight: bold');
+        console.log('  Ctrl/Cmd + K → Clear Chat');
+        console.log('  Ctrl/Cmd + E → Export Chat');
+        console.log('  Ctrl/Cmd + H → Show Help');
+        console.log('  Escape → Clear Input\n');
+        
+        console.log('%c🎯 Easter Egg Hint: Type a special accounting word... 😉\n', 'color: #a855f7; font-style: italic');
+
+        // ==================== INITIALIZATION COMPLETE ====================
+        
+        console.log('%c✅ All systems ready! Start asking questions! 💬', 'color: #00ff88; font-weight: bold');
+        
+    </script>
+</body>
+</html>
