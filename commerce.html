@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounts Wizard™ - Commerce Day Exclusive | Elite Accounting Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
     <style>
         * {
             margin: 0;
@@ -1158,42 +1159,406 @@
             box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4);
         }
 
-        /* Feature button styles */
-            .feature-card {
+        /* AI Assistant Section */
+        .ai-section {
+            background: radial-gradient(circle at top left, rgba(0, 255, 255, 0.1), rgba(0, 0, 0, 0.9));
+            padding: 80px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e6faff;
+            text-align: center;
             position: relative;
             overflow: hidden;
-            z-index: 1;
         }
 
-        .feature-action {
-            margin-top: 1.2rem;
-            text-align: left;
-            position: relative;
-            z-index: 5; /* ensures it's above tilt/glow layers */
+        .ai-section::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,255,0.15), transparent 70%);
+            top: -50%;
+            left: -50%;
+            transform: rotate(25deg);
+            animation: ai-glow 10s linear infinite;
         }
 
-        .feature-btn {
+        @keyframes ai-glow {
+            0% { transform: rotate(0deg); opacity: 0.4; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg); opacity: 0.4; }
+        }
+
+        .ai-container {
+            max-width: 900px;
+            background: rgba(0, 20, 30, 0.6);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .ai-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #00f0ff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.6);
+            margin-bottom: 1rem;
+        }
+
+        .ai-description {
+            font-size: 1.05rem;
+            color: #c7faff;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .ai-button-wrapper {
+            margin-bottom: 1.8rem;
+        }
+
+        .ai-launch-button {
             display: inline-block;
-            padding: 10px 18px;
-            background: linear-gradient(90deg, #4f46e5, #9333ea);
-            color: #fff;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            background: linear-gradient(90deg, #00f0ff, #00aaff);
+            color: #000;
+            font-weight: 700;
+            padding: 14px 32px;
+            border-radius: 30px;
             text-decoration: none;
-            cursor: pointer;
-            position: relative;
-            z-index: 10;
+            transition: 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
         }
 
-        .feature-btn:hover {
-            background: linear-gradient(90deg, #9333ea, #4f46e5);
-            transform: scale(1.05);
+        .ai-launch-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
         }
 
-        .feature-card * {
-            pointer-events: auto;
+        .ai-disclaimer {
+            font-size: 0.9rem;
+            color: #9ee4e4;
+            border-top: 1px dashed rgba(0,255,255,0.3);
+            padding-top: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
         }
+
+        /* ========================================
+            JOURNEY TIMELINE - Dark Theme
+            ======================================== */
+
+            .journey-section {
+                --color: rgba(255, 255, 255, 0.9);
+                --bgColor: transparent;
+                --cardBg: linear-gradient(135deg, rgba(16, 33, 62, 0.4), rgba(26, 26, 46, 0.4));
+                --lineColor: rgba(0, 212, 255, 0.2);
+                
+                min-height: 100vh;
+                padding: 80px 20px;
+                font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+                color: var(--color);
+                background: var(--bgColor);
+                position: relative;
+            }
+
+            .journey-container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .journey-main-title {
+                text-align: center;
+                margin-bottom: 80px;
+            }
+
+            .journey-main-title .gradient-text {
+                font-size: clamp(2.5rem, 5vw, 3.5rem);
+                font-weight: 800;
+                background: linear-gradient(135deg, #ffffff, var(--neon-blue), var(--neon-green));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                line-height: 1.2;
+            }
+
+            .journey-main-title .subtitle-text {
+                font-size: 1.2rem;
+                font-weight: 300;
+                color: rgba(255, 255, 255, 0.6);
+                margin-top: 10px;
+                display: inline-block;
+            }
+
+            .journey-timeline {
+                --col-gap: 2rem;
+                --row-gap: 17rem;
+                --line-w: 0.25rem;
+                display: grid;
+                grid-template-columns: var(--line-w) 1fr;
+                grid-auto-columns: max-content;
+                column-gap: var(--col-gap);
+                list-style: none;
+                width: min(60rem, 90%);
+                margin-inline: auto;
+                position: relative;
+            }
+
+            /* Vertical line */
+            .journey-timeline::before {
+                content: "";
+                grid-column: 1;
+                grid-row: 1 / span 20;
+                background: linear-gradient(
+                    to bottom,
+                    var(--neon-blue),
+                    var(--neon-green),
+                    var(--neon-yellow)
+                );
+                border-radius: calc(var(--line-w) / 2);
+                opacity: 0.3;
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            }
+
+            /* Row gaps */
+            .journey-timeline li:not(:last-child) {
+                margin-bottom: var(--row-gap);
+            }
+
+            /* Card */
+            .journey-timeline li {
+                grid-column: 2;
+                --inlineP: 1.5rem;
+                margin-inline: var(--inlineP);
+                grid-row: span 2;
+                display: grid;
+                grid-template-rows: min-content min-content min-content;
+                opacity: 0;
+                animation: fadeInUp 0.6s ease-out forwards;
+            }
+
+            .journey-timeline li:nth-child(1) { animation-delay: 0.1s; }
+            .journey-timeline li:nth-child(2) { animation-delay: 0.2s; }
+            .journey-timeline li:nth-child(3) { animation-delay: 0.3s; }
+            .journey-timeline li:nth-child(4) { animation-delay: 0.4s; }
+            .journey-timeline li:nth-child(5) { animation-delay: 0.5s; }
+            .journey-timeline li:nth-child(6) { animation-delay: 0.6s; }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Step badge */
+            .journey-timeline li .date {
+                --dateH: 3.5rem;
+                height: var(--dateH);
+                margin-inline: calc(var(--inlineP) * -1);
+                text-align: center;
+                background: linear-gradient(135deg, var(--accent-color), rgba(0, 0, 0, 0.3));
+                color: white;
+                font-size: 1rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+                display: grid;
+                place-content: center;
+                position: relative;
+                border-radius: calc(var(--dateH) / 2) 0 0 calc(var(--dateH) / 2);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Date flap */
+            .journey-timeline li .date::before {
+                content: "";
+                width: var(--inlineP);
+                aspect-ratio: 1;
+                background: var(--accent-color);
+                background-image: linear-gradient(rgba(0, 0, 0, 0.3) 100%, transparent);
+                position: absolute;
+                top: 100%;
+                clip-path: polygon(0 0, 100% 0, 0 100%);
+                right: 0;
+            }
+
+            /* Timeline circle */
+            .journey-timeline li .date::after {
+                content: "";
+                position: absolute;
+                width: 2rem;
+                aspect-ratio: 1;
+                background: var(--dark-bg);
+                border: 0.3rem solid var(--accent-color);
+                border-radius: 50%;
+                top: 50%;
+                transform: translate(50%, -50%);
+                right: calc(100% + var(--col-gap) + var(--line-w) / 2);
+                box-shadow: 0 0 20px var(--accent-color);
+            }
+
+            /* Title & Description */
+            .journey-timeline li .title,
+            .journey-timeline li .descr {
+                background: var(--cardBg);
+                backdrop-filter: blur(10px);
+                position: relative;
+                padding-inline: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .journey-timeline li .title {
+                overflow: hidden;
+                padding-block-start: 1.5rem;
+                padding-block-end: 1rem;
+                font-weight: 600;
+                font-size: 1.3rem;
+                color: rgba(255, 255, 255, 0.95);
+                border-radius: 0 8px 0 0;
+            }
+
+            .journey-timeline li .descr {
+                padding-block-end: 1.5rem;
+                font-weight: 300;
+                line-height: 1.7;
+                color: rgba(255, 255, 255, 0.75);
+                border-radius: 0 0 8px 8px;
+            }
+
+            .journey-timeline li .descr strong {
+                color: var(--neon-green);
+                font-weight: 500;
+            }
+
+            .journey-timeline li .descr em {
+                color: var(--neon-blue);
+                font-style: normal;
+            }
+
+            /* Card shadows */
+            .journey-timeline li .title::before,
+            .journey-timeline li .descr::before {
+                content: "";
+                position: absolute;
+                width: 90%;
+                height: 0.5rem;
+                background: rgba(0, 212, 255, 0.2);
+                left: 50%;
+                border-radius: 50%;
+                filter: blur(8px);
+                transform: translate(-50%, 50%);
+            }
+
+            .journey-timeline li .title::before {
+                bottom: calc(100% + 0.125rem);
+            }
+
+            .journey-timeline li .descr::before {
+                z-index: -1;
+                bottom: 0.25rem;
+            }
+
+            /* Desktop: Alternating layout */
+            @media (min-width: 768px) {
+                .journey-timeline {
+                    grid-template-columns: 1fr var(--line-w) 1fr;
+                }
+                
+                .journey-timeline::before {
+                    grid-column: 2;
+                }
+                
+                .journey-timeline li:nth-child(odd) {
+                    grid-column: 1;
+                }
+                
+                .journey-timeline li:nth-child(even) {
+                    grid-column: 3;
+                }
+                
+                /* Start second card lower */
+                .journey-timeline li:nth-child(2) {
+                    grid-row: 2/4;
+                }
+                
+                .journey-timeline li:nth-child(odd) .date::before {
+                    clip-path: polygon(0 0, 100% 0, 100% 100%);
+                    left: 0;
+                }
+                
+                .journey-timeline li:nth-child(odd) .date::after {
+                    transform: translate(-50%, -50%);
+                    left: calc(100% + var(--col-gap) + var(--line-w) / 2);
+                }
+                
+                .journey-timeline li:nth-child(odd) .date {
+                    border-radius: 0 calc(var(--dateH) / 2) calc(var(--dateH) / 2) 0;
+                }
+            }
+
+            /* Disclaimer Section */
+            .journey-disclaimer {
+                max-width: 600px;
+                margin: 80px auto 0;
+                padding: 30px;
+                background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 87, 34, 0.05));
+                border: 2px solid rgba(255, 193, 7, 0.3);
+                border-radius: 16px;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            }
+
+            .disclaimer-icon {
+                font-size: 2.5rem;
+                flex-shrink: 0;
+            }
+
+            .disclaimer-content h3 {
+                color: var(--neon-yellow);
+                margin-bottom: 8px;
+                font-size: 1.2rem;
+            }
+
+            .disclaimer-content p {
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.6;
+            }
+
+            /* === FEATURE ICON COLORS (Infographic Palette) === */
+            .feature-icon i {
+                font-size: 2rem;
+                transition: color 0.3s ease, transform 0.3s ease;
+            }
+
+            /* Individual colors per card */
+                .feature-card:nth-child(1) .feature-icon i { color: #00b4ff; } /* Interactive Lessons – bright blue */
+                .feature-card:nth-child(2) .feature-icon i { color: #ffcc00; } /* Practice MCQs – gold */
+                .feature-card:nth-child(3) .feature-icon i { color: #00ff9d; } /* Infographics – mint green */
+                .feature-card:nth-child(4) .feature-icon i { color: #ff6f61; } /* Practical Qs – coral red */
+                .feature-card:nth-child(5) .feature-icon i { color: #c77dff; } /* Main Quiz Hub – violet */
+                .feature-card:nth-child(6) .feature-icon i { color: #ff8b3d; } /* GuessTheAccount – orange */
+                .feature-card:nth-child(7) .feature-icon i { color: #1ee3cf; } /* Scenario-Based – teal */
+                .feature-card:nth-child(8) .feature-icon i { color: #ffde59; } /* RapidFire – yellow */
+                .feature-card:nth-child(9) .feature-icon i { color: #39ff14; } /* True/False – neon green */
+                .feature-card:nth-child(10) .feature-icon i { color: #3f8efc; } /* Ledger Game – deep blue */
+                .feature-card:nth-child(11) .feature-icon i { color: #ff007f; } /* Guess Modes – magenta */
+                .feature-card:nth-child(12) .feature-icon i { color: #00f0ff; } /* Journal Entry Practice – cyan */
+                .feature-card:nth-child(13) .feature-icon i { color: #00ffa2; } /* Mobile Optimization – lime teal */
+                .feature-card:nth-child(14) .feature-icon i { color: #ffb347; } /* Disclaimer – amber */
+                .feature-card:nth-child(15) .feature-icon i { color: #9b5de5; } /* Topic Snippets – purple */
+
+            /* Hover glow animation */
+            .feature-card:hover .feature-icon i {
+                transform: scale(1.1);
+                filter: brightness(1.25);
+            }
 
     </style>
 </head>
@@ -1309,7 +1674,6 @@
                         <span>Start Learning</span>
                         <span>→</span>
                     </button>
-                    <button class="btn-secondary">Watch Demo</button>
                 </div>
             </div>
 
@@ -1331,117 +1695,398 @@
     <section class="features-section" id="features">
     <div class="section-container">
         <div class="section-header">
-        <div class="section-badge">Why Choose Us</div>
-        <h2 class="section-title">Features So Good, Even Economies Compete</h2>
+        <div class="section-badge">Why Choose AccountsWizard</div>
+        <h2 class="section-title">Features That Make Learning Accounting Fun & Interactive</h2>
         <p class="section-subtitle">
-            Crafted for students, teachers, and investors who believe knowledge should come with an ROI.
+            From animations to quizzes — har chapter ke saath seekhna becomes interesting, visual, and smart!
         </p>
         </div>
 
         <div class="features-grid">
+
+        <!-- Interactive Lessons -->
         <div class="feature-card" data-tilt>
-            <div class="feature-icon">
-            <span class="icon-emoji">🤖</span>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-book-open-reader"></i></span>
             <div class="icon-glow"></div>
-            </div>
-            <h3 class="feature-title">AI-Powered Learning</h3>
-            <p class="feature-description">
-            Our AI doesn’t just solve accounting problems — it analyzes, explains, and occasionally judges your balance sheet decisions. 
-            It’s basically the Federal Reserve, but nicer.
-            </p>
-            <div class="feature-tags">
-            <span class="tag">Automation</span>
-            <span class="tag">Cognitive Capital</span>
-            </div>
-            <div class="feature-action">
-            <a href="ai.html" class="feature-btn">Launch AI Mode →</a>
-            </div>
+        </div>
+        <h3 class="feature-title">Interactive Lesson Pages</h3>
+        <p class="feature-description">
+            Each chapter comes with interactive lessons, animations, and simple English —
+            taaki basic topics bhi easily samajh aaye. Every page feels like a guided journey
+            through accounting fundamentals.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Animations</span><span class="tag">Simple English</span><span class="tag">Guided</span>
+        </div>
         </div>
 
+        <!-- Practice MCQs -->
         <div class="feature-card" data-tilt>
-            <div class="feature-icon">
-            <span class="icon-emoji">💰</span>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-list-check"></i></span>
             <div class="icon-glow"></div>
-            </div>
-            <h3 class="feature-title">Flexible Ownership Plans</h3>
-            <p class="feature-description">
-            Buy it outright like a capitalist, rent it like a pragmatist, or partner like a strategist.  
-            Either way — you own a piece of the digital accounting empire.
-            </p>
-            <div class="feature-tags">
-            <span class="tag">Full Buyout</span>
-            <span class="tag">Rental Model</span>
-            <span class="tag">Partnership</span>
-            </div>
+        </div>
+        <h3 class="feature-title">Practice MCQs — 20 per Chapter</h3>
+        <p class="feature-description">
+            Har chapter ke baad 20 carefully crafted MCQs for self-assessment. Every attempt is
+            saved and your best score replaces the previous record — progress auto-updates so you can
+            track improvements over time. View detailed stats on your profile / progress page.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Saved Attempts</span><span class="tag">Progress Tracking</span><span class="tag">Instant Feedback</span>
+        </div>
         </div>
 
+        <!-- Infographics & Charts -->
         <div class="feature-card" data-tilt>
-            <div class="feature-icon">
-            <span class="icon-emoji">🧾</span>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-chart-pie"></i></span>
             <div class="icon-glow"></div>
-            </div>
-            <h3 class="feature-title">Smart Ledger Sync</h3>
-            <p class="feature-description">
-            Every transaction you make — academic or financial — gets stored, synced, and secured.  
-            Even the IMF would be impressed with this accuracy.
-            </p>
-            <div class="feature-tags">
-            <span class="tag">Data Security</span>
-            <span class="tag">Precision Accounting</span>
-            </div>
+        </div>
+        <h3 class="feature-title">Infographics, Charts & Tables</h3>
+        <p class="feature-description">
+            Complex concepts visualised clearly — balance sheets, ratios, and trial balances shown
+            as infographics, charts and comparison tables for fast comprehension and memory retention.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Visual Learning</span><span class="tag">Charts</span>
+        </div>
         </div>
 
+        <!-- Practical Questions -->
         <div class="feature-card" data-tilt>
-            <div class="feature-icon">
-            <span class="icon-emoji">🗽</span>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-file-invoice-dollar"></i></span>
             <div class="icon-glow"></div>
-            </div>
-            <h3 class="feature-title">Capitalism-Friendly Design</h3>
-            <p class="feature-description">
-            Built in the spirit of free markets and free Wi-Fi.  
-            We believe education should be accessible — and scalable like an IPO.
-            </p>
-            <div class="feature-tags">
-            <span class="tag">Economic Freedom</span>
-            <span class="tag">Zero Bureaucracy</span>
-            </div>
+        </div>
+        <h3 class="feature-title">Practical Questions with Answers</h3>
+        <p class="feature-description">
+            Solved and unsolved practicals for journal entries, ledger posting, and trial balances —
+            step-by-step solutions included so you can practice and verify yourself.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Hands-on</span><span class="tag">Guided Solutions</span>
+        </div>
         </div>
 
+        <!-- Main Quiz Hub -->
         <div class="feature-card" data-tilt>
-            <div class="feature-icon">
-            <span class="icon-emoji">🌎</span>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-gamepad"></i></span>
             <div class="icon-glow"></div>
-            </div>
-            <h3 class="feature-title">Globally Recognized Humor</h3>
-            <p class="feature-description">
-            Our system runs on universal accounting principles and international memes.  
-            Balanced sheets, unbalanced jokes — that’s globalization done right.
-            </p>
-            <div class="feature-tags">
-            <span class="tag">Cross-Border Learning</span>
-            <span class="tag">Satirical Economics</span>
-            </div>
+        </div>
+        <h3 class="feature-title">Main Quiz Hub</h3>
+        <p class="feature-description">
+            The all-in-one MCQ hub: attempt mixed MCQs drawn from every chapter to measure overall mastery.
+            Use it as a final checkpoint after chapter completion — progress syncs to your profile so you can
+            monitor long-term growth.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">All-in-One</span><span class="tag">Chapter MCQs</span>
+        </div>
         </div>
 
+        <!-- Guess The Account (Retro Theme) -->
         <div class="feature-card" data-tilt>
-            <div class="feature-icon">
-            <span class="icon-emoji">🛰️</span>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-dice"></i></span>
             <div class="icon-glow"></div>
-            </div>
-            <h3 class="feature-title">Partnership Portal</h3>
-            <p class="feature-description">
-            Invest, license, or collaborate.  
-            We’re open for partnerships — unless your country has sanctions.
-            </p>
-            <div class="feature-tags">
-            <span class="tag">Joint Ventures</span>
-            <span class="tag">Collaborative Growth</span>
-            </div>
         </div>
+        <h3 class="feature-title">GuessTheAccount — Retro Game Theme</h3>
+        <p class="feature-description">
+            Retro arcade vibes (think 8-bit / pixel art). Players see a transaction or hint and must
+            guess the correct ledger/account. Multiple modes available — Classic, Time Attack, Sudden Death,
+            and Boss Rush — each increasing in difficulty and speed.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Retro Theme</span><span class="tag">Multi-Modes</span>
+        </div>
+        </div>
+
+        <!-- Scenario-Based -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-brain"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">Scenario-Based Quiz — Cyberpunk Theme</h3>
+        <p class="feature-description">
+            Deep, situational problems presented in a cyberpunk-style interface. Apply accounting rules to
+            realistic scenarios — choose the right treatments, post entries, and interpret results.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Scenario Practice</span><span class="tag">Analytical</span>
+        </div>
+        </div>
+
+        <!-- Rapid Fire -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-bolt"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">RapidFire — 90s Game Theme</h3>
+        <p class="feature-description">
+            Fast-paced rounds inspired by 90s arcade games. Answer as many MCQs as possible within
+            a short time window. Great for sharpening speed and accuracy under pressure.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Speed Practice</span><span class="tag">High Score</span>
+        </div>
+        </div>
+
+        <!-- True/False -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-scale-balanced"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">True / False Rounds</h3>
+        <p class="feature-description">
+            Quick judgement rounds to test concept clarity. Presented with neon & dark UI options for focused
+            revision sessions — ideal for quick warm-ups before practice or exams.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Quick Revision</span><span class="tag">Neon UI</span>
+        </div>
+        </div>
+
+        <!-- Ledger Game -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-book"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">Ledger Game</h3>
+        <p class="feature-description">
+            Simulate ledger posting in a game format — drag & drop entries, reconcile balances, and solve
+            posting puzzles. Great for mastering ledger structure and flow.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Interactive Ledger</span><span class="tag">Themeable</span>
+        </div>
+        </div>
+
+        <!-- GuessTheAccount Modes -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-layer-group"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">GuessTheAccount — Mode Details</h3>
+        <p class="feature-description">
+            <b>Classic:</b> steady-paced practice with hints.  
+            <b>Time Attack:</b> score max answers within fixed time.  
+            <b>Sudden Death:</b> one mistake and the round ends.  
+            <b>Boss Rush:</b> a series of elite questions with escalating difficulty — survive to win.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Classic</span><span class="tag">Time Attack</span><span class="tag">Boss Rush</span>
+        </div>
+        </div>
+
+        <!-- Journal Entry Practice -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-pen-to-square"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">Journal Entry Practice</h3>
+        <p class="feature-description">
+            Access Journal Entry exercises directly from the homepage — simulate real transactions,
+            post entries, and get instant guidance on debit/credit rules. AI hints available for stuck students.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Interactive</span><span class="tag">AI Hints</span>
+        </div>
+        </div>
+
+        <!-- Mobile Optimization -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-mobile-screen"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">Smartphone Optimized</h3>
+        <p class="feature-description">
+            Responsive design for fast mobile studying — pages load quickly, interactions are touch-friendly,
+            and the UI adapts for small screens.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Responsive</span><span class="tag">Touch Friendly</span>
+        </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">Disclaimer</h3>
+        <p class="feature-description">
+            This website is under construction 🚧 — kuch bugs, outdated content, ya missing MCQs ho sakte hain.
+            Agar aapko koi issue mile, contact me via email and I’ll fix it ASAP.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Beta</span><span class="tag">Feedback Welcome</span>
+        </div>
+        </div>
+
+        <!-- Topic Snippets -->
+        <div class="feature-card" data-tilt>
+        <div class="feature-icon">
+            <span class="icon-emoji"><i class="fa-solid fa-lightbulb"></i></span>
+            <div class="icon-glow"></div>
+        </div>
+        <h3 class="feature-title">Topic Snippets on Main Page</h3>
+        <p class="feature-description">
+            Short summaries of every topic are available on the main index so you can preview concepts before
+            diving deeper — quick, efficient skimming for busy students.
+        </p>
+        <div class="feature-tags">
+            <span class="tag">Quick Preview</span><span class="tag">Concise</span>
+        </div>
+        </div>
+
         </div>
     </div>
     </section>
 
+    <!-- AI Assistant Section -->
+    <section class="ai-section" id="ai-assistant">
+    <div class="ai-container" data-tilt>
+        <div class="ai-content">
+        <h2 class="ai-title">🤖 AI Learning Assistant</h2>
+        <p class="ai-description">
+            Meet your personal study partner! This simulated AI Assistant helps you understand accounting concepts, generate journal entries, and clarify tricky terms — all in real time.
+            <br><br>
+            Though it behaves like an AI, it’s actually a <b>JavaScript-based logic system</b> that merges your inputs with pre-stored data and smart keyword detection.  
+            Think of it as a clever helper designed to make learning feel futuristic 🔥
+        </p>
+
+        <div class="ai-button-wrapper">
+            <a href="ai.html" class="ai-launch-button">🚀 Launch AI Assistant</a>
+        </div>
+
+        <p class="ai-disclaimer">
+            ⚠️ <b>Disclaimer:</b> This is <em>not a real AI model</em>.  
+            It does not use any online AI services or APIs.  
+            The responses are generated using <b>predefined JavaScript logic</b> and stored data.  
+            It simply mimics how an AI would behave to make your learning interactive and fun.
+        </p>
+        </div>
+    </div>
+    </section>
+
+    <!-- Journey Timeline Section -->
+    <section class="journey-section" id="journey">
+        <div class="journey-container">
+            <h1 class="journey-main-title">
+                <span class="gradient-text">Your Learning Journey</span>
+                <br>
+                <span class="subtitle-text">Master Accounting in 6 Simple Steps</span>
+            </h1>
+            
+            <ul class="journey-timeline">
+                <!-- Step 1 -->
+                <li>
+                    <div class="date" style="--accent-color: #00d4ff">STEP 1</div>
+                    <div class="title">Start Your Learning Adventure</div>
+                    <div class="descr">
+                        Your journey begins the moment you click <em>Start Learning</em> on the homepage 
+                        or the <strong>Learn</strong> button in the navbar. You’ll be taken straight to 
+                        the Lesson Hub — your personal accounting dashboard. From here, every topic, note, 
+                        and quiz is just one click away. So take a deep breath, grab a notebook, and 
+                        prepare to turn accounting concepts into clear, practical knowledge.
+                    </div>
+                </li>
+
+                <!-- Step 2 -->
+                <li>
+                    <div class="date" style="--accent-color: #00d4ff">STEP 2</div>
+                    <div class="title">Find Your Perfect Lesson</div>
+                    <div class="descr">
+                        Once inside the Lesson Hub, explore <strong>Lessons 1–14</strong> (excluding 3 & 5). 
+                        Each lesson represents a key milestone in the DK Goel curriculum. Use the integrated 
+                        <strong>Search Bar</strong> to quickly locate lessons using topic names or 
+                        keywords like “Journal Entry” or “Trial Balance.” You can even browse chapter 
+                        summaries to understand which one to start next. The experience is designed 
+                        for both beginners and quick revisers alike.
+                    </div>
+                </li>
+
+                <!-- Step 3 -->
+                <li>
+                    <div class="date" style="--accent-color: #00ff88">STEP 3</div>
+                    <div class="title">Deep Dive into Interactive Notes</div>
+                    <div class="descr">
+                        Each lesson offers beautifully formatted notes, written in simple English 
+                        and powered by <strong>animations, infographics, and interactive diagrams</strong>. 
+                        You’ll find real-world examples that connect accounting theory to daily life — 
+                        like how journal entries work in small businesses or startups. Scroll at your 
+                        own pace, highlight key terms, and revisit sections anytime. This phase builds 
+                        your foundation before moving to practical testing.
+                    </div>
+                </li>
+
+                <!-- Step 4 -->
+                <li>
+                    <div class="date" style="--accent-color: #00ff88">STEP 4</div>
+                    <div class="title">Test Yourself with MCQs</div>
+                    <div class="descr">
+                        After mastering the lesson, jump into the <strong>20-question MCQ set</strong> 
+                        crafted for that specific topic. Every attempt you make is automatically saved, 
+                        so you can track your learning history. If you perform better than before, 
+                        your progress score updates instantly. Immediate feedback shows your correct 
+                        and incorrect answers, helping you fix weak areas on the spot — it’s like 
+                        having a mini teacher built right into your screen.
+                    </div>
+                </li>
+
+                <!-- Step 5 -->
+                <li>
+                    <div class="date" style="--accent-color: #ffc107">STEP 5</div>
+                    <div class="title">Track Your Progress</div>
+                    <div class="descr">
+                        Your learning performance is never lost. Click the account icon in the navbar 
+                        → select <em>My Progress</em> to open your <strong>Progress Dashboard</strong>. 
+                        Here, your best scores, quiz attempts, and topic-wise performance graphs are 
+                        displayed in a clear, visual layout. Whether you improve by 2% or 20%, every 
+                        record is updated in real time. This lets you identify which chapters need a 
+                        quick review before moving on.
+                    </div>
+                </li>
+
+                <!-- Step 6 -->
+                <li>
+                    <div class="date" style="--accent-color: #ffc107">STEP 6</div>
+                    <div class="title">Level Up with Extra Practice</div>
+                    <div class="descr">
+                        Once you’ve mastered the basics, head to the <strong>Quiz Pages</strong> for 
+                        more exciting practice. Play through themed modes like <em>GuessTheAccount</em> 
+                        (retro game style), <em>RapidFire</em> (90s challenge mode), and <em>ScenarioBased</em> 
+                        (cyberpunk simulation). You can also try <strong>True/False</strong> or the 
+                        <strong>Ledger Game</strong> to sharpen your bookkeeping instincts. Each quiz 
+                        type tests a different skill — speed, logic, and accuracy — making sure you 
+                        don’t just learn accounting, but actually enjoy it.
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Disclaimer as separate element -->
+            <div class="journey-disclaimer">
+                <div class="disclaimer-icon">⚠️</div>
+                <div class="disclaimer-content">
+                    <h3>Important Notice</h3>
+                    <p>The syllabus follows <strong>DK Goel Grade 11 (up to Chapter 14)</strong>. 
+                    Quiz-page progress saving is still <strong>under development</strong> and will 
+                    be released soon with advanced tracking options and smart insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Curriculum Section -->
     <section class="curriculum-section" id="lessons">
@@ -1590,85 +2235,108 @@
 
     <!-- Pricing Section -->
     <section class="pricing-section" id="pricing">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-badge">Commerce Day Special</div>
-                <h2 class="section-title">Choose the Way You Acquire Knowledge (and a Website)</h2>
-                <p class="section-subtitle">Three sensible options for schools, trustees, and proud capitalists — pick what fits your balance sheet.</p>
-            </div>
-
-            <div class="pricing-grid">
-                <div class="price-card">
-                    <div class="price-header">
-                        <h3 class="price-title">Site Rental (License)</h3>
-                        <div class="price-amount">
-                            <span class="currency">₹</span>
-                            <span class="amount">1,199</span>
-                            <span class="period">/month</span>
-                        </div>
-                        <p class="price-description">Low-commitment access — host + updates, perfect for trial runs and PTA approvals.</p>
-                    </div>
-                    <ul class="price-features">
-                        <li><span class="checkmark">✓</span> Hosted on our secure platform</li>
-                        <li><span class="checkmark">✓</span> Standard teacher dashboard</li>
-                        <li><span class="checkmark">✓</span> Monthly content & quiz updates</li>
-                        <li><span class="checkmark">✓</span> Email support & knowledge base</li>
-                        <li><span class="cross">✗</span> No source-code access</li>
-                        <li><span class="cross">✗</span> Limited white-labeling</li>
-                    </ul>
-                    <button class="price-button">Start a Trial</button>
-                </div>
-
-                <div class="price-card featured">
-                    <div class="price-badge">BEST FOR SCHOOLS</div>
-                    <div class="price-header">
-                        <h3 class="price-title">Partnership</h3>
-                        <div class="price-amount">
-                            <span class="currency">₹</span>
-                            <span class="amount">24,999</span>
-                            <span class="period">/year</span>
-                        </div>
-                        <p class="price-description">Work with me: co-branding, shared revenue options, and priority rollout for your institution.</p>
-                    </div>
-                    <ul class="price-features">
-                        <li><span class="checkmark">✓</span> Custom onboarding & teacher workshop credits</li>
-                        <li><span class="checkmark">✓</span> Co-branded pages & partial white-labeling</li>
-                        <li><span class="checkmark">✓</span> Priority feature requests & quarterly updates</li>
-                        <li><span class="checkmark">✓</span> Analytics dashboard + student progress exports</li>
-                        <li><span class="checkmark">✓</span> Optional revenue share / licensing model</li>
-                        <li><span class="checkmark">✓</span> Dedicated support channel</li>
-                    </ul>
-                    <button class="price-button primary">Partner With Us</button>
-                </div>
-
-                <div class="price-card">
-                    <div class="price-header">
-                        <h3 class="price-title">Full Buyout</h3>
-                        <div class="price-amount">
-                            <span class="currency">₹</span>
-                            <span class="amount">1,11,111</span>
-                            <span class="period">/one-time</span>
-                        </div>
-                        <p class="price-description">Own everything outright — source code, custom branding, and lifetime teacher support options.</p>
-                    </div>
-                    <ul class="price-features">
-                        <li><span class="checkmark">✓</span> Full source code & database export</li>
-                        <li><span class="checkmark">✓</span> Complete white-labeling & on-site training</li>
-                        <li><span class="checkmark">✓</span> Priority custom development (per agreement)</li>
-                        <li><span class="checkmark">✓</span> Lifetime updates for critical bugs</li>
-                        <li><span class="checkmark">✓</span> Option for exclusive regional licensing</li>
-                        <li><span class="checkmark">✓</span> Your logo, your domain, your rules</li>
-                    </ul>
-                    <button class="price-button">Request Buyout</button>
-                </div>
-            </div>
-
-            <div class="pricing-note">
-                <p>💡 <strong>Note:</strong> Prices shown are commerce-day specials. Choose Rental for a no-risk pilot, Partnership for institutional rollout, or Full Buyout if you want to rule an accounting micro-empire.</p>
-                <p>⚖️ Disclaimer: We accept rupees, smiles, and reasonable checks — sanctions apply only to boredom and pointless meetings.</p>
-            </div>
+    <div class="section-container">
+        <div class="section-header">
+        <div class="section-badge">Commerce Day Exclusive</div>
+        <h2 class="section-title">Choose Your Path to Ownership & Collaboration</h2>
+        <p class="section-subtitle">
+            Three visionary plans — from golden access to full creative control. 
+            Decide how you wish to shape the future of AccountsPro.
+        </p>
         </div>
+
+        <div class="pricing-grid">
+
+        <!-- Auris Plan -->
+        <div class="price-card">
+            <div class="price-header">
+            <h3 class="price-title">Auris Plan</h3>
+            <div class="price-amount">
+                <span class="currency">₹</span>
+                <span class="amount">1,500</span>
+                <span class="period">/year</span>
+            </div>
+            <p class="price-description">
+                Latin for “Golden” — your entry into the AccountsPro ecosystem.
+                Get partial ownership and custom features tailored to your needs.
+            </p>
+            </div>
+
+            <ul class="price-features">
+            <li><span class="checkmark">✓</span> 10% ownership stake for 1 year</li>
+            <li><span class="checkmark">✓</span> Request additional lessons as needed</li>
+            <li><span class="checkmark">✓</span> Personalized quiz pages & challenges</li>
+            <li><span class="checkmark">✓</span> Year-long access to hosted platform</li>
+            <li><span class="checkmark">✓</span> Regular updates and performance improvements</li>
+            <li><span class="cross">✗</span> No source-code access</li>
+            <li><span class="cross">✗</span> Limited customization</li>
+            </ul>
+
+            <a href="#contact" class="price-button">Get Auris Access</a>
+        </div>
+
+        <!-- Kaizen Plan -->
+        <div class="price-card featured">
+            <div class="price-badge">Best for Collaborators</div>
+            <div class="price-header">
+            <h3 class="price-title">Kaizen Plan</h3>
+            <div class="price-amount">
+                <span class="currency">₹</span>
+                <span class="amount">2,000</span>
+                <span class="period">/year</span>
+            </div>
+            <p class="price-description">
+                “Kaizen” means continuous improvement — this plan allows real partnership and creative restructuring of the platform.
+            </p>
+            </div>
+
+            <ul class="price-features">
+            <li><span class="checkmark">✓</span> 40% ownership for 1 year</li>
+            <li><span class="checkmark">✓</span> Access to Firebase data analytics</li>
+            <li><span class="checkmark">✓</span> Restructure & redesign the site layout</li>
+            <li><span class="checkmark">✓</span> Partial source code access</li>
+            <li><span class="checkmark">✓</span> Label or merchandise your own section</li>
+            <li><span class="checkmark">✓</span> Includes all features of Auris Plan</li>
+            <li><span class="checkmark">✓</span> Dedicated collaboration support</li>
+            </ul>
+
+            <a href="#contact" class="price-button primary">Join the Kaizen Program</a>
+        </div>
+
+        <!-- Zenith Plan -->
+        <div class="price-card">
+            <div class="price-header">
+            <h3 class="price-title">Zenith Plan</h3>
+            <div class="price-amount">
+                <span class="currency">₹</span>
+                <span class="amount">10,000</span>
+                <span class="period">/one-time</span>
+            </div>
+            <p class="price-description">
+                Reach the peak of ownership — the “Zenith”. You get full rights, data access, and two years of dedicated maintenance support.
+            </p>
+            </div>
+
+            <ul class="price-features">
+            <li><span class="checkmark">✓</span> 100% ownership & control</li>
+            <li><span class="checkmark">✓</span> Full source code + database export</li>
+            <li><span class="checkmark">✓</span> Personal onboarding & setup help</li>
+            <li><span class="checkmark">✓</span> 2 years of maintenance support</li>
+            <li><span class="checkmark">✓</span> Custom licensing & exclusive rights</li>
+            <li><span class="checkmark">✓</span> Branding under your name or institution</li>
+            </ul>
+
+            <a href="#contact" class="price-button">Own Zenith</a>
+        </div>
+        </div>
+
+        <div class="pricing-note">
+        <p>💡 <strong>Note:</strong> Ownership values are symbolic representations of partnership and collaboration. All plans are renewable annually except Zenith, which is permanent.</p>
+        <p>⚖️ <strong>Disclaimer:</strong> Prices and terms are subject to change. These offers are part of the Commerce Day showcase and may differ in future releases.</p>
+        </div>
+    </div>
     </section>
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -1701,7 +2369,7 @@
     <script>
         // Commerce Day Countdown Timer
         function startCountdown() {
-        const commerceDay = new Date('2024-02-15 09:00:00'); // Example: Feb 15, 2024
+        const commerceDay = new Date('2025-10-29 09:00:00'); // Example: Feb 15, 2025
             commerceDay.setHours(23, 59, 59, 999);
 
             function updateTimer() {
@@ -1848,10 +2516,11 @@
         // Price button interactions
         document.querySelectorAll('.price-button').forEach(button => {
             button.addEventListener('click', () => {
-                console.log('Firebase: Payment initiated (demo mode)');
-                alert('Commerce Day Special: This feature unlocks when teachers open their wallets! 💰');
+                console.log('Price button pressed – demo mode only');
+                alert('Thank you for your interest! Please contact me in real life to proceed. 🙂');
             });
         });
+
 
         // Generate particles for the sphere
         document.addEventListener('DOMContentLoaded', () => {
