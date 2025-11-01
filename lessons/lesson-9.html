@@ -1146,6 +1146,7 @@
         padding-bottom: 80px; /* Make room for button at bottom */
         border-radius: 14px;
         min-height: 400px; /* Ensure consistent height */
+        overflow: visible;
       }
 
 
@@ -1240,6 +1241,11 @@
       .practical-card .journal-example {
         padding: 0 25px 25px 25px;
         background: transparent;
+        display: none; /* ✅ Hidden by default */
+      }
+
+      .practical-card .journal-example.active {
+        display: block; /* ✅ Show when active */
       }
 
       .format-demo .journal-card {
@@ -7653,7 +7659,7 @@
 
   window.togglePractical = function(practicalId) {
     const solution = document.getElementById(`${practicalId}-solution`);
-    const btn = event.target;
+    const btn = document.querySelector(`[onclick="togglePractical('${practicalId}')"]`); // ✅ Find button by onclick attribute
 
     if (btn) {
       btn.classList.add('btn-animate');
@@ -7666,13 +7672,13 @@
         setTimeout(() => {
           solution.style.display = 'none';
         }, 300);
-        btn.textContent = 'View Solution';
+        if (btn) btn.textContent = 'View Solution';
       } else {
         solution.style.display = 'block';
         setTimeout(() => {
           solution.classList.add('active');
         }, 10);
-        btn.textContent = 'Hide Solution';
+        if (btn) btn.textContent = 'Hide Solution';
       }
     }
   };

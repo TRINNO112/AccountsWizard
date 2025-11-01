@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Firestore Data Visualizer</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e1e;
+    color: #ddd;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+  }
+  #app {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+  }
+  aside {
+    width: 280px;
+    background-color: #2d2d2d;
+    border-right: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 16px;
+    border-bottom: 1px solid #444;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: #3a3a3a;
+  }
+  .collection-list, .document-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+  .collection-item, .document-item {
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .collection-item:hover, .document-item:hover {
+    background-color: #444;
+  }
+  .collection-item.selected, .document-item.selected {
+    background-color: #007acc;
+    color: white;
+  }
+  main {
+    flex-grow: 1;
+    padding: 16px;
+    overflow: auto;
+    background-color: #252526;
+  }
+  pre {
+    background-color: #1e1e1e;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    color: #9cdcfe;
+  }
+  h1 {
+    margin: 0 0 8px 0;
+  }
+  .section-title {
+    margin: 0 0 8px 0;
+    font-weight: bold;
+    font-size: 1em;
+    border-bottom: 1px solid #444;
+    padding-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <aside>
+    <header>Collections</header>
+    <div class="collection-list" id="collectionList"></div>
+    <header>Documents</header>
+    <div class="document-list" id="documentList"></div>
+  </aside>
+  <main>
+    <h1>Document Data</h1>
+    <pre id="documentData">Select a document to view its data.</pre>
+  </main>
+</div>
+<script>
+  // Mock data simulating Firestore structure
+  const mockData = {
+    'user-progress': [
+      {
+        id: 'anon_1678886400_abc123_lesson1',
+        userId: 'anon_1678886400_abc123',
+        lessonNumber: 1,
+        answers: {
+          q1: { selected: 'a', correct: 'b', isCorrect: false },
+          q2: { selected: 'c', correct: 'c', isCorrect: true },
+        },
+        score: 1,
+        totalQuestions: 2,
+        percentage: 50,
+        timestamp: { seconds: 1678886400, nanoseconds: 0 },
+        attempts: 3,
+      },
+      {
+        id: 'firebaseUID_xyz789_lesson1',
+        userId: 'firebaseUID_xyz789',
+        lessonNumber: 1,
+        answers: {
+          q1: { selected: 'b', correct: 'b', isCorrect: true },
+          q2: { selected: 'c', correct: 'c', isCorrect: true },
+        },
+        score: 2,
+        totalQuestions: 2,
+        percentage: 100,
+        timestamp: { seconds: 1678886520, nanoseconds: 0 },
+        attempts: 1,
+      },
+      {
+        id: 'firebaseUID_xyz789_lesson2',
+        userId: 'firebaseUID_xyz789',
+        lessonNumber: 2,
+        answers: {
+          q1: { selected: 'd', correct: 'd', isCorrect: true },
+          q2: { selected: 'a', correct: 'b', isCorrect: false },
+          q3: { selected: 'c', correct: 'c', isCorrect: true },
+        },
+        score: 2,
+        totalQuestions: 3,
+        percentage: 67,
+        timestamp: { seconds: 1678886940, nanoseconds: 0 },
+        attempts: 2,
+      },
+    ],
+    'overall-progress': [
+      {
+        id: 'anon_1678886400_abc123',
+        userId: 'anon_1678886400_abc123',
+        totalScore: 1,
+        totalQuestions: 2,
+        overallPercentage: 50,
+        completedLessons: 1,
+        totalLessons: 14,
+        lastUpdated: { seconds: 1678886400, nanoseconds: 0 },
+      },
+      {
+        id: 'firebaseUID_xyz789',
+        userId: 'firebaseUID_xyz789',
+        totalScore: 4,
+        totalQuestions: 5,
+        overallPercentage: 80,
+        completedLessons: 2,
+        totalLessons: 14,
+        lastUpdated: { seconds: 1678886940, nanoseconds: 0 },
+      },
+    ],
+  };
+
+  const collectionListEl = document.getElementById('collectionList');
+  const documentListEl = document.getElementById('documentList');
+  const documentDataEl = document.getElementById('documentData');
+
+  let selectedCollection = null;
+  let selectedDocumentId = null;
+
+  function renderCollections() {
+    collectionListEl.innerHTML = '';
+    Object.keys(mockData).forEach(collectionName => {
+      const div = document.createElement('div');
+      div.textContent = collectionName;
+      div.className = 'collection-item';
+      div.tabIndex = 0;
+      div.addEventListener('click', () => {
+        selectCollection(collectionName);
+      });
+      div.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectCollection(collectionName);
+        }
+      });
+      collectionListEl.appendChild(div);
+    });
+  }
+
+  function renderDocuments() {
+    documentListEl.innerHTML = '';
+    if (!selectedCollection) return;
+    const docs = mockData[selectedCollection];
+    docs.forEach(doc => {
+      const div = document.createElement('div');
+      div.textContent = doc.id;
+      div.className = 'document-item';
+      div.tabIndex = 0;
+      div.addEventListener('click', () => {
+        selectDocument(doc.id);
+      });
+      div.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectDocument(doc.id);
+        }
+      });
+      documentListEl.appendChild(div);
+    });
+  }
+
+  function selectCollection(collectionName) {
+    selectedCollection = collectionName;
+    selectedDocumentId = null;
+    updateSelection();
+    renderDocuments();
+    if (mockData[collectionName].length > 0) {
+      selectDocument(mockData[collectionName][0].id);
+    } else {
+      documentDataEl.textContent = 'No documents in this collection.';
+    }
+  }
+
+  function selectDocument(docId) {
+    selectedDocumentId = docId;
+    updateSelection();
+    renderDocumentData();
+  }
+
+  function updateSelection() {
+    // Update collection selection
+    Array.from(collectionListEl.children).forEach(div => {
+      div.classList.toggle('selected', div.textContent === selectedCollection);
+    });
+    // Update document selection
+    Array.from(documentListEl.children).forEach(div => {
+      div.classList.toggle('selected', div.textContent === selectedDocumentId);
+    });
+  }
+
+  function renderDocumentData() {
+    if (!selectedCollection || !selectedDocumentId) {
+      documentDataEl.textContent = 'Select a document to view its data.';
+      return;
+    }
+    const doc = mockData[selectedCollection].find(d => d.id === selectedDocumentId);
+    if (!doc) {
+      documentDataEl.textContent = 'Document not found.';
+      return;
+    }
+    // Pretty print JSON with 2 spaces indentation
+    documentDataEl.textContent = JSON.stringify(doc, null, 2);
+  }
+
+  // Initialize
+  renderCollections();
+  // Select first collection by default
+  const firstCollection = Object.keys(mockData)[0];
+  if (firstCollection) {
+    selectCollection(firstCollection);
+  }
+</script>
+</body>
+</html>

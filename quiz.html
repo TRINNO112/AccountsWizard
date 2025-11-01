@@ -1541,6 +1541,58 @@
                 display: flex;
             }
         }
+
+        /* User Profile Styles */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .user-profile button {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .user-profile {
+                display: none; /* Hide on mobile, or adjust as needed */
+            }
+        }
+
+        /* Stats Display in Results */
+        .previous-best-badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 1rem 0;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--info);
+            font-size: 0.875rem;
+        }
+
+        .new-record-badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 1rem 0;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--success);
+            font-size: 0.875rem;
+            animation: pulse 2s infinite;
+        }
     </style>
 </head>
 <body>
@@ -1568,6 +1620,13 @@
                 <span></span>
                 <span></span>
             </div>
+        </div>
+
+        <div id="userProfile" class="user-profile"></div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </nav>
 
@@ -1922,7 +1981,242 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // ========================================
+        // (Add at the very top of your existing script)
+        // ========================================
+
+        // Import Firebase functions
+        import { 
+        submitQuizAttempt, 
+        loadPreviousQuizAttempt, 
+        getUserProfile,
+        updateLastLogin,
+        signInWithGoogle,
+        signOutUser,
+        onAuthChange,
+        getOverallStats
+        } from './firebase-config.js';
+
+        // Track quiz start time
+        let quizStartTime = null;
+
+        // ========================================
+        // MODIFY YOUR loadChapterQuiz FUNCTION
+        // ========================================
+        async function loadChapterQuiz(chapterIds) {
+            // Your existing code...
+            const allQuestions = [];
+            chapterIds.forEach(chapterId => {
+                const chapter = chapterQuestions[chapterId];
+                if (chapter) {
+                    chapter.questions.forEach(q => {
+                        allQuestions.push({
+                            ...q,
+                            sourceChapter: chapterId,
+                            sourceChapterTitle: chapter.title
+                        });
+                    });
+                }
+            });
+            
+            currentQuiz.allQuestions = shuffleArray(allQuestions);
+            currentQuiz.currentQuestion = 0;
+            currentQuiz.score = 0;
+            currentQuiz.userAnswers = [];
+            currentQuiz.skippedQuestions = [];
+            currentQuiz.startTime = new Date();
+            
+            // 🔥 NEW: Record quiz start time for Firebase
+            quizStartTime = Date.now();
+            
+            // 🔥 NEW: Load previous attempt
+            try {
+                const previousAttempt = await loadPreviousQuizAttempt(chapterIds);
+                if (previousAttempt) {
+                    console.log('📖 Previous best score:', previousAttempt.score, '/', previousAttempt.totalQuestions);
+                    // Optional: Show user their previous best score
+                    showToast(`Your previous best: ${previousAttempt.score}/${previousAttempt.totalQuestions} (${previousAttempt.percentage}%)`, 'info');
+                }
+            } catch (error) {
+                console.error('Error loading previous attempt:', error);
+            }
+
+            // Update quiz title (your existing code)...
+            if (chapterIds.length === 1) {
+                const chapter = chapterQuestions[chapterIds[0]];
+                quizChapterTitle.textContent = `Chapter ${chapterIds[0]}: ${chapter.title}`;
+                quizChapterDescription.textContent = chapter.description;
+            } else {
+                quizChapterTitle.textContent = `${chapterIds.length} Chapters Combined Quiz`;
+                quizChapterDescription.textContent = `Questions from chapters: ${chapterIds.join(', ')}`;
+            }
+
+            loadQuestion();
+        }
+
+        // ========================================
+        // MODIFY YOUR showResults FUNCTION
+        // ========================================
+        async function showResults() {
+            if (!currentQuiz.allQuestions || currentQuiz.allQuestions.length === 0) return;
+            
+            const totalQuestions = currentQuiz.allQuestions.length;
+            const scorePercent = Math.round((currentQuiz.score / totalQuestions) * 100);
+            const skippedCount = currentQuiz.skippedQuestions.length;
+            const wrongCount = totalQuestions - currentQuiz.score - skippedCount;
+            
+            // Calculate time spent
+            const timeSpent = Math.floor((Date.now() - quizStartTime) / 1000); // in seconds
+            
+            // 🔥 NEW: Submit to Firebase
+            try {
+                const result = await submitQuizAttempt(
+                    currentQuiz.chapters, // Array of chapter IDs
+                    currentQuiz.userAnswers, // User's answers
+                    currentQuiz.allQuestions, // All questions
+                    currentQuiz.score, // Score
+                    totalQuestions, // Total questions
+                    currentQuiz.skippedQuestions, // Skipped questions
+                    timeSpent // Time spent in seconds
+                );
+                
+                if (result.success) {
+                    if (result.isNewRecord) {
+                        console.log('🎉 NEW RECORD!', result.message);
+                        showToast('🎉 New Best Score Saved!', 'success');
+                    } else {
+                        console.log('📊 Previous score was better:', result.message);
+                        showToast(result.message, 'info');
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error saving quiz results:', error);
+                showToast('Failed to save results. Please check your connection.', 'error');
+            }
+            
+            // Your existing results display code...
+            const scoreCircle = document.querySelector('.score-circle-container');
+            scoreCircle.style.setProperty('--score-percent', scorePercent);
+            
+            document.querySelector('.score-percentage').textContent = `${scorePercent}%`;
+            
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards[0].querySelector('.stat-value').textContent = totalQuestions;
+            statCards[1].querySelector('.stat-value').textContent = currentQuiz.score;
+            statCards[2].querySelector('.stat-value').textContent = wrongCount;
+            statCards[3].querySelector('.stat-value').textContent = skippedCount;
+            
+            const performanceBadge = document.querySelector('.performance-badge');
+            performanceBadge.className = 'performance-badge';
+            if (scorePercent >= 90) {
+                performanceBadge.classList.add('performance-excellent');
+                performanceBadge.textContent = '🏆 Excellent Performance!';
+            } else if (scorePercent >= 70) {
+                performanceBadge.classList.add('performance-good');
+                performanceBadge.textContent = '👍 Good Job!';
+            } else if (scorePercent >= 50) {
+                performanceBadge.classList.add('performance-average');
+                performanceBadge.textContent = '💪 Keep Practicing!';
+            } else {
+                performanceBadge.classList.add('performance-poor');
+                performanceBadge.textContent = '📚 Needs Improvement';
+            }
+
+            quizCard.classList.remove('active');
+            resultsCard.classList.add('active');
+            updateStepper(3);
+        }
+
+        // ========================================
+        // OPTIONAL: Add User Profile Display
+        // ========================================
+        async function initializeUserProfile() {
+            try {
+                const profile = await getUserProfile();
+                await updateLastLogin();
+                
+                console.log('👤 User Profile:', profile);
+                
+                // You can display user info in your nav if you want
+                // For example, add this to your nav:
+                // <div id="userProfile" class="user-profile"></div>
+                
+                const userProfileDiv = document.getElementById('userProfile');
+                if (userProfileDiv && profile) {
+                    if (profile.isAnonymous) {
+                        userProfileDiv.innerHTML = `
+                            <button onclick="handleSignIn()" class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                                <span>Sign In</span>
+                            </button>
+                        `;
+                    } else {
+                        userProfileDiv.innerHTML = `
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                ${profile.photoURL ? `<img src="${profile.photoURL}" alt="${profile.displayName}" style="width: 32px; height: 32px; border-radius: 50%;">` : ''}
+                                <span style="color: var(--text-secondary);">${profile.displayName}</span>
+                                <button onclick="handleSignOut()" class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                                    <span>Sign Out</span>
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error('Error initializing profile:', error);
+            }
+        }
+
+        // Sign in handler
+        async function handleSignIn() {
+            const result = await signInWithGoogle();
+            if (result.success) {
+                showToast('Signed in successfully!', 'success');
+                await initializeUserProfile();
+            } else {
+                showToast('Sign-in failed: ' + result.error, 'error');
+            }
+        }
+
+        // Sign out handler
+        async function handleSignOut() {
+            const result = await signOutUser();
+            if (result.success) {
+                showToast('Signed out successfully!', 'info');
+                await initializeUserProfile();
+            } else {
+                showToast('Sign-out failed: ' + result.error, 'error');
+            }
+        }
+
+        // Make functions global
+        window.handleSignIn = handleSignIn;
+        window.handleSignOut = handleSignOut;
+
+        // ========================================
+        // Initialize on page load
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUserProfile();
+        });
+
+        // ========================================
+        // OPTIONAL: Display overall stats on page
+        // ========================================
+        async function displayOverallStats() {
+            try {
+                const stats = await getOverallStats();
+                console.log('📊 Overall Stats:', stats);
+                
+                // You can display this somewhere in your UI
+                // For example, in the hero section or a stats card
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Call this if you want to show stats
+        // displayOverallStats();
     // Chapter Questions Database
     const chapterQuestions = {
         1: {
