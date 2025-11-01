@@ -534,6 +534,172 @@
       @media (max-width: 480px) {
         .gst-rates-grid { grid-template-columns: 1fr; }
       }
+      /* Mobile Optimizations */
+      @media (max-width: 768px) {
+        /* General Layout */
+        body {
+          padding: 10px;
+        }
+        
+        section {
+          padding: 20px 15px;
+          margin-bottom: 20px;
+        }
+
+        /* Table Optimizations */
+        .table-scroll {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          margin: 10px -15px;
+          width: calc(100% + 30px);
+          background: rgba(255,255,255,0.02);
+          position: relative;
+        }
+
+        .table-scroll::after {
+          content: '← Scroll horizontally →';
+          display: block;
+          text-align: center;
+          padding: 8px;
+          font-size: 0.8rem;
+          color: var(--muted);
+          background: var(--card);
+          position: sticky;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .gst-table th,
+        .gst-table td {
+          padding: 8px 10px;
+        }
+
+        /* Grid Layouts */
+        .features-grid {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .gst-rates-grid {
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 10px;
+        }
+
+        /* Cards and Content */
+        .feature-card {
+          padding: 15px;
+        }
+
+        .lesson-title {
+          font-size: 1.8rem;
+        }
+      }
+
+      /* Extra Small Screens */
+      @media (max-width: 480px) {
+        .gst-table {
+          font-size: 0.8rem;
+        }
+
+        .gst-rates-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .lesson-title {
+          font-size: 1.5rem;
+        }
+      }
+
+      /* Mobile-Friendly Table Styles */
+      .gst-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 20px 0;
+      }
+
+      @media (max-width: 768px) {
+        /* General Layout */
+        body {
+          padding: 10px;
+        }
+        
+        section {
+          padding: 20px 15px;
+          margin-bottom: 20px;
+        }
+
+        /* Table Optimizations */
+        .gst-table {
+          font-size: 0.9rem;
+          margin: 10px -15px;
+          width: calc(100% + 30px);
+          border-radius: 0;
+        }
+
+        .gst-table::after {
+          content: '← Scroll horizontally →';
+          display: block;
+          text-align: center;
+          padding: 8px;
+          font-size: 0.8rem;
+          color: var(--muted);
+          background: var(--card);
+          position: sticky;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .gst-table th,
+        .gst-table td {
+          padding: 8px 10px;
+          white-space: nowrap;
+        }
+
+        .gst-table th {
+          position: sticky;
+          top: 0;
+          background: var(--card);
+          z-index: 1;
+        }
+
+        /* Grid Layouts */
+        .features-grid {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .gst-rates-grid {
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 10px;
+        }
+      }
+
+      /* Extra Small Screens */
+      @media (max-width: 480px) {
+        .gst-table {
+          font-size: 0.8rem;
+        }
+
+        .gst-table th,
+        .gst-table td {
+          padding: 6px 8px;
+        }
+
+        .gst-rates-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .lesson-title {
+          font-size: 1.5rem;
+        }
+      }
     </style>
 </head>
 <body>

@@ -385,6 +385,44 @@
       .lesson-title { font-size: 1.8rem; }
       .formula { font-size: 1rem; }
     }
+
+    /* Add this CSS for the comparison table wrapper */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .comparison-table {
+      width: 100%;
+      min-width: 600px; /* Ensures table doesn't compress too much */
+      margin: 0; /* Remove margin since wrapper has it */
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    /* Scrollbar styling for the wrapper */
+    .table-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 4px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: var(--brand-2);
+    }
   </style>
 </head>
 <body>
@@ -770,42 +808,44 @@
     <section>
       <h2><i class="fas fa-exchange-alt"></i> Debtors vs Creditors</h2>
       
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th><i class="fas fa-user-plus"></i> Aspect</th>
-            <th><i class="fas fa-arrow-up"></i> Debtors (Trade Receivables)</th>
-            <th><i class="fas fa-arrow-down"></i> Creditors (Trade Payables)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Definition</strong></td>
-            <td>Persons who owe money to the business</td>
-            <td>Persons to whom business owes money</td>
-          </tr>
-          <tr>
-            <td><strong>Arises from</strong></td>
-            <td>Credit sales of goods/services</td>
-            <td>Credit purchases of goods/services</td>
-          </tr>
-          <tr>
-            <td><strong>Classification</strong></td>
-            <td>Current Asset</td>
-            <td>Current Liability</td>
-          </tr>
-          <tr>
-            <td><strong>Also called</strong></td>
-            <td>Sundry Debtors, Trade Receivables</td>
-            <td>Sundry Creditors, Trade Payables</td>
-          </tr>
-          <tr>
-            <td><strong>Bills related</strong></td>
-            <td>Bills Receivable (formal promise to receive)</td>
-            <td>Bills Payable (formal promise to pay)</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th><i class="fas fa-user-plus"></i> Aspect</th>
+              <th><i class="fas fa-arrow-up"></i> Debtors (Trade Receivables)</th>
+              <th><i class="fas fa-arrow-down"></i> Creditors (Trade Payables)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Definition</strong></td>
+              <td>Persons who owe money to the business</td>
+              <td>Persons to whom business owes money</td>
+            </tr>
+            <tr>
+              <td><strong>Arises from</strong></td>
+              <td>Credit sales of goods/services</td>
+              <td>Credit purchases of goods/services</td>
+            </tr>
+            <tr>
+              <td><strong>Classification</strong></td>
+              <td>Current Asset</td>
+              <td>Current Liability</td>
+            </tr>
+            <tr>
+              <td><strong>Also called</strong></td>
+              <td>Sundry Debtors, Trade Receivables</td>
+              <td>Sundry Creditors, Trade Payables</td>
+            </tr>
+            <tr>
+              <td><strong>Bills related</strong></td>
+              <td>Bills Receivable (formal promise to receive)</td>
+              <td>Bills Payable (formal promise to pay)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- Discount & Vouchers Section -->

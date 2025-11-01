@@ -516,6 +516,30 @@
       background: rgba(255,255,255,0.05);
     }
 
+    /* Responsive tables for small screens */
+    @media (max-width: 768px) {
+      .comparison-table,
+      .cash-book-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .comparison-table th,
+      .comparison-table td,
+      .cash-book-table th,
+      .cash-book-table td {
+        white-space: nowrap;
+      }
+
+      /* Make solution buttons more touch-friendly */
+      .view-solution-btn {
+        padding: 12px 22px;
+        font-size: 1rem;
+      }
+    }
+
     .debit-side {
       background: rgba(76,175,80,0.05);
     }
@@ -1075,7 +1099,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('balancing')">View Complete Solution</button>
+  <button class="view-solution-btn" onclick="toggleSolution('balancing', this)">View Complete Solution</button>
 
         <div class="solution" id="balancing-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Balanced Single Column Cash Book</h4>
@@ -1244,7 +1268,7 @@
           </ul>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('double-balancing')">View Double Column Example</button>
+  <button class="view-solution-btn" onclick="toggleSolution('double-balancing', this)">View Double Column Example</button>
 
         <div class="solution" id="double-balancing-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Double Column Cash Book Balancing Process</h4>
@@ -1296,7 +1320,7 @@
           </ul>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('three-balancing')">View Three Column Procedure</button>
+  <button class="view-solution-btn" onclick="toggleSolution('three-balancing', this)">View Three Column Procedure</button>
 
         <div class="solution" id="three-balancing-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Three Column Cash Book Balancing Process</h4>
@@ -1503,7 +1527,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('ex1')">View Solution</button>
+  <button class="view-solution-btn" onclick="toggleSolution('ex1', this)">View Solution</button>
 
         <div class="solution" id="ex1-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Single Column Cash Book</h4>
@@ -1647,7 +1671,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('ex2')">View Solution</button>
+  <button class="view-solution-btn" onclick="toggleSolution('ex2', this)">View Solution</button>
 
         <div class="solution" id="ex2-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Double Column Cash Book</h4>
@@ -1829,7 +1853,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('ex3')">View Solution</button>
+  <button class="view-solution-btn" onclick="toggleSolution('ex3', this)">View Solution</button>
 
         <div class="solution" id="ex3-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Three Column Cash Book</h4>
@@ -2024,7 +2048,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('ex4')">View Solution</button>
+  <button class="view-solution-btn" onclick="toggleSolution('ex4', this)">View Solution</button>
 
         <div class="solution" id="ex4-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Petty Cash Book</h4>
@@ -2229,7 +2253,7 @@
           </ol>
         </div>
 
-        <button class="view-solution-btn" onclick="toggleSolution('ex5')">View Solution</button>
+  <button class="view-solution-btn" onclick="toggleSolution('ex5', this)">View Solution</button>
 
         <div class="solution" id="ex5-solution">
           <h4 style="color: var(--brand-2); margin-bottom: 20px;">Solution: Single Column Cash Book</h4>
@@ -3109,18 +3133,24 @@
     console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
     
     // Toggle solution visibility
-    function toggleSolution(exampleId) {
-      const solution = document.getElementById(exampleId + '-solution');
-      const button = event.target;
-      
-      if (solution.classList.contains('active')) {
-        solution.classList.remove('active');
-        button.textContent = 'View Solution';
-      } else {
-        solution.classList.add('active');
-        button.textContent = 'Hide Solution';
-      }
+    window.toggleSolution = function(exampleId, btn) {
+    const solution = document.getElementById(exampleId + '-solution');
+    let button = btn;
+    if (!button && solution) {
+      const prev = solution.previousElementSibling;
+      if (prev && prev.tagName.toLowerCase() === 'button') button = prev;
     }
+
+    if (!solution) return;
+
+    if (solution.classList.contains('active')) {
+      solution.classList.remove('active');
+      if (button) button.textContent = 'View Solution';
+    } else {
+      solution.classList.add('active');
+      if (button) button.textContent = 'Hide Solution';
+    }
+  };
 </script>
 
 </body>

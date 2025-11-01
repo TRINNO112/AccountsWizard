@@ -1,4 +1,88 @@
- <!-- Floating Particles -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trial Balance - Final Accounts Preparation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="../scripts.js" defer></script>
+    <style>
+      /* Ensure the page is responsive */
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+/* 1. The key to responsiveness for small screens */
+.table-container {
+    /* Enables horizontal scrolling if content overflows */
+    overflow-x: auto; 
+    /* Ensures the container takes full width on small screens */
+    width: 100%; 
+}
+
+/* 2. Basic Table Styling */
+table {
+    /* Ensures the table is as wide as its content needs to be */
+    width: 100%; 
+    /* Collapses borders for a cleaner look */
+    border-collapse: collapse; 
+    /* Optional: ensures minimum width so it doesn't shrink too much */
+    min-width: 600px; 
+}
+
+/* 3. Cell and Header Styling */
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    white-space: nowrap; /* Prevents text from wrapping within narrow columns */
+}
+
+/* Style for the table header */
+thead th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Alternate row colors for readability */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover effect */
+tbody tr:hover {
+    background-color: #e9e9e9;
+}
+
+/* Style for the table footer */
+tfoot th, tfoot td {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+/* Optional: Center headers for financial columns */
+th:nth-child(4), 
+td:nth-child(4),
+th:nth-child(5),
+td:nth-child(5),
+th:nth-child(6),
+td:nth-child(6) {
+    text-align: right;
+}
+
+/* Optional: Caption styling */
+caption {
+    padding: 10px;
+    font-weight: bold;
+    caption-side: top;
+    text-align: left;
+}
+
+    </style>
+  
+
+
+<!-- Floating Particles -->
   <div class="particle"></div>
   <div class="particle"></div>
   <div class="particle"></div>
@@ -1582,6 +1666,82 @@
         </div>
     </div>
     </section>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Journal Table</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Journal Entries</h2>
+
+    <!-- The container makes the table scrollable on small screens -->
+    <div class="table-container">
+        <table>
+            <caption>Monthly Spending Journal</caption>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Debit ($)</th>
+                    <th>Credit ($)</th>
+                    <th>Balance ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-10-01</td>
+                    <td>Groceries</td>
+                    <td>Weekly shopping at supermarket</td>
+                    <td>50.00</td>
+                    <td>0.00</td>
+                    <td>950.00</td>
+                </tr>
+                <tr>
+                    <td>2024-10-05</td>
+                    <td>Income</td>
+                    <td>Freelance work payment</td>
+                    <td>0.00</td>
+                    <td>200.00</td>
+                    <td>1150.00</td>
+                </tr>
+                <tr>
+                    <td>2024-10-10</td>
+                    <td>Utilities</td>
+                    <td>Electricity bill</td>
+                    <td>75.50</td>
+                    <td>0.00</td>
+                    <td>1074.50</td>
+                </tr>
+                 <tr>
+                    <td>2024-10-12</td>
+                    <td>Food</td>
+                    <td>Dinner with friends</td>
+                    <td>45.00</td>
+                    <td>0.00</td>
+                    <td>1029.50</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Total</th>
+                    <td>170.50</td>
+                    <td>200.00</td>
+                    <td>1029.50</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</body>
+</html>
+
 
     <!-- MCQs -->
     <section class="card" id="mcqSection">

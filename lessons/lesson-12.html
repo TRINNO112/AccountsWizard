@@ -523,6 +523,14 @@
       section { padding: 20px; }
       .format-table { font-size: 0.85rem; }
     }
+
+    /* Mobile-only: Make side-by-side sections vertical */
+    @media (max-width: 768px) {
+      section > div[style*="display: grid"][style*="grid-template-columns: 1fr 1fr"] {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+    }
   </style>
 </head>
 <body>
