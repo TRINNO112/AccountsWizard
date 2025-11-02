@@ -1,9 +1,32 @@
-// Firebase Configuration for AccountsWizard
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+// ============================================
+// ENHANCED FIREBASE CONFIGURATION
+// Supports: Lessons, Quiz, True/False, All Games
+// ============================================
 
-// Your Firebase configuration
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { 
+  getAuth, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  signOut, 
+  onAuthStateChanged,
+  signInAnonymously 
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { 
+  getFirestore, 
+  collection, 
+  doc, 
+  setDoc, 
+  getDoc, 
+  getDocs, 
+  query, 
+  where, 
+  serverTimestamp,
+  orderBy,
+  limit
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAsVXny76jcd7XeAkErqdBW7l89B5T5nws",
   authDomain: "accountswizard-2025.firebaseapp.com",
@@ -20,35 +43,29 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-// ========================================
-// USER ID MANAGEMENT (Works for both logged-in and anonymous users)
-// ========================================
+// ============================================
+// USER MANAGEMENT
+// ============================================
+
 export function getUserId() {
-  // If user is logged in with Google, use their Firebase Auth UID
   if (auth.currentUser) {
     console.log('✅ Logged-in user:', auth.currentUser.email);
-    return auth.currentUser.uid; // Returns Firebase Auth UID
+    return auth.currentUser.uid;
   }
   
-  // Otherwise, create/use anonymous user ID from localStorage
   let userId = localStorage.getItem('accounts-wizard-user-id');
   if (!userId) {
     userId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     localStorage.setItem('accounts-wizard-user-id', userId);
     console.log('👤 Anonymous user created:', userId);
-  } else {
-    console.log('👤 Anonymous user loaded:', userId);
   }
   return userId;
 }
 
-// ========================================
-// AUTHENTICATION FUNCTIONS
-// ========================================
 export async function signInWithGoogle() {
   try {
     const result = await signInWithPopup(auth, googleProvider);
-    console.log('✅ Signed in:', result.user.email);
+    console.log('✅ Google sign-in:', result.user.email);
     return { success: true, user: result.user };
   } catch (error) {
     console.error('❌ Sign-in error:', error);
@@ -59,7 +76,7 @@ export async function signInWithGoogle() {
 export async function signOutUser() {
   try {
     await signOut(auth);
-    console.log('✅ Signed out successfully');
+    console.log('✅ Signed out');
     return { success: true };
   } catch (error) {
     console.error('❌ Sign-out error:', error);
@@ -71,32 +88,32 @@ export function onAuthChange(callback) {
   return onAuthStateChanged(auth, callback);
 }
 
-// ========================================
-// LOAD PREVIOUS LESSON DATA
-// ========================================
-export async function loadPreviousAnswers(lessonNumber) {
+export async function getUserProfile() {
+  const userId = getUserId();
   try {
-    const userId = getUserId();
-    const docRef = doc(db, 'user-progress', `${userId}_lesson${lessonNumber}`);
+    const docRef = doc(db, 'users', userId);
     const docSnap = await getDoc(docRef);
-    
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      console.log('📖 Previous answers loaded:', data);
-      return data;
-    } else {
-      console.log('📝 No previous attempts found');
-      return null;
-    }
+    return docSnap.exists() ? docSnap.data() : null;
   } catch (error) {
-    console.error('❌ Error loading previous answers:', error);
+    console.error('❌ Error loading profile:', error);
     return null;
   }
 }
 
-// ========================================
-// SUBMIT LESSON ATTEMPT (ONLY SAVES IF BETTER SCORE)
-// ========================================
+export async function updateLastLogin() {
+  const userId = getUserId();
+  try {
+    const userRef = doc(db, 'users', userId);
+    await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
+  } catch (error) {
+    console.error('❌ Error updating login:', error);
+  }
+}
+
+// ============================================
+// LESSON PROGRESS
+// ============================================
+
 export async function submitLessonAttempt(lessonNumber, answers, score, totalQuestions) {
   try {
     const userId = getUserId();
@@ -104,31 +121,27 @@ export async function submitLessonAttempt(lessonNumber, answers, score, totalQue
     const docId = `${userId}_lesson${lessonNumber}`;
     const docRef = doc(db, 'user-progress', docId);
     
-    // Check if previous attempt exists
     const prevDoc = await getDoc(docRef);
     let shouldSave = true;
     let previousBestScore = 0;
     let previousPercentage = 0;
-    let previousTotalQuestions = totalQuestions;
     
     if (prevDoc.exists()) {
       const prevData = prevDoc.data();
       previousBestScore = prevData.score || 0;
       previousPercentage = prevData.percentage || 0;
-      previousTotalQuestions = prevData.totalQuestions || totalQuestions;
       
-      // ✅ COMPARE PERCENTAGES (NOT RAW SCORES)
       if (percentage <= previousPercentage) {
         shouldSave = false;
-        console.log(`📊 Previous score (${previousBestScore}/${previousTotalQuestions} = ${previousPercentage}%) was equal or better. Not updating.`);
+        console.log(`📊 Previous: ${previousBestScore}/${totalQuestions} = ${previousPercentage}% (Better)`);
         return { 
           success: true, 
           updated: false, 
           currentScore: score,
           bestScore: previousBestScore,
-          totalQuestions: previousTotalQuestions,
+          totalQuestions: totalQuestions,
           percentage: previousPercentage,
-          message: `Previous best: ${previousBestScore}/${previousTotalQuestions} (${previousPercentage}%)`
+          message: `Previous best: ${previousBestScore}/${totalQuestions} (${previousPercentage}%)`
         };
       }
     }
@@ -137,18 +150,18 @@ export async function submitLessonAttempt(lessonNumber, answers, score, totalQue
       const lessonData = {
         userId: userId,
         lessonNumber: lessonNumber,
-        answers: answers, // Object: { q1: {selected: 'a', correct: 'b', isCorrect: false}, ... }
+        answers: answers,
         score: score,
         totalQuestions: totalQuestions,
         percentage: percentage,
         timestamp: serverTimestamp(),
-        attempts: prevDoc.exists() ? (prevDoc.data().attempts || 1) + 1 : 1
+        attempts: prevDoc.exists() ? (prevDoc.data().attempts || 1) + 1 : 1,
+        type: 'lesson'
       };
 
       await setDoc(docRef, lessonData);
-      console.log('✅ New best score saved!', lessonData);
+      console.log('✅ New best lesson score saved!', lessonData);
       
-      // Update overall progress across all lessons
       await updateOverallProgress(userId);
       
       return { 
@@ -159,62 +172,272 @@ export async function submitLessonAttempt(lessonNumber, answers, score, totalQue
         totalQuestions: totalQuestions,
         percentage: percentage,
         isNewRecord: true,
-        message: `New best score: ${score}/${totalQuestions} (${percentage}%)`
+        message: `New best: ${score}/${totalQuestions} (${percentage}%)`
       };
     }
     
   } catch (error) {
-    console.error('❌ Error submitting lesson attempt:', error);
+    console.error('❌ Lesson submission error:', error);
     return { success: false, error: error.message };
   }
 }
 
-// ========================================
-// UPDATE OVERALL PROGRESS (ALL 14 LESSONS)
-// ========================================
-async function updateOverallProgress(userId) {
+export async function loadPreviousAnswers(lessonNumber) {
   try {
-    const progressRef = collection(db, 'user-progress');
-    const q = query(progressRef, where('userId', '==', userId));
-    const querySnapshot = await getDocs(q);
+    const userId = getUserId();
+    const docRef = doc(db, 'user-progress', `${userId}_lesson${lessonNumber}`);
+    const docSnap = await getDoc(docRef);
     
-    let totalScore = 0;
-    let totalQuestions = 0;
-    let completedLessons = 0;
-    
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      totalScore += data.score || 0;
-      totalQuestions += data.totalQuestions || 0;
-      completedLessons++;
-    });
-    
-    const overallPercentage = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
-    
-    // Save overall progress
-    const overallDocRef = doc(db, 'overall-progress', userId);
-    await setDoc(overallDocRef, {
-      userId: userId,
-      totalScore: totalScore,
-      totalQuestions: totalQuestions,
-      overallPercentage: overallPercentage,
-      completedLessons: completedLessons,
-      totalLessons: 14, // Your total number of lessons
-      lastUpdated: serverTimestamp()
-    });
-    
-    console.log('📈 Overall progress updated:', { completedLessons, overallPercentage });
-    return { completedLessons, overallPercentage };
-    
+    if (docSnap.exists()) {
+      console.log('📖 Previous lesson data loaded');
+      return docSnap.data();
+    }
+    return null;
   } catch (error) {
-    console.error('❌ Error updating overall progress:', error);
+    console.error('❌ Load error:', error);
+    return null;
   }
 }
 
-// ========================================
-// GET OVERALL PROGRESS (FOR INDEX PAGE)
-// ========================================
-export async function getOverallProgress() {
+// ============================================
+// 🎯 QUIZ PROGRESS (ENHANCED WITH DETAILED TRACKING!)
+// ============================================
+
+export async function submitQuizAttempt(chapterIds, userAnswers, allQuestions, score, totalQuestions, skippedQuestions, timeSpent, questionTimings = [], hintsUsed = []) {
+  try {
+    const userId = getUserId();
+    const percentage = Math.round((score / totalQuestions) * 100);
+    
+    // Create unique ID for this chapter combination
+    const chapterKey = chapterIds.sort().join('-');
+    const docId = `${userId}_quiz_${chapterKey}`;
+    const docRef = doc(db, 'quiz-progress', docId);
+    
+    const prevDoc = await getDoc(docRef);
+    let shouldSave = true;
+    let previousBestScore = 0;
+    let previousPercentage = 0;
+    let currentAttemptNumber = 1;
+    
+    if (prevDoc.exists()) {
+      const prevData = prevDoc.data();
+      previousBestScore = prevData.score || 0;
+      previousPercentage = prevData.percentage || 0;
+      currentAttemptNumber = (prevData.attempts || 1) + 1;
+      
+      if (percentage <= previousPercentage) {
+        shouldSave = false;
+        console.log(`📊 Quiz - Previous: ${previousBestScore}/${totalQuestions} = ${previousPercentage}% (Better)`);
+        return { 
+          success: true, 
+          updated: false, 
+          isNewRecord: false,
+          currentScore: score,
+          bestScore: previousBestScore,
+          totalQuestions: totalQuestions,
+          percentage: previousPercentage,
+          message: `Previous best: ${previousBestScore}/${totalQuestions} (${previousPercentage}%)`
+        };
+      }
+    }
+    
+    if (shouldSave) {
+      // Helper: deep-flatten arrays to avoid nested arrays (Firestore rejects nested arrays)
+      function deepFlatten(arr) {
+        if (!Array.isArray(arr)) return arr;
+        return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? deepFlatten(val) : val), []);
+      }
+
+      // Sanitize timings and hints to be simple arrays of numbers
+      const sanitizedTimings = Array.isArray(questionTimings)
+        ? questionTimings.map(t => (Array.isArray(t) ? Number(deepFlatten(t)[0]) || 0 : Number(t) || 0))
+        : [];
+      const sanitizedHints = Array.isArray(hintsUsed)
+        ? hintsUsed.map(h => (Array.isArray(h) ? Number(deepFlatten(h)[0]) || 0 : Number(h) || 0))
+        : [];
+
+      // 📊 Build detailed question breakdown with ALL tracking
+      const detailedAnswers = allQuestions.map((q, idx) => {
+        const rawUserAns = userAnswers ? userAnswers[idx] : undefined;
+        const userAns = Array.isArray(rawUserAns) ? deepFlatten(rawUserAns) : rawUserAns;
+        const isSkipped = Array.isArray(skippedQuestions) && skippedQuestions.includes(idx);
+
+        let isCorrect = false;
+        if (!isSkipped) {
+          if (q.type === 'single') {
+            isCorrect = (userAns === q.correct);
+          } else if (q.type === 'multiple') {
+            const ua = Array.isArray(userAns) ? [...userAns].sort() : [];
+            const ca = Array.isArray(q.correct) ? deepFlatten(q.correct) : (Array.isArray(q.correct) ? [...q.correct] : []);
+            // ensure ca is a flat array
+            const caFlat = Array.isArray(ca) ? [].concat(...ca.map(v => Array.isArray(v) ? deepFlatten(v) : v)).flat() : ca;
+            const caSorted = Array.isArray(caFlat) ? [...caFlat].sort() : [];
+            isCorrect = JSON.stringify(ua) === JSON.stringify(caSorted);
+          }
+        }
+
+        // Sanitize options: convert any nested arrays to strings
+        const optionsSanitized = (q.options || []).map(opt => Array.isArray(opt) ? deepFlatten(opt).join(' ') : opt);
+
+        return {
+          questionNumber: idx + 1,
+          chapter: q.sourceChapter || 'Unknown',
+          chapterTitle: q.sourceChapterTitle || 'Unknown Chapter',
+          question: q.question,
+          type: q.type,
+          difficulty: q.difficulty || 'medium', // 🆕 DIFFICULTY
+          userAnswer: isSkipped ? 'skipped' : userAns,
+          correctAnswer: Array.isArray(q.correct) ? deepFlatten(q.correct) : q.correct,
+          isCorrect: isCorrect,
+          isSkipped: isSkipped,
+          options: optionsSanitized,
+          explanation: q.explanation || '',
+          timeSpent: sanitizedTimings[idx] || 0, // 🆕 TIME PER QUESTION (seconds)
+          hintsUsed: sanitizedHints[idx] || 0, // 🆕 HINTS USED
+          attemptNumber: currentAttemptNumber // 🆕 WHICH ATTEMPT
+        };
+      });
+
+      const quizData = {
+        userId: userId,
+        chapterIds: chapterIds,
+        chapterKey: chapterKey,
+        answers: detailedAnswers, // 🎯 FULL DETAILED BREAKDOWN
+        score: score,
+        totalQuestions: totalQuestions,
+        percentage: percentage,
+        correctCount: score,
+        wrongCount: totalQuestions - score - skippedQuestions.length,
+        skippedCount: skippedQuestions.length,
+        totalTimeSpent: timeSpent, // Total quiz time
+        averageTimePerQuestion: Math.round(timeSpent / totalQuestions), // Average time
+        totalHintsUsed: hintsUsed.reduce((sum, count) => sum + count, 0), // Total hints
+        timestamp: serverTimestamp(),
+        attempts: currentAttemptNumber,
+        type: 'quiz'
+      };
+
+      await setDoc(docRef, quizData);
+      console.log('✅ New best quiz score saved with FULL details!', quizData);
+
+      await updateOverallProgress(userId);
+
+      return { 
+        success: true, 
+        updated: true,
+        isNewRecord: true,
+        currentScore: score,
+        bestScore: score,
+        totalQuestions: totalQuestions,
+        percentage: percentage,
+        message: `New best: ${score}/${totalQuestions} (${percentage}%)`
+      };
+    }
+    
+  } catch (error) {
+    console.error('❌ Quiz submission error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function loadPreviousQuizAttempt(chapterIds) {
+  try {
+    const userId = getUserId();
+    const chapterKey = chapterIds.sort().join('-');
+    const docRef = doc(db, 'quiz-progress', `${userId}_quiz_${chapterKey}`);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      console.log('📖 Previous quiz data loaded');
+      return docSnap.data();
+    }
+    return null;
+  } catch (error) {
+    console.error('❌ Quiz load error:', error);
+    return null;
+  }
+}
+
+// ============================================
+// OVERALL PROGRESS
+// ============================================
+
+async function updateOverallProgress(userId) {
+  try {
+    // Get all lesson progress
+    const lessonsQuery = query(
+      collection(db, 'user-progress'),
+      where('userId', '==', userId),
+      where('type', '==', 'lesson')
+    );
+    const lessonsSnapshot = await getDocs(lessonsQuery);
+    
+    let lessonsScore = 0;
+    let lessonsTotal = 0;
+    let completedLessons = 0;
+    
+    lessonsSnapshot.forEach((doc) => {
+      const data = doc.data();
+      lessonsScore += data.score || 0;
+      lessonsTotal += data.totalQuestions || 0;
+      completedLessons++;
+    });
+    
+    // Get all quiz progress
+    const quizzesQuery = query(
+      collection(db, 'quiz-progress'),
+      where('userId', '==', userId),
+      where('type', '==', 'quiz')
+    );
+    const quizzesSnapshot = await getDocs(quizzesQuery);
+    
+    let quizzesScore = 0;
+    let quizzesTotal = 0;
+    let completedQuizzes = 0;
+    
+    quizzesSnapshot.forEach((doc) => {
+      const data = doc.data();
+      quizzesScore += data.score || 0;
+      quizzesTotal += data.totalQuestions || 0;
+      completedQuizzes++;
+    });
+    
+    const totalScore = lessonsScore + quizzesScore;
+    const totalQuestions = lessonsTotal + quizzesTotal;
+    const overallPercentage = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+    
+    const overallDocRef = doc(db, 'overall-progress', userId);
+    await setDoc(overallDocRef, {
+      userId: userId,
+      lessons: {
+        score: lessonsScore,
+        total: lessonsTotal,
+        completed: completedLessons,
+        percentage: lessonsTotal > 0 ? Math.round((lessonsScore / lessonsTotal) * 100) : 0
+      },
+      quizzes: {
+        score: quizzesScore,
+        total: quizzesTotal,
+        completed: completedQuizzes,
+        percentage: quizzesTotal > 0 ? Math.round((quizzesScore / quizzesTotal) * 100) : 0
+      },
+      overall: {
+        score: totalScore,
+        total: totalQuestions,
+        percentage: overallPercentage
+      },
+      lastUpdated: serverTimestamp()
+    });
+    
+    console.log('📈 Overall progress updated');
+    return { completedLessons, completedQuizzes, overallPercentage };
+    
+  } catch (error) {
+    console.error('❌ Progress update error:', error);
+  }
+}
+
+export async function getOverallStats() {
   try {
     const userId = getUserId();
     const docRef = doc(db, 'overall-progress', userId);
@@ -222,20 +445,54 @@ export async function getOverallProgress() {
     
     if (docSnap.exists()) {
       return docSnap.data();
-    } else {
-      return {
-        completedLessons: 0,
-        totalLessons: 14,
-        overallPercentage: 0,
-        totalScore: 0,
-        totalQuestions: 0
-      };
     }
+    return {
+      lessons: { score: 0, total: 0, completed: 0, percentage: 0 },
+      quizzes: { score: 0, total: 0, completed: 0, percentage: 0 },
+      overall: { score: 0, total: 0, percentage: 0 }
+    };
   } catch (error) {
-    console.error('❌ Error getting overall progress:', error);
-    return { completedLessons: 0, totalLessons: 14, overallPercentage: 0 };
+    console.error('❌ Stats load error:', error);
+    return null;
   }
 }
 
-// Export db and auth for other uses
+// ============================================
+// 📊 ADMIN: GET ALL USERS DATA
+// ============================================
+
+export async function getAllUsersProgress() {
+  try {
+    const usersData = [];
+    
+    // Get all overall progress docs
+    const progressSnapshot = await getDocs(collection(db, 'overall-progress'));
+    
+    for (const progressDoc of progressSnapshot.docs) {
+      const progressData = progressDoc.data();
+      const userId = progressData.userId;
+      
+      // Get user profile
+      const userRef = doc(db, 'users', userId);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.exists() ? userSnap.data() : {};
+      
+      usersData.push({
+        userId: userId,
+        name: userData.name || 'Anonymous',
+        email: userData.email || 'N/A',
+        photoURL: userData.photoURL || null,
+        progress: progressData,
+        lastLogin: userData.lastLogin || null
+      });
+    }
+    
+    console.log('✅ Retrieved', usersData.length, 'users');
+    return usersData;
+  } catch (error) {
+    console.error('❌ Admin data error:', error);
+    return [];
+  }
+}
+
 export { db, auth };

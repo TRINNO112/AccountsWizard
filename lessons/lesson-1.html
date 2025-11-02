@@ -900,9 +900,9 @@
       
       <div class="tabs-container">
         <div class="tabs-header">
-          <button class="tab-btn active" onclick="showTab('characteristics')">Characteristics</button>
-          <button class="tab-btn" onclick="showTab('objectives')">Objectives</button>
-          <button class="tab-btn" onclick="showTab('functions')">Functions</button>
+          <button class="tab-btn active" onclick="showTab('characteristics', this)">Characteristics</button>
+          <button class="tab-btn" onclick="showTab('objectives', this)">Objectives</button>
+          <button class="tab-btn" onclick="showTab('functions', this)">Functions</button>
         </div>
         
         <div id="characteristics" class="tab-content active">
@@ -1930,20 +1930,28 @@
     }
 
     // Tab Functionality
-    function showTab(tabName) {
+    function showTab(tabName, btn) {
       // Hide all tab contents
       const contents = document.querySelectorAll('.tab-content');
       contents.forEach(content => content.classList.remove('active'));
       
       // Remove active class from all buttons
       const buttons = document.querySelectorAll('.tab-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
+      buttons.forEach(b => b.classList.remove('active'));
       
       // Show selected tab
-      document.getElementById(tabName).classList.add('active');
+      const el = document.getElementById(tabName);
+      if (el) el.classList.add('active');
       
-      // Add active class to clicked button
-      event.target.classList.add('active');
+      // Add active class to clicked button (prefer passed button)
+      if (btn && btn.classList) {
+        btn.classList.add('active');
+      } else {
+        // Fallback: try to locate a button that references this tab
+        const fallback = Array.from(document.querySelectorAll('.tab-btn'))
+          .find(x => x.getAttribute('onclick') && x.getAttribute('onclick').includes(`showTab('${tabName}')`));
+        if (fallback) fallback.classList.add('active');
+      }
     }
 
     // Scroll Reveal Animation
