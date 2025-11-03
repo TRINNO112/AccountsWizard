@@ -803,3 +803,125 @@ input[type="radio"],
     font-size: 1rem;
   }
 }
+
+/* ===============================
+   FOOTER STYLES
+   =============================== */
+
+.lesson-footer {
+  position: relative;
+  margin-top: 100px;
+  padding: 60px 20px 40px;
+  background: linear-gradient(180deg, transparent, rgba(10, 10, 15, 0.5));
+  border-top: 1px solid rgba(168, 85, 247, 0.1);
+  text-align: center;
+  z-index: 10;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.footer-copyright {
+  color: var(--text-dim, #a0a0b8);
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+  opacity: 0.8;
+}
+
+#lesson-title {
+  color: var(--neon-cyan, #00ffff);
+  font-weight: 600;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  color: var(--text-dim, #a0a0b8);
+  text-decoration: none;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 50px;
+  background: rgba(13, 20, 37, 0.5);
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.footer-link:hover {
+  color: var(--neon-cyan, #00ffff);
+  border-color: var(--neon-cyan, #00ffff);
+  background: rgba(0, 255, 255, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+}
+
+.footer-link i {
+  font-size: 1.1rem;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--neon-purple, #a855f7), var(--neon-cyan, #00ffff));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 10px 30px rgba(168, 85, 247, 0.6);
+}
+
+.back-to-top i {
+  color: white;
+  font-size: 1.2rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .footer-link {
+    width: 80%;
+    max-width: 300px;
+    justify-content: center;
+  }
+  
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+}
