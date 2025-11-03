@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard v4.1 - AccountsWizard</title>
+  <title>Admin Dashboard - Complete Analytics | AccountsWizard</title>
   <style>
     :root {
       --bg: #0b1020;
       --bg-2: #0f1733;
       --card: #141b38;
+      --card-hover: #1a2347;
       --text: #f7f9ff;
-      --muted: #b8c2ff;
+      --muted: #94a3b8;
       --brand: #7c4dff;
       --brand-2: #00e5ff;
       --accent: #ff7ac6;
       --success: #10b981;
       --warning: #fbbf24;
       --error: #ef4444;
-      --radius: 16px;
-      --shadow: 0 15px 30px rgba(0,0,0,.35);
+      --radius: 12px;
+      --shadow: 0 10px 25px rgba(0,0,0,.3);
     }
 
     * { 
@@ -28,231 +29,121 @@
     }
     
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system;
-      background: radial-gradient(1200px 800px at 80% -10%, rgba(124,77,255,.25), transparent 60%),
-                  radial-gradient(1000px 700px at 10% 10%, rgba(0,229,255,.15), transparent 55%),
-                  linear-gradient(180deg, var(--bg), var(--bg-2));
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
       min-height: 100vh;
       padding: 20px;
-      position: relative;
-      overflow-x: hidden;
     }
 
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.3;
-      animation: float 20s infinite ease-in-out;
-      z-index: -1;
-    }
-
-    .orb-1 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, var(--brand), transparent);
-      top: -200px;
-      right: -200px;
-    }
-
-    .orb-2 {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, var(--accent), transparent);
-      bottom: -250px;
-      left: -250px;
-      animation-delay: 7s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(50px, -50px) scale(1.1); }
-      66% { transform: translate(-50px, 50px) scale(0.9); }
-    }
-
+    /* LOGIN SCREEN */
     .login-container {
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 20px;
     }
 
     .login-box {
-      background: linear-gradient(135deg, rgba(20, 27, 56, 0.95), rgba(15, 23, 51, 0.95));
+      background: rgba(20, 27, 56, 0.95);
       backdrop-filter: blur(20px);
       border-radius: var(--radius);
-      padding: 60px 50px;
-      max-width: 480px;
+      padding: 48px;
+      max-width: 420px;
       width: 100%;
       text-align: center;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: var(--shadow);
-      animation: slideUp 0.6s ease-out;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
     }
 
     .login-logo {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 30px;
-      background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent), var(--brand));
-      border-radius: 24px;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 48px;
-      box-shadow: 0 15px 40px rgba(124,77,255,0.5);
-      animation: pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      font-size: 36px;
     }
 
     .login-title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2), var(--accent));
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-size: 200% auto;
-      animation: shimmer 3s linear infinite;
-    }
-
-    @keyframes shimmer {
-      to { background-position: 200% center; }
-    }
-
-    .login-subtitle {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 40px;
     }
 
     .google-btn {
       width: 100%;
-      padding: 18px 32px;
-      background: linear-gradient(135deg, #fff, #f0f0f0);
+      padding: 14px 24px;
+      background: white;
       color: #333;
       border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 700;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      margin-top: 24px;
     }
 
     .google-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
-    .google-btn:active {
-      transform: translateY(0);
-    }
-
-    .error-message {
-      margin-top: 20px;
-      padding: 14px;
-      background: rgba(239,68,68,0.1);
-      border: 1px solid var(--error);
-      border-radius: 8px;
-      color: var(--error);
-      font-size: 14px;
-    }
-
+    /* DASHBOARD */
     .dashboard {
       display: none;
+      max-width: 1600px;
+      margin: 0 auto;
     }
 
     .dashboard.active {
       display: block;
     }
 
+    /* HEADER */
     .header {
-      text-align: center;
-      margin-bottom: 40px;
-      animation: slideDown 0.6s ease-out;
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .header h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      background: linear-gradient(135deg, var(--brand), var(--brand-2), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 200% auto;
-      animation: shimmer 3s linear infinite;
-      margin-bottom: 10px;
-    }
-
-    .header p {
-      color: var(--muted);
-      font-size: 1.1rem;
-    }
-
-    .admin-info {
       background: rgba(20, 27, 56, 0.8);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.05);
       border-radius: var(--radius);
-      padding: 16px 24px;
+      padding: 24px 32px;
       margin-bottom: 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: var(--shadow);
-      max-width: 1600px;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-      gap: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .admin-user {
+    .header-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
     }
 
     .admin-avatar {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      border: 2px solid var(--brand-2);
+      border: 2px solid var(--brand);
     }
 
-    .admin-details {
-      display: flex;
-      flex-direction: column;
+    .header-info h1 {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
     }
 
-    .admin-name {
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .admin-email {
-      font-size: 13px;
+    .header-info p {
       color: var(--muted);
+      font-size: 0.9rem;
     }
 
     .sign-out-btn {
@@ -260,10 +151,10 @@
       background: rgba(239,68,68,0.1);
       border: 1px solid var(--error);
       color: var(--error);
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
     }
 
     .sign-out-btn:hover {
@@ -271,216 +162,209 @@
       color: white;
     }
 
+    /* STATS OVERVIEW */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      margin-bottom: 40px;
-      max-width: 1600px;
-      margin-left: auto;
-      margin-right: auto;
-      animation: fadeInUp 0.8s ease-out;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      margin-bottom: 32px;
     }
 
     .stat-card {
-      background: linear-gradient(135deg, rgba(124,77,255,0.08), rgba(0,229,255,0.08));
+      background: rgba(20, 27, 56, 0.6);
       padding: 24px;
       border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
       transition: all 0.3s ease;
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--brand), var(--brand-2));
     }
 
     .stat-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,229,255,0.2);
+      transform: translateY(-4px);
       border-color: var(--brand-2);
     }
 
-    .stat-card h3 {
-      margin: 0 0 12px 0;
+    .stat-label {
       font-size: 0.85rem;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
     }
 
-    .stat-card .value {
-      font-size: 2.5rem;
-      font-weight: 900;
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 800;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      line-height: 1;
     }
 
-    .stat-card .label {
-      margin-top: 8px;
-      font-size: 0.75rem;
+    .stat-sublabel {
+      font-size: 0.8rem;
       color: var(--muted);
+      margin-top: 4px;
       opacity: 0.7;
     }
 
-    .search-bar {
-      max-width: 1600px;
-      margin: 0 auto 24px;
+    /* SEARCH AND FILTERS */
+    .controls {
+      background: rgba(20, 27, 56, 0.6);
+      padding: 20px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
       position: relative;
     }
 
-    .search-bar input {
+    .search-box input {
       width: 100%;
-      padding: 16px 20px 16px 50px;
-      background: rgba(20,27,56,0.8);
-      border: 2px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius);
+      padding: 12px 16px 12px 40px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
       color: var(--text);
-      font-size: 1rem;
-      font-family: inherit;
-      transition: all 0.3s ease;
+      font-size: 0.95rem;
     }
 
-    .search-bar input:focus {
+    .search-box input:focus {
       outline: none;
       border-color: var(--brand-2);
-      box-shadow: 0 0 0 4px rgba(0,229,255,0.1);
     }
 
-    .search-bar::before {
-      content: '🔍';
+    .search-box::before {
+      content: "🔍";
       position: absolute;
-      left: 18px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1.2rem;
     }
 
+    .filter-btn {
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--brand-2);
+    }
+
+    .filter-btn.active {
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    /* USER CARDS */
     .users-container {
-      max-width: 1600px;
-      margin: 0 auto;
+      display: grid;
+      gap: 24px;
     }
 
     .user-card {
-      background: linear-gradient(135deg, rgba(20, 27, 56, 0.9), rgba(15, 23, 51, 0.9));
-      backdrop-filter: blur(20px);
+      background: rgba(20, 27, 56, 0.8);
       border-radius: var(--radius);
-      padding: 28px;
-      margin-bottom: 32px;
       border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: var(--shadow);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 24px;
+      transition: all 0.3s ease;
     }
 
     .user-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       border-color: var(--brand-2);
-      box-shadow: 0 25px 50px rgba(0,229,255,0.15);
+      box-shadow: 0 15px 35px rgba(0,229,255,0.1);
     }
 
     .user-header {
       display: flex;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 32px;
-      padding-bottom: 24px;
-      border-bottom: 2px solid rgba(255,255,255,0.05);
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    .user-avatar {
-      width: 80px;
-      height: 80px;
+    .user-avatar-img {
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
+      border: 2px solid var(--brand);
       object-fit: cover;
-      border: 3px solid var(--brand);
-      box-shadow: 0 8px 20px rgba(124,77,255,0.3);
     }
 
-    .user-info {
+    .user-details {
       flex: 1;
     }
 
-    .user-info h3 {
-      margin: 0 0 8px 0;
-      font-size: 1.5rem;
-      background: linear-gradient(135deg, var(--text), var(--brand-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .user-info p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .user-stats {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .user-stat-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .user-stat-item strong {
-      color: var(--brand-2);
+    .user-name {
+      font-size: 1.2rem;
       font-weight: 700;
+      margin-bottom: 4px;
     }
 
+    .user-email {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .user-id {
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    .user-badge {
+      padding: 4px 12px;
+      background: rgba(124,77,255,0.2);
+      border: 1px solid var(--brand);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--brand-2);
+    }
+
+    /* TABS */
     .tabs {
       display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      border-bottom: 2px solid rgba(255,255,255,0.05);
-      padding-bottom: 12px;
-      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 8px;
     }
 
     .tab-btn {
-      padding: 10px 20px;
-      background: rgba(255,255,255,0.03);
-      border: 2px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
       color: var(--muted);
       cursor: pointer;
-      transition: all 0.3s ease;
       font-weight: 600;
       font-size: 0.9rem;
+      transition: all 0.3s;
+      border-radius: 6px;
     }
 
     .tab-btn:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: var(--brand-2);
+      background: rgba(255,255,255,0.05);
     }
 
     .tab-btn.active {
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color: white;
-      border-color: transparent;
-      box-shadow: 0 4px 15px rgba(124,77,255,0.3);
+      color: var(--brand-2);
+      background: rgba(0,229,255,0.1);
     }
 
     .tab-content {
@@ -489,71 +373,146 @@
 
     .tab-content.active {
       display: block;
-      animation: fadeIn 0.4s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* PROGRESS BARS */
+    .progress-item {
+      margin-bottom: 16px;
     }
 
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .progress-label {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .progress-value {
+      font-size: 0.9rem;
+      color: var(--brand-2);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    /* DETAILED TABLES */
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .detail-table th {
+      text-align: left;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .detail-table td {
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9rem;
+    }
+
+    .detail-table tr:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge-success {
+      background: rgba(16,185,129,0.2);
+      color: var(--success);
+    }
+
+    .badge-error {
+      background: rgba(239,68,68,0.2);
+      color: var(--error);
+    }
+
+    .badge-warning {
+      background: rgba(251,191,36,0.2);
+      color: var(--warning);
+    }
+
+    /* LOADING */
     .loading {
       text-align: center;
-      padding: 80px 20px;
-      font-size: 1.2rem;
-      color: var(--muted);
+      padding: 60px;
     }
 
     .spinner {
-      width: 60px;
-      height: 60px;
-      border: 5px solid rgba(255,255,255,0.1);
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255,255,255,0.1);
       border-top-color: var(--brand);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto 24px;
+      margin: 0 auto 20px;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    .no-data {
-      text-align: center;
-      padding: 80px 20px;
-      color: var(--muted);
-    }
-
-    .no-data h2 {
-      font-size: 2rem;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, var(--warning), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
+    /* RESPONSIVE */
     @media (max-width: 768px) {
-      body { padding: 12px; }
-      .login-box { padding: 40px 30px; }
-      .header h1 { font-size: 1.8rem; }
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .user-header { flex-direction: column; text-align: center; }
-      .admin-info { flex-direction: column; }
+      .header {
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+      
+      .search-box {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-
+  <!-- LOGIN SCREEN -->
   <div id="loginScreen" class="login-container">
     <div class="login-box">
-      <div class="login-logo">🔒</div>
+      <div class="login-logo">🔐</div>
       <h1 class="login-title">Admin Dashboard</h1>
-      <p class="login-subtitle">Sign in with your admin account</p>
+      <p style="color: var(--muted); margin-bottom: 24px;">Sign in with admin account</p>
       
       <button class="google-btn" onclick="handleGoogleSignIn()">
-        <svg width="20" height="20" viewBox="0 0 48 48">
+        <svg width="18" height="18" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
           <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
           <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -562,72 +521,80 @@
         Sign in with Google
       </button>
       
-      <div id="loginError" class="error-message" style="display: none;"></div>
+      <div id="loginError" style="display: none; margin-top: 20px; padding: 12px; background: rgba(239,68,68,0.1); border: 1px solid var(--error); border-radius: 6px; color: var(--error); font-size: 0.9rem;"></div>
     </div>
   </div>
 
+    <!-- DASHBOARD SCREEN -->
   <div id="dashboardScreen" class="dashboard">
-    <div class="admin-info">
-      <div class="admin-user">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
         <img id="adminAvatar" src="" alt="Admin" class="admin-avatar">
-        <div class="admin-details">
-          <div class="admin-name" id="adminName">Admin</div>
-          <div class="admin-email" id="adminEmail">admin@example.com</div>
+        <div class="header-info">
+          <h1>Admin Dashboard</h1>
+          <p id="adminInfo">Loading...</p>
         </div>
       </div>
-      <button class="sign-out-btn" onclick="handleSignOut()">🚪 Sign Out</button>
+      <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
     </div>
 
-    <div class="header">
-      <h1>📊 Admin Dashboard v4.1</h1>
-      <p>Complete Analytics with Secure Authentication</p>
-    </div>
-
+    <!-- STATS OVERVIEW -->
     <div class="stats-grid">
       <div class="stat-card">
-        <h3>Total Users</h3>
-        <div class="value" id="totalUsers">0</div>
-        <div class="label">Active learners</div>
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value" id="totalUsers">0</div>
+        <div class="stat-sublabel">Active learners</div>
       </div>
       <div class="stat-card">
-        <h3>Lessons Completed</h3>
-        <div class="value" id="totalLessons">0</div>
-        <div class="label">Total attempts</div>
+        <div class="stat-label">Lessons Completed</div>
+        <div class="stat-value" id="totalLessons">0</div>
+        <div class="stat-sublabel">Total attempts</div>
       </div>
       <div class="stat-card">
-        <h3>Quizzes Taken</h3>
-        <div class="value" id="totalQuizzes">0</div>
-        <div class="label">Total attempts</div>
+        <div class="stat-label">Quizzes Taken</div>
+        <div class="stat-value" id="totalQuizzes">0</div>
+        <div class="stat-sublabel">Total attempts</div>
       </div>
       <div class="stat-card">
-        <h3>Questions Answered</h3>
-        <div class="value" id="totalQuestions">0</div>
-        <div class="label">Across platform</div>
+        <div class="stat-label">Avg Lesson Score</div>
+        <div class="stat-value" id="avgLessonScore">0%</div>
+        <div class="stat-sublabel">Platform average</div>
       </div>
       <div class="stat-card">
-        <h3>Avg Lesson Score</h3>
-        <div class="value" id="avgLessons">0%</div>
-        <div class="label">Average completion</div>
+        <div class="stat-label">Avg Quiz Score</div>
+        <div class="stat-value" id="avgQuizScore">0%</div>
+        <div class="stat-sublabel">Platform average</div>
       </div>
       <div class="stat-card">
-        <h3>Avg Quiz Score</h3>
-        <div class="value" id="avgQuiz">0%</div>
-        <div class="label">Average performance</div>
+        <div class="stat-label">Total Questions</div>
+        <div class="stat-value" id="totalQuestions">0</div>
+        <div class="stat-sublabel">Answered overall</div>
       </div>
     </div>
 
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search by name or email..." onkeyup="filterUsers()">
+    <!-- SEARCH AND FILTERS -->
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search users by name, email or ID..." onkeyup="filterUsers()">
+      </div>
+      <button class="filter-btn" id="filterAll" onclick="setFilter('all')">All Users</button>
+      <button class="filter-btn" id="filterActive" onclick="setFilter('active')">Active (>50%)</button>
+      <button class="filter-btn" id="filterInactive" onclick="setFilter('inactive')">Needs Help (<50%)</button>
+      <button class="filter-btn" onclick="exportData()">📥 Export CSV</button>
     </div>
 
+    <!-- LOADING STATE -->
     <div id="loadingState" class="loading">
       <div class="spinner"></div>
-      <p>Loading user data...</p>
+      <p>Loading comprehensive data...</p>
     </div>
 
+    <!-- USERS CONTAINER -->
     <div id="usersContainer" class="users-container" style="display: none;"></div>
   </div>
 
+  <!-- FIREBASE & MAIN SCRIPT -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
     import { 
@@ -642,9 +609,12 @@
       collection, 
       getDocs,
       doc,
-      getDoc
+      getDoc,
+      query,
+      where
     } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAsVXny76jcd7XeAkErqdBW7l89B5T5nws",
       authDomain: "accountswizard-2025.firebaseapp.com",
@@ -660,24 +630,26 @@
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
+    // ADMIN EMAIL - CHANGE THIS TO YOUR EMAIL
     const ADMIN_EMAIL = 'kaushtubh457@gmail.com';
 
+    // Global variables
+    let allUsersData = [];
+    let currentFilter = 'all';
+
+    // DOM Elements
     const loginScreen = document.getElementById('loginScreen');
     const dashboardScreen = document.getElementById('dashboardScreen');
     const loginError = document.getElementById('loginError');
-    const adminName = document.getElementById('adminName');
-    const adminEmail = document.getElementById('adminEmail');
     const adminAvatar = document.getElementById('adminAvatar');
+    const adminInfo = document.getElementById('adminInfo');
     const loadingState = document.getElementById('loadingState');
     const usersContainer = document.getElementById('usersContainer');
 
-    const totalUsersEl = document.getElementById('totalUsers');
-    const totalLessonsEl = document.getElementById('totalLessons');
-    const totalQuizzesEl = document.getElementById('totalQuizzes');
-    const totalQuestionsEl = document.getElementById('totalQuestions');
-    const avgLessonsEl = document.getElementById('avgLessons');
-    const avgQuizEl = document.getElementById('avgQuiz');
-
+    // ============================================
+    // AUTHENTICATION
+    // ============================================
+    
     window.handleGoogleSignIn = async function() {
       try {
         const result = await signInWithPopup(auth, googleProvider);
@@ -685,7 +657,7 @@
         loginError.style.display = 'none';
       } catch (err) {
         console.error('❌ Sign-in failed:', err);
-        loginError.textContent = 'Sign in failed: ' + (err.message || err);
+        loginError.textContent = 'Sign-in failed: ' + err.message;
         loginError.style.display = 'block';
       }
     };
@@ -694,112 +666,981 @@
       try {
         await signOut(auth);
         console.log('✅ Signed out');
-        hideDashboard();
-        loginError.style.display = 'none';
+        showLoginScreen();
       } catch (err) {
-        console.error('❌ Sign out failed:', err);
-        alert('Sign out failed: ' + (err.message || err));
+        console.error('❌ Sign-out failed:', err);
+        alert('Sign-out failed: ' + err.message);
       }
     };
 
+    // Auth state observer
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        console.log('No user signed in');
-        hideDashboard();
+        showLoginScreen();
         return;
       }
 
-      console.log('🔐 Auth state changed. Signed in as:', user.email);
-      
+      // Check if user is admin
       if (user.email !== ADMIN_EMAIL) {
-        console.warn('⚠️ Unauthorized user:', user.email);
+        console.warn('⚠️ Unauthorized:', user.email);
         await signOut(auth);
-        loginError.textContent = `Unauthorized. Only ${ADMIN_EMAIL} can access this dashboard.`;
+        loginError.textContent = `Access denied. Only ${ADMIN_EMAIL} can access this dashboard.`;
         loginError.style.display = 'block';
-        hideDashboard();
+        showLoginScreen();
         return;
       }
 
-      loginError.style.display = 'none';
-      adminName.textContent = user.displayName || 'Admin';
-      adminEmail.textContent = user.email;
-      adminAvatar.src = user.photoURL || 'https://via.placeholder.com/80/7c4dff/ffffff?text=AD';
-
+      // Admin authenticated
+      console.log('✅ Admin authenticated:', user.email);
+      adminAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'Admin')}&background=7c4dff&color=fff`;
+      adminInfo.textContent = user.email;
+      
       showDashboard();
-      await loadAllUsersAndRender();
+      await loadAllData();
     });
+
+    function showLoginScreen() {
+      loginScreen.style.display = 'flex';
+      dashboardScreen.classList.remove('active');
+    }
 
     function showDashboard() {
       loginScreen.style.display = 'none';
       dashboardScreen.classList.add('active');
     }
 
-    function hideDashboard() {
-      loginScreen.style.display = '';
-      dashboardScreen.classList.remove('active');
-      usersContainer.innerHTML = '';
-      loadingState.style.display = '';
-    }
-
-    async function loadAllUsersAndRender() {
+    // ============================================
+    // DATA LOADING
+    // ============================================
+    
+    async function loadAllData() {
       loadingState.style.display = 'block';
       usersContainer.style.display = 'none';
-      usersContainer.innerHTML = '';
-      loadingState.querySelector('p').textContent = 'Loading user data...';
-
+      
       try {
-        console.log('📊 Fetching overall-progress collection...');
+        console.log('📊 Loading comprehensive data...');
+        
+        // Step 1: Get all users from overall-progress
         const overallSnapshot = await getDocs(collection(db, 'overall-progress'));
         
         if (overallSnapshot.empty) {
-          console.log('⚠️ No users found in overall-progress');
-          loadingState.querySelector('p').textContent = 'No users found. Users will appear here after they complete lessons or quizzes.';
-          usersContainer.style.display = 'none';
+          loadingState.innerHTML = `
+            <div style="color: var(--warning);">
+              <h2>No Users Found</h2>
+              <p>Users will appear here once they complete lessons or quizzes.</p>
+            </div>
+          `;
           return;
         }
 
-        console.log(`✅ Found ${overallSnapshot.docs.length} users`);
         const users = [];
         
-        for (const docSnap of overallSnapshot.docs) {
-          const progressData = docSnap.data();
-          const userId = progressData.userId || docSnap.id;
-
+        // Step 2: For each user, get ALL their data
+        for (const overallDoc of overallSnapshot.docs) {
+          const overallData = overallDoc.data();
+          const userId = overallData.userId || overallDoc.id;
+          
+          // Get user profile
           const userRef = doc(db, 'users', userId);
-          const userProfileSnap = await getDoc(userRef);
-          const profile = userProfileSnap.exists() ? userProfileSnap.data() : {};
-
+          const userSnap = await getDoc(userRef);
+          const userProfile = userSnap.exists() ? userSnap.data() : {};
+          
+          // Get all lesson progress
+          const lessonProgressQuery = query(
+            collection(db, 'user-progress'),
+            where('userId', '==', userId)
+          );
+          const lessonProgressSnap = await getDocs(lessonProgressQuery);
+          const lessonProgress = [];
+          
+          lessonProgressSnap.forEach(doc => {
+            const data = doc.data();
+            lessonProgress.push({
+              docId: doc.id,
+              lessonNumber: data.lessonNumber,
+              score: data.score,
+              totalQuestions: data.totalQuestions,
+              percentage: data.percentage,
+              attempts: data.attempts || 1,
+              timestamp: data.timestamp,
+              answers: data.answers || {} // Detailed answers
+            });
+          });
+          
+          // Get all quiz progress  
+          const quizProgressQuery = query(
+            collection(db, 'quiz-progress'),
+            where('userId', '==', userId)
+          );
+          const quizProgressSnap = await getDocs(quizProgressQuery);
+          const quizProgress = [];
+          
+          quizProgressSnap.forEach(doc => {
+            const data = doc.data();
+            quizProgress.push({
+              docId: doc.id,
+              chapterIds: data.chapterIds || [],
+              score: data.score,
+              totalQuestions: data.totalQuestions,
+              percentage: data.percentage,
+              correctCount: data.correctCount,
+              wrongCount: data.wrongCount,
+              skippedCount: data.skippedCount,
+              totalTimeSpent: data.totalTimeSpent || 0,
+              averageTimePerQuestion: data.averageTimePerQuestion || 0,
+              totalHintsUsed: data.totalHintsUsed || 0,
+              attempts: data.attempts || 1,
+              timestamp: data.timestamp,
+              answers: data.answers || [] // Detailed question-by-question breakdown
+            });
+          });
+          
+          // Compile complete user data
           users.push({
-            userId,
-            name: profile.name || profile.displayName || 'Anonymous User',
-            email: profile.email || 'N/A',
-            photoURL: profile.photoURL || null,
-            progress: progressData,
-            lastLogin: profile.lastLogin || null
+            userId: userId,
+            name: userProfile.name || userProfile.displayName || 'Anonymous User',
+            email: userProfile.email || 'N/A',
+            photoURL: userProfile.photoURL,
+            lastLogin: userProfile.lastLogin,
+            createdAt: userProfile.createdAt,
+            overallStats: overallData,
+            lessonProgress: lessonProgress.sort((a, b) => a.lessonNumber - b.lessonNumber),
+            quizProgress: quizProgress,
+            totalLessonsCompleted: lessonProgress.length,
+            totalQuizzesCompleted: quizProgress.length,
+            overallPercentage: overallData.overall?.percentage || 0
           });
         }
-
-        updateTopLevelStats(users);
-
-        usersContainer.innerHTML = '';
-        users.forEach(user => {
-          const card = createUserCard(user);
-          usersContainer.appendChild(card);
-        });
-
+        
+        // Sort users by overall percentage (best performers first)
+        users.sort((a, b) => b.overallPercentage - a.overallPercentage);
+        
+        allUsersData = users;
+        console.log(`✅ Loaded ${users.length} users with complete data`);
+        
+        updateGlobalStats(users);
+        renderUsers(users);
+        
         loadingState.style.display = 'none';
         usersContainer.style.display = 'block';
-
-        window.allUsersData = users;
-        console.log('✅ Dashboard loaded successfully');
         
       } catch (error) {
-        console.error('❌ Error loading admin data:', error);
-        loadingState.querySelector('p').innerHTML = `
+        console.error('❌ Error loading data:', error);
+        loadingState.innerHTML = `
           <div style="color: var(--error);">
-            <strong>Failed to load user data</strong><br>
-            <span style="font-size: 0.9rem; margin-top: 8px; display: block;">
-              Error: ${error.message}<br><br>
-              Please check:<br>
-              1. Firestore security rules are updated<br>
-              2. Your email (${ADMIN_EMAIL}) is authorize
+            <h2>Error Loading Data</h2>
+            <p>${error.message}</p>
+            <p style="margin-top: 16px;">Please check console for details.</p>
+          </div>
+        `;
+      }
+    }
+
+    // ============================================
+    // UPDATE GLOBAL STATISTICS
+    // ============================================
+    
+    function updateGlobalStats(users) {
+      const totalUsers = users.length;
+      let totalLessons = 0;
+      let totalQuizzes = 0;
+      let totalLessonScore = 0;
+      let totalLessonQuestions = 0;
+      let totalQuizScore = 0;
+      let totalQuizQuestions = 0;
+      let grandTotalQuestions = 0;
+      
+      users.forEach(user => {
+        totalLessons += user.lessonProgress.length;
+        totalQuizzes += user.quizProgress.length;
+        
+        user.lessonProgress.forEach(lesson => {
+          totalLessonScore += lesson.score || 0;
+          totalLessonQuestions += lesson.totalQuestions || 0;
+        });
+        
+        user.quizProgress.forEach(quiz => {
+          totalQuizScore += quiz.score || 0;
+          totalQuizQuestions += quiz.totalQuestions || 0;
+        });
+      });
+      
+      grandTotalQuestions = totalLessonQuestions + totalQuizQuestions;
+      const avgLessonScore = totalLessonQuestions > 0 ? Math.round((totalLessonScore / totalLessonQuestions) * 100) : 0;
+      const avgQuizScore = totalQuizQuestions > 0 ? Math.round((totalQuizScore / totalQuizQuestions) * 100) : 0;
+      
+      // Update DOM
+      document.getElementById('totalUsers').textContent = totalUsers;
+      document.getElementById('totalLessons').textContent = totalLessons;
+      document.getElementById('totalQuizzes').textContent = totalQuizzes;
+      document.getElementById('avgLessonScore').textContent = avgLessonScore + '%';
+      document.getElementById('avgQuizScore').textContent = avgQuizScore + '%';
+      document.getElementById('totalQuestions').textContent = grandTotalQuestions;
+    }
+
+    // ============================================
+    // RENDER USER CARDS (With Detailed Data)
+    // ============================================
+    
+    function renderUsers(users) {
+      usersContainer.innerHTML = '';
+      
+      users.forEach(user => {
+        const userCard = createDetailedUserCard(user);
+        usersContainer.appendChild(userCard);
+      });
+    }
+
+        function createDetailedUserCard(user) {
+      const card = document.createElement('div');
+      card.className = 'user-card';
+      card.dataset.userId = user.userId;
+      card.dataset.name = user.name.toLowerCase();
+      card.dataset.email = user.email.toLowerCase();
+      
+      const avatar = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=7c4dff&color=fff`;
+      const performanceBadge = user.overallPercentage >= 75 ? '🌟 Top Performer' : 
+                               user.overallPercentage >= 50 ? '📈 Good Progress' : 
+                               '📚 Getting Started';
+      
+      const lastLoginText = user.lastLogin ? formatTimestamp(user.lastLogin) : 'Never logged in';
+      
+      card.innerHTML = `
+        <!-- USER HEADER -->
+        <div class="user-header">
+          <img src="${avatar}" alt="${user.name}" class="user-avatar-img">
+          <div class="user-details">
+            <div class="user-name">${user.name}</div>
+            <div class="user-email">${user.email}</div>
+            <div class="user-id">ID: ${user.userId}</div>
+          </div>
+          <div class="user-badge">${performanceBadge}</div>
+        </div>
+
+        <!-- QUICK STATS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div style="background: rgba(124,77,255,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(124,77,255,0.3);">
+            <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 4px;">OVERALL SCORE</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: var(--brand);">${user.overallPercentage}%</div>
+          </div>
+          <div style="background: rgba(0,229,255,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(0,229,255,0.3);">
+            <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 4px;">LESSONS</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: var(--brand-2);">${user.totalLessonsCompleted}</div>
+          </div>
+          <div style="background: rgba(255,122,198,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,122,198,0.3);">
+            <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 4px;">QUIZZES</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent);">${user.totalQuizzesCompleted}</div>
+          </div>
+          <div style="background: rgba(16,185,129,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3);">
+            <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 4px;">LAST ACTIVE</div>
+            <div style="font-size: 0.85rem; font-weight: 600; color: var(--success);">${lastLoginText}</div>
+          </div>
+        </div>
+
+        <!-- PROGRESS BREAKDOWN -->
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Lesson Progress</span>
+            <span class="progress-value">${user.overallStats.lessons?.percentage || 0}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${user.overallStats.lessons?.percentage || 0}%"></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-label">Quiz Progress</span>
+            <span class="progress-value">${user.overallStats.quizzes?.percentage || 0}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${user.overallStats.quizzes?.percentage || 0}%"></div>
+          </div>
+        </div>
+
+        <!-- TABS FOR DETAILED VIEW -->
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(event, 'overview-${user.userId}')">📊 Overview</button>
+          <button class="tab-btn" onclick="switchTab(event, 'lessons-${user.userId}')">📚 Lessons (${user.totalLessonsCompleted})</button>
+          <button class="tab-btn" onclick="switchTab(event, 'quizzes-${user.userId}')">🎯 Quizzes (${user.totalQuizzesCompleted})</button>
+        </div>
+
+        <!-- TAB CONTENTS -->
+        <div id="overview-${user.userId}" class="tab-content active">
+          ${createOverviewContent(user)}
+        </div>
+
+        <div id="lessons-${user.userId}" class="tab-content">
+          ${createLessonsContent(user)}
+        </div>
+
+        <div id="quizzes-${user.userId}" class="tab-content">
+          ${createQuizzesContent(user)}
+        </div>
+      `;
+      
+      return card;
+    }
+
+    // ============================================
+    // CREATE OVERVIEW TAB CONTENT
+    // ============================================
+    
+    function createOverviewContent(user) {
+      const stats = user.overallStats;
+      
+      return `
+        <div style="margin-top: 16px;">
+          <h3 style="margin-bottom: 16px; font-size: 1.1rem;">📈 Performance Summary</h3>
+          
+          <table class="detail-table">
+            <tr>
+              <td><strong>Total Score</strong></td>
+              <td>${stats.overall?.score || 0} / ${stats.overall?.total || 0} questions</td>
+            </tr>
+            <tr>
+              <td><strong>Lessons Completed</strong></td>
+              <td>${stats.lessons?.completed || 0} lessons • ${stats.lessons?.score || 0}/${stats.lessons?.total || 0} (${stats.lessons?.percentage || 0}%)</td>
+            </tr>
+            <tr>
+              <td><strong>Quizzes Completed</strong></td>
+              <td>${stats.quizzes?.completed || 0} quizzes • ${stats.quizzes?.score || 0}/${stats.quizzes?.total || 0} (${stats.quizzes?.percentage || 0}%)</td>
+            </tr>
+            <tr>
+              <td><strong>Overall Performance</strong></td>
+              <td><span class="badge ${getPerformanceBadgeClass(stats.overall?.percentage || 0)}">${stats.overall?.percentage || 0}%</span></td>
+            </tr>
+            <tr>
+              <td><strong>Last Updated</strong></td>
+              <td>${stats.lastUpdated ? formatTimestamp(stats.lastUpdated) : 'N/A'}</td>
+            </tr>
+          </table>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // CREATE LESSONS TAB CONTENT (DETAILED)
+    // ============================================
+    
+    function createLessonsContent(user) {
+      if (user.lessonProgress.length === 0) {
+        return `
+          <div style="text-align: center; padding: 40px; color: var(--muted);">
+            <p>📚 No lessons completed yet</p>
+          </div>
+        `;
+      }
+      
+      let html = '<div style="margin-top: 16px;">';
+      
+      user.lessonProgress.forEach(lesson => {
+        const answers = lesson.answers || {};
+        const totalAnswers = Object.keys(answers).length;
+        const correctAnswers = Object.values(answers).filter(a => a.isCorrect).length;
+        
+        html += `
+          <div style="background: rgba(255,255,255,0.02); padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 1rem; color: var(--brand-2);">📖 Lesson ${lesson.lessonNumber}</h4>
+              <span class="badge ${getPerformanceBadgeClass(lesson.percentage)}">${lesson.percentage}%</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 12px;">
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--text);">Score:</strong> ${lesson.score}/${lesson.totalQuestions}
+              </div>
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--text);">Attempts:</strong> ${lesson.attempts}
+              </div>
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--text);">Completed:</strong> ${formatTimestamp(lesson.timestamp)}
+              </div>
+            </div>
+            
+            ${totalAnswers > 0 ? `
+              <details style="margin-top: 12px;">
+                <summary style="cursor: pointer; color: var(--brand); font-weight: 600; font-size: 0.9rem; padding: 8px 0;">
+                  📋 View Question-by-Question Breakdown (${totalAnswers} questions)
+                </summary>
+                <div style="margin-top: 12px;">
+                  <table class="detail-table">
+                    <thead>
+                      <tr>
+                        <th>Q#</th>
+                        <th>Selected</th>
+                        <th>Correct</th>
+                        <th>Result</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${Object.entries(answers).map(([qId, qData]) => `
+                        <tr>
+                          <td><strong>${qId.toUpperCase()}</strong></td>
+                          <td>${qData.selected}</td>
+                          <td>${qData.correct}</td>
+                          <td>${qData.isCorrect ? '<span class="badge badge-success">✓ Correct</span>' : '<span class="badge badge-error">✗ Wrong</span>'}</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            ` : ''}
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      return html;
+    }
+
+    // ============================================
+    // CREATE QUIZZES TAB CONTENT (DETAILED)
+    // ============================================
+    
+    function createQuizzesContent(user) {
+      if (user.quizProgress.length === 0) {
+        return `
+          <div style="text-align: center; padding: 40px; color: var(--muted);">
+            <p>🎯 No quizzes completed yet</p>
+          </div>
+        `;
+      }
+      
+      let html = '<div style="margin-top: 16px;">';
+      
+      user.quizProgress.forEach((quiz, index) => {
+        const chapterText = quiz.chapterIds && quiz.chapterIds.length > 0 
+          ? `Chapters: ${quiz.chapterIds.join(', ')}` 
+          : 'Mixed Chapters';
+        
+        const answers = quiz.answers || [];
+        const hasDetailedAnswers = answers.length > 0 && typeof answers[0] === 'object';
+        
+        html += `
+          <div style="background: rgba(255,255,255,0.02); padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 1rem; color: var(--accent);">🎯 Quiz #${index + 1}</h4>
+              <span class="badge ${getPerformanceBadgeClass(quiz.percentage)}">${quiz.percentage}%</span>
+            </div>
+            
+            <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px;">
+              ${chapterText}
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 12px;">
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--success);">✓ Correct:</strong> ${quiz.correctCount || quiz.score || 0}
+              </div>
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--error);">✗ Wrong:</strong> ${quiz.wrongCount || 0}
+              </div>
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--warning);">⊝ Skipped:</strong> ${quiz.skippedCount || 0}
+              </div>
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                <strong style="color: var(--text);">Total:</strong> ${quiz.totalQuestions}
+              </div>
+            </div>
+            
+            ${quiz.totalTimeSpent ? `
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <div style="font-size: 0.85rem; color: var(--muted);">
+                  <strong style="color: var(--text);">⏱️ Total Time:</strong> ${Math.floor(quiz.totalTimeSpent / 60)}m ${quiz.totalTimeSpent % 60}s
+                </div>
+                <div style="font-size: 0.85rem; color: var(--muted);">
+                  <strong style="color: var(--text);">⏱️ Avg/Question:</strong> ${quiz.averageTimePerQuestion || 0}s
+                </div>
+                <div style="font-size: 0.85rem; color: var(--muted);">
+                  <strong style="color: var(--text);">💡 Hints Used:</strong> ${quiz.totalHintsUsed || 0}
+                </div>
+                <div style="font-size: 0.85rem; color: var(--muted);">
+                  <strong style="color: var(--text);">🔄 Attempts:</strong> ${quiz.attempts || 1}
+                </div>
+              </div>
+            ` : ''}
+            
+            ${hasDetailedAnswers ? `
+              <details style="margin-top: 12px;">
+                <summary style="cursor: pointer; color: var(--brand); font-weight: 600; font-size: 0.9rem; padding: 8px 0;">
+                  📋 View Detailed Question Breakdown (${answers.length} questions)
+                </summary>
+                <div style="margin-top: 12px; max-height: 400px; overflow-y: auto;">
+                  ${answers.map((q, idx) => `
+                    <div style="background: rgba(255,255,255,0.03); padding: 12px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid ${q.isCorrect ? 'var(--success)' : (q.isSkipped ? 'var(--warning)' : 'var(--error)')};">
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="color: var(--brand-2);">Q${q.questionNumber || idx + 1}</strong>
+                        ${q.isSkipped ? '<span class="badge badge-warning">Skipped</span>' : 
+                          (q.isCorrect ? '<span class="badge badge-success">✓ Correct</span>' : '<span class="badge badge-error">✗ Wrong</span>')}
+                      </div>
+                      
+                      ${q.chapter ? `<div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 6px;">📚 ${q.chapterTitle || 'Chapter ' + q.chapter}</div>` : ''}
+                      
+                      <div style="font-size: 0.9rem; margin-bottom: 8px; color: var(--text);">
+                        ${q.question || 'Question text not available'}
+                      </div>
+                      
+                      ${!q.isSkipped ? `
+                        <div style="font-size: 0.85rem; margin-top: 8px;">
+                          <div style="color: var(--muted);">
+                            <strong>Your Answer:</strong> 
+                            <span style="color: ${q.isCorrect ? 'var(--success)' : 'var(--error)'};">${formatAnswer(q.userAnswer)}</span>
+                          </div>
+                          ${!q.isCorrect ? `
+                            <div style="color: var(--muted); margin-top: 4px;">
+                              <strong>Correct Answer:</strong> 
+                              <span style="color: var(--success);">${formatAnswer(q.correctAnswer)}</span>
+                            </div>
+                          ` : ''}
+                        </div>
+                      ` : ''}
+                      
+                      ${q.explanation ? `
+                        <details style="margin-top: 8px;">
+                          <summary style="cursor: pointer; color: var(--brand-2); font-size: 0.85rem;">💡 Explanation</summary>
+                          <div style="margin-top: 6px; font-size: 0.85rem; color: var(--muted); padding-left: 8px; border-left: 2px solid var(--brand);">
+                            ${q.explanation}
+                          </div>
+                        </details>
+                      ` : ''}
+                      
+                      ${q.timeSpent || q.hintsUsed ? `
+                        <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 0.75rem; color: var(--muted);">
+                          ${q.timeSpent ? `<span>⏱️ ${q.timeSpent}s</span>` : ''}
+                          ${q.hintsUsed ? `<span>💡 ${q.hintsUsed} hint(s)</span>` : ''}
+                        </div>
+                      ` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              </details>
+            ` : ''}
+            
+            <div style="font-size: 0.8rem; color: var(--muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05);">
+              📅 Completed: ${formatTimestamp(quiz.timestamp)}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      return html;
+    }
+
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+    
+    function formatAnswer(answer) {
+      if (Array.isArray(answer)) {
+        return answer.join(', ');
+      }
+      return answer || 'N/A';
+    }
+
+    function getPerformanceBadgeClass(percentage) {
+      if (percentage >= 75) return 'badge-success';
+      if (percentage >= 50) return 'badge-warning';
+      return 'badge-error';
+    }
+
+    function formatTimestamp(timestamp) {
+      if (!timestamp) return 'N/A';
+      
+      let date;
+      if (timestamp.toDate) {
+        date = timestamp.toDate();
+      } else if (timestamp.seconds) {
+        date = new Date(timestamp.seconds * 1000);
+      } else {
+        date = new Date(timestamp);
+      }
+      
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
+      
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+      if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+      if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+      
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // ============================================
+    // TAB SWITCHING
+    // ============================================
+    
+    window.switchTab = function(event, tabId) {
+      const card = event.target.closest('.user-card');
+      const allTabs = card.querySelectorAll('.tab-btn');
+      const allContents = card.querySelectorAll('.tab-content');
+      
+      allTabs.forEach(tab => tab.classList.remove('active'));
+      allContents.forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    };
+
+        // ============================================
+    // SEARCH AND FILTER FUNCTIONALITY
+    // ============================================
+    
+    window.filterUsers = function() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.user-card');
+      
+      cards.forEach(card => {
+        const name = card.dataset.name;
+        const email = card.dataset.email;
+        const userId = card.dataset.userId.toLowerCase();
+        
+        const matchesSearch = name.includes(searchTerm) || 
+                             email.includes(searchTerm) || 
+                             userId.includes(searchTerm);
+        
+        if (matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      
+      updateVisibleCount();
+    };
+
+    window.setFilter = function(filterType) {
+      currentFilter = filterType;
+      
+      // Update button states
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.getElementById('filter' + capitalizeFirst(filterType))?.classList.add('active');
+      
+      // Filter users
+      const cards = document.querySelectorAll('.user-card');
+      
+      cards.forEach(card => {
+        const userId = card.dataset.userId;
+        const user = allUsersData.find(u => u.userId === userId);
+        
+        if (!user) return;
+        
+        let shouldShow = true;
+        
+        if (filterType === 'active') {
+          shouldShow = user.overallPercentage >= 50;
+        } else if (filterType === 'inactive') {
+          shouldShow = user.overallPercentage < 50;
+        }
+        
+        card.style.display = shouldShow ? 'block' : 'none';
+      });
+      
+      updateVisibleCount();
+    };
+
+    function updateVisibleCount() {
+      const visibleCards = document.querySelectorAll('.user-card[style*="display: block"], .user-card:not([style*="display: none"])');
+      const total = allUsersData.length;
+      const visible = visibleCards.length;
+      
+      console.log(`Showing ${visible} of ${total} users`);
+    }
+
+    function capitalizeFirst(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // ============================================
+    // EXPORT TO CSV FUNCTIONALITY
+    // ============================================
+    
+    window.exportData = function() {
+      if (allUsersData.length === 0) {
+        alert('No data to export');
+        return;
+      }
+      
+      console.log('📥 Exporting data to CSV...');
+      
+      // CSV Headers
+      let csv = 'User ID,Name,Email,Overall %,Lessons Completed,Lessons Score,Lessons %,Quizzes Completed,Quiz Score,Quiz %,Last Login\n';
+      
+      // Add each user
+      allUsersData.forEach(user => {
+        const stats = user.overallStats;
+        const lastLogin = user.lastLogin ? formatTimestamp(user.lastLogin) : 'Never';
+        
+        csv += `"${user.userId}",`;
+        csv += `"${user.name}",`;
+        csv += `"${user.email}",`;
+        csv += `${stats.overall?.percentage || 0},`;
+        csv += `${stats.lessons?.completed || 0},`;
+        csv += `"${stats.lessons?.score || 0}/${stats.lessons?.total || 0}",`;
+        csv += `${stats.lessons?.percentage || 0},`;
+        csv += `${stats.quizzes?.completed || 0},`;
+        csv += `"${stats.quizzes?.score || 0}/${stats.quizzes?.total || 0}",`;
+        csv += `${stats.quizzes?.percentage || 0},`;
+        csv += `"${lastLogin}"\n`;
+      });
+      
+      // Download CSV
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      const timestamp = new Date().toISOString().split('T')[0];
+      link.setAttribute('href', url);
+      link.setAttribute('download', `accountswizard-admin-export-${timestamp}.csv`);
+      link.style.visibility = 'hidden';
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      console.log('✅ CSV exported successfully');
+      
+      // Also export detailed JSON
+      exportDetailedJSON();
+    };
+
+    function exportDetailedJSON() {
+      const detailedData = {
+        exportDate: new Date().toISOString(),
+        totalUsers: allUsersData.length,
+        platformStats: {
+          totalLessons: allUsersData.reduce((sum, u) => sum + u.totalLessonsCompleted, 0),
+          totalQuizzes: allUsersData.reduce((sum, u) => sum + u.totalQuizzesCompleted, 0),
+          averagePerformance: Math.round(
+            allUsersData.reduce((sum, u) => sum + u.overallPercentage, 0) / allUsersData.length
+          )
+        },
+        users: allUsersData.map(user => ({
+          userId: user.userId,
+          name: user.name,
+          email: user.email,
+          overallStats: user.overallStats,
+          lessonProgress: user.lessonProgress.map(lesson => ({
+            lessonNumber: lesson.lessonNumber,
+            score: lesson.score,
+            totalQuestions: lesson.totalQuestions,
+            percentage: lesson.percentage,
+            attempts: lesson.attempts,
+            timestamp: lesson.timestamp,
+            answers: lesson.answers
+          })),
+          quizProgress: user.quizProgress.map(quiz => ({
+            chapterIds: quiz.chapterIds,
+            score: quiz.score,
+            totalQuestions: quiz.totalQuestions,
+            percentage: quiz.percentage,
+            correctCount: quiz.correctCount,
+            wrongCount: quiz.wrongCount,
+            skippedCount: quiz.skippedCount,
+            totalTimeSpent: quiz.totalTimeSpent,
+            averageTimePerQuestion: quiz.averageTimePerQuestion,
+            totalHintsUsed: quiz.totalHintsUsed,
+            attempts: quiz.attempts,
+            timestamp: quiz.timestamp,
+            detailedAnswers: quiz.answers
+          }))
+        }))
+      };
+      
+      const jsonBlob = new Blob([JSON.stringify(detailedData, null, 2)], { type: 'application/json' });
+      const jsonLink = document.createElement('a');
+      const jsonUrl = URL.createObjectURL(jsonBlob);
+      
+      const timestamp = new Date().toISOString().split('T')[0];
+      jsonLink.setAttribute('href', jsonUrl);
+      jsonLink.setAttribute('download', `accountswizard-detailed-export-${timestamp}.json`);
+      jsonLink.style.visibility = 'hidden';
+      
+      document.body.appendChild(jsonLink);
+      jsonLink.click();
+      document.body.removeChild(jsonLink);
+      
+      console.log('✅ Detailed JSON exported successfully');
+    }
+
+    // ============================================
+    // KEYBOARD SHORTCUTS
+    // ============================================
+    
+    document.addEventListener('keydown', (e) => {
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('searchInput')?.focus();
+      }
+      
+      // Ctrl/Cmd + E to export
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault();
+        exportData();
+      }
+      
+      // Escape to clear search
+      if (e.key === 'Escape') {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput && searchInput.value) {
+          searchInput.value = '';
+          filterUsers();
+        }
+      }
+    });
+
+    // ============================================
+    // AUTO-REFRESH DATA EVERY 5 MINUTES
+    // ============================================
+    
+    let autoRefreshInterval;
+    
+    function startAutoRefresh() {
+      // Refresh data every 5 minutes
+      autoRefreshInterval = setInterval(() => {
+        console.log('🔄 Auto-refreshing data...');
+        loadAllData();
+      }, 5 * 60 * 1000); // 5 minutes
+    }
+
+    function stopAutoRefresh() {
+      if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+      }
+    }
+
+    // Start auto-refresh when dashboard is shown
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.email === ADMIN_EMAIL) {
+        startAutoRefresh();
+      } else {
+        stopAutoRefresh();
+      }
+    });
+
+    // ============================================
+    // PRINT FUNCTIONALITY
+    // ============================================
+    
+    window.printDashboard = function() {
+      window.print();
+    };
+
+    // Add print styles
+    const printStyles = `
+      @media print {
+        body {
+          background: white;
+          color: black;
+        }
+        
+        .header, .controls, .sign-out-btn, .filter-btn, .tab-btn {
+          display: none !important;
+        }
+        
+        .user-card {
+          page-break-inside: avoid;
+          border: 1px solid #ccc;
+          margin-bottom: 20px;
+          background: white;
+        }
+        
+        .tab-content {
+          display: block !important;
+        }
+        
+        details {
+          display: none;
+        }
+      }
+    `;
+    
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = printStyles;
+    document.head.appendChild(styleSheet);
+
+    // ============================================
+    // INITIALIZE FILTERS ON LOAD
+    // ============================================
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set default filter to "All"
+      const filterAllBtn = document.getElementById('filterAll');
+      if (filterAllBtn) {
+        filterAllBtn.classList.add('active');
+      }
+    });
+
+    // ============================================
+    // CONSOLE WELCOME MESSAGE
+    // ============================================
+    
+    console.log(`
+╔═══════════════════════════════════════════════════════╗
+║                                                       ║
+║       📊 ACCOUNTSWIZARD ADMIN DASHBOARD v4.1          ║
+║                                                       ║
+║   Comprehensive Analytics & User Progress Tracking   ║
+║                                                       ║
+║   Features:                                           ║
+║   ✅ Real-time user statistics                       ║
+║   ✅ Detailed lesson & quiz breakdowns               ║
+║   ✅ Question-by-question analysis                   ║
+║   ✅ Time tracking & hint usage                      ║
+║   ✅ CSV & JSON export                               ║
+║   ✅ Advanced filtering & search                     ║
+║   ✅ Auto-refresh every 5 minutes                    ║
+║                                                       ║
+║   Keyboard Shortcuts:                                 ║
+║   • Ctrl/Cmd + K → Focus search                      ║
+║   • Ctrl/Cmd + E → Export data                       ║
+║   • Esc → Clear search                               ║
+║                                                       ║
+║   Admin: ${ADMIN_EMAIL.padEnd(40)} ║
+║                                                       ║
+╚═══════════════════════════════════════════════════════╝
+    `);
+
+    // ============================================
+    // EXPOSE FUNCTIONS FOR DEBUGGING
+    // ============================================
+    
+    window.adminDebug = {
+      getAllUsers: () => allUsersData,
+      getUserById: (userId) => allUsersData.find(u => u.userId === userId),
+      reloadData: () => loadAllData(),
+      exportCSV: () => exportData(),
+      getStats: () => ({
+        totalUsers: allUsersData.length,
+        totalLessons: allUsersData.reduce((sum, u) => sum + u.totalLessonsCompleted, 0),
+        totalQuizzes: allUsersData.reduce((sum, u) => sum + u.totalQuizzesCompleted, 0),
+        avgPerformance: Math.round(
+          allUsersData.reduce((sum, u) => sum + u.overallPercentage, 0) / allUsersData.length
+        )
+      })
+    };
+
+    console.log('💡 Tip: Use window.adminDebug in console for advanced debugging');
+    console.log('Examples:');
+    console.log('  - window.adminDebug.getAllUsers()');
+    console.log('  - window.adminDebug.getUserById("user_id_here")');
+    console.log('  - window.adminDebug.getStats()');
+    console.log('  - window.adminDebug.reloadData()');
+
+  </script>
+</body>
+</html>
