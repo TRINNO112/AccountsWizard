@@ -707,10 +707,16 @@
           <div class="item-progress-fill" style="width: ${percentage}%"></div>
         </div>
       `;
-      
-      // ✅ FIX: Correct path to lessons folder
+
+      // ✅ CRITICAL FIX: Use hyphen in filename (lesson-1.html, not lesson1.html)
       card.onclick = () => {
-        window.location.href = `lessons/lesson${lessonNum}.html`;
+        try {
+          // Navigate to lessons/lesson-X.html (with hyphen!)
+          window.location.href = 'lessons/lesson-' + lessonNum + '.html';
+        } catch (error) {
+          console.error('❌ Navigation error:', error);
+          alert('Could not load lesson ' + lessonNum);
+        }
       };
       
       return card;
