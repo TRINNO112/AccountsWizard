@@ -41,6 +41,27 @@
             min-height: 100vh;
         }
 
+        /* Smooth page content fade-in after loading */
+        body.loading .page-content {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        body:not(.loading) .page-content {
+            animation: fadeInPage 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeInPage {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
         /* Matrix Rain Background */
         .matrix-bg {
             position: fixed;
@@ -316,6 +337,8 @@
 
         .hero-content {
             animation: slideInLeft 0.8s ease;
+            text-align: left;
+            margin-left: 0;
         }
 
         @keyframes slideInLeft {
@@ -354,13 +377,15 @@
         }
 
         .hero-title {
-            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-size: 4.5rem; /* Default for desktop */
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 25px;
             background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-align: left;
+            margin-left: 0;
         }
 
         .hero-title span {
@@ -387,7 +412,7 @@
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--dark-border);
             border-radius: 15px;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
         }
 
@@ -412,6 +437,11 @@
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            text-decoration: none;
+        }
+
+        .hero-buttons a {
+            text-decoration: none;
         }
 
         .btn-primary {
@@ -479,51 +509,6 @@
         .section-subtitle {
             font-size: 1.1rem;
             color: var(--text-secondary);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: var(--dark-card);
-            border: 1px solid var(--dark-border);
-            border-radius: 24px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent, rgba(0, 255, 136, 0.05));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--neon-green);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-icon {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 30px;
         }
         
         /* Hero Visual Styles */
@@ -623,71 +608,6 @@
         @keyframes badge-float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
-        }
-
-        /* Features Section Styles */
-        .features-section {
-            padding: 100px 30px;
-            background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.02));
-        }
-
-        .section-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .section-badge {
-            display: inline-block
-        }
-        
-        .icon-emoji {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            z-index: 2;
-        }
-
-        .icon-glow {
-            position: absolute;
-            inset: -20px;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.2), transparent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .feature-tags {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            padding: 5px 12px;
-            background: rgba(153, 69, 255, 0.1);
-            border: 1px solid var(--neon-purple);
-            border-radius: 100px;
-            font-size: 12px;
-            color: var(--neon-purple);
         }
 
         /* Curriculum Section */
@@ -961,6 +881,10 @@
                 gap: 40px;
             }
 
+            .hero-title {
+                font-size: 2rem;
+            }
+
             .visual-container {
                 height: 300px;
             }
@@ -1015,6 +939,10 @@
             box-shadow: 
                 0 0 100px rgba(0, 255, 136, 0.3),
                 0 30px 80px rgba(0, 0, 0, 0.8);
+            max-height: 90vh;         /* keeps modal within screen height */
+            overflow-y: auto;         /* enables vertical scroll */
+            scrollbar-width: thin;    /* (for Firefox) thin scrollbar */
+            scrollbar-color: #00ff88 #111111; /* neon scrollbar style */
         }
 
         @keyframes slideUpModal {
@@ -1160,117 +1088,6 @@
         .auth-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4);
-        }
-
-        /* AI Assistant Section */
-        .ai-section {
-            padding: 100px 30px;
-            background: linear-gradient(180deg, transparent, rgba(0, 255, 255, 0.03));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Soft ambient glow background */
-        .ai-section::before {
-            content: "";
-            position: absolute;
-            width: 180%;
-            height: 180%;
-            top: -40%;
-            left: -40%;
-            background: radial-gradient(circle, rgba(0,255,255,0.1), transparent 70%);
-            animation: ai-glow 35s ease-in-out infinite;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        @keyframes ai-glow {
-            0%, 100% { transform: rotate(0deg); opacity: 0.3; }
-            50% { transform: rotate(180deg); opacity: 0.5; }
-        }
-
-        /* Card-style container */
-        .ai-container {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            background: var(--dark-card, rgba(10, 10, 10, 0.7));
-            border: 1px solid var(--dark-border, rgba(255,255,255,0.05));
-            border-radius: 24px;
-            padding: 60px 50px;
-            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            transition: all 0.6s ease;
-        }
-
-        .ai-container:hover {
-            transform: translateY(-10px);
-            border-color: rgba(0, 255, 255, 0.4);
-            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.25);
-        }
-
-        /* Title and text */
-        .ai-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #00eaff;
-            text-shadow: 0 0 10px rgba(0,255,255,0.3);
-            margin-bottom: 1rem;
-            transition: color 0.4s ease, text-shadow 0.4s ease;
-        }
-
-        .ai-container:hover .ai-title {
-            color: #00ffb3;
-            text-shadow: 0 0 20px rgba(0,255,255,0.5);
-        }
-
-        .ai-description {
-            color: var(--text-secondary, #a0a0a0);
-            line-height: 1.8;
-            font-size: 1.05rem;
-            margin-bottom: 2rem;
-            transition: color 0.4s ease;
-        }
-
-        /* Button styling to match feature tag elegance */
-        .ai-button-wrapper {
-            margin-bottom: 1.8rem;
-        }
-
-        .ai-launch-button {
-            display: inline-block;
-            padding: 14px 32px;
-            border-radius: 100px;
-            background: linear-gradient(135deg, #00f0ff, #00aaff);
-            color: #000;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-        }
-
-        .ai-launch-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-        }
-
-        /* Soft, minimal disclaimer */
-        .ai-disclaimer {
-            font-size: 0.9rem;
-            color: #9ee4e4;
-            border-top: 1px dashed rgba(0,255,255,0.2);
-            padding-top: 15px;
-            margin-top: 20px;
-            line-height: 1.6;
-            transition: color 0.4s ease;
-        }
-
-        .ai-container:hover .ai-disclaimer {
-            color: #b5ffff;
         }
 
         /* ========================================
@@ -2110,6 +1927,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
+            transform: scale(1.05);
         }
 
         /* Zoom Animation */
@@ -2455,16 +2273,10 @@
             text-align: center;
         }
 
-        .hero-section h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
         .hero-section p {
             color: #666;
             margin-bottom: 15px;
-            font-size: 14px;
+            font-size: 22px;
         }
 
         .cta-btn {
@@ -3004,10 +2816,532 @@
                 height: 480px;
             }
         }
+
+        /* Features & AI Assistant Section Styles */
+        .ft-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 5rem 1rem;
+            color: #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ft-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #6c63ff, transparent);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #6c63ff, #8a84ff);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #e2e8f0, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Features Grid */
+        .ft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Feature Cards - ENHANCED FOR DESKTOP, SIMPLE FOR MOBILE */
+        .ft-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            /* Desktop only - smooth animations */
+            transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Animated top border */
+        .ft-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6c63ff, #00d4aa, #6c63ff);
+            background-size: 200% 100%;
+            transition: opacity 0.5s ease;
+            opacity: 0.6;
+        }
+
+        /* Desktop hover effects - SMOOTH */
+        @media (min-width: 769px) {
+            .ft-card:hover {
+                transform: translateY(-12px) scale(1.02);
+                box-shadow: 
+                    0 25px 50px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(108, 99, 255, 0.3);
+                border-color: rgba(108, 99, 255, 0.4);
+            }
+
+            .ft-card:hover::before {
+                opacity: 1;
+                animation: borderFlow 2s linear infinite;
+            }
+
+            @keyframes borderFlow {
+                0% { background-position: 0% 0%; }
+                100% { background-position: 200% 0%; }
+            }
+
+            .ft-card:hover .icon-emoji {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+            .ft-card:hover .icon-glow {
+                opacity: 0.8;
+                filter: blur(25px);
+                animation: pulseGlow 2s ease-in-out infinite;
+            }
+
+            @keyframes pulseGlow {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.15); }
+            }
+
+            .ft-card:hover .ft-title {
+                background: linear-gradient(90deg, #6c63ff, #00d4aa);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .ft-card:hover .tag {
+                background: rgba(108, 99, 255, 0.3);
+                border-color: rgba(108, 99, 255, 0.5);
+                transform: translateY(-2px);
+            }
+        }
+
+        /* MOBILE - DISABLE ALL ANIMATIONS */
+        @media (max-width: 768px) {
+            .ft-card {
+                transition: none;
+                transform: none;
+            }
+            
+            .ft-card:hover {
+                transform: none;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            
+            .ft-card::before {
+                animation: none;
+            }
+        }
+
+        .ft-card-ai {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(44, 58, 82, 0.8));
+            border: 1px solid rgba(108, 99, 255, 0.2);
+        }
+
+        .ft-card-ai::before {
+            background: linear-gradient(90deg, #ff6b9d, #6c63ff, #ff6b9d);
+            background-size: 200% 100%;
+        }
+
+        /* Feature Icons */
+        .ft-icon {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-emoji {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6c63ff, #8a84ff);
+            border-radius: 20px;
+            font-size: 2rem;
+            color: white;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .icon-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6c63ff, #8a84ff);
+            border-radius: 20px;
+            opacity: 0.4;
+            filter: blur(20px);
+            z-index: 1;
+            transition: all 0.6s ease;
+        }
+
+        .ft-card-ai .icon-emoji,
+        .ft-card-ai .icon-glow {
+            background: linear-gradient(135deg, #ff6b9d, #6c63ff);
+        }
+
+        /* Feature Content */
+        .ft-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+            transition: all 0.5s ease;
+        }
+
+        .ft-description {
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Tags */
+        .ft-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: rgba(108, 99, 255, 0.15);
+            color: #8a84ff;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .ft-card-ai .tag {
+            background: rgba(255, 107, 157, 0.15);
+            color: #ff8bb4;
+            border: 1px solid rgba(255, 107, 157, 0.2);
+        }
+
+        /* AI Button */
+        .ai-button-wrapper {
+            margin: 1.5rem 0;
+        }
+
+        .ai-launch-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, #ff6b9d, #6c63ff);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .ai-launch-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(108, 99, 255, 0.5);
+        }
+
+        /* AI Disclaimer */
+        .ai-disclaimer {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .ft-section {
+                padding: 3rem 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .ft-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .ft-card {
+                padding: 1.5rem;
+            }
+            
+            .ft-icon {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .icon-emoji {
+                font-size: 1.8rem;
+            }
+            
+            .ft-title {
+                font-size: 1.3rem;
+            }
+            
+            .ft-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        /* Room Section Styles */
+        .room-section {
+            padding: 80px 30px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ff6b9d, transparent);
+        }
+
+        .room-iframe-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+        }
+
+        .room-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .room-iframe:hover {
+            transform: scale(1.005);
+        }
+
+        .room-controls {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(17, 17, 17, 0.8);
+            border-top: 1px solid var(--dark-border);
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .room-fullscreen-btn, .room-direct-link {
+            background: linear-gradient(135deg, #6c63ff, #8a84ff);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .room-direct-link {
+            background: linear-gradient(135deg, #ff6b9d, #ff8bb4);
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        .room-fullscreen-btn:hover, .room-direct-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        }
+
+        .room-direct-link:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .room-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Fullscreen Styles */
+        .room-iframe-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            border-radius: 0;
+            margin: 0;
+        }
+
+        .room-iframe-container.fullscreen .room-iframe {
+            height: 100vh;
+        }
+
+        .room-iframe-container.fullscreen .room-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .room-section {
+                padding: 60px 20px;
+            }
+            
+            .room-iframe {
+                height: 400px;
+            }
+            
+            .room-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .room-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .stat {
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .room-iframe {
+                height: 300px;
+            }
+        }
     </style>
 </head>
-<body>
-    <!-- Loading Screen -->
+<body class="loading">
+    <!-- Loading Screen (stays outside the wrapper) -->
     <div class="loading-screen" id="loadingScreen">
         <div class="stuck-grid">
             <div class="grid-item">Journal Entry</div>
@@ -3071,7 +3405,7 @@
             <p class="loading-percentage" id="loadingPercentage">0%</p>
         </div>
     </div>
-
+    
     <!-- Background Effects -->
     <div class="matrix-bg" id="matrixBg"></div>
     <div class="gradient-bg"></div>
@@ -3099,23 +3433,23 @@
         <div class="welcome-modal">
             <button class="welcome-close" id="welcomeClose">×</button>
             <div class="welcome-content">
-                <div class="welcome-icon">🧙✨</div>
-                <h2 class="welcome-title">Welcome to the World of Accounts</h2>
+                <div class="welcome-icon">💼🔥</div>
+                <h2 class="welcome-title">Welcome to Commerce Day — The Showcase Zone</h2>
                 <p class="welcome-text">
-                    Here you can <span class="highlight">feel</span>, 
-                    <span class="highlight">enjoy</span>, and 
-                    <span class="highlight">think</span> of everything accounting has to offer.
+                    You’ve officially entered the area where <span class="highlight">creativity</span> meets 
+                    <span class="highlight">commerce</span>... and maybe a little bit of <span class="highlight">chaos</span>.
                 </p>
                 <div class="welcome-notice">
-                    <p>⚠️ This page is <strong>ONLY available for Commerce Day</strong></p>
-                    <p>Made by an awesome student, <strong>Trinno Asphalt</strong></p>
-                    <p class="privacy-note">(Real name is always hidden in privacy 🔒)</p>
+                    <p>🎉 This page is part of the <strong>Commerce Day Exhibition</strong></p>
+                    <p>Designed and built by <strong>Trinno Asphalt</strong> — fueled by CSS, Logic & Chitta Stationery™</p>
+                    <p class="privacy-note">(Yes, real name stays private. Respect the mystery 😏)</p>
                 </div>
-                <p class="welcome-cta">Continue exploring using the navigation links above!</p>
-                <button class="welcome-explore-btn" id="welcomeExploreBtn">Start Exploring →</button>
+                <p class="welcome-cta">Take a stroll around — you might just find something awesome 👀</p>
+                <button class="welcome-explore-btn" id="welcomeExploreBtn">Let’s Go →</button>
             </div>
         </div>
     </div>
+
 
     <!-- Commerce Day Timer -->
     <section class="commerce-timer-section">
@@ -3180,11 +3514,11 @@
                 </div>
                 
                 <div class="hero-buttons">
-                    <button class="btn-primary">
-                        <span>Start Learning</span>
-                        <span>→</span>
-                    </button>
-                </div>
+                <a href="lessons.html" class="btn-primary">
+                    <span>Start Learning</span>
+                    <span>→</span>
+                </a>
+            </div>
             </div>
 
             <div class="hero-visual">
@@ -3201,145 +3535,123 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features-section" id="features">
-    <div class="section-container">
-        <div class="section-header">
-        <div class="section-badge">Why Choose AccountsWizard</div>
-        <h2 class="section-title">Features That Make Learning Accounting Fun & Interactive</h2>
-        <p class="section-subtitle">
-            From animations to quizzes — har chapter ke saath seekhna becomes interesting, visual, and smart!
-        </p>
-        </div>
+    <!-- Features & AI Assistant Section -->
+    <section class="ft-section" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">Why Choose AccountsWizard</div>
+                <h2 class="section-title">Features That Make Learning Accounting Fun & Interactive</h2>
+                <p class="section-subtitle">
+                    From animations to quizzes — har chapter ke saath seekhna becomes interesting, visual, and smart!
+                </p>
+            </div>
 
-        <div class="features-grid">
+            <div class="ft-grid">
+                <!-- Interactive Lessons -->
+                <div class="ft-card" data-tilt>
+                    <div class="ft-icon">
+                        <span class="icon-emoji"><i class="fa-solid fa-book-open-reader"></i></span>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3 class="ft-title">Interactive Lesson Pages</h3>
+                    <p class="ft-description">
+                        Each chapter comes with interactive lessons, animations, and simple English —
+                        taaki basic topics bhi easily samajh aaye. Every page feels like a guided journey
+                        through accounting fundamentals.
+                    </p>
+                    <div class="ft-tags">
+                        <span class="tag">Animations</span><span class="tag">Simple English</span><span class="tag">Guided</span>
+                    </div>
+                </div>
 
-        <!-- Interactive Lessons -->
-        <div class="feature-card" data-tilt>
-        <div class="feature-icon">
-            <span class="icon-emoji"><i class="fa-solid fa-book-open-reader"></i></span>
-            <div class="icon-glow"></div>
-        </div>
-        <h3 class="feature-title">Interactive Lesson Pages</h3>
-        <p class="feature-description">
-            Each chapter comes with interactive lessons, animations, and simple English —
-            taaki basic topics bhi easily samajh aaye. Every page feels like a guided journey
-            through accounting fundamentals.
-        </p>
-        <div class="feature-tags">
-            <span class="tag">Animations</span><span class="tag">Simple English</span><span class="tag">Guided</span>
-        </div>
-        </div>
+                <!-- Practice MCQs -->
+                <div class="ft-card" data-tilt>
+                    <div class="ft-icon">
+                        <span class="icon-emoji"><i class="fa-solid fa-list-check"></i></span>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3 class="ft-title">Practice MCQs — 20 per Chapter</h3>
+                    <p class="ft-description">
+                        Har chapter ke baad 20 carefully crafted MCQs for self-assessment. Every attempt is
+                        saved and your best score replaces the previous record — progress auto-updates so you can
+                        track improvements over time. View detailed stats on your profile / progress page.
+                    </p>
+                    <div class="ft-tags">
+                        <span class="tag">Saved Attempts</span><span class="tag">Progress Tracking</span><span class="tag">Instant Feedback</span>
+                    </div>
+                </div>
 
-        <!-- Practice MCQs -->
-        <div class="feature-card" data-tilt>
-        <div class="feature-icon">
-            <span class="icon-emoji"><i class="fa-solid fa-list-check"></i></span>
-            <div class="icon-glow"></div>
-        </div>
-        <h3 class="feature-title">Practice MCQs — 20 per Chapter</h3>
-        <p class="feature-description">
-            Har chapter ke baad 20 carefully crafted MCQs for self-assessment. Every attempt is
-            saved and your best score replaces the previous record — progress auto-updates so you can
-            track improvements over time. View detailed stats on your profile / progress page.
-        </p>
-        <div class="feature-tags">
-            <span class="tag">Saved Attempts</span><span class="tag">Progress Tracking</span><span class="tag">Instant Feedback</span>
-        </div>
-        </div>
+                <!-- AI Assistant -->
+                <div class="ft-card ft-card-ai" data-tilt>
+                    <div class="ft-icon">
+                        <span class="icon-emoji"><i class="fa-solid fa-robot"></i></span>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3 class="ft-title">AI Learning Assistant</h3>
+                    <p class="ft-description">
+                        Meet your personal study partner! This simulated AI Assistant helps you understand accounting concepts, 
+                        generate journal entries, and clarify tricky terms — all in real time.
+                    </p>
+                    <div class="ft-tags">
+                        <span class="tag">Smart Helper</span><span class="tag">Real-time</span><span class="tag">Interactive</span>
+                    </div>
+                    <div class="ai-button-wrapper">
+                        <a href="ai.html" class="ai-launch-button">🚀 Launch AI Assistant</a>
+                    </div>
+                    <p class="ai-disclaimer">
+                        ⚠️ <b>Note:</b> This is a <em>simulated AI</em> using predefined logic and stored data.
+                    </p>
+                </div>
 
-        <!-- Infographics & Charts -->
-        <div class="feature-card" data-tilt>
-        <div class="feature-icon">
-            <span class="icon-emoji"><i class="fa-solid fa-chart-pie"></i></span>
-            <div class="icon-glow"></div>
-        </div>
-        <h3 class="feature-title">Infographics, Charts & Tables</h3>
-        <p class="feature-description">
-            Complex concepts visualised clearly — balance sheets, ratios, and trial balances shown
-            as infographics, charts and comparison tables for fast comprehension and memory retention.
-        </p>
-        <div class="feature-tags">
-            <span class="tag">Visual Learning</span><span class="tag">Charts</span>
-        </div>
-        </div>
+                <!-- Infographics & Charts -->
+                <div class="ft-card" data-tilt>
+                    <div class="ft-icon">
+                        <span class="icon-emoji"><i class="fa-solid fa-chart-pie"></i></span>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3 class="ft-title">Infographics, Charts & Tables</h3>
+                    <p class="ft-description">
+                        Complex concepts visualised clearly — balance sheets, ratios, and trial balances shown
+                        as infographics, charts and comparison tables for fast comprehension and memory retention.
+                    </p>
+                    <div class="ft-tags">
+                        <span class="tag">Visual Learning</span><span class="tag">Charts</span>
+                    </div>
+                </div>
 
-        <!-- Practical Questions -->
-        <div class="feature-card" data-tilt>
-        <div class="feature-icon">
-            <span class="icon-emoji"><i class="fa-solid fa-file-invoice-dollar"></i></span>
-            <div class="icon-glow"></div>
-        </div>
-        <h3 class="feature-title">Practical Questions with Answers</h3>
-        <p class="feature-description">
-            Solved and unsolved practicals for journal entries, ledger posting, and trial balances —
-            step-by-step solutions included so you can practice and verify yourself.
-        </p>
-        <div class="feature-tags">
-            <span class="tag">Hands-on</span><span class="tag">Guided Solutions</span>
-        </div>
-        </div>
+                <!-- Practical Questions -->
+                <div class="ft-card" data-tilt>
+                    <div class="ft-icon">
+                        <span class="icon-emoji"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3 class="ft-title">Practical Questions with Answers</h3>
+                    <p class="ft-description">
+                        Solved and unsolved practicals for journal entries, ledger posting, and trial balances —
+                        step-by-step solutions included so you can practice and verify yourself.
+                    </p>
+                    <div class="ft-tags">
+                        <span class="tag">Hands-on</span><span class="tag">Guided Solutions</span>
+                    </div>
+                </div>
 
-        <!-- Disclaimer -->
-        <div class="feature-card" data-tilt>
-        <div class="feature-icon">
-            <span class="icon-emoji"><i class="fa-solid fa-triangle-exclamation"></i></span>
-            <div class="icon-glow"></div>
+                <!-- Topic Snippets -->
+                <div class="ft-card" data-tilt>
+                    <div class="ft-icon">
+                        <span class="icon-emoji"><i class="fa-solid fa-lightbulb"></i></span>
+                        <div class="icon-glow"></div>
+                    </div>
+                    <h3 class="ft-title">Topic Snippets on Main Page</h3>
+                    <p class="ft-description">
+                        Short summaries of every topic are available on the main index so you can preview concepts before
+                        diving deeper — quick, efficient skimming for busy students.
+                    </p>
+                    <div class="ft-tags">
+                        <span class="tag">Quick Preview</span><span class="tag">Concise</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h3 class="feature-title">Disclaimer</h3>
-        <p class="feature-description">
-            This website is under construction 🚧 — kuch bugs, outdated content, ya missing MCQs ho sakte hain.
-            Agar aapko koi issue mile, contact me via email and I’ll fix it ASAP.
-        </p>
-        <div class="feature-tags">
-            <span class="tag">Beta</span><span class="tag">Feedback Welcome</span>
-        </div>
-        </div>
-
-        <!-- Topic Snippets -->
-        <div class="feature-card" data-tilt>
-        <div class="feature-icon">
-            <span class="icon-emoji"><i class="fa-solid fa-lightbulb"></i></span>
-            <div class="icon-glow"></div>
-        </div>
-        <h3 class="feature-title">Topic Snippets on Main Page</h3>
-        <p class="feature-description">
-            Short summaries of every topic are available on the main index so you can preview concepts before
-            diving deeper — quick, efficient skimming for busy students.
-        </p>
-        <div class="feature-tags">
-            <span class="tag">Quick Preview</span><span class="tag">Concise</span>
-        </div>
-        </div>
-
-        </div>
-    </div>
-    </section>
-
-    <!-- AI Assistant Section -->
-    <section class="ai-section" id="ai-assistant">
-    <div class="ai-container" data-tilt>
-        <div class="ai-content">
-        <h2 class="ai-title">🤖 AI Learning Assistant</h2>
-        <p class="ai-description">
-            Meet your personal study partner! This simulated AI Assistant helps you understand accounting concepts, generate journal entries, and clarify tricky terms — all in real time.
-            <br><br>
-            Though it behaves like an AI, it’s actually a <b>JavaScript-based logic system</b> that merges your inputs with pre-stored data and smart keyword detection.  
-            Think of it as a clever helper designed to make learning feel futuristic 🔥
-        </p>
-
-        <div class="ai-button-wrapper">
-            <a href="ai.html" class="ai-launch-button">🚀 Launch AI Assistant</a>
-        </div>
-
-        <p class="ai-disclaimer">
-            ⚠️ <b>Disclaimer:</b> This is <em>not a real AI model</em>.  
-            It does not use any online AI services or APIs.  
-            The responses are generated using <b>predefined JavaScript logic</b> and stored data.  
-            It simply mimics how an AI would behave to make your learning interactive and fun.
-        </p>
-        </div>
-    </div>
     </section>
 
     <!-- Features Carousel Section -->
@@ -3782,284 +4094,284 @@
     </section>
 
     <!-- Developer's Struggle Showcase Section -->
-<section class="developer-struggle-section">
-    <div class="struggle-container">
-        <div class="struggle-header">
-            <span class="struggle-badge">
-                <i class="fas fa-code"></i> Behind The Scenes
-            </span>
-            <h2 class="struggle-title">
-                The <span class="pain-text">Real Pain</span> of Mobile Development
-            </h2>
-            <p class="struggle-subtitle">
-                What you see vs What developers go through to make it work on your phone
-            </p>
-        </div>
-
-        <!-- Device Preview with Frustration Elements -->
-        <div class="device-showcase">
-            <!-- Desktop View -->
-            <div class="desktop-view">
-                <div class="desktop-frame">
-                    <div class="desktop-bar">
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                    <div class="desktop-content">
-                        <div class="desktop-webpage">
-                            <nav class="web-nav">
-                                <div class="logo">AccountsWiz</div>
-                                <ul class="nav-links">
-                                    <li>Home</li>
-                                    <li>Features</li>
-                                    <li>Pricing</li>
-                                    <li>Contact</li>
-                                </ul>
-                            </nav>
-                            <div class="hero-section">
-                                <h1>Simplify Your Accounts</h1>
-                                <p>Professional accounting made easy</p>
-                                <button class="cta-btn">Get Started</button>
-                            </div>
-                            <div class="features-grid">
-                                <div class="feature-card">
-                                    <div class="feature-icon">📊</div>
-                                    <h3>Analytics</h3>
-                                    <p>Real-time insights</p>
-                                </div>
-                                <div class="feature-card">
-                                    <div class="feature-icon">💰</div>
-                                    <h3>Budgeting</h3>
-                                    <p>Smart planning</p>
-                                </div>
-                                <div class="feature-card">
-                                    <div class="feature-icon">📈</div>
-                                    <h3>Reports</h3>
-                                    <p>Detailed analysis</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="desktop-label">✨ Desktop: Everything fits perfectly!</div>
+    <section class="developer-struggle-section">
+        <div class="struggle-container">
+            <div class="struggle-header">
+                <span class="struggle-badge">
+                    <i class="fas fa-code"></i> Behind The Scenes
+                </span>
+                <h2 class="struggle-title">
+                    The <span class="pain-text">Real Pain</span> of Mobile Development
+                </h2>
+                <p class="struggle-subtitle">
+                    What you see vs What developers go through to make it work on your phone
+                </p>
             </div>
 
-            <!-- Arrow showing transformation -->
-            <div class="transform-arrow">
-                <i class="fas fa-arrow-right"></i>
-                <span class="transform-text">SQUEEZE INTO</span>
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <!-- Mobile View with Issues -->
-            <div class="phone-view">
-                <div class="phone-frame-struggle">
-                    <div class="phone-notch"></div>
-                    <div class="phone-screen-struggle">
-                        <!-- Hamburger Menu Demo -->
-                        <div class="mobile-header">
-                            <h3>AccountsWiz...</h3>
-                            <button class="hamburger-btn" id="hamburgerBtn">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
+            <!-- Device Preview with Frustration Elements -->
+            <div class="device-showcase">
+                <!-- Desktop View -->
+                <div class="desktop-view">
+                    <div class="desktop-frame">
+                        <div class="desktop-bar">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
                         </div>
-                        
-                        <!-- Hidden Mobile Menu -->
-                        <div class="mobile-menu" id="mobileMenu">
-                            <a href="#">Home</a>
-                            <a href="#">Features</a>
-                            <a href="#">Pricing</a>
-                            <a href="#">About</a>
-                            <a href="#">Contact</a>
-                        </div>
-
-                        <!-- Broken Content Examples -->
-                        <div class="broken-content">
-                            <div class="mobile-homepage">
-                                <!-- Hero with cut-off image -->
-                                <div class="mobile-hero">
-                                    <img src="data:image/svg+xml,%3Csvg width='400' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea'/%3E%3Cstop offset='100%25' style='stop-color:%23764ba2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='150' fill='url(%23g1)'/%3E%3Ctext x='200' y='75' text-anchor='middle' fill='white' font-size='20'%3ESimplify Your Acc...%3C/text%3E%3C/svg%3E" alt="Hero">
-                                    <div class="overflow-text">Professional accounting made...</div>
+                        <div class="desktop-content">
+                            <div class="desktop-webpage">
+                                <nav class="web-nav">
+                                    <div class="logo">AccountsWiz</div>
+                                    <ul class="nav-links">
+                                        <li>Home</li>
+                                        <li>Features</li>
+                                        <li>Pricing</li>
+                                        <li>Contact</li>
+                                    </ul>
+                                </nav>
+                                <div class="hero-section">
+                                    <h1>Simplify Your Accounts</h1>
+                                    <p>Professional accounting made easy</p>
+                                    <button class="cta-btn">Get Started</button>
                                 </div>
-                                
-                                <!-- Cramped button -->
-                                <button class="mobile-cta">Get Start...</button>
-                                
-                                <!-- Cramped features -->
-                                <div class="mobile-features">
-                                    <div class="feature-box">
-                                        <span>📊</span>
-                                        <div>Analyt...</div>
+                                <div class="features-grid">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">📊</div>
+                                        <h3>Analytics</h3>
+                                        <p>Real-time insights</p>
                                     </div>
-                                    <div class="feature-box">
-                                        <span>💰</span>
-                                        <div>Budg...</div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon">💰</div>
+                                        <h3>Budgeting</h3>
+                                        <p>Smart planning</p>
                                     </div>
-                                    <div class="feature-box">
-                                        <span>📈</span>
-                                        <div>Repo...</div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon">📈</div>
+                                        <h3>Reports</h3>
+                                        <p>Detailed analysis</p>
                                     </div>
-                                    <div class="feature-box">
-                                        <span>⚙️</span>
-                                        <div>Setti...</div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Unreadable table -->
-                                <div class="mobile-table">
-                                    <table>
-                                        <tr>
-                                            <td>Date</td>
-                                            <td>Transaction</td>
-                                            <td>Amount</td>
-                                            <td>Status</td>
-                                        </tr>
-                                        <tr>
-                                            <td>01/11</td>
-                                            <td>Payment rec...</td>
-                                            <td>$1,234...</td>
-                                            <td>Pend...</td>
-                                        </tr>
-                                        <tr>
-                                            <td>02/11</td>
-                                            <td>Invoice #12...</td>
-                                            <td>$567...</td>
-                                            <td>Comp...</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                
-                                <!-- Tiny footer text -->
-                                <div class="mobile-footer">
-                                    <p>© 2024 AccountsWiz. All rights reserved. Terms | Privacy | Contact us at...</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="desktop-label">✨ Desktop: Everything fits perfectly!</div>
                 </div>
-                <div class="mobile-label">😱 Mobile: Developer's Nightmare!</div>
-            </div>
-        </div>
 
-        <!-- Developer's Frustration Stats -->
-        <div class="frustration-stats">
-            <div class="frustration-card">
-                <div class="frustration-icon">🤯</div>
-                <h3>1200px → 375px</h3>
-                <p>Fitting desktop design into mobile</p>
-            </div>
-            <div class="frustration-card">
-                <div class="frustration-icon">⏰</div>
-                <h3>80+ Hours</h3>
-                <p>Just to make it responsive</p>
-            </div>
-            <div class="frustration-card">
-                <div class="frustration-icon">📱</div>
-                <h3>15+ Devices</h3>
-                <p>To test compatibility</p>
-            </div>
-            <div class="frustration-card">
-                <div class="frustration-icon">🔧</div>
-                <h3>1000+ Lines</h3>
-                <p>Of CSS media queries</p>
-            </div>
-        </div>
+                <!-- Arrow showing transformation -->
+                <div class="transform-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                    <span class="transform-text">SQUEEZE INTO</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
 
-        <!-- Developer's Journey -->
-        <div class="developer-journey">
-            <h3 class="journey-title">A Developer's Journey to Make This Page Mobile-Friendly</h3>
-            
-            <div class="journey-steps">
-                <div class="journey-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Design looks perfect on desktop</h4>
-                        <p>"This looks amazing! Client will love it!"</p>
+                <!-- Mobile View with Issues -->
+                <div class="phone-view">
+                    <div class="phone-frame-struggle">
+                        <div class="phone-notch"></div>
+                        <div class="phone-screen-struggle">
+                            <!-- Hamburger Menu Demo -->
+                            <div class="mobile-header">
+                                <h3>AccountsWiz...</h3>
+                                <button class="hamburger-btn" id="hamburgerBtn">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
+                            </div>
+                            
+                            <!-- Hidden Mobile Menu -->
+                            <div class="mobile-menu" id="mobileMenu">
+                                <a href="#">Home</a>
+                                <a href="#">Features</a>
+                                <a href="#">Pricing</a>
+                                <a href="#">About</a>
+                                <a href="#">Contact</a>
+                            </div>
+
+                            <!-- Broken Content Examples -->
+                            <div class="broken-content">
+                                <div class="mobile-homepage">
+                                    <!-- Hero with cut-off image -->
+                                    <div class="mobile-hero">
+                                        <img src="data:image/svg+xml,%3Csvg width='400' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea'/%3E%3Cstop offset='100%25' style='stop-color:%23764ba2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='150' fill='url(%23g1)'/%3E%3Ctext x='200' y='75' text-anchor='middle' fill='white' font-size='20'%3ESimplify Your Acc...%3C/text%3E%3C/svg%3E" alt="Hero">
+                                        <div class="overflow-text">Professional accounting made...</div>
+                                    </div>
+                                    
+                                    <!-- Cramped button -->
+                                    <button class="mobile-cta">Get Start...</button>
+                                    
+                                    <!-- Cramped features -->
+                                    <div class="mobile-features">
+                                        <div class="feature-box">
+                                            <span>📊</span>
+                                            <div>Analyt...</div>
+                                        </div>
+                                        <div class="feature-box">
+                                            <span>💰</span>
+                                            <div>Budg...</div>
+                                        </div>
+                                        <div class="feature-box">
+                                            <span>📈</span>
+                                            <div>Repo...</div>
+                                        </div>
+                                        <div class="feature-box">
+                                            <span>⚙️</span>
+                                            <div>Setti...</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Unreadable table -->
+                                    <div class="mobile-table">
+                                        <table>
+                                            <tr>
+                                                <td>Date</td>
+                                                <td>Transaction</td>
+                                                <td>Amount</td>
+                                                <td>Status</td>
+                                            </tr>
+                                            <tr>
+                                                <td>01/11</td>
+                                                <td>Payment rec...</td>
+                                                <td>$1,234...</td>
+                                                <td>Pend...</td>
+                                            </tr>
+                                            <tr>
+                                                <td>02/11</td>
+                                                <td>Invoice #12...</td>
+                                                <td>$567...</td>
+                                                <td>Comp...</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+                                    <!-- Tiny footer text -->
+                                    <div class="mobile-footer">
+                                        <p>© 2024 AccountsWiz. All rights reserved. Terms | Privacy | Contact us at...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="mobile-label">😱 Mobile: Developer's Nightmare!</div>
                 </div>
+            </div>
+
+            <!-- Developer's Frustration Stats -->
+            <div class="frustration-stats">
+                <div class="frustration-card">
+                    <div class="frustration-icon">🤯</div>
+                    <h3>1200px → 375px</h3>
+                    <p>Fitting desktop design into mobile</p>
+                </div>
+                <div class="frustration-card">
+                    <div class="frustration-icon">⏰</div>
+                    <h3>80+ Hours</h3>
+                    <p>Just to make it responsive</p>
+                </div>
+                <div class="frustration-card">
+                    <div class="frustration-icon">📱</div>
+                    <h3>15+ Devices</h3>
+                    <p>To test compatibility</p>
+                </div>
+                <div class="frustration-card">
+                    <div class="frustration-icon">🔧</div>
+                    <h3>1000+ Lines</h3>
+                    <p>Of CSS media queries</p>
+                </div>
+            </div>
+
+            <!-- Developer's Journey -->
+            <div class="developer-journey">
+                <h3 class="journey-title">A Developer's Journey to Make This Page Mobile-Friendly</h3>
                 
-                <div class="journey-step frustrated">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Check on mobile...</h4>
-                        <p>"Wait, why is everything broken?! 😭"</p>
+                <div class="journey-steps">
+                    <div class="journey-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Design looks perfect on desktop</h4>
+                            <p>"This looks amazing! Client will love it!"</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="journey-step frustrated">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Images don't fit</h4>
-                        <p>"Half the image is outside the screen!"</p>
+                    
+                    <div class="journey-step frustrated">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Check on mobile...</h4>
+                            <p>"Wait, why is everything broken?! 😭"</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="journey-step frustrated">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>Text overlapping everywhere</h4>
-                        <p>"Why is the title inside the paragraph?!"</p>
+                    
+                    <div class="journey-step frustrated">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Images don't fit</h4>
+                            <p>"Half the image is outside the screen!"</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="journey-step frustrated">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h4>Navigation disappeared</h4>
-                        <p>"Time to create a hamburger menu from scratch..."</p>
+                    
+                    <div class="journey-step frustrated">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Text overlapping everywhere</h4>
+                            <p>"Why is the title inside the paragraph?!"</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="journey-step exhausted">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <h4>After 80 hours of CSS...</h4>
-                        <p>"Finally works on iPhone... Oh wait, Android exists 😵"</p>
+                    
+                    <div class="journey-step frustrated">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Navigation disappeared</h4>
+                            <p>"Time to create a hamburger menu from scratch..."</p>
+                        </div>
+                    </div>
+                    
+                    <div class="journey-step exhausted">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>After 80 hours of CSS...</h4>
+                            <p>"Finally works on iPhone... Oh wait, Android exists 😵"</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- The Reality Check -->
-        <div class="reality-check">
-            <div class="reality-content">
-                <h3>⚠️ The Harsh Reality</h3>
-                <p>What you're seeing on this <strong>Accounts Wizard</strong> page right now?</p>
-                <div class="reality-stats">
-                    <div class="reality-item">
-                        <span class="reality-number">3,004</span>
-                        <span class="reality-label">Lines of CSS</span>
+            <!-- The Reality Check -->
+            <div class="reality-check">
+                <div class="reality-content">
+                    <h3>⚠️ The Harsh Reality</h3>
+                    <p>What you're seeing on this <strong>Accounts Wizard</strong> page right now?</p>
+                    <div class="reality-stats">
+                        <div class="reality-item">
+                            <span class="reality-number">3,004</span>
+                            <span class="reality-label">Lines of CSS</span>
+                        </div>
+                        <div class="reality-item">
+                            <span class="reality-number">47</span>
+                            <span class="reality-label">Media Queries</span>
+                        </div>
+                        <div class="reality-item">
+                            <span class="reality-number">∞</span>
+                            <span class="reality-label">Retries</span>
+                        </div>
                     </div>
-                    <div class="reality-item">
-                        <span class="reality-number">47</span>
-                        <span class="reality-label">Media Queries</span>
-                    </div>
-                    <div class="reality-item">
-                        <span class="reality-number">∞</span>
-                        <span class="reality-label">Retries</span>
-                    </div>
+                    <p class="reality-message">Just so you can read this comfortably on your phone! 📱</p>
                 </div>
-                <p class="reality-message">Just so you can read this comfortably on your phone! 📱</p>
             </div>
-        </div>
 
-        <!-- Commerce Day Message -->
-        <div class="commerce-message">
-            <div class="message-icon">💻</div>
-            <h3>To My Fellow Commerce Mates</h3>
-            <p>
-                While we dive deep into balance sheets and business concepts, I spent days making sure this site looks right on every screen — big or small. It may seem simple, but trust me, getting everything to fit perfectly is a journey full of tiny challenges.
-            </p>
-            <p class="message-highlight">
-                This project taught me one thing — just like accounting needs precision, web design needs patience. So here’s to all of us learning, balancing, and creating our way to something greater. ✨
-            </p>
-        </div>
+            <!-- Commerce Day Message -->
+            <div class="commerce-message">
+                <div class="message-icon">💻</div>
+                <h3>To My Fellow Commerce Mates</h3>
+                <p>
+                    While we dive deep into balance sheets and business concepts, I spent days making sure this site looks right on every screen — big or small. It may seem simple, but trust me, getting everything to fit perfectly is a journey full of tiny challenges.
+                </p>
+                <p class="message-highlight">
+                    This project taught me one thing — just like accounting needs precision, web design needs patience. So here’s to all of us learning, balancing, and creating our way to something greater. ✨
+                </p>
+            </div>
 
-    </div>
-</section>
+        </div>
+    </section>
 
     <!-- Pricing Section -->
     <section class="pricing-section" id="pricing">
@@ -4165,6 +4477,65 @@
     </div>
     </section>
 
+    <!-- The CSS Flex Zone (sponsored by Chitta Stationery 😎) -->
+    <section class="room-section" id="css-flex-zone">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">Sponsored by Chitta Stationery™</div>
+                <h2 class="section-title">Welcome to The CSS Flex Zone</h2>
+                <p class="section-subtitle">
+                    No, this isn’t a real room. It’s just pixels behaving nicely because I told them to.  
+                    A little flex of my CSS powers — purely for fun, not jealousy 😏
+                </p>
+            </div>
+
+            <div class="room-iframe-container">
+                <iframe 
+                    src="room.html" 
+                    class="room-iframe"
+                    title="CSS Flex Zone"
+                    loading="lazy"
+                    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+                    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+                >
+                    <p>Your browser does not support iframes. <a href="room.html" target="_blank">Visit The CSS Flex Zone directly</a></p>
+                </iframe>
+                
+                <div class="room-controls">
+                    <button class="room-fullscreen-btn" onclick="toggleRoomFullscreen()">
+                        <i class="fas fa-expand"></i> Go Fullscreen (if your PC can handle this much flex)
+                    </button>
+                    <a href="room.html" class="room-direct-link" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Open in New Tab (because why not?)
+                    </a>
+                </div>
+                
+                <div class="room-stats">
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">CSS Bragging Rights</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Images or Logic</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Flex Energy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-footer">
+                <p>
+                    Built proudly by <strong>Trinno &amp; Yuvraj</strong> — powered by friendship, Logic, and <em>Chitta Stationery™</em>.  
+                    (Tirth was there too... kind of.)
+                </p>
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -4180,7 +4551,7 @@
                 </div>
                 <div class="footer-stat">
                     <span class="stat-value">100+</span>
-                    <span class="stat-desc">Teacher-ready exercises</span>
+                    <span class="stat-desc">Student-ready exercises</span>
                 </div>
                 <div class="footer-stat">
                     <span class="stat-value">∞</span>
@@ -4675,6 +5046,9 @@
         }
 
         function hideLoadingScreen() {
+            // Remove loading class from body to trigger page fade-in
+            document.body.classList.remove('loading');
+            
             loadingScreen.classList.add('fade-out');
             document.body.style.overflow = 'auto';
             
@@ -4685,7 +5059,6 @@
                 }
             }, 1000);
             
-            // Log completion (optional - remove in production)
             console.log('%c✨ Loading Complete!', 'font-size: 20px; color: #00ff88; font-weight: bold;');
             console.log(`Duration: ${((Date.now() - startTime) / 1000).toFixed(2)}s`);
         }
@@ -4726,6 +5099,61 @@
         hamburgerBtn.classList.remove('active');
         mobileMenu.classList.remove('active');
     }
+    });
+
+    // Room Fullscreen Functionality
+    function toggleRoomFullscreen() {
+        const roomContainer = document.querySelector('.room-iframe-container');
+        const iframe = document.querySelector('.room-iframe');
+        const fullscreenBtn = document.querySelector('.room-fullscreen-btn');
+        
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            if (roomContainer.requestFullscreen) {
+                roomContainer.requestFullscreen();
+            } else if (roomContainer.webkitRequestFullscreen) {
+                roomContainer.webkitRequestFullscreen();
+            } else if (roomContainer.msRequestFullscreen) {
+                roomContainer.msRequestFullscreen();
+            }
+            
+            roomContainer.classList.add('fullscreen');
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i> Exit Fullscreen';
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            
+            roomContainer.classList.remove('fullscreen');
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Fullscreen Mode';
+        }
+    }
+
+    // Listen for fullscreen changes
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    function handleFullscreenChange() {
+        const roomContainer = document.querySelector('.room-iframe-container');
+        const fullscreenBtn = document.querySelector('.room-fullscreen-btn');
+        
+        if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            roomContainer.classList.remove('fullscreen');
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Fullscreen Mode';
+        }
+    }
+
+    // Optional: Add keyboard escape to exit fullscreen
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.querySelector('.room-iframe-container.fullscreen')) {
+            toggleRoomFullscreen();
+        }
     });
     </script>
 </body>

@@ -643,6 +643,12 @@
         transition: all 0.3s ease;
       }
 
+      /* FIX: Make solution cards visible in the interactive practice section */
+      .solution-area .journal-card {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
       .feedback-area.correct {
         background: rgba(76, 175, 80, 0.1);
         border-left: 4px solid var(--success);
