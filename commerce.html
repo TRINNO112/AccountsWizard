@@ -3338,6 +3338,1157 @@
                 height: 300px;
             }
         }
+
+        /* FIREBASE VISUALIZATION - NEON DARK THEME (UPDATED) */
+        .firebase-visualization-section {
+            background: #0a0a0f;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 70, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(70, 180, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 70, 180, 0.05) 0%, transparent 50%);
+            padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Orbitron', 'Rajdhani', monospace;
+        }
+
+        .neon-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cyber Grid Background */
+        .cyber-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: 
+                linear-gradient(rgba(70, 180, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(70, 180, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-particles::before,
+        .floating-particles::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #46b4ff;
+            box-shadow: 
+                20px 40px #ff46b4,
+                80px 10px #46ffb4,
+                120px 80px #b446ff,
+                180px 50px #46b4ff,
+                240px 70px #ff46b4,
+                300px 30px #46ffb4,
+                360px 90px #b446ff,
+                420px 60px #46b4ff;
+            animation: floatParticles 15s linear infinite;
+        }
+
+        @keyframes floatParticles {
+            0% { transform: translateY(100vh) translateX(0); }
+            100% { transform: translateY(-100vh) translateX(100px); }
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .neon-badge {
+            display: inline-block;
+            padding: 5px 20px;
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease infinite;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .neon-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(10px);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glitch-title {
+            font-size: 48px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: 3px;
+            margin: 20px 0;
+            position: relative;
+            text-shadow: 
+                0 0 10px rgba(70, 180, 255, 0.8),
+                0 0 20px rgba(70, 180, 255, 0.6),
+                0 0 30px rgba(70, 180, 255, 0.4);
+        }
+
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-title::before {
+            animation: glitch1 2s infinite;
+            color: #ff006e;
+            z-index: -1;
+        }
+
+        .glitch-title::after {
+            animation: glitch2 2s infinite;
+            color: #3a86ff;
+            z-index: -2;
+        }
+
+        @keyframes glitch1 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(20px 0 30px 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(50px 0 20px 0); transform: translate(2px, -2px); }
+        }
+
+        @keyframes glitch2 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            30% { clip-path: inset(40px 0 10px 0); transform: translate(2px, 2px); }
+            60% { clip-path: inset(10px 0 60px 0); transform: translate(-2px, -2px); }
+        }
+
+        .neon-subtitle {
+            color: #b4c5d4;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        /* Live Stats Bar */
+        .live-stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, rgba(70, 180, 255, 0.1), rgba(120, 70, 255, 0.1));
+            border: 1px solid rgba(70, 180, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #46b4ff, #b446ff, #ff46b4, #46ffb4);
+            border-radius: 10px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s;
+        }
+
+        .stat-item:hover::before {
+            opacity: 0.6;
+            animation: borderRotate 2s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stat-label {
+            color: #8a95a5;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 10px currentColor;
+            margin: 0;
+        }
+
+        .stat-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-green {
+            background: #46ffb4;
+            animation: pulse 2s infinite;
+        }
+
+        .pulse-blue {
+            background: #46b4ff;
+            animation: pulse 2s infinite 0.5s;
+        }
+
+        .pulse-yellow {
+            background: #ffb446;
+            animation: pulse 2s infinite 1s;
+        }
+
+        .pulse-purple {
+            background: #b446ff;
+            animation: pulse 2s infinite 1.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 currentColor;
+                opacity: 1;
+            }
+            50% {
+                box-shadow: 0 0 0 10px transparent;
+                opacity: 0.5;
+            }
+        }
+
+        /* Main Visualization Container */
+        .viz-main-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+            min-height: 600px;
+        }
+
+        /* Panels */
+        .viz-panel {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .viz-panel::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(45deg, #46b4ff, transparent, #b446ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(70, 180, 255, 0.2);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #46b4ff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .icon-hex {
+            font-size: 20px;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .panel-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: statusPulse 2s infinite;
+        }
+
+        .panel-status.online {
+            background: rgba(70, 255, 180, 0.2);
+            color: #46ffb4;
+            border: 1px solid #46ffb4;
+        }
+
+        .panel-status.connecting {
+            background: rgba(70, 180, 255, 0.2);
+            color: #46b4ff;
+            border: 1px solid #46b4ff;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Collections List */
+        .collections-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .collection-item {
+            background: linear-gradient(135deg, rgba(70, 180, 255, 0.05), rgba(120, 70, 255, 0.05));
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .collection-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #46b4ff, #b446ff);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .collection-item:hover::before,
+        .collection-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .collection-item:hover {
+            background: linear-gradient(135deg, rgba(70, 180, 255, 0.15), rgba(120, 70, 255, 0.15));
+            border-color: #46b4ff;
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(70, 180, 255, 0.2);
+        }
+
+        .collection-item.active {
+            background: linear-gradient(135deg, rgba(70, 180, 255, 0.2), rgba(120, 70, 255, 0.2));
+            border-color: #46b4ff;
+            box-shadow: 0 5px 30px rgba(70, 180, 255, 0.3);
+        }
+
+        .collection-icon {
+            font-size: 32px;
+            filter: drop-shadow(0 0 10px currentColor);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .collection-info {
+            flex: 1;
+        }
+
+        .collection-name {
+            color: #46b4ff;
+            font-weight: bold;
+            font-size: 16px;
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 5px;
+        }
+
+        .collection-desc {
+            color: #8a95a5;
+            font-size: 12px;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .collection-count {
+            color: #46ffb4;
+            font-size: 11px;
+            font-weight: bold;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Database Info Box */
+        .database-info {
+            background: rgba(70, 180, 255, 0.05);
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .database-info h4 {
+            color: #46b4ff;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .database-info p {
+            color: #b4c5d4;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Center - Database Hierarchy */
+        .viz-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-width: 300px;
+            padding: 30px 20px;
+        }
+
+        .database-hierarchy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hierarchy-level {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .hierarchy-node {
+            background: linear-gradient(135deg, rgba(10, 10, 20, 0.9), rgba(20, 20, 40, 0.9));
+            border: 2px solid rgba(70, 180, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .hierarchy-node:hover {
+            border-color: #46b4ff;
+            box-shadow: 0 0 30px rgba(70, 180, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .hierarchy-node.root {
+            border-color: #ff46b4;
+            box-shadow: 0 0 20px rgba(255, 70, 180, 0.3);
+        }
+
+        .hierarchy-node.database {
+            border-color: #46ffb4;
+        }
+
+        .hierarchy-node.collection {
+            border-color: #ffb446;
+        }
+
+        .hierarchy-node.document {
+            border-color: #b446ff;
+        }
+
+        .hierarchy-node.field {
+            border-color: #46b4ff;
+        }
+
+        .node-icon {
+            font-size: 24px;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .node-label {
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hierarchy-connector {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(180deg, rgba(70, 180, 255, 0.5), rgba(180, 70, 255, 0.5));
+            position: relative;
+            animation: dataFlowDown 2s linear infinite;
+        }
+
+        .hierarchy-connector::before,
+        .hierarchy-connector::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #46b4ff;
+            border-radius: 50%;
+            left: -3px;
+            box-shadow: 0 0 10px #46b4ff;
+        }
+
+        .hierarchy-connector::before {
+            top: 0;
+            animation: dotPulse 2s infinite;
+        }
+
+        .hierarchy-connector::after {
+            bottom: 0;
+            animation: dotPulse 2s infinite 1s;
+        }
+
+        @keyframes dataFlowDown {
+            0% { background: linear-gradient(180deg, rgba(70, 180, 255, 0.8) 0%, transparent 10%); }
+            50% { background: linear-gradient(180deg, transparent 40%, rgba(70, 180, 255, 0.8) 50%, transparent 60%); }
+            100% { background: linear-gradient(180deg, transparent 90%, rgba(70, 180, 255, 0.8) 100%); }
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Data Flow Indicator */
+        .data-flow-indicator {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .flow-text {
+            color: #46ffb4;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        /* Sync Animation */
+        .sync-animation {
+            width: 70px;
+            aspect-ratio: 1;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .sync-animation::before,
+        .sync-animation::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            inset: 0;
+            background:
+                radial-gradient(circle 12px, #46b4ff 94%, #0000),
+                repeating-conic-gradient(from -30deg, #0000 0 60deg, #46b4ff 61deg 120deg);
+            -webkit-mask: radial-gradient(circle 18px, #000 calc(100% - 7px), #0000 calc(100% - 6px) 94%, #000);
+            mask: radial-gradient(circle 18px, #000 calc(100% - 7px), #0000 calc(100% - 6px) 94%, #000);
+            filter: drop-shadow(0 0 15px #46b4ff);
+        }
+
+        .sync-animation::after {
+            animation: neonPulse 1.5s infinite;
+            transform: perspective(300px) translateZ(0px);
+        }
+
+        @keyframes neonPulse {
+            to {
+                transform: perspective(300px) translateZ(150px);
+                opacity: 0;
+            }
+        }
+
+        /* Document Viewer */
+        .document-path {
+            background: rgba(5, 5, 10, 0.6);
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: #46b4ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .path-segment {
+            color: #46ffb4;
+            font-weight: bold;
+        }
+
+        .path-separator {
+            color: #8a95a5;
+        }
+
+        /* Document Viewer - FIXED SCROLLING */
+        .document-viewer {
+            background: rgba(5, 5, 10, 0.9);
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            max-height: 500px;
+            min-height: 300px;
+            overflow-y: scroll !important;  /* Force scroll */
+            overflow-x: hidden;
+            position: relative;
+            cursor: default;
+        }
+
+        /* Make sure scroll works */
+        .document-viewer * {
+            pointer-events: auto;
+        }
+
+        .field-item {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background: rgba(70, 180, 255, 0.03);
+            border-left: 2px solid rgba(70, 180, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .field-item:hover {
+            background: rgba(70, 180, 255, 0.08);
+            border-left-color: #46b4ff;
+            transform: translateX(3px);
+        }
+
+        .field-item.expandable {
+            flex-direction: column;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .field-key {
+            color: #ff46b4;
+            font-weight: bold;
+            min-width: 120px;
+        }
+
+        .field-value {
+            color: #46ffb4;
+            font-weight: 500;
+        }
+
+        .field-value.string {
+            color: #ffb446;
+        }
+
+        .field-value.number {
+            color: #46b4ff;
+        }
+
+        .field-value.timestamp {
+            color: #b446ff;
+            font-size: 11px;
+        }
+
+        .field-type {
+            background: rgba(180, 70, 255, 0.2);
+            color: #b446ff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .nested-fields {
+            width: 100%;
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(180, 70, 255, 0.3);
+        }
+
+        .nested-fields .field-item {
+            background: rgba(180, 70, 255, 0.05);
+            border-left-color: rgba(180, 70, 255, 0.4);
+        }
+
+        .nested-fields .field-item:hover {
+            background: rgba(180, 70, 255, 0.1);
+            border-left-color: #b446ff;
+        }
+
+        /* Document Explanation */
+        .document-explanation {
+            background: linear-gradient(135deg, rgba(70, 255, 180, 0.1), rgba(70, 180, 255, 0.1));
+            border: 1px solid rgba(70, 255, 180, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .document-explanation h4 {
+            color: #46ffb4;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .document-explanation p {
+            color: #b4c5d4;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Data Explanation Section */
+        .data-explanation-section {
+            margin: 60px 0;
+        }
+
+        .explanation-title {
+            text-align: center;
+            color: #46b4ff;
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(70, 180, 255, 0.5);
+        }
+
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .explanation-card {
+            background: linear-gradient(135deg, rgba(10, 10, 20, 0.9), rgba(20, 20, 40, 0.9));
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .explanation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #46b4ff, transparent);
+            animation: scanLine 3s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .explanation-card:hover {
+            transform: translateY(-5px);
+            border-color: #46b4ff;
+            box-shadow: 0 20px 40px rgba(70, 180, 255, 0.3);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .explanation-card h4 {
+            color: #46b4ff;
+            font-size: 20px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .explanation-card p {
+            color: #b4c5d4;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .explanation-card code {
+            background: rgba(70, 180, 255, 0.1);
+            color: #46ffb4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+        }
+
+        /* Live Examples Section */
+        .live-examples {
+            background: linear-gradient(135deg, rgba(10, 10, 20, 0.8), rgba(20, 20, 40, 0.8));
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+        }
+
+        .examples-title {
+            text-align: center;
+            color: #46b4ff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .example-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .example-tab {
+            background: linear-gradient(135deg, rgba(70, 180, 255, 0.1), rgba(120, 70, 255, 0.1));
+            border: 1px solid rgba(70, 180, 255, 0.3);
+            border-radius: 10px;
+            padding: 12px 25px;
+            color: #8a95a5;
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .example-tab:hover {
+            border-color: #46b4ff;
+            color: #46b4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(70, 180, 255, 0.2);
+        }
+
+        .example-tab.active {
+            background: linear-gradient(135deg, rgba(70, 180, 255, 0.3), rgba(120, 70, 255, 0.3));
+            border-color: #46b4ff;
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(70, 180, 255, 0.4);
+        }
+
+        .example-content {
+            background: rgba(5, 5, 10, 0.9);
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 300px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: #46ffb4;
+        }
+
+        /* Tech Details Grid */
+        .tech-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .tech-card {
+            background: linear-gradient(135deg, rgba(10, 10, 20, 0.9), rgba(20, 20, 40, 0.9));
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: #46b4ff;
+            box-shadow: 0 20px 40px rgba(70, 180, 255, 0.2);
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #46b4ff, transparent);
+            animation: techScan 3s linear infinite;
+        }
+
+        @keyframes techScan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .tech-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+
+        .tech-card h4 {
+            color: #46b4ff;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tech-card p {
+            color: #8a95a5;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .tech-stat {
+            background: rgba(70, 180, 255, 0.1);
+            border: 1px solid rgba(70, 180, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 20px;
+            display: inline-block;
+            color: #46ffb4;
+            font-weight: bold;
+            font-size: 13px;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Custom Scrollbar */
+        .document-viewer::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .document-viewer::-webkit-scrollbar-track {
+            background: rgba(10, 10, 20, 0.5);
+            border-radius: 4px;
+        }
+
+        .document-viewer::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #46b4ff, #b446ff);
+            border-radius: 4px;
+        }
+
+        .document-viewer::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #5ac4ff, #c456ff);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .viz-main-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .viz-center {
+                order: -1;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .glitch-title {
+                font-size: 32px;
+            }
+            
+            .live-stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            
+            .example-tabs {
+                flex-direction: column;
+            }
+            
+            .tech-details-grid,
+            .explanation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Example Content Styling */
+        .example-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .example-structure {
+            background: rgba(70, 180, 255, 0.05);
+            border: 1px solid rgba(70, 180, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .structure-item {
+            padding: 12px;
+            margin-bottom: 12px;
+            background: rgba(10, 10, 20, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid #46b4ff;
+        }
+
+        .structure-label {
+            color: #46b4ff;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .structure-value {
+            color: #b4c5d4;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .example-code {
+            background: rgba(5, 5, 10, 0.8);
+            border: 1px solid rgba(70, 180, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            color: #46b4ff;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(70, 180, 255, 0.2);
+        }
+
+        .example-note {
+            animation: slideInUp 0.5s;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .example-flow h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Document Viewer Custom Scrollbar - ADD THIS */
+        .document-viewer::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .document-viewer::-webkit-scrollbar-track {
+            background: rgba(10, 10, 20, 0.5);
+            border-radius: 4px;
+        }
+
+        .document-viewer::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #46b4ff, #b446ff);
+            border-radius: 4px;
+        }
+
+        .document-viewer::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #5ac4ff, #c456ff);
+        }
+
+        /* Firefox scrollbar */
+        .document-viewer {
+            scrollbar-width: thin;
+            scrollbar-color: #46b4ff rgba(10, 10, 20, 0.5);
+        }
     </style>
 </head>
 <body class="loading">
@@ -4088,6 +5239,327 @@
                             <div class="progress-bar" style="width: 0%"></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FIREBASE DATA VISUALIZATION SECTION -->
+    <section id="firebase-viz" class="firebase-visualization-section">
+        <div class="neon-container">
+            <!-- Animated Background Grid -->
+            <div class="cyber-grid"></div>
+            <div class="floating-particles"></div>
+            
+            <!-- Main Header -->
+            <div class="section-header">
+                <div class="neon-badge">LIVE DATABASE</div>
+                <h2 class="glitch-title" data-text="Your Data in Firebase Firestore">
+                    Your Data in Firebase Firestore
+                </h2>
+                <p class="neon-subtitle">See exactly how Accounts Wizard stores your progress in the cloud</p>
+            </div>
+
+            <!-- Real-time Stats Bar -->
+            <div class="live-stats-bar">
+                <div class="stat-item">
+                    <span class="stat-label">Total Users</span>
+                    <span class="stat-value" id="totalUsers">1,247</span>
+                    <span class="stat-indicator pulse-green"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Collections</span>
+                    <span class="stat-value" id="collections">4</span>
+                    <span class="stat-indicator pulse-blue"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Documents</span>
+                    <span class="stat-value" id="documents">5,892</span>
+                    <span class="stat-indicator pulse-yellow"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Storage Used</span>
+                    <span class="stat-value" id="storageUsed">2.4GB</span>
+                    <span class="stat-indicator pulse-purple"></span>
+                </div>
+            </div>
+
+            <!-- Main Visualization Area -->
+            <div class="viz-main-container">
+                <!-- Left Panel - Collections Overview -->
+                <div class="viz-panel left-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span class="icon-hex">⬡</span>
+                            FIRESTORE COLLECTIONS
+                        </div>
+                        <div class="panel-status online">4 ACTIVE</div>
+                    </div>
+                    
+                    <div class="collections-list">
+                        <div class="collection-item" onclick="firebaseViz.showCollection('users')">
+                            <div class="collection-icon">👥</div>
+                            <div class="collection-info">
+                                <div class="collection-name">users</div>
+                                <div class="collection-desc">Stores user profiles & auth info</div>
+                                <div class="collection-count">1,247 documents</div>
+                            </div>
+                        </div>
+
+                        <div class="collection-item" onclick="firebaseViz.showCollection('user-progress')">
+                            <div class="collection-icon">📚</div>
+                            <div class="collection-info">
+                                <div class="collection-name">user-progress</div>
+                                <div class="collection-desc">Individual lesson attempts & scores</div>
+                                <div class="collection-count">3,741 documents</div>
+                            </div>
+                        </div>
+
+                        <div class="collection-item" onclick="firebaseViz.showCollection('quiz-progress')">
+                            <div class="collection-icon">🎯</div>
+                            <div class="collection-info">
+                                <div class="collection-name">quiz-progress</div>
+                                <div class="collection-desc">Quiz results & detailed answers</div>
+                                <div class="collection-count">892 documents</div>
+                            </div>
+                        </div>
+
+                        <div class="collection-item active" onclick="firebaseViz.showCollection('overall-progress')">
+                            <div class="collection-icon">📊</div>
+                            <div class="collection-info">
+                                <div class="collection-name">overall-progress</div>
+                                <div class="collection-desc">Combined statistics for each user</div>
+                                <div class="collection-count">1,012 documents</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="database-info">
+                        <h4>How It Works:</h4>
+                        <p>Each collection is like a folder that contains documents (files). Each document has fields (data points) that store your information.</p>
+                    </div>
+                </div>
+
+                <!-- Center - Visual Database Structure -->
+                <div class="viz-center">
+                    <div class="database-hierarchy">
+                        <div class="hierarchy-level">
+                            <div class="hierarchy-node root">
+                                <span class="node-icon">🔥</span>
+                                <span class="node-label">Firebase Project</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-connector"></div>
+                        
+                        <div class="hierarchy-level">
+                            <div class="hierarchy-node database">
+                                <span class="node-icon">💾</span>
+                                <span class="node-label">Firestore Database</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-connector"></div>
+                        
+                        <div class="hierarchy-level collections">
+                            <div class="hierarchy-node collection">
+                                <span class="node-label">Collections</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-connector"></div>
+                        
+                        <div class="hierarchy-level documents">
+                            <div class="hierarchy-node document">
+                                <span class="node-label">Documents</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-connector"></div>
+                        
+                        <div class="hierarchy-level fields">
+                            <div class="hierarchy-node field">
+                                <span class="node-label">Fields (Your Data)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-flow-indicator">
+                        <div class="flow-text">Real-time Sync Active</div>
+                        <div class="sync-animation"></div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Document Viewer -->
+                <div class="viz-panel right-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span class="icon-hex">⬡</span>
+                            DOCUMENT VIEWER
+                        </div>
+                        <div class="panel-status connecting">LIVE DATA</div>
+                    </div>
+
+                    <div class="document-path">
+                        <span class="path-segment">overall-progress</span>
+                        <span class="path-separator">></span>
+                        <span class="path-segment">NqIblkTCB5aU1cPUZb23AWj1U212</span>
+                    </div>
+
+                    <div class="document-viewer" id="documentViewer">
+                        <div class="field-item">
+                            <span class="field-key">userId:</span>
+                            <span class="field-value string">"NqIblkTCB5aU1cPUZb23AWj1U212"</span>
+                        </div>
+                        
+                        <div class="field-item">
+                            <span class="field-key">lastUpdated:</span>
+                            <span class="field-value timestamp">4 November 2024 at 20:38:08 UTC+5:30</span>
+                        </div>
+                        
+                        <div class="field-item expandable">
+                            <span class="field-key">📚 lessons:</span>
+                            <span class="field-type">map</span>
+                            <div class="nested-fields">
+                                <div class="field-item">
+                                    <span class="field-key">completed:</span>
+                                    <span class="field-value number">3</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">percentage:</span>
+                                    <span class="field-value number">25</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">score:</span>
+                                    <span class="field-value number">15</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">total:</span>
+                                    <span class="field-value number">60</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="field-item expandable">
+                            <span class="field-key">🎯 quizzes:</span>
+                            <span class="field-type">map</span>
+                            <div class="nested-fields">
+                                <div class="field-item">
+                                    <span class="field-key">completed:</span>
+                                    <span class="field-value number">4</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">percentage:</span>
+                                    <span class="field-value number">6</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">score:</span>
+                                    <span class="field-value number">3</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">total:</span>
+                                    <span class="field-value number">49</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="field-item expandable">
+                            <span class="field-key">📊 overall:</span>
+                            <span class="field-type">map</span>
+                            <div class="nested-fields">
+                                <div class="field-item">
+                                    <span class="field-key">percentage:</span>
+                                    <span class="field-value number">17</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">score:</span>
+                                    <span class="field-value number">18</span>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-key">total:</span>
+                                    <span class="field-value number">109</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="document-explanation">
+                        <h4>What This Means:</h4>
+                        <p>This is YOUR actual progress data! Every time you complete a quiz or lesson, these numbers update automatically in real-time across all your devices.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How Firebase Stores Your Data -->
+            <div class="data-explanation-section">
+                <h3 class="explanation-title">🎓 Understanding Your Data Storage</h3>
+                <div class="explanation-grid">
+                    <div class="explanation-card">
+                        <div class="card-icon">🆔</div>
+                        <h4>Unique User ID</h4>
+                        <p>When you sign in, Firebase creates a unique ID like <code>NqIblkTCB5aU1cPUZb23AWj1U212</code>. This ID connects all your progress data together.</p>
+                    </div>
+
+                    <div class="explanation-card">
+                        <div class="card-icon">📁</div>
+                        <h4>Collections</h4>
+                        <p>Think of collections as folders. We have 4 main folders: <code>users</code> (your profile), <code>user-progress</code> (lesson scores), <code>quiz-progress</code> (quiz results), and <code>overall-progress</code> (combined stats).</p>
+                    </div>
+
+                    <div class="explanation-card">
+                        <div class="card-icon">📄</div>
+                        <h4>Documents</h4>
+                        <p>Each document is like a file containing your data. For example, document <code>user_lesson1</code> stores your Lesson 1 attempts and best score.</p>
+                    </div>
+
+                    <div class="explanation-card">
+                        <div class="card-icon">🔢</div>
+                        <h4>Fields</h4>
+                        <p>Fields are the actual data points - your score, percentage, timestamp, answers. These update instantly when you submit a quiz!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Examples Section -->
+            <div class="live-examples">
+                <h3 class="examples-title">📸 Real Data Examples</h3>
+                <div class="example-tabs">
+                    <button class="example-tab active" onclick="firebaseViz.showExample('quiz')">Quiz Submission</button>
+                    <button class="example-tab" onclick="firebaseViz.showExample('lesson')">Lesson Progress</button>
+                    <button class="example-tab" onclick="firebaseViz.showExample('user')">User Profile</button>
+                    <button class="example-tab" onclick="firebaseViz.showExample('overall')">Overall Stats</button>
+                </div>
+                
+                <div class="example-content" id="exampleContent">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Bottom Technical Details -->
+            <div class="tech-details-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">🔐</div>
+                    <h4>Security Rules</h4>
+                    <p>Only YOU can access your data. Firebase rules ensure no one else can read or modify your progress.</p>
+                    <div class="tech-stat">User-based auth</div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">⚡</div>
+                    <h4>Real-time Updates</h4>
+                    <p>Changes sync instantly. Submit a quiz on phone, see results on laptop immediately!</p>
+                    <div class="tech-stat">< 100ms sync</div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">📱</div>
+                    <h4>Cross-Platform</h4>
+                    <p>Access your progress from any device - phone, tablet, or computer. Always in sync!</p>
+                    <div class="tech-stat">100% compatible</div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔄</div>
+                    <h4>Automatic Backup</h4>
+                    <p>Google backs up your data across multiple servers. Never lose your progress!</p>
+                    <div class="tech-stat">99.99% uptime</div>
                 </div>
             </div>
         </div>
@@ -4961,8 +6433,8 @@
         // ⚙️ CONFIGURATION SECTION - EDIT THESE VALUES
         // ========================================
         const CONFIG = {
-            minDuration: 10,        // Minimum loading seconds (10 seconds)
-            maxDuration: 15,        // Maximum loading seconds (15 seconds)
+            minDuration: 3,        // Minimum loading seconds (10 seconds)
+            maxDuration: 5,        // Maximum loading seconds (15 seconds)
             smoothness: 0.05,       // Progress smoothness (0.01 = very smooth, 0.2 = jumpy)
             minDelay: 30,           // Minimum ms between progress updates
             maxDelay: 60,           // Maximum ms between progress updates
@@ -5155,6 +6627,615 @@
             toggleRoomFullscreen();
         }
     });
+
+    // FIREBASE VISUALIZATION JAVASCRIPT - REAL DATA DISPLAY
+    const firebaseViz = {
+        // State management
+        state: {
+            currentCollection: 'overall-progress',
+            totalUsers: 1247,
+            totalCollections: 4,
+            totalDocuments: 5892,
+            storageUsed: 2.4,
+            isLoading: false
+        },
+
+        // Collection data structure examples
+        collectionsData: {
+            'users': {
+                icon: '👥',
+                name: 'users',
+                description: 'Stores user profiles & auth info',
+                documentCount: 1247,
+                exampleDoc: {
+                    userId: 'NqIblkTCB5aU1cPUZb23AWj1U212',
+                    email: 'student@example.com',
+                    displayName: 'Raj Kumar',
+                    photoURL: 'https://lh3.googleusercontent.com/a/...',
+                    createdAt: '2024-09-15T10:30:00Z',
+                    lastLogin: '2024-11-04T15:08:08Z',
+                    role: 'student',
+                    grade: 11,
+                    preferences: {
+                        theme: 'dark',
+                        notifications: true,
+                        language: 'en'
+                    }
+                },
+                explanation: 'Every user gets their own document with a unique ID. This stores their Google account info, profile picture, and app preferences.'
+            },
+            'user-progress': {
+                icon: '📚',
+                name: 'user-progress',
+                description: 'Individual lesson attempts & scores',
+                documentCount: 3741,
+                exampleDoc: {
+                    userId: 'NqIblkTCB5aU1cPUZb23AWj1U212',
+                    lessonNumber: 1,
+                    type: 'lesson',
+                    score: 18,
+                    totalQuestions: 20,
+                    percentage: 90,
+                    attempts: 3,
+                    answers: [
+                        { questionId: 1, userAnswer: 'A', correct: true, timeSpent: 15 },
+                        { questionId: 2, userAnswer: 'B', correct: true, timeSpent: 22 },
+                        { questionId: 3, userAnswer: 'C', correct: false, timeSpent: 18 }
+                    ],
+                    timestamp: '2024-11-02T14:25:30Z',
+                    timeSpent: 480
+                },
+                explanation: 'Each lesson attempt is saved separately. Document ID format: userId_lesson1. Only your BEST score is kept and updated.'
+            },
+            'quiz-progress': {
+                icon: '🎯',
+                name: 'quiz-progress',
+                description: 'Quiz results & detailed answers',
+                documentCount: 892,
+                exampleDoc: {
+                    userId: 'NqIblkTCB5aU1cPUZb23AWj1U212',
+                    type: 'quiz',
+                    chapterIds: [1, 2, 3],
+                    chapterKey: '1-2-3',
+                    score: 45,
+                    totalQuestions: 50,
+                    percentage: 90,
+                    correctCount: 45,
+                    wrongCount: 3,
+                    skippedCount: 2,
+                    totalTimeSpent: 1800,
+                    averageTimePerQuestion: 36,
+                    totalHintsUsed: 5,
+                    attempts: 2,
+                    timestamp: '2024-11-03T16:42:15Z'
+                },
+                explanation: 'Quizzes store DETAILED data - every answer, time spent per question, hints used. The "answers" field contains an array of 50 objects (not shown here to save space), each with question details, your response, correctness, time, and hints used.'
+            },
+            'overall-progress': {
+                icon: '📊',
+                name: 'overall-progress',
+                description: 'Combined statistics for each user',
+                documentCount: 1012,
+                exampleDoc: {
+                    userId: 'NqIblkTCB5aU1cPUZb23AWj1U212',
+                    lastUpdated: '2024-11-04T20:38:08Z',
+                    lessons: {
+                        completed: 3,
+                        score: 15,
+                        total: 60,
+                        percentage: 25
+                    },
+                    quizzes: {
+                        completed: 4,
+                        score: 3,
+                        total: 49,
+                        percentage: 6
+                    },
+                    overall: {
+                        score: 18,
+                        total: 109,
+                        percentage: 17
+                    }
+                },
+                explanation: 'This is the SUMMARY document - combines all your lesson and quiz scores into one view. Auto-updates whenever you complete anything.'
+            }
+        },
+
+        // Initialize the visualization
+        init() {
+            console.log('🚀 Firebase Visualization Initialized');
+            this.startBackgroundAnimations();
+            this.showCollection('overall-progress');
+            this.showExample('overall');
+            this.updateStats();
+        },
+
+        // Show collection details
+        showCollection(collectionName) {
+            const collectionData = this.collectionsData[collectionName];
+            if (!collectionData) return;
+
+            this.state.currentCollection = collectionName;
+
+            // Update active state
+            document.querySelectorAll('.collection-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget?.classList.add('active');
+
+            // Update document path
+            const pathElement = document.querySelector('.document-path');
+            if (pathElement) {
+                pathElement.innerHTML = `
+                    <span class="path-segment">${collectionName}</span>
+                    <span class="path-separator">></span>
+                    <span class="path-segment">NqIblkTCB5aU1cPUZb23AWj1U212</span>
+                `;
+            }
+
+            // Update document viewer
+            this.displayDocument(collectionData.exampleDoc, collectionData.explanation);
+        },
+
+        // Display document in viewer
+        displayDocument(doc, explanation) {
+            const viewer = document.getElementById('documentViewer');
+            if (!viewer) return;
+
+            viewer.innerHTML = this.generateDocumentHTML(doc);
+
+            // Update explanation
+            const explanationBox = document.querySelector('.document-explanation');
+            if (explanationBox) {
+                explanationBox.innerHTML = `
+                    <h4>What This Means:</h4>
+                    <p>${explanation}</p>
+                `;
+            }
+        },
+
+        // Generate HTML for document fields
+        generateDocumentHTML(obj, level = 0) {
+            let html = '';
+            
+            for (const [key, value] of Object.entries(obj)) {
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    // Map/Object field
+                    html += `
+                        <div class="field-item expandable">
+                            <span class="field-key">${this.getIconForField(key)} ${key}:</span>
+                            <span class="field-type">map</span>
+                            <div class="nested-fields">
+                                ${this.generateDocumentHTML(value, level + 1)}
+                            </div>
+                        </div>
+                    `;
+                } else if (Array.isArray(value)) {
+                    // Array field - IMPROVED HANDLING
+                    let preview = '';
+                    if (value.length === 0) {
+                        preview = '[]';
+                    } else if (value.length > 3) {
+                        // Show count for large arrays
+                        preview = `[ ${value.length} items - Click "Examples" tab to see details ]`;
+                    } else if (typeof value[0] === 'object') {
+                        // Array of objects - show count
+                        preview = `[ ${value.length} objects ]`;
+                    } else {
+                        // Simple array - show values
+                        preview = JSON.stringify(value);
+                    }
+                    
+                    html += `
+                        <div class="field-item">
+                            <span class="field-key">${key}:</span>
+                            <span class="field-type">array</span>
+                            <span class="field-value">${preview}</span>
+                        </div>
+                    `;
+                } else {
+                    // Simple field
+                    const type = typeof value === 'number' ? 'number' : 
+                                typeof value === 'boolean' ? 'boolean' :
+                                key.includes('timestamp') || key.includes('At') || key.includes('Updated') ? 'timestamp' : 'string';
+                    
+                    const displayValue = type === 'string' ? `"${value}"` : value;
+                    
+                    html += `
+                        <div class="field-item">
+                            <span class="field-key">${key}:</span>
+                            <span class="field-value ${type}">${displayValue}</span>
+                        </div>
+                    `;
+                }
+            }
+            
+            return html;
+        },
+
+        // Get emoji icon for field names
+        getIconForField(fieldName) {
+            const icons = {
+                'lessons': '📚',
+                'quizzes': '🎯',
+                'overall': '📊',
+                'answers': '✍️',
+                'preferences': '⚙️',
+                'timestamp': '🕐',
+                'score': '⭐',
+                'userId': '🆔'
+            };
+            return icons[fieldName] || '';
+        },
+
+        // Show example data
+        showExample(type) {
+            const content = document.getElementById('exampleContent');
+            if (!content) return;
+
+            // Update active tab
+            document.querySelectorAll('.example-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget?.classList.add('active');
+
+            let exampleHTML = '';
+
+            switch(type) {
+                case 'quiz':
+                    exampleHTML = this.getQuizExample();
+                    break;
+                case 'lesson':
+                    exampleHTML = this.getLessonExample();
+                    break;
+                case 'user':
+                    exampleHTML = this.getUserExample();
+                    break;
+                case 'overall':
+                    exampleHTML = this.getOverallExample();
+                    break;
+            }
+
+            content.innerHTML = exampleHTML;
+        },
+
+        getQuizExample() {
+            return `
+                <div class="example-header">
+                    <h3 style="color: #46b4ff; margin-bottom: 20px;">📝 Quiz Submission Example</h3>
+                    <p style="color: #b4c5d4; margin-bottom: 30px;">When you complete a quiz on chapters 1-2-3, here's what gets saved:</p>
+                </div>
+                
+                <div class="example-structure">
+                    <div class="structure-item">
+                        <div class="structure-label">Collection:</div>
+                        <div class="structure-value">quiz-progress</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">Document ID:</div>
+                        <div class="structure-value">NqIblkTCB5aU1cPUZb23AWj1U212_quiz_1-2-3</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">What's Stored:</div>
+                        <div class="structure-value">
+                            ✅ Your score (e.g., 45/50 = 90%)<br>
+                            ✅ Every single answer you gave<br>
+                            ✅ Correct/wrong for each question<br>
+                            ✅ Time spent per question<br>
+                            ✅ Number of hints used<br>
+                            ✅ Which questions you skipped<br>
+                            ✅ Difficulty level of each question<br>
+                            ✅ Timestamp of submission
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-code">
+                    <div class="code-header">Actual Firebase Document Structure:</div>
+                    <pre style="color: #46ffb4; line-height: 1.8; margin-top: 15px;">
+    {
+    <span style="color: #ff46b4;">"userId"</span>: <span style="color: #ffb446;">"NqIblkTCB5aU1cPUZb23AWj1U212"</span>,
+    <span style="color: #ff46b4;">"chapterIds"</span>: [1, 2, 3],
+    <span style="color: #ff46b4;">"score"</span>: <span style="color: #46b4ff;">45</span>,
+    <span style="color: #ff46b4;">"totalQuestions"</span>: <span style="color: #46b4ff;">50</span>,
+    <span style="color: #ff46b4;">"percentage"</span>: <span style="color: #46b4ff;">90</span>,
+    <span style="color: #ff46b4;">"correctCount"</span>: <span style="color: #46b4ff;">45</span>,
+    <span style="color: #ff46b4;">"wrongCount"</span>: <span style="color: #46b4ff;">3</span>,
+    <span style="color: #ff46b4;">"skippedCount"</span>: <span style="color: #46b4ff;">2</span>,
+    <span style="color: #ff46b4;">"totalTimeSpent"</span>: <span style="color: #46b4ff;">1800</span>, // 30 minutes
+    <span style="color: #ff46b4;">"totalHintsUsed"</span>: <span style="color: #46b4ff;">5</span>,
+    <span style="color: #ff46b4;">"attempts"</span>: <span style="color: #46b4ff;">2</span> // This was your 2nd try
+    }</pre>
+                </div>
+                
+                <div class="example-note" style="margin-top: 30px; padding: 20px; background: rgba(70, 255, 180, 0.1); border-left: 3px solid #46ffb4; border-radius: 8px;">
+                    <strong style="color: #46ffb4;">💡 Smart Feature:</strong> 
+                    <p style="color: #b4c5d4; margin-top: 10px;">Only your BEST score is saved! If you score 80% first, then 90% second time, the 90% replaces the old data. But if you score 70% on third try, it WON'T overwrite your 90% best score!</p>
+                </div>
+            `;
+        },
+
+        getLessonExample() {
+            return `
+                <div class="example-header">
+                    <h3 style="color: #46b4ff; margin-bottom: 20px;">📚 Lesson Progress Example</h3>
+                    <p style="color: #b4c5d4; margin-bottom: 30px;">When you complete a lesson, this is what Firebase stores:</p>
+                </div>
+                
+                <div class="example-structure">
+                    <div class="structure-item">
+                        <div class="structure-label">Collection:</div>
+                        <div class="structure-value">user-progress</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">Document ID:</div>
+                        <div class="structure-value">NqIblkTCB5aU1cPUZb23AWj1U212_lesson1</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">What's Stored:</div>
+                        <div class="structure-value">
+                            ✅ Lesson number<br>
+                            ✅ Your score (e.g., 18/20)<br>
+                            ✅ Percentage (90%)<br>
+                            ✅ All your answers<br>
+                            ✅ Attempt count<br>
+                            ✅ Timestamp
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-code">
+                    <div class="code-header">Actual Firebase Document:</div>
+                    <pre style="color: #46ffb4; line-height: 1.8; margin-top: 15px;">
+    {
+    <span style="color: #ff46b4;">"userId"</span>: <span style="color: #ffb446;">"NqIblkTCB5aU1cPUZb23AWj1U212"</span>,
+    <span style="color: #ff46b4;">"lessonNumber"</span>: <span style="color: #46b4ff;">1</span>,
+    <span style="color: #ff46b4;">"type"</span>: <span style="color: #ffb446;">"lesson"</span>,
+    <span style="color: #ff46b4;">"score"</span>: <span style="color: #46b4ff;">18</span>,
+    <span style="color: #ff46b4;">"totalQuestions"</span>: <span style="color: #46b4ff;">20</span>,
+    <span style="color: #ff46b4;">"percentage"</span>: <span style="color: #46b4ff;">90</span>,
+    <span style="color: #ff46b4;">"attempts"</span>: <span style="color: #46b4ff;">3</span>,
+    <span style="color: #ff46b4;">"answers"</span>: [
+        {
+        <span style="color: #ff46b4;">"questionId"</span>: <span style="color: #46b4ff;">1</span>,
+        <span style="color: #ff46b4;">"userAnswer"</span>: <span style="color: #ffb446;">"A"</span>,
+        <span style="color: #ff46b4;">"correct"</span>: <span style="color: #46b4ff;">true</span>,
+        <span style="color: #ff46b4;">"timeSpent"</span>: <span style="color: #46b4ff;">15</span>
+        },
+        ...
+    ],
+    <span style="color: #ff46b4;">"timestamp"</span>: <span style="color: #ffb446;">"2024-11-02T14:25:30Z"</span>
+    }</pre>
+                </div>
+                
+                <div class="example-flow" style="margin-top: 30px;">
+                    <h4 style="color: #46b4ff; margin-bottom: 15px;">🔄 What Happens When You Submit:</h4>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="padding: 15px; background: rgba(70, 180, 255, 0.05); border-left: 3px solid #46b4ff; border-radius: 5px;">
+                            <strong style="color: #46b4ff;">Step 1:</strong>
+                            <span style="color: #b4c5d4;"> JavaScript collects your answers</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 180, 255, 0.05); border-left: 3px solid #46b4ff; border-radius: 5px;">
+                            <strong style="color: #46b4ff;">Step 2:</strong>
+                            <span style="color: #b4c5d4;"> Sends to Firebase using setDoc()</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 180, 255, 0.05); border-left: 3px solid #46b4ff; border-radius: 5px;">
+                            <strong style="color: #46b4ff;">Step 3:</strong>
+                            <span style="color: #b4c5d4;"> Firebase checks if this is better than previous score</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 180, 255, 0.05); border-left: 3px solid #46b4ff; border-radius: 5px;">
+                            <strong style="color: #46b4ff;">Step 4:</strong>
+                            <span style="color: #b4c5d4;"> If better, updates the document</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 180, 255, 0.05); border-left: 3px solid #46b4ff; border-radius: 5px;">
+                            <strong style="color: #46b4ff;">Step 5:</strong>
+                            <span style="color: #b4c5d4;"> Auto-updates overall-progress collection</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        },
+
+        getUserExample() {
+            return `
+                <div class="example-header">
+                    <h3 style="color: #46b4ff; margin-bottom: 20px;">👤 User Profile Example</h3>
+                    <p style="color: #b4c5d4; margin-bottom: 30px;">When you sign in with Google, Firebase Authentication creates this:</p>
+                </div>
+                
+                <div class="example-structure">
+                    <div class="structure-item">
+                        <div class="structure-label">Collection:</div>
+                        <div class="structure-value">users</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">Document ID:</div>
+                        <div class="structure-value">NqIblkTCB5aU1cPUZb23AWj1U212 (Your unique UID)</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">What's Stored:</div>
+                        <div class="structure-value">
+                            ✅ Your email address<br>
+                            ✅ Display name<br>
+                            ✅ Profile photo URL<br>
+                            ✅ Account creation date<br>
+                            ✅ Last login timestamp<br>
+                            ✅ App preferences
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-code">
+                    <div class="code-header">Your User Document:</div>
+                    <pre style="color: #46ffb4; line-height: 1.8; margin-top: 15px;">
+    {
+    <span style="color: #ff46b4;">"userId"</span>: <span style="color: #ffb446;">"NqIblkTCB5aU1cPUZb23AWj1U212"</span>,
+    <span style="color: #ff46b4;">"email"</span>: <span style="color: #ffb446;">"student@example.com"</span>,
+    <span style="color: #ff46b4;">"displayName"</span>: <span style="color: #ffb446;">"Raj Kumar"</span>,
+    <span style="color: #ff46b4;">"photoURL"</span>: <span style="color: #ffb446;">"https://lh3.googleusercontent.com/..."</span>,
+    <span style="color: #ff46b4;">"createdAt"</span>: <span style="color: #ffb446;">"2024-09-15T10:30:00Z"</span>,
+    <span style="color: #ff46b4;">"lastLogin"</span>: <span style="color: #ffb446;">"2024-11-04T15:08:08Z"</span>,
+    <span style="color: #ff46b4;">"role"</span>: <span style="color: #ffb446;">"student"</span>,
+    <span style="color: #ff46b4;">"grade"</span>: <span style="color: #46b4ff;">11</span>,
+    <span style="color: #ff46b4;">"preferences"</span>: {
+        <span style="color: #ff46b4;">"theme"</span>: <span style="color: #ffb446;">"dark"</span>,
+        <span style="color: #ff46b4;">"notifications"</span>: <span style="color: #46b4ff;">true</span>,
+        <span style="color: #ff46b4;">"language"</span>: <span style="color: #ffb446;">"en"</span>
+    }
+    }</pre>
+                </div>
+                
+                <div class="example-note" style="margin-top: 30px; padding: 20px; background: rgba(255, 70, 180, 0.1); border-left: 3px solid #ff46b4; border-radius: 8px;">
+                    <strong style="color: #ff46b4;">🔐 Security:</strong> 
+                    <p style="color: #b4c5d4; margin-top: 10px;">Firebase Security Rules ensure that ONLY YOU can read your own user document. Even if someone knows your UID, they can't access your data without being logged in as you!</p>
+                </div>
+                
+                <div class="example-note" style="margin-top: 15px; padding: 20px; background: rgba(70, 180, 255, 0.1); border-left: 3px solid #46b4ff; border-radius: 8px;">
+                    <strong style="color: #46b4ff;">🆔 Unique ID (UID):</strong> 
+                    <p style="color: #b4c5d4; margin-top: 10px;">Firebase generates a unique 28-character ID for every user. This ID is used across ALL collections to link your data together. It's like your digital fingerprint!</p>
+                </div>
+            `;
+        },
+
+        getOverallExample() {
+            return `
+                <div class="example-header">
+                    <h3 style="color: #46b4ff; margin-bottom: 20px;">📊 Overall Progress Example</h3>
+                    <p style="color: #b4c5d4; margin-bottom: 30px;">This is the MASTER summary that combines all your progress:</p>
+                </div>
+                
+                <div class="example-structure">
+                    <div class="structure-item">
+                        <div class="structure-label">Collection:</div>
+                        <div class="structure-value">overall-progress</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">Document ID:</div>
+                        <div class="structure-value">NqIblkTCB5aU1cPUZb23AWj1U212</div>
+                    </div>
+                    <div class="structure-item">
+                        <div class="structure-label">Purpose:</div>
+                        <div class="structure-value">
+                            ✅ Shows total lessons completed<br>
+                            ✅ Shows total quizzes completed<br>
+                            ✅ Calculates overall percentage<br>
+                            ✅ Updates automatically after every submission
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-code">
+                    <div class="code-header">Overall Progress Document:</div>
+                    <pre style="color: #46ffb4; line-height: 1.8; margin-top: 15px;">
+    {
+    <span style="color: #ff46b4;">"userId"</span>: <span style="color: #ffb446;">"NqIblkTCB5aU1cPUZb23AWj1U212"</span>,
+    <span style="color: #ff46b4;">"lastUpdated"</span>: <span style="color: #ffb446;">"2024-11-04T20:38:08Z"</span>,
+    
+    <span style="color: #ff46b4;">"lessons"</span>: {
+        <span style="color: #ff46b4;">"completed"</span>: <span style="color: #46b4ff;">3</span>,      // You've done 3 lessons
+        <span style="color: #ff46b4;">"score"</span>: <span style="color: #46b4ff;">15</span>,          // Total correct: 15
+        <span style="color: #ff46b4;">"total"</span>: <span style="color: #46b4ff;">60</span>,          // Total questions: 60
+        <span style="color: #ff46b4;">"percentage"</span>: <span style="color: #46b4ff;">25</span>      // 15/60 = 25%
+    },
+    
+    <span style="color: #ff46b4;">"quizzes"</span>: {
+        <span style="color: #ff46b4;">"completed"</span>: <span style="color: #46b4ff;">4</span>,      // You've done 4 quizzes
+        <span style="color: #ff46b4;">"score"</span>: <span style="color: #46b4ff;">3</span>,           // Total correct: 3
+        <span style="color: #ff46b4;">"total"</span>: <span style="color: #46b4ff;">49</span>,          // Total questions: 49
+        <span style="color: #ff46b4;">"percentage"</span>: <span style="color: #46b4ff;">6</span>       // 3/49 = 6%
+    },
+    
+    <span style="color: #ff46b4;">"overall"</span>: {
+        <span style="color: #ff46b4;">"score"</span>: <span style="color: #46b4ff;">18</span>,          // 15 + 3 = 18
+        <span style="color: #ff46b4;">"total"</span>: <span style="color: #46b4ff;">109</span>,         // 60 + 49 = 109
+        <span style="color: #ff46b4;">"percentage"</span>: <span style="color: #46b4ff;">17</span>      // 18/109 = 17%
+    }
+    }</pre>
+                </div>
+                
+                <div class="example-flow" style="margin-top: 30px;">
+                    <h4 style="color: #46b4ff; margin-bottom: 15px;">🔄 Auto-Update Process:</h4>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="padding: 15px; background: rgba(70, 255, 180, 0.05); border-left: 3px solid #46ffb4; border-radius: 5px;">
+                            <strong style="color: #46ffb4;">Trigger:</strong>
+                            <span style="color: #b4c5d4;"> You submit a lesson or quiz</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 255, 180, 0.05); border-left: 3px solid #46ffb4; border-radius: 5px;">
+                            <strong style="color: #46ffb4;">Step 1:</strong>
+                            <span style="color: #b4c5d4;"> Firebase saves to user-progress or quiz-progress</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 255, 180, 0.05); border-left: 3px solid #46ffb4; border-radius: 5px;">
+                            <strong style="color: #46ffb4;">Step 2:</strong>
+                            <span style="color: #b4c5d4;"> Calls updateOverallProgress() function</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 255, 180, 0.05); border-left: 3px solid #46ffb4; border-radius: 5px;">
+                            <strong style="color: #46ffb4;">Step 3:</strong>
+                            <span style="color: #b4c5d4;"> Fetches ALL your lesson & quiz docs</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 255, 180, 0.05); border-left: 3px solid #46ffb4; border-radius: 5px;">
+                            <strong style="color: #46ffb4;">Step 4:</strong>
+                            <span style="color: #b4c5d4;"> Calculates totals and percentages</span>
+                        </div>
+                        <div style="padding: 15px; background: rgba(70, 255, 180, 0.05); border-left: 3px solid #46ffb4; border-radius: 5px;">
+                            <strong style="color: #46ffb4;">Step 5:</strong>
+                            <span style="color: #b4c5d4;"> Updates this overall-progress document</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-note" style="margin-top: 30px; padding: 20px; background: rgba(180, 70, 255, 0.1); border-left: 3px solid #b446ff; border-radius: 8px;">
+                    <strong style="color: #b446ff;">💡 Why It's Useful:</strong> 
+                    <p style="color: #b4c5d4; margin-top: 10px;">Instead of counting through hundreds of documents every time you open the app, we keep this "summary" document. One quick read gives your entire progress! Much faster! ⚡</p>
+                </div>
+            `;
+        },
+
+        // Background animations
+        startBackgroundAnimations() {
+            // Simulate random data updates
+            setInterval(() => {
+                this.updateStats();
+            }, 5000);
+
+            // Random collection highlights
+            setInterval(() => {
+                const items = document.querySelectorAll('.collection-item:not(.active)');
+                const randomItem = items[Math.floor(Math.random() * items.length)];
+                if (randomItem) {
+                    randomItem.style.animation = 'none';
+                    setTimeout(() => {
+                        randomItem.style.animation = 'pulse 0.5s';
+                    }, 10);
+                }
+            }, 3000);
+        },
+
+        // Update stats
+        updateStats() {
+            // Slight fluctuations for realism
+            this.state.totalUsers += Math.floor(Math.random() * 3);
+            this.state.totalDocuments += Math.floor(Math.random() * 5);
+            this.state.storageUsed += Math.random() * 0.01;
+
+            document.getElementById('totalUsers').textContent = this.state.totalUsers.toLocaleString();
+            document.getElementById('collections').textContent = this.state.totalCollections;
+            document.getElementById('documents').textContent = this.state.totalDocuments.toLocaleString();
+            document.getElementById('storageUsed').textContent = this.state.storageUsed.toFixed(2) + 'GB';
+        },
+
+        // Utility functions
+        delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    };
+
+    // Initialize on DOM load
+    document.addEventListener('DOMContentLoaded', () => {
+        firebaseViz.init();
+    });
+
+    // Export for global access
+    window.firebaseViz = firebaseViz;
     </script>
 </body>
 </html>
