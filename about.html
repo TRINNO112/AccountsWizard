@@ -6,6 +6,9 @@
   <title>About Us | AccountsWizard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
+    /* =============================================
+    1. ROOT VARIABLES & GLOBAL STYLES
+    ============================================= */
     :root {
       --bg: #0a0a0f;
       --bg-2: #12121a;
@@ -23,13 +26,13 @@
       --shadow: 0 0 40px rgba(0, 255, 255, 0.1);
       --shadow-lg: 0 0 80px rgba(0, 255, 255, 0.2);
     }
-    
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: var(--text);
@@ -48,12 +51,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
+      background:
         radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(255, 16, 240, 0.05) 0%, transparent 50%),
         radial-gradient(circle at 40% 20%, rgba(0, 153, 255, 0.05) 0%, transparent 50%);
       pointer-events: none;
-      z-index: 0;
+      z-index: -1; /* Placed behind all content */
       animation: floatBackground 20s ease-in-out infinite;
     }
 
@@ -63,18 +66,23 @@
       66% { transform: translate(20px, -10px) scale(0.95); }
     }
 
-    /* Navigation Header - Neon Style */
+
+    /* =============================================
+      2. NAVIGATION (REFACTORED & FIXED)
+      ============================================= */
+
+    /* --- Header Container --- */
     .nav-header {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(10, 10, 15, 0.95);
-      backdrop-filter: blur(20px);
+      z-index: 1000;
+      background: rgba(10, 10, 15, 0.9);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       border-bottom: 1px solid rgba(0, 255, 255, 0.1);
       box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
     }
 
-    /* Container */
     .nav-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -83,11 +91,9 @@
       justify-content: space-between;
       align-items: center;
       height: 75px;
-      position: relative;
-      z-index: 50;
     }
 
-    /* Logo */
+    /* --- Logo --- */
     .nav-logo {
       font-size: 1.5rem;
       font-weight: 900;
@@ -95,17 +101,11 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
       letter-spacing: 1px;
-      line-height: 1;
-      position: relative;
-      z-index: 300; /* Always above everything */
-      transform: translateY(1px); /* Subtle centering fix */
+      z-index: 1001; /* Always on top */
     }
 
-    /* Links */
+    /* --- Desktop Navigation Links --- */
     .nav-links {
       display: flex;
       gap: 10px;
@@ -120,7 +120,6 @@
       font-weight: 600;
       font-size: 0.95rem;
       transition: all 0.3s ease;
-      position: relative;
       border: 1px solid transparent;
     }
 
@@ -138,98 +137,101 @@
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     }
 
-    /* Modern Neon Hamburger */
+    /* --- Hamburger Menu Icon --- */
     .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      width: 32px;
-      height: 22px;
+      display: none; /* Hidden on desktop */
       cursor: pointer;
+      width: 35px;
+      height: 25px;
       position: relative;
-      margin-left: auto;
-      z-index: 200;
-      transition: transform 0.3s ease;
+      z-index: 1001; /* Always on top */
     }
 
     .hamburger span {
-      display: block;
-      height: 3px;
+      position: absolute;
+      height: 4px;
       width: 100%;
       background: var(--neon-cyan);
-      border-radius: 2px;
-      transition: all 0.35s ease;
-      box-shadow: 0 0 8px var(--neon-cyan);
+      border-radius: 10px;
+      transition: all 0.4s ease;
+      left: 0;
     }
 
-    /* ✅ Perfectly Centered X Animation */
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
+    .hamburger span:nth-child(1) { top: 0; }
+    .hamburger span:nth-child(2) { top: 10px; }
+    .hamburger span:nth-child(3) { top: 20px; }
 
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-      transform: scaleX(0);
-    }
-
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
-
-    /* Hover Glow */
     .hamburger:hover span {
       box-shadow: 0 0 15px var(--neon-cyan);
     }
 
-    /* ✅ Responsive Fix for Mobile */
+    /* Hamburger active state (X shape) */
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 8px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -8px);
+    }
+
+    /* --- Mobile Navigation (Media Query) --- */
     @media (max-width: 768px) {
+      /* Show hamburger and hide desktop links */
       .hamburger {
-        display: flex;
-        order: 2;
+        display: block;
       }
-
-      .nav-container {
-        justify-content: space-between;
-        align-items: center;
-      }
-
       .nav-links {
+        display: flex; /* Overriding desktop display */
         position: absolute;
-        top: 75px;
+        top: 75px; /* Position below the header */
         left: 0;
         width: 100%;
+        
         flex-direction: column;
         align-items: center;
-        background: rgba(10, 10, 15, 0.98);
         gap: 25px;
         padding: 30px 0;
+        
+        background: rgba(10, 10, 15, 0.98);
         border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        
+        /* Animation: hide by default */
         transform: translateY(-120%);
-        transition: transform 0.4s ease-in-out;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
-        z-index: 150; /* below logo & hamburger */
+        opacity: 0;
+        pointer-events: none; /* THIS IS THE KEY: only non-clickable when hidden on mobile */
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
       }
 
+      /* Show mobile menu when active */
       .nav-links.active {
         transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto; /* Make links clickable when menu is open */
       }
 
       .nav-links a {
         font-size: 1rem;
         width: 80%;
         text-align: center;
-        border-radius: 10px;
       }
     }
 
-    /* Main Content Wrapper */
+
+    /* =============================================
+      3. PAGE CONTENT WRAPPER
+      ============================================= */
     .page-wrapper {
       position: relative;
       z-index: 1;
     }
 
-    /* Hero Section - Epic Neon Style */
+
+    /* =============================================
+      4. HERO SECTION
+      ============================================= */
     .hero {
       max-width: 1200px;
       margin: 0 auto;
@@ -269,11 +271,11 @@
     }
 
     .hero h1 .gradient-text {
-      background: linear-gradient(135deg, 
-        var(--neon-cyan) 0%, 
-        var(--neon-pink) 25%, 
-        var(--neon-yellow) 50%, 
-        var(--neon-green) 75%, 
+      background: linear-gradient(135deg,
+        var(--neon-cyan) 0%,
+        var(--neon-pink) 25%,
+        var(--neon-yellow) 50%,
+        var(--neon-green) 75%,
         var(--neon-blue) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -310,7 +312,7 @@
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 
+      box-shadow:
         0 0 40px rgba(0, 255, 255, 0.5),
         inset 0 0 20px rgba(255, 255, 255, 0.2);
       transition: all 0.3s ease;
@@ -337,7 +339,7 @@
 
     .glitch-button:hover {
       transform: translateY(-5px) scale(1.05);
-      box-shadow: 
+      box-shadow:
         0 10px 60px rgba(0, 255, 255, 0.7),
         inset 0 0 30px rgba(255, 255, 255, 0.3);
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
