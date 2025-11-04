@@ -23,7 +23,8 @@ import {
   where, 
   serverTimestamp,
   orderBy,
-  limit
+  limit,
+  deleteDoc
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
 // Firebase Configuration
@@ -66,6 +67,15 @@ export async function signInWithGoogle() {
   try {
     const result = await signInWithPopup(auth, googleProvider);
     console.log('✅ Google sign-in:', result.user.email);
+
+    // === MIGRATE anonymous data (if any) into the new signed-in user's account.
+    // By default we keep backups of anonymous docs (deleteOld: false).
+    try {
+      await migrateAnonymousData(result.user.uid, { deleteOld: false });
+    } catch (mErr) {
+      console.warn('⚠️ Migration attempt failed (non-fatal):', mErr);
+    }
+
     return { success: true, user: result.user };
   } catch (error) {
     console.error('❌ Sign-in error:', error);
@@ -454,6 +464,87 @@ export async function getOverallStats() {
   } catch (error) {
     console.error('❌ Stats load error:', error);
     return null;
+  }
+}
+
+// ============================================
+// 🧠 MIGRATE ANONYMOUS DATA TO LOGGED-IN ACCOUNT
+// ============================================
+
+/**
+ * Migrate anonymous-stored docs (prefix: anon_...) into the newly authenticated user's records.
+ *
+ * @param {string} newUserId  - authenticated user's UID
+ * @param {object} options - { deleteOld: boolean } (default: false)
+ *
+ * Behavior:
+ *  - Looks for documents whose IDs start with the anonId in collections:
+ *      'user-progress', 'quiz-progress', 'overall-progress'
+ *  - Creates equivalent documents replacing the anonId with newUserId
+ *  - Optionally deletes old anonymous docs if deleteOld === true
+ *  - Removes the localStorage 'accounts-wizard-user-id' key after migration
+ */
+export async function migrateAnonymousData(newUserId, { deleteOld = false } = {}) {
+  const anonId = localStorage.getItem('accounts-wizard-user-id');
+
+  if (!anonId || !anonId.startsWith('anon_')) {
+    console.log('ℹ️ No anonymous ID found — nothing to migrate.');
+    return;
+  }
+
+  if (!newUserId) {
+    throw new Error('migrateAnonymousData: newUserId required');
+  }
+
+  console.log(`🔄 Migrating data from ${anonId} → ${newUserId} (deleteOld=${deleteOld})`);
+
+  try {
+    const collectionsToCheck = ['user-progress', 'quiz-progress', 'overall-progress'];
+
+    for (const col of collectionsToCheck) {
+      const colRef = collection(db, col);
+      // Firestore doesn't have "startsWith" queries on document ID, so we fetch a reasonable slice.
+      // We fetch all docs in the collection and filter client-side by ID prefix.
+      const snapshot = await getDocs(colRef);
+
+      for (const docSnap of snapshot.docs) {
+        const docId = docSnap.id;
+        if (docId.startsWith(anonId)) {
+          const data = docSnap.data();
+
+          // Replace userId field if present
+          data.userId = newUserId;
+
+          // Generate new doc id by replacing prefix
+          const newDocId = docId.replace(anonId, newUserId);
+
+          // Write the migrated document
+          await setDoc(doc(db, col, newDocId), data);
+          console.log(`✅ Migrated ${col}/${docId} → ${newDocId}`);
+
+          // Optionally delete the old anon doc
+          if (deleteOld) {
+            await deleteDoc(doc(db, col, docId));
+            console.log(`🗑️ Deleted old anon doc ${col}/${docId}`);
+          }
+        }
+      }
+    }
+
+    // Clear anon id from localStorage (so future getUserId() will use auth.currentUser.uid)
+    localStorage.removeItem('accounts-wizard-user-id');
+    console.log('🧹 Migration complete. anon ID cleared from localStorage.');
+
+    // Recompute overall progress for the new user (best-effort)
+    try {
+      await updateOverallProgress(newUserId);
+    } catch (e) {
+      console.warn('⚠️ Could not update overall progress after migration:', e);
+    }
+
+  } catch (error) {
+    console.error('❌ migrateAnonymousData error:', error);
+    throw error;
   }
 }
 
