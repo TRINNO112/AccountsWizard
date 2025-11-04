@@ -2789,6 +2789,57 @@
 
         // Add event listener for mouse/touch movement
         b.addEventListener("pointermove", base);
+
+        const room = document.querySelector('.room'); // main 3D container
+        let rotateX = 0, rotateY = 0;
+        let isDragging = false;
+        let lastX, lastY;
+
+        room.style.willChange = 'transform'; // GPU acceleration
+
+        // 🖱 Desktop mouse drag
+        room.addEventListener('mousedown', e => {
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        });
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - lastX;
+        const deltaY = e.clientY - lastY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        rotateY += deltaX * 0.4;
+        rotateX -= deltaY * 0.4;
+        updateRoomRotation();
+        });
+
+        // 📱 Touchscreen drag
+        room.addEventListener('touchstart', e => {
+        isDragging = true;
+        const touch = e.touches[0];
+        lastX = touch.clientX;
+        lastY = touch.clientY;
+        }, { passive: true });
+
+        room.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - lastX;
+        const deltaY = touch.clientY - lastY;
+        lastX = touch.clientX;
+        lastY = touch.clientY;
+        rotateY += deltaX * 0.4;
+        rotateX -= deltaY * 0.4;
+        updateRoomRotation();
+        }, { passive: true });
+
+        room.addEventListener('touchend', () => isDragging = false);
+
+        function updateRoomRotation() {
+        room.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
     </script>
 </body>
 </html>
