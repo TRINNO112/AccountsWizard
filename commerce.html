@@ -4490,6 +4490,143 @@
             scrollbar-width: thin;
             scrollbar-color: #46b4ff rgba(10, 10, 20, 0.5);
         }
+
+        /* Admin Info Section */
+        .admin-info-section {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #0a0f1f 0%, #050714 100%);
+            position: relative;
+        }
+
+        .admin-info-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .admin-info-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .admin-info-heading {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-info-subtext {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Cards Grid */
+        .admin-info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .admin-info-box {
+            background: rgba(20, 27, 56, 0.8);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .admin-info-box:hover {
+            transform: translateY(-6px);
+            border-color: #00e5ff;
+            box-shadow: 0 20px 40px rgba(0, 229, 255, 0.2);
+        }
+
+        .admin-info-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .admin-info-box-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00e5ff;
+            margin-bottom: 12px;
+        }
+
+        .admin-info-box-text {
+            font-size: 1rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* CTA Button Area */
+        .admin-info-cta {
+            text-align: center;
+        }
+
+        .admin-info-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, #7c4dff, #00e5ff);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.4);
+        }
+
+        .admin-info-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(124, 77, 255, 0.6);
+        }
+
+        .admin-info-button i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-info-button:hover i {
+            transform: translateX(4px);
+        }
+
+        .admin-info-note {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-info-section {
+            padding: 60px 15px;
+            }
+
+            .admin-info-cards {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            }
+
+            .admin-info-heading {
+            font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body class="loading">
@@ -5565,6 +5702,79 @@
             </div>
         </div>
     </section>
+
+    <!-- 📊 ADMIN SYSTEM PREVIEW SECTION - DRY SARCASM & OBSERVER STYLE -->
+    <section class="admin-info-section">
+    <div class="admin-info-wrapper">
+        
+        <!-- Section Title -->
+        <div class="admin-info-header">
+        <h2 class="admin-info-heading">🧩 How the Admin Observes Your Progress</h2>
+        <p class="admin-info-subtext">
+            Relax — no one’s spying. It’s just the system quietly recording everything you do. For “educational purposes,” of course.
+        </p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="admin-info-cards">
+        
+        <!-- Card 1: User Overview -->
+        <div class="admin-info-box">
+            <div class="admin-info-icon"><i class="fas fa-user"></i></div>
+            <h3 class="admin-info-box-title">User Overview</h3>
+            <p class="admin-info-box-text">
+            The admin gets a neat little file on you — name, email, progress, scores. 
+            Nothing personal. Just your entire learning life summarized into numbers.
+            </p>
+        </div>
+
+        <!-- Card 2: Lesson Breakdown -->
+        <div class="admin-info-box">
+            <div class="admin-info-icon"><i class="fas fa-book"></i></div>
+            <h3 class="admin-info-box-title">Lesson Breakdown</h3>
+            <p class="admin-info-box-text">
+            Every lesson you touch leaves a trail — scores, attempts, even the parts you thought no one noticed. 
+            Spoiler: someone noticed.
+            </p>
+        </div>
+
+        <!-- Card 3: Quiz Analysis -->
+        <div class="admin-info-box">
+            <div class="admin-info-icon"><i class="fas fa-list-check"></i></div>
+            <h3 class="admin-info-box-title">Quiz Analysis</h3>
+            <p class="admin-info-box-text">
+            Correct, wrong, skipped — all counted with care. 
+            The system doesn’t judge; it simply remembers. And it remembers everything.
+            </p>
+        </div>
+
+        <!-- Card 4: Performance Trends -->
+        <div class="admin-info-box">
+            <div class="admin-info-icon"><i class="fas fa-chart-line"></i></div>
+            <h3 class="admin-info-box-title">Performance Trends</h3>
+            <p class="admin-info-box-text">
+            Your improvement, decline, and sudden bursts of brilliance — all plotted neatly. 
+            It’s almost poetic, if you like being observed through graphs.
+            </p>
+        </div>
+
+        </div>
+
+        <!-- Button to Admin Page -->
+        <div class="admin-info-cta">
+        <a href="admin.html" class="admin-info-button">
+            <span>Access Admin Dashboard</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <p class="admin-info-note">
+            🔐 Access restricted to authorized educators only.  
+            <br>— Overseen by <strong>The Greatest Trinno Asphalt</strong>, who prefers silence over explanation.
+        </p>
+        </div>
+
+    </div>
+    </section>
+
 
     <!-- Developer's Struggle Showcase Section -->
     <section class="developer-struggle-section">
