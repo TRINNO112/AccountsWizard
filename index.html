@@ -115,7 +115,6 @@
       padding: 4px;
     }
 
-    /* User Info Styles */
     .user-info {
       display: flex;
       align-items: center;
@@ -169,42 +168,364 @@
     }
     .ghost:hover{ background: rgba(255,255,255,.06); transform: translateY(-1px); }
 
-    .hero-media{
-      position: relative; min-height: 250px; border-radius: var(--radius-lg);
-      background: linear-gradient(180deg, rgba(124,77,255,.22), rgba(0,229,255,.15));
-      border: 1px solid rgba(255,255,255,.08); box-shadow: var(--shadow); overflow: clip;
+    /* ========= SIMPLE HERO MEDIA ========= */
+    .neon-hero {
+        max-width: 700px;
+        width: 100%;
+        
+        background: linear-gradient(145deg, rgba(0,229,255,0.12), rgba(124,77,255,0.12), rgba(255,179,0,0.12));
+        padding: 10px 25px 20px 25px;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 
+            0 0 50px rgba(0,229,255,0.2),
+            inset 0 0 30px rgba(255,255,255,0.03);
+        backdrop-filter: blur(30px);
+        position: relative;
+        overflow: hidden;
     }
-    .coin{
-      position:absolute; width: 60px; height: 60px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffe29a, #ffb703 55%, #a56b00 70%);
-      box-shadow: 0 16px 30px rgba(255,183,3,.25), inset 0 2px 0 rgba(255,255,255,.5);
-      animation: float 5s ease-in-out infinite;
-    }
-    .coin::after{
-      content:"₹"; position:absolute; inset:0; display:grid; place-items:center;
-      font-weight: 900; font-size: 24px; color:#2b1900; text-shadow: 0 1px 0 #fff7, 0 2px 8px #0006;
-    }
-    .coin.c1{ top: 16px; left: 16px; }
-    .coin.c2{ bottom: 16px; right: 16px; animation-delay: .9s; }
-    .chip{
-      position:absolute; inset: 20px; border-radius: 22px;
-      background: rgba(10,12,30,.55); border:1px solid rgba(255,255,255,.08);
-      display:grid; grid-template-columns: 1fr; gap: 14px; padding: 16px;
-    }
-    .mini{
-      background: linear-gradient(180deg, #1a224a, #10163a);
-      border:1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px;
-    }
-    .mini h4{ margin: 0 0 6px; font-size: clamp(0.8rem, 2vw, 0.95rem); color:#e6ebff; }
-    .stat{font-size: clamp(1rem, 2.5vw, 1.35rem); font-weight: 900; letter-spacing:.5px;}
-    .stat.ok{ color: var(--ok); }
-    .stat.warn{ color: var(--warn); }
-    .mini small { font-size: clamp(0.7rem, 1.5vw, 0.85rem); }
 
-    @keyframes float{
-      0%, 100%{ transform: translateY(0) rotate(0); }
-      50%{ transform: translateY(-12px) rotate(5deg); }
+    /* Title Section with Badge */
+    .neon-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--brand-2);
+        letter-spacing: 1.2px;
+        margin-bottom: 28px;
+        text-shadow: 0 0 15px rgba(0,229,255,0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
     }
+
+    .title-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, rgba(0,229,255,0.3), rgba(124,77,255,0.3));
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: 1px solid rgba(0,229,255,0.4);
+        box-shadow: 0 0 10px rgba(0,229,255,0.3);
+    }
+
+    /* GRID */
+    .neon-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    /* CARDS - Enhanced */
+    .neon-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+        padding: 18px;
+        border-radius: 20px;
+        border: 1px solid rgba(0,229,255,0.25);
+        box-shadow: 
+            0 8px 25px rgba(0,0,0,0.3),
+            0 0 20px rgba(0,229,255,0.15);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+        z-index: 2;
+        position: relative;
+    }
+
+    .neon-card:hover {
+        transform: translateY(-8px) scale(1.04);
+        border-color: var(--brand-2);
+        box-shadow: 
+            0 12px 35px rgba(0,0,0,0.4),
+            0 0 35px rgba(0,229,255,0.4);
+        background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+    }
+
+    /* Card Label/Tag */
+    .card-label {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(0,229,255,0.15);
+        color: var(--brand-2);
+        font-size: 9px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(0,229,255,0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Headings & Text */
+    .neon-card h4 {
+        color: var(--brand-2);
+        font-size: 16px;
+        margin: 18px 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        font-weight: 700;
+        text-shadow: 0 0 8px rgba(0,229,255,0.3);
+    }
+
+    .neon-card p {
+        font-size: 13px;
+        color: var(--muted);
+        opacity: 0.95;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+
+    /* Icon Background - Enhanced with Gradient */
+    .neon-icon-bg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90px;
+        padding: 14px;
+        background: linear-gradient(135deg, rgba(0,229,255,0.12), rgba(124,77,255,0.08));
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.12);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Animated background effect */
+    .neon-icon-bg::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0,229,255,0.1) 0%, transparent 70%);
+        animation: rotate 8s linear infinite;
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+
+    .neon-card:hover .neon-icon-bg::before {
+        opacity: 1;
+    }
+
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* SVG Icons - Enhanced */
+    .neon-icon-bg .infographic-icon {
+        width: 55px;
+        height: 55px;
+        color: var(--brand-2);
+        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.7));
+        transition: all 0.4s ease;
+        z-index: 1;
+    }
+    
+    .neon-card:hover .infographic-icon {
+        transform: scale(1.15) rotate(5deg);
+        filter: drop-shadow(0 0 15px rgba(0, 229, 255, 1));
+    }
+
+    /* ======== NEW: DEBIT = CREDIT FORMULA BOX ======== */
+    .formula-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+        padding: 12px;
+        background: rgba(0,0,0,0.3);
+        border-radius: 12px;
+        border: 1px solid rgba(0,229,255,0.2);
+        box-shadow: 
+            inset 0 2px 8px rgba(0,0,0,0.3),
+            0 0 15px rgba(0,229,255,0.1);
+    }
+
+    .formula-item {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        border: 1px solid;
+    }
+
+    .formula-item.debit {
+        background: linear-gradient(135deg, rgba(255,77,77,0.2), rgba(255,77,77,0.1));
+        color: #ff6b6b;
+        border-color: rgba(255,107,107,0.3);
+        box-shadow: 0 0 10px rgba(255,107,107,0.2);
+    }
+
+    .formula-item.credit {
+        background: linear-gradient(135deg, rgba(77,255,136,0.2), rgba(77,255,136,0.1));
+        color: #4dff88;
+        border-color: rgba(77,255,136,0.3);
+        box-shadow: 0 0 10px rgba(77,255,136,0.2);
+    }
+
+    .formula-equals {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--brand-2);
+        text-shadow: 0 0 10px rgba(0,229,255,0.5);
+    }
+
+    .neon-card:hover .formula-item {
+        transform: scale(1.05);
+    }
+
+    .neon-card:hover .formula-item.debit {
+        box-shadow: 0 0 15px rgba(255,107,107,0.4);
+    }
+
+    .neon-card:hover .formula-item.credit {
+        box-shadow: 0 0 15px rgba(77,255,136,0.4);
+    }
+
+    /* ======== NEW: PROCESS STEPS INDICATOR ======== */
+    .process-steps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 12px;
+    }
+
+    .step-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--brand-2), rgba(124,77,255,0.8));
+        box-shadow: 0 0 10px rgba(0,229,255,0.5);
+        position: relative;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .step-dot:nth-child(1) { animation-delay: 0s; }
+    .step-dot:nth-child(2) { animation-delay: 0.3s; }
+    .step-dot:nth-child(3) { animation-delay: 0.6s; }
+    .step-dot:nth-child(4) { animation-delay: 0.9s; }
+
+    .step-dot::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: inherit;
+        filter: blur(3px);
+        opacity: 0.6;
+    }
+
+    @keyframes pulse {
+        0%, 100% { 
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% { 
+            transform: scale(1.3);
+            opacity: 0.7;
+        }
+    }
+
+    /* ======== FLOATING BACKGROUND ICONS (Now Darker) ======== */
+    .floating-icon {
+        position: absolute;
+        color: var(--brand-2);
+        opacity: 0.18; /* INCREASED from 0.08 to make them darker/more visible */
+        z-index: 1;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-icon svg {
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 0 5px rgba(0,229,255,0.3)); /* Added subtle glow */
+    }
+    
+    /* Positioning */
+    .icon-calculator { top: 15%; left: 5%; width: 55px; height: 55px; animation-duration: 7s; }
+    .icon-coins { bottom: 10%; left: 20%; width: 65px; height: 65px; animation-delay: -2s; animation-duration: 8s; }
+    .icon-chart { top: 20%; right: 8%; width: 60px; height: 60px; animation-delay: -4s; }
+    .icon-ledger { bottom: 15%; right: 15%; width: 50px; height: 50px; animation-duration: 9s; animation-delay: -1s; }
+
+    /* Float Animation */
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-25px) rotate(5deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* ======== RESPONSIVE ======== */
+
+    /* Tablets */
+    @media (max-width: 768px) {
+        .neon-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .floating-icon {
+            display: none;
+        }
+
+        .neon-hero {
+            padding: 28px;
+        }
+    }
+
+    /* Small Phones */
+    @media (max-width: 480px) {
+        .neon-hero {
+            padding: 22px;
+            border-radius: 20px;
+        }
+        
+        .neon-card {
+            padding: 20px;
+        }
+        
+        .neon-title {
+            font-size: 20px;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .neon-icon-bg {
+            height: 75px;
+        }
+        
+        .infographic-icon {
+            width: 45px;
+            height: 45px;
+        }
+
+        .formula-item {
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+
+        .formula-box {
+            gap: 8px;
+            padding: 10px;
+        }
+    }
+
 
     .features{
       max-width: 1200px; margin: 22px auto 0; padding: 0 18px 60px;
@@ -241,18 +562,162 @@
       background: linear-gradient(90deg, #fff, var(--accent), var(--lime));
       -webkit-background-clip:text; background-clip:text; color: transparent;
     }
+
+    /* REDESIGNED TOPICS SECTION */
     .topics{
-      display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
     }
-    .topic{
-      background: linear-gradient(180deg, #0e1636, #0b122c);
-      border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 14px;
-      min-height: 110px; display:flex; flex-direction: column; justify-content: space-between;
-      transition: transform .18s ease; cursor: pointer;
+
+    .topic {
+      background: linear-gradient(135deg, #0e1636, #0b122c);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 20px;
+      padding: 20px;
+      min-height: 140px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .topic:hover{ transform: translateY(-3px); }
-    .topic b{ font-size: clamp(0.9rem, 2vw, 0.98rem); }
-    .topic small{ color:#cbd3ff; opacity:.85; font-size: clamp(0.75rem, 1.5vw, 0.85rem); }
+
+    .topic::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        transparent, 
+        rgba(124,77,255,.1), 
+        rgba(0,229,255,.1)
+      );
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .topic:hover::before {
+      opacity: 1;
+    }
+
+    .topic::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(45deg, 
+        var(--brand), 
+        var(--brand-2), 
+        var(--accent), 
+        var(--lime)
+      );
+      border-radius: 20px;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.4s ease;
+      background-size: 400% 400%;
+      animation: gradient-border 3s ease infinite;
+    }
+
+    @keyframes gradient-border {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .topic:hover::after {
+      opacity: 0.3;
+    }
+
+    .topic:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,229,255,.15),
+                  0 10px 20px rgba(124,77,255,.15);
+      border-color: rgba(255,255,255,.15);
+    }
+
+    .topic-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .topic-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, rgba(124,77,255,.2), rgba(0,229,255,.2));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .topic:hover .topic-icon {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      transform: rotate(10deg) scale(1.1);
+    }
+
+    .topic-content {
+      flex: 1;
+    }
+
+    .topic b {
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .topic:hover b {
+      color: var(--lime);
+    }
+
+    .topic small {
+      color: var(--muted);
+      opacity: 0.85;
+      font-size: clamp(0.8rem, 1.5vw, 0.88rem);
+      line-height: 1.4;
+      display: block;
+      transition: opacity 0.3s ease;
+    }
+
+    .topic:hover small {
+      opacity: 1;
+    }
+
+    .topic-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+
+    .topic-progress::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--brand-2), transparent);
+      animation: shimmer 2s ease-in-out infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .topic:hover .topic-progress::after {
+      opacity: 1;
+    }
+
+    @keyframes shimmer {
+      to { left: 100%; }
+    }
 
     .cta-band{
       margin-top: 24px; border-radius: var(--radius-lg);
@@ -428,7 +893,7 @@
       text-decoration: none;
     }
 
-    /* ========= Professional Auth Modal Styles ========= */
+    /* Professional Auth Modal Styles */
     .auth-modal-overlay {
       display: none;
       position: fixed;
@@ -499,7 +964,7 @@
       justify-content: center;
       font-size: 32px;
       box-shadow: 0 10px 30px rgba(124,77,255,.4);
-      animation: float 3s ease-in-out infinite;
+      animation: pulse-icon 3s ease-in-out infinite;
     }
 
     .auth-modal-title {
@@ -723,6 +1188,95 @@
       color: var(--lime);
     }
 
+    /* Commerce Day Special Button */
+    .commerce-day-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #ff0080, #ff8c00, #00ff88);
+        background-size: 200% 200%;
+        color: #0a0a0a;
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 100px;
+        border: none;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 
+            0 0 30px rgba(255, 0, 128, 0.5),
+            0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: gradient-shift 3s ease infinite, pulse-glow 2s ease-in-out infinite;
+        margin-top: 20px;
+    }
+
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { 
+            box-shadow: 
+                0 0 30px rgba(255, 0, 128, 0.5),
+                0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        50% { 
+            box-shadow: 
+                0 0 50px rgba(255, 0, 128, 0.8),
+                0 0 80px rgba(0, 255, 136, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .commerce-day-btn::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 70%
+        );
+        transform: rotate(45deg);
+        animation: shine 3s linear infinite;
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .commerce-day-btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 
+            0 0 60px rgba(255, 0, 128, 0.8),
+            0 0 100px rgba(0, 255, 136, 0.6),
+            0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .commerce-day-btn:active {
+        transform: translateY(-2px) scale(1.02);
+    }
+
+    .commerce-day-btn::after {
+        content: '✨';
+        font-size: 18px;
+        animation: sparkle-rotate 2s linear infinite;
+    }
+
+    @keyframes sparkle-rotate {
+        0%, 100% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(180deg) scale(1.2); }
+    }
+
     /* Reveal animation */
     .reveal {
       opacity: 0;
@@ -757,24 +1311,12 @@
       .features {
         grid-template-columns: repeat(3, 1fr);
       }
-      .chip {
-        grid-template-columns: 1fr 1fr;
+      .stat-container {
+        grid-template-columns: repeat(2, 1fr);
       }
-
-      .mini {
-        padding: 4px;
-      }
-      .coin {
-        width: 96px;
-        height: 96px;
-      }
-      .coin::after {
-        font-size: 38px;
-      }
-      .coin.c1 { top: 26px; left: 22px; }
-      .coin.c2 { bottom: 26px; right: 22px; }
       .hero-media {
-        min-height: 300px;
+        min-height: 360px;
+        padding: 32px;
       }
       .cta-band {
         flex-direction: row;
@@ -804,99 +1346,10 @@
       }
     }
 
-    /* 🔥 COMMERCE DAY SPECIAL BUTTON 🔥 */
-    .commerce-day-btn {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 32px;
-        background: linear-gradient(135deg, #ff0080, #ff8c00, #00ff88);
-        background-size: 200% 200%;
-        color: #0a0a0a;
-        font-weight: 700;
-        font-size: 16px;
-        text-decoration: none;
-        border-radius: 100px;
-        border: none;
-        cursor: pointer;
-        overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 
-            0 0 30px rgba(255, 0, 128, 0.5),
-            0 10px 30px rgba(0, 0, 0, 0.3);
-        animation: gradient-shift 3s ease infinite, pulse-glow 2s ease-in-out infinite;
-        margin-top: 20px;
-    }
-
-    /* Gradient animation */
-    @keyframes gradient-shift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-
-    /* Pulsing glow */
-    @keyframes pulse-glow {
-        0%, 100% { 
-            box-shadow: 
-                0 0 30px rgba(255, 0, 128, 0.5),
-                0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        50% { 
-            box-shadow: 
-                0 0 50px rgba(255, 0, 128, 0.8),
-                0 0 80px rgba(0, 255, 136, 0.5),
-                0 10px 40px rgba(0, 0, 0, 0.4);
-        }
-    }
-
-    /* Shine effect overlay */
-    .commerce-day-btn::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            45deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.4) 50%,
-            transparent 70%
-        );
-        transform: rotate(45deg);
-        animation: shine 3s linear infinite;
-    }
-
-    @keyframes shine {
-        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    }
-
-    /* Hover state */
-    .commerce-day-btn:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 
-            0 0 60px rgba(255, 0, 128, 0.8),
-            0 0 100px rgba(0, 255, 136, 0.6),
-            0 20px 50px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Active/Click state */
-    .commerce-day-btn:active {
-        transform: translateY(-2px) scale(1.02);
-    }
-
-    /* Add sparkle icon */
-    .commerce-day-btn::after {
-        content: '✨';
-        font-size: 18px;
-        animation: sparkle-rotate 2s linear infinite;
-    }
-
-    @keyframes sparkle-rotate {
-        0%, 100% { transform: rotate(0deg) scale(1); }
-        50% { transform: rotate(180deg) scale(1.2); }
+    @media (min-width: 1024px) {
+      .topics {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
     }
   </style>
 </head>
@@ -938,21 +1391,68 @@
         <a class="ghost" href="#topics">Explore Topics</a>
       </div>
     </div>
-    <div class="hero-media pop" role="img" aria-label="Animated accounting showcase">
-      <div class="coin c1" aria-hidden="true"></div>
-      <div class="coin c2" aria-hidden="true"></div>
-      <div class="chip">
-        <div class="mini">
-          <h4>Double Entry Rule</h4>
-          <div class="stat ok">Debit = Credit</div>
-          <small style="opacity:.85">Every transaction affects two accounts.</small>
+    
+    <!-- SIMPLE HERO MEDIA -->
+    <div class="neon-hero">
+  
+        <!-- Floating Background Icons (Now Darker) -->
+        <span class="floating-icon icon-calculator">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><line x1="12" y1="14" x2="12" y2="18"></line><line x1="8" y1="14" x2="8" y2="18"></line><line x1="12" y1="10" x2="16" y2="10"></line></svg>
+        </span>
+        <span class="floating-icon icon-coins">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"></circle><path d="M18.09 10.37A6 6 0 1 1 10.34 18"></path><path d="M7 6h1v4"></path><path d="M15 12h1v4"></path></svg>
+        </span>
+        <span class="floating-icon icon-chart">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        </span>
+        <span class="floating-icon icon-ledger">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </span>
+
+        <h3 class="neon-title">
+            <span class="title-badge">Essential</span>
+            Core Accounting Concepts
+        </h3>
+
+        <div class="neon-grid">
+
+            <!-- Card 1 - Double Entry Rule -->
+            <div class="neon-card">
+                <div class="card-label">Fundamental Principle</div>
+                <div class="neon-icon-bg">
+                    <svg class="infographic-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line><path d="M3 12a9 9 0 0 1 9-9m9 9a9 9 0 0 1-9 9"></path><path d="M3 12a9 9 0 0 0 9 9m9-9a9 9 0 0 0-9-9"></path></svg>
+                </div>
+                <h4>Double Entry Rule</h4>
+                <p>Every transaction affects two accounts equally, maintaining the balance of the accounting equation.</p>
+                
+                <!-- NEW: Debit = Credit Formula -->
+                <div class="formula-box">
+                    <span class="formula-item debit">Debit</span>
+                    <span class="formula-equals">=</span>
+                    <span class="formula-item credit">Credit</span>
+                </div>
+            </div>
+
+            <!-- Card 2 - Accounting Cycle -->
+            <div class="neon-card">
+                <div class="card-label">Core Process</div>
+                <div class="neon-icon-bg">
+                    <svg class="infographic-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                </div>
+                <h4>Accounting Cycle</h4>
+                <p>The systematic process of recording, classifying, posting, and summarizing financial transactions.</p>
+                
+                <!-- NEW: Process Steps -->
+                <div class="process-steps">
+                    <span class="step-dot"></span>
+                    <span class="step-dot"></span>
+                    <span class="step-dot"></span>
+                    <span class="step-dot"></span>
+                </div>
+            </div>
+
         </div>
-        <div class="mini">
-          <h4>Accounting Cycle</h4>
-          <div class="stat warn">Journal → Ledger → Trial Balance</div>
-          <small style="opacity:.85">Then adjustments &amp; statements.</small>
-        </div>
-      </div>
+
     </div>
   </section>
 
@@ -979,56 +1479,140 @@
     </article>
   </section>
 
+  <!-- REDESIGNED TOPICS SECTION -->
   <section class="section" id="topics">
     <h2 class="reveal">Popular Topics</h2>
     <div class="topics">
       <div class="topic reveal" data-topic="basic-concepts">
-        <b>Basic Concepts</b>
-        <small>Entity, Money Measurement, Going Concern, Dual Aspect.</small>
+        <div class="topic-header">
+          <div class="topic-icon">📚</div>
+          <div class="topic-content">
+            <b>Basic Concepts</b>
+            <small>Entity, Money Measurement, Going Concern, Dual Aspect.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="accounting-equation">
-        <b>Accounting Equation</b>
-        <small>Assets = Capital + Liabilities.</small>
+        <div class="topic-header">
+          <div class="topic-icon">⚖️</div>
+          <div class="topic-content">
+            <b>Accounting Equation</b>
+            <small>Assets = Capital + Liabilities.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="source-documents">
-        <b>Source Documents</b>
-        <small>Invoice, Cash Memo, Debit/Credit Note, Voucher.</small>
+        <div class="topic-header">
+          <div class="topic-icon">📄</div>
+          <div class="topic-content">
+            <b>Source Documents</b>
+            <small>Invoice, Cash Memo, Debit/Credit Note, Voucher.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="journal">
-        <b>Journal</b>
-        <small>General journal entries &amp; narration.</small>
+        <div class="topic-header">
+          <div class="topic-icon">📝</div>
+          <div class="topic-content">
+            <b>Journal</b>
+            <small>General journal entries &amp; narration.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="ledger">
-        <b>Ledger</b>
-        <small>Posting from journal, balancing accounts.</small>
+        <div class="topic-header">
+          <div class="topic-icon">📖</div>
+          <div class="topic-content">
+            <b>Ledger</b>
+            <small>Posting from journal, balancing accounts.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="cash-book">
-        <b>Cash Book</b>
-        <small>Single, double, triple column cash book.</small>
+        <div class="topic-header">
+          <div class="topic-icon">💵</div>
+          <div class="topic-content">
+            <b>Cash Book</b>
+            <small>Single, double, triple column cash book.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="trial-balance">
-        <b>Trial Balance</b>
-        <small>Methods of preparation, error types.</small>
+        <div class="topic-header">
+          <div class="topic-icon">⚖️</div>
+          <div class="topic-content">
+            <b>Trial Balance</b>
+            <small>Methods of preparation, error types.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="depreciation">
-        <b>Depreciation</b>
-        <small>Straight-line, WDV, disposal of asset.</small>
+        <div class="topic-header">
+          <div class="topic-icon">📉</div>
+          <div class="topic-content">
+            <b>Depreciation</b>
+            <small>Straight-line, WDV, disposal of asset.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="bank-reconciliation">
-        <b>Bank Reconciliation</b>
-        <small>Causes of difference &amp; statement.</small>
+        <div class="topic-header">
+          <div class="topic-icon">🏦</div>
+          <div class="topic-content">
+            <b>Bank Reconciliation</b>
+            <small>Causes of difference &amp; statement.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="rectification">
-        <b>Rectification of Errors</b>
-        <small>Before/after trial balance.</small>
+        <div class="topic-header">
+          <div class="topic-icon">🔧</div>
+          <div class="topic-content">
+            <b>Rectification of Errors</b>
+            <small>Before/after trial balance.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="gst">
-        <b>Accounting for GST</b>
-        <small>CGST, SGST, IGST basics.</small>
+        <div class="topic-header">
+          <div class="topic-icon">🧾</div>
+          <div class="topic-content">
+            <b>Accounting for GST</b>
+            <small>CGST, SGST, IGST basics.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
+
       <div class="topic reveal" data-topic="final-accounts">
-        <b>Final Accounts (Intro)</b>
-        <small>Trading, P&amp;L, Balance Sheet basics.</small>
+        <div class="topic-header">
+          <div class="topic-icon">📊</div>
+          <div class="topic-content">
+            <b>Final Accounts (Intro)</b>
+            <small>Trading, P&amp;L, Balance Sheet basics.</small>
+          </div>
+        </div>
+        <div class="topic-progress"></div>
       </div>
     </div>
 
@@ -1554,7 +2138,6 @@
     // Make closeAuthModal globally accessible
     window.closeAuthModal = closeAuthModal;
 
-    // ✅ OPEN ACCOUNT MODAL
     // ✅ OPEN ACCOUNT MODAL
     window.openAccountModal = function() {
       if (!currentUser) {
