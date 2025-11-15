@@ -1483,9 +1483,11 @@
   <section class="section" id="topics">
     <h2 class="reveal">Popular Topics</h2>
     <div class="topics">
+
+      <!-- Basic Concepts -->
       <div class="topic reveal" data-topic="basic-concepts">
         <div class="topic-header">
-          <div class="topic-icon">📚</div>
+          <div class="topic-icon"><i data-lucide="book-open"></i></div>
           <div class="topic-content">
             <b>Basic Concepts</b>
             <small>Entity, Money Measurement, Going Concern, Dual Aspect.</small>
@@ -1494,9 +1496,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Accounting Equation -->
       <div class="topic reveal" data-topic="accounting-equation">
         <div class="topic-header">
-          <div class="topic-icon">⚖️</div>
+          <div class="topic-icon"><i data-lucide="scale"></i></div>
           <div class="topic-content">
             <b>Accounting Equation</b>
             <small>Assets = Capital + Liabilities.</small>
@@ -1505,9 +1508,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Source Documents -->
       <div class="topic reveal" data-topic="source-documents">
         <div class="topic-header">
-          <div class="topic-icon">📄</div>
+          <div class="topic-icon"><i data-lucide="file-text"></i></div>
           <div class="topic-content">
             <b>Source Documents</b>
             <small>Invoice, Cash Memo, Debit/Credit Note, Voucher.</small>
@@ -1516,9 +1520,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Journal -->
       <div class="topic reveal" data-topic="journal">
         <div class="topic-header">
-          <div class="topic-icon">📝</div>
+          <div class="topic-icon"><i data-lucide="notebook"></i></div>
           <div class="topic-content">
             <b>Journal</b>
             <small>General journal entries &amp; narration.</small>
@@ -1527,9 +1532,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Ledger -->
       <div class="topic reveal" data-topic="ledger">
         <div class="topic-header">
-          <div class="topic-icon">📖</div>
+          <div class="topic-icon"><i data-lucide="book-copy"></i></div>
           <div class="topic-content">
             <b>Ledger</b>
             <small>Posting from journal, balancing accounts.</small>
@@ -1538,9 +1544,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Cash Book -->
       <div class="topic reveal" data-topic="cash-book">
         <div class="topic-header">
-          <div class="topic-icon">💵</div>
+          <div class="topic-icon"><i data-lucide="wallet"></i></div>
           <div class="topic-content">
             <b>Cash Book</b>
             <small>Single, double, triple column cash book.</small>
@@ -1549,9 +1556,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Trial Balance -->
       <div class="topic reveal" data-topic="trial-balance">
         <div class="topic-header">
-          <div class="topic-icon">⚖️</div>
+          <div class="topic-icon"><i data-lucide="clipboard-list"></i></div>
           <div class="topic-content">
             <b>Trial Balance</b>
             <small>Methods of preparation, error types.</small>
@@ -1560,9 +1568,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Depreciation -->
       <div class="topic reveal" data-topic="depreciation">
         <div class="topic-header">
-          <div class="topic-icon">📉</div>
+          <div class="topic-icon"><i data-lucide="trending-down"></i></div>
           <div class="topic-content">
             <b>Depreciation</b>
             <small>Straight-line, WDV, disposal of asset.</small>
@@ -1571,9 +1580,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Bank Reconciliation -->
       <div class="topic reveal" data-topic="bank-reconciliation">
         <div class="topic-header">
-          <div class="topic-icon">🏦</div>
+          <div class="topic-icon"><i data-lucide="landmark"></i></div>
           <div class="topic-content">
             <b>Bank Reconciliation</b>
             <small>Causes of difference &amp; statement.</small>
@@ -1582,9 +1592,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Rectification -->
       <div class="topic reveal" data-topic="rectification">
         <div class="topic-header">
-          <div class="topic-icon">🔧</div>
+          <div class="topic-icon"><i data-lucide="wrench"></i></div>
           <div class="topic-content">
             <b>Rectification of Errors</b>
             <small>Before/after trial balance.</small>
@@ -1593,9 +1604,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- GST -->
       <div class="topic reveal" data-topic="gst">
         <div class="topic-header">
-          <div class="topic-icon">🧾</div>
+          <div class="topic-icon"><i data-lucide="receipt"></i></div>
           <div class="topic-content">
             <b>Accounting for GST</b>
             <small>CGST, SGST, IGST basics.</small>
@@ -1604,9 +1616,10 @@
         <div class="topic-progress"></div>
       </div>
 
+      <!-- Final Accounts -->
       <div class="topic reveal" data-topic="final-accounts">
         <div class="topic-header">
-          <div class="topic-icon">📊</div>
+          <div class="topic-icon"><i data-lucide="bar-chart"></i></div>
           <div class="topic-content">
             <b>Final Accounts (Intro)</b>
             <small>Trading, P&amp;L, Balance Sheet basics.</small>
@@ -1757,6 +1770,12 @@
   <footer>
     © <span id="year"></span> AccountsWizard • Made for Grade 11 learners • Trinno Asphalt • <a href="about.html">About</a>
   </footer>
+
+  <script type="module">
+    import { createIcons, icons } from "https://unpkg.com/lucide@latest/dist/esm/lucide.js";
+    createIcons({ icons });
+  </script>
+
 
   <!-- Firebase SDK -->
   <script type="module">
