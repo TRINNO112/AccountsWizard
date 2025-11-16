@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts Wizard - Official Software Licensing Agreement</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&family=Great+Vibes&family=Allura&family=EB+Garamond:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'EB Garamond', serif;
+            line-height: 1.9;
+            color: #1a1a1a;
+            background: #f5f5f0;
+            padding: 0;
+        }
+        
+        .document-container {
+            max-width: 210mm;
+            margin: 20px auto;
+            padding: 25mm;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            border: 1px solid #d4d4d4;
+        }
+        
+        .document-header {
+            text-align: center;
+            border-bottom: 4px double #000;
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .document-title {
+            font-family: 'Tangerine', cursive;
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #2c2c2c;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .document-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            margin: 15px 0;
+            color: #444;
+        }
+        
+        .document-date {
+            font-size: 15px;
+            margin-top: 20px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .preamble {
+            font-family: 'Tangerine', cursive;
+            font-size: 28px;
+            text-align: center;
+            margin: 30px 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            font-family: 'Allura', cursive;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+        
+        .subsection-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 25px 0 15px 0;
+            text-decoration: underline;
+        }
+        
+        .article {
+            margin-bottom: 25px;
+        }
+        
+        .article-number {
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 10px;
+            color: #2c2c2c;
+        }
+        
+        .article-content {
+            text-align: justify;
+            font-size: 16px;
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        .plan-box {
+            border: 3px solid #000;
+            padding: 25px;
+            margin: 30px 0;
+            background: #fafaf8;
+            page-break-inside: avoid;
+        }
+        
+        .plan-name {
+            font-family: 'Tangerine', cursive;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+        }
+        
+        .plan-price {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #d4af37;
+        }
+        
+        .plan-description {
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        
+        .feature-list {
+            margin: 20px 0;
+            padding-left: 35px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .feature-header {
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 17px;
+            text-decoration: underline;
+        }
+        
+        .signature-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid #000;
+            page-break-inside: avoid;
+        }
+        
+        .signature-block {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        
+        .signature-line {
+            width: 48%;
+        }
+        
+        .signature-canvas-wrapper {
+            border: 2px solid #000;
+            background: #fff;
+            margin-bottom: 10px;
+            position: relative;
+            height: 120px;
+        }
+        
+        .signature-canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        
+        .signature-label {
+            border-top: 2px solid #000;
+            padding-top: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .signature-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .signature-controls button {
+            padding: 8px 15px;
+            background: #2c2c2c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'EB Garamond', serif;
+            font-size: 14px;
+        }
+        
+        .signature-controls button:hover {
+            background: #444;
+        }
+        
+        .footer-note {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 13px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: #2c2c2c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'EB Garamond', serif;
+            font-size: 18px;
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #444;
+        }
+        
+        @media print {
+            .print-button {
+                display: none;
+            }
+            
+            .signature-controls {
+                display: none;
+            }
+            
+            .document-container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 15mm;
+                margin: 0;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+        
+        .ornament {
+            text-align: center;
+            font-size: 24px;
+            margin: 25px 0;
+            color: #888;
+        }
+
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .feature-table th,
+        .feature-table td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .feature-table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        .note-box {
+            background: #fff9e6;
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    
+    <div class="document-container">
+        
+        <!-- Document Header -->
+        <div class="document-header">
+            <div class="document-title">
+                Software Licensing Agreement
+            </div>
+            <div class="document-subtitle">
+                Accounts Wizard - Commerce Day Exclusive
+            </div>
+            <div class="ornament">⚘</div>
+            <div class="document-date">
+                Effective Date: November 16, 2025
+            </div>
+        </div>
+        
+        <!-- Preamble -->
+        <div class="preamble">
+            We the Creators of this Educational Platform, in Order to form a more perfect Learning Experience,
+            establish Justice in Pricing, ensure domestic Tranquility in Knowledge Transfer,
+            provide for the common Understanding of Accounting Principles, promote the general Welfare of Students,
+            and secure the Blessings of Technology to ourselves and our Posterity,
+            do ordain and establish this Software Licensing Agreement.
+        </div>
+        
+        <!-- Article I: Definitions -->
+        <div class="section">
+            <h2 class="section-title">Article I: Comprehensive Definitions</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 1.1 — Parties to This Agreement</p>
+                <p class="article-content">
+                    <strong>"Licensor"</strong> refers to Trinno Asphalt and associated development team, the original creators, designers, and maintainers of the Accounts Wizard platform. <strong>"Licensee"</strong> refers to any individual, educational institution, corporate entity, or organization acquiring usage rights under any of the designated licensing plans herein described.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 1.2 — The Software Platform</p>
+                <p class="article-content">
+                    <strong>"Accounts Wizard Platform"</strong> (hereinafter "the Platform") encompasses the complete web-based educational software system including but not limited to: interactive lesson pages covering 12+ DK Goel chapters (Lessons 1, 2, 4, 6-14), 500+ practice exercises, 20 MCQs per chapter, AI-powered learning assistant, quiz game modes (GuessTheAccount with Classic/Time Attack/Sudden Death/Boss Rush modes, RapidFire, Scenario-Based quizzes, True/False rounds, Ledger Game), Firebase Firestore database infrastructure, real-time progress tracking system, user authentication system, admin dashboard with comprehensive analytics, mobile-responsive design implementations, all associated animations, infographics, charts, visual aids, and any future updates or additions to said system.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 1.3 — Source Code Components</p>
+                <p class="article-content">
+                    <strong>"Source Code"</strong> refers to all human-readable programming instructions including HTML5 markup (7,000+ lines), CSS3 stylesheets with media queries, JavaScript ES6+ logic, Firebase configuration files, backend cloud functions, database security rules, API integrations, and all associated documentation, comments, and development files used to construct and operate the Platform.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 1.4 — Database and Cloud Services</p>
+                <p class="article-content">
+                    <strong>"Firebase Infrastructure"</strong> includes Firestore NoSQL database collections (users, user-progress, quiz-progress, overall-progress), Firebase Authentication service, Cloud Storage, Analytics dashboard, and all real-time synchronization mechanisms that power cross-device functionality and data persistence.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Article II: Platform Features & Capabilities -->
+        <div class="section">
+            <h2 class="section-title">Article II: Platform Features & Technical Capabilities</h2>
+            
+            <p class="article-content" style="margin-left: 0; margin-bottom: 25px;">
+                This section enumerates the comprehensive feature set provided by Accounts Wizard, which all licensing plans provide access to in varying degrees of technical control.
+            </p>
+
+            <h3 class="subsection-title">Educational Content Infrastructure</h3>
+            
+            <div class="article">
+                <p class="article-number">Section 2.1 — Interactive Lesson System</p>
+                <p class="article-content">
+                    The Platform provides 12 comprehensive chapters aligned with DK Goel Grade 11 syllabus (excluding Chapters 3 and 5), featuring: animated explanations with visual storytelling, infographics and comparison charts for complex concepts, step-by-step practical questions with detailed solutions, topic snippets on main index for quick preview, search functionality for rapid lesson discovery, and simple English explanations designed for Indian commerce students.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 2.2 — Assessment & Quiz Ecosystem</p>
+                <p class="article-content">
+                    Each chapter contains 20 carefully crafted MCQs with instant feedback mechanisms. The Main Quiz Hub aggregates questions across all chapters for comprehensive testing. Specialized quiz modes include: <strong>GuessTheAccount</strong> (retro pixel-art themed with 4 difficulty modes), <strong>RapidFire</strong> (90s arcade-style speed challenges), <strong>Scenario-Based</strong> (cyberpunk-themed situational problems), <strong>True/False Rounds</strong> (neon UI quick revision), and <strong>Ledger Game</strong> (interactive drag-and-drop posting simulation).
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 2.3 — AI Learning Assistant</p>
+                <p class="article-content">
+                    A simulated AI assistant (utilizing predefined logic and stored accounting knowledge base) provides real-time help with: concept clarification, journal entry generation, term definitions, and interactive problem-solving guidance. This feature operates through natural language processing simulation and accounting rule engines.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 2.4 — Progress Tracking & Analytics</p>
+                <p class="article-content">
+                    Real-time Firebase-powered progress system automatically saves: best scores per lesson, quiz attempt history, topic-wise performance graphs, overall completion percentages, and detailed answer analysis. Data synchronizes across all devices instantaneously with 99.99% uptime guarantee.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 2.5 — Administrative Control Panel</p>
+                <p class="article-content">
+                    The admin dashboard provides authorized educators with: user overview statistics, lesson breakdown analytics, quiz performance trends, individual student progress monitoring, aggregate class performance metrics, and data export capabilities. Access restricted to Zenith Plan holders and approved educational institutions.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 2.6 — Mobile Responsiveness</p>
+                <p class="article-content">
+                    The Platform has been extensively optimized for mobile devices through 47+ CSS media queries, touch-friendly interfaces, hamburger navigation menus, optimized image loading, and viewport-specific layouts ensuring seamless experience across desktop (1200px+), tablet (768px-1199px), and mobile (320px-767px) screen sizes.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Article III: Licensing Plans -->
+        <div class="section">
+            <h2 class="section-title">Article III: Licensing Tiers & Permissions</h2>
+            
+            <p class="article-content" style="margin-left: 0; margin-bottom: 25px;">
+                The Licensor offers three distinct licensing structures, each conferring specific usage rights, technical access levels, and modification permissions as detailed below.
+            </p>
+            
+            <!-- Auris Plan -->
+            <div class="plan-box">
+                <div class="plan-name">Auris Plan</div>
+                <div class="plan-price">₹1,500 per annum</div>
+                <div class="plan-description">
+                    Entry-level access for individual learners, students, and casual users seeking complete educational functionality without technical modification capabilities.
+                </div>
+                
+                <div class="feature-header">Rights & Privileges Granted:</div>
+                <ul class="feature-list">
+                    <li>✔ Complete and unrestricted access to all 12 lesson chapters with full content visibility</li>
+                    <li>✔ Unlimited attempts on all 500+ practice exercises and MCQ assessments</li>
+                    <li>✔ Full access to AI Learning Assistant for concept clarification and problem-solving</li>
+                    <li>✔ Access to all quiz game modes (GuessTheAccount, RapidFire, Scenario-Based, True/False, Ledger Game)</li>
+                    <li>✔ Real-time progress tracking with automatic cloud synchronization via Firebase</li>
+                    <li>✔ Right to request up to five (5) new lessons or content additions per calendar month</li>
+                    <li>✔ Personalized quiz challenges based on performance analytics</li>
+                    <li>✔ Hosted platform access for duration of twelve (12) months from activation date</li>
+                    <li>✔ Regular performance optimizations and user interface enhancements</li>
+                    <li>✔ Basic technical support via email with 48-hour response time</li>
+                    <li>✔ Cross-device synchronization across unlimited number of personal devices</li>
+                    <li>✔ Mobile-optimized interface with full touch support</li>
+                </ul>
+                
+                <div class="feature-header">Limitations & Restrictions:</div>
+                <ul class="feature-list">
+                    <li>✘ No access to HTML, CSS, or JavaScript source code in any form</li>
+                    <li>✘ Prohibited from modifying user interface, layouts, or visual design elements</li>
+                    <li>✘ No access to Firebase Analytics dashboard or usage statistics</li>
+                    <li>✘ No access to admin control panel or user management systems</li>
+                    <li>✘ No white-labeling, branding customization, or institutional licensing rights</li>
+                    <li>✘ No database visibility, direct Firestore access, or data export capabilities</li>
+                    <li>✘ Cannot host Platform on custom domains or independent servers</li>
+                    <li>✘ Backend infrastructure and server logic remain entirely proprietary</li>
+                </ul>
+            </div>
+            
+            <!-- Kaizen Plan -->
+            <div class="plan-box">
+                <div class="plan-name">Kaizen Plan</div>
+                <div class="plan-price">₹2,000 per annum</div>
+                <div class="plan-description">
+                    Contributor-level access designed for developers, educational institutions, coaching centers, and collaborative partners requiring creative control over user interface while maintaining backend integrity.
+                </div>
+                
+                <div class="feature-header">Rights & Privileges Granted:</div>
+                <ul class="feature-list">
+                    <li>✔ All rights, privileges, and access levels included in Auris Plan</li>
+                    <li>✔ Partial source code access limited to frontend components (HTML, CSS, vanilla JavaScript)</li>
+                    <li>✔ Authorization to redesign and modify user interface layouts and visual aesthetics</li>
+                    <li>✔ Permission to add custom branded sections, institutional logos, or organizational labels</li>
+                    <li>✔ Read-only access to Firebase Analytics dashboard for usage insights and performance metrics</li>
+                    <li>✔ Ability to customize color schemes, typography, and visual themes</li>
+                    <li>✔ Access to CSS media queries for additional responsive design modifications</li>
+                    <li>✔ Priority collaboration support with 24-hour response time via email and scheduled video calls</li>
+                    <li>✔ Monthly consultation sessions for feature requests and customization guidance</li>
+                    <li>✔ Permission to integrate Platform within institutional learning management systems (LMS)</li>
+                    <li>✔ Rights to create custom landing pages and promotional materials using Platform branding</li>
+                    <li>✔ Access to design documentation and UI/UX guidelines</li>
+                </ul>
+                
+                <div class="feature-header">Limitations & Restrictions:</div>
+                <ul class="feature-list">
+                    <li>✘ Backend source code, Firebase cloud functions, and server logic remain proprietary and inaccessible</li>
+                    <li>✘ No database export functionality or direct Firestore collection manipulation</li>
+                    <li>✘ Prohibited from modifying quiz logic, scoring algorithms, or AI assistant behavior</li>
+                    <li>✘ Cannot alter authentication mechanisms or user account management systems</li>
+                    <li>✘ No licensing rights for commercial redistribution or resale to third parties</li>
+                    <li>✘ Cannot create derivative works for competitive platforms or services</li>
+                    <li>✘ Admin control panel access restricted; cannot view other users' private data</li>
+                    <li>✘ Modifications must maintain Platform integrity and not violate original design principles</li>
+                </ul>
+            </div>
+            
+            <!-- Zenith Plan -->
+            <div class="plan-box">
+                <div class="plan-name">Zenith Plan</div>
+                <div class="plan-price">₹10,000 (One-Time Purchase)</div>
+                <div class="plan-description">
+                    Complete ownership license conferring full technical control, source code access, database ownership, and institutional branding rights. Ideal for universities, major coaching institutions, independent developers, and organizations requiring absolute autonomy.
+                </div>
+                
+                <div class="feature-header">Rights & Privileges Granted:</div>
+                <ul class="feature-list">
+                    <li>✔ Complete source code access encompassing frontend (HTML/CSS/JavaScript) and backend (Firebase configuration, cloud functions, security rules)</li>
+                    <li>✔ Comprehensive Firebase database export with full data ownership and portability</li>
+                    <li>✔ Unlimited customization, modification, enhancement, and feature addition rights</li>
+                    <li>✔ Full licensing rights permitting use under Licensee's name, institution, or corporate brand</li>
+                    <li>✔ White-labeling capabilities with complete removal of original branding if desired</li>
+                    <li>✔ Permission to host Platform on custom domains and independent server infrastructure</li>
+                    <li>✔ Rights to create derivative works, extended versions, or platform integrations</li>
+                    <li>✔ Access to complete admin control panel with full user management capabilities</li>
+                    <li>✔ Firebase project ownership transfer with independent billing and management</li>
+                    <li>✔ Personal onboarding assistance including platform architecture walkthrough</li>
+                    <li>✔ Initial setup consultation and deployment guidance for custom hosting environments</li>
+                    <li>✔ Two (2) years of continued maintenance, bug fixes, and security updates</li>
+                    <li>✔ Priority support with 12-hour response guarantee via email, chat, and video consultation</li>
+                    <li>✔ Access to future Platform updates and feature releases during maintenance period</li>
+                    <li>✔ Documentation package including system architecture, database schemas, and API references</li>
+                    <li>✔ Rights to monetize, resell, or sublicense Platform under Licensee's terms (with attribution)</li>
+                </ul>
+                
+                <div class="feature-header">Limitations & Restrictions:</div>
+                <ul class="feature-list">
+                    <li>✘ Ownership transfer of original intellectual property rights subject to written approval by Licensor</li>
+                    <li>✘ No annual renewal features; maintenance and support valid for two (2) years only</li>
+                    <li>✘ Extended support beyond initial period available via separate service agreement</li>
+                    <li>✘ Licensor retains rights to original codebase for portfolio and demonstration purposes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Article IV: Payment & Financial Terms -->
+        <div class="section">
+            <h2 class="section-title">Article IV: Payment Terms & Financial Obligations</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 4.1 — Payment Methods & Processing</p>
+                <p class="article-content">
+                    All payments must be rendered in full via approved methods (UPI, Bank Transfer, or Digital Payment Gateway) prior to license activation. Payment confirmation triggers immediate provisioning of access credentials and platform permissions within 24 hours of transaction verification.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 4.2 — Annual Plan Renewals</p>
+                <p class="article-content">
+                    Auris and Kaizen Plans operate on annual subscription basis requiring renewal at conclusion of each twelve-month period. Licensor shall provide renewal notice thirty (30) days prior to expiration. Failure to renew results in automatic access termination without data deletion for grace period of ninety (90) days.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 4.3 — Zenith Plan One-Time Structure</p>
+                <p class="article-content">
+                    The Zenith Plan constitutes a single, non-recurring purchase conferring perpetual licensing rights. No annual renewals required. Maintenance and support services included for two (2) years from purchase date, after which extended support available via separate service agreement at prevailing rates.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 4.4 — Pricing Modifications</p>
+                <p class="article-content">
+                    Licensor reserves right to modify pricing structures with sixty (60) days advance notice. Existing Licensees grandfathered at current rates for duration of active license period. Price changes apply only to new subscriptions or renewal cycles beginning after notice period.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 4.5 — Refund Policy</p>
+                <p class="article-content">
+                    Full refunds available within seven (7) calendar days of initial purchase provided: (a) no substantial Platform usage has occurred (defined as fewer than 5 lesson completions), (b) no source code disclosure has occurred (Kaizen/Zenith Plans), and (c) no database exports performed (Zenith Plan). After stipulated period or upon code/data disclosure, all sales become final and non-refundable. Refund processing completed within 14 business days of approval.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article V: Technical Terms & Conditions -->
+        <div class="section">
+            <h2 class="section-title">Article V: Technical Usage & Compliance</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 5.1 — Intellectual Property Rights</p>
+                <p class="article-content">
+                    Unless explicitly transferred under Zenith Plan with written approval, all intellectual property rights including copyrights, trademarks, trade secrets, proprietary algorithms, and original creative works remain exclusive property of Licensor. Licensing plans grant usage rights only, not ownership of underlying intellectual property except as specifically enumerated.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 5.2 — Prohibited Activities</p>
+                <p class="article-content">
+                    Licensees shall not engage in: (a) reverse engineering of backend systems (except where explicitly authorized), (b) unauthorized redistribution or sublicensing to third parties, (c) removal of copyright notices or attribution (except Zenith Plan white-labeling), (d) creation of competing platforms using proprietary methods, (e) data scraping or automated harvesting beyond normal use, (f) circumvention of access controls or security measures, (g) activities violating applicable laws or regulations. Material breach may result in immediate license termination without refund.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 5.3 — Data Privacy & Security Compliance</p>
+                <p class="article-content">
+                    Licensor maintains industry-standard security measures aligned with Firebase security best practices. User authentication implemented via secure OAuth 2.0 protocols. Data transmission encrypted using TLS 1.3. Firestore security rules prevent unauthorized access. Licensees responsible for compliance with applicable data protection regulations (GDPR, CCPA, Indian IT Act 2000) when handling user information accessed through Platform. For Zenith Plan holders assuming database ownership, all regulatory compliance obligations transfer to Licensee.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 5.4 — Technical Support & Maintenance</p>
+                <p class="article-content">
+                    Support levels vary by plan: Auris (48-hour email response), Kaizen (24-hour priority response plus monthly consultations), Zenith (12-hour guaranteed response with video support). Maintenance includes bug fixes, security patches, and compatibility updates. Feature requests considered based on Platform roadmap and technical feasibility. Emergency support for critical security issues provided within 6 hours regardless of plan tier.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 5.5 — Platform Availability & Uptime</p>
+                <p class="article-content">
+                    Licensor commits to 99.5% uptime for hosted Platform services (Auris/Kaizen Plans). Scheduled maintenance windows announced 72 hours in advance. Unscheduled downtime credited proportionally to subscription period. For Zenith Plan self-hosted deployments, uptime responsibility transfers to Licensee infrastructure.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 5.6 — Updates & Version Management</p>
+                <p class="article-content">
+                    Licensor reserves right to update Platform features, add content, or modify interfaces with reasonable notice. Major updates (UI overhauls, feature additions) announced 30 days in advance. Security updates applied immediately. Auris/Kaizen Plans receive updates automatically. Zenith Plan holders receive update packages with optional deployment at their discretion.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 5.7 — Content Accuracy & Educational Disclaimer</p>
+                <p class="article-content">
+                    While Platform content aligns with DK Goel Grade 11 syllabus and follows established accounting principles, Licensor makes no warranty regarding absolute accuracy or suitability for specific examination boards. Content provided for educational purposes only. Licensees responsible for verifying alignment with their specific curriculum requirements. AI Assistant responses are simulated and should not replace professional accounting advice.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 5.8 — User Conduct & Acceptable Use</p>
+                <p class="article-content">
+                    Licensees agree to: (a) maintain confidentiality of access credentials, (b) not share accounts with unauthorized users, (c) use Platform for lawful educational purposes only, (d) not attempt to disrupt Platform operations or access other users' data, (e) respect intellectual property of educational content, (f) not use Platform to violate academic integrity policies. Violations may result in account suspension or termination.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article VI: Liability & Warranties -->
+        <div class="section">
+            <h2 class="section-title">Article VI: Warranties, Liability & Indemnification</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 6.1 — Limited Warranty</p>
+                <p class="article-content">
+                    Licensor warrants that Platform will perform substantially in accordance with documentation provided. Licensor warrants possession of necessary rights to grant licenses herein. Licensor warrants that Platform does not knowingly infringe third-party intellectual property rights. These warranties valid for ninety (90) days from license activation.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 6.2 — Disclaimer of Warranties</p>
+                <p class="article-content">
+                    Except as expressly stated in Section 6.1, Platform provided "AS IS" and "AS AVAILABLE" without warranties of any kind, express or implied, including but not limited to: merchantability, fitness for particular purpose, non-infringement, accuracy of content, uninterrupted operation, or error-free performance. Licensor does not warrant that Platform will meet Licensee's specific requirements or achieve particular educational outcomes.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 6.3 — Limitation of Liability</p>
+                <p class="article-content">
+                    In no event shall Licensor be liable for any indirect, incidental, consequential, special, exemplary, or punitive damages arising from Platform usage, including but not limited to: loss of data, loss of revenue, loss of business opportunities, examination failures, time invested, or reputational harm. Licensor's total aggregate liability under this Agreement limited to amount paid by Licensee in twelve (12) months preceding claim.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 6.4 — Indemnification by Licensee</p>
+                <p class="article-content">
+                    Licensee agrees to indemnify, defend, and hold harmless Licensor from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising from: (a) Licensee's breach of this Agreement, (b) Licensee's violation of applicable laws, (c) Licensee's modification or distribution of Platform in violation of license terms, (d) claims by third parties resulting from Licensee's use of Platform.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 6.5 — Force Majeure</p>
+                <p class="article-content">
+                    Neither party liable for failure to perform obligations due to circumstances beyond reasonable control including: natural disasters, acts of war, government actions, internet service provider failures, Firebase/Google Cloud outages, pandemics, or other force majeure events. Affected party shall notify other party within 48 hours and make reasonable efforts to resume performance.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article VII: Termination Conditions -->
+        <div class="section">
+            <h2 class="section-title">Article VII: Termination & Suspension</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 7.1 — Termination by Licensor</p>
+                <p class="article-content">
+                    Licensor may terminate license immediately upon: (a) material breach of Agreement terms, (b) non-payment of renewal fees beyond 15-day grace period, (c) fraudulent activity or misrepresentation, (d) unauthorized redistribution or commercial exploitation, (e) repeated violations of acceptable use policies. Notice of termination provided via email with explanation of cause.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 7.2 — Termination by Licensee</p>
+                <p class="article-content">
+                    Annual licenses (Auris/Kaizen) may be terminated by Licensee with thirty (30) days written notice. No refund for partial subscription periods. Data export requests honored within 14 days of termination notice subject to plan limitations. Zenith Plan licenses perpetual and non-terminable except by mutual written agreement or material breach by Licensor.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 7.3 — Effects of Termination</p>
+                <p class="article-content">
+                    Upon termination: (a) Platform access revoked immediately, (b) Licensee ceases all use of Platform and source code, (c) Licensee returns or destroys confidential materials (except Zenith Plan owners), (d) user data retained for 90 days then permanently deleted (unless data ownership transferred under Zenith Plan), (e) payment obligations for completed subscription periods remain due, (f) provisions surviving termination include confidentiality, intellectual property, limitation of liability, and governing law clauses.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 7.4 — Suspension for Non-Payment</p>
+                <p class="article-content">
+                    For annual plans, non-payment of renewal fees results in: Day 1-15 (grace period with full access), Day 16-30 (read-only access with renewal prompts), Day 31+ (complete suspension with 90-day data retention). Account reactivation possible upon payment of outstanding fees plus ₹500 reactivation charge.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article VIII: Database & Firebase Specifics -->
+        <div class="section">
+            <h2 class="section-title">Article VIII: Firebase Infrastructure & Data Management</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 8.1 — Database Architecture</p>
+                <p class="article-content">
+                    Platform utilizes Firebase Firestore NoSQL database with four primary collections: (a) <strong>users</strong> collection storing authentication data and profile information, (b) <strong>user-progress</strong> collection tracking individual lesson attempts and scores, (c) <strong>quiz-progress</strong> collection containing detailed quiz results and answer history, (d) <strong>overall-progress</strong> collection aggregating combined statistics. Each document identified by unique user ID with real-time synchronization across devices.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 8.2 — Data Ownership & Access Rights</p>
+                <p class="article-content">
+                    <strong>Auris Plan:</strong> User owns personal progress data but cannot directly access or export from Firestore. Data visible only through Platform interface. <strong>Kaizen Plan:</strong> Read-only Firebase Analytics access for usage insights; no direct database manipulation. <strong>Zenith Plan:</strong> Complete database ownership transfer with full Firestore export in JSON format, Firebase project credentials, and security rule configurations.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 8.3 — Security Rules & Authentication</p>
+                <p class="article-content">
+                    Firestore security rules enforce user-based authentication ensuring each user can only read/write their own data. Rules prevent cross-user data access and unauthorized modifications. Authentication implemented via Firebase Auth with support for email/password, Google Sign-In, and OAuth providers. Security rules documentation provided with Zenith Plan for custom deployment.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 8.4 — Data Backup & Recovery</p>
+                <p class="article-content">
+                    For hosted plans (Auris/Kaizen), Licensor maintains daily automated backups with 30-day retention. Point-in-time recovery available for catastrophic failures. For self-hosted Zenith deployments, backup responsibility transfers to Licensee. Licensor provides backup configuration scripts and best practices documentation.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 8.5 — Data Portability & Export</p>
+                <p class="article-content">
+                    Auris Plan users may request progress report export in PDF format upon account closure. Kaizen Plan users receive CSV export of personal analytics data. Zenith Plan includes complete Firestore database dump in JSON format with all collections, documents, and metadata preserving hierarchical structure.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article IX: Admin System Access -->
+        <div class="section">
+            <h2 class="section-title">Article IX: Administrative Dashboard & Analytics</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 9.1 — Admin Panel Capabilities</p>
+                <p class="article-content">
+                    The Administrative Dashboard provides comprehensive oversight including: user overview with names/emails/progress statistics, lesson breakdown showing per-chapter performance metrics, quiz analysis with correct/incorrect/skipped response patterns, performance trend graphs tracking improvement over time, aggregate class statistics for institutional users, and data export functionality for reporting purposes.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 9.2 — Access Authorization</p>
+                <p class="article-content">
+                    Admin Dashboard access restricted to: (a) Licensor (full administrative privileges), (b) Zenith Plan holders with institutional deployment (configurable role-based access), (c) approved educational institutions under special arrangement. Access granted only after signing supplementary Data Processing Agreement ensuring compliance with privacy regulations.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 9.3 — Privacy & Ethical Use</p>
+                <p class="article-content">
+                    Admin panel users agree to: respect student privacy, use data solely for educational improvement purposes, not share individual performance data publicly without consent, implement institutional policies governing data access, and report any unauthorized access attempts. Misuse of admin privileges grounds for immediate access revocation and potential legal action.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 9.4 — Data Retention in Admin Systems</p>
+                <p class="article-content">
+                    Admin analytics retain historical data for 24 months to enable longitudinal studies and performance tracking. After 24 months, data aggregated and anonymized. Individual identifiable records deleted per retention policy unless institution has documented educational research exemption.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article X: Mobile Optimization & Responsive Design -->
+        <div class="section">
+            <h2 class="section-title">Article X: Technical Implementation & Device Support</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 10.1 — Responsive Design Commitment</p>
+                <p class="article-content">
+                    Platform extensively optimized for mobile devices through 47+ CSS media queries addressing viewport sizes from 320px (small phones) to 1920px+ (large desktop monitors). Implementation includes: hamburger navigation menus, touch-friendly button sizing (minimum 44x44px), optimized image loading with lazy-loading, viewport-specific typography scaling, and extensive testing across 15+ device profiles.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 10.2 — Browser Compatibility</p>
+                <p class="article-content">
+                    Platform supports modern browsers including: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+, and mobile browsers (Chrome Mobile, Safari iOS, Samsung Internet). Internet Explorer not supported. Licensees responsible for ensuring users employ compatible browsers for optimal experience.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 10.3 — Performance Standards</p>
+                <p class="article-content">
+                    Platform optimized for: initial page load under 3 seconds on 4G connections, interactive response time under 100ms, Firebase real-time sync latency under 200ms, and score of 85+ on Google Lighthouse performance audit. Kaizen/Zenith Plan holders may further optimize for specific deployment environments.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article XI: General Legal Provisions -->
+        <div class="section">
+            <h2 class="section-title">Article XI: General Legal Provisions</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 11.1 — Governing Law & Jurisdiction</p>
+                <p class="article-content">
+                    This Agreement governed by and construed in accordance with laws of India. Any disputes, controversies, or claims arising hereunder subject to exclusive jurisdiction of courts located in Ahmedabad, Gujarat, India. Both parties submit to personal jurisdiction of said courts and waive objections based on inconvenient forum.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 11.2 — Dispute Resolution</p>
+                <p class="article-content">
+                    Prior to litigation, parties agree to attempt good faith negotiation for thirty (30) days. If unresolved, disputes proceed to binding arbitration under Indian Arbitration and Conciliation Act, 1996. Arbitration conducted in English language in Ahmedabad by single arbitrator mutually agreed upon. Arbitration costs split equally unless arbitrator determines otherwise.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.3 — Entire Agreement</p>
+                <p class="article-content">
+                    This document constitutes entire agreement between parties and supersedes all prior negotiations, representations, understandings, and agreements whether written or oral. No modification valid unless executed in writing and signed by both parties. Email confirmations with digital signatures considered valid written modifications.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.4 — Severability</p>
+                <p class="article-content">
+                    If any provision of this Agreement deemed invalid, illegal, or unenforceable by competent authority, such provision shall be modified to minimum extent necessary to make it valid and enforceable while preserving original intent. Remaining provisions remain in full force and effect.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.5 — Waiver</p>
+                <p class="article-content">
+                    Failure by either party to enforce any provision shall not constitute waiver of right to enforce same or other provisions in future. All waivers must be in writing and signed by party granting waiver.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.6 — Assignment</p>
+                <p class="article-content">
+                    Licensee may not assign, transfer, or sublicense rights under this Agreement without prior written consent of Licensor. Licensor may assign Agreement to successor entity in event of merger, acquisition, or sale of assets. Agreement binds and benefits parties and their permitted successors and assigns.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.7 — Notices</p>
+                <p class="article-content">
+                    All notices, requests, and communications under this Agreement shall be in writing and delivered via: (a) email to address provided during registration (deemed received 24 hours after sending), (b) registered post to physical address if provided (deemed received 5 business days after posting), or (c) personal delivery (deemed received upon delivery).
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.8 — Confidentiality</p>
+                <p class="article-content">
+                    Both parties agree to maintain confidentiality of non-public information disclosed during Agreement term. Confidential information includes: source code (for plans with code access), Firebase credentials, business strategies, user data, and proprietary methodologies. Obligation survives Agreement termination for five (5) years. Exceptions: information already public, independently developed, or required by law to disclose.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.9 — Publicity & Attribution</p>
+                <p class="article-content">
+                    Licensor may list Licensee as customer/user in marketing materials unless Licensee objects in writing. Licensee may reference use of Platform in internal documentation. Zenith Plan holders may remove Platform branding but must retain copyright attribution in source code comments: "Originally developed by Trinno Asphalt / Accounts Wizard Project."
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 11.10 — Survival</p>
+                <p class="article-content">
+                    Following provisions survive Agreement termination: intellectual property rights, confidentiality obligations, limitation of liability, indemnification, governing law, dispute resolution, and any payment obligations accrued prior to termination.
+                </p>
+            </div>
+        </div>
+
+        <!-- Article XII: Special Commerce Day Provisions -->
+        <div class="section">
+            <h2 class="section-title">Article XII: Commerce Day Exclusive Terms</h2>
+            
+            <div class="article">
+                <p class="article-number">Section 12.1 — Limited Time Offer</p>
+                <p class="article-content">
+                    This Software Licensing Agreement offered under special "Commerce Day Exclusive" promotion valid for limited duration. Pricing and terms herein guaranteed only for purchases completed during promotional period. Licensor reserves right to modify pricing, features, or discontinue certain plan tiers after promotional period concludes.
+                </p>
+            </div>
+            
+            <div class="article">
+                <p class="article-number">Section 12.2 — Promotional Pricing Lock-In</p>
+                <p class="article-content">
+                    Licensees acquiring plans during Commerce Day promotion locked into promotional pricing for initial license term (1 year for annual plans, perpetual for Zenith Plan). Renewal rates may adjust to standard pricing. Early adopters receive grandfather clause protecting against price increases exceeding 25% at first renewal.
+                </p>
+            </div>
+
+            <div class="article">
+                <p class="article-number">Section 12.3 — Special Acknowledgment</p>
+                <p class="article-content">
+                    This Platform represents culmination of extensive development effort including 7,000+ lines of HTML code, 3,004 lines of CSS (including 47 media queries), comprehensive JavaScript implementations, Firebase integration, mobile optimization, and creation of interactive educational content. Licensee acknowledges receiving exceptional value and commits to using Platform for intended educational purposes with appreciation for development effort invested.
+                </p>
+            </div>
+        </div>
+
+        <div class="ornament">⚘ ⚘ ⚘</div>
+
+        <!-- Article XIII: Acceptance & Execution -->
+        <div class="section">
+            <h2 class="section-title">Article XIII: Acceptance & Legal Binding</h2>
+            
+            <p class="article-content" style="margin-left: 0;">
+                By selecting any of the aforementioned licensing plans, completing the payment process, and executing this Agreement through digital or physical signature below, the Licensee acknowledges having read, understood, and voluntarily agreed to all terms, conditions, rights, obligations, and limitations set forth in this comprehensive Software Licensing Agreement.
+            </p>
+
+            <p class="article-content" style="margin-left: 0; margin-top: 20px;">
+                This Agreement constitutes a legally binding contract between Licensor and Licensee, enforceable under Indian law, and represents the complete understanding between parties regarding subject matter hereof.
+            </p>
+        </div>
+        
+        <!-- Signature Section with Canvas -->
+        <div class="signature-section">
+            <h3 style="text-align: center; font-family: 'Allura', cursive; font-size: 28px; margin-bottom: 30px;">
+                Signatures of Agreement
+            </h3>
+
+            <div class="note-box">
+                <strong>Instructions:</strong> You can either:
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Draw your signature using mouse/touchpad in the boxes below</li>
+                    <li>Or print this document and sign physically with pen</li>
+                    <li>Use "Clear" button to reset signature if needed</li>
+                </ul>
+            </div>
+
+            <div class="signature-block">
+                <div class="signature-line">
+                    <div class="signature-canvas-wrapper">
+                        <canvas class="signature-canvas" id="licensorCanvas"></canvas>
+                    </div>
+                    <div class="signature-controls">
+                        <button onclick="clearSignature('licensorCanvas')">Clear</button>
+                    </div>
+                    <div class="signature-label">
+                        <strong>Licensor:</strong> Trinno Asphalt<br>
+                        Accounts Wizard Platform<br>
+                        Date: _________________
+                    </div>
+                </div>
+
+                <div class="signature-line">
+                    <div class="signature-canvas-wrapper">
+                        <canvas class="signature-canvas" id="licenseeCanvas"></canvas>
+                    </div>
+                    <div class="signature-controls">
+                        <button onclick="clearSignature('licenseeCanvas')">Clear</button>
+                    </div>
+                    <div class="signature-label">
+                        <strong>Licensee:</strong> _________________<br>
+                        Plan Selected: _________________<br>
+                        Date: _________________
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-note">
+            This Software Licensing Agreement executed on the date written above constitutes the complete and exclusive statement of the agreement between the parties. It supersedes all proposals, oral or written, and all other communications relating to the subject matter of this Agreement.
+        </div>
+
+        <div class="footer-note" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;">
+            <strong>Document Reference:</strong> AW-SLA-2025-CD<br>
+            <strong>Version:</strong> 1.0 (Commerce Day Exclusive)<br>
+            <strong>Pages:</strong> Complete Legal Agreement<br>
+            <strong>Jurisdiction:</strong> Ahmedabad, Gujarat, India
+        </div>
+        
+    </div>
+
+    <script>
+        // Signature Canvas Implementation
+        const canvases = {
+            licensorCanvas: null,
+            licenseeCanvas: null
+        };
+
+        function initializeSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            // Drawing settings
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Mouse events
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', handleTouchStart);
+            canvas.addEventListener('touchmove', handleTouchMove);
+            canvas.addEventListener('touchend', stopDrawing);
+
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            function stopDrawing() {
+                isDrawing = false;
+            }
+
+            function handleTouchStart(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                lastX = touch.clientX - rect.left;
+                lastY = touch.clientY - rect.top;
+                isDrawing = true;
+            }
+
+            function handleTouchMove(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                [lastX, lastY] = [x, y];
+            }
+
+            canvases[canvasId] = ctx;
+        }
+
+        function clearSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvases[canvasId];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Initialize both canvases on page load
+        window.addEventListener('load', () => {
+            initializeSignature('licensorCanvas');
+            initializeSignature('licenseeCanvas');
+        });
+    </script>
+</body>
+</html>
