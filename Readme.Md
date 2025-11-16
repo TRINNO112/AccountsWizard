@@ -1,4 +1,4 @@
-AccountsPro/
+AccountsWizard/
 │
 ├── index.html           → Homepage (Hero, intro, navigation to lessons)
 ├── lessons.html         → Accounting lessons page

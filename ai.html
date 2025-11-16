@@ -1306,10 +1306,10 @@
             apiKey: 'AIzaSyBjz1pRMb-StQFX2e37BRVbQ9WpkTNC5-c',
             
             // Gemini API endpoint
-            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent',
             
             // Model name
-            model: 'gemini-2.5-flash'
+            model: 'gemini-2.0-flash-lite'
         };
 
         // ==================== STATE MANAGEMENT ====================
@@ -1355,7 +1355,7 @@
 
         ❌ RESTRICTIONS:
         - Stay focused on Grade 11 Accounting only
-        - Don't discuss topics beyond Trial Balance
+        - Make sure that the content is appropriate for high school students
         - Politely redirect non-accounting questions
 
         Format responses with clear structure, examples, and step-by-step explanations.`;
@@ -1541,6 +1541,7 @@
         }
 
         function askQuestion(question) {
+            hideWelcome();
             document.getElementById('userInput').value = question;
             sendMessage();
         }
@@ -1788,7 +1789,7 @@
                         <div class="message-avatar">🧙</div>
                         <div class="message-content">
                             <div class="message-bubble">
-                                <strong>📚 Accounts Wizard AI - Powered by Google Gemini!</strong><br><br>
+                                <strong>📚 Accounts Wizard AI -</strong><br><br>
                                 <strong>🎯 What I Can Help With:</strong><br>
                                 ✅ Grade 11 Accounting (up to Trial Balance)<br>
                                 ✅ Journal Entries & Ledger<br>
@@ -1875,7 +1876,7 @@
 
         // ==================== INITIALIZATION ====================
         function initializeApp() {
-            console.log('%c🧙 ACCOUNTS WIZARD AI - GEMINI POWERED', 'font-size: 20px; color: #00ff88; font-weight: bold;');
+            console.log('%c🧙 ACCOUNTS WIZARD AI', 'font-size: 20px; color: #00ff88; font-weight: bold;');
             console.log('%c✨ Free Forever with Google Gemini!', 'font-size: 14px; color: #00d4ff;');
             loadFromLocalStorage();
             setInterval(updateStats, 60000);
