@@ -680,6 +680,7 @@
         .pricing-section {
             padding: 100px 30px;
             background: linear-gradient(180deg, transparent, rgba(153, 69, 255, 0.02));
+            position: relative;
         }
 
         .pricing-grid {
@@ -697,6 +698,7 @@
             padding: 40px;
             position: relative;
             transition: all 0.3s ease;
+            overflow: visible; /* Important for badges */
         }
 
         .price-card.featured {
@@ -704,6 +706,7 @@
             transform: scale(1.05);
         }
 
+        /* Original Price Badge (Always visible for featured) */
         .price-badge {
             position: absolute;
             top: -15px;
@@ -717,8 +720,287 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
+            z-index: 2;
         }
 
+        /* ============ DISCOUNT BADGES (Hidden by default) ============ */
+
+        /* Corner Discount Badge */
+        .discount-corner {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            background: linear-gradient(135deg, #ff3366, #ff0844);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-weight: 800;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(255, 8, 68, 0.5);
+            transform: rotate(-5deg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 3;
+        }
+
+        .discount-corner::before {
+            content: '🔥';
+            margin-right: 5px;
+        }
+
+        /* Ribbon Style Percentage Badge */
+        .discount-ribbon {
+            position: absolute;
+            top: 14px;
+            right: -42px;
+            width: 150px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff5722, #e91e63);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transform: rotate(45deg);
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1;
+        }
+
+        /* Ribbon shadow effect */
+        .discount-ribbon::before,
+        .discount-ribbon::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            border: 4px solid transparent;
+            border-top-color: #c2185b;
+        }
+
+        .discount-ribbon::before {
+            left: 0;
+            border-left-color: #c2185b;
+        }
+
+        .discount-ribbon::after {
+            right: 0;
+            border-right-color: #c2185b;
+        }
+
+        /* Floating Savings Badge */
+        .discount-savings {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+
+        /* Price Amount Styles */
+        .price-amount {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .original-price {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* ============ DISCOUNT MODE ACTIVE STATES ============ */
+
+        /* When discount mode is active on pricing section */
+        .pricing-section.discount-active .price-card {
+            animation: cardGlow 2s ease-in-out infinite;
+        }
+
+        .pricing-section.discount-active .price-card.featured {
+            transform: scale(1.08);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.4);
+        }
+
+        .pricing-section.discount-active .discount-corner {
+            opacity: 1;
+            visibility: visible;
+            transform: rotate(-5deg) scale(1);
+            animation: bounceIn 0.6s ease, pulse 2s ease-in-out infinite 0.6s;
+        }
+
+        .pricing-section.discount-active .discount-ribbon {
+            opacity: 1;
+            visibility: visible;
+            animation: slideInRotate 0.7s ease, ribbonGlow 2.5s ease-in-out infinite 0.7s;
+        }
+
+        .pricing-section.discount-active .discount-savings {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pricing-section.discount-active .original-price {
+            opacity: 0.7;
+            visibility: visible;
+        }
+
+        .pricing-section.discount-active .amount {
+            color: #00ff88;
+            animation: priceFlash 0.5s ease;
+        }
+
+        /* ============ ANIMATIONS ============ */
+
+        @keyframes cardGlow {
+            0%, 100% {
+                box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+            }
+            50% {
+                box-shadow: 0 15px 50px rgba(0, 255, 136, 0.3);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: rotate(-5deg) scale(0);
+            }
+            50% {
+                transform: rotate(-5deg) scale(1.2);
+            }
+            100% {
+                transform: rotate(-5deg) scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: rotate(-5deg) scale(1);
+                box-shadow: 0 6px 20px rgba(255, 8, 68, 0.5);
+            }
+            50% {
+                transform: rotate(-5deg) scale(1.05);
+                box-shadow: 0 8px 30px rgba(255, 8, 68, 0.7);
+            }
+        }
+
+        @keyframes slideInRotate {
+            0% {
+                transform: rotate(45deg) translateX(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: rotate(45deg) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes ribbonGlow {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 35px rgba(233, 30, 99, 0.6), 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes priceFlash {
+            0% {
+                transform: scale(0.8) rotateX(90deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============ NOTIFICATION STYLES ============ */
+
+        .price-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            animation: slideInRight 0.5s ease;
+            pointer-events: none;
+        }
+
+        .price-notification.info {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .price-notification.removing {
+            animation: fadeOut 0.5s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+        }
+
+        /* Rest of your existing CSS... */
         .price-header {
             text-align: center;
             padding-bottom: 30px;
@@ -731,10 +1013,6 @@
             margin-bottom: 20px;
         }
 
-        .price-amount {
-            margin-bottom: 15px;
-        }
-
         .currency {
             font-size: 1.5rem;
             color: var(--text-secondary);
@@ -744,6 +1022,7 @@
             font-size: 3rem;
             font-weight: 700;
             color: var(--neon-green);
+            transition: all 0.3s ease;
         }
 
         .period {
@@ -811,6 +1090,18 @@
 
         .pricing-note strong {
             color: var(--neon-yellow);
+        }
+
+        .feature-category {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin: 20px 0 10px;
+        }
+
+        .limitations li {
+            opacity: 0.7;
         }
 
         /* Footer */
@@ -6075,10 +6366,18 @@
 
                 <!-- Auris Plan -->
                 <div class="price-card">
+                    <!-- Discount Badges (Hidden by default) -->
+                    <div class="discount-corner">LIMITED</div>
+                    <div class="discount-ribbon">20% OFF</div>
+                    <div class="discount-savings">Save ₹401</div>
+
                     <div class="price-header">
                         <h3 class="price-title">Auris Plan</h3>
                         <div class="price-amount">
-                            <span class="currency">₹</span><span class="amount">3,000</span><span class="period">/3 Months</span>
+                            <div class="original-price">₹2,000</div>
+                            <span class="currency">₹</span>
+                            <span class="amount" data-original="2,000" data-discount="1,599">2,000</span>
+                            <span class="period">/3 Months</span>
                         </div>
                         <p class="price-description">
                             Entry-level access for learners and casual users.  
@@ -6111,11 +6410,19 @@
                 <!-- Kaizen Plan -->
                 <div class="price-card featured">
                     <div class="price-badge">Most Popular</div>
+                    
+                    <!-- Discount Badges (Hidden by default) -->
+                    <div class="discount-corner">HOT DEAL</div>
+                    <div class="discount-ribbon">36% OFF</div>
+                    <div class="discount-savings">Save ₹2,501</div>
 
                     <div class="price-header">
                         <h3 class="price-title">Kaizen Plan</h3>
                         <div class="price-amount">
-                            <span class="currency">₹</span><span class="amount">7,000</span><span class="period">/6 Months + 1 Month Extra</span>
+                            <div class="original-price">₹7,000</div>
+                            <span class="currency">₹</span>
+                            <span class="amount" data-original="7,000" data-discount="4,499">7,000</span>
+                            <span class="period">/6 Months + 1 Month Extra</span>
                         </div>
                         <p class="price-description">
                             A contributor-level plan for developers, institutions, or collaborators  
@@ -6146,10 +6453,18 @@
 
                 <!-- Zenith Plan -->
                 <div class="price-card">
+                    <!-- Discount Badges (Hidden by default) -->
+                    <div class="discount-corner">BEST VALUE</div>
+                    <div class="discount-ribbon">52% OFF</div>
+                    <div class="discount-savings">Save ₹7,801</div>
+
                     <div class="price-header">
                         <h3 class="price-title">Zenith Plan</h3>
                         <div class="price-amount">
-                            <span class="currency">₹</span><span class="amount">15,000</span><span class="period">/1 Year</span>
+                            <div class="original-price">₹15,000</div>
+                            <span class="currency">₹</span>
+                            <span class="amount" data-original="15,000" data-discount="7,199">15,000</span>
+                            <span class="period">/1 Year</span>
                         </div>
                         <p class="price-description">
                             Full-access, full-control, full-ownership license.  
@@ -6193,7 +6508,6 @@
 
         </div>
     </section>
-
 
     <!-- The CSS Flex Zone (sponsored by Chitta Stationery 😎) -->
     <section class="room-section" id="css-flex-zone">
@@ -7493,16 +7807,6 @@
 
     // 🔥 SECRET DISCOUNT MODE - CTRL + Y
     let discountActive = false;
-    const originalPrices = {
-        auris: '2,000',
-        kaizen: '7,000',
-        zenith: '15,000'
-    };
-    const discountedPrices = {
-        auris: '1,599',      // 20% off!
-        kaizen: '4,499',     // 35% off!
-        zenith: '7,199'    // 52% off!
-    };
 
     document.addEventListener('keydown', (e) => {
         // Detect Ctrl+Y (or Cmd+Y on Mac)
@@ -7514,153 +7818,77 @@
 
     function toggleDiscountMode() {
         discountActive = !discountActive;
-        
-        const aurisAmount = document.querySelector('.price-card:nth-child(1) .amount');
-        const kaizenAmount = document.querySelector('.price-card:nth-child(2) .amount');
-        const zenithAmount = document.querySelector('.price-card:nth-child(3) .amount');
-        
-        const priceCards = document.querySelectorAll('.price-card');
+        const pricingSection = document.querySelector('.pricing-section');
         
         if (discountActive) {
             // ACTIVATE DISCOUNT MODE
             console.log('%c🎉 SECRET DISCOUNT ACTIVATED!', 'font-size: 20px; color: #00ff88; font-weight: bold;');
             
-            // Add discount badge
-            priceCards.forEach((card, index) => {
-                if (!card.querySelector('.discount-badge')) {
-                    const badge = document.createElement('div');
-                    badge.className = 'discount-badge';
-                    badge.innerHTML = '🔥 SPECIAL DISCOUNT';
-                    badge.style.cssText = `
-                        position: absolute;
-                        top: -10px;
-                        right: -10px;
-                        background: linear-gradient(135deg, #ff6b6b, #ff0844);
-                        color: white;
-                        padding: 8px 15px;
-                        border-radius: 20px;
-                        font-weight: bold;
-                        font-size: 12px;
-                        box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4);
-                        animation: pulse 1.5s infinite;
-                        z-index: 10;
-                    `;
-                    card.style.position = 'relative';
-                    card.appendChild(badge);
+            // Add discount class to pricing section
+            pricingSection.classList.add('discount-active');
+            
+            // Update all prices
+            document.querySelectorAll('.amount').forEach(amount => {
+                const discountPrice = amount.dataset.discount;
+                const originalPrice = amount.dataset.original;
+                
+                // Show original price in strikethrough
+                const originalPriceElement = amount.closest('.price-amount').querySelector('.original-price');
+                if (originalPriceElement) {
+                    originalPriceElement.textContent = `₹${originalPrice}`;
                 }
                 
-                // Add glow effect
-                card.style.boxShadow = '0 10px 40px rgba(0, 255, 136, 0.3)';
-                card.style.transform = 'scale(1.02)';
+                // Animate price change
+                amount.style.transform = 'scale(0.8) rotateX(90deg)';
+                amount.style.opacity = '0';
+                
+                setTimeout(() => {
+                    amount.textContent = discountPrice;
+                    amount.style.transform = 'scale(1) rotateX(0)';
+                    amount.style.opacity = '1';
+                }, 300);
             });
             
-            // Update prices with animation
-            updatePriceWithAnimation(aurisAmount, discountedPrices.auris);
-            updatePriceWithAnimation(kaizenAmount, discountedPrices.kaizen);
-            updatePriceWithAnimation(zenithAmount, discountedPrices.zenith);
-            
             // Show notification
-            showNotification('🎉 Commerce Day Special Activated! Prices slashed!', 'success');
+            showNotification('🎉 Commerce Day Special Activated! Up to 52% OFF!', 'success');
             
         } else {
             // DEACTIVATE DISCOUNT MODE
             console.log('%c❌ Discount mode deactivated', 'font-size: 14px; color: #ff6b6b;');
             
-            // Remove discount badges
-            document.querySelectorAll('.discount-badge').forEach(badge => badge.remove());
-            
-            // Remove glow effect
-            priceCards.forEach(card => {
-                card.style.boxShadow = '';
-                card.style.transform = '';
-            });
+            // Remove discount class
+            pricingSection.classList.remove('discount-active');
             
             // Restore original prices
-            updatePriceWithAnimation(aurisAmount, originalPrices.auris);
-            updatePriceWithAnimation(kaizenAmount, originalPrices.kaizen);
-            updatePriceWithAnimation(zenithAmount, originalPrices.zenith);
+            document.querySelectorAll('.amount').forEach(amount => {
+                const originalPrice = amount.dataset.original;
+                
+                amount.style.transform = 'scale(0.8) rotateX(90deg)';
+                amount.style.opacity = '0';
+                
+                setTimeout(() => {
+                    amount.textContent = originalPrice;
+                    amount.style.transform = 'scale(1) rotateX(0)';
+                    amount.style.opacity = '1';
+                }, 300);
+            });
             
             // Show notification
             showNotification('Regular pricing restored', 'info');
         }
     }
 
-    function updatePriceWithAnimation(element, newPrice) {
-        if (!element) return;
-        
-        // Animate out
-        element.style.transform = 'scale(0.8) rotateX(90deg)';
-        element.style.opacity = '0';
-        element.style.transition = 'all 0.3s ease';
-        
-        setTimeout(() => {
-            element.textContent = newPrice;
-            element.style.transform = 'scale(1) rotateX(0deg)';
-            element.style.opacity = '1';
-            
-            // Add bounce effect
-            setTimeout(() => {
-                element.style.transform = 'scale(1.1)';
-                setTimeout(() => {
-                    element.style.transform = 'scale(1)';
-                }, 150);
-            }, 50);
-        }, 300);
-    }
-
     function showNotification(message, type) {
         const notification = document.createElement('div');
-        notification.className = 'price-notification';
+        notification.className = `price-notification ${type === 'info' ? 'info' : ''}`;
         notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? 'linear-gradient(135deg, #00ff88, #00d4ff)' : 'linear-gradient(135deg, #667eea, #764ba2)'};
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            animation: slideInRight 0.5s ease, fadeOut 0.5s ease 2.5s;
-            pointer-events: none;
-        `;
         
         document.body.appendChild(notification);
         
         setTimeout(() => {
-            notification.remove();
-        }, 3000);
-    }
-
-    // Add CSS animations if not already present
-    if (!document.querySelector('#discount-animations')) {
-        const style = document.createElement('style');
-        style.id = 'discount-animations';
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            @keyframes fadeOut {
-                from {
-                    opacity: 1;
-                }
-                to {
-                    opacity: 0;
-                    transform: translateX(400px);
-                }
-            }
-        `;
-        document.head.appendChild(style);
+            notification.classList.add('removing');
+            setTimeout(() => notification.remove(), 500);
+        }, 2500);
     }
 
     // Secret console message

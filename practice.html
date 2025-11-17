@@ -540,63 +540,63 @@
     }
 
     // Check answer
-        function checkAnswer() {
-        const q = questions[currentQuestionIndex];
-        const debitAcc = $('#debitAccount').value;
-        const creditAcc = $('#creditAccount').value;  // ← Fixed: removed extra quote
-        const debitAmt = parseInt($('#debitAmount').value) || 0;
-        const creditAmt = parseInt($('#creditAmount').value) || 0;
+      function checkAnswer() {
+          const q = questions[currentQuestionIndex];
+          const debitAcc = $('#debitAccount').value;
+          const creditAcc = $('#creditAccount').value;
+          const debitAmt = parseInt($('#debitAmount').value) || 0;
+          const creditAmt = parseInt($('#creditAmount').value) || 0;
 
-      const feedback = $('#feedback');
-      feedback.classList.add('show');
+          const feedback = $('#feedback');
+          feedback.classList.add('show');
 
-      const isCorrect = (
-        debitAcc === q.debitAccount &&
-        creditAcc === q.creditAccount &&
-        debitAmt === q.amount &&
-        creditAmt === q.amount
-      );
+          const isCorrect = (
+              debitAcc === q.debitAccount &&
+              creditAcc === q.creditAccount &&
+              debitAmt === q.amount &&
+              creditAmt === q.amount
+          );
 
-      if (isCorrect) {
-        correctAnswers++;
-        $('#correctCount').textContent = correctAnswers;
-        feedback.classList.remove('incorrect');
-        feedback.classList.add('correct');
-        feedback.innerHTML = `
-          <strong>🎉 Correct!</strong>
-          <div class="feedback-detail">
-            <strong>Correct Entry:</strong><br>
-            ${q.debitAccount} ........ Dr. ₹${q.amount.toLocaleString('en-IN')}<br>
-            &nbsp;&nbsp;To ${q.creditAccount} ........ ₹${q.amount.toLocaleString('en-IN')}<br>
-            (Being ${q.hint.toLowerCase()})
-          </div>
-        `;
-      } else {
-        incorrectAnswers++;
-        $('#incorrectCount').textContent = incorrectAnswers;
-        feedback.classList.remove('correct');
-        feedback.classList.add('incorrect');
-        
-        let errors = [];
-        if (debitAcc !== q.debitAccount) errors.push('Wrong debit account');
-        if (creditAcc !== q.creditAccount) errors.push('Wrong credit account');
-        if (debitAmt !== q.amount || creditAmt !== q.amount) errors.push('Incorrect amount');
+          if (isCorrect) {
+              correctAnswers++;
+              $('#correctCount').textContent = correctAnswers;
+              feedback.classList.remove('incorrect');
+              feedback.classList.add('correct');
+              feedback.innerHTML = `
+                  <strong>🎉 Correct!</strong>
+                  <div class="feedback-detail">
+                      <strong>Correct Entry:</strong><br>
+                      ${q.debitAccount} ........ Dr. ₹${q.amount.toLocaleString('en-IN')}<br>
+                      &nbsp;&nbsp;To ${q.creditAccount} ........ ₹${q.amount.toLocaleString('en-IN')}<br>
+                      ${q.hint}
+                  </div>
+              `;
+          } else {
+              incorrectAnswers++;
+              $('#incorrectCount').textContent = incorrectAnswers;
+              feedback.classList.remove('correct');
+              feedback.classList.add('incorrect');
+              
+              let errors = [];
+              if (debitAcc !== q.debitAccount) errors.push('Wrong debit account');
+              if (creditAcc !== q.creditAccount) errors.push('Wrong credit account');
+              if (debitAmt !== q.amount || creditAmt !== q.amount) errors.push('Incorrect amount');
 
-        feedback.innerHTML = `
-          <strong>❌ Not quite right!</strong>
-          <p>Issues: ${errors.join(', ')}</p>
-          <div class="feedback-detail">
-            <strong>Correct Entry:</strong><br>
-            ${q.debitAccount} ........ Dr. ₹${q.amount.toLocaleString('en-IN')}<br>
-            &nbsp;&nbsp;To ${q.creditAccount} ........ ₹${q.amount.toLocaleString('en-IN')}<br>
-            (Being ${q.hint.toLowerCase()})
-          </div>
-        `;
+              feedback.innerHTML = `
+                  <strong>❌ Not quite right!</strong>
+                  <p>Issues: ${errors.join(', ')}</p>
+                  <div class="feedback-detail">
+                      <strong>Correct Entry:</strong><br>
+                      ${q.debitAccount} ........ Dr. ₹${q.amount.toLocaleString('en-IN')}<br>
+                      &nbsp;&nbsp;To ${q.creditAccount} ........ ₹${q.amount.toLocaleString('en-IN')}<br>
+                      ${q.hint}
+                  </div>
+              `;
+          }
+
+          $('#submitBtn').style.display = 'none';
+          $('#nextBtn').style.display = 'inline-block';
       }
-
-      $('#submitBtn').style.display = 'none';
-      $('#nextBtn').style.display = 'inline-block';
-    }
 
     // Next question
     function nextQuestion() {
