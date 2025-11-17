@@ -757,7 +757,7 @@
             top: 14px;
             right: -42px;
             width: 150px;
-            height: 40px;
+            height: 36px;
             background: linear-gradient(135deg, #ff5722, #e91e63);
             color: white;
             display: flex;
@@ -6609,37 +6609,63 @@
     </footer>
 
     <script>
-        // Commerce Day Countdown Timer
-        function startCountdown() {
-        const commerceDay = new Date('2025-10-29 09:00:00'); // Example: Feb 15, 2025
-            commerceDay.setHours(23, 59, 59, 999);
+        function startCommerceCountdown(testMode = true) {
 
-            function updateTimer() {
-                const now = new Date();
-                const diff = commerceDay - now;
+            const now = new Date();
 
-                if (diff <= 0) {
-                    document.getElementById('days').textContent = '00';
-                    document.getElementById('hours').textContent = '00';
-                    document.getElementById('minutes').textContent = '00';
-                    document.getElementById('seconds').textContent = '00';
+            let start;
+            let end;
+
+            if (testMode) {
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+                end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 0, 0, 0);
+            } else {
+                start = new Date(now.getFullYear(), now.getMonth(), 21, 0, 0, 0);
+                end = new Date(now.getFullYear(), now.getMonth(), 23, 0, 0, 0);
+            }
+
+            function updateCountdown() {
+                const current = new Date();
+
+                if (current < start) {
+                    document.getElementById("days").textContent = "00";
+                    document.getElementById("hours").textContent = "00";
+                    document.getElementById("minutes").textContent = "00";
+                    document.getElementById("seconds").textContent = "00";
                     return;
                 }
+
+                if (current >= end) {
+                    document.getElementById("days").textContent = "00";
+                    document.getElementById("hours").textContent = "00";
+                    document.getElementById("minutes").textContent = "00";
+                    document.getElementById("seconds").textContent = "00";
+                    return;
+                }
+
+                const diff = end - current;
 
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                document.getElementById('days').textContent = String(days).padStart(2, '0');
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                document.getElementById("days").textContent = String(days).padStart(2, "0");
+                document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+                document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+                document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
             }
 
-            updateTimer();
-            setInterval(updateTimer, 1000);
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
         }
+
+        // 🔥 Enable test mode here:
+        startCommerceCountdown(true);
+
+        // When you want real date behavior:
+        // startCommerceCountdown(false);
+
 
         // Matrix Rain Effect
         function createMatrixRain() {
