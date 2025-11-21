@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanshika Pandey - Introduction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* =============================================
+        ROOT VARIABLES & GLOBAL STYLES
+        ============================================= */
+        :root {
+            --bg: #0a0a0f;
+            --bg-2: #12121a;
+            --bg-3: #1a1a2e;
+            --card: #16161f;
+            --card-hover: #1f1f2e;
+            --neon-cyan: #00ffff;
+            --neon-pink: #ff10f0;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff88;
+            --neon-blue: #0099ff;
+            --text: #ffffff;
+            --text-dim: #a0a0b8;
+            --radius: 20px;
+            --shadow: 0 0 40px rgba(0, 255, 255, 0.1);
+            --shadow-lg: 0 0 80px rgba(0, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 16, 240, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 153, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: floatBackground 20s ease-in-out infinite;
+        }
+
+        @keyframes floatBackground {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-20px, -20px) scale(1.05); }
+            66% { transform: translate(20px, -10px) scale(0.95); }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 40px 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(255, 16, 240, 0.1);
+            border: 2px solid var(--neon-pink);
+            border-radius: 50px;
+            color: var(--neon-pink);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 35px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(255, 16, 240, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 16, 240, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 16, 240, 0.5); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 35px;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg,
+                var(--neon-cyan) 0%,
+                var(--neon-pink) 25%,
+                var(--neon-yellow) 50%,
+                var(--neon-green) 75%,
+                var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+            display: block;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-dim);
+            max-width: 800px;
+            margin: 0 auto 45px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .profile-circle {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--bg);
+            box-shadow: 
+                0 0 60px rgba(0, 255, 255, 0.5),
+                0 0 100px rgba(255, 16, 240, 0.3);
+            animation: floatProfile 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes floatProfile {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Content Section */
+        .content-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            margin-top: 70px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 45px 35px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 255, 0.1), 
+                rgba(255, 16, 240, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: var(--neon-cyan);
+            box-shadow: 
+                0 20px 60px rgba(0, 255, 255, 0.4),
+                inset 0 0 30px rgba(0, 255, 255, 0.05);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Info Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-top: 70px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, var(--card), rgba(0, 255, 255, 0.02));
+            border-radius: var(--radius);
+            padding: 50px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--neon-cyan), 
+                var(--neon-pink), 
+                var(--neon-yellow));
+            border-radius: var(--radius);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .info-card:hover::before {
+            opacity: 0.5;
+            animation: rotateGradient 2s linear infinite;
+        }
+
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 20px 80px rgba(0, 255, 255, 0.3),
+                0 0 120px rgba(255, 16, 240, 0.2);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .info-card h3 {
+            font-size: 2rem;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .info-card p {
+            font-size: 1.15rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* Hobbies Tags */
+        .hobbies-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .hobby-tag {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-yellow));
+            color: var(--bg);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 0 30px rgba(255, 16, 240, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .hobby-tag:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 50px rgba(255, 16, 240, 0.6);
+        }
+
+        /* CTA Button */
+        .cta-section {
+            text-align: center;
+            margin: 100px 0;
+        }
+
+        .glitch-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            color: var(--bg);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow:
+                0 0 40px rgba(0, 255, 255, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .glitch-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .glitch-button:hover::before {
+            left: 100%;
+        }
+
+        .glitch-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow:
+                0 10px 60px rgba(0, 255, 255, 0.7),
+                inset 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 150px;
+            padding: 70px 40px 50px;
+            background: linear-gradient(180deg, var(--bg), #000);
+            border-top: 2px solid rgba(0, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                var(--neon-cyan), 
+                var(--neon-pink), 
+                var(--neon-yellow));
+            animation: slide 3s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .footer-text {
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 20px 60px;
+            }
+
+            .content-section {
+                padding: 0 20px;
+                margin: 60px auto;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-star"></i> WELCOME TO MY PROFILE
+        </div>
+
+        <div class="profile-circle">VP</div>
+
+        <h1>
+            HEY, I'M
+            <span class="gradient-text">VANSHIKA PANDEY</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Mai Vanshika hoon, 8th class ki student — thodi creative, thodi talkative, aur hamesha 
+            naye ideas ke saath. Mujhe seekhna, explore karna, aur apni life ko apne style 
+            mein jeena pasand hai. Yeh mera personal space hai jahan mai apne baare me, 
+            apne interests aur apne sapno ko share karti hoon!
+        </p>
+    </section>
+
+    <section class="content-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏫</div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">Class</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📍</div>
+                <div class="stat-number">S.D.A.M</div>
+                <div class="stat-label">School</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">✨</div>
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Ideas</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">❤️</div>
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Dedication</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>GET TO KNOW ME</h2>
+            <p>A deeper look into my world</p>
+        </div>
+
+        <div class="cards-grid">
+
+            <!-- ABOUT ME -->
+            <div class="info-card">
+                <div class="card-icon">👋</div>
+                <h3>Who I Am</h3>
+                <p>
+                    I'm Vanshika Pandey, aur mai abhi 8th class mai padhti hoon.
+                    Mujhe laal rang bahut pasand hai. Hum 3 bhai-behan hai —
+                    meri badi behen ka naam <strong>Sakshi</strong> hai, aur mere bhai ka naam <strong>Vaibhav</strong> hai.
+                    Mujhe school jaana accha lagta hai, aur football khelna mere favourite hobbies 
+                    me se ek hai. Mujhe bada hoke <strong>Advocate</strong> banna hai, 
+                    kyunki mujhe nyay aur logon ke liye khade rehna pasand hai.
+                </p>
+            </div>
+
+            <!-- SCHOOL -->
+            <div class="info-card">
+                <div class="card-icon">🏫</div>
+                <h3>My School</h3>
+                <p>
+                    I study at <strong>SEVENTH DAY ADVENTIST MISSION SCHOOL</strong>.
+                    School accha hai, par haan... fees zyada lete hain aur kabhi kabhi 
+                    padhai se zyada activities chalti rehti hain. 
+                    Lekin future banane ke liye school jaana zaroori hai —
+                    aur mai apni mehnat se kabhi peeche nahi hat-ti!
+                </p>
+            </div>
+
+            <!-- FIRST IDEAS -->
+            <div class="info-card">
+                <div class="card-icon">💡</div>
+                <h3>My First Ideas</h3>
+                <p>
+                    Mere paas hamesha se bohot saare ideas rahe hain.  
+                    Mujhe content creation pasand hai, specially Instagram par.  
+                    Mai chahti hoon ki log duniya ko ek naye aur creative nazariye se dekhe.  
+                    Nayi cheezein explore karna, naye places discover karna, 
+                    aur life ko thoda aesthetic banana — ye sab mere ideas ka hissa hai.
+                </p>
+            </div>
+
+            <!-- HOBBIES -->
+            <div class="info-card">
+                <div class="card-icon">🎨</div>
+                <h3>My Hobbies & Interests</h3>
+                <p>
+                    Mujhe online active rehna, naye videos dekhna, friends se chat karna,
+                    aur creative snaps banana bahut pasand hai.  
+                    Main woh kaam karti hoon jo mujhe happy feel karate hain —
+                    aur jo mere din ko thoda aur colourful bana dete hain.
+                </p>
+                <div class="hobbies-container">
+                    <span class="hobby-tag">📱 Snapchat</span>
+                    <span class="hobby-tag">🎬 Aesthetic Videos</span>
+                    <span class="hobby-tag">💬 Chatting</span>
+                    <span class="hobby-tag">🌟 Content Creating</span>
+                    <span class="hobby-tag">📸 Photography</span>
+                    <span class="hobby-tag">🎶 Music</span>
+                </div>
+            </div>
+
+            <!-- GOALS -->
+            <div class="info-card">
+                <div class="card-icon">🚀</div>
+                <h3>My Goals</h3>
+                <p>
+                    Mere goals simple aur clear hain — padhai mein achha karna, 
+                    creative skills seekhna, aur apne ideas ko reality mein badalna.  
+                    Main future mein ek strong, independent aur confident girl banna chahti hoon  
+                    jo apni identity khud banaye.  
+                    The future looks exciting — and I'm fully ready for it!
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <button class="glitch-button">
+            <i class="fas fa-rocket"></i>
+            <span>LET'S CONNECT!</span>
+        </button>
+    </section>
+
+    <footer>
+        <div class="footer-text">
+            <p>© 2024 Vanshika Pandey | Built with creativity, dreams and passion 💜</p>
+            <p style="margin-top: 15px;">Thank you for visiting my space!</p>
+        </div>
+    </footer>
+
+
+    <script>
+        // Smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-card, .info-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Button click effect
+        document.querySelector('.glitch-button').addEventListener('click', () => {
+            alert('Thanks for checking out my profile! 🌟');
+        });
+
+        // Console easter egg
+        console.log('%c🎮 Hey! You found the console! 🎮', 'color: #00ffff; font-size: 20px; font-weight: bold;');
+        console.log('%cCurious minds are the best minds! 🧠', 'color: #ff10f0; font-size: 14px;');
+    </script>
+</body>
+</html>
