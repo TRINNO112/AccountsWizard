@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Accounts Wizard - Learn Accounting Game Style! Har chapter ek mission, har formula ek weapon.">
+    <title>Accounts Wizard 🧙‍♂️ | Learn Accounting - Game Style!</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Your CSS File -->
+    <link rel="stylesheet" href="./learn.css">
+</head>
+<body>
+    <!-- ============================================
+         🌟 ANIMATED BACKGROUND
+    ============================================ -->
+    <div class="animated-bg">
+        <div class="grid-bg"></div>
+        <div class="particles-container" id="particlesContainer"></div>
+    </div>
+
+    <!-- ============================================
+         🔔 TOAST NOTIFICATIONS
+    ============================================ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================
+         📍 NAVIGATION BAR
+    ============================================ -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">
+            <div class="logo-icon">🧙‍♂️</div>
+            <div class="logo-text">
+                <span class="logo-title">ACCOUNTS WIZARD</span>
+                <span class="logo-subtitle">Game Style Learning</span>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#missions" class="nav-link">Missions</a></li>
+            <li><a href="#ranks" class="nav-link">Ranks</a></li>
+            <li><a href="#achievements" class="nav-link">Achievements</a></li>
+        </ul>
+
+        <div class="nav-player-stats">
+            <div class="nav-streak">
+                <span class="nav-streak-icon">🔥</span>
+                <span class="nav-streak-text" id="navStreak">0</span>
+            </div>
+            <div class="nav-xp-display">
+                <span class="nav-xp-icon">⚡</span>
+                <span class="nav-xp-text" id="navXp">0 XP</span>
+            </div>
+            <div class="nav-level-badge">
+                <span>🎖️</span>
+                <span>Level <span id="navLevel">1</span></span>
+            </div>
+            <div class="nav-profile" id="profileBtn">
+                <span>👤</span>
+                <div class="profile-level" id="profileLevelBadge">1</div>
+            </div>
+        </div>
+
+        <div class="mobile-menu-toggle" id="mobileMenuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         📱 MOBILE MENU
+    ============================================ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-nav-links">
+            <a href="#home" class="mobile-nav-link active">🏠 Home</a>
+            <a href="#missions" class="mobile-nav-link">🎮 Missions</a>
+            <a href="#ranks" class="mobile-nav-link">🏆 Ranks</a>
+            <a href="#achievements" class="mobile-nav-link">🏅 Achievements</a>
+        </div>
+        <div class="mobile-player-stats">
+            <div class="mobile-stat-row">
+                <span>⚡ Total XP</span>
+                <span id="mobileXp">0 XP</span>
+            </div>
+            <div class="mobile-stat-row">
+                <span>🎖️ Level</span>
+                <span id="mobileLevel">1</span>
+            </div>
+            <div class="mobile-stat-row">
+                <span>🔥 Streak</span>
+                <span id="mobileStreak">0 Days</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         🎮 MAIN CONTENT
+    ============================================ -->
+    <main id="mainContent">
+        
+        <!-- ========== HERO SECTION ========== -->
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="hero-badge-icon">🎮</span>
+                        <span class="hero-badge-text">India's #1 Gaming Style Accounting Platform</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="line1">Tum Sirf Student Nahi...</span>
+                        <span class="line2">Ek Accounting <span class="highlight">WARRIOR</span> Ho! 🔥</span>
+                    </h1>
+
+                    <div class="hero-subtitle">
+                        <span class="hero-subtitle-item">📚 Har Chapter = Mission</span>
+                        <span class="hero-subtitle-item">⚔️ Har Formula = Weapon</span>
+                        <span class="hero-subtitle-item">💔 Har Mistake = Damage</span>
+                        <span class="hero-subtitle-item">✅ Har Correct = Heal</span>
+                    </div>
+
+                    <p class="hero-description">
+                        Accountancy ke formulas nahi... <strong>skills sikho — Game style mein!</strong> 
+                        Complete missions, earn XP, unlock ranks, aur bano 
+                        <span class="highlight-text">Accounts Wizard</span> 🧙‍♂️
+                    </p>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="hero-stat-icon">🎯</span>
+                            <div class="hero-stat-value">4</div>
+                            <div class="hero-stat-label">Epic Missions</div>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-icon">⚔️</span>
+                            <div class="hero-stat-value">7</div>
+                            <div class="hero-stat-label">Warrior Ranks</div>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-icon">🏅</span>
+                            <div class="hero-stat-value">12</div>
+                            <div class="hero-stat-label">Achievements</div>
+                        </div>
+                    </div>
+
+                    <div class="hero-buttons">
+                        <a href="#missions" class="btn btn-primary">
+                            <span>🎮</span> Start Your Mission
+                        </a>
+                        <a href="#ranks" class="btn btn-secondary">
+                            <span>🏆</span> View Ranks
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Character Card -->
+                <div class="hero-visual">
+                    <div class="hero-card-container">
+                        <div class="floating-badge badge-1">
+                            <div class="badge-icon-float fire">🎯</div>
+                            <div class="badge-content-float">
+                                <span class="badge-title-float">First Entry!</span>
+                                <span class="badge-subtitle-float">+10 XP</span>
+                            </div>
+                        </div>
+                        <div class="floating-badge badge-2">
+                            <div class="badge-icon-float ice">✅</div>
+                            <div class="badge-content-float">
+                                <span class="badge-title-float">Keep Going!</span>
+                                <span class="badge-subtitle-float">You got this! 💪</span>
+                            </div>
+                        </div>
+
+                        <div class="character-card">
+                            <div class="character-header">
+                                <div class="character-rank">
+                                    <span class="rank-label">Current Rank</span>
+                                    <span class="rank-title" id="heroRankTitle">😅 Noob Accountant</span>
+                                </div>
+                                <div class="character-level">
+                                    <span class="level-number" id="heroLevel">1</span>
+                                    <span class="level-text">Level</span>
+                                </div>
+                            </div>
+
+                            <div class="character-avatar">
+                                <div class="avatar-ring"></div>
+                                🧙‍♂️
+                            </div>
+
+                            <h3 class="character-name" id="playerName">New Warrior</h3>
+                            <p class="character-title">⚔️ Ready for Battle!</p>
+
+                            <div class="xp-progress-container">
+                                <div class="xp-progress-header">
+                                    <span class="xp-label">Progress to Level 2</span>
+                                    <span class="xp-value"><span id="currentXp">0</span> / <span id="nextLevelXp">100</span> XP</span>
+                                </div>
+                                <div class="xp-progress-bar">
+                                    <div class="xp-progress-fill" id="xpProgressFill" style="width: 0%;"></div>
+                                </div>
+                                <p class="xp-next-level">Next: <strong id="nextRankName">Rookie Ledger Keeper 📚</strong></p>
+                            </div>
+
+                            <div class="character-stats-grid">
+                                <div class="char-stat">
+                                    <div class="char-stat-icon">🎮</div>
+                                    <div class="char-stat-value" id="gamesPlayed">0</div>
+                                    <div class="char-stat-label">Games Played</div>
+                                </div>
+                                <div class="char-stat">
+                                    <div class="char-stat-icon">🔥</div>
+                                    <div class="char-stat-value" id="currentStreak">0</div>
+                                    <div class="char-stat-label">Day Streak</div>
+                                </div>
+                                <div class="char-stat">
+                                    <div class="char-stat-icon">🏅</div>
+                                    <div class="char-stat-value" id="totalBadges">0</div>
+                                    <div class="char-stat-label">Badges</div>
+                                </div>
+                                <div class="char-stat">
+                                    <div class="char-stat-icon">✅</div>
+                                    <div class="char-stat-value" id="accuracyPercent">0%</div>
+                                    <div class="char-stat-label">Accuracy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== MISSIONS SECTION ========== -->
+        <section class="missions-section section" id="missions">
+            <div class="missions-container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <span class="section-badge-icon">🎮</span>
+                        <span class="section-badge-text">Choose Your Battle</span>
+                    </div>
+                    <h2 class="section-title">
+                        <span class="text-gradient-fire">Mission</span> Control
+                    </h2>
+                    <p class="section-subtitle">
+                        Har mission ek naya challenge. Complete karo, XP kamao, aur Accounts Wizard bano!
+                    </p>
+                </div>
+
+                <div class="missions-grid">
+                    
+                    <!-- MISSION 1: Trial Balance -->
+                    <div class="mission-card trial-balance" id="mission-trial-balance">
+                        <div class="mission-header">
+                            <span class="mission-number">MISSION 01</span>
+                            <div class="mission-difficulty">
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star empty">⭐</span>
+                            </div>
+                            <div class="mission-icon">🎯</div>
+                            <h3 class="mission-title">Trial Balance</h3>
+                            <p class="mission-theme">🔫 Sniper Training Mode</p>
+                        </div>
+                        <div class="mission-body">
+                            <p class="mission-story">
+                                "Tumhare paas entries hain. Debit aur Credit mein sort karo. Balance hona chahiye warna game over!"
+                            </p>
+                            <div class="mission-objectives">
+                                <h4 class="mission-objectives-title">🎯 Objectives</h4>
+                                <div class="mission-objective">▸ Drag entries to Debit/Credit</div>
+                                <div class="mission-objective">▸ Balance the Trial Balance</div>
+                                <div class="mission-objective">▸ Learn why each entry goes where</div>
+                            </div>
+                            <div class="mission-rewards">
+                                <div class="mission-reward xp">⚡ +50-150 XP</div>
+                                <div class="mission-reward badge">🏅 Sniper Badge</div>
+                            </div>
+                        </div>
+                        <div class="mission-footer">
+                            <div class="mission-progress-info">
+                                <span class="mission-progress-label">Best Score</span>
+                                <span class="mission-progress-value" id="tb-best-score">--</span>
+                            </div>
+                            <button class="mission-start-btn" onclick="startMission('trial-balance')">
+                                ▶ Start Mission
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MISSION 2: BRS -->
+                    <div class="mission-card brs" id="mission-brs">
+                        <div class="mission-header">
+                            <span class="mission-number">MISSION 02</span>
+                            <div class="mission-difficulty">
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                            </div>
+                            <div class="mission-icon">🕵️</div>
+                            <h3 class="mission-title">Bank Reconciliation</h3>
+                            <p class="mission-theme">🔍 Detective Mode</p>
+                        </div>
+                        <div class="mission-body">
+                            <p class="mission-story">
+                                "Cash Book aur Pass Book match nahi ho rahe! Detective banke differences dhundho aur fix karo!"
+                            </p>
+                            <div class="mission-objectives">
+                                <h4 class="mission-objectives-title">🎯 Objectives</h4>
+                                <div class="mission-objective">▸ Identify causes of differences</div>
+                                <div class="mission-objective">▸ Classify: Add or Deduct</div>
+                                <div class="mission-objective">▸ Reconcile the balances</div>
+                            </div>
+                            <div class="mission-rewards">
+                                <div class="mission-reward xp">⚡ +75-200 XP</div>
+                                <div class="mission-reward badge">🏅 Detective Badge</div>
+                            </div>
+                        </div>
+                        <div class="mission-footer">
+                            <div class="mission-progress-info">
+                                <span class="mission-progress-label">Best Score</span>
+                                <span class="mission-progress-value" id="brs-best-score">--</span>
+                            </div>
+                            <button class="mission-start-btn" onclick="startMission('brs')">
+                                ▶ Start Mission
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MISSION 3: Depreciation -->
+                    <div class="mission-card depreciation" id="mission-depreciation">
+                        <div class="mission-header">
+                            <span class="mission-number">MISSION 03</span>
+                            <div class="mission-difficulty">
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                            </div>
+                            <div class="mission-icon">📉</div>
+                            <h3 class="mission-title">Depreciation</h3>
+                            <p class="mission-theme">💀 Survival Mode</p>
+                        </div>
+                        <div class="mission-body">
+                            <p class="mission-story">
+                                "Assets ki value time ke saath girti hai. Calculate karo depreciation - SLM ya WDV method se!"
+                            </p>
+                            <div class="mission-objectives">
+                                <h4 class="mission-objectives-title">🎯 Objectives</h4>
+                                <div class="mission-objective">▸ Choose correct method</div>
+                                <div class="mission-objective">▸ Calculate year-wise depreciation</div>
+                                <div class="mission-objective">▸ Watch asset value decrease</div>
+                            </div>
+                            <div class="mission-rewards">
+                                <div class="mission-reward xp">⚡ +60-180 XP</div>
+                                <div class="mission-reward badge">🏅 Calculator Badge</div>
+                            </div>
+                        </div>
+                        <div class="mission-footer">
+                            <div class="mission-progress-info">
+                                <span class="mission-progress-label">Best Score</span>
+                                <span class="mission-progress-value" id="dep-best-score">--</span>
+                            </div>
+                            <button class="mission-start-btn" onclick="startMission('depreciation')">
+                                ▶ Start Mission
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MISSION 4: Rectification -->
+                    <div class="mission-card rectification" id="mission-rectification">
+                        <div class="mission-header">
+                            <span class="mission-number">MISSION 04</span>
+                            <div class="mission-difficulty">
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                                <span class="difficulty-star">⭐</span>
+                            </div>
+                            <div class="mission-icon">🛠️</div>
+                            <h3 class="mission-title">Rectification</h3>
+                            <p class="mission-theme">🔧 Glitch Fixer Mode</p>
+                        </div>
+                        <div class="mission-body">
+                            <p class="mission-story">
+                                "Accounts mein errors aa gaye hain! Galat entries dhundho aur unhe fix karo rectifying entries se!"
+                            </p>
+                            <div class="mission-objectives">
+                                <h4 class="mission-objectives-title">🎯 Objectives</h4>
+                                <div class="mission-objective">▸ Identify error type</div>
+                                <div class="mission-objective">▸ Create rectifying entry</div>
+                                <div class="mission-objective">▸ Fix the books</div>
+                            </div>
+                            <div class="mission-rewards">
+                                <div class="mission-reward xp">⚡ +80-250 XP</div>
+                                <div class="mission-reward badge">🏅 Fixer Badge</div>
+                            </div>
+                        </div>
+                        <div class="mission-footer">
+                            <div class="mission-progress-info">
+                                <span class="mission-progress-label">Best Score</span>
+                                <span class="mission-progress-value" id="rect-best-score">--</span>
+                            </div>
+                            <button class="mission-start-btn" onclick="startMission('rectification')">
+                                ▶ Start Mission
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== RANKS SECTION ========== -->
+        <section class="ranks-section section" id="ranks">
+            <div class="ranks-container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <span class="section-badge-icon">⚔️</span>
+                        <span class="section-badge-text">Warrior Progression</span>
+                    </div>
+                    <h2 class="section-title">
+                        <span class="text-gradient-gold">Rank</span> System
+                    </h2>
+                    <p class="section-subtitle">
+                        XP kamao aur ranks unlock karo. Noob se Wizard tak ka safar!
+                    </p>
+                </div>
+
+                <div class="ranks-grid">
+                    <!-- Rank 1 -->
+                    <div class="rank-card rank-1" id="rank-1">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">😅</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 1</span>
+                                <h3 class="rank-name">Noob Accountant</h3>
+                                <span class="rank-xp-required">⚡ 0 XP</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">Sabka yahan se start hota hai. Basic entries seekho!</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ Access Trial Balance mission</div>
+                                <div class="rank-perk">✓ Basic hints available</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 2 -->
+                    <div class="rank-card rank-2 locked" id="rank-2">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">📚</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 2</span>
+                                <h3 class="rank-name">Rookie Ledger Keeper</h3>
+                                <span class="rank-xp-required">⚡ 100 XP Required</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">Ab tum ledger maintain kar sakte ho!</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ +10% XP bonus</div>
+                                <div class="rank-perk">✓ Unlock practice mode</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 3 -->
+                    <div class="rank-card rank-3 locked" id="rank-3">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">⚔️</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 3</span>
+                                <h3 class="rank-name">Trial Balance Soldier</h3>
+                                <span class="rank-xp-required">⚡ 250 XP Required</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">Debit-Credit balance karna ab easy!</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ Skip power-up unlocked</div>
+                                <div class="rank-perk">✓ Access BRS mission</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 4 -->
+                    <div class="rank-card rank-4 locked" id="rank-4">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">🎯</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 4</span>
+                                <h3 class="rank-name">Depreciation Sniper</h3>
+                                <span class="rank-xp-required">⚡ 450 XP Required</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">SLM ya WDV? Koi problem nahi!</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ Time freeze power-up</div>
+                                <div class="rank-perk">✓ +15% XP bonus</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 5 -->
+                    <div class="rank-card rank-5 locked" id="rank-5">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">💳</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 5</span>
+                                <h3 class="rank-name">BRS Hacker</h3>
+                                <span class="rank-xp-required">⚡ 650 XP Required</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">Bank reconciliation expert!</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ 50-50 power-up unlocked</div>
+                                <div class="rank-perk">✓ +20% XP bonus</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 6 -->
+                    <div class="rank-card rank-6 locked" id="rank-6">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">🩺</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 6</span>
+                                <h3 class="rank-name">Rectification Surgeon</h3>
+                                <span class="rank-xp-required">⚡ 900 XP Required</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">Errors ko fix karna tumhari specialty!</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ Reveal answer power-up</div>
+                                <div class="rank-perk">✓ Double XP weekends</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 7 - WIZARD -->
+                    <div class="rank-card rank-7 locked" id="rank-7">
+                        <div class="rank-card-header">
+                            <div class="rank-icon">🧙‍♂️</div>
+                            <div class="rank-info">
+                                <span class="rank-level">Level 7 - MAX</span>
+                                <h3 class="rank-name">Accounts Wizard 🔥</h3>
+                                <span class="rank-xp-required">⚡ 1200 XP Required</span>
+                            </div>
+                        </div>
+                        <div class="rank-card-body">
+                            <p class="rank-description">THE ULTIMATE TITLE! Tum ab Master ho! 🧙‍♂️✨</p>
+                            <div class="rank-perks">
+                                <div class="rank-perk">✓ All power-ups unlimited</div>
+                                <div class="rank-perk">✓ Exclusive Wizard badge</div>
+                                <div class="rank-perk">✓ Hall of Fame entry</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ACHIEVEMENTS SECTION ========== -->
+        <section class="achievements-section section" id="achievements">
+            <div class="achievements-container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <span class="section-badge-icon">🏅</span>
+                        <span class="section-badge-text">Glory Collection</span>
+                    </div>
+                    <h2 class="section-title">
+                        <span class="text-gradient-legendary">Achievement</span> Gallery
+                    </h2>
+                    <p class="section-subtitle">
+                        Special tasks complete karo aur exclusive badges unlock karo!
+                    </p>
+                </div>
+
+                <!-- Achievement Stats -->
+                <div class="achievement-stats-summary">
+                    <div class="achievement-stat-item">
+                        <div class="achievement-stat-icon">🏆</div>
+                        <div class="achievement-stat-value gold" id="unlockedAchievements">0</div>
+                        <div class="achievement-stat-label">Unlocked</div>
+                    </div>
+                    <div class="achievement-stat-item">
+                        <div class="achievement-stat-icon">🔒</div>
+                        <div class="achievement-stat-value blue" id="lockedAchievements">12</div>
+                        <div class="achievement-stat-label">Locked</div>
+                    </div>
+                    <div class="achievement-stat-item">
+                        <div class="achievement-stat-icon">⚡</div>
+                        <div class="achievement-stat-value green" id="achievementXpTotal">0</div>
+                        <div class="achievement-stat-label">XP Earned</div>
+                    </div>
+                </div>
+
+                <!-- Achievements Grid -->
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- Achievement cards will be generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================
+         🎮 GAME ARENA (Shows during gameplay)
+    ============================================ -->
+    <div class="game-arena" id="gameArena">
+        <!-- Game Header -->
+        <div class="game-header">
+            <div class="game-info">
+                <button class="game-back-btn" id="exitGameBtn" title="Exit Game">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="game-title-section">
+                    <span class="game-mission-label" id="gameMissionLabel">MISSION 01</span>
+                    <h2 class="game-title" id="gameTitle">Trial Balance</h2>
+                </div>
+            </div>
+            
+            <div class="game-stats-bar">
+                <div class="game-stat-item timer">
+                    <span class="game-stat-icon">⏱️</span>
+                    <span class="game-stat-value" id="gameTimer">05:00</span>
+                </div>
+                <div class="health-bar-container">
+                    <span class="health-bar-icon">❤️</span>
+                    <div class="health-bar">
+                        <div class="health-bar-fill full" id="healthBar" style="width: 100%;"></div>
+                    </div>
+                    <span class="health-text" id="healthText">100%</span>
+                </div>
+                <div class="game-stat-item score">
+                    <span class="game-stat-icon">⭐</span>
+                    <span class="game-stat-value" id="gameScore">0</span>
+                </div>
+                <div class="game-stat-item combo" id="comboContainer">
+                    <span class="game-stat-icon">🔥</span>
+                    <span class="game-stat-value" id="gameCombo">0x</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Content Area - Changes based on mission -->
+        <div class="game-content" id="gameContent">
+            <!-- Content loaded dynamically based on mission type -->
+        </div>
+    </div>
+
+    <!-- ============================================
+         🏆 GAME RESULTS OVERLAY
+    ============================================ -->
+    <div class="game-results-overlay" id="gameResults">
+        <div class="game-results-card">
+            <div class="result-status">
+                <span class="result-icon" id="resultIcon">🏆</span>
+                <h2 class="result-title" id="resultTitle">Mission Complete!</h2>
+                <p class="result-subtitle" id="resultSubtitle">Great job, Warrior!</p>
+            </div>
+
+            <div class="result-stats">
+                <div class="result-stat">
+                    <span class="result-stat-icon">✅</span>
+                    <span class="result-stat-value green" id="resultCorrect">0</span>
+                    <span class="result-stat-label">Correct</span>
+                </div>
+                <div class="result-stat">
+                    <span class="result-stat-icon">❌</span>
+                    <span class="result-stat-value" style="color: var(--neon-red);" id="resultWrong">0</span>
+                    <span class="result-stat-label">Wrong</span>
+                </div>
+                <div class="result-stat">
+                    <span class="result-stat-icon">🎯</span>
+                    <span class="result-stat-value blue" id="resultAccuracy">0%</span>
+                    <span class="result-stat-label">Accuracy</span>
+                </div>
+            </div>
+
+            <div class="result-xp-earned">
+                <p class="xp-earned-label">XP Earned</p>
+                <div class="xp-earned-value">
+                    <span class="xp-earned-icon">⚡</span>
+                    <span id="resultXp">+0 XP</span>
+                </div>
+            </div>
+
+            <!-- Level Up Notification (hidden by default) -->
+            <div class="level-up-notification" id="levelUpNotice" style="display: none;">
+                <div class="level-up-content">
+                    <span class="level-up-icon">🎉</span>
+                    <div class="level-up-text">
+                        <span class="level-up-title">LEVEL UP!</span>
+                        <span class="level-up-subtitle">Level <span id="newLevelNum">2</span> reached!</span>
+                    </div>
+                    <span class="level-up-icon">🎉</span>
+                </div>
+            </div>
+
+            <!-- New Rank Notification (hidden by default) -->
+            <div class="new-rank-unlocked" id="newRankNotice" style="display: none;">
+                <p class="new-rank-title">🎖️ NEW RANK UNLOCKED!</p>
+                <div class="new-rank-content">
+                    <div class="new-rank-icon" id="newRankIcon">📚</div>
+                    <div class="new-rank-info">
+                        <h3 class="new-rank-name" id="newRankTitle">Rookie Ledger Keeper</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievement Unlocked (hidden by default) -->
+            <div class="result-achievements" id="achievementNotice" style="display: none;">
+                <h4 class="result-achievements-title">🏆 Achievement Unlocked!</h4>
+                <div class="result-achievements-grid" id="unlockedAchievementsList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div class="result-explanation" id="resultExplanation" style="display: none;">
+                <h4 style="color: var(--neon-blue); margin-bottom: 10px;">📖 What You Learned:</h4>
+                <p id="explanationText" style="color: var(--text-secondary); line-height: 1.7;"></p>
+            </div>
+
+            <div class="result-actions">
+                <button class="result-btn result-btn-secondary" id="goHomeBtn">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="result-btn result-btn-primary" id="playAgainBtn">
+                    <i class="fas fa-redo"></i> Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ⚙️ SETTINGS MODAL
+    ============================================ -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">⚙️ Settings</h3>
+                <button class="modal-close" id="closeSettings">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-group">
+                    <h4 class="settings-group-title">👤 Profile</h4>
+                    <div class="settings-item">
+                        <div class="settings-label">
+                            <span class="settings-label-text">Your Name</span>
+                        </div>
+                        <input type="text" class="input" id="settingsName" placeholder="Enter your name" style="max-width: 200px; padding: 10px;">
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h4 class="settings-group-title">🔊 Sound</h4>
+                    <div class="settings-item">
+                        <div class="settings-label">
+                            <span class="settings-label-text">Sound Effects</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="soundToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h4 class="settings-group-title">🗑️ Data</h4>
+                    <div class="settings-item">
+                        <div class="settings-label">
+                            <span class="settings-label-text">Reset All Progress</span>
+                            <span class="settings-label-description">Start fresh (cannot undo!)</span>
+                        </div>
+                        <button class="btn btn-sm" id="resetAllBtn" style="background: rgba(255,51,102,0.2); color: var(--neon-red); border: 1px solid var(--neon-red);">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveSettings">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ⚠️ CONFIRM MODAL
+    ============================================ -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal" style="max-width: 400px; text-align: center;">
+            <div class="modal-body" style="padding: 40px 30px;">
+                <div style="font-size: 4rem; margin-bottom: 20px;" id="confirmIcon">⚠️</div>
+                <h3 style="font-family: var(--font-gaming); font-size: 1.3rem; margin-bottom: 15px;" id="confirmTitle">Are you sure?</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 30px;" id="confirmMessage">This action cannot be undone.</p>
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-ghost" id="confirmCancel">Cancel</button>
+                    <button class="btn btn-primary" id="confirmOk">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         🔊 SOUND TOGGLE (Fixed position)
+    ============================================ -->
+    <div class="sound-enabled-indicator" id="soundIndicator">
+        <span class="sound-icon" id="soundIcon">🔊</span>
+        <span class="sound-text" id="soundText">Sound On</span>
+    </div>
+
+    <!-- ============================================
+         💫 FLOATING XP CONTAINER
+    ============================================ -->
+    <div id="floatingXpContainer"></div>
+
+    <!-- ============================================
+         📜 FOOTER
+    ============================================ -->
+    <footer style="background: var(--bg-secondary); padding: 40px 30px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
+                <div style="width: 40px; height: 40px; background: var(--gradient-legendary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">🧙‍♂️</div>
+                <span style="font-family: var(--font-gaming); font-size: 1.2rem; background: var(--gradient-legendary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ACCOUNTS WIZARD</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">
+                "Tum sirf student nahi… ek Accounting Warrior ho!" ⚔️
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">
+                Made with ❤️ for Commerce Students | © 2024
+            </p>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         📜 JAVASCRIPT
+    ============================================ -->
+    <script src="./learn.js"></script>
+</body>
+</html>
