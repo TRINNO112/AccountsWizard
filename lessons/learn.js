@@ -1255,7 +1255,7 @@ console.log('%c"Tum sirf student nahi… ek Accounting Warrior ho!"', 'color: #0
 // ============================================
 
 const TrialBalanceEntries = [
-    // DEBIT ITEMS (Assets & Expenses)
+    // DEBIT ITEMS (Assets & Expenses) - 15 items
     {
         id: 1,
         text: 'Machinery purchased',
@@ -1376,8 +1376,49 @@ const TrialBalanceEntries = [
         type: 'Expense',
         explanation: 'Advertising ka kharcha Indirect Expense hai. Debit mein jaayega.'
     },
+    // ADDED NEW DEBIT ENTRIES (5 more)
+    {
+        id: 31,
+        text: 'Office Equipment',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Asset',
+        explanation: 'Office equipment like computers, printers are Fixed Assets. Always Debit!'
+    },
+    {
+        id: 32,
+        text: 'Vehicles (Delivery Van)',
+        amount: 300000,
+        correctSide: 'debit',
+        type: 'Asset',
+        explanation: 'Vehicles used for business are Fixed Assets. Debit side!'
+    },
+    {
+        id: 33,
+        text: 'Trade Expenses',
+        amount: 7500,
+        correctSide: 'debit',
+        type: 'Expense',
+        explanation: 'Trade expenses like packaging, transportation are Direct Expenses. Debit!'
+    },
+    {
+        id: 34,
+        text: 'Depreciation on Machinery',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        explanation: 'Depreciation is an expense that reduces asset value. Always Debit!'
+    },
+    {
+        id: 35,
+        text: 'Commission Paid',
+        amount: 6000,
+        correctSide: 'debit',
+        type: 'Expense',
+        explanation: 'Commission paid to agents is an expense. Expenses = Debit!'
+    },
 
-    // CREDIT ITEMS (Liabilities, Capital & Income)
+    // CREDIT ITEMS (Liabilities, Capital & Income) - 15 items
     {
         id: 16,
         text: 'Capital (Owner)',
@@ -1457,6 +1498,87 @@ const TrialBalanceEntries = [
         correctSide: 'credit',
         type: 'Liability',
         explanation: 'Bills Payable matlab paisa dena hai - Liability hai. Credit!'
+    },
+    {
+        id: 26,
+        text: 'Reserves & Surplus',
+        amount: 40000,
+        correctSide: 'credit',
+        type: 'Capital',
+        explanation: 'Reserves are accumulated profits - part of owners equity. Credit!'
+    },
+    {
+        id: 27,
+        text: 'Provision for Doubtful Debts',
+        amount: 3000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Provision is a liability - expected loss from bad debts. Credit side.'
+    },
+    {
+        id: 28,
+        text: 'Unearned Revenue',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Money received in advance for future services. Liability = Credit!'
+    },
+    {
+        id: 29,
+        text: 'Interest on Loan Payable',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Interest payable on loans is a liability. Credit side!'
+    },
+    {
+        id: 30,
+        text: 'Gains from Asset Sale',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Income',
+        explanation: 'Profit from selling assets is income. All incomes = Credit!'
+    },
+    // ADDED NEW CREDIT ENTRIES (5 more)
+    {
+        id: 36,
+        text: 'Mortgage Payable',
+        amount: 250000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Mortgage is a long-term loan for property. Liabilities = Credit!'
+    },
+    {
+        id: 37,
+        text: 'Accrued Interest Income',
+        amount: 4500,
+        correctSide: 'credit',
+        type: 'Income',
+        explanation: 'Interest earned but not yet received is still income. Credit!'
+    },
+    {
+        id: 38,
+        text: 'Deferred Tax Liability',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Taxes payable in future are liabilities. Credit side!'
+    },
+    {
+        id: 39,
+        text: 'Donations Received',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Income',
+        explanation: 'Donations received are non-operating income. Income = Credit!'
+    },
+    {
+        id: 40,
+        text: 'Retained Earnings',
+        amount: 75000,
+        correctSide: 'credit',
+        type: 'Capital',
+        explanation: 'Accumulated profits not distributed. Part of equity = Credit!'
     }
 ];
 
