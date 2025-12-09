@@ -150,6 +150,14 @@ const Achievements = [
                    Player.bestScores['depreciation'] > 0 &&
                    Player.bestScores['rectification'] > 0;
         }
+    },
+    {
+        id: 'mistake-killer',
+        name: 'Mistake Killer',
+        description: 'Achieve 5x streak in Rectification game',
+        icon: '🔧',
+        xp: 50,
+        condition: () => false // Checked during game
     }
 ];
 
@@ -841,6 +849,132 @@ function endGame(completed) {
     updateAllUI();
 }
 
+// Add this CSS for scrollable results
+const resultsStyle = document.createElement('style');
+resultsStyle.textContent = `
+    /* Results Screen Scroll Fix */
+    #gameResults {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto !important;
+        z-index: 10000;
+        background: linear-gradient(135deg, 
+            rgba(10, 10, 35, 0.98) 0%, 
+            rgba(20, 20, 50, 0.98) 100%);
+        backdrop-filter: blur(10px);
+    }
+    
+    .results-container {
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .results-content {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+        background: var(--bg-card);
+        border-radius: 20px;
+        border: 2px solid rgba(168, 85, 247, 0.3);
+        box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
+    }
+    
+    .result-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .result-action-btn {
+        min-width: 180px;
+        padding: 15px 30px;
+        font-size: 1rem;
+        font-family: var(--font-gaming);
+    }
+    
+    .exit-btn {
+        background: linear-gradient(135deg, var(--neon-red), #ff3366);
+        border: none;
+    }
+    
+    .exit-btn:hover {
+        background: linear-gradient(135deg, #ff3366, var(--neon-red));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 51, 102, 0.3);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .results-content {
+            padding: 20px;
+            margin: 20px;
+        }
+        
+        .result-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .result-action-btn {
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+    
+    @media (max-height: 700px) {
+        .results-container {
+            padding: 10px;
+        }
+        
+        .results-content {
+            margin: 10px auto;
+        }
+    }
+    
+    /* Close Button */
+    .results-close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 51, 102, 0.2);
+        border: 2px solid var(--neon-red);
+        border-radius: 50%;
+        color: var(--neon-red);
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10001;
+    }
+    
+    .results-close-btn:hover {
+        background: var(--neon-red);
+        color: white;
+        transform: rotate(90deg);
+    }
+`;
+document.head.appendChild(resultsStyle);
+
+// ============================================
+// 🏆 UPDATE SHOW RESULTS FUNCTION
+// ============================================
+
 function showResults(completed, accuracy, xpEarned, levelResult, newAchievements) {
     // Hide game arena
     document.getElementById('gameArena').style.display = 'none';
@@ -889,6 +1023,9 @@ function showResults(completed, accuracy, xpEarned, levelResult, newAchievements
         levelUpNotice.style.display = 'block';
         setText('newLevelNum', levelResult.newLevel);
         Sound.play('levelup');
+        
+        // Add celebratory animation
+        levelUpNotice.style.animation = 'pulse 2s infinite';
     } else {
         levelUpNotice.style.display = 'none';
     }
@@ -918,26 +1055,466 @@ function showResults(completed, accuracy, xpEarned, levelResult, newAchievements
         achievementNotice.style.display = 'none';
     }
 
-    // Show results overlay
-    document.getElementById('gameResults').classList.add('active');
-    document.getElementById('gameResults').style.display = 'flex';
+    // Add close button to results
+    const gameResults = document.getElementById('gameResults');
+    gameResults.classList.add('active');
+    gameResults.style.display = 'flex';
+    
+    // Update results container structure
+    gameResults.innerHTML = `
+        <div class="results-container">
+            <button class="results-close-btn" onclick="exitToHome()">✕</button>
+            <div class="results-content">
+                <div class="result-header">
+                    <div class="result-icon">${resultIcon.textContent}</div>
+                    <h1 class="${resultTitle.className}">${resultTitle.textContent}</h1>
+                    <p class="result-subtitle">${resultSubtitle.textContent}</p>
+                </div>
+                
+                <div class="result-stats">
+                    <div class="stat-row">
+                        <span>Correct Answers:</span>
+                        <strong>${Game.correct}</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>Wrong Answers:</span>
+                        <strong>${Game.wrong}</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>Accuracy:</span>
+                        <strong>${accuracy}%</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>XP Earned:</span>
+                        <strong class="xp-earned">+${xpEarned} XP</strong>
+                    </div>
+                </div>
+                
+                <!-- Level Up Notice -->
+                ${levelResult.leveledUp ? `
+                <div class="level-up-notice" id="levelUpNotice" style="display: block;">
+                    <div class="level-up-icon">🎉</div>
+                    <div class="level-up-text">
+                        <h3>LEVEL UP!</h3>
+                        <p>You reached <span class="new-level">${levelResult.newLevel}</span></p>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- New Rank Notice -->
+                ${levelResult.leveledUp && levelResult.newLevel > levelResult.oldLevel ? `
+                <div class="new-rank-notice" id="newRankNotice" style="display: block;">
+                    <div class="new-rank-icon">${Ranks.find(r => r.level === levelResult.newLevel)?.emoji || '🏆'}</div>
+                    <div class="new-rank-text">
+                        <h3>NEW RANK!</h3>
+                        <p>${Ranks.find(r => r.level === levelResult.newLevel)?.name || 'New Rank'}</p>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- Achievement Notice -->
+                ${newAchievements.length > 0 ? `
+                <div class="achievement-notice" id="achievementNotice" style="display: block;">
+                    <div class="achievement-notice-icon">🏆</div>
+                    <div class="achievement-notice-content">
+                        <h3>Achievements Unlocked!</h3>
+                        <div class="achievements-list" id="unlockedAchievementsList">
+                            ${newAchievements.map(a => 
+                                `<div class="result-achievement">${a.icon} ${a.name}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <!-- Action Buttons -->
+                <div class="result-actions">
+                    <button class="btn btn-primary result-action-btn" onclick="playAgain()">
+                        🔄 Play Again
+                    </button>
+                    <button class="btn btn-secondary result-action-btn" onclick="exitToHome()">
+                        🏠 Main Menu
+                    </button>
+                </div>
+                
+                <div class="result-tip">
+                    <span>💡 Tip:</span> Complete missions daily to maintain your streak!
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add CSS for new elements
+    const dynamicStyle = document.createElement('style');
+    dynamicStyle.textContent = `
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            font-family: var(--font-gaming);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .result-title.perfect {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 20px var(--neon-yellow);
+        }
+        
+        .result-title.victory {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        .result-title.defeat {
+            color: var(--neon-red);
+            text-shadow: 0 0 20px var(--neon-red);
+        }
+        
+        .result-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+        
+        .result-stats {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-row span {
+            color: var(--text-secondary);
+        }
+        
+        .stat-row strong {
+            font-family: var(--font-gaming);
+            font-size: 1.2rem;
+        }
+        
+        .xp-earned {
+            color: var(--neon-green);
+        }
+        
+        .level-up-notice, .new-rank-notice, .achievement-notice {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(255, 107, 53, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .level-up-icon, .new-rank-icon, .achievement-notice-icon {
+            font-size: 3rem;
+        }
+        
+        .level-up-text h3, .new-rank-text h3, .achievement-notice-content h3 {
+            color: var(--neon-purple);
+            margin-bottom: 5px;
+            font-family: var(--font-gaming);
+        }
+        
+        .new-level {
+            font-family: var(--font-gaming);
+            color: var(--neon-yellow);
+            font-size: 1.5rem;
+        }
+        
+        .achievement-notice-content {
+            flex: 1;
+        }
+        
+        .achievements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .result-achievement {
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .result-tip {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        /* Scrollbar styling */
+        #gameResults::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #gameResults::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+        
+        #gameResults::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 4px;
+        }
+        
+        #gameResults::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-blue);
+        }
+        
+        /* Touch device improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .results-close-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .result-action-btn {
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+        }
+    `;
+    document.head.appendChild(dynamicStyle);
+    
+    // Ensure scrolling works
+    setTimeout(() => {
+        gameResults.scrollTop = 0;
+    }, 100);
 }
 
+// ============================================
+// 🎮 PLAY AGAIN FUNCTION
+// ============================================
+
+function playAgain() {
+    Sound.play('click');
+    
+    // Hide results screen
+    document.getElementById('gameResults').style.display = 'none';
+    document.getElementById('gameResults').classList.remove('active');
+    
+    // Restart the same mission
+    startMission(Game.mission);
+}
+
+// ============================================
+// 🏠 EXIT TO HOME (UPDATED)
+// ============================================
+
 function exitToHome() {
-    // Hide game screens
+    Sound.play('click');
+    
+    // Hide all game screens
     document.getElementById('gameArena').style.display = 'none';
     document.getElementById('gameArena').classList.remove('active');
     document.getElementById('gameResults').style.display = 'none';
     document.getElementById('gameResults').classList.remove('active');
-
-    // Show main content
-    document.getElementById('mainContent').style.display = 'block';
-
-    // Scroll to missions
-    document.getElementById('missions').scrollIntoView({ behavior: 'smooth' });
-
+    
+    // Stop any active timers
+    stopTimer();
+    
+    // Reset game state
+    Game.isActive = false;
+    
+    // Show main content with smooth transition
+    const mainContent = document.getElementById('mainContent');
+    mainContent.style.display = 'block';
+    mainContent.style.opacity = '0';
+    mainContent.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        mainContent.style.opacity = '1';
+    }, 50);
+    
+    // Scroll to top smoothly
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+    
     // Update UI
     updateAllUI();
+    
+    // Show welcome back message
+    showToast('🏠 Welcome Back!', 'Ready for another mission?', 'info');
+}
+
+// ============================================
+// 📱 UPDATE EVENT LISTENERS
+// ============================================
+
+// Add this to your existing DOMContentLoaded event listener
+// Replace the existing exitToHome calls with these updates:
+
+// In the Game Buttons section, update the exit game button:
+document.getElementById('exitGameBtn').addEventListener('click', function() {
+    if (Game.isActive) {
+        showConfirm(
+            '⚠️',
+            'Exit Mission?',
+            'Your progress will be lost!',
+            function() {
+                stopTimer();
+                Game.isActive = false;
+                exitToHome();
+            }
+        );
+    } else {
+        exitToHome();
+    }
+});
+
+// Update the go home button (already exists):
+document.getElementById('goHomeBtn').addEventListener('click', exitToHome);
+
+// Add escape key support
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        // If results screen is visible, exit to home
+        if (document.getElementById('gameResults').classList.contains('active')) {
+            exitToHome();
+        }
+        // If game arena is active, show confirm dialog
+        else if (Game.isActive) {
+            showConfirm(
+                '⚠️',
+                'Exit Mission?',
+                'Your progress will be lost!',
+                function() {
+                    stopTimer();
+                    Game.isActive = false;
+                    exitToHome();
+                }
+            );
+        }
+    }
+});
+
+// ============================================
+// 📱 TOUCH GESTURE SUPPORT FOR EXIT
+// ============================================
+
+// Add swipe down to exit on mobile
+let touchStartY = 0;
+let touchEndY = 0;
+
+document.addEventListener('touchstart', function(e) {
+    if (document.getElementById('gameResults').classList.contains('active')) {
+        touchStartY = e.changedTouches[0].screenY;
+    }
+}, { passive: true });
+
+document.addEventListener('touchend', function(e) {
+    if (document.getElementById('gameResults').classList.contains('active')) {
+        touchEndY = e.changedTouches[0].screenY;
+        
+        // Swipe down to exit (minimum 100px swipe)
+        if (touchEndY - touchStartY > 100) {
+            exitToHome();
+        }
+    }
+}, { passive: true });
+
+// ============================================
+// 🎨 ADD SCROLL INDICATOR FOR LONG RESULTS
+// ============================================
+
+const scrollIndicatorStyle = document.createElement('style');
+scrollIndicatorStyle.textContent = `
+    .scroll-indicator {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        text-align: center;
+        animation: bounce 2s infinite;
+        pointer-events: none;
+        z-index: 10002;
+        background: rgba(0,0,0,0.5);
+        padding: 8px 15px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .scroll-indicator span {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 1.2rem;
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+        40% { transform: translateX(-50%) translateY(-10px); }
+        60% { transform: translateX(-50%) translateY(-5px); }
+    }
+    
+    @media (max-height: 700px) {
+        .scroll-indicator {
+            display: none;
+        }
+    }
+`;
+document.head.appendChild(scrollIndicatorStyle);
+
+// Add scroll indicator to results screen
+function addScrollIndicator() {
+    const gameResults = document.getElementById('gameResults');
+    if (!gameResults.querySelector('.scroll-indicator')) {
+        const indicator = document.createElement('div');
+        indicator.className = 'scroll-indicator';
+        indicator.innerHTML = `
+            <span>👇</span>
+            Scroll for more
+        `;
+        gameResults.appendChild(indicator);
+        
+        // Remove indicator when user scrolls
+        gameResults.addEventListener('scroll', function() {
+            if (gameResults.scrollTop > 50) {
+                indicator.style.opacity = '0';
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 300);
+            }
+        }, { once: true });
+    }
 }
 
 // ============================================
@@ -1251,11 +1828,11 @@ console.log('%c"Tum sirf student nahi… ek Accounting Warrior ho!"', 'color: #0
 ================================================================ */
 
 // ============================================
-// 📚 TRIAL BALANCE QUESTION BANK
+// 📚 TRIAL BALANCE QUESTION BANK (EXPANDED)
 // ============================================
 
 const TrialBalanceEntries = [
-    // DEBIT ITEMS (Assets & Expenses) - 15 items
+    // DEBIT ITEMS (Assets & Expenses) - 25 items
     {
         id: 1,
         text: 'Machinery purchased',
@@ -1376,7 +1953,6 @@ const TrialBalanceEntries = [
         type: 'Expense',
         explanation: 'Advertising ka kharcha Indirect Expense hai. Debit mein jaayega.'
     },
-    // ADDED NEW DEBIT ENTRIES (5 more)
     {
         id: 31,
         text: 'Office Equipment',
@@ -1417,8 +1993,48 @@ const TrialBalanceEntries = [
         type: 'Expense',
         explanation: 'Commission paid to agents is an expense. Expenses = Debit!'
     },
+    {
+        id: 36,
+        text: 'Goodwill',
+        amount: 100000,
+        correctSide: 'debit',
+        type: 'Asset',
+        explanation: 'Goodwill is an intangible asset. Assets have debit balance.'
+    },
+    {
+        id: 37,
+        text: 'Patents & Trademarks',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Asset',
+        explanation: 'Intellectual property assets have debit balance.'
+    },
+    {
+        id: 38,
+        text: 'Drawings',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        explanation: 'Owner\'s drawings reduce capital, so it\'s debit.'
+    },
+    {
+        id: 39,
+        text: 'Bad Debts',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        explanation: 'Bad debts are losses, so debit balance.'
+    },
+    {
+        id: 40,
+        text: 'Interest on Loan',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        explanation: 'Interest paid is an expense, debit side.'
+    },
 
-    // CREDIT ITEMS (Liabilities, Capital & Income) - 15 items
+    // CREDIT ITEMS (Liabilities, Capital & Income) - 25 items
     {
         id: 16,
         text: 'Capital (Owner)',
@@ -1539,9 +2155,8 @@ const TrialBalanceEntries = [
         type: 'Income',
         explanation: 'Profit from selling assets is income. All incomes = Credit!'
     },
-    // ADDED NEW CREDIT ENTRIES (5 more)
     {
-        id: 36,
+        id: 41,
         text: 'Mortgage Payable',
         amount: 250000,
         correctSide: 'credit',
@@ -1549,7 +2164,7 @@ const TrialBalanceEntries = [
         explanation: 'Mortgage is a long-term loan for property. Liabilities = Credit!'
     },
     {
-        id: 37,
+        id: 42,
         text: 'Accrued Interest Income',
         amount: 4500,
         correctSide: 'credit',
@@ -1557,7 +2172,7 @@ const TrialBalanceEntries = [
         explanation: 'Interest earned but not yet received is still income. Credit!'
     },
     {
-        id: 38,
+        id: 43,
         text: 'Deferred Tax Liability',
         amount: 18000,
         correctSide: 'credit',
@@ -1565,7 +2180,7 @@ const TrialBalanceEntries = [
         explanation: 'Taxes payable in future are liabilities. Credit side!'
     },
     {
-        id: 39,
+        id: 44,
         text: 'Donations Received',
         amount: 25000,
         correctSide: 'credit',
@@ -1573,12 +2188,52 @@ const TrialBalanceEntries = [
         explanation: 'Donations received are non-operating income. Income = Credit!'
     },
     {
-        id: 40,
+        id: 45,
         text: 'Retained Earnings',
         amount: 75000,
         correctSide: 'credit',
         type: 'Capital',
         explanation: 'Accumulated profits not distributed. Part of equity = Credit!'
+    },
+    {
+        id: 46,
+        text: 'Bank Overdraft',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Bank overdraft is a liability, credit balance.'
+    },
+    {
+        id: 47,
+        text: 'Trade Discount',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Income',
+        explanation: 'Trade discount received is income.'
+    },
+    {
+        id: 48,
+        text: 'Provision for Tax',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Tax provision is a liability, credit balance.'
+    },
+    {
+        id: 49,
+        text: 'Capital Reserve',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Capital',
+        explanation: 'Capital reserve is part of equity, credit balance.'
+    },
+    {
+        id: 50,
+        text: 'Sundry Creditors',
+        amount: 28000,
+        correctSide: 'credit',
+        type: 'Liability',
+        explanation: 'Sundry creditors are liabilities, credit side.'
     }
 ];
 
@@ -1611,14 +2266,14 @@ function loadTrialBalanceGame() {
     TBGame.creditTotal = 0;
     TBGame.isComplete = false;
 
-    // Select random entries (5 debit + 5 credit for balance)
+    // Select random entries (6 debit + 6 credit for balance)
     const debitItems = shuffleArray(
         TrialBalanceEntries.filter(e => e.correctSide === 'debit')
-    ).slice(0, 5);
+    ).slice(0, 6);
     
     const creditItems = shuffleArray(
         TrialBalanceEntries.filter(e => e.correctSide === 'credit')
-    ).slice(0, 5);
+    ).slice(0, 6);
 
     // Adjust amounts to make them balance
     let debitSum = debitItems.reduce((sum, e) => sum + e.amount, 0);
@@ -1626,7 +2281,9 @@ function loadTrialBalanceGame() {
     
     // Adjust last credit item to balance
     const diff = debitSum - creditSum;
-    creditItems[creditItems.length - 1].amount += diff;
+    if (creditItems.length > 0) {
+        creditItems[creditItems.length - 1].amount += diff;
+    }
 
     // Combine and shuffle all entries
     TBGame.entries = shuffleArray([...debitItems, ...creditItems]);
@@ -1651,8 +2308,8 @@ function renderTrialBalanceUI() {
                 <p>Entries ko sahi side mein <strong>Drag & Drop</strong> karo. Debit = Credit hona chahiye!</p>
                 <div class="tb-hint-box">
                     <span>💡 Hint:</span>
-                    <span><strong>DEBIT:</strong> Assets + Expenses</span>
-                    <span><strong>CREDIT:</strong> Liabilities + Capital + Income</span>
+                    <span><strong>DEBIT:</strong> Assets + Expenses + Drawings + Losses</span>
+                    <span><strong>CREDIT:</strong> Liabilities + Capital + Income + Gains</span>
                 </div>
             </div>
 
@@ -1676,7 +2333,7 @@ function renderTrialBalanceUI() {
                                  data-id="${entry.id}"
                                  data-index="${index}"
                                  id="entry-${entry.id}">
-                                <div class="tb-entry-icon">${entry.type === 'Asset' ? '🏢' : entry.type === 'Expense' ? '💸' : entry.type === 'Income' ? '💰' : entry.type === 'Liability' ? '📝' : '👤'}</div>
+                                <div class="tb-entry-icon">${entry.type === 'Asset' ? '🏢' : entry.type === 'Expense' ? '💸' : entry.type === 'Income' ? '💰' : entry.type === 'Liability' ? '📝' : entry.type === 'Capital' ? '👤' : '📊'}</div>
                                 <div class="tb-entry-details">
                                     <span class="tb-entry-name">${entry.text}</span>
                                     <span class="tb-entry-type">${entry.type}</span>
@@ -2277,10 +2934,6 @@ function handleDrop(e) {
 // 📱 TOUCH HANDLERS (Mobile)
 // ============================================
 
-let touchClone = null;
-let touchStartX = 0;
-let touchStartY = 0;
-
 function handleTouchStart(e) {
     const touch = e.touches[0];
     touchStartX = touch.clientX;
@@ -2617,7 +3270,7 @@ window.removeEntryFromZone = removeEntryFromZone;
 ================================================================ */
 
 // ============================================
-// 📚 BRS QUESTION BANK
+// 📚 BRS QUESTION BANK (EXPANDED WITH DEBIT/CREDIT OPTIONS)
 // ============================================
 
 const BRSItems = [
@@ -2631,7 +3284,8 @@ const BRSItems = [
         action: 'add-passbook', // When starting from Cash Book balance
         actionFromPassbook: 'deduct-passbook', // When starting from Pass Book balance
         explanation: 'Cash Book mein already minus ho gaya hai (Credit), but Bank ne abhi payment nahi ki. Isliye Pass Book balance zyada hai. Pass Book se start karein toh minus karo.',
-        hindiTip: 'Cheque issue kiya = Cash Book mein minus. Bank ne pay nahi kiya = Pass Book mein abhi bhi hai.'
+        hindiTip: 'Cheque issue kiya = Cash Book mein minus. Bank ne pay nahi kiya = Pass Book mein abhi bhi hai.',
+        debitCredit: 'debit'
     },
     {
         id: 2,
@@ -2642,18 +3296,32 @@ const BRSItems = [
         action: 'add-passbook',
         actionFromPassbook: 'deduct-passbook',
         explanation: 'March end tak Bank ne pay nahi kiya. Cash Book mein March mein minus hai, but Pass Book mein April mein minus hoga.',
-        hindiTip: 'Late presentation = Bank balance temporarily zyada dikhega.'
+        hindiTip: 'Late presentation = Bank balance temporarily zyada dikhega.',
+        debitCredit: 'debit'
     },
     {
-        id: 3,
-        situation: 'Cheques worth ₹12,000 issued to creditors are still in transit.',
-        shortText: 'Cheques in transit ₹12,000',
-        amount: 12000,
+        id: 31,
+        situation: 'Cheque of ₹15,000 issued to contractor on 30th June, cleared on 5th July.',
+        shortText: 'Cheque ₹15,000 - cleared next month',
+        amount: 15000,
         type: 'cheque-issued-not-presented',
         action: 'add-passbook',
         actionFromPassbook: 'deduct-passbook',
-        explanation: 'Transit mein matlab bank tak nahi pahunche. Cash Book mein deduct hai but Bank ke records mein nahi.',
-        hindiTip: 'Cheque transit = Difference create hota hai temporarily.'
+        explanation: 'June ke end tak cheque pending tha. Cash Book mein deduct, Pass Book mein nahi.',
+        hindiTip: 'Month-end timing difference = Temporary mismatch.',
+        debitCredit: 'debit'
+    },
+    {
+        id: 32,
+        situation: 'Salary cheques totalling ₹75,000 issued on last working day, cleared next week.',
+        shortText: 'Salary cheques ₹75,000',
+        amount: 75000,
+        type: 'cheque-issued-not-presented',
+        action: 'add-passbook',
+        actionFromPassbook: 'deduct-passbook',
+        explanation: 'Employee cheques not yet cashed. Bank balance appears higher than books.',
+        hindiTip: 'Uncashed salary cheques = Bank shows extra money.',
+        debitCredit: 'debit'
     },
 
     // CHEQUES DEPOSITED BUT NOT CREDITED
@@ -2663,10 +3331,11 @@ const BRSItems = [
         shortText: 'Cheque deposited ₹15,000 - not credited',
         amount: 15000,
         type: 'cheque-deposited-not-credited',
-        action: 'deduct-cashbook', // Starting from Cash Book
+        action: 'deduct-cashbook',
         actionFromPassbook: 'add-passbook',
         explanation: 'Cash Book mein add ho gaya (Debit), but Bank ne abhi credit nahi kiya. Isliye Cash Book balance zyada hai.',
-        hindiTip: 'Deposit kiya but Bank ne nahi maana = Cash Book mein extra.'
+        hindiTip: 'Deposit kiya but Bank ne nahi maana = Cash Book mein extra.',
+        debitCredit: 'credit'
     },
     {
         id: 5,
@@ -2677,184 +3346,360 @@ const BRSItems = [
         action: 'deduct-cashbook',
         actionFromPassbook: 'add-passbook',
         explanation: 'March mein deposit kiya but April mein credit hua. March ke BRS mein difference aayega.',
-        hindiTip: 'Bank processing time = Temporary difference.'
+        hindiTip: 'Bank processing time = Temporary difference.',
+        debitCredit: 'credit'
     },
     {
-        id: 6,
-        situation: 'Customer cheque of ₹20,000 sent for collection, awaiting clearance.',
-        shortText: 'Cheque for collection ₹20,000',
-        amount: 20000,
+        id: 33,
+        situation: 'Final day collection of ₹45,000 deposited at 4 PM, processed next day.',
+        shortText: 'Late deposit ₹45,000',
+        amount: 45000,
         type: 'cheque-deposited-not-credited',
         action: 'deduct-cashbook',
         actionFromPassbook: 'add-passbook',
-        explanation: 'Collection mein bheja = Cash Book mein likha, but clearance pending = Bank mein nahi.',
-        hindiTip: 'Collection cheque = Wait for clearance.'
+        explanation: 'Bank cutoff time missed. Shows in books but not in bank statement.',
+        hindiTip: 'After-hours deposit = Next day processing.',
+        debitCredit: 'credit'
+    },
+    {
+        id: 34,
+        situation: 'Outstation cheque of ₹22,000 deposited, awaiting clearance (3-5 days).',
+        shortText: 'Outstation cheque ₹22,000',
+        amount: 22000,
+        type: 'cheque-deposited-not-credited',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'add-passbook',
+        explanation: 'Outstation cheques take longer to clear. Temporary difference.',
+        hindiTip: 'Different city cheque = Longer clearing time.',
+        debitCredit: 'credit'
     },
 
     // BANK CHARGES
     {
-        id: 7,
-        situation: 'Bank charged ₹500 as service charges, not recorded in Cash Book.',
-        shortText: 'Bank charges ₹500',
+        id: 35,
+        situation: 'Monthly SMS alert charges ₹30 debited by bank.',
+        shortText: 'SMS charges ₹30',
+        amount: 30,
+        type: 'bank-charges',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Bank service charge. Debit Bank Charges, Credit Bank A/c.',
+        hindiTip: 'Small charges often missed! Record them.',
+        debitCredit: 'debit'
+    },
+    {
+        id: 36,
+        situation: 'Annual debit card charges ₹500 debited.',
+        shortText: 'Card charges ₹500',
         amount: 500,
         type: 'bank-charges',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Bank ne charge kar liya (Pass Book mein minus), but Cash Book mein entry nahi hai. Cash Book update karna padega.',
-        hindiTip: 'Bank charges = Cash Book mein minus karo (Credit Bank A/c).'
+        explanation: 'Card maintenance fee. Bank already deducted, books need update.',
+        hindiTip: 'Annual charges = Easy to forget!',
+        debitCredit: 'debit'
     },
     {
-        id: 8,
-        situation: 'Bank debited ₹750 for cheque book charges, not entered in books.',
-        shortText: 'Cheque book charges ₹750',
-        amount: 750,
+        id: 37,
+        situation: 'RTGS/NEFT charges ₹25 per transaction.',
+        shortText: 'Transfer charges ₹25',
+        amount: 25,
         type: 'bank-charges',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Cheque book ka charge Bank ne le liya. Cash Book mein record karna bhool gaye.',
-        hindiTip: 'Bank debit = Cash Book mein bhi minus hona chahiye.'
+        explanation: 'Electronic transfer fees. Bank deducted, books not updated.',
+        hindiTip: 'Online transfer charges add up!',
+        debitCredit: 'debit'
     },
     {
-        id: 9,
-        situation: 'Annual locker rent ₹2,000 debited by bank directly.',
-        shortText: 'Locker rent ₹2,000',
-        amount: 2000,
+        id: 38,
+        situation: 'Penalty for minimum balance not maintained ₹200.',
+        shortText: 'Min balance penalty ₹200',
+        amount: 200,
         type: 'bank-charges',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Bank ne directly debit kar diya locker rent. Cash Book mein entry missing hai.',
-        hindiTip: 'Direct bank debit = Cash Book update required.'
+        explanation: 'Bank penalty for low balance. Record as expense.',
+        hindiTip: 'Check minimum balance requirements!',
+        debitCredit: 'debit'
+    },
+    {
+        id: 39,
+        situation: 'Stop payment charges ₹100 for cancelled cheque.',
+        shortText: 'Stop payment ₹100',
+        amount: 100,
+        type: 'bank-charges',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Fee for stopping cheque payment. Bank already charged.',
+        hindiTip: 'Cheque cancellation has costs!',
+        debitCredit: 'debit'
     },
 
-    // INTEREST CREDITED BY BANK
+    // INTEREST CREDITED
     {
-        id: 10,
-        situation: 'Interest of ₹1,200 credited by bank on savings account, not recorded.',
-        shortText: 'Interest received ₹1,200',
-        amount: 1200,
+        id: 40,
+        situation: 'Monthly interest on savings account ₹350 credited.',
+        shortText: 'Savings interest ₹350',
+        amount: 350,
         type: 'interest-credited',
         action: 'add-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Bank ne interest de diya (Pass Book mein plus), but Cash Book mein entry nahi. Cash Book mein add karo.',
-        hindiTip: 'Interest credited = Cash Book mein Debit (increase).'
+        explanation: 'Regular interest income. Bank credited, books need entry.',
+        hindiTip: 'Savings interest = Passive income!',
+        debitCredit: 'credit'
     },
     {
-        id: 11,
-        situation: 'Quarterly interest ₹3,500 added by bank to fixed deposit.',
-        shortText: 'FD Interest ₹3,500',
-        amount: 3500,
+        id: 41,
+        situation: 'Interest on tax refund ₹1,250 credited.',
+        shortText: 'Tax refund interest ₹1,250',
+        amount: 1250,
         type: 'interest-credited',
         action: 'add-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'FD pe interest mila. Bank ne credit kar diya, ab Cash Book bhi update karo.',
-        hindiTip: 'Bank credit = Good news! Cash Book mein add karo.'
+        explanation: 'Government pays interest on delayed refunds. Bank got it.',
+        hindiTip: 'Even government pays interest sometimes!',
+        debitCredit: 'credit'
+    },
+    {
+        id: 42,
+        situation: 'Fixed deposit interest ₹5,000 credited.',
+        shortText: 'FD Interest ₹5,000',
+        amount: 5000,
+        type: 'interest-credited',
+        action: 'add-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'FD interest received. Bank credited, books need update.',
+        hindiTip: 'FD interest = Extra income!',
+        debitCredit: 'credit'
     },
 
     // DIRECT DEPOSITS
     {
-        id: 12,
-        situation: 'Customer directly deposited ₹10,000 in our bank account.',
-        shortText: 'Direct deposit ₹10,000',
+        id: 43,
+        situation: 'Insurance claim settlement ₹50,000 directly deposited.',
+        shortText: 'Insurance claim ₹50,000',
+        amount: 50000,
+        type: 'direct-deposit',
+        action: 'add-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Insurance company paid directly to bank. Books unaware.',
+        hindiTip: 'Direct settlements need recording!',
+        debitCredit: 'credit'
+    },
+    {
+        id: 44,
+        situation: 'GST refund ₹28,500 directly credited to bank.',
+        shortText: 'GST refund ₹28,500',
+        amount: 28500,
+        type: 'direct-deposit',
+        action: 'add-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Government refund via direct credit. Update books.',
+        hindiTip: 'Tax refunds are happy surprises!',
+        debitCredit: 'credit'
+    },
+    {
+        id: 45,
+        situation: 'Dividend income ₹10,000 directly deposited.',
+        shortText: 'Dividend income ₹10,000',
         amount: 10000,
         type: 'direct-deposit',
         action: 'add-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Customer ne seedha bank mein daal diya. Pass Book mein hai, Cash Book mein nahi. Cash Book update karo.',
-        hindiTip: 'Direct deposit = Cash Book mein entry missing, add karo!'
-    },
-    {
-        id: 13,
-        situation: 'Dividend of ₹5,000 collected directly by bank.',
-        shortText: 'Dividend collected ₹5,000',
-        amount: 5000,
-        type: 'direct-deposit',
-        action: 'add-cashbook',
-        actionFromPassbook: 'no-action',
-        explanation: 'Bank ne dividend collect karke account mein daal diya. Cash Book mein record karna hai.',
-        hindiTip: 'Bank collection = Cash Book mein Debit entry banao.'
+        explanation: 'Dividend from investments directly credited.',
+        hindiTip: 'Investment returns need recording!',
+        debitCredit: 'credit'
     },
 
     // DIRECT PAYMENTS
     {
-        id: 14,
-        situation: 'Insurance premium ₹6,000 paid directly by bank through standing instruction.',
-        shortText: 'Insurance premium ₹6,000',
-        amount: 6000,
+        id: 46,
+        situation: 'GST payment ₹15,000 via auto-debit.',
+        shortText: 'GST auto-debit ₹15,000',
+        amount: 15000,
         type: 'direct-payment',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Standing instruction se Bank ne pay kar diya. Pass Book mein minus hai, Cash Book update pending.',
-        hindiTip: 'Standing instruction = Automatic payment, Cash Book mein record karo.'
+        explanation: 'Tax payment via auto-debit. Bank paid, books not updated.',
+        hindiTip: 'Auto-debit for taxes = Convenient but track!',
+        debitCredit: 'debit'
     },
     {
-        id: 15,
-        situation: 'EMI of ₹8,000 debited by bank under auto-debit facility.',
-        shortText: 'EMI Auto-debit ₹8,000',
-        amount: 8000,
+        id: 47,
+        situation: 'Monthly software subscription ₹2,500 auto-debited.',
+        shortText: 'Software subscription ₹2,500',
+        amount: 2500,
         type: 'direct-payment',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Auto-debit se EMI cut gayi. Bank mein minus hai, Cash Book mein entry daalo.',
-        hindiTip: 'Auto-debit = Cash Book mein Credit entry required.'
+        explanation: 'SaaS payment via bank auto-debit. Record as expense.',
+        hindiTip: 'Recurring payments = Watch out!',
+        debitCredit: 'debit'
     },
     {
-        id: 16,
-        situation: 'Electricity bill ₹3,500 paid through ECS by bank.',
-        shortText: 'Electricity ECS ₹3,500',
-        amount: 3500,
+        id: 48,
+        situation: 'Electricity bill ₹3,200 auto-debited.',
+        shortText: 'Electricity bill ₹3,200',
+        amount: 3200,
         type: 'direct-payment',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'ECS payment automatic hai. Bank ne pay kar diya, Cash Book mein likhna bhool gaye.',
-        hindiTip: 'ECS = Electronic payment by bank. Record it in Cash Book!'
+        explanation: 'Utility bill auto-debit. Bank paid, books need update.',
+        hindiTip: 'Auto-debit utilities = Check regularly!',
+        debitCredit: 'debit'
     },
 
     // DISHONOURED CHEQUES
     {
-        id: 17,
-        situation: 'Cheque of ₹9,000 received from customer was dishonoured.',
-        shortText: 'Cheque dishonoured ₹9,000',
-        amount: 9000,
+        id: 49,
+        situation: 'Cheque of ₹12,000 deposited but returned due to signature mismatch.',
+        shortText: 'Signature mismatch ₹12,000',
+        amount: 12000,
         type: 'dishonoured',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Pehle Cash Book mein add kiya tha (Debit), but cheque bounce ho gaya! Ab minus karo.',
-        hindiTip: 'Dishonoured = Cheque fail! Cash Book se minus karo.'
+        explanation: 'Cheque bounced due to signature issue. Reverse earlier entry.',
+        hindiTip: 'Signature must match exactly!',
+        debitCredit: 'credit'
     },
     {
-        id: 18,
-        situation: 'Customer cheque ₹4,500 returned by bank due to insufficient funds.',
-        shortText: 'Cheque bounced ₹4,500',
-        amount: 4500,
+        id: 50,
+        situation: 'Cheque ₹8,000 returned due to insufficient funds.',
+        shortText: 'Insufficient funds ₹8,000',
+        amount: 8000,
         type: 'dishonoured',
         action: 'deduct-cashbook',
         actionFromPassbook: 'no-action',
-        explanation: 'Insufficient funds = Cheque bounce. Jo add kiya tha Cash Book mein, wo reverse karo.',
-        hindiTip: 'Bounce = Customer ke account mein paisa nahi tha!'
+        explanation: 'Cheque bounced - NSF. Reverse earlier deposit entry.',
+        hindiTip: 'NSF = Not Sufficient Funds!',
+        debitCredit: 'credit'
     },
 
-    // ERRORS
+    // BANK ERRORS
     {
-        id: 19,
-        situation: 'Bank wrongly credited our account with ₹2,500 meant for another customer.',
-        shortText: 'Wrong credit ₹2,500',
-        amount: 2500,
+        id: 51,
+        situation: 'Bank credited ₹8,000 twice by mistake.',
+        shortText: 'Double credit error ₹8,000',
+        amount: 8000,
         type: 'bank-error-credit',
-        action: 'no-action', // Humein kuch nahi karna
+        action: 'no-action',
         actionFromPassbook: 'deduct-passbook',
-        explanation: 'Bank ki galti se extra credit hua. Ye humara paisa nahi hai, reconciliation mein minus karo.',
-        hindiTip: 'Bank error = Pass Book adjust karo, Cash Book mat chhedo.'
+        explanation: 'Bank error - extra credit. Inform bank to reverse.',
+        hindiTip: 'Bank errors happen too! Report them.',
+        debitCredit: 'debit'
     },
     {
-        id: 20,
-        situation: 'Bank wrongly debited ₹1,500 from our account.',
-        shortText: 'Wrong debit ₹1,500',
-        amount: 1500,
+        id: 52,
+        situation: 'Bank debited ₹3,000 for another account\'s transaction.',
+        shortText: 'Wrong account debit ₹3,000',
+        amount: 3000,
         type: 'bank-error-debit',
         action: 'no-action',
         actionFromPassbook: 'add-passbook',
-        explanation: 'Bank ne galti se minus kar diya. Humein plus karna hoga reconciliation mein.',
-        hindiTip: 'Wrong debit = Bank se complaint karo aur adjust karo!'
+        explanation: 'Wrong account charged. Bank needs to correct.',
+        hindiTip: 'Check statements for wrong charges!',
+        debitCredit: 'credit'
+    },
+    {
+        id: 53,
+        situation: 'Bank charged ₹150 for cheque book but not in our account.',
+        shortText: 'Wrong charge ₹150',
+        amount: 150,
+        type: 'bank-error-debit',
+        action: 'no-action',
+        actionFromPassbook: 'add-passbook',
+        explanation: 'Bank charged wrong account. Need correction.',
+        hindiTip: 'Verify all bank charges!',
+        debitCredit: 'credit'
+    },
+
+    // OMITTED ENTRIES
+    {
+        id: 54,
+        situation: 'Bank interest credited but entry omitted in cash book.',
+        shortText: 'Interest omitted ₹900',
+        amount: 900,
+        type: 'omission',
+        action: 'add-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Bank credited interest, books missed it. Add to cash book.',
+        hindiTip: 'Interest income often forgotten!',
+        debitCredit: 'credit'
+    },
+    {
+        id: 55,
+        situation: 'Standing instruction for charity donation ₹1,000 omitted.',
+        shortText: 'Donation omitted ₹1,000',
+        amount: 1000,
+        type: 'omission',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Auto charity donation. Bank paid, books missed.',
+        hindiTip: 'Charity donations need recording too!',
+        debitCredit: 'debit'
+    },
+    {
+        id: 56,
+        situation: 'Loan EMI ₹12,500 omitted from cash book.',
+        shortText: 'Loan EMI omitted ₹12,500',
+        amount: 12500,
+        type: 'omission',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Loan EMI auto-debit. Bank deducted, books missed.',
+        hindiTip: 'Loan payments must be recorded!',
+        debitCredit: 'debit'
+    },
+
+    // ADDITIONAL NEW ENTRIES
+    {
+        id: 57,
+        situation: 'Credit card payment ₹25,000 debited by bank.',
+        shortText: 'Credit card payment ₹25,000',
+        amount: 25000,
+        type: 'direct-payment',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Credit card auto-payment. Bank paid, books need entry.',
+        hindiTip: 'Credit card payments = Liability reduction!',
+        debitCredit: 'debit'
+    },
+    {
+        id: 58,
+        situation: 'Rent received directly in bank ₹20,000.',
+        shortText: 'Direct rent ₹20,000',
+        amount: 20000,
+        type: 'direct-deposit',
+        action: 'add-cashbook',
+        actionFromPassbook: 'no-action',
+        explanation: 'Tenant paid rent directly to bank. Update books.',
+        hindiTip: 'Direct receipts = Easy but track!',
+        debitCredit: 'credit'
+    },
+    {
+        id: 59,
+        situation: 'Cheque issued to employee ₹5,000 but lost and not presented.',
+        shortText: 'Lost cheque ₹5,000',
+        amount: 5000,
+        type: 'cheque-issued-not-presented',
+        action: 'add-passbook',
+        actionFromPassbook: 'deduct-passbook',
+        explanation: 'Cheque lost, will never be presented. Bank balance higher.',
+        hindiTip: 'Lost cheques = Stop payment needed!',
+        debitCredit: 'debit'
+    },
+    {
+        id: 60,
+        situation: 'Post-dated cheque ₹15,000 deposited, will be credited later.',
+        shortText: 'Post-dated cheque ₹15,000',
+        amount: 15000,
+        type: 'cheque-deposited-not-credited',
+        action: 'deduct-cashbook',
+        actionFromPassbook: 'add-passbook',
+        explanation: 'Post-dated cheque - bank will credit on future date.',
+        hindiTip: 'Post-dated = Future credit!',
+        debitCredit: 'credit'
     }
 ];
 
@@ -2874,7 +3719,7 @@ const BRSGame = {
 };
 
 // ============================================
-// 🎯 LOAD BRS GAME
+// 🎯 LOAD BRS GAME (UPDATED FOR DEBIT/CREDIT)
 // ============================================
 
 function loadBRSGame() {
@@ -2912,12 +3757,12 @@ function loadBRSGame() {
 
     Game.totalQuestions = BRSGame.items.length;
 
-    // Render UI
+    // Render UI with Debit/Credit options
     renderBRSUI();
 }
 
 // ============================================
-// 🖥️ RENDER BRS UI
+// 🖥️ RENDER BRS UI (UPDATED FOR DEBIT/CREDIT)
 // ============================================
 
 function renderBRSUI() {
@@ -2951,8 +3796,11 @@ function renderBRSUI() {
             <!-- Instructions -->
             <div class="brs-instructions">
                 <h3>🕵️ Mission: Reconcile the Balances!</h3>
-                <p>Har item ke liye decide karo: <strong>ADD</strong> karein ya <strong>DEDUCT</strong> karein ya <strong>NO ACTION</strong>.</p>
+                <p>Har item ke liye decide karo: <strong>DEBIT ₹</strong> karein ya <strong>CREDIT ₹</strong> karein ya <strong>NO ACTION</strong>.</p>
                 <p class="brs-starting-hint">📌 Tum <strong>${startingName}</strong> balance se start kar rahe ho.</p>
+                <p class="brs-debit-credit-hint">
+                    💡 <strong>DEBIT ₹:</strong> Balance badhao | <strong>CREDIT ₹:</strong> Balance ghatao
+                </p>
             </div>
 
             <!-- Progress -->
@@ -2987,16 +3835,16 @@ function renderBRSUI() {
                 </div>
             </div>
 
-            <!-- Answer Options -->
+            <!-- Answer Options (DEBIT/CREDIT) -->
             <div class="brs-options">
-                <button class="brs-option-btn add" onclick="submitBRSAnswer('add')">
-                    <span class="brs-option-icon">➕</span>
-                    <span class="brs-option-text">ADD</span>
+                <button class="brs-option-btn debit" onclick="submitBRSAnswer('debit')">
+                    <span class="brs-option-icon">📥</span>
+                    <span class="brs-option-text">DEBIT ₹</span>
                     <span class="brs-option-hint">Balance mein jodo</span>
                 </button>
-                <button class="brs-option-btn deduct" onclick="submitBRSAnswer('deduct')">
-                    <span class="brs-option-icon">➖</span>
-                    <span class="brs-option-text">DEDUCT</span>
+                <button class="brs-option-btn credit" onclick="submitBRSAnswer('credit')">
+                    <span class="brs-option-icon">📤</span>
+                    <span class="brs-option-text">CREDIT ₹</span>
                     <span class="brs-option-hint">Balance se ghatao</span>
                 </button>
                 <button class="brs-option-btn no-action" onclick="submitBRSAnswer('no-action')">
@@ -3024,7 +3872,7 @@ function renderBRSUI() {
         </div>
     `;
 
-    // Add styles
+    // Add styles (updated for debit/credit)
     addBRSStyles();
 
     // Load first question
@@ -3032,7 +3880,7 @@ function renderBRSUI() {
 }
 
 // ============================================
-// 🎨 ADD BRS STYLES
+// 🎨 ADD BRS STYLES (UPDATED FOR DEBIT/CREDIT)
 // ============================================
 
 function addBRSStyles() {
@@ -3143,6 +3991,15 @@ function addBRSStyles() {
             border-radius: 10px;
             display: inline-block;
             color: var(--neon-blue) !important;
+        }
+
+        .brs-debit-credit-hint {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            color: var(--neon-yellow) !important;
+            font-size: 0.9rem;
         }
 
         .brs-progress {
@@ -3272,14 +4129,14 @@ function addBRSStyles() {
             transform: translateY(-5px);
         }
 
-        .brs-option-btn.add:hover {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+        .brs-option-btn.debit:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
         }
 
-        .brs-option-btn.deduct:hover {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 25px rgba(255, 51, 102, 0.3);
+        .brs-option-btn.credit:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
         }
 
         .brs-option-btn.no-action:hover {
@@ -3291,14 +4148,14 @@ function addBRSStyles() {
             transform: scale(1.05);
         }
 
-        .brs-option-btn.selected.add {
-            background: rgba(0, 255, 136, 0.2);
-            border-color: var(--neon-green);
+        .brs-option-btn.selected.debit {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-blue);
         }
 
-        .brs-option-btn.selected.deduct {
-            background: rgba(255, 51, 102, 0.2);
-            border-color: var(--neon-red);
+        .brs-option-btn.selected.credit {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--neon-green);
         }
 
         .brs-option-btn.selected.no-action {
@@ -3331,8 +4188,8 @@ function addBRSStyles() {
             font-size: 1rem;
         }
 
-        .brs-option-btn.add .brs-option-text { color: var(--neon-green); }
-        .brs-option-btn.deduct .brs-option-text { color: var(--neon-red); }
+        .brs-option-btn.debit .brs-option-text { color: var(--neon-blue); }
+        .brs-option-btn.credit .brs-option-text { color: var(--neon-green); }
         .brs-option-btn.no-action .brs-option-text { color: var(--neon-yellow); }
 
         .brs-option-hint {
@@ -3427,12 +4284,12 @@ function addBRSStyles() {
             font-size: 0.85rem;
         }
 
-        .brs-summary-row.add {
-            border-left: 3px solid var(--neon-green);
+        .brs-summary-row.debit {
+            border-left: 3px solid var(--neon-blue);
         }
 
-        .brs-summary-row.deduct {
-            border-left: 3px solid var(--neon-red);
+        .brs-summary-row.credit {
+            border-left: 3px solid var(--neon-green);
         }
 
         .brs-summary-row.total {
@@ -3514,13 +4371,14 @@ function getItemTypeName(type) {
         'direct-payment': '📤 Direct Payment',
         'dishonoured': '❌ Cheque Dishonoured',
         'bank-error-credit': '⚠️ Bank Error (Credit)',
-        'bank-error-debit': '⚠️ Bank Error (Debit)'
+        'bank-error-debit': '⚠️ Bank Error (Debit)',
+        'omission': '🚫 Omission'
     };
     return names[type] || 'Unknown';
 }
 
 // ============================================
-// 🎯 SUBMIT BRS ANSWER
+// 🎯 SUBMIT BRS ANSWER (UPDATED FOR DEBIT/CREDIT)
 // ============================================
 
 function submitBRSAnswer(answer) {
@@ -3534,14 +4392,17 @@ function submitBRSAnswer(answer) {
         correctAction = item.actionFromPassbook;
     }
 
-    // Normalize answers
-    const normalizedAnswer = answer === 'add' ? 'add-cashbook' : 
-                             answer === 'deduct' ? 'deduct-cashbook' : 'no-action';
-    
-    const normalizedCorrect = correctAction.includes('add') ? 'add' : 
-                              correctAction.includes('deduct') ? 'deduct' : 'no-action';
+    // Map action to debit/credit
+    let correctAnswer;
+    if (correctAction.includes('add')) {
+        correctAnswer = 'debit'; // Add to balance = Debit
+    } else if (correctAction.includes('deduct')) {
+        correctAnswer = 'credit'; // Deduct from balance = Credit
+    } else {
+        correctAnswer = 'no-action';
+    }
 
-    const isCorrect = answer === normalizedCorrect;
+    const isCorrect = answer === correctAnswer;
 
     // Disable buttons
     document.querySelectorAll('.brs-option-btn').forEach(btn => {
@@ -3549,7 +4410,7 @@ function submitBRSAnswer(answer) {
     });
 
     // Highlight selected and correct
-    const selectedBtn = document.querySelector(`.brs-option-btn.${answer === 'no-action' ? 'no-action' : answer}`);
+    const selectedBtn = document.querySelector(`.brs-option-btn.${answer}`);
     if (selectedBtn) {
         selectedBtn.classList.add('selected');
         selectedBtn.classList.add(isCorrect ? 'correct' : 'wrong');
@@ -3557,16 +4418,16 @@ function submitBRSAnswer(answer) {
 
     if (!isCorrect) {
         // Show correct answer
-        const correctBtn = document.querySelector(`.brs-option-btn.${normalizedCorrect === 'no-action' ? 'no-action' : normalizedCorrect}`);
+        const correctBtn = document.querySelector(`.brs-option-btn.${correctAnswer}`);
         if (correctBtn) {
             correctBtn.classList.add('correct');
         }
     }
 
-    // Update adjusted balance
-    if (answer === 'add') {
+    // Update adjusted balance based on answer
+    if (answer === 'debit') {
         BRSGame.adjustedBalance += item.amount;
-    } else if (answer === 'deduct') {
+    } else if (answer === 'credit') {
         BRSGame.adjustedBalance -= item.amount;
     }
 
@@ -3591,7 +4452,7 @@ function submitBRSAnswer(answer) {
     BRSGame.answers.push({
         item: item,
         userAnswer: answer,
-        correctAnswer: normalizedCorrect,
+        correctAnswer: correctAnswer,
         isCorrect: isCorrect
     });
 
@@ -3660,13 +4521,13 @@ function showBRSSummary() {
     // List all adjustments
     let runningBalance = startingBalance;
     BRSGame.answers.forEach(ans => {
-        const sign = ans.correctAnswer === 'add' ? '+' : ans.correctAnswer === 'deduct' ? '-' : '±';
-        const rowClass = ans.correctAnswer === 'add' ? 'add' : ans.correctAnswer === 'deduct' ? 'deduct' : '';
+        const sign = ans.correctAnswer === 'debit' ? '+' : ans.correctAnswer === 'credit' ? '-' : '±';
+        const rowClass = ans.correctAnswer === 'debit' ? 'debit' : ans.correctAnswer === 'credit' ? 'credit' : '';
         const status = ans.isCorrect ? '✅' : '❌';
 
-        if (ans.correctAnswer === 'add') {
+        if (ans.correctAnswer === 'debit') {
             runningBalance += ans.item.amount;
-        } else if (ans.correctAnswer === 'deduct') {
+        } else if (ans.correctAnswer === 'credit') {
             runningBalance -= ans.item.amount;
         }
 
@@ -3732,7 +4593,7 @@ window.submitBRSAnswer = submitBRSAnswer;
 ================================================================ */
 
 // ============================================
-// 📚 DEPRECIATION ASSETS BANK
+// 📚 DEPRECIATION ASSETS BANK (EXPANDED)
 // ============================================
 
 const DepreciationAssets = [
@@ -3745,7 +4606,7 @@ const DepreciationAssets = [
         scrapValue: 10000,
         lifeYears: 10,
         ratePercent: 10,
-        method: 'both', // Can use SLM or WDV
+        method: 'both',
         category: 'Plant & Machinery'
     },
     {
@@ -3797,64 +4658,244 @@ const DepreciationAssets = [
         category: 'Plant & Machinery'
     },
     {
-        id: 6,
-        name: 'Printer & Scanner',
-        emoji: '🖨️',
-        description: 'High-speed office printer',
-        cost: 30000,
-        scrapValue: 3000,
+        id: 11,
+        name: 'Server Rack',
+        emoji: '🖥️',
+        description: 'Data center server equipment',
+        cost: 250000,
+        scrapValue: 25000,
+        lifeYears: 6,
+        ratePercent: 25,
+        method: 'both',
+        category: 'IT Equipment'
+    },
+    {
+        id: 12,
+        name: 'Forklift',
+        emoji: '🚜',
+        description: 'Warehouse material handling equipment',
+        cost: 350000,
+        scrapValue: 35000,
+        lifeYears: 7,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Plant & Machinery'
+    },
+    {
+        id: 13,
+        name: 'Photocopier',
+        emoji: '📠',
+        description: 'High-speed office photocopy machine',
+        cost: 65000,
+        scrapValue: 6500,
         lifeYears: 5,
         ratePercent: 25,
         method: 'both',
         category: 'Office Equipment'
     },
     {
-        id: 7,
-        name: 'CCTV System',
-        emoji: '📹',
-        description: 'Security camera system',
-        cost: 60000,
-        scrapValue: 6000,
-        lifeYears: 6,
+        id: 14,
+        name: 'Security System',
+        emoji: '🚨',
+        description: 'Complete office security with cameras, alarms',
+        cost: 120000,
+        scrapValue: 12000,
+        lifeYears: 8,
         ratePercent: 20,
         method: 'both',
-        category: 'Office Equipment'
+        category: 'Security Equipment'
     },
     {
-        id: 8,
-        name: 'Generator',
-        emoji: '🔌',
-        description: 'Backup power generator',
-        cost: 200000,
-        scrapValue: 20000,
-        lifeYears: 10,
-        ratePercent: 10,
+        id: 15,
+        name: 'Coffee Machine',
+        emoji: '☕',
+        description: 'Commercial coffee machine for office',
+        cost: 45000,
+        scrapValue: 4500,
+        lifeYears: 5,
+        ratePercent: 30,
         method: 'both',
-        category: 'Plant & Machinery'
+        category: 'Kitchen Equipment'
     },
     {
-        id: 9,
-        name: 'Building',
-        emoji: '🏢',
-        description: 'Office building (excluding land)',
-        cost: 1000000,
-        scrapValue: 100000,
-        lifeYears: 50,
-        ratePercent: 5,
-        method: 'slm', // Building usually SLM
-        category: 'Building'
+        id: 16,
+        name: 'Projector',
+        emoji: '📽️',
+        description: 'Conference room projector system',
+        cost: 55000,
+        scrapValue: 5500,
+        lifeYears: 6,
+        ratePercent: 25,
+        method: 'both',
+        category: 'Audio-Visual Equipment'
     },
     {
-        id: 10,
-        name: 'Motorcycle',
-        emoji: '🏍️',
-        description: 'Staff ke liye two-wheeler',
-        cost: 80000,
-        scrapValue: 8000,
+        id: 17,
+        name: 'Gym Equipment',
+        emoji: '🏋️',
+        description: 'Office gym equipment for employees',
+        cost: 85000,
+        scrapValue: 8500,
         lifeYears: 8,
-        ratePercent: 15,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Recreation Equipment'
+    },
+    {
+        id: 18,
+        name: 'Landscaping Equipment',
+        emoji: '🌿',
+        description: 'Lawn mowers, trimmers for office garden',
+        cost: 40000,
+        scrapValue: 4000,
+        lifeYears: 5,
+        ratePercent: 30,
+        method: 'both',
+        category: 'Grounds Equipment'
+    },
+    {
+        id: 19,
+        name: 'Telephone System',
+        emoji: '📞',
+        description: 'Office PBX telephone system',
+        cost: 75000,
+        scrapValue: 7500,
+        lifeYears: 8,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Communication Equipment'
+    },
+    {
+        id: 20,
+        name: 'Library Books',
+        emoji: '📚',
+        description: 'Technical books for office library',
+        cost: 30000,
+        scrapValue: 3000,
+        lifeYears: 4,
+        ratePercent: 40,
+        method: 'slm',
+        category: 'Library Assets'
+    },
+    {
+        id: 21,
+        name: 'Industrial Robot',
+        emoji: '🤖',
+        description: 'Automated manufacturing robot',
+        cost: 500000,
+        scrapValue: 50000,
+        lifeYears: 7,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Advanced Machinery'
+    },
+    {
+        id: 22,
+        name: 'Company Car',
+        emoji: '🚗',
+        description: 'Executive company car',
+        cost: 800000,
+        scrapValue: 80000,
+        lifeYears: 5,
+        ratePercent: 25,
         method: 'both',
         category: 'Vehicles'
+    },
+    {
+        id: 23,
+        name: '3D Printer',
+        emoji: '🖨️',
+        description: 'Industrial 3D printing machine',
+        cost: 300000,
+        scrapValue: 30000,
+        lifeYears: 5,
+        ratePercent: 30,
+        method: 'both',
+        category: 'Manufacturing Equipment'
+    },
+    {
+        id: 24,
+        name: 'Solar Panels',
+        emoji: '☀️',
+        description: 'Roof-top solar power system',
+        cost: 200000,
+        scrapValue: 20000,
+        lifeYears: 15,
+        ratePercent: 10,
+        method: 'both',
+        category: 'Green Energy'
+    },
+    {
+        id: 25,
+        name: 'Medical Equipment',
+        emoji: '🏥',
+        description: 'Clinic medical examination equipment',
+        cost: 150000,
+        scrapValue: 15000,
+        lifeYears: 8,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Medical Equipment'
+    },
+    {
+        id: 26,
+        name: 'CCTV System',
+        emoji: '📹',
+        description: 'Complete CCTV surveillance system',
+        cost: 90000,
+        scrapValue: 9000,
+        lifeYears: 6,
+        ratePercent: 25,
+        method: 'both',
+        category: 'Security Equipment'
+    },
+    {
+        id: 27,
+        name: 'Industrial Oven',
+        emoji: '🔥',
+        description: 'Bakery industrial baking oven',
+        cost: 250000,
+        scrapValue: 25000,
+        lifeYears: 10,
+        ratePercent: 15,
+        method: 'both',
+        category: 'Food Processing'
+    },
+    {
+        id: 28,
+        name: 'Water Purifier',
+        emoji: '💧',
+        description: 'Industrial water purification system',
+        cost: 120000,
+        scrapValue: 12000,
+        lifeYears: 8,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Utilities'
+    },
+    {
+        id: 29,
+        name: 'Conference System',
+        emoji: '🎤',
+        description: 'Audio conference system with microphones',
+        cost: 75000,
+        scrapValue: 7500,
+        lifeYears: 6,
+        ratePercent: 25,
+        method: 'both',
+        category: 'Audio-Visual'
+    },
+    {
+        id: 30,
+        name: 'Industrial Fan',
+        emoji: '💨',
+        description: 'Large industrial cooling fan',
+        cost: 60000,
+        scrapValue: 6000,
+        lifeYears: 8,
+        ratePercent: 20,
+        method: 'both',
+        category: 'Plant & Machinery'
     }
 ];
 
@@ -4961,11 +6002,11 @@ window.showDepSummary = showDepSummary;
 ================================================================ */
 
 // ============================================
-// 📚 RECTIFICATION ERRORS BANK
+// 📚 RECTIFICATION ERRORS BANK (EXPANDED)
 // ============================================
 
 const RectificationErrors = [
-    // ERROR OF OMISSION
+    // ERROR OF OMISSION (5 more)
     {
         id: 1,
         type: 'omission',
@@ -5012,8 +6053,100 @@ const RectificationErrors = [
         explanation: 'Rent expense miss ho gaya. Rent Debit (expense badha), Bank Credit (paisa gaya).',
         hindiTip: 'Expense pay kiya = Expense Debit, Cash/Bank Credit.'
     },
+    {
+        id: 16,
+        type: 'omission',
+        typeName: 'Error of Omission',
+        typeEmoji: '🚫',
+        originalEntry: null,
+        wrongEntry: 'Cash purchase omitted',
+        situation: 'Purchase of goods ₹12,000 for cash was completely omitted.',
+        amount: 12000,
+        correctingEntry: {
+            debit: 'Purchase A/c',
+            credit: 'Cash A/c',
+            amount: 12000
+        },
+        options: [
+            { debit: 'Purchase A/c', credit: 'Cash A/c', amount: 12000, isCorrect: true },
+            { debit: 'Cash A/c', credit: 'Purchase A/c', amount: 12000, isCorrect: false },
+            { debit: 'Purchase A/c', credit: 'Creditor A/c', amount: 12000, isCorrect: false },
+            { debit: 'Stock A/c', credit: 'Cash A/c', amount: 12000, isCorrect: false }
+        ],
+        explanation: 'Cash purchase miss ho gaya. Purchase Debit (expense badha), Cash Credit (paisa gaya).',
+        hindiTip: 'Cash purchase = Purchase Debit, Cash Credit.'
+    },
+    {
+        id: 17,
+        type: 'omission',
+        typeName: 'Error of Omission',
+        typeEmoji: '🚫',
+        originalEntry: null,
+        wrongEntry: 'Capital introduced not recorded',
+        situation: 'Owner introduced additional capital ₹50,000 but not recorded.',
+        amount: 50000,
+        correctingEntry: {
+            debit: 'Cash A/c',
+            credit: 'Capital A/c',
+            amount: 50000
+        },
+        options: [
+            { debit: 'Cash A/c', credit: 'Capital A/c', amount: 50000, isCorrect: true },
+            { debit: 'Capital A/c', credit: 'Cash A/c', amount: 50000, isCorrect: false },
+            { debit: 'Cash A/c', credit: 'Loan A/c', amount: 50000, isCorrect: false },
+            { debit: 'Bank A/c', credit: 'Capital A/c', amount: 50000, isCorrect: false }
+        ],
+        explanation: 'Capital introduced but not recorded. Cash Debit (paisa aaya), Capital Credit (owner ka hissa badha).',
+        hindiTip: 'Capital introduction = Cash/Bank Debit, Capital Credit.'
+    },
+    {
+        id: 18,
+        type: 'omission',
+        typeName: 'Error of Omission',
+        typeEmoji: '🚫',
+        originalEntry: null,
+        wrongEntry: 'Drawings omitted',
+        situation: 'Owner withdrew ₹10,000 for personal use but not recorded.',
+        amount: 10000,
+        correctingEntry: {
+            debit: 'Drawings A/c',
+            credit: 'Cash A/c',
+            amount: 10000
+        },
+        options: [
+            { debit: 'Drawings A/c', credit: 'Cash A/c', amount: 10000, isCorrect: true },
+            { debit: 'Cash A/c', credit: 'Drawings A/c', amount: 10000, isCorrect: false },
+            { debit: 'Drawings A/c', credit: 'Capital A/c', amount: 10000, isCorrect: false },
+            { debit: 'Personal A/c', credit: 'Cash A/c', amount: 10000, isCorrect: false }
+        ],
+        explanation: 'Drawings miss ho gaye. Drawings Debit (capital kam hua), Cash Credit (paisa gaya).',
+        hindiTip: 'Drawings = Drawings Debit, Cash/Bank Credit.'
+    },
+    {
+        id: 19,
+        type: 'omission',
+        typeName: 'Error of Omission',
+        typeEmoji: '🚫',
+        originalEntry: null,
+        wrongEntry: 'Commission earned omitted',
+        situation: 'Commission earned ₹3,000 was not recorded in books.',
+        amount: 3000,
+        correctingEntry: {
+            debit: 'Cash A/c',
+            credit: 'Commission A/c',
+            amount: 3000
+        },
+        options: [
+            { debit: 'Cash A/c', credit: 'Commission A/c', amount: 3000, isCorrect: true },
+            { debit: 'Commission A/c', credit: 'Cash A/c', amount: 3000, isCorrect: false },
+            { debit: 'Bank A/c', credit: 'Commission A/c', amount: 3000, isCorrect: false },
+            { debit: 'Commission A/c', credit: 'Income A/c', amount: 3000, isCorrect: false }
+        ],
+        explanation: 'Commission income miss ho gaya. Cash Debit (paisa aaya), Commission Credit (income badha).',
+        hindiTip: 'Income omission = Cash/Bank Debit, Income Credit.'
+    },
 
-    // ERROR OF COMMISSION
+    // ERROR OF COMMISSION (5 more)
     {
         id: 3,
         type: 'commission',
@@ -5061,30 +6194,76 @@ const RectificationErrors = [
         hindiTip: 'Creditor galat hai? Galat wale ko Debit, Sahi wale ko Credit!'
     },
     {
-        id: 5,
+        id: 20,
         type: 'commission',
         typeName: 'Error of Commission',
         typeEmoji: '🔄',
-        originalEntry: 'Sales ₹4,500 recorded',
-        wrongEntry: 'Amount wrongly recorded as ₹5,400',
-        situation: 'Sales of ₹4,500 was wrongly recorded as ₹5,400 in Sales Book.',
-        amount: 900,
+        originalEntry: 'Debited Furniture ₹25,000',
+        wrongEntry: 'Wrongly debited to Machinery A/c',
+        situation: 'Furniture purchased ₹25,000 was debited to Machinery A/c instead of Furniture A/c.',
+        amount: 25000,
         correctingEntry: {
-            debit: 'Sales A/c',
-            credit: 'Debtor A/c',
-            amount: 900
+            debit: 'Furniture A/c',
+            credit: 'Machinery A/c',
+            amount: 25000
         },
         options: [
-            { debit: 'Sales A/c', credit: 'Debtor A/c', amount: 900, isCorrect: true },
-            { debit: 'Debtor A/c', credit: 'Sales A/c', amount: 900, isCorrect: false },
-            { debit: 'Sales A/c', credit: 'Cash A/c', amount: 900, isCorrect: false },
-            { debit: 'Sales A/c', credit: 'Debtor A/c', amount: 4500, isCorrect: false }
+            { debit: 'Furniture A/c', credit: 'Machinery A/c', amount: 25000, isCorrect: true },
+            { debit: 'Machinery A/c', credit: 'Furniture A/c', amount: 25000, isCorrect: false },
+            { debit: 'Furniture A/c', credit: 'Cash A/c', amount: 25000, isCorrect: false },
+            { debit: 'Machinery A/c', credit: 'Cash A/c', amount: 25000, isCorrect: false }
         ],
-        explanation: '₹900 zyada record hua (5400-4500). Sales Debit (kam karo), Debtor Credit (kam karo). Sirf difference amount!',
-        hindiTip: 'Excess record? Difference amount se reverse karo!'
+        explanation: 'Furniture ka amount Machinery mein daal diya. Furniture Debit (sahi asset), Machinery Credit (galat se nikalo).',
+        hindiTip: 'Wrong asset account? Debit correct asset, Credit wrong asset.'
+    },
+    {
+        id: 21,
+        type: 'commission',
+        typeName: 'Error of Commission',
+        typeEmoji: '🔄',
+        originalEntry: 'Credited Rent ₹15,000',
+        wrongEntry: 'Wrongly credited to Salary A/c',
+        situation: 'Rent received ₹15,000 was credited to Salary A/c instead of Rent A/c.',
+        amount: 15000,
+        correctingEntry: {
+            debit: 'Salary A/c',
+            credit: 'Rent A/c',
+            amount: 15000
+        },
+        options: [
+            { debit: 'Salary A/c', credit: 'Rent A/c', amount: 15000, isCorrect: true },
+            { debit: 'Rent A/c', credit: 'Salary A/c', amount: 15000, isCorrect: false },
+            { debit: 'Salary A/c', credit: 'Cash A/c', amount: 15000, isCorrect: false },
+            { debit: 'Rent A/c', credit: 'Income A/c', amount: 15000, isCorrect: false }
+        ],
+        explanation: 'Rent income galat account mein credit hua. Salary Debit (wrong se nikalo), Rent Credit (sahi mein daalo).',
+        hindiTip: 'Wrong income account? Debit wrong, Credit right income.'
+    },
+    {
+        id: 22,
+        type: 'commission',
+        typeName: 'Error of Commission',
+        typeEmoji: '🔄',
+        originalEntry: 'Debited Telephone ₹2,500',
+        wrongEntry: 'Wrongly debited to Electricity A/c',
+        situation: 'Telephone bill ₹2,500 was debited to Electricity A/c.',
+        amount: 2500,
+        correctingEntry: {
+            debit: 'Telephone A/c',
+            credit: 'Electricity A/c',
+            amount: 2500
+        },
+        options: [
+            { debit: 'Telephone A/c', credit: 'Electricity A/c', amount: 2500, isCorrect: true },
+            { debit: 'Electricity A/c', credit: 'Telephone A/c', amount: 2500, isCorrect: false },
+            { debit: 'Telephone A/c', credit: 'Bank A/c', amount: 2500, isCorrect: false },
+            { debit: 'Utilities A/c', credit: 'Electricity A/c', amount: 2500, isCorrect: false }
+        ],
+        explanation: 'Telephone expense Electricity mein daal diya. Telephone Debit (sahi expense), Electricity Credit (galat se nikalo).',
+        hindiTip: 'Wrong expense account? Debit correct expense, Credit wrong expense.'
     },
 
-    // ERROR OF PRINCIPLE
+    // ERROR OF PRINCIPLE (5 more)
     {
         id: 6,
         type: 'principle',
@@ -5109,53 +6288,99 @@ const RectificationErrors = [
         hindiTip: 'Capital vs Revenue confusion? Asset ≠ Expense. Correct the account type!'
     },
     {
-        id: 7,
+        id: 23,
         type: 'principle',
         typeName: 'Error of Principle',
         typeEmoji: '⚖️',
-        originalEntry: 'Debited Wages A/c ₹15,000',
-        wrongEntry: 'Wages for building construction treated as expense',
-        situation: 'Wages ₹15,000 paid for construction of building was debited to Wages A/c instead of Building A/c.',
-        amount: 15000,
+        originalEntry: 'Debited Stationery ₹8,000',
+        wrongEntry: 'Purchase of printer treated as expense',
+        situation: 'Printer purchased ₹8,000 for office was debited to Stationery A/c.',
+        amount: 8000,
         correctingEntry: {
-            debit: 'Building A/c',
-            credit: 'Wages A/c',
-            amount: 15000
+            debit: 'Office Equipment A/c',
+            credit: 'Stationery A/c',
+            amount: 8000
         },
         options: [
-            { debit: 'Building A/c', credit: 'Wages A/c', amount: 15000, isCorrect: true },
-            { debit: 'Wages A/c', credit: 'Building A/c', amount: 15000, isCorrect: false },
-            { debit: 'Building A/c', credit: 'Cash A/c', amount: 15000, isCorrect: false },
-            { debit: 'Construction A/c', credit: 'Wages A/c', amount: 15000, isCorrect: false }
+            { debit: 'Office Equipment A/c', credit: 'Stationery A/c', amount: 8000, isCorrect: true },
+            { debit: 'Stationery A/c', credit: 'Office Equipment A/c', amount: 8000, isCorrect: false },
+            { debit: 'Office Equipment A/c', credit: 'Cash A/c', amount: 8000, isCorrect: false },
+            { debit: 'Assets A/c', credit: 'Stationery A/c', amount: 8000, isCorrect: false }
         ],
-        explanation: 'Building ke liye wages = Capital expenditure (asset ka part). Building Debit, Wages Credit.',
-        hindiTip: 'Asset banane ka kharcha = Asset mein add karo, expense nahi!'
+        explanation: 'Printer ek asset hai, stationery expense nahi. Office Equipment Debit, Stationery Credit.',
+        hindiTip: 'Durable asset = Capital expenditure, not expense!'
     },
     {
-        id: 8,
+        id: 24,
         type: 'principle',
         typeName: 'Error of Principle',
         typeEmoji: '⚖️',
-        originalEntry: 'Debited Furniture A/c ₹2,000',
-        wrongEntry: 'Furniture repairs treated as capital expenditure',
-        situation: 'Repairs to furniture ₹2,000 was wrongly debited to Furniture A/c instead of Repairs A/c.',
-        amount: 2000,
+        originalEntry: 'Credited Sales ₹12,000',
+        wrongEntry: 'Sale of fixed asset treated as sales',
+        situation: 'Old vehicle sold ₹12,000 was credited to Sales A/c instead of Vehicle A/c.',
+        amount: 12000,
         correctingEntry: {
-            debit: 'Repairs A/c',
-            credit: 'Furniture A/c',
-            amount: 2000
+            debit: 'Sales A/c',
+            credit: 'Vehicle A/c',
+            amount: 12000
         },
         options: [
-            { debit: 'Repairs A/c', credit: 'Furniture A/c', amount: 2000, isCorrect: true },
-            { debit: 'Furniture A/c', credit: 'Repairs A/c', amount: 2000, isCorrect: false },
-            { debit: 'Repairs A/c', credit: 'Cash A/c', amount: 2000, isCorrect: false },
-            { debit: 'Maintenance A/c', credit: 'Furniture A/c', amount: 2000, isCorrect: false }
+            { debit: 'Sales A/c', credit: 'Vehicle A/c', amount: 12000, isCorrect: true },
+            { debit: 'Vehicle A/c', credit: 'Sales A/c', amount: 12000, isCorrect: false },
+            { debit: 'Sales A/c', credit: 'Cash A/c', amount: 12000, isCorrect: false },
+            { debit: 'Asset Sale A/c', credit: 'Vehicle A/c', amount: 12000, isCorrect: false }
         ],
-        explanation: 'Repair expense hai, asset addition nahi. Repairs Debit (sahi expense), Furniture Credit (galat se nikalo).',
-        hindiTip: 'Repair ≠ New purchase. Revenue expenditure hai!'
+        explanation: 'Asset sale normal sales nahi hai. Sales Debit (reverse), Vehicle Credit (asset value kam karo).',
+        hindiTip: 'Asset sale ≠ Trading sale. Treat as asset disposal!'
+    },
+    {
+        id: 25,
+        type: 'principle',
+        typeName: 'Error of Principle',
+        typeEmoji: '⚖️',
+        originalEntry: 'Debited Travel ₹5,000',
+        wrongEntry: 'Business travel for asset installation treated as expense',
+        situation: 'Travel expenses ₹5,000 for machinery installation was debited to Travel A/c.',
+        amount: 5000,
+        correctingEntry: {
+            debit: 'Machinery A/c',
+            credit: 'Travel A/c',
+            amount: 5000
+        },
+        options: [
+            { debit: 'Machinery A/c', credit: 'Travel A/c', amount: 5000, isCorrect: true },
+            { debit: 'Travel A/c', credit: 'Machinery A/c', amount: 5000, isCorrect: false },
+            { debit: 'Installation A/c', credit: 'Travel A/c', amount: 5000, isCorrect: false },
+            { debit: 'Machinery A/c', credit: 'Cash A/c', amount: 5000, isCorrect: false }
+        ],
+        explanation: 'Asset installation ka travel cost asset ka part hai. Machinery Debit, Travel Credit.',
+        hindiTip: 'Costs to make asset usable = Add to asset cost!'
+    },
+    {
+        id: 26,
+        type: 'principle',
+        typeName: 'Error of Principle',
+        typeEmoji: '⚖️',
+        originalEntry: 'Debited Advertisement ₹50,000',
+        wrongEntry: 'Brand development cost treated as expense',
+        situation: 'Brand development cost ₹50,000 was debited to Advertisement A/c instead of Goodwill A/c.',
+        amount: 50000,
+        correctingEntry: {
+            debit: 'Goodwill A/c',
+            credit: 'Advertisement A/c',
+            amount: 50000
+        },
+        options: [
+            { debit: 'Goodwill A/c', credit: 'Advertisement A/c', amount: 50000, isCorrect: true },
+            { debit: 'Advertisement A/c', credit: 'Goodwill A/c', amount: 50000, isCorrect: false },
+            { debit: 'Goodwill A/c', credit: 'Cash A/c', amount: 50000, isCorrect: false },
+            { debit: 'Brand A/c', credit: 'Advertisement A/c', amount: 50000, isCorrect: false }
+        ],
+        explanation: 'Brand development creates intangible asset. Goodwill Debit, Advertisement Credit.',
+        hindiTip: 'Long-term brand value = Intangible asset!'
     },
 
-    // ERROR OF POSTING (Wrong Side)
+    // ERROR OF POSTING (5 more)
     {
         id: 9,
         type: 'posting',
@@ -5180,148 +6405,215 @@ const RectificationErrors = [
         hindiTip: 'Wrong side = Double amount! Ek reverse + ek correct karne ke liye.'
     },
     {
-        id: 10,
+        id: 27,
         type: 'posting',
         typeName: 'Error of Posting',
         typeEmoji: '↔️',
-        originalEntry: 'Sales ₹4,000 recorded',
-        wrongEntry: 'Sales credited twice in ledger',
-        situation: 'Sales of ₹4,000 was credited twice to Sales A/c in ledger.',
-        amount: 4000,
+        originalEntry: 'Purchase ₹15,000',
+        wrongEntry: 'Posted to wrong side (Debit instead of Credit)',
+        situation: 'Purchase from supplier ₹15,000 was debited to Supplier A/c instead of being credited.',
+        amount: 15000,
         correctingEntry: {
-            debit: 'Sales A/c',
-            credit: 'Suspense A/c',
-            amount: 4000
+            debit: 'Suspense A/c',
+            credit: 'Supplier A/c',
+            amount: 30000
         },
         options: [
-            { debit: 'Sales A/c', credit: 'Suspense A/c', amount: 4000, isCorrect: true },
-            { debit: 'Suspense A/c', credit: 'Sales A/c', amount: 4000, isCorrect: false },
-            { debit: 'Sales A/c', credit: 'Cash A/c', amount: 4000, isCorrect: false },
-            { debit: 'Sales A/c', credit: 'Suspense A/c', amount: 8000, isCorrect: false }
+            { debit: 'Suspense A/c', credit: 'Supplier A/c', amount: 30000, isCorrect: true },
+            { debit: 'Supplier A/c', credit: 'Suspense A/c', amount: 30000, isCorrect: false },
+            { debit: 'Suspense A/c', credit: 'Supplier A/c', amount: 15000, isCorrect: false },
+            { debit: 'Purchase A/c', credit: 'Supplier A/c', amount: 30000, isCorrect: false }
         ],
-        explanation: 'Ek baar extra credit ho gaya. Sales Debit karo (extra credit reverse), Suspense Credit (TB balance karne ke liye).',
-        hindiTip: 'Double entry? Ek reverse karo!'
+        explanation: 'Supplier account ko debit kiya but credit hona chahiye tha. Double amount: 15000 (reverse) + 15000 (correct).',
+        hindiTip: 'Creditor account always has credit balance. Wrong side = Double correction!'
+    },
+    {
+        id: 28,
+        type: 'posting',
+        typeName: 'Error of Posting',
+        typeEmoji: '↔️',
+        originalEntry: 'Salary paid ₹25,000',
+        wrongEntry: 'Debited twice in ledger',
+        situation: 'Salary paid ₹25,000 was debited twice to Salary A/c in ledger.',
+        amount: 25000,
+        correctingEntry: {
+            debit: 'Suspense A/c',
+            credit: 'Salary A/c',
+            amount: 25000
+        },
+        options: [
+            { debit: 'Suspense A/c', credit: 'Salary A/c', amount: 25000, isCorrect: true },
+            { debit: 'Salary A/c', credit: 'Suspense A/c', amount: 25000, isCorrect: false },
+            { debit: 'Suspense A/c', credit: 'Cash A/c', amount: 25000, isCorrect: false },
+            { debit: 'Salary A/c', credit: 'Bank A/c', amount: 25000, isCorrect: false }
+        ],
+        explanation: 'Ek baar extra debit ho gaya. Suspense Debit (balance karne ke liye), Salary Credit (extra debit reverse).',
+        hindiTip: 'Double debit? Reverse the extra one!'
+    },
+    {
+        id: 29,
+        type: 'posting',
+        typeName: 'Error of Posting',
+        typeEmoji: '↔️',
+        originalEntry: 'Interest received ₹3,000',
+        wrongEntry: 'Credited to Interest Paid A/c',
+        situation: 'Interest received ₹3,000 was wrongly credited to Interest Paid A/c.',
+        amount: 3000,
+        correctingEntry: {
+            debit: 'Interest Paid A/c',
+            credit: 'Interest Received A/c',
+            amount: 3000
+        },
+        options: [
+            { debit: 'Interest Paid A/c', credit: 'Interest Received A/c', amount: 3000, isCorrect: true },
+            { debit: 'Interest Received A/c', credit: 'Interest Paid A/c', amount: 3000, isCorrect: false },
+            { debit: 'Interest Paid A/c', credit: 'Cash A/c', amount: 3000, isCorrect: false },
+            { debit: 'Interest A/c', credit: 'Interest Received A/c', amount: 3000, isCorrect: false }
+        ],
+        explanation: 'Interest received ko interest paid mein daal diya. Interest Paid Debit (reverse), Interest Received Credit (sahi jagah).',
+        hindiTip: 'Received ≠ Paid! Received is income, Paid is expense.'
+    },
+    {
+        id: 30,
+        type: 'posting',
+        typeName: 'Error of Posting',
+        typeEmoji: '↔️',
+        originalEntry: 'Discount allowed ₹2,000',
+        wrongEntry: 'Debited to Discount Received A/c',
+        situation: 'Discount allowed to customer ₹2,000 was debited to Discount Received A/c.',
+        amount: 2000,
+        correctingEntry: {
+            debit: 'Discount Received A/c',
+            credit: 'Discount Allowed A/c',
+            amount: 2000
+        },
+        options: [
+            { debit: 'Discount Received A/c', credit: 'Discount Allowed A/c', amount: 2000, isCorrect: true },
+            { debit: 'Discount Allowed A/c', credit: 'Discount Received A/c', amount: 2000, isCorrect: false },
+            { debit: 'Discount Received A/c', credit: 'Cash A/c', amount: 2000, isCorrect: false },
+            { debit: 'Discount A/c', credit: 'Discount Allowed A/c', amount: 2000, isCorrect: false }
+        ],
+        explanation: 'Discount allowed (expense) ko discount received (income) mein daal diya. Discount Received Debit (reverse), Discount Allowed Credit (sahi jagah).',
+        hindiTip: 'Allowed = Expense, Received = Income. Don\'t mix!'
     },
 
-    // COMPENSATING ERROR
+    // COMPENSATING ERROR (2 more)
     {
-        id: 11,
+        id: 31,
         type: 'compensating',
         typeName: 'Compensating Error',
         typeEmoji: '🔁',
         originalEntry: 'Two errors cancelling each other',
-        wrongEntry: 'Sales undercast ₹1,000, Purchase undercast ₹1,000',
-        situation: 'Sales Book was undercast by ₹1,000 and Purchase Book was also undercast by ₹1,000.',
-        amount: 1000,
+        wrongEntry: 'Sales overcast ₹2,000, Purchase overcast ₹2,000',
+        situation: 'Sales Book was overcast by ₹2,000 and Purchase Book was also overcast by ₹2,000.',
+        amount: 2000,
         correctingEntry: {
-            debit: 'Purchase A/c',
-            credit: 'Sales A/c',
-            amount: 1000
+            debit: 'Sales A/c',
+            credit: 'Purchase A/c',
+            amount: 2000
         },
         options: [
-            { debit: 'Purchase A/c', credit: 'Sales A/c', amount: 1000, isCorrect: true },
-            { debit: 'Sales A/c', credit: 'Purchase A/c', amount: 1000, isCorrect: false },
-            { debit: 'Purchase A/c', credit: 'Cash A/c', amount: 1000, isCorrect: false },
-            { debit: 'Suspense A/c', credit: 'Sales A/c', amount: 1000, isCorrect: false }
+            { debit: 'Sales A/c', credit: 'Purchase A/c', amount: 2000, isCorrect: true },
+            { debit: 'Purchase A/c', credit: 'Sales A/c', amount: 2000, isCorrect: false },
+            { debit: 'Sales A/c', credit: 'Suspense A/c', amount: 2000, isCorrect: false },
+            { debit: 'Purchase A/c', credit: 'Suspense A/c', amount: 2000, isCorrect: false }
         ],
-        explanation: 'Dono undercast the. Sales kam record hui toh Credit karo (badao). Purchase kam record hui toh Debit karo (badao).',
-        hindiTip: 'Undercast = Kam likha. Increase karne ke liye normal side mein entry!'
+        explanation: 'Dono overcast the. Sales zyada record hui toh Debit karo (kam karo). Purchase zyada record hui toh Credit karo (kam karo).',
+        hindiTip: 'Overcast = Zyada likha. Reduce both by same amount!'
+    },
+    {
+        id: 32,
+        type: 'compensating',
+        typeName: 'Compensating Error',
+        typeEmoji: '🔁',
+        originalEntry: 'Errors in Sales Returns and Purchase Returns',
+        wrongEntry: 'Sales Returns undercast ₹1,500, Purchase Returns undercast ₹1,500',
+        situation: 'Sales Returns Book was undercast by ₹1,500 and Purchase Returns Book was also undercast by ₹1,500.',
+        amount: 1500,
+        correctingEntry: {
+            debit: 'Purchase Returns A/c',
+            credit: 'Sales Returns A/c',
+            amount: 1500
+        },
+        options: [
+            { debit: 'Purchase Returns A/c', credit: 'Sales Returns A/c', amount: 1500, isCorrect: true },
+            { debit: 'Sales Returns A/c', credit: 'Purchase Returns A/c', amount: 1500, isCorrect: false },
+            { debit: 'Purchase Returns A/c', credit: 'Suspense A/c', amount: 1500, isCorrect: false },
+            { debit: 'Sales Returns A/c', credit: 'Suspense A/c', amount: 1500, isCorrect: false }
+        ],
+        explanation: 'Dono returns undercast. Sales Returns kam record hui toh Credit karo (badao). Purchase Returns kam record hui toh Debit karo (badao).',
+        hindiTip: 'Returns undercast? Increase both returns accounts!'
     },
 
-    // SUSPENSE ACCOUNT ERRORS
+    // TRANSPOSITION ERROR (3 more)
     {
-        id: 12,
-        type: 'suspense',
-        typeName: 'Suspense A/c Error',
-        typeEmoji: '❓',
-        originalEntry: 'Suspense A/c has Debit balance ₹500',
-        wrongEntry: 'Returns Inward ₹500 not posted to ledger',
-        situation: 'Returns Inward ₹500 was recorded in journal but not posted to Returns Inward A/c. Suspense A/c shows ₹500 Debit.',
-        amount: 500,
-        correctingEntry: {
-            debit: 'Returns Inward A/c',
-            credit: 'Suspense A/c',
-            amount: 500
-        },
-        options: [
-            { debit: 'Returns Inward A/c', credit: 'Suspense A/c', amount: 500, isCorrect: true },
-            { debit: 'Suspense A/c', credit: 'Returns Inward A/c', amount: 500, isCorrect: false },
-            { debit: 'Returns Inward A/c', credit: 'Sales A/c', amount: 500, isCorrect: false },
-            { debit: 'Customer A/c', credit: 'Suspense A/c', amount: 500, isCorrect: false }
-        ],
-        explanation: 'Returns Inward post nahi hua tha. Ab post karo: Returns Inward Debit, Suspense Credit (Suspense balance nil ho jayega).',
-        hindiTip: 'Suspense A/c = Temporary home. Jab error fix ho, Suspense nil!'
-    },
-    {
-        id: 13,
-        type: 'suspense',
-        typeName: 'Suspense A/c Error',
-        typeEmoji: '❓',
-        originalEntry: 'Suspense A/c has Credit balance ₹2,500',
-        wrongEntry: 'Discount allowed ₹2,500 not posted',
-        situation: 'Discount allowed ₹2,500 was credited to Customer A/c but not debited to Discount Allowed A/c. Suspense shows ₹2,500 Credit.',
-        amount: 2500,
-        correctingEntry: {
-            debit: 'Discount Allowed A/c',
-            credit: 'Suspense A/c',
-            amount: 2500
-        },
-        options: [
-            { debit: 'Discount Allowed A/c', credit: 'Suspense A/c', amount: 2500, isCorrect: true },
-            { debit: 'Suspense A/c', credit: 'Discount Allowed A/c', amount: 2500, isCorrect: false },
-            { debit: 'Discount Allowed A/c', credit: 'Customer A/c', amount: 2500, isCorrect: false },
-            { debit: 'Discount Allowed A/c', credit: 'Cash A/c', amount: 2500, isCorrect: false }
-        ],
-        explanation: 'Discount Allowed debit miss tha. Ab Debit Discount Allowed, Credit Suspense. Suspense balance zero!',
-        hindiTip: 'Missing debit? Debit correct account, Credit Suspense!'
-    },
-
-    // TRANSPOSITION ERROR
-    {
-        id: 14,
+        id: 33,
         type: 'transposition',
         typeName: 'Transposition Error',
         typeEmoji: '🔢',
-        originalEntry: 'Amount ₹5,670',
-        wrongEntry: 'Wrongly written as ₹5,760',
-        situation: 'Salary paid ₹5,670 was wrongly recorded as ₹5,760 in Cash Book.',
+        originalEntry: 'Amount ₹3,780',
+        wrongEntry: 'Recorded as ₹3,870',
+        situation: 'Rent paid ₹3,780 was recorded as ₹3,870 in Cash Book.',
         amount: 90,
         correctingEntry: {
             debit: 'Cash A/c',
-            credit: 'Salary A/c',
+            credit: 'Rent A/c',
             amount: 90
         },
         options: [
-            { debit: 'Cash A/c', credit: 'Salary A/c', amount: 90, isCorrect: true },
-            { debit: 'Salary A/c', credit: 'Cash A/c', amount: 90, isCorrect: false },
-            { debit: 'Cash A/c', credit: 'Salary A/c', amount: 5670, isCorrect: false },
+            { debit: 'Cash A/c', credit: 'Rent A/c', amount: 90, isCorrect: true },
+            { debit: 'Rent A/c', credit: 'Cash A/c', amount: 90, isCorrect: false },
+            { debit: 'Cash A/c', credit: 'Rent A/c', amount: 3780, isCorrect: false },
             { debit: 'Cash A/c', credit: 'Suspense A/c', amount: 90, isCorrect: false }
         ],
-        explanation: '₹90 zyada record hua (5760-5670). Cash Debit (kam show hua toh badao), Salary Credit (zyada show hua toh kam karo).',
-        hindiTip: 'Transposition = Digits ulte! Difference by 9 divisible hota hai (90÷9=10). Reverse the excess!'
+        explanation: '₹90 zyada record hua (3870-3780). Cash Debit (kam show hua toh badao), Rent Credit (zyada show hua toh kam karo).',
+        hindiTip: 'Transposition error difference is divisible by 9! (90÷9=10)'
     },
     {
-        id: 15,
+        id: 34,
         type: 'transposition',
         typeName: 'Transposition Error',
         typeEmoji: '🔢',
-        originalEntry: 'Purchase ₹3,450',
-        wrongEntry: 'Recorded as ₹3,540',
-        situation: 'Purchase of goods ₹3,450 was recorded as ₹3,540 in Purchase Book.',
+        originalEntry: 'Amount ₹6,540',
+        wrongEntry: 'Recorded as ₹6,450',
+        situation: 'Sales ₹6,540 was recorded as ₹6,450 in Sales Book.',
         amount: 90,
         correctingEntry: {
-            debit: 'Creditor A/c',
-            credit: 'Purchase A/c',
+            debit: 'Sales A/c',
+            credit: 'Debtor A/c',
             amount: 90
         },
         options: [
-            { debit: 'Creditor A/c', credit: 'Purchase A/c', amount: 90, isCorrect: true },
-            { debit: 'Purchase A/c', credit: 'Creditor A/c', amount: 90, isCorrect: false },
-            { debit: 'Creditor A/c', credit: 'Cash A/c', amount: 90, isCorrect: false },
-            { debit: 'Purchase A/c', credit: 'Suspense A/c', amount: 90, isCorrect: false }
+            { debit: 'Sales A/c', credit: 'Debtor A/c', amount: 90, isCorrect: true },
+            { debit: 'Debtor A/c', credit: 'Sales A/c', amount: 90, isCorrect: false },
+            { debit: 'Sales A/c', credit: 'Cash A/c', amount: 90, isCorrect: false },
+            { debit: 'Debtor A/c', credit: 'Suspense A/c', amount: 90, isCorrect: false }
         ],
-        explanation: '₹90 excess record. Purchase Credit (kam karo), Creditor Debit (kam karo) - dono zyada show ho rahe the.',
-        hindiTip: 'Excess on both sides? Reduce both by difference amount!'
+        explanation: '₹90 kam record hua (6540-6450). Sales Debit (kam show hui toh badao), Debtor Credit (kam show hua toh badao).',
+        hindiTip: 'Undercast by transposition? Increase both affected accounts!'
+    },
+    {
+        id: 35,
+        type: 'transposition',
+        typeName: 'Transposition Error',
+        typeEmoji: '🔢',
+        originalEntry: 'Amount ₹9,280',
+        wrongEntry: 'Recorded as ₹9,820',
+        situation: 'Purchase ₹9,280 was recorded as ₹9,820 in Purchase Book.',
+        amount: 540,
+        correctingEntry: {
+            debit: 'Creditor A/c',
+            credit: 'Purchase A/c',
+            amount: 540
+        },
+        options: [
+            { debit: 'Creditor A/c', credit: 'Purchase A/c', amount: 540, isCorrect: true },
+            { debit: 'Purchase A/c', credit: 'Creditor A/c', amount: 540, isCorrect: false },
+            { debit: 'Creditor A/c', credit: 'Cash A/c', amount: 540, isCorrect: false },
+            { debit: 'Purchase A/c', credit: 'Suspense A/c', amount: 540, isCorrect: false }
+        ],
+        explanation: '₹540 zyada record hua (9820-9280). Purchase Credit (kam karo), Creditor Debit (kam karo).',
+        hindiTip: '540÷9=60. Transposition errors always divisible by 9!'
     }
 ];
 
