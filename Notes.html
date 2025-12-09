@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkDown Notes Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #d1d5db;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        .dark {
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
+            --bg-tertiary: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border-color: #4b5563;
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+        }
+        
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar {
+            background-color: var(--bg-primary);
+            border-color: var(--border-color);
+        }
+        
+        .note-item {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+        }
+        
+        .note-item:hover, .note-item.active {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .editor-area {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        
+        .preview-area {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .folder-item:hover, .folder-item.active {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .tag {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .input-field {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .toolbar-btn {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .toolbar-btn:hover {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .toolbar-btn.active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .preview-area h1 { font-size: 2em; font-weight: bold; margin: 0.67em 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+        .preview-area h2 { font-size: 1.5em; font-weight: bold; margin: 0.83em 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+        .preview-area h3 { font-size: 1.17em; font-weight: bold; margin: 1em 0; }
+        .preview-area h4 { font-size: 1em; font-weight: bold; margin: 1.33em 0; }
+        .preview-area p { margin: 1em 0; line-height: 1.6; }
+        .preview-area ul, .preview-area ol { margin: 1em 0; padding-left: 2em; }
+        .preview-area li { margin: 0.5em 0; }
+        .preview-area code { background-color: var(--bg-tertiary); padding: 0.2em 0.4em; border-radius: 3px; font-family: 'Fira Code', monospace; font-size: 0.9em; }
+        .preview-area pre { background-color: #0d1117; padding: 1em; border-radius: 6px; overflow-x: auto; margin: 1em 0; }
+        .preview-area pre code { background: none; padding: 0; color: #e6edf3; }
+        .preview-area blockquote { border-left: 4px solid var(--accent); padding-left: 1em; margin: 1em 0; color: var(--text-secondary); font-style: italic; }
+        .preview-area a { color: var(--accent); text-decoration: underline; }
+        .preview-area table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+        .preview-area th, .preview-area td { border: 1px solid var(--border-color); padding: 0.5em; }
+        .preview-area th { background-color: var(--bg-tertiary); }
+        .preview-area img { max-width: 100%; height: auto; border-radius: 8px; }
+        .preview-area hr { border: none; border-top: 2px solid var(--border-color); margin: 2em 0; }
+        .preview-area input[type="checkbox"] { margin-right: 0.5em; transform: scale(1.2); }
+        .preview-area .task-list-item { list-style: none; margin-left: -1.5em; }
+        
+        .modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background-color: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+        
+        .favorite-star {
+            color: var(--warning);
+        }
+        
+        .archived-badge {
+            background-color: var(--text-secondary);
+        }
+        
+        .save-indicator {
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast {
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        .fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 100 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+        
+        .drag-over {
+            border: 2px dashed var(--accent) !important;
+            background-color: var(--bg-tertiary) !important;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .toc-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .version-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden">
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+    
+    <div id="app" class="flex h-full">
+        <!-- Sidebar -->
+        <div class="sidebar w-64 flex-shrink-0 border-r flex flex-col h-full">
+            <!-- Logo & Theme Toggle -->
+            <div class="p-4 border-b flex items-center justify-between" style="border-color: var(--border-color);">
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fas fa-feather-alt" style="color: var(--accent);"></i>
+                    <span>Notes Pro</span>
+                </h1>
+                <div class="flex items-center gap-1">
+                    <button id="shortcutsBtn" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Keyboard Shortcuts">
+                        <i class="fas fa-keyboard text-sm" style="color: var(--text-secondary);"></i>
+                    </button>
+                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Toggle Theme">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Search -->
+            <div class="p-3 border-b" style="border-color: var(--border-color);">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2" style="color: var(--text-secondary);"></i>
+                    <input type="text" id="searchInput" placeholder="Search notes..." 
+                        class="input-field w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="p-3 border-b flex gap-2" style="border-color: var(--border-color);">
+                <button id="importBtn" class="flex-1 p-2 rounded-lg text-sm flex items-center justify-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Import">
+                    <i class="fas fa-upload" style="color: var(--text-secondary);"></i>
+                </button>
+                <button id="templatesBtn" class="flex-1 p-2 rounded-lg text-sm flex items-center justify-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Templates">
+                    <i class="fas fa-magic" style="color: var(--text-secondary);"></i>
+                </button>
+                <button id="trashBtn" class="flex-1 p-2 rounded-lg text-sm flex items-center justify-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Trash">
+                    <i class="fas fa-trash" style="color: var(--text-secondary);"></i>
+                </button>
+            </div>
+            
+            <!-- Folders -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-semibold uppercase" style="color: var(--text-secondary);">Folders</span>
+                        <button id="addFolderBtn" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-plus text-sm" style="color: var(--text-secondary);"></i>
+                        </button>
+                    </div>
+                    <div id="folderList" class="space-y-1"></div>
+                </div>
+                
+                <!-- Tags -->
+                <div class="p-3 border-t" style="border-color: var(--border-color);">
+                    <span class="text-sm font-semibold uppercase" style="color: var(--text-secondary);">Tags</span>
+                    <div id="tagCloud" class="flex flex-wrap gap-2 mt-2"></div>
+                </div>
+                
+                <!-- Recent Notes -->
+                <div class="p-3 border-t" style="border-color: var(--border-color);">
+                    <span class="text-sm font-semibold uppercase" style="color: var(--text-secondary);">Recent</span>
+                    <div id="recentNotes" class="mt-2 space-y-1"></div>
+                </div>
+            </div>
+            
+            <!-- New Note Button -->
+            <div class="p-3 border-t" style="border-color: var(--border-color);">
+                <button id="newNoteBtn" class="btn-primary w-full py-2 rounded-lg font-semibold flex items-center justify-center gap-2 transition">
+                    <i class="fas fa-plus"></i>
+                    New Note
+                </button>
+            </div>
+        </div>
+        
+        <!-- Notes List -->
+        <div class="w-72 flex-shrink-0 border-r flex flex-col h-full" style="background-color: var(--bg-secondary); border-color: var(--border-color);">
+            <div class="p-4 border-b flex items-center justify-between" style="border-color: var(--border-color);">
+                <div>
+                    <h2 class="font-semibold" id="currentFolderName">All Notes</h2>
+                    <span class="text-sm" style="color: var(--text-secondary);" id="noteCount">0 notes</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button id="sortBtn" class="p-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition" title="Sort">
+                        <i class="fas fa-sort" style="color: var(--text-secondary);"></i>
+                    </button>
+                    <button id="viewModeBtn" class="p-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition" title="View Mode">
+                        <i class="fas fa-th-list" id="viewModeIcon" style="color: var(--text-secondary);"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="notesList" class="flex-1 overflow-y-auto p-2 space-y-2"></div>
+        </div>
+        
+        <!-- Editor & Preview -->
+        <div id="editorContainer" class="flex-1 flex flex-col h-full">
+            <!-- Toolbar -->
+            <div class="p-2 border-b flex items-center justify-between gap-2 flex-wrap" style="background-color: var(--bg-primary); border-color: var(--border-color);">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <input type="text" id="noteTitle" placeholder="Note title..." 
+                        class="input-field text-lg font-semibold px-3 py-1 rounded border focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">
+                    
+                    <button id="favoriteBtn" class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Favorite">
+                        <i class="far fa-star" id="favoriteIcon"></i>
+                    </button>
+                    
+                    <select id="folderSelect" class="input-field px-2 py-1 rounded border text-sm">
+                    </select>
+                    
+                    <div id="noteTags" class="flex items-center gap-1 flex-wrap"></div>
+                    <button id="addTagBtn" class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition" title="Add tag">
+                        <i class="fas fa-tag" style="color: var(--text-secondary);"></i>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-1">
+                    <span id="saveIndicator" class="text-xs px-2 py-1 rounded save-indicator" style="color: var(--success);">
+                        <i class="fas fa-check"></i> Saved
+                    </span>
+                    <span id="wordCount" class="text-xs px-2" style="color: var(--text-secondary);">0 words</span>
+                    <span id="readTime" class="text-xs px-2" style="color: var(--text-secondary);">0 min read</span>
+                </div>
+            </div>
+            
+            <!-- Formatting Toolbar -->
+            <div class="p-2 border-b flex items-center gap-1 flex-wrap" style="background-color: var(--bg-secondary); border-color: var(--border-color);">
+                <div class="flex items-center gap-1 border-r pr-2 mr-2" style="border-color: var(--border-color);">
+                    <button class="toolbar-btn p-2 rounded" data-format="heading" title="Heading (Ctrl+H)">
+                        <i class="fas fa-heading"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="bold" title="Bold (Ctrl+B)">
+                        <i class="fas fa-bold"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="italic" title="Italic (Ctrl+I)">
+                        <i class="fas fa-italic"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="strikethrough" title="Strikethrough">
+                        <i class="fas fa-strikethrough"></i>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-1 border-r pr-2 mr-2" style="border-color: var(--border-color);">
+                    <button class="toolbar-btn p-2 rounded" data-format="ul" title="Bullet List">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="ol" title="Numbered List">
+                        <i class="fas fa-list-ol"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="checklist" title="Checklist">
+                        <i class="fas fa-tasks"></i>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-1 border-r pr-2 mr-2" style="border-color: var(--border-color);">
+                    <button class="toolbar-btn p-2 rounded" data-format="quote" title="Quote">
+                        <i class="fas fa-quote-left"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="code" title="Inline Code">
+                        <i class="fas fa-code"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="codeblock" title="Code Block">
+                        <i class="fas fa-file-code"></i>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-1 border-r pr-2 mr-2" style="border-color: var(--border-color);">
+                    <button class="toolbar-btn p-2 rounded" data-format="link" title="Link (Ctrl+K)">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="image" title="Image">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="table" title="Table">
+                        <i class="fas fa-table"></i>
+                    </button>
+                    <button class="toolbar-btn p-2 rounded" data-format="hr" title="Horizontal Rule">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-1 ml-auto">
+                    <button id="undoBtn" class="toolbar-btn p-2 rounded" title="Undo (Ctrl+Z)">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button id="redoBtn" class="toolbar-btn p-2 rounded" title="Redo (Ctrl+Y)">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button id="tocBtn" class="toolbar-btn p-2 rounded" title="Table of Contents">
+                        <i class="fas fa-list-alt"></i>
+                    </button>
+                    <button id="historyBtn" class="toolbar-btn p-2 rounded" title="Version History">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button id="duplicateBtn" class="toolbar-btn p-2 rounded" title="Duplicate Note">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button id="printBtn" class="toolbar-btn p-2 rounded" title="Print">
+                        <i class="fas fa-print"></i>
+                    </button>
+                    <button id="exportBtn" class="toolbar-btn p-2 rounded" title="Export">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button id="fullscreenBtn" class="toolbar-btn p-2 rounded" title="Fullscreen (F11)">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button id="deleteNoteBtn" class="p-2 rounded hover:bg-red-100 dark:hover:bg-red-900 transition" title="Delete note">
+                        <i class="fas fa-trash text-red-500"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- View Mode Tabs -->
+            <div class="flex border-b" style="background-color: var(--bg-tertiary); border-color: var(--border-color);">
+                <button class="view-tab px-4 py-2 text-sm font-medium transition active" data-view="split">
+                    <i class="fas fa-columns mr-1"></i> Split
+                </button>
+                <button class="view-tab px-4 py-2 text-sm font-medium transition" data-view="editor">
+                    <i class="fas fa-edit mr-1"></i> Editor
+                </button>
+                <button class="view-tab px-4 py-2 text-sm font-medium transition" data-view="preview">
+                    <i class="fas fa-eye mr-1"></i> Preview
+                </button>
+            </div>
+            
+            <!-- Editor & Preview Split -->
+            <div id="editorSplit" class="flex-1 flex overflow-hidden">
+                <!-- Editor -->
+                <div id="editorPane" class="w-1/2 flex flex-col border-r" style="border-color: var(--border-color);">
+                    <textarea id="editor" class="editor-area flex-1 p-4 resize-none focus:outline-none font-mono text-sm" 
+                        placeholder="Write your markdown here..."></textarea>
+                </div>
+                
+                <!-- Preview -->
+                <div id="previewPane" class="w-1/2 flex flex-col">
+                    <div id="preview" class="preview-area flex-1 p-4 overflow-y-auto"></div>
+                </div>
+            </div>
+            
+            <!-- Status Bar -->
+            <div class="px-4 py-1 border-t flex items-center justify-between text-xs" style="background-color: var(--bg-tertiary); border-color: var(--border-color); color: var(--text-secondary);">
+                <div class="flex items-center gap-4">
+                    <span id="cursorPosition">Ln 1, Col 1</span>
+                    <span id="charCount">0 characters</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="lastSaved">Never saved</span>
+                    <span>Markdown</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden file input for import -->
+    <input type="file" id="fileInput" accept=".md,.txt,.html" class="hidden" multiple>
+    
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-96 shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Export Note</h3>
+            <div class="space-y-3">
+                <button class="export-option w-full p-3 rounded-lg border text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition" data-format="md" style="border-color: var(--border-color);">
+                    <i class="fab fa-markdown text-2xl" style="color: var(--accent);"></i>
+                    <div>
+                        <div class="font-semibold">Markdown (.md)</div>
+                        <div class="text-sm" style="color: var(--text-secondary);">Raw markdown file</div>
+                    </div>
+                </button>
+                <button class="export-option w-full p-3 rounded-lg border text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition" data-format="html" style="border-color: var(--border-color);">
+                    <i class="fab fa-html5 text-2xl text-orange-500"></i>
+                    <div>
+                        <div class="font-semibold">HTML (.html)</div>
+                        <div class="text-sm" style="color: var(--text-secondary);">Styled HTML document</div>
+                    </div>
+                </button>
+                <button class="export-option w-full p-3 rounded-lg border text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition" data-format="txt" style="border-color: var(--border-color);">
+                    <i class="fas fa-file-alt text-2xl" style="color: var(--text-secondary);"></i>
+                    <div>
+                        <div class="font-semibold">Plain Text (.txt)</div>
+                        <div class="text-sm" style="color: var(--text-secondary);">Text without formatting</div>
+                    </div>
+                </button>
+                <button class="export-option w-full p-3 rounded-lg border text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition" data-format="json" style="border-color: var(--border-color);">
+                    <i class="fas fa-file-code text-2xl text-green-500"></i>
+                    <div>
+                        <div class="font-semibold">JSON (.json)</div>
+                        <div class="text-sm" style="color: var(--text-secondary);">Note with metadata</div>
+                    </div>
+                </button>
+                <button class="export-option w-full p-3 rounded-lg border text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition" data-format="pdf" style="border-color: var(--border-color);">
+                    <i class="fas fa-file-pdf text-2xl text-red-500"></i>
+                    <div>
+                        <div class="font-semibold">PDF (Print)</div>
+                        <div class="text-sm" style="color: var(--text-secondary);">Print to PDF</div>
+                    </div>
+                </button>
+            </div>
+            <button id="closeExportModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Cancel
+            </button>
+        </div>
+    </div>
+    
+    <!-- Add Tag Modal -->
+    <div id="tagModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-80 shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Add Tag</h3>
+            <input type="text" id="tagInput" placeholder="Enter tag name..." 
+                class="input-field w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+            <div id="suggestedTags" class="flex flex-wrap gap-2 mb-4"></div>
+            <div class="flex gap-2">
+                <button id="confirmAddTag" class="btn-primary flex-1 py-2 rounded-lg font-semibold transition">Add</button>
+                <button id="closeTagModal" class="flex-1 py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Folder Modal -->
+    <div id="folderModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-80 shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">New Folder</h3>
+            <input type="text" id="folderInput" placeholder="Enter folder name..." 
+                class="input-field w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+            <div class="flex gap-2">
+                <button id="confirmAddFolder" class="btn-primary flex-1 py-2 rounded-lg font-semibold transition">Create</button>
+                <button id="closeFolderModal" class="flex-1 py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Templates Modal -->
+    <div id="templatesModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-[500px] max-h-[80vh] overflow-y-auto shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Note Templates</h3>
+            <div class="grid grid-cols-2 gap-3" id="templatesList"></div>
+            <button id="closeTemplatesModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Cancel
+            </button>
+        </div>
+    </div>
+    
+    <!-- Trash Modal -->
+    <div id="trashModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-[500px] max-h-[80vh] overflow-y-auto shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">Trash</h3>
+                <button id="emptyTrashBtn" class="text-sm text-red-500 hover:text-red-600">
+                    <i class="fas fa-trash mr-1"></i> Empty Trash
+                </button>
+            </div>
+            <div id="trashList" class="space-y-2"></div>
+            <button id="closeTrashModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Close
+            </button>
+        </div>
+    </div>
+    
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="shortcutsModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-[500px] max-h-[80vh] overflow-y-auto shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Keyboard Shortcuts</h3>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>New Note</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + N</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Save Note</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + S</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Bold</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + B</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Italic</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + I</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Link</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + K</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Heading</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + H</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Search</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + F</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Fullscreen</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">F11</kbd>
+                </div>
+                <div class="flex justify-between py-2 border-b" style="border-color: var(--border-color);">
+                    <span>Undo</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + Z</kbd>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span>Redo</span>
+                    <kbd class="px-2 py-1 rounded" style="background: var(--bg-tertiary);">Ctrl + Y</kbd>
+                </div>
+            </div>
+            <button id="closeShortcutsModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Close
+            </button>
+        </div>
+    </div>
+    
+    <!-- TOC Modal -->
+    <div id="tocModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-80 max-h-[80vh] overflow-y-auto shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Table of Contents</h3>
+            <div id="tocList" class="space-y-1"></div>
+            <button id="closeTocModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Close
+            </button>
+        </div>
+    </div>
+    
+    <!-- Version History Modal -->
+    <div id="historyModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-[500px] max-h-[80vh] overflow-y-auto shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Version History</h3>
+            <div id="historyList" class="space-y-2"></div>
+            <button id="closeHistoryModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Close
+            </button>
+        </div>
+    </div>
+    
+    <!-- Sort Modal -->
+    <div id="sortModal" class="modal fixed inset-0 hidden items-center justify-center z-50">
+        <div class="modal-content rounded-xl p-6 w-72 shadow-2xl">
+            <h3 class="text-lg font-bold mb-4">Sort Notes</h3>
+            <div class="space-y-2">
+                <button class="sort-option w-full p-3 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2" data-sort="updated-desc">
+                    <i class="fas fa-clock"></i> Last Modified
+                </button>
+                <button class="sort-option w-full p-3 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2" data-sort="created-desc">
+                    <i class="fas fa-calendar-plus"></i> Date Created
+                </button>
+                <button class="sort-option w-full p-3 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2" data-sort="title-asc">
+                    <i class="fas fa-sort-alpha-down"></i> Title (A-Z)
+                </button>
+                <button class="sort-option w-full p-3 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2" data-sort="title-desc">
+                    <i class="fas fa-sort-alpha-up"></i> Title (Z-A)
+                </button>
+                <button class="sort-option w-full p-3 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2" data-sort="favorites">
+                    <i class="fas fa-star"></i> Favorites First
+                </button>
+            </div>
+            <button id="closeSortModal" class="mt-4 w-full py-2 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-700 transition" style="border-color: var(--border-color);">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configure marked
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+
+        // Templates
+        const templates = [
+            { name: 'Meeting Notes', icon: 'fa-users', content: `# Meeting Notes\n\n**Date:** ${new Date().toLocaleDateString()}\n**Attendees:** \n\n## Agenda\n1. \n2. \n3. \n\n## Discussion Points\n\n\n## Action Items\n- [ ] \n- [ ] \n\n## Next Steps\n` },
+            { name: 'Project Plan', icon: 'fa-project-diagram', content: `# Project Name\n\n## Overview\n\n## Goals\n- \n\n## Timeline\n| Phase | Start | End | Status |\n|-------|-------|-----|--------|\n| Planning | | | ⏳ |\n| Development | | | |\n| Testing | | | |\n\n## Resources\n\n## Risks\n` },
+            { name: 'Daily Journal', icon: 'fa-book', content: `# ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n\n## Today's Goals\n- [ ] \n- [ ] \n- [ ] \n\n## Notes\n\n## Gratitude\n1. \n2. \n3. \n\n## Reflection\n` },
+            { name: 'Bug Report', icon: 'fa-bug', content: `# Bug Report\n\n## Summary\n\n## Steps to Reproduce\n1. \n2. \n3. \n\n## Expected Behavior\n\n## Actual Behavior\n\n## Environment\n- OS: \n- Browser: \n- Version: \n\n## Screenshots\n\n## Additional Notes\n` },
+            { name: 'Recipe', icon: 'fa-utensils', content: `# Recipe Name\n\n⏱️ **Prep Time:** \n🍳 **Cook Time:** \n🍽️ **Servings:** \n\n## Ingredients\n- \n- \n- \n\n## Instructions\n1. \n2. \n3. \n\n## Notes\n` },
+            { name: 'Code Snippet', icon: 'fa-code', content: `# Code Snippet\n\n## Description\n\n## Code\n\`\`\`javascript\n// Your code here\n\`\`\`\n\n## Usage\n\n## Notes\n` },
+            { name: 'Book Notes', icon: 'fa-book-open', content: `# Book Title\n\n**Author:** \n**Started:** \n**Finished:** \n**Rating:** ⭐⭐⭐⭐⭐\n\n## Summary\n\n## Key Takeaways\n1. \n2. \n3. \n\n## Favorite Quotes\n> \n\n## Personal Thoughts\n` },
+            { name: 'Blank Note', icon: 'fa-file', content: '' }
+        ];
+
+        // App State
+        let state = {
+            notes: [],
+            trash: [],
+            folders: ['Personal', 'Work', 'Ideas'],
+            currentFolder: null,
+            currentNote: null,
+            currentTag: null,
+            darkMode: false,
+            searchQuery: '',
+            sortBy: 'updated-desc',
+            viewMode: 'split',
+            listView: 'list'
+        };
+
+        // Undo/Redo stacks
+        let undoStack = [];
+        let redoStack = [];
+        let isUndoRedo = false;
+
+        // DOM Elements
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+        const noteTitle = document.getElementById('noteTitle');
+        const notesList = document.getElementById('notesList');
+        const folderList = document.getElementById('folderList');
+        const tagCloud = document.getElementById('tagCloud');
+        const noteTags = document.getElementById('noteTags');
+        const searchInput = document.getElementById('searchInput');
+        const noteCount = document.getElementById('noteCount');
+        const currentFolderName = document.getElementById('currentFolderName');
+        const folderSelect = document.getElementById('folderSelect');
+        const saveIndicator = document.getElementById('saveIndicator');
+
+        // Initialize
+        function init() {
+            loadState();
+            renderFolders();
+            renderFolderSelect();
+            renderNotes();
+            renderTagCloud();
+            renderRecentNotes();
+            renderTemplates();
+            setupEventListeners();
+            updateTheme();
+            
+            if (state.notes.length === 0) {
+                createSampleNote();
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast px-4 py-2 rounded-lg shadow-lg text-white ${type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'}`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-times' : 'fa-info'} mr-2"></i>${message}`;
+            document.getElementById('toastContainer').appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Load/Save State
+        function loadState() {
+            const saved = localStorage.getItem('markdownNotesProApp');
+            if (saved) {
+                state = { ...state, ...JSON.parse(saved) };
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('markdownNotesProApp', JSON.stringify(state));
+        }
+
+        // Create sample note
+        function createSampleNote() {
+            const sampleNote = {
+                id: Date.now(),
+                title: 'Welcome to MarkDown Notes Pro! 🚀',
+                content: `# Welcome to MarkDown Notes Pro! 🚀
+
+Your powerful markdown note-taking companion with advanced features.
+
+## ✨ New Features
+
+### 📝 Formatting Toolbar
+Use the toolbar buttons to quickly format your text:
+- **Bold**, *Italic*, ~~Strikethrough~~
+- Lists, checklists, and quotes
+- Code blocks with syntax highlighting
+- Tables, links, and images
+
+### ⭐ Favorites
+Mark important notes as favorites for quick access.
+
+### 📁 Enhanced Organization
+- Drag and drop notes between folders
+- Sort notes by date, title, or favorites
+- Filter by tags
+
+### 📋 Templates
+Start with pre-built templates:
+- Meeting Notes
+- Project Plans
+- Daily Journal
+- And more!
+
+### 🗑️ Trash & Recovery
+Deleted notes go to trash first - recover them anytime!
+
+### 📜 Version History
+Track changes with automatic version snapshots.
+
+### ⌨️ Keyboard Shortcuts
+Press \`Ctrl+?\` or click the keyboard icon to see all shortcuts.
+
+### 📤 Export Options
+Export to MD, HTML, TXT, JSON, or print to PDF.
+
+## Task List Example
+- [x] Download the app
+- [x] Create first note
+- [ ] Explore all features
+- [ ] Be productive!
+
+## Code Example
+\`\`\`javascript
+function greet(name) {
+    console.log(\`Hello, \${name}!\`);
+}
+greet('World');
+\`\`\`
+
+---
+
+Happy note-taking! 📝`,
+                folder: 'Personal',
+                tags: ['welcome', 'tutorial'],
+                favorite: true,
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+                versions: []
+            };
+            
+            state.notes.push(sampleNote);
+            saveState();
+            renderNotes();
+            renderTagCloud();
+            renderRecentNotes();
+            selectNote(sampleNote.id);
+        }
+
+        // Render Functions
+        function renderFolders() {
+            const favCount = state.notes.filter(n => n.favorite).length;
+            folderList.innerHTML = `
+                <div class="folder-item p-2 rounded cursor-pointer flex items-center gap-2 ${state.currentFolder === null && state.currentTag === null ? 'active' : ''}" data-folder="all">
+                    <i class="fas fa-inbox" style="color: var(--accent);"></i>
+                    <span>All Notes</span>
+                    <span class="ml-auto text-sm" style="color: var(--text-secondary);">${state.notes.length}</span>
+                </div>
+                <div class="folder-item p-2 rounded cursor-pointer flex items-center gap-2 ${state.currentFolder === 'favorites' ? 'active' : ''}" data-folder="favorites">
+                    <i class="fas fa-star favorite-star"></i>
+                    <span>Favorites</span>
+                    <span class="ml-auto text-sm" style="color: var(--text-secondary);">${favCount}</span>
+                </div>
+                ${state.folders.map(folder => `
+                    <div class="folder-item p-2 rounded cursor-pointer flex items-center gap-2 group ${state.currentFolder === folder ? 'active' : ''}" data-folder="${folder}" draggable="false">
+                        <i class="fas fa-folder" style="color: var(--accent);"></i>
+                        <span class="flex-1">${folder}</span>
+                        <span class="text-sm" style="color: var(--text-secondary);">${state.notes.filter(n => n.folder === folder).length}</span>
+                        <button class="delete-folder opacity-0 group-hover:opacity-100 p-1 hover:text-red-500 transition" data-folder="${folder}">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                `).join('')}
+            `;
+
+            // Add drop zones for folders
+            document.querySelectorAll('.folder-item[data-folder]').forEach(el => {
+                el.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    el.classList.add('drag-over');
+                });
+                el.addEventListener('dragleave', () => {
+                    el.classList.remove('drag-over');
+                });
+                el.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    el.classList.remove('drag-over');
+                    const noteId = parseInt(e.dataTransfer.getData('text/plain'));
+                    const folder = el.dataset.folder;
+                    if (folder !== 'all' && folder !== 'favorites') {
+                        moveNoteToFolder(noteId, folder);
+                    }
+                });
+            });
+        }
+
+        function renderFolderSelect() {
+            folderSelect.innerHTML = state.folders.map(f => 
+                `<option value="${f}" ${state.currentNote?.folder === f ? 'selected' : ''}>${f}</option>`
+            ).join('');
+        }
+
+        function renderNotes() {
+            let filteredNotes = state.notes;
+            
+            // Filter by folder
+            if (state.currentFolder === 'favorites') {
+                filteredNotes = filteredNotes.filter(n => n.favorite);
+            } else if (state.currentFolder) {
+                filteredNotes = filteredNotes.filter(n => n.folder === state.currentFolder);
+            }
+            
+            // Filter by tag
+            if (state.currentTag) {
+                filteredNotes = filteredNotes.filter(n => n.tags.includes(state.currentTag));
+            }
+            
+            // Filter by search
+            if (state.searchQuery) {
+                const query = state.searchQuery.toLowerCase();
+                filteredNotes = filteredNotes.filter(n => 
+                    n.title.toLowerCase().includes(query) || 
+                    n.content.toLowerCase().includes(query) ||
+                    n.tags.some(t => t.toLowerCase().includes(query))
+                );
+            }
+            
+            // Sort
+            filteredNotes = sortNotes(filteredNotes);
+            
+            noteCount.textContent = `${filteredNotes.length} note${filteredNotes.length !== 1 ? 's' : ''}`;
+            
+            if (filteredNotes.length === 0) {
+                notesList.innerHTML = `
+                    <div class="text-center py-8" style="color: var(--text-secondary);">
+                        <i class="fas fa-sticky-note text-4xl mb-3"></i>
+                        <p>No notes found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const isCompact = state.listView === 'compact';
+            notesList.innerHTML = filteredNotes.map(note => `
+                <div class="note-item ${isCompact ? 'p-2' : 'p-3'} rounded-lg cursor-pointer border ${state.currentNote?.id === note.id ? 'active ring-2 ring-blue-500' : ''}" 
+                    data-id="${note.id}" draggable="true">
+                    <div class="flex items-start gap-2">
+                        ${note.favorite ? '<i class="fas fa-star favorite-star text-sm mt-1"></i>' : ''}
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold truncate ${isCompact ? 'text-sm' : ''}">${note.title || 'Untitled'}</h3>
+                            ${!isCompact ? `<p class="text-sm truncate mt-1" style="color: var(--text-secondary);">${note.content.replace(/[#*\`\[\]]/g, '').substring(0, 60)}...</p>` : ''}
+                        </div>
+                    </div>
+                    ${!isCompact ? `
+                    <div class="flex items-center gap-2 mt-2 flex-wrap">
+                        <span class="text-xs" style="color: var(--text-secondary);">${formatDate(note.updatedAt)}</span>
+                        ${note.tags.slice(0, 2).map(tag => `<span class="tag text-xs px-2 py-0.5 rounded-full">${tag}</span>`).join('')}
+                        ${note.tags.length > 2 ? `<span class="text-xs" style="color: var(--text-secondary);">+${note.tags.length - 2}</span>` : ''}
+                    </div>` : ''}
+                </div>
+            `).join('');
+
+            // Add drag events
+            document.querySelectorAll('.note-item[draggable="true"]').forEach(el => {
+                el.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', el.dataset.id);
+                    el.classList.add('opacity-50');
+                });
+                el.addEventListener('dragend', () => {
+                    el.classList.remove('opacity-50');
+                });
+            });
+        }
+
+        function sortNotes(notes) {
+            const sorted = [...notes];
+            switch (state.sortBy) {
+                case 'updated-desc':
+                    return sorted.sort((a, b) => b.updatedAt - a.updatedAt);
+                case 'created-desc':
+                    return sorted.sort((a, b) => b.createdAt - a.createdAt);
+                case 'title-asc':
+                    return sorted.sort((a, b) => a.title.localeCompare(b.title));
+                case 'title-desc':
+                    return sorted.sort((a, b) => b.title.localeCompare(a.title));
+                case 'favorites':
+                    return sorted.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || b.updatedAt - a.updatedAt);
+                default:
+                    return sorted;
+            }
+        }
+
+        function renderTagCloud() {
+            const allTags = [...new Set(state.notes.flatMap(n => n.tags))];
+            
+            tagCloud.innerHTML = allTags.length === 0 ? 
+                '<span class="text-xs" style="color: var(--text-secondary);">No tags yet</span>' :
+                allTags.map(tag => `
+                    <span class="tag-filter text-xs px-2 py-1 rounded-full cursor-pointer transition ${state.currentTag === tag ? 'tag' : ''}" 
+                        style="${state.currentTag !== tag ? 'background-color: var(--bg-tertiary);' : ''}"
+                        data-tag="${tag}">${tag}</span>
+                `).join('');
+        }
+
+        function renderRecentNotes() {
+            const recent = [...state.notes].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 5);
+            document.getElementById('recentNotes').innerHTML = recent.map(note => `
+                <div class="text-sm p-2 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 truncate flex items-center gap-2" data-recent-id="${note.id}">
+                    ${note.favorite ? '<i class="fas fa-star favorite-star text-xs"></i>' : '<i class="far fa-file text-xs" style="color: var(--text-secondary);"></i>'}
+                    <span class="truncate">${note.title || 'Untitled'}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderNoteTags() {
+            if (!state.currentNote) {
+                noteTags.innerHTML = '';
+                return;
+            }
+            
+            noteTags.innerHTML = state.currentNote.tags.map(tag => `
+                <span class="tag text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                    ${tag}
+                    <button class="remove-tag hover:text-red-200 transition" data-tag="${tag}">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </span>
+            `).join('');
+        }
+
+        function renderTemplates() {
+            document.getElementById('templatesList').innerHTML = templates.map(t => `
+                <div class="template-card p-4 rounded-lg border cursor-pointer transition" style="border-color: var(--border-color);" data-template="${t.name}">
+                    <i class="fas ${t.icon} text-2xl mb-2" style="color: var(--accent);"></i>
+                    <div class="font-semibold">${t.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderTrash() {
+            const trashList = document.getElementById('trashList');
+            if (state.trash.length === 0) {
+                trashList.innerHTML = '<div class="text-center py-8" style="color: var(--text-secondary);"><i class="fas fa-trash-alt text-4xl mb-3"></i><p>Trash is empty</p></div>';
+                return;
+            }
+            
+            trashList.innerHTML = state.trash.map(note => `
+                <div class="p-3 rounded-lg border flex items-center justify-between" style="border-color: var(--border-color);">
+                    <div>
+                        <div class="font-semibold">${note.title || 'Untitled'}</div>
+                        <div class="text-sm" style="color: var(--text-secondary);">Deleted ${formatDate(note.deletedAt)}</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="restore-note p-2 rounded hover:bg-green-100 dark:hover:bg-green-900 text-green-500" data-id="${note.id}" title="Restore">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button class="permanent-delete p-2 rounded hover:bg-red-100 dark:hover:bg-red-900 text-red-500" data-id="${note.id}" title="Delete permanently">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updatePreview() {
+            const content = editor.value;
+            preview.innerHTML = marked.parse(content);
+            
+            // Update word count
+            const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const chars = content.length;
+            const readTime = Math.max(1, Math.ceil(words / 200));
+            
+            document.getElementById('wordCount').textContent = `${words} words`;
+            document.getElementById('charCount').textContent = `${chars} characters`;
+            document.getElementById('readTime').textContent = `${readTime} min read`;
+        }
+
+        function updateCursorPosition() {
+            const pos = editor.selectionStart;
+            const text = editor.value.substring(0, pos);
+            const lines = text.split('\n');
+            const line = lines.length;
+            const col = lines[lines.length - 1].length + 1;
+            document.getElementById('cursorPosition').textContent = `Ln ${line}, Col ${col}`;
+        }
+
+        // Note Operations
+        function createNote(content = '', title = 'Untitled Note') {
+            const note = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                folder: state.currentFolder && state.currentFolder !== 'favorites' ? state.currentFolder : 'Personal',
+                tags: [],
+                favorite: false,
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+                versions: []
+            };
+            
+            state.notes.push(note);
+            saveState();
+            renderNotes();
+            renderRecentNotes();
+            selectNote(note.id);
+            showToast('Note created');
+        }
+
+        function selectNote(id) {
+            state.currentNote = state.notes.find(n => n.id === id);
+            if (state.currentNote) {
+                noteTitle.value = state.currentNote.title;
+                editor.value = state.currentNote.content;
+                updatePreview();
+                renderNoteTags();
+                renderNotes();
+                renderFolderSelect();
+                folderSelect.value = state.currentNote.folder;
+                updateFavoriteIcon();
+                undoStack = [state.currentNote.content];
+                redoStack = [];
+                document.getElementById('lastSaved').textContent = `Last saved ${formatDate(state.currentNote.updatedAt)}`;
+            }
+        }
+
+        function updateCurrentNote() {
+            if (!state.currentNote) return;
+            
+            // Save version if content changed significantly
+            if (!isUndoRedo && state.currentNote.content !== editor.value) {
+                if (state.currentNote.content.length > 0 && 
+                    Math.abs(state.currentNote.content.length - editor.value.length) > 50) {
+                    saveVersion();
+                }
+                undoStack.push(editor.value);
+                if (undoStack.length > 50) undoStack.shift();
+                redoStack = [];
+            }
+            
+            state.currentNote.title = noteTitle.value;
+            state.currentNote.content = editor.value;
+            state.currentNote.folder = folderSelect.value;
+            state.currentNote.updatedAt = Date.now();
+            
+            saveState();
+            renderNotes();
+            renderRecentNotes();
+            
+            // Show save indicator
+            saveIndicator.style.opacity = '1';
+            document.getElementById('lastSaved').textContent = `Last saved ${formatDate(Date.now())}`;
+            setTimeout(() => saveIndicator.style.opacity = '0.5', 1500);
+        }
+
+        function saveVersion() {
+            if (!state.currentNote) return;
+            state.currentNote.versions = state.currentNote.versions || [];
+            state.currentNote.versions.unshift({
+                content: state.currentNote.content,
+                savedAt: Date.now()
+            });
+            if (state.currentNote.versions.length > 10) {
+                state.currentNote.versions.pop();
+            }
+        }
+
+        function deleteCurrentNote() {
+            if (!state.currentNote) return;
+            
+            if (confirm('Move this note to trash?')) {
+                const note = { ...state.currentNote, deletedAt: Date.now() };
+                state.trash.push(note);
+                state.notes = state.notes.filter(n => n.id !== state.currentNote.id);
+                state.currentNote = null;
+                noteTitle.value = '';
+                editor.value = '';
+                preview.innerHTML = '';
+                noteTags.innerHTML = '';
+                saveState();
+                renderNotes();
+                renderTagCloud();
+                renderRecentNotes();
+                showToast('Note moved to trash');
+            }
+        }
+
+        function restoreNote(id) {
+            const note = state.trash.find(n => n.id === id);
+            if (note) {
+                delete note.deletedAt;
+                state.notes.push(note);
+                state.trash = state.trash.filter(n => n.id !== id);
+                saveState();
+                renderNotes();
+                renderTrash();
+                renderRecentNotes();
+                showToast('Note restored');
+            }
+        }
+
+        function permanentDeleteNote(id) {
+            if (confirm('Permanently delete this note?')) {
+                state.trash = state.trash.filter(n => n.id !== id);
+                saveState();
+                renderTrash();
+                showToast('Note permanently deleted', 'error');
+            }
+        }
+
+        function emptyTrash() {
+            if (confirm('Permanently delete all notes in trash?')) {
+                state.trash = [];
+                saveState();
+                renderTrash();
+                showToast('Trash emptied');
+            }
+        }
+
+        function duplicateNote() {
+            if (!state.currentNote) return;
+            const note = {
+                ...state.currentNote,
+                id: Date.now(),
+                title: state.currentNote.title + ' (Copy)',
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+                versions: []
+            };
+            state.notes.push(note);
+            saveState();
+            renderNotes();
+            selectNote(note.id);
+            showToast('Note duplicated');
+        }
+
+        function toggleFavorite() {
+            if (!state.currentNote) return;
+            state.currentNote.favorite = !state.currentNote.favorite;
+            saveState();
+            updateFavoriteIcon();
+            renderNotes();
+            renderFolders();
+            renderRecentNotes();
+            showToast(state.currentNote.favorite ? 'Added to favorites' : 'Removed from favorites');
+        }
+
+        function updateFavoriteIcon() {
+            const icon = document.getElementById('favoriteIcon');
+            if (state.currentNote?.favorite) {
+                icon.className = 'fas fa-star favorite-star';
+            } else {
+                icon.className = 'far fa-star';
+            }
+        }
+
+        function moveNoteToFolder(noteId, folder) {
+            const note = state.notes.find(n => n.id === noteId);
+            if (note) {
+                note.folder = folder;
+                note.updatedAt = Date.now();
+                saveState();
+                renderNotes();
+                renderFolders();
+                if (state.currentNote?.id === noteId) {
+                    folderSelect.value = folder;
+                }
+                showToast(`Moved to ${folder}`);
+            }
+        }
+
+        // Folder Operations
+        function createFolder(name) {
+            if (name && !state.folders.includes(name)) {
+                state.folders.push(name);
+                saveState();
+                renderFolders();
+                renderFolderSelect();
+                showToast('Folder created');
+            }
+        }
+
+        function deleteFolder(name) {
+            if (confirm(`Delete folder "${name}"? Notes will be moved to Personal.`)) {
+                state.notes.forEach(n => {
+                    if (n.folder === name) n.folder = 'Personal';
+                });
+                state.folders = state.folders.filter(f => f !== name);
+                if (state.currentFolder === name) state.currentFolder = null;
+                saveState();
+                renderFolders();
+                renderFolderSelect();
+                renderNotes();
+                showToast('Folder deleted');
+            }
+        }
+
+        function selectFolder(folder) {
+            state.currentFolder = folder === 'all' ? null : folder;
+            state.currentTag = null;
+            currentFolderName.textContent = folder === 'all' ? 'All Notes' : folder === 'favorites' ? 'Favorites' : folder;
+            renderFolders();
+            renderNotes();
+            renderTagCloud();
+        }
+
+        // Tag Operations
+        function addTag(tag) {
+            if (!state.currentNote || !tag) return;
+            
+            tag = tag.toLowerCase().trim();
+            if (!state.currentNote.tags.includes(tag)) {
+                state.currentNote.tags.push(tag);
+                state.currentNote.updatedAt = Date.now();
+                saveState();
+                renderNoteTags();
+                renderNotes();
+                renderTagCloud();
+                showToast('Tag added');
+            }
+        }
+
+        function removeTag(tag) {
+            if (!state.currentNote) return;
+            
+            state.currentNote.tags = state.currentNote.tags.filter(t => t !== tag);
+            state.currentNote.updatedAt = Date.now();
+            saveState();
+            renderNoteTags();
+            renderNotes();
+            renderTagCloud();
+        }
+
+        function filterByTag(tag) {
+            state.currentTag = state.currentTag === tag ? null : tag;
+            state.currentFolder = null;
+            currentFolderName.textContent = state.currentTag ? `Tag: ${state.currentTag}` : 'All Notes';
+            renderFolders();
+            renderNotes();
+            renderTagCloud();
+        }
+
+        function renderSuggestedTags() {
+            const allTags = [...new Set(state.notes.flatMap(n => n.tags))];
+            const currentTags = state.currentNote?.tags || [];
+            const suggested = allTags.filter(t => !currentTags.includes(t)).slice(0, 6);
+            
+            document.getElementById('suggestedTags').innerHTML = suggested.length > 0 ?
+                `<span class="text-xs" style="color: var(--text-secondary);">Suggestions:</span>` +
+                suggested.map(tag => `
+                    <span class="suggested-tag text-xs px-2 py-1 rounded-full cursor-pointer hover:opacity-80" 
+                        style="background-color: var(--bg-tertiary);"
+                        data-tag="${tag}">${tag}</span>
+                `).join('') : '';
+        }
+
+        // Formatting Functions
+        function applyFormat(format) {
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            const selected = text.substring(start, end);
+            let replacement = '';
+            let cursorOffset = 0;
+            
+            switch (format) {
+                case 'bold':
+                    replacement = `**${selected || 'text'}**`;
+                    cursorOffset = selected ? 0 : -2;
+                    break;
+                case 'italic':
+                    replacement = `*${selected || 'text'}*`;
+                    cursorOffset = selected ? 0 : -1;
+                    break;
+                case 'strikethrough':
+                    replacement = `~~${selected || 'text'}~~`;
+                    cursorOffset = selected ? 0 : -2;
+                    break;
+                case 'heading':
+                    replacement = `## ${selected || 'Heading'}`;
+                    break;
+                case 'ul':
+                    replacement = selected ? selected.split('\n').map(l => `- ${l}`).join('\n') : '- List item';
+                    break;
+                case 'ol':
+                    replacement = selected ? selected.split('\n').map((l, i) => `${i + 1}. ${l}`).join('\n') : '1. List item';
+                    break;
+                case 'checklist':
+                    replacement = selected ? selected.split('\n').map(l => `- [ ] ${l}`).join('\n') : '- [ ] Task';
+                    break;
+                case 'quote':
+                    replacement = `> ${selected || 'Quote'}`;
+                    break;
+                case 'code':
+                    replacement = `\`${selected || 'code'}\``;
+                    cursorOffset = selected ? 0 : -1;
+                    break;
+                case 'codeblock':
+                    replacement = `\`\`\`\n${selected || 'code'}\n\`\`\``;
+                    break;
+                case 'link':
+                    replacement = `[${selected || 'text'}](url)`;
+                    break;
+                case 'image':
+                    replacement = `![${selected || 'alt text'}](image-url)`;
+                    break;
+                case 'table':
+                    replacement = `| Header 1 | Header 2 | Header 3 |\n|----------|----------|----------|\n| Cell 1   | Cell 2   | Cell 3   |`;
+                    break;
+                case 'hr':
+                    replacement = '\n---\n';
+                    break;
+            }
+            
+            editor.value = text.substring(0, start) + replacement + text.substring(end);
+            editor.focus();
+            const newPos = start + replacement.length + cursorOffset;
+            editor.setSelectionRange(newPos, newPos);
+            updatePreview();
+            updateCurrentNote();
+        }
+
+        // Undo/Redo
+        function undo() {
+            if (undoStack.length > 1) {
+                isUndoRedo = true;
+                redoStack.push(undoStack.pop());
+                editor.value = undoStack[undoStack.length - 1];
+                updatePreview();
+                updateCurrentNote();
+                isUndoRedo = false;
+            }
+        }
+
+        function redo() {
+            if (redoStack.length > 0) {
+                isUndoRedo = true;
+                const content = redoStack.pop();
+                undoStack.push(content);
+                editor.value = content;
+                updatePreview();
+                updateCurrentNote();
+                isUndoRedo = false;
+            }
+        }
+
+        // View Mode
+        function setViewMode(mode) {
+            state.viewMode = mode;
+            const editorPane = document.getElementById('editorPane');
+            const previewPane = document.getElementById('previewPane');
+            
+            document.querySelectorAll('.view-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.view === mode);
+                tab.style.backgroundColor = tab.dataset.view === mode ? 'var(--bg-primary)' : '';
+                tab.style.borderBottom = tab.dataset.view === mode ? '2px solid var(--accent)' : '';
+            });
+            
+            switch (mode) {
+                case 'editor':
+                    editorPane.style.width = '100%';
+                    previewPane.style.display = 'none';
+                    break;
+                case 'preview':
+                    editorPane.style.display = 'none';
+                    previewPane.style.width = '100%';
+                    previewPane.style.display = 'flex';
+                    break;
+                default:
+                    editorPane.style.width = '50%';
+                    editorPane.style.display = 'flex';
+                    previewPane.style.width = '50%';
+                    previewPane.style.display = 'flex';
+            }
+            saveState();
+        }
+
+        // Table of Contents
+        function generateTOC() {
+            const content = editor.value;
+            const headings = content.match(/^#{1,6}\s+.+$/gm) || [];
+            const tocList = document.getElementById('tocList');
+            
+            if (headings.length === 0) {
+                tocList.innerHTML = '<p class="text-sm" style="color: var(--text-secondary);">No headings found</p>';
+                return;
+            }
+            
+            tocList.innerHTML = headings.map((h, i) => {
+                const level = h.match(/^#+/)[0].length;
+                const text = h.replace(/^#+\s+/, '');
+                return `<div class="toc-item p-2 rounded cursor-pointer" style="padding-left: ${level * 12}px;" data-heading="${i}">
+                    ${text}
+                </div>`;
+            }).join('');
+        }
+
+        // Version History
+        function renderVersionHistory() {
+            const historyList = document.getElementById('historyList');
+            if (!state.currentNote?.versions?.length) {
+                historyList.innerHTML = '<p class="text-sm" style="color: var(--text-secondary);">No version history</p>';
+                return;
+            }
+            
+            historyList.innerHTML = state.currentNote.versions.map((v, i) => `
+                <div class="version-item p-3 rounded-lg border flex items-center justify-between" style="border-color: var(--border-color);">
+                    <div>
+                        <div class="font-semibold text-sm">Version ${state.currentNote.versions.length - i}</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">${new Date(v.savedAt).toLocaleString()}</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">${v.content.length} characters</div>
+                    </div>
+                    <button class="restore-version btn-primary px-3 py-1 rounded text-sm" data-index="${i}">
+                        Restore
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function restoreVersion(index) {
+            if (!state.currentNote) return;
+            const version = state.currentNote.versions[index];
+            if (version && confirm('Restore this version? Current content will be saved as a new version.')) {
+                saveVersion();
+                editor.value = version.content;
+                updatePreview();
+                updateCurrentNote();
+                closeModal('historyModal');
+                showToast('Version restored');
+            }
+        }
+
+        // Export Functions
+        function exportNote(format) {
+            if (!state.currentNote) return;
+            
+            let content, filename, type;
+            const title = state.currentNote.title || 'Untitled';
+            
+            switch (format) {
+                case 'md':
+                    content = `# ${title}\n\n${state.currentNote.content}`;
+                    filename = `${title}.md`;
+                    type = 'text/markdown';
+                    break;
+                case 'html':
+                    content = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
+        pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+        code { background: #f6f8fa; padding: 0.2em 0.4em; border-radius: 3px; font-family: 'SF Mono', Consolas, monospace; }
+        pre code { background: none; padding: 0; }
+        blockquote { border-left: 4px solid #3b82f6; padding-left: 1rem; margin-left: 0; color: #666; font-style: italic; }
+        img { max-width: 100%; border-radius: 8px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f6f8fa; }
+    </style>
+</head>
+<body>
+    ${marked.parse(state.currentNote.content)}
+</body>
+</html>`;
+                    filename = `${title}.html`;
+                    type = 'text/html';
+                    break;
+                case 'txt':
+                    content = `${title}\n${'='.repeat(title.length)}\n\n${state.currentNote.content.replace(/[#*\`_~\[\]]/g, '')}`;
+                    filename = `${title}.txt`;
+                    type = 'text/plain';
+                    break;
+                case 'json':
+                    content = JSON.stringify(state.currentNote, null, 2);
+                    filename = `${title}.json`;
+                    type = 'application/json';
+                    break;
+                case 'pdf':
+                    printNote();
+                    closeModal('exportModal');
+                    return;
+            }
+            
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            closeModal('exportModal');
+            showToast(`Exported as ${format.toUpperCase()}`);
+        }
+
+        // Import
+        function importFiles(files) {
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    let content = e.target.result;
+                    let title = file.name.replace(/\.[^/.]+$/, '');
+                    
+                    if (file.name.endsWith('.json')) {
+                        try {
+                            const data = JSON.parse(content);
+                            content = data.content || content;
+                            title = data.title || title;
+                        } catch (err) {}
+                    }
+                    
+                    createNote(content, title);
+                };
+                reader.readAsText(file);
+            });
+            showToast(`Imported ${files.length} file(s)`);
+        }
+
+        // Print
+        function printNote() {
+            if (!state.currentNote) return;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${state.currentNote.title}</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
+                        pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; }
+                        code { background: #f6f8fa; padding: 0.2em 0.4em; border-radius: 3px; }
+                        pre code { background: none; }
+                        @media print { body { padding: 0; } }
+                    </style>
+                </head>
+                <body>
+                    <h1>${state.currentNote.title}</h1>
+                    ${marked.parse(state.currentNote.content)}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Fullscreen
+        function toggleFullscreen() {
+            const container = document.getElementById('editorContainer');
+            container.classList.toggle('fullscreen');
+            const icon = document.querySelector('#fullscreenBtn i');
+            icon.className = container.classList.contains('fullscreen') ? 'fas fa-compress' : 'fas fa-expand';
+        }
+
+        // Theme
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            updateTheme();
+            saveState();
+        }
+
+        function updateTheme() {
+            document.body.classList.toggle('dark', state.darkMode);
+            document.getElementById('themeIcon').className = state.darkMode ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Utilities
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+            if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`;
+            
+            return date.toLocaleDateString();
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Editor
+            editor.addEventListener('input', () => {
+                updatePreview();
+                updateCurrentNote();
+            });
+            
+            editor.addEventListener('click', updateCursorPosition);
+            editor.addEventListener('keyup', updateCursorPosition);
+            
+            noteTitle.addEventListener('input', updateCurrentNote);
+            folderSelect.addEventListener('change', updateCurrentNote);
+            
+            // Search
+            searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                renderNotes();
+            });
+            
+            // New Note
+            document.getElementById('newNoteBtn').addEventListener('click', () => createNote());
+            
+            // Delete Note
+            document.getElementById('deleteNoteBtn').addEventListener('click', deleteCurrentNote);
+            
+            // Theme Toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Favorite
+            document.getElementById('favoriteBtn').addEventListener('click', toggleFavorite);
+            
+            // Duplicate
+            document.getElementById('duplicateBtn').addEventListener('click', duplicateNote);
+            
+            // Undo/Redo
+            document.getElementById('undoBtn').addEventListener('click', undo);
+            document.getElementById('redoBtn').addEventListener('click', redo);
+            
+            // Fullscreen
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+            
+            // Print
+            document.getElementById('printBtn').addEventListener('click', printNote);
+            
+            // Folders
+            folderList.addEventListener('click', (e) => {
+                const folderItem = e.target.closest('.folder-item');
+                const deleteBtn = e.target.closest('.delete-folder');
+                
+                if (deleteBtn) {
+                    e.stopPropagation();
+                    deleteFolder(deleteBtn.dataset.folder);
+                } else if (folderItem) {
+                    selectFolder(folderItem.dataset.folder);
+                }
+            });
+            
+            // Add Folder
+            document.getElementById('addFolderBtn').addEventListener('click', () => openModal('folderModal'));
+            document.getElementById('closeFolderModal').addEventListener('click', () => closeModal('folderModal'));
+            document.getElementById('confirmAddFolder').addEventListener('click', () => {
+                const input = document.getElementById('folderInput');
+                createFolder(input.value);
+                input.value = '';
+                closeModal('folderModal');
+            });
+            
+            // Notes List
+            notesList.addEventListener('click', (e) => {
+                const noteItem = e.target.closest('.note-item');
+                if (noteItem) {
+                    selectNote(parseInt(noteItem.dataset.id));
+                }
+            });
+            
+            // Recent Notes
+            document.getElementById('recentNotes').addEventListener('click', (e) => {
+                const item = e.target.closest('[data-recent-id]');
+                if (item) {
+                    selectNote(parseInt(item.dataset.recentId));
+                }
+            });
+            
+            // Tags
+            document.getElementById('addTagBtn').addEventListener('click', () => {
+                if (state.currentNote) {
+                    renderSuggestedTags();
+                    openModal('tagModal');
+                }
+            });
+            document.getElementById('closeTagModal').addEventListener('click', () => closeModal('tagModal'));
+            document.getElementById('confirmAddTag').addEventListener('click', () => {
+                const input = document.getElementById('tagInput');
+                addTag(input.value);
+                input.value = '';
+                closeModal('tagModal');
+            });
+            
+            document.getElementById('suggestedTags').addEventListener('click', (e) => {
+                const tag = e.target.closest('.suggested-tag');
+                if (tag) {
+                    addTag(tag.dataset.tag);
+                    closeModal('tagModal');
+                }
+            });
+            
+            noteTags.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('.remove-tag');
+                if (removeBtn) {
+                    removeTag(removeBtn.dataset.tag);
+                }
+            });
+            
+            tagCloud.addEventListener('click', (e) => {
+                const tagFilter = e.target.closest('.tag-filter');
+                if (tagFilter) {
+                    filterByTag(tagFilter.dataset.tag);
+                }
+            });
+            
+            // Formatting toolbar
+            document.querySelectorAll('.toolbar-btn[data-format]').forEach(btn => {
+                btn.addEventListener('click', () => applyFormat(btn.dataset.format));
+            });
+            
+            // View tabs
+            document.querySelectorAll('.view-tab').forEach(tab => {
+                tab.addEventListener('click', () => setViewMode(tab.dataset.view));
+            });
+            
+            // Sort
+            document.getElementById('sortBtn').addEventListener('click', () => openModal('sortModal'));
+            document.getElementById('closeSortModal').addEventListener('click', () => closeModal('sortModal'));
+            document.querySelectorAll('.sort-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.sortBy = btn.dataset.sort;
+                    saveState();
+                    renderNotes();
+                    closeModal('sortModal');
+                });
+            });
+            
+            // View mode toggle
+            document.getElementById('viewModeBtn').addEventListener('click', () => {
+                state.listView = state.listView === 'list' ? 'compact' : 'list';
+                document.getElementById('viewModeIcon').className = state.listView === 'list' ? 'fas fa-th-list' : 'fas fa-bars';
+                saveState();
+                renderNotes();
+            });
+            
+            // Export
+            document.getElementById('exportBtn').addEventListener('click', () => {
+                if (state.currentNote) openModal('exportModal');
+            });
+            document.getElementById('closeExportModal').addEventListener('click', () => closeModal('exportModal'));
+            document.querySelectorAll('.export-option').forEach(btn => {
+                btn.addEventListener('click', () => exportNote(btn.dataset.format));
+            });
+            
+            // Import
+            document.getElementById('importBtn').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+            document.getElementById('fileInput').addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    importFiles(e.target.files);
+                }
+            });
+            
+            // Templates
+            document.getElementById('templatesBtn').addEventListener('click', () => openModal('templatesModal'));
+            document.getElementById('closeTemplatesModal').addEventListener('click', () => closeModal('templatesModal'));
+            document.getElementById('templatesList').addEventListener('click', (e) => {
+                const card = e.target.closest('.template-card');
+                if (card) {
+                    const template = templates.find(t => t.name === card.dataset.template);
+                    if (template) {
+                        createNote(template.content, template.name === 'Blank Note' ? 'Untitled Note' : template.name);
+                        closeModal('templatesModal');
+                    }
+                }
+            });
+            
+            // Trash
+            document.getElementById('trashBtn').addEventListener('click', () => {
+                renderTrash();
+                openModal('trashModal');
+            });
+            document.getElementById('closeTrashModal').addEventListener('click', () => closeModal('trashModal'));
+            document.getElementById('emptyTrashBtn').addEventListener('click', emptyTrash);
+            document.getElementById('trashList').addEventListener('click', (e) => {
+                const restoreBtn = e.target.closest('.restore-note');
+                const deleteBtn = e.target.closest('.permanent-delete');
+                if (restoreBtn) restoreNote(parseInt(restoreBtn.dataset.id));
+                if (deleteBtn) permanentDeleteNote(parseInt(deleteBtn.dataset.id));
+            });
+            
+            // Shortcuts
+            document.getElementById('shortcutsBtn').addEventListener('click', () => openModal('shortcutsModal'));
+            document.getElementById('closeShortcutsModal').addEventListener('click', () => closeModal('shortcutsModal'));
+            
+            // TOC
+            document.getElementById('tocBtn').addEventListener('click', () => {
+                generateTOC();
+                openModal('tocModal');
+            });
+            document.getElementById('closeTocModal').addEventListener('click', () => closeModal('tocModal'));
+            document.getElementById('tocList').addEventListener('click', (e) => {
+                const item = e.target.closest('.toc-item');
+                if (item) {
+                    closeModal('tocModal');
+                    const headingIndex = parseInt(item.dataset.heading);
+                    const content = editor.value;
+                    const headings = content.match(/^#{1,6}\s+.+$/gm) || [];
+                    if (headings[headingIndex]) {
+                        const pos = content.indexOf(headings[headingIndex]);
+                        editor.focus();
+                        editor.setSelectionRange(pos, pos);
+                        // Scroll to position
+                        const lines = content.substring(0, pos).split('\n').length;
+                        editor.scrollTop = (lines - 1) * 20;
+                    }
+                }
+            });
+            
+            // Version History
+            document.getElementById('historyBtn').addEventListener('click', () => {
+                renderVersionHistory();
+                openModal('historyModal');
+            });
+            document.getElementById('closeHistoryModal').addEventListener('click', () => closeModal('historyModal'));
+            document.getElementById('historyList').addEventListener('click', (e) => {
+                const btn = e.target.closest('.restore-version');
+                if (btn) restoreVersion(parseInt(btn.dataset.index));
+            });
+            
+            // Modal backdrop click
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key.toLowerCase()) {
+                        case 'n':
+                            e.preventDefault();
+                            createNote();
+                            break;
+                        case 's':
+                            e.preventDefault();
+                            updateCurrentNote();
+                            showToast('Note saved');
+                            break;
+                        case 'b':
+                            e.preventDefault();
+                            applyFormat('bold');
+                            break;
+                        case 'i':
+                            e.preventDefault();
+                            applyFormat('italic');
+                            break;
+                        case 'k':
+                            e.preventDefault();
+                            applyFormat('link');
+                            break;
+                        case 'h':
+                            e.preventDefault();
+                            applyFormat('heading');
+                            break;
+                        case 'z':
+                            if (!e.shiftKey) {
+                                e.preventDefault();
+                                undo();
+                            }
+                            break;
+                        case 'y':
+                            e.preventDefault();
+                            redo();
+                            break;
+                        case 'f':
+                            e.preventDefault();
+                            searchInput.focus();
+                            break;
+                    }
+                }
+                
+                if (e.key === 'F11') {
+                    e.preventDefault();
+                    toggleFullscreen();
+                }
+                
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal').forEach(m => closeModal(m.id));
+                    const container = document.getElementById('editorContainer');
+                    if (container.classList.contains('fullscreen')) {
+                        toggleFullscreen();
+                    }
+                }
+            });
+        }
+
+        // Start the app
+        init();
+        setViewMode(state.viewMode || 'split');
+    </script>
+</body>
+</html>
