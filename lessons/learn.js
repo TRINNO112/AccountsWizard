@@ -2931,10 +2931,30 @@ function handleDrop(e) {
 }
 
 // ============================================
-// 📱 TOUCH HANDLERS (Mobile)
+// 📱 TOUCH HANDLERS (Mobile - Multi-Touch Support)
 // ============================================
 
+let isDragging = false;
+let lastTouchCount = 0;
+
 function handleTouchStart(e) {
+    // Multi-touch support: 1 finger = drag, 2+ fingers = scroll
+    const touchCount = e.touches.length;
+    lastTouchCount = touchCount;
+
+    // If 2+ fingers, disable drag and allow scroll
+    if (touchCount >= 2) {
+        isDragging = false;
+        TBGame.draggedEntry = null;
+        if (touchClone) {
+            touchClone.remove();
+            touchClone = null;
+        }
+        return;
+    }
+
+    // Single finger - enable drag
+    isDragging = true;
     const touch = e.touches[0];
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
@@ -2942,7 +2962,7 @@ function handleTouchStart(e) {
     TBGame.draggedEntry = this;
     this.classList.add('dragging');
 
-    // Create visual clone
+    // Create visual clone for dragging feedback
     touchClone = this.cloneNode(true);
     touchClone.style.cssText = `
         position: fixed;
@@ -2953,14 +2973,34 @@ function handleTouchStart(e) {
         pointer-events: none;
         z-index: 9999;
         transform: scale(0.9);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        border-radius: 8px;
     `;
     document.body.appendChild(touchClone);
 }
 
 function handleTouchMove(e) {
+    // Allow scrolling with 2+ fingers, only drag with single finger
+    const touchCount = e.touches.length;
+
+    if (touchCount >= 2) {
+        // Multi-touch: allow normal scrolling
+        isDragging = false;
+        if (touchClone) {
+            touchClone.remove();
+            touchClone = null;
+        }
+        if (TBGame.draggedEntry) {
+            TBGame.draggedEntry.classList.remove('dragging');
+            TBGame.draggedEntry = null;
+        }
+        return;
+    }
+
+    // Single finger drag
+    if (!isDragging || !touchClone) return;
+
     e.preventDefault();
-    
-    if (!touchClone) return;
 
     const touch = e.touches[0];
     touchClone.style.left = `${touch.clientX - 100}px`;
@@ -2971,25 +3011,48 @@ function handleTouchMove(e) {
     const creditZone = document.getElementById('creditZone');
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
-    debitZone.classList.remove('drag-over');
-    creditZone.classList.remove('drag-over');
+    debitZone?.classList.remove('drag-over');
+    creditZone?.classList.remove('drag-over');
 
     if (element) {
         if (element.closest('#debitZone')) {
-            debitZone.classList.add('drag-over');
+            debitZone?.classList.add('drag-over');
         } else if (element.closest('#creditZone')) {
-            creditZone.classList.add('drag-over');
+            creditZone?.classList.add('drag-over');
         }
     }
 }
 
 function handleTouchEnd(e) {
+    const touchCount = e.touches.length;
+
+    // If 2+ fingers still active, cancel drag
+    if (touchCount >= 1) {
+        isDragging = false;
+        if (touchClone) {
+            touchClone.remove();
+            touchClone = null;
+        }
+        if (TBGame.draggedEntry) {
+            TBGame.draggedEntry.classList.remove('dragging');
+            TBGame.draggedEntry = null;
+        }
+        document.querySelectorAll('.tb-drop-zone').forEach(zone => {
+            zone.classList.remove('drag-over');
+        });
+        return;
+    }
+
+    // Complete the drag operation
+    if (!isDragging || !TBGame.draggedEntry) {
+        isDragging = false;
+        return;
+    }
+
     if (touchClone) {
         touchClone.remove();
         touchClone = null;
     }
-
-    if (!TBGame.draggedEntry) return;
 
     const touch = e.changedTouches[0];
     const element = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -3017,6 +3080,7 @@ function handleTouchEnd(e) {
     }
 
     TBGame.draggedEntry = null;
+    isDragging = false;
 }
 
 // ============================================
