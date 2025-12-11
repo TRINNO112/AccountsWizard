@@ -1832,409 +1832,3158 @@ console.log('%c"Tum sirf student nahi… ek Accounting Warrior ho!"', 'color: #0
 // ============================================
 
 const TrialBalanceEntries = [
-    // DEBIT ITEMS (Assets & Expenses) - 25 items
+    // ==========================================
+    // FIXED ASSETS (DEBIT) - 40 items
+    // ==========================================
     {
         id: 1,
         text: 'Machinery purchased',
         amount: 50000,
         correctSide: 'debit',
         type: 'Asset',
+        category: 'Fixed Asset',
         explanation: 'Machinery ek Fixed Asset hai. Assets ka balance Debit hota hai kyunki ye business ke resources hain.'
     },
     {
         id: 2,
-        text: 'Cash in hand',
-        amount: 25000,
-        correctSide: 'debit',
-        type: 'Asset',
-        explanation: 'Cash ek Current Asset hai. Jab cash hota hai, wo Debit side mein dikhta hai.'
-    },
-    {
-        id: 3,
         text: 'Furniture & Fixtures',
         amount: 35000,
         correctSide: 'debit',
         type: 'Asset',
+        category: 'Fixed Asset',
         explanation: 'Furniture bhi Fixed Asset hai. Saare assets Debit side mein aate hain.'
     },
     {
-        id: 4,
-        text: 'Stock/Inventory',
-        amount: 45000,
-        correctSide: 'debit',
-        type: 'Asset',
-        explanation: 'Stock business ka Current Asset hai. Ye Debit balance rakhta hai.'
-    },
-    {
-        id: 5,
-        text: 'Bank Balance',
-        amount: 80000,
-        correctSide: 'debit',
-        type: 'Asset',
-        explanation: 'Bank mein rakha paisa Asset hai. Debit side mein show hoga.'
-    },
-    {
-        id: 6,
-        text: 'Debtors (Rahul)',
-        amount: 15000,
-        correctSide: 'debit',
-        type: 'Asset',
-        explanation: 'Debtors wo log hain jinse paisa lena hai. Ye Asset hai, toh Debit mein aayega.'
-    },
-    {
-        id: 7,
-        text: 'Prepaid Insurance',
-        amount: 8000,
-        correctSide: 'debit',
-        type: 'Asset',
-        explanation: 'Prepaid expenses future ka benefit hai - Current Asset. Debit side!'
-    },
-    {
-        id: 8,
+        id: 3,
         text: 'Land & Building',
         amount: 200000,
         correctSide: 'debit',
         type: 'Asset',
+        category: 'Fixed Asset',
         explanation: 'Land & Building sabse bada Fixed Asset hai. Obviously Debit!'
     },
     {
-        id: 9,
-        text: 'Rent Expense',
-        amount: 12000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Rent ek Expense hai. Expenses hamesha Debit hote hain kyunki ye losses hain.'
-    },
-    {
-        id: 10,
-        text: 'Salary Expense',
-        amount: 30000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Salary bhi Expense hai. Jab paisa jaata hai expense ke liye, Debit karo!'
-    },
-    {
-        id: 11,
-        text: 'Electricity Bill',
-        amount: 5000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Electricity Bill ek Expense hai. Saare expenses Debit side mein!'
-    },
-    {
-        id: 12,
-        text: 'Wages Paid',
-        amount: 18000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Wages bhi Expense category mein aata hai. Debit!'
-    },
-    {
-        id: 13,
-        text: 'Purchases',
-        amount: 75000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Goods ki purchase Trading Expense hai. Debit side mein jaati hai.'
-    },
-    {
-        id: 14,
-        text: 'Carriage Inward',
-        amount: 3000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Goods lane ka kharcha (Carriage Inward) Direct Expense hai. Debit!'
-    },
-    {
-        id: 15,
-        text: 'Advertisement Expense',
-        amount: 10000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Advertising ka kharcha Indirect Expense hai. Debit mein jaayega.'
-    },
-    {
-        id: 31,
+        id: 4,
         text: 'Office Equipment',
         amount: 45000,
         correctSide: 'debit',
         type: 'Asset',
+        category: 'Fixed Asset',
         explanation: 'Office equipment like computers, printers are Fixed Assets. Always Debit!'
     },
     {
-        id: 32,
+        id: 5,
         text: 'Vehicles (Delivery Van)',
         amount: 300000,
         correctSide: 'debit',
         type: 'Asset',
+        category: 'Fixed Asset',
         explanation: 'Vehicles used for business are Fixed Assets. Debit side!'
     },
     {
-        id: 33,
-        text: 'Trade Expenses',
-        amount: 7500,
+        id: 6,
+        text: 'Computer Systems',
+        amount: 85000,
         correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Trade expenses like packaging, transportation are Direct Expenses. Debit!'
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Computers are fixed assets used for business operations. Debit balance!'
+    },
+    {
+        id: 7,
+        text: 'Factory Building',
+        amount: 500000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Factory Building is a major fixed asset. All assets = Debit!'
+    },
+    {
+        id: 8,
+        text: 'Air Conditioning Plant',
+        amount: 75000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'AC Plant is fixed asset. Assets have debit balance.'
+    },
+    {
+        id: 9,
+        text: 'Electrical Installations',
+        amount: 40000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Electrical fittings are part of fixed assets. Debit!'
+    },
+    {
+        id: 10,
+        text: 'Office Furniture',
+        amount: 28000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Office furniture like desks, chairs are fixed assets. Debit side!'
+    },
+    {
+        id: 11,
+        text: 'Motor Car',
+        amount: 450000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Motor car used for business is a fixed asset. Debit balance!'
+    },
+    {
+        id: 12,
+        text: 'Plant & Equipment',
+        amount: 180000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Plant & Equipment are production assets. Assets = Debit!'
+    },
+    {
+        id: 13,
+        text: 'Leasehold Property',
+        amount: 350000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Leasehold property rights are fixed assets. Debit side!'
+    },
+    {
+        id: 14,
+        text: 'Freehold Land',
+        amount: 800000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Land owned permanently is a fixed asset. Debit!'
+    },
+    {
+        id: 15,
+        text: 'Workshop Equipment',
+        amount: 95000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Workshop tools and equipment are fixed assets. Debit balance!'
+    },
+    {
+        id: 16,
+        text: 'Printing Machine',
+        amount: 120000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Printing machine is production equipment - fixed asset. Debit!'
+    },
+    {
+        id: 17,
+        text: 'Generator',
+        amount: 65000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Power generator is a fixed asset. All assets debit side!'
+    },
+    {
+        id: 18,
+        text: 'CCTV Equipment',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Security equipment is fixed asset. Debit!'
+    },
+    {
+        id: 19,
+        text: 'Server & Networking',
+        amount: 150000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'IT infrastructure is fixed asset. Debit balance!'
+    },
+    {
+        id: 20,
+        text: 'Warehouse Building',
+        amount: 400000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Warehouse is immovable fixed asset. Debit side!'
+    },
+    {
+        id: 21,
+        text: 'Cold Storage Plant',
+        amount: 250000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Cold storage facility is fixed asset. Debit!'
+    },
+    {
+        id: 22,
+        text: 'Showroom Fittings',
+        amount: 55000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Showroom fixtures are fixed assets. Debit balance!'
+    },
+    {
+        id: 23,
+        text: 'Truck Fleet',
+        amount: 600000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Transport vehicles are fixed assets. Debit side!'
+    },
+    {
+        id: 24,
+        text: 'Solar Panels',
+        amount: 180000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Solar power installation is fixed asset. Debit!'
+    },
+    {
+        id: 25,
+        text: 'Laboratory Equipment',
+        amount: 220000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Lab equipment for testing is fixed asset. Debit!'
+    },
+    {
+        id: 26,
+        text: 'Forklift',
+        amount: 85000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Material handling equipment is fixed asset. Debit side!'
+    },
+    {
+        id: 27,
+        text: 'Crane',
+        amount: 350000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Heavy machinery like crane is fixed asset. Debit!'
+    },
+    {
+        id: 28,
+        text: 'Fire Safety Equipment',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Safety equipment is fixed asset. Debit balance!'
+    },
+    {
+        id: 29,
+        text: 'Telephone System (EPABX)',
+        amount: 28000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Communication equipment is fixed asset. Debit!'
+    },
+    {
+        id: 30,
+        text: 'Water Purification Plant',
+        amount: 95000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Utility plants are fixed assets. Debit side!'
+    },
+    {
+        id: 31,
+        text: 'Packaging Machine',
+        amount: 130000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Packaging equipment is fixed asset. Debit!'
+    },
+    {
+        id: 32,
+        text: 'Weighing Scale (Heavy Duty)',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Industrial scales are fixed assets. Debit balance!'
+    },
+    {
+        id: 33,
+        text: 'Conveyor Belt System',
+        amount: 175000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Conveyor systems are production assets. Debit!'
     },
     {
         id: 34,
-        text: 'Depreciation on Machinery',
-        amount: 8000,
+        text: 'Railway Siding',
+        amount: 450000,
         correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Depreciation is an expense that reduces asset value. Always Debit!'
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Railway siding is permanent infrastructure. Fixed asset - Debit!'
     },
     {
         id: 35,
-        text: 'Commission Paid',
-        amount: 6000,
+        text: 'Boring Machine',
+        amount: 88000,
         correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Commission paid to agents is an expense. Expenses = Debit!'
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Industrial machinery is fixed asset. Debit side!'
     },
     {
         id: 36,
+        text: 'Lathe Machine',
+        amount: 145000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Manufacturing equipment is fixed asset. Debit!'
+    },
+    {
+        id: 37,
+        text: 'CNC Machine',
+        amount: 500000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Automated machinery is fixed asset. Debit balance!'
+    },
+    {
+        id: 38,
+        text: 'Boiler',
+        amount: 280000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Industrial boiler is fixed asset. Debit!'
+    },
+    {
+        id: 39,
+        text: 'Compressor',
+        amount: 72000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Industrial compressor is fixed asset. Debit side!'
+    },
+    {
+        id: 40,
+        text: 'Transformer',
+        amount: 185000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Electrical transformer is fixed asset. Debit!'
+    },
+
+    // ==========================================
+    // INTANGIBLE ASSETS (DEBIT) - 15 items
+    // ==========================================
+    {
+        id: 41,
         text: 'Goodwill',
         amount: 100000,
         correctSide: 'debit',
         type: 'Asset',
-        explanation: 'Goodwill is an intangible asset. Assets have debit balance.'
-    },
-    {
-        id: 37,
-        text: 'Patents & Trademarks',
-        amount: 50000,
-        correctSide: 'debit',
-        type: 'Asset',
-        explanation: 'Intellectual property assets have debit balance.'
-    },
-    {
-        id: 38,
-        text: 'Drawings',
-        amount: 25000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Owner\'s drawings reduce capital, so it\'s debit.'
-    },
-    {
-        id: 39,
-        text: 'Bad Debts',
-        amount: 5000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Bad debts are losses, so debit balance.'
-    },
-    {
-        id: 40,
-        text: 'Interest on Loan',
-        amount: 15000,
-        correctSide: 'debit',
-        type: 'Expense',
-        explanation: 'Interest paid is an expense, debit side.'
-    },
-
-    // CREDIT ITEMS (Liabilities, Capital & Income) - 25 items
-    {
-        id: 16,
-        text: 'Capital (Owner)',
-        amount: 150000,
-        correctSide: 'credit',
-        type: 'Capital',
-        explanation: 'Capital owner ka investment hai - ye Liability hai business ki. Credit side!'
-    },
-    {
-        id: 17,
-        text: 'Bank Loan',
-        amount: 100000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Loan ek Liability hai - paisa wapas karna hai. Credit balance!'
-    },
-    {
-        id: 18,
-        text: 'Creditors (Supplier)',
-        amount: 25000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Creditors wo hain jinhe paisa dena hai. Liability = Credit side.'
-    },
-    {
-        id: 19,
-        text: 'Outstanding Salary',
-        amount: 8000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Outstanding expenses bhi Liability hai - abhi pay nahi kiya. Credit!'
-    },
-    {
-        id: 20,
-        text: 'Sales Revenue',
-        amount: 120000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Sales se Income aati hai. Income hamesha Credit side mein!'
-    },
-    {
-        id: 21,
-        text: 'Commission Received',
-        amount: 5000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Commission Received ek Income hai. Income = Credit!'
-    },
-    {
-        id: 22,
-        text: 'Interest Received',
-        amount: 3000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Interest mila hai toh Income hai. Credit mein likho!'
-    },
-    {
-        id: 23,
-        text: 'Rent Received',
-        amount: 6000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Rent receive kiya hai toh Income hai. Credit side!'
-    },
-    {
-        id: 24,
-        text: 'Discount Received',
-        amount: 2000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Discount receive karna Income hai (paise bache). Credit!'
-    },
-    {
-        id: 25,
-        text: 'Bills Payable',
-        amount: 20000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Bills Payable matlab paisa dena hai - Liability hai. Credit!'
-    },
-    {
-        id: 26,
-        text: 'Reserves & Surplus',
-        amount: 40000,
-        correctSide: 'credit',
-        type: 'Capital',
-        explanation: 'Reserves are accumulated profits - part of owners equity. Credit!'
-    },
-    {
-        id: 27,
-        text: 'Provision for Doubtful Debts',
-        amount: 3000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Provision is a liability - expected loss from bad debts. Credit side.'
-    },
-    {
-        id: 28,
-        text: 'Unearned Revenue',
-        amount: 15000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Money received in advance for future services. Liability = Credit!'
-    },
-    {
-        id: 29,
-        text: 'Interest on Loan Payable',
-        amount: 5000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Interest payable on loans is a liability. Credit side!'
-    },
-    {
-        id: 30,
-        text: 'Gains from Asset Sale',
-        amount: 12000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Profit from selling assets is income. All incomes = Credit!'
-    },
-    {
-        id: 41,
-        text: 'Mortgage Payable',
-        amount: 250000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Mortgage is a long-term loan for property. Liabilities = Credit!'
+        category: 'Intangible Asset',
+        explanation: 'Goodwill is an intangible asset representing business reputation. Debit balance!'
     },
     {
         id: 42,
-        text: 'Accrued Interest Income',
-        amount: 4500,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Interest earned but not yet received is still income. Credit!'
+        text: 'Patents',
+        amount: 75000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Patent rights are intangible assets. Assets = Debit!'
     },
     {
         id: 43,
-        text: 'Deferred Tax Liability',
-        amount: 18000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Taxes payable in future are liabilities. Credit side!'
+        text: 'Trademarks',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Trademarks are intellectual property assets. Debit side!'
     },
     {
         id: 44,
-        text: 'Donations Received',
-        amount: 25000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Donations received are non-operating income. Income = Credit!'
+        text: 'Copyrights',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Copyrights are intangible assets. Debit balance!'
     },
     {
         id: 45,
-        text: 'Retained Earnings',
-        amount: 75000,
-        correctSide: 'credit',
-        type: 'Capital',
-        explanation: 'Accumulated profits not distributed. Part of equity = Credit!'
+        text: 'Franchises',
+        amount: 200000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Franchise rights are intangible assets. Debit!'
     },
     {
         id: 46,
-        text: 'Bank Overdraft',
-        amount: 30000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Bank overdraft is a liability, credit balance.'
+        text: 'Software Licenses',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Software licenses are intangible assets. Debit side!'
     },
     {
         id: 47,
-        text: 'Trade Discount',
-        amount: 5000,
-        correctSide: 'credit',
-        type: 'Income',
-        explanation: 'Trade discount received is income.'
+        text: 'Mining Rights',
+        amount: 500000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Mining rights are intangible assets. Debit!'
     },
     {
         id: 48,
-        text: 'Provision for Tax',
-        amount: 15000,
-        correctSide: 'credit',
-        type: 'Liability',
-        explanation: 'Tax provision is a liability, credit balance.'
+        text: 'Broadcasting Rights',
+        amount: 150000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Media rights are intangible assets. Debit balance!'
     },
     {
         id: 49,
-        text: 'Capital Reserve',
-        amount: 35000,
-        correctSide: 'credit',
-        type: 'Capital',
-        explanation: 'Capital reserve is part of equity, credit balance.'
+        text: 'Website Development',
+        amount: 85000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Website as asset is intangible. Debit side!'
     },
     {
         id: 50,
-        text: 'Sundry Creditors',
+        text: 'Customer List',
+        amount: 40000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Customer database is intangible asset. Debit!'
+    },
+    {
+        id: 51,
+        text: 'Brand Value',
+        amount: 300000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Brand value is intangible asset. Debit balance!'
+    },
+    {
+        id: 52,
+        text: 'Trade Secrets',
+        amount: 120000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Proprietary knowledge is intangible asset. Debit!'
+    },
+    {
+        id: 53,
+        text: 'Import License',
+        amount: 55000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Import/Export licenses are intangible assets. Debit side!'
+    },
+    {
+        id: 54,
+        text: 'Development Costs Capitalized',
+        amount: 180000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Capitalized R&D is intangible asset. Debit!'
+    },
+    {
+        id: 55,
+        text: 'Non-Compete Agreements',
+        amount: 65000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Intangible Asset',
+        explanation: 'Non-compete agreements are intangible assets. Debit balance!'
+    },
+
+    // ==========================================
+    // CURRENT ASSETS (DEBIT) - 35 items
+    // ==========================================
+    {
+        id: 56,
+        text: 'Cash in Hand',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Cash is current asset. Jab cash hota hai, Debit side mein dikhta hai.'
+    },
+    {
+        id: 57,
+        text: 'Cash at Bank',
+        amount: 80000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Bank balance is current asset. Debit side!'
+    },
+    {
+        id: 58,
+        text: 'Petty Cash',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Petty cash for small expenses is current asset. Debit!'
+    },
+    {
+        id: 59,
+        text: 'Stock/Inventory (Raw Materials)',
+        amount: 75000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Raw material inventory is current asset. Debit balance!'
+    },
+    {
+        id: 60,
+        text: 'Stock (Work in Progress)',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'WIP inventory is current asset. Debit side!'
+    },
+    {
+        id: 61,
+        text: 'Stock (Finished Goods)',
+        amount: 95000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Finished goods inventory is current asset. Debit!'
+    },
+    {
+        id: 62,
+        text: 'Sundry Debtors',
+        amount: 65000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Debtors (receivables) are current assets. Debit balance!'
+    },
+    {
+        id: 63,
+        text: 'Debtors (Rahul)',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Individual debtor account is asset. Debit!'
+    },
+    {
+        id: 64,
+        text: 'Debtors (Sharma & Sons)',
         amount: 28000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Trade receivables are current assets. Debit side!'
+    },
+    {
+        id: 65,
+        text: 'Debtors (ABC Traders)',
+        amount: 42000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Amounts due from customers are assets. Debit!'
+    },
+    {
+        id: 66,
+        text: 'Bills Receivable',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Bills receivable are current assets. Debit balance!'
+    },
+    {
+        id: 67,
+        text: 'Prepaid Insurance',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Prepaid insurance is current asset (advance payment). Debit!'
+    },
+    {
+        id: 68,
+        text: 'Prepaid Rent',
+        amount: 24000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Rent paid in advance is current asset. Debit side!'
+    },
+    {
+        id: 69,
+        text: 'Prepaid Advertising',
+        amount: 18000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Advertising paid in advance is prepaid expense. Debit!'
+    },
+    {
+        id: 70,
+        text: 'Advance to Suppliers',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Advance payments to suppliers are assets. Debit balance!'
+    },
+    {
+        id: 71,
+        text: 'Advance to Employees',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Salary advances given are assets. Debit!'
+    },
+    {
+        id: 72,
+        text: 'Security Deposits',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Deposits given are assets (refundable). Debit side!'
+    },
+    {
+        id: 73,
+        text: 'Accrued Income',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Income earned but not received is asset. Debit!'
+    },
+    {
+        id: 74,
+        text: 'Interest Accrued on Investments',
+        amount: 6500,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Accrued interest is current asset. Debit balance!'
+    },
+    {
+        id: 75,
+        text: 'Short-term Investments',
+        amount: 100000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Short-term investments are current assets. Debit!'
+    },
+    {
+        id: 76,
+        text: 'Marketable Securities',
+        amount: 75000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Easily sellable securities are current assets. Debit side!'
+    },
+    {
+        id: 77,
+        text: 'Fixed Deposits (Short-term)',
+        amount: 150000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Short-term FDs are current assets. Debit!'
+    },
+    {
+        id: 78,
+        text: 'Treasury Bills',
+        amount: 200000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'T-Bills are short-term investments. Debit balance!'
+    },
+    {
+        id: 79,
+        text: 'Stock of Stationery',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Office supplies stock is current asset. Debit!'
+    },
+    {
+        id: 80,
+        text: 'Stock of Packing Materials',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Packing material inventory is asset. Debit side!'
+    },
+    {
+        id: 81,
+        text: 'Loose Tools',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Loose tools are current assets. Debit!'
+    },
+    {
+        id: 82,
+        text: 'TDS Receivable',
+        amount: 18000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'TDS deducted is refundable - asset. Debit balance!'
+    },
+    {
+        id: 83,
+        text: 'GST Input Credit',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'GST paid on purchases is asset (credit). Debit!'
+    },
+    {
+        id: 84,
+        text: 'VAT Refundable',
+        amount: 22000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Refundable VAT is current asset. Debit side!'
+    },
+    {
+        id: 85,
+        text: 'Loans to Employees',
+        amount: 40000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Loans given to staff are assets. Debit!'
+    },
+    {
+        id: 86,
+        text: 'Inter-Branch Receivable',
+        amount: 55000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Amount due from other branches is asset. Debit balance!'
+    },
+    {
+        id: 87,
+        text: 'Export Receivables',
+        amount: 85000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Amounts due from foreign buyers are assets. Debit!'
+    },
+    {
+        id: 88,
+        text: 'Cheques in Hand',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Undeposited cheques are current assets. Debit side!'
+    },
+    {
+        id: 89,
+        text: 'Cash in Transit',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Cash being transferred is asset. Debit!'
+    },
+    {
+        id: 90,
+        text: 'Stock of Spare Parts',
+        amount: 28000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Spare parts inventory is current asset. Debit balance!'
+    },
+
+    // ==========================================
+    // INVESTMENTS (DEBIT) - 15 items
+    // ==========================================
+    {
+        id: 91,
+        text: 'Investment in Shares',
+        amount: 200000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Share investments are assets. Debit balance!'
+    },
+    {
+        id: 92,
+        text: 'Investment in Debentures',
+        amount: 150000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Debenture investments are assets. Debit!'
+    },
+    {
+        id: 93,
+        text: 'Investment in Mutual Funds',
+        amount: 100000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'MF investments are assets. Debit side!'
+    },
+    {
+        id: 94,
+        text: 'Investment in Government Securities',
+        amount: 250000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'G-Secs are investment assets. Debit!'
+    },
+    {
+        id: 95,
+        text: 'Investment in Subsidiary',
+        amount: 500000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Investment in subsidiary company is asset. Debit balance!'
+    },
+    {
+        id: 96,
+        text: 'Investment in Associate',
+        amount: 300000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Investment in associate company is asset. Debit!'
+    },
+    {
+        id: 97,
+        text: 'Investment in Joint Venture',
+        amount: 400000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'JV investments are assets. Debit side!'
+    },
+    {
+        id: 98,
+        text: 'Investment Property',
+        amount: 600000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Property held for investment is asset. Debit!'
+    },
+    {
+        id: 99,
+        text: 'Long-term Fixed Deposits',
+        amount: 350000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Long-term FDs are investment assets. Debit balance!'
+    },
+    {
+        id: 100,
+        text: 'Investment in Bonds',
+        amount: 180000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Corporate/Govt bonds are assets. Debit!'
+    },
+    {
+        id: 101,
+        text: 'Investment in Partnership Firm',
+        amount: 200000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Partnership investment is asset. Debit side!'
+    },
+    {
+        id: 102,
+        text: 'Investment in LIC Policy',
+        amount: 75000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Life insurance policies are investment assets. Debit!'
+    },
+    {
+        id: 103,
+        text: 'NSC (National Savings Certificate)',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'NSC is investment asset. Debit balance!'
+    },
+    {
+        id: 104,
+        text: 'PPF Investment',
+        amount: 100000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Public Provident Fund is investment. Debit!'
+    },
+    {
+        id: 105,
+        text: 'Investment in Gold',
+        amount: 250000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'Gold held for investment is asset. Debit side!'
+    },
+
+    // ==========================================
+    // DIRECT EXPENSES (DEBIT) - 25 items
+    // ==========================================
+    {
+        id: 106,
+        text: 'Purchases',
+        amount: 150000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Goods ki purchase trading expense hai. Debit!'
+    },
+    {
+        id: 107,
+        text: 'Purchase Returns (Credit Note)',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Purchase returns reduce purchases. Credit side!'
+    },
+    {
+        id: 108,
+        text: 'Carriage Inward',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Transport cost for purchases is direct expense. Debit!'
+    },
+    {
+        id: 109,
+        text: 'Freight Inward',
+        amount: 7500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Freight on purchases is direct expense. Debit!'
+    },
+    {
+        id: 110,
+        text: 'Wages (Manufacturing)',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Factory wages are direct expense. Debit balance!'
+    },
+    {
+        id: 111,
+        text: 'Factory Rent',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Rent for factory is production expense. Debit!'
+    },
+    {
+        id: 112,
+        text: 'Power & Fuel (Factory)',
+        amount: 18000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Factory power is direct expense. Debit side!'
+    },
+    {
+        id: 113,
+        text: 'Import Duty',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Custom duty on imports is direct expense. Debit!'
+    },
+    {
+        id: 114,
+        text: 'Octroi',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Entry tax on goods is direct expense. Debit!'
+    },
+    {
+        id: 115,
+        text: 'Clearing Charges',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Customs clearing charges are direct expense. Debit balance!'
+    },
+    {
+        id: 116,
+        text: 'Loading & Unloading (Purchases)',
+        amount: 3500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Handling charges for goods are direct expense. Debit!'
+    },
+    {
+        id: 117,
+        text: 'Consumable Stores',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Factory consumables are direct expense. Debit side!'
+    },
+    {
+        id: 118,
+        text: 'Raw Material Consumed',
+        amount: 85000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Materials used in production are direct expense. Debit!'
+    },
+    {
+        id: 119,
+        text: 'Packing Materials Used',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Packing costs are direct expense. Debit!'
+    },
+    {
+        id: 120,
+        text: 'Royalty on Production',
+        amount: 20000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Royalty based on output is direct expense. Debit balance!'
+    },
+    {
+        id: 121,
+        text: 'Factory Insurance',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Insurance for factory is direct expense. Debit!'
+    },
+    {
+        id: 122,
+        text: 'Factory Lighting',
+        amount: 6000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Factory electricity is direct expense. Debit side!'
+    },
+    {
+        id: 123,
+        text: 'Factory Repairs',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Factory maintenance is direct expense. Debit!'
+    },
+    {
+        id: 124,
+        text: 'Supervisor Salary (Factory)',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Factory supervisor cost is direct expense. Debit!'
+    },
+    {
+        id: 125,
+        text: 'Stores Expenses',
+        amount: 7500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Warehouse handling costs are direct expense. Debit balance!'
+    },
+    {
+        id: 126,
+        text: 'Coolie Charges',
+        amount: 4000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Labour for goods handling is direct expense. Debit!'
+    },
+    {
+        id: 127,
+        text: 'Cartage (Inward)',
+        amount: 3000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Local transport of purchases is direct expense. Debit side!'
+    },
+    {
+        id: 128,
+        text: 'Factory Stationery',
+        amount: 2500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Stationery for factory is direct expense. Debit!'
+    },
+    {
+        id: 129,
+        text: 'Factory Water Charges',
+        amount: 4500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'Water used in production is direct expense. Debit!'
+    },
+    {
+        id: 130,
+        text: 'Manufacturing Expenses',
+        amount: 55000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Direct Expense',
+        explanation: 'General manufacturing costs are direct expense. Debit balance!'
+    },
+
+    // ==========================================
+    // INDIRECT EXPENSES (DEBIT) - 50 items
+    // ==========================================
+    {
+        id: 131,
+        text: 'Salary Expense',
+        amount: 75000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Office salaries are indirect expense. Debit!'
+    },
+    {
+        id: 132,
+        text: 'Rent (Office)',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Office rent is indirect expense. Debit side!'
+    },
+    {
+        id: 133,
+        text: 'Electricity Bill (Office)',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Office electricity is indirect expense. Debit!'
+    },
+    {
+        id: 134,
+        text: 'Telephone Expenses',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Phone bills are indirect expense. Debit balance!'
+    },
+    {
+        id: 135,
+        text: 'Internet Charges',
+        amount: 3000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Internet bills are indirect expense. Debit!'
+    },
+    {
+        id: 136,
+        text: 'Postage & Courier',
+        amount: 4500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Postal expenses are indirect expense. Debit side!'
+    },
+    {
+        id: 137,
+        text: 'Printing & Stationery',
+        amount: 6000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Office stationery is indirect expense. Debit!'
+    },
+    {
+        id: 138,
+        text: 'Advertisement Expense',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Advertising costs are indirect expense. Debit!'
+    },
+    {
+        id: 139,
+        text: 'Legal Expenses',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Legal fees are indirect expense. Debit balance!'
+    },
+    {
+        id: 140,
+        text: 'Audit Fees',
+        amount: 20000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Auditor fees are indirect expense. Debit!'
+    },
+    {
+        id: 141,
+        text: 'Professional Fees',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Consultant fees are indirect expense. Debit side!'
+    },
+    {
+        id: 142,
+        text: 'Insurance Premium (Office)',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Office insurance is indirect expense. Debit!'
+    },
+    {
+        id: 143,
+        text: 'Depreciation on Machinery',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Depreciation reduces asset value - expense. Debit!'
+    },
+    {
+        id: 144,
+        text: 'Depreciation on Furniture',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Furniture depreciation is expense. Debit balance!'
+    },
+    {
+        id: 145,
+        text: 'Depreciation on Vehicles',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Vehicle depreciation is expense. Debit!'
+    },
+    {
+        id: 146,
+        text: 'Depreciation on Building',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Building depreciation is expense. Debit side!'
+    },
+    {
+        id: 147,
+        text: 'Depreciation on Computer',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Computer depreciation is expense. Debit!'
+    },
+    {
+        id: 148,
+        text: 'Bank Charges',
+        amount: 3500,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Bank fees are indirect expense. Debit!'
+    },
+    {
+        id: 149,
+        text: 'Commission Paid (Sales)',
+        amount: 18000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Sales commission is indirect expense. Debit balance!'
+    },
+    {
+        id: 150,
+        text: 'Brokerage Paid',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Brokerage fees are indirect expense. Debit!'
+    },
+    {
+        id: 151,
+        text: 'Travelling Expenses',
+        amount: 22000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Business travel costs are indirect expense. Debit side!'
+    },
+    {
+        id: 152,
+        text: 'Conveyance Expenses',
+        amount: 6000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Local travel expenses are indirect expense. Debit!'
+    },
+    {
+        id: 153,
+        text: 'Entertainment Expenses',
+        amount: 10000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Client entertainment is indirect expense. Debit!'
+    },
+    {
+        id: 154,
+        text: 'Staff Welfare Expenses',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Employee welfare costs are indirect expense. Debit balance!'
+    },
+    {
+        id: 155,
+        text: 'Repairs & Maintenance',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Maintenance costs are indirect expense. Debit!'
+    },
+    {
+        id: 156,
+        text: 'Bad Debts',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Irrecoverable debts are losses/expense. Debit side!'
+    },
+    {
+        id: 157,
+        text: 'Discount Allowed',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Discount given to customers is expense. Debit!'
+    },
+    {
+        id: 158,
+        text: 'Interest on Loan',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Interest paid on borrowings is expense. Debit!'
+    },
+    {
+        id: 159,
+        text: 'Interest on Bank Overdraft',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Overdraft interest is expense. Debit balance!'
+    },
+    {
+        id: 160,
+        text: 'Interest on Debentures',
+        amount: 20000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Debenture interest is expense. Debit!'
+    },
+    {
+        id: 161,
+        text: 'Carriage Outward',
+        amount: 7000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Delivery expenses are indirect expense. Debit side!'
+    },
+    {
+        id: 162,
+        text: 'Freight Outward',
+        amount: 9000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Freight on sales is indirect expense. Debit!'
+    },
+    {
+        id: 163,
+        text: 'Export Expenses',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Export related costs are indirect expense. Debit!'
+    },
+    {
+        id: 164,
+        text: 'Donation',
+        amount: 10000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Charitable donations are expense. Debit balance!'
+    },
+    {
+        id: 165,
+        text: 'Loss on Sale of Asset',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Asset sale loss is expense. Debit!'
+    },
+    {
+        id: 166,
+        text: 'Preliminary Expenses',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Company formation costs are expense. Debit side!'
+    },
+    {
+        id: 167,
+        text: 'Directors Fees',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Directors remuneration is expense. Debit!'
+    },
+    {
+        id: 168,
+        text: 'Meeting Expenses',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Board meeting costs are expense. Debit!'
+    },
+    {
+        id: 169,
+        text: 'Registration Fees',
+        amount: 3000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'License/registration fees are expense. Debit balance!'
+    },
+    {
+        id: 170,
+        text: 'Subscription & Membership',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Club/association fees are expense. Debit!'
+    },
+    {
+        id: 171,
+        text: 'Rates & Taxes',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Municipal taxes are expense. Debit side!'
+    },
+    {
+        id: 172,
+        text: 'Property Tax',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Property tax is expense. Debit!'
+    },
+    {
+        id: 173,
+        text: 'Motor Car Expenses',
+        amount: 10000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Vehicle running costs are expense. Debit!'
+    },
+    {
+        id: 174,
+        text: 'Fuel & Petrol',
+        amount: 18000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Fuel costs are indirect expense. Debit balance!'
+    },
+    {
+        id: 175,
+        text: 'Security Expenses',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Security guard costs are expense. Debit!'
+    },
+    {
+        id: 176,
+        text: 'Housekeeping Expenses',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Cleaning costs are expense. Debit side!'
+    },
+    {
+        id: 177,
+        text: 'Training Expenses',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Staff training costs are expense. Debit!'
+    },
+    {
+        id: 178,
+        text: 'Recruitment Expenses',
+        amount: 10000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Hiring costs are expense. Debit!'
+    },
+    {
+        id: 179,
+        text: 'Sampling Expenses',
+        amount: 6000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Product samples are expense. Debit balance!'
+    },
+    {
+        id: 180,
+        text: 'Exhibition Expenses',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Trade fair costs are expense. Debit!'
+    },
+
+    // ==========================================
+    // DRAWINGS (DEBIT) - 5 items
+    // ==========================================
+    {
+        id: 181,
+        text: 'Drawings (Owner)',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Drawings',
+        explanation: 'Owner withdrawals reduce capital. Debit!'
+    },
+    {
+        id: 182,
+        text: 'Drawings in Cash',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Drawings',
+        explanation: 'Cash withdrawn by owner is drawings. Debit side!'
+    },
+    {
+        id: 183,
+        text: 'Drawings in Goods',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Drawings',
+        explanation: 'Goods taken by owner for personal use. Debit!'
+    },
+    {
+        id: 184,
+        text: 'Personal Expenses of Partner',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Drawings',
+        explanation: 'Personal expenses paid by business are drawings. Debit!'
+    },
+    {
+        id: 185,
+        text: 'Life Insurance Premium (Owner)',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Drawings',
+        explanation: 'Personal insurance paid by business is drawings. Debit balance!'
+    },
+
+    // ==========================================
+    // CAPITAL (CREDIT) - 20 items
+    // ==========================================
+    {
+        id: 186,
+        text: 'Capital (Proprietor)',
+        amount: 500000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Owner investment is capital. Credit side!'
+    },
+    {
+        id: 187,
+        text: 'Capital (Partner A)',
+        amount: 300000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Partner capital contribution. Credit!'
+    },
+    {
+        id: 188,
+        text: 'Capital (Partner B)',
+        amount: 250000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Partner investment in business. Credit!'
+    },
+    {
+        id: 189,
+        text: 'Share Capital',
+        amount: 1000000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Issued share capital is equity. Credit balance!'
+    },
+    {
+        id: 190,
+        text: 'Equity Share Capital',
+        amount: 800000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Equity shares issued. Credit side!'
+    },
+    {
+        id: 191,
+        text: 'Preference Share Capital',
+        amount: 200000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Preference shares issued. Credit!'
+    },
+    {
+        id: 192,
+        text: 'Additional Capital Introduced',
+        amount: 150000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Extra investment by owner. Credit!'
+    },
+    {
+        id: 193,
+        text: 'General Reserve',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Retained profits set aside. Credit balance!'
+    },
+    {
+        id: 194,
+        text: 'Capital Reserve',
+        amount: 75000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Capital profits reserve. Credit side!'
+    },
+    {
+        id: 195,
+        text: 'Securities Premium',
+        amount: 50000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Premium on share issue. Credit!'
+    },
+    {
+        id: 196,
+        text: 'Retained Earnings',
+        amount: 180000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Accumulated undistributed profits. Credit!'
+    },
+    {
+        id: 197,
+        text: 'Profit & Loss Account (Credit Balance)',
+        amount: 120000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Net profit increases equity. Credit balance!'
+    },
+    {
+        id: 198,
+        text: 'Revaluation Reserve',
+        amount: 200000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Gain on asset revaluation. Credit side!'
+    },
+    {
+        id: 199,
+        text: 'Sinking Fund',
+        amount: 80000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Reserve for specific purpose. Credit!'
+    },
+    {
+        id: 200,
+        text: 'Dividend Equalization Reserve',
+        amount: 50000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Reserve for stable dividends. Credit!'
+    },
+    {
+        id: 201,
+        text: 'Debenture Redemption Reserve',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Reserve for debenture repayment. Credit balance!'
+    },
+    {
+        id: 202,
+        text: 'Investment Allowance Reserve',
+        amount: 60000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Statutory reserve. Credit side!'
+    },
+    {
+        id: 203,
+        text: 'Export Profit Reserve',
+        amount: 40000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Reserve from export profits. Credit!'
+    },
+    {
+        id: 204,
+        text: 'Workmen Compensation Reserve',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Reserve for employee claims. Credit!'
+    },
+    {
+        id: 205,
+        text: 'Contingency Reserve',
+        amount: 45000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Reserve for unforeseen events. Credit balance!'
+    },
+
+    // ==========================================
+    // LONG-TERM LIABILITIES (CREDIT) - 25 items
+    // ==========================================
+    {
+        id: 206,
+        text: 'Bank Loan',
+        amount: 300000,
         correctSide: 'credit',
         type: 'Liability',
-        explanation: 'Sundry creditors are liabilities, credit side.'
-    }
+        category: 'Long-term Liability',
+        explanation: 'Bank loan is liability - repayable. Credit!'
+    },
+    {
+        id: 207,
+        text: 'Term Loan from Bank',
+        amount: 500000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Long-term bank borrowing. Credit side!'
+    },
+    {
+        id: 208,
+        text: 'Loan from Financial Institution',
+        amount: 400000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'NBFC/FI loan is liability. Credit!'
+    },
+    {
+        id: 209,
+        text: 'Debentures',
+        amount: 250000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Debentures issued are liabilities. Credit!'
+    },
+    {
+        id: 210,
+        text: '10% Debentures',
+        amount: 200000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Secured debentures are liabilities. Credit balance!'
+    },
+    {
+        id: 211,
+        text: 'Mortgage Loan',
+        amount: 600000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Property mortgage is long-term liability. Credit side!'
+    },
+    {
+        id: 212,
+        text: 'Loan from Directors',
+        amount: 150000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Directors loan to company is liability. Credit!'
+    },
+    {
+        id: 213,
+        text: 'Loan from Partners',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Partner loan is liability. Credit!'
+    },
+    {
+        id: 214,
+        text: 'Loan from Relatives',
+        amount: 80000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Personal loans are liabilities. Credit balance!'
+    },
+    {
+        id: 215,
+        text: 'Unsecured Loan',
+        amount: 120000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Unsecured borrowings are liabilities. Credit side!'
+    },
+    {
+        id: 216,
+        text: 'Vehicle Loan',
+        amount: 280000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Auto loan is liability. Credit!'
+    },
+    {
+        id: 217,
+        text: 'Equipment Financing',
+        amount: 180000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Equipment loan is liability. Credit!'
+    },
+    {
+        id: 218,
+        text: 'Hire Purchase Liability',
+        amount: 150000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'HP outstanding is liability. Credit balance!'
+    },
+    {
+        id: 219,
+        text: 'Finance Lease Liability',
+        amount: 200000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Lease obligations are liabilities. Credit side!'
+    },
+    {
+        id: 220,
+        text: 'Public Deposits',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Deposits from public are liabilities. Credit!'
+    },
+    {
+        id: 221,
+        text: 'Security Deposits Received',
+        amount: 75000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Refundable deposits are liabilities. Credit!'
+    },
+    {
+        id: 222,
+        text: 'Deferred Tax Liability',
+        amount: 45000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Future tax payable is liability. Credit balance!'
+    },
+    {
+        id: 223,
+        text: 'Provision for Gratuity',
+        amount: 80000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Employee gratuity provision is liability. Credit side!'
+    },
+    {
+        id: 224,
+        text: 'Provision for Leave Encashment',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Leave liability provision. Credit!'
+    },
+    {
+        id: 225,
+        text: 'Provision for Pension',
+        amount: 120000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Pension obligation is liability. Credit!'
+    },
+    {
+        id: 226,
+        text: 'Bonds Payable',
+        amount: 300000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Corporate bonds issued are liabilities. Credit balance!'
+    },
+    {
+        id: 227,
+        text: 'Convertible Debentures',
+        amount: 150000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Convertible debt is liability until conversion. Credit side!'
+    },
+    {
+        id: 228,
+        text: 'Zero Coupon Bonds',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Discount bonds are liabilities. Credit!'
+    },
+    {
+        id: 229,
+        text: 'Subordinated Debt',
+        amount: 200000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Junior debt is liability. Credit!'
+    },
+    {
+        id: 230,
+        text: 'Foreign Currency Loan',
+        amount: 350000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'ECB/foreign loan is liability. Credit balance!'
+    },
+
+    // ==========================================
+    // CURRENT LIABILITIES (CREDIT) - 35 items
+    // ==========================================
+    {
+        id: 231,
+        text: 'Sundry Creditors',
+        amount: 85000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Trade creditors are current liabilities. Credit!'
+    },
+    {
+        id: 232,
+        text: 'Creditors (Supplier A)',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Amount payable to supplier. Credit side!'
+    },
+    {
+        id: 233,
+        text: 'Creditors (XYZ Ltd)',
+        amount: 45000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Trade payables are liabilities. Credit!'
+    },
+    {
+        id: 234,
+        text: 'Bills Payable',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Bills accepted are liabilities. Credit!'
+    },
+    {
+        id: 235,
+        text: 'Bank Overdraft',
+        amount: 50000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Overdrawn bank account is liability. Credit balance!'
+    },
+    {
+        id: 236,
+        text: 'Outstanding Salary',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Unpaid salaries are liabilities. Credit side!'
+    },
+    {
+        id: 237,
+        text: 'Outstanding Wages',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Wages payable is liability. Credit!'
+    },
+    {
+        id: 238,
+        text: 'Outstanding Rent',
+        amount: 20000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Rent due but not paid is liability. Credit!'
+    },
+    {
+        id: 239,
+        text: 'Outstanding Electricity',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Utility bills payable are liabilities. Credit balance!'
+    },
+    {
+        id: 240,
+        text: 'Outstanding Telephone',
+        amount: 3000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Phone bills due are liabilities. Credit side!'
+    },
+    {
+        id: 241,
+        text: 'Outstanding Commission',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Commission payable is liability. Credit!'
+    },
+    {
+        id: 242,
+        text: 'Outstanding Interest',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Interest accrued but not paid. Credit!'
+    },
+    {
+        id: 243,
+        text: 'Accrued Expenses',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Expenses incurred but not paid. Credit balance!'
+    },
+    {
+        id: 244,
+        text: 'Advance from Customers',
+        amount: 40000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Customer advances are liabilities until goods delivered. Credit side!'
+    },
+    {
+        id: 245,
+        text: 'Unearned Revenue',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Money received for future services. Credit!'
+    },
+    {
+        id: 246,
+        text: 'Provision for Tax',
+        amount: 50000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Tax provision is liability. Credit!'
+    },
+    {
+        id: 247,
+        text: 'Income Tax Payable',
+        amount: 45000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Tax due is current liability. Credit balance!'
+    },
+    {
+        id: 248,
+        text: 'GST Payable',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'GST output liability. Credit side!'
+    },
+    {
+        id: 249,
+        text: 'TDS Payable',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'TDS deducted but not deposited. Credit!'
+    },
+    {
+        id: 250,
+        text: 'PF Payable',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Provident fund due is liability. Credit!'
+    },
+    {
+        id: 251,
+        text: 'ESI Payable',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Employee insurance due is liability. Credit balance!'
+    },
+    {
+        id: 252,
+        text: 'Professional Tax Payable',
+        amount: 3500,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Professional tax due is liability. Credit side!'
+    },
+    {
+        id: 253,
+        text: 'Dividend Payable',
+        amount: 60000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Declared dividend unpaid is liability. Credit!'
+    },
+    {
+        id: 254,
+        text: 'Unclaimed Dividend',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Dividends not collected are liabilities. Credit!'
+    },
+    {
+        id: 255,
+        text: 'Short-term Borrowings',
+        amount: 75000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Short-term loans are current liabilities. Credit balance!'
+    },
+    {
+        id: 256,
+        text: 'Cash Credit',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'CC facility used is liability. Credit side!'
+    },
+    {
+        id: 257,
+        text: 'Provision for Doubtful Debts',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Bad debt provision is contra-asset/liability. Credit!'
+    },
+    {
+        id: 258,
+        text: 'Provision for Repairs',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Repair provision is liability. Credit!'
+    },
+    {
+        id: 259,
+        text: 'Provision for Warranty',
+        amount: 20000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Warranty claims provision is liability. Credit balance!'
+    },
+    {
+        id: 260,
+        text: 'Provision for Discount',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Expected discount provision. Credit side!'
+    },
+    {
+        id: 261,
+        text: 'Deposits from Dealers',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Refundable dealer deposits are liabilities. Credit!'
+    },
+    {
+        id: 262,
+        text: 'Security from Contractors',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Contractor deposits are liabilities. Credit!'
+    },
+    {
+        id: 263,
+        text: 'EMD Received',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Earnest money deposits are liabilities. Credit balance!'
+    },
+    {
+        id: 264,
+        text: 'Retention Money',
+        amount: 20000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Retained amounts are liabilities. Credit side!'
+    },
+    {
+        id: 265,
+        text: 'Inter-Branch Payable',
+        amount: 45000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Amount due to other branches. Credit!'
+    },
+
+    // ==========================================
+    // INCOME (CREDIT) - 45 items
+    // ==========================================
+    {
+        id: 266,
+        text: 'Sales Revenue',
+        amount: 500000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Revenue',
+        explanation: 'Sales income is revenue. Credit!'
+    },
+    {
+        id: 267,
+        text: 'Cash Sales',
+        amount: 150000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Revenue',
+        explanation: 'Cash sales are income. Credit side!'
+    },
+    {
+        id: 268,
+        text: 'Credit Sales',
+        amount: 250000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Revenue',
+        explanation: 'Credit sales are income. Credit!'
+    },
+    {
+        id: 269,
+        text: 'Export Sales',
+        amount: 200000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Revenue',
+        explanation: 'Export revenue is income. Credit!'
+    },
+    {
+        id: 270,
+        text: 'Service Revenue',
+        amount: 120000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Revenue',
+        explanation: 'Service income is revenue. Credit balance!'
+    },
+    {
+        id: 271,
+        text: 'Sales Returns (Debit Note)',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Revenue',
+        explanation: 'Sales returns reduce sales. Debit side!'
+    },
+    {
+        id: 272,
+        text: 'Commission Received',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Commission income. Credit!'
+    },
+    {
+        id: 273,
+        text: 'Interest Received',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Interest earned is income. Credit!'
+    },
+    {
+        id: 274,
+        text: 'Interest on Fixed Deposit',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'FD interest is income. Credit balance!'
+    },
+    {
+        id: 275,
+        text: 'Interest on Investments',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Investment interest is income. Credit side!'
+    },
+    {
+        id: 276,
+        text: 'Interest from Debtors',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Overdue interest from customers. Credit!'
+    },
+    {
+        id: 277,
+        text: 'Dividend Received',
+        amount: 20000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Dividend income from shares. Credit!'
+    },
+    {
+        id: 278,
+        text: 'Rent Received',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Rental income. Credit balance!'
+    },
+    {
+        id: 279,
+        text: 'Rent from Sub-letting',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Sub-let rent is income. Credit side!'
+    },
+    {
+        id: 280,
+        text: 'Discount Received',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Purchase discounts are income. Credit!'
+    },
+    {
+        id: 281,
+        text: 'Cash Discount Received',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Early payment discount is income. Credit!'
+    },
+    {
+        id: 282,
+        text: 'Profit on Sale of Machinery',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Gain on asset sale is income. Credit balance!'
+    },
+    {
+        id: 283,
+        text: 'Profit on Sale of Investment',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Investment gain is income. Credit side!'
+    },
+    {
+        id: 284,
+        text: 'Profit on Sale of Vehicle',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Vehicle sale profit is income. Credit!'
+    },
+    {
+        id: 285,
+        text: 'Bad Debts Recovered',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Recovery of written-off debts. Credit!'
+    },
+    {
+        id: 286,
+        text: 'Sundry Income',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Miscellaneous income. Credit balance!'
+    },
+    {
+        id: 287,
+        text: 'Miscellaneous Receipts',
+        amount: 6000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Other small incomes. Credit side!'
+    },
+    {
+        id: 288,
+        text: 'Scrap Sales',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Sale of scrap material is income. Credit!'
+    },
+    {
+        id: 289,
+        text: 'Sale of Waste',
+        amount: 5000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Waste material sale is income. Credit!'
+    },
+    {
+        id: 290,
+        text: 'Brokerage Received',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Brokerage income. Credit balance!'
+    },
+    {
+        id: 291,
+        text: 'Agency Commission',
+        amount: 22000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Commission from agency work. Credit side!'
+    },
+    {
+        id: 292,
+        text: 'Royalty Received',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Royalty income. Credit!'
+    },
+    {
+        id: 293,
+        text: 'Insurance Claim Received',
+        amount: 50000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Insurance settlement is income. Credit!'
+    },
+    {
+        id: 294,
+        text: 'Compensation Received',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Compensation/damages received. Credit balance!'
+    },
+    {
+        id: 295,
+        text: 'Duty Drawback',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Export duty refund is income. Credit side!'
+    },
+    {
+        id: 296,
+        text: 'Government Subsidy',
+        amount: 40000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Govt grant/subsidy is income. Credit!'
+    },
+    {
+        id: 297,
+        text: 'Export Incentive',
+        amount: 30000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Export benefits are income. Credit!'
+    },
+    {
+        id: 298,
+        text: 'MEIS/SEIS Credit',
+        amount: 25000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Export scheme benefits. Credit balance!'
+    },
+    {
+        id: 299,
+        text: 'Apprentice Grant',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Training subsidy is income. Credit side!'
+    },
+    {
+        id: 300,
+        text: 'Profit on Foreign Exchange',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Forex gain is income. Credit!'
+    },
+    {
+        id: 301,
+        text: 'Transfer Fees Received',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Transfer/processing fees. Credit!'
+    },
+    {
+        id: 302,
+        text: 'Membership Fees Received',
+        amount: 20000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Member subscriptions are income. Credit balance!'
+    },
+    {
+        id: 303,
+        text: 'Entrance Fees',
+        amount: 10000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Entry fees collected. Credit side!'
+    },
+    {
+        id: 304,
+        text: 'Consultancy Fees',
+        amount: 45000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Consulting income. Credit!'
+    },
+    {
+        id: 305,
+        text: 'Professional Fees Received',
+        amount: 35000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Professional service fees. Credit!'
+    },
+    {
+        id: 306,
+        text: 'Technical Fees Received',
+        amount: 28000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Technical service income. Credit balance!'
+    },
+    {
+        id: 307,
+        text: 'Storage Charges Received',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Warehousing income. Credit side!'
+    },
+    {
+        id: 308,
+        text: 'Processing Charges Received',
+        amount: 22000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Job work income. Credit!'
+    },
+    {
+        id: 309,
+        text: 'Late Payment Charges',
+        amount: 8000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Penalty income from customers. Credit!'
+    },
+    {
+        id: 310,
+        text: 'Excess Provision Written Back',
+        amount: 12000,
+        correctSide: 'credit',
+        type: 'Income',
+        category: 'Other Income',
+        explanation: 'Unused provision is income. Credit balance!'
+    },
+
+    // ==========================================
+    // SPECIAL/MIXED ENTRIES - 40 items
+    // ==========================================
+    {
+        id: 311,
+        text: 'Opening Stock',
+        amount: 45000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Stock',
+        explanation: 'Opening stock appears on debit side of Trial Balance.'
+    },
+    {
+        id: 312,
+        text: 'Closing Stock',
+        amount: 55000,
+        correctSide: 'credit',
+        type: 'Asset',
+        category: 'Stock',
+        explanation: 'Closing stock appears on credit side of Trial Balance (as per traditional method).'
+    },
+    {
+        id: 313,
+        text: 'Suspense Account (Debit)',
+        amount: 5000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Temporary',
+        explanation: 'Suspense with debit balance - excess credit somewhere.'
+    },
+    {
+        id: 314,
+        text: 'Suspense Account (Credit)',
+        amount: 3000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Temporary',
+        explanation: 'Suspense with credit balance - excess debit somewhere.'
+    },
+    {
+        id: 315,
+        text: 'Profit & Loss A/c (Debit - Net Loss)',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Result',
+        explanation: 'Net loss appears on debit side.'
+    },
+    {
+        id: 316,
+        text: 'Bills Receivable Discounted',
+        amount: 20000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Contingent',
+        explanation: 'BR discounted is contingent liability. Credit!'
+    },
+    {
+        id: 317,
+        text: 'Consignment Stock',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Stock',
+        explanation: 'Goods on consignment are assets. Debit!'
+    },
+    {
+        id: 318,
+        text: 'Goods in Transit',
+        amount: 28000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Stock',
+        explanation: 'Goods being transported are assets. Debit side!'
+    },
+    {
+        id: 319,
+        text: 'Branch Stock',
+        amount: 42000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Stock',
+        explanation: 'Stock at branch is asset. Debit!'
+    },
+    {
+        id: 320,
+        text: 'Goods Sent on Approval',
+        amount: 18000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Stock',
+        explanation: 'Approval basis goods are still assets. Debit!'
+    },
+    {
+        id: 321,
+        text: 'Joint Venture Account',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Investment',
+        explanation: 'JV contribution is asset/investment. Debit balance!'
+    },
+    {
+        id: 322,
+        text: 'Consignee Account',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Receivable',
+        explanation: 'Amount due from consignee. Debit side!'
+    },
+    {
+        id: 323,
+        text: 'Branch Account',
+        amount: 65000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Receivable',
+        explanation: 'Branch balance is asset. Debit!'
+    },
+    {
+        id: 324,
+        text: 'Head Office Account',
+        amount: 75000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Payable',
+        explanation: 'Amount due to HO is liability for branch. Credit!'
+    },
+    {
+        id: 325,
+        text: 'Capital Work in Progress',
+        amount: 150000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Asset under construction. Debit balance!'
+    },
+    {
+        id: 326,
+        text: 'Self-Constructed Asset',
+        amount: 85000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Asset built internally. Debit side!'
+    },
+    {
+        id: 327,
+        text: 'Right of Use Asset (Lease)',
+        amount: 120000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Fixed Asset',
+        explanation: 'Lease ROU asset (Ind AS 116). Debit!'
+    },
+    {
+        id: 328,
+        text: 'Lease Liability',
+        amount: 110000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Lease payment obligation. Credit!'
+    },
+    {
+        id: 329,
+        text: 'Deferred Revenue Expenditure',
+        amount: 40000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Deferred',
+        explanation: 'Large expense to be written off over years. Debit balance!'
+    },
+    {
+        id: 330,
+        text: 'Preliminary Expenses (Not Written Off)',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Deferred',
+        explanation: 'Unamortized formation expenses. Debit side!'
+    },
+    {
+        id: 331,
+        text: 'Share Issue Expenses',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Deferred',
+        explanation: 'Costs of issuing shares. Debit!'
+    },
+    {
+        id: 332,
+        text: 'Debenture Issue Expenses',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Deferred',
+        explanation: 'Costs of issuing debentures. Debit!'
+    },
+    {
+        id: 333,
+        text: 'Discount on Issue of Shares',
+        amount: 20000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Deferred',
+        explanation: 'Shares issued at discount. Debit balance!'
+    },
+    {
+        id: 334,
+        text: 'Discount on Issue of Debentures',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Deferred',
+        explanation: 'Debentures issued at discount. Debit side!'
+    },
+    {
+        id: 335,
+        text: 'Premium on Redemption of Debentures',
+        amount: 15000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Long-term Liability',
+        explanation: 'Premium payable on redemption. Credit!'
+    },
+    {
+        id: 336,
+        text: 'Calls in Arrear',
+        amount: 25000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Receivable',
+        explanation: 'Unpaid share calls are assets. Debit!'
+    },
+    {
+        id: 337,
+        text: 'Calls in Advance',
+        amount: 18000,
+        correctSide: 'credit',
+        type: 'Liability',
+        category: 'Current Liability',
+        explanation: 'Advance share money received. Credit balance!'
+    },
+    {
+        id: 338,
+        text: 'Share Forfeiture Account',
+        amount: 10000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Amount forfeited on shares. Credit side!'
+    },
+    {
+        id: 339,
+        text: 'Treasury Stock',
+        amount: 50000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Owners Equity',
+        explanation: 'Buyback shares (contra equity). Debit!'
+    },
+    {
+        id: 340,
+        text: 'Staff Loans & Advances',
+        amount: 35000,
+        correctSide: 'debit',
+        type: 'Asset',
+        category: 'Current Asset',
+        explanation: 'Loans to employees are assets. Debit!'
+    },
+    {
+        id: 341,
+        text: 'Statutory Reserves (RBI)',
+        amount: 100000,
+        correctSide: 'credit',
+        type: 'Capital',
+        category: 'Owners Equity',
+        explanation: 'Mandatory reserves are equity. Credit balance!'
+    },
+    {
+        id: 342,
+        text: 'Loss on Foreign Exchange',
+        amount: 8000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Forex loss is expense. Debit side!'
+    },
+    {
+        id: 343,
+        text: 'Amortization of Intangibles',
+        amount: 12000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Intangible asset amortization. Debit!'
+    },
+    {
+        id: 344,
+        text: 'Impairment Loss',
+        amount: 30000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Asset impairment is expense. Debit!'
+    },
+    {
+        id: 345,
+        text: 'Inventory Write-down',
+        amount: 15000,
+        correctSide: 'debit',
+        type: 'Expense',
+        category: 'Indirect Expense',
+        explanation: 'Stock obsolescence loss. Debit side!'
+    },
 ];
 
 // ============================================

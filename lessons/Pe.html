@@ -1,0 +1,3574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical Education Practice - Grade 11</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 1.1em;
+        }
+
+        /* Stats Dashboard */
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-box i {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .stat-box.total i { color: var(--primary); }
+        .stat-box.correct i { color: var(--success); }
+        .stat-box.wrong i { color: var(--danger); }
+        .stat-box.accuracy i { color: var(--warning); }
+        .stat-box.streak i { color: var(--info); }
+
+        .stat-box .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-box .stat-label {
+            font-size: 0.85em;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-header span {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .progress-bar-container {
+            background: #e2e8f0;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), #f093fb);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Question Type Tabs */
+        .type-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .type-tab {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .type-tab i {
+            font-size: 1.3em;
+        }
+
+        .type-tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .type-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .type-tab .tab-count {
+            font-size: 0.75em;
+            opacity: 0.8;
+        }
+
+        /* Unit Filter */
+        .unit-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .unit-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .unit-btn:hover {
+            background: white;
+            border-color: var(--primary);
+        }
+
+        .unit-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Question Card */
+        .question-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .question-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .badge-unit {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .badge-type {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: var(--gray);
+            font-size: 0.95em;
+        }
+
+        .question-text {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: var(--dark);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* MCQ Options */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 18px 22px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: var(--primary);
+            background: #f0f4ff;
+            transform: translateX(8px);
+        }
+
+        .option-letter {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--gray);
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .option.correct {
+            background: #d1fae5;
+            border-color: var(--success);
+        }
+
+        .option.correct .option-letter {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .option.wrong {
+            background: #fee2e2;
+            border-color: var(--danger);
+        }
+
+        .option.wrong .option-letter {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* True/False Styles */
+        .tf-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .tf-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 25px;
+            border: 3px solid #e2e8f0;
+            background: white;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tf-btn i {
+            font-size: 2.5em;
+        }
+
+        .tf-btn.true-btn i { color: var(--success); }
+        .tf-btn.false-btn i { color: var(--danger); }
+
+        .tf-btn:hover:not(.disabled) {
+            transform: scale(1.05);
+        }
+
+        .tf-btn.true-btn:hover:not(.disabled) {
+            border-color: var(--success);
+            background: #d1fae5;
+        }
+
+        .tf-btn.false-btn:hover:not(.disabled) {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .tf-btn.selected.true-btn {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .tf-btn.selected.true-btn i { color: white; }
+
+        .tf-btn.selected.false-btn {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .tf-btn.selected.false-btn i { color: white; }
+
+        .tf-btn.correct-answer {
+            background: var(--success) !important;
+            border-color: var(--success) !important;
+            color: white !important;
+        }
+
+        .tf-btn.correct-answer i { color: white !important; }
+
+        .tf-btn.wrong-answer {
+            background: var(--danger) !important;
+            border-color: var(--danger) !important;
+            color: white !important;
+        }
+
+        .tf-btn.wrong-answer i { color: white !important; }
+
+        /* Fill in the Blank Styles */
+        .fib-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .fib-input-wrapper {
+            position: relative;
+        }
+
+        .fib-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 1.1em;
+            font-family: 'Poppins', sans-serif;
+            border: 3px solid #e2e8f0;
+            border-radius: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .fib-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .fib-input.correct {
+            border-color: var(--success);
+            background: #d1fae5;
+        }
+
+        .fib-input.wrong {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .fib-submit {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .fib-submit:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .fib-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .correct-answer-display {
+            padding: 15px 20px;
+            background: #d1fae5;
+            border-left: 4px solid var(--success);
+            border-radius: 8px;
+            color: #065f46;
+            font-weight: 500;
+        }
+
+        /* Match the Following Styles */
+        .match-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .match-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .match-column-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 10px;
+            background: #f0f4ff;
+            border-radius: 10px;
+        }
+
+        .match-item {
+            padding: 15px 18px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .match-item:hover:not(.matched):not(.disabled) {
+            border-color: var(--primary);
+            background: #f0f4ff;
+        }
+
+        .match-item.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .match-item.matched {
+            background: #d1fae5;
+            border-color: var(--success);
+            cursor: default;
+        }
+
+        .match-item.wrong-match {
+            background: #fee2e2;
+            border-color: var(--danger);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .match-check-btn {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .match-check-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .match-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .explanation-box.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation-box h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explanation-box p {
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 16px 25px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-btn.prev {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+
+        .nav-btn.prev:hover:not(:disabled) {
+            background: #cbd5e1;
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .nav-btn.next:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Completion Screen */
+        .completion-screen {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 35px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .completion-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .completion-screen h2 {
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .final-score {
+            font-size: 4em;
+            font-weight: 800;
+            color: var(--dark);
+            margin: 20px 0;
+        }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .breakdown-item {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .breakdown-item .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .breakdown-item .label {
+            font-size: 0.85em;
+            color: var(--gray);
+        }
+
+        .restart-btn {
+            padding: 18px 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .question-card {
+                padding: 25px 20px;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .match-container {
+                grid-template-columns: 1fr;
+            }
+
+            .tf-container {
+                flex-direction: column;
+            }
+
+            .tf-btn {
+                max-width: none;
+            }
+
+            .type-tabs {
+                gap: 8px;
+            }
+
+            .type-tab {
+                padding: 12px 15px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        /* Hint System */
+        .hint-btn {
+            background: #fef3c7;
+            color: #92400e;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .hint-btn:hover {
+            background: #fde68a;
+        }
+
+        .hint-text {
+            background: #fef3c7;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #92400e;
+            display: none;
+        }
+
+        .hint-text.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1><i class="fas fa-running"></i> Physical Education Practice</h1>
+            <p>Grade 11 - Units 6, 7 & 8 | NCERT Based Comprehensive Practice</p>
+        </div>
+
+        <div class="stats-dashboard">
+            <div class="stat-box total">
+                <i class="fas fa-list-ol"></i>
+                <div class="stat-value" id="totalQuestions">0</div>
+                <div class="stat-label">Total Questions</div>
+            </div>
+            <div class="stat-box correct">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">Correct</div>
+            </div>
+            <div class="stat-box wrong">
+                <i class="fas fa-times-circle"></i>
+                <div class="stat-value" id="wrongCount">0</div>
+                <div class="stat-label">Wrong</div>
+            </div>
+            <div class="stat-box accuracy">
+                <i class="fas fa-percentage"></i>
+                <div class="stat-value" id="accuracyPercent">0%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-box streak">
+                <i class="fas fa-fire"></i>
+                <div class="stat-value" id="streakCount">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span id="progressText">Question 1 of 100</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="type-tabs">
+            <button class="type-tab active" onclick="filterByType('all')" data-type="all">
+                <i class="fas fa-th-large"></i>
+                <span>All Types</span>
+                <span class="tab-count" id="countAll">100</span>
+            </button>
+            <button class="type-tab" onclick="filterByType('mcq')" data-type="mcq">
+                <i class="fas fa-list"></i>
+                <span>MCQ</span>
+                <span class="tab-count" id="countMCQ">40</span>
+            </button>
+            <button class="type-tab" onclick="filterByType('tf')" data-type="tf">
+                <i class="fas fa-toggle-on"></i>
+                <span>True/False</span>
+                <span class="tab-count" id="countTF">25</span>
+            </button>
+            <button class="type-tab" onclick="filterByType('fib')" data-type="fib">
+                <i class="fas fa-pencil-alt"></i>
+                <span>Fill Blanks</span>
+                <span class="tab-count" id="countFIB">20</span>
+            </button>
+            <button class="type-tab" onclick="filterByType('match')" data-type="match">
+                <i class="fas fa-random"></i>
+                <span>Match</span>
+                <span class="tab-count" id="countMatch">15</span>
+            </button>
+        </div>
+
+        <div class="unit-filter">
+            <button class="unit-btn active" onclick="filterByUnit('all')">All Units</button>
+            <button class="unit-btn" onclick="filterByUnit(6)">Unit 6: Test & Measurement</button>
+            <button class="unit-btn" onclick="filterByUnit(7)">Unit 7: Anatomy & Physiology</button>
+            <button class="unit-btn" onclick="filterByUnit(8)">Unit 8: Kinesiology & Biomechanics</button>
+        </div>
+
+        <div id="quizContainer">
+            <!-- Question Card will be dynamically inserted here -->
+        </div>
+
+        <div id="completionScreen" style="display: none;">
+            <!-- Completion screen will be shown here -->
+        </div>
+    </div>
+
+    <script>
+                // ============================================
+        // QUESTION DATABASE
+        // ============================================
+
+        const allQuestions = [
+            // ==========================================
+            // UNIT 6: TEST, MEASUREMENT & EVALUATION - MCQs
+            // ==========================================
+            {
+                id: 1,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "What is the primary purpose of measurement in physical education?",
+                options: [
+                    "To rank students based on performance",
+                    "To collect quantitative data about student performance",
+                    "To assign grades only",
+                    "To compare different schools"
+                ],
+                correct: 1,
+                explanation: "Measurement is the process of collecting quantitative data about student performance, which forms the foundation for evaluation and improvement in physical education."
+            },
+            {
+                id: 2,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Which of the following is NOT a characteristic of a good test?",
+                options: [
+                    "Validity",
+                    "Reliability",
+                    "Complexity",
+                    "Objectivity"
+                ],
+                correct: 2,
+                explanation: "A good test should be valid, reliable, objective, and simple to administer. Complexity is not desirable as tests should be clear and understandable."
+            },
+            {
+                id: 3,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Validity of a test refers to:",
+                options: [
+                    "The consistency of results over time",
+                    "The degree to which a test measures what it claims to measure",
+                    "The ease of administration",
+                    "The cost effectiveness of the test"
+                ],
+                correct: 1,
+                explanation: "Validity indicates whether a test actually measures what it is designed to measure. A valid fitness test should truly measure fitness, not other factors."
+            },
+            {
+                id: 4,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Reliability in testing refers to:",
+                options: [
+                    "The test is easy to score",
+                    "The test gives consistent results when repeated under similar conditions",
+                    "The test is expensive to conduct",
+                    "The test requires minimal time"
+                ],
+                correct: 1,
+                explanation: "Reliability refers to the consistency of test results. A reliable test will produce similar results when administered multiple times under similar conditions."
+            },
+            {
+                id: 5,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Harvard Step Test is used to measure:",
+                options: [
+                    "Muscular strength",
+                    "Cardiovascular endurance",
+                    "Flexibility",
+                    "Speed"
+                ],
+                correct: 1,
+                explanation: "The Harvard Step Test assesses cardiovascular fitness by measuring heart rate recovery after a standardized stepping exercise."
+            },
+            {
+                id: 6,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Sit and Reach Test primarily measures:",
+                options: [
+                    "Muscular strength",
+                    "Cardiovascular endurance",
+                    "Flexibility of lower back and hamstrings",
+                    "Agility"
+                ],
+                correct: 2,
+                explanation: "The Sit and Reach Test specifically measures the flexibility of the lower back and hamstring muscles."
+            },
+            {
+                id: 7,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "BMI stands for:",
+                options: [
+                    "Body Muscle Index",
+                    "Body Mass Index",
+                    "Basic Metabolic Indicator",
+                    "Biological Measurement Index"
+                ],
+                correct: 1,
+                explanation: "BMI (Body Mass Index) is calculated as weight in kg divided by height in meters squared (kg/m²). It's used to categorize body weight status."
+            },
+            {
+                id: 8,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The formula for calculating BMI is:",
+                options: [
+                    "Weight (kg) × Height (m)",
+                    "Weight (kg) ÷ Height (m)",
+                    "Weight (kg) ÷ Height² (m²)",
+                    "Height (m) ÷ Weight (kg)"
+                ],
+                correct: 2,
+                explanation: "BMI = Weight in kilograms divided by height in meters squared. For example, a person weighing 70 kg and 1.75 m tall has BMI = 70 ÷ (1.75)² = 22.86."
+            },
+            {
+                id: 9,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Formative evaluation is conducted:",
+                options: [
+                    "At the end of a course",
+                    "During the learning process for continuous feedback",
+                    "Only for final grading",
+                    "Once a year"
+                ],
+                correct: 1,
+                explanation: "Formative evaluation is ongoing assessment during the learning process that provides continuous feedback to improve performance before final evaluation."
+            },
+            {
+                id: 10,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Summative evaluation is performed:",
+                options: [
+                    "During the learning process",
+                    "At the end of a course or instructional unit",
+                    "Every day",
+                    "Only for weak students"
+                ],
+                correct: 1,
+                explanation: "Summative evaluation occurs at the end of an instructional period to assess overall achievement and assign final grades."
+            },
+            {
+                id: 11,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The 50-meter dash test primarily measures:",
+                options: [
+                    "Endurance",
+                    "Speed",
+                    "Flexibility",
+                    "Strength"
+                ],
+                correct: 1,
+                explanation: "The 50-meter dash is a sprint test that measures speed - the ability to move the body quickly over a short distance."
+            },
+            {
+                id: 12,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Zig-Zag Run test primarily measures:",
+                options: [
+                    "Speed",
+                    "Agility",
+                    "Endurance",
+                    "Power"
+                ],
+                correct: 1,
+                explanation: "The Zig-Zag Run test measures agility - the ability to change direction quickly and efficiently while maintaining control."
+            },
+            {
+                id: 13,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Norm-referenced evaluation compares:",
+                options: [
+                    "Student with predetermined standards",
+                    "Student's performance with other students",
+                    "Current performance with past performance",
+                    "Theory with practical work"
+                ],
+                correct: 1,
+                explanation: "Norm-referenced evaluation compares a student's performance with that of peers or a normative group to determine relative standing."
+            },
+            {
+                id: 14,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Criterion-referenced evaluation compares:",
+                options: [
+                    "Student with other students",
+                    "Student with predetermined standards or criteria",
+                    "One test with another test",
+                    "Schools with each other"
+                ],
+                correct: 1,
+                explanation: "Criterion-referenced evaluation measures performance against specific predetermined criteria or standards, not against other individuals."
+            },
+            {
+                id: 15,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Objectivity in testing means:",
+                options: [
+                    "The personal opinion of the tester",
+                    "The degree of agreement among different scorers",
+                    "The student's self-assessment",
+                    "Parental feedback on performance"
+                ],
+                correct: 1,
+                explanation: "Objectivity means different evaluators will arrive at the same score when assessing the same performance, minimizing personal bias."
+            },
+            {
+                id: 16,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Cooper 12-minute Run Test measures:",
+                options: [
+                    "Speed",
+                    "Muscular strength",
+                    "Cardiorespiratory endurance",
+                    "Flexibility"
+                ],
+                correct: 2,
+                explanation: "The Cooper 12-minute Run Test is designed to measure cardiorespiratory or aerobic endurance by determining the maximum distance covered in 12 minutes."
+            },
+            {
+                id: 17,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Which test is used to measure explosive leg power?",
+                options: [
+                    "Sit and Reach Test",
+                    "Standing Broad Jump",
+                    "Shuttle Run",
+                    "Pull-ups"
+                ],
+                correct: 1,
+                explanation: "The Standing Broad Jump (Long Jump) measures explosive leg power - the ability to exert maximum force in a single explosive effort."
+            },
+            {
+                id: 18,
+                type: "mcq",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The main purpose of evaluation in physical education is:",
+                options: [
+                    "To punish weak students",
+                    "To improve the teaching-learning process",
+                    "To reduce class size",
+                    "To increase competition among students"
+                ],
+                correct: 1,
+                explanation: "The primary purpose of evaluation is to improve the teaching-learning process by identifying strengths and areas needing improvement."
+            },
+
+            // ==========================================
+            // UNIT 7: ANATOMY & PHYSIOLOGY - MCQs
+            // ==========================================
+            {
+                id: 19,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "How many bones are there in an adult human skeleton?",
+                options: [
+                    "186",
+                    "206",
+                    "216",
+                    "226"
+                ],
+                correct: 1,
+                explanation: "An adult human skeleton consists of 206 bones. Babies are born with about 270-300 bones, which fuse together as they grow."
+            },
+            {
+                id: 20,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The largest bone in the human body is:",
+                options: [
+                    "Humerus",
+                    "Tibia",
+                    "Femur",
+                    "Fibula"
+                ],
+                correct: 2,
+                explanation: "The femur (thigh bone) is the longest, heaviest, and strongest bone in the human body."
+            },
+            {
+                id: 21,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The smallest bone in the human body is found in:",
+                options: [
+                    "Ear",
+                    "Nose",
+                    "Finger",
+                    "Toe"
+                ],
+                correct: 0,
+                explanation: "The stapes (stirrup bone) in the middle ear is the smallest bone in the human body, measuring about 3mm."
+            },
+            {
+                id: 22,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "A ball and socket joint allows movement in:",
+                options: [
+                    "One direction only",
+                    "Two directions",
+                    "All directions (multiaxial)",
+                    "No movement"
+                ],
+                correct: 2,
+                explanation: "Ball and socket joints (like shoulder and hip) allow the widest range of movement in multiple directions including flexion, extension, abduction, adduction, and rotation."
+            },
+            {
+                id: 23,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The elbow joint is an example of:",
+                options: [
+                    "Ball and socket joint",
+                    "Hinge joint",
+                    "Pivot joint",
+                    "Saddle joint"
+                ],
+                correct: 1,
+                explanation: "The elbow is a hinge joint, allowing movement primarily in one plane (flexion and extension), similar to a door hinge."
+            },
+            {
+                id: 24,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "How many chambers does the human heart have?",
+                options: [
+                    "Two",
+                    "Three",
+                    "Four",
+                    "Five"
+                ],
+                correct: 2,
+                explanation: "The human heart has four chambers: two upper chambers (left and right atria) and two lower chambers (left and right ventricles)."
+            },
+            {
+                id: 25,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The normal resting heart rate for healthy adults is:",
+                options: [
+                    "40-50 beats per minute",
+                    "60-100 beats per minute",
+                    "120-140 beats per minute",
+                    "150-180 beats per minute"
+                ],
+                correct: 1,
+                explanation: "The normal resting heart rate for healthy adults ranges from 60 to 100 beats per minute. Well-trained athletes may have lower rates (40-60 bpm)."
+            },
+            {
+                id: 26,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Which blood vessel carries oxygenated blood from the heart to the body?",
+                options: [
+                    "Pulmonary artery",
+                    "Aorta",
+                    "Vena cava",
+                    "Pulmonary vein"
+                ],
+                correct: 1,
+                explanation: "The aorta is the largest artery that carries oxygen-rich blood from the left ventricle to all parts of the body."
+            },
+            {
+                id: 27,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The cardiac muscle is found in:",
+                options: [
+                    "Arms",
+                    "Legs",
+                    "Heart",
+                    "Stomach"
+                ],
+                correct: 2,
+                explanation: "Cardiac muscle is a specialized type of involuntary, striated muscle found only in the heart walls."
+            },
+            {
+                id: 28,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Which type of muscle is under voluntary control?",
+                options: [
+                    "Cardiac muscle",
+                    "Smooth muscle",
+                    "Skeletal muscle",
+                    "Visceral muscle"
+                ],
+                correct: 2,
+                explanation: "Skeletal muscles are under voluntary control - we consciously control their movement for activities like walking, running, and lifting."
+            },
+            {
+                id: 29,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The respiratory system's primary function is:",
+                options: [
+                    "Blood circulation",
+                    "Gas exchange (oxygen and carbon dioxide)",
+                    "Food digestion",
+                    "Waste elimination through urine"
+                ],
+                correct: 1,
+                explanation: "The respiratory system's main function is to facilitate gas exchange - taking in oxygen from the air and removing carbon dioxide from the body."
+            },
+            {
+                id: 30,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Vital capacity of lungs refers to:",
+                options: [
+                    "Maximum air inhaled in a normal breath",
+                    "Maximum air exhaled after maximum inhalation",
+                    "Normal tidal volume",
+                    "Residual volume in lungs"
+                ],
+                correct: 1,
+                explanation: "Vital capacity is the maximum amount of air a person can expel from the lungs after a maximum inhalation. It's typically 4-5 liters in adults."
+            },
+            {
+                id: 31,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Systolic blood pressure represents:",
+                options: [
+                    "Pressure when heart relaxes (diastole)",
+                    "Pressure when heart contracts (systole)",
+                    "Average blood pressure",
+                    "Minimum blood pressure"
+                ],
+                correct: 1,
+                explanation: "Systolic pressure (the higher number in BP reading) represents the pressure in arteries when the heart contracts to pump blood."
+            },
+            {
+                id: 32,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Normal blood pressure for a healthy adult is approximately:",
+                options: [
+                    "90/60 mmHg",
+                    "120/80 mmHg",
+                    "140/100 mmHg",
+                    "160/110 mmHg"
+                ],
+                correct: 1,
+                explanation: "Normal blood pressure for a healthy adult is around 120/80 mmHg, where 120 is systolic and 80 is diastolic pressure."
+            },
+            {
+                id: 33,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The vertebral column (spine) consists of how many vertebrae?",
+                options: [
+                    "26",
+                    "33",
+                    "40",
+                    "24"
+                ],
+                correct: 1,
+                explanation: "The vertebral column consists of 33 vertebrae: 7 cervical, 12 thoracic, 5 lumbar, 5 sacral (fused), and 4 coccygeal (fused)."
+            },
+            {
+                id: 34,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Which organ is responsible for filtering blood and producing urine?",
+                options: [
+                    "Liver",
+                    "Heart",
+                    "Kidneys",
+                    "Lungs"
+                ],
+                correct: 2,
+                explanation: "The kidneys filter blood to remove waste products and excess water, producing urine for excretion from the body."
+            },
+            {
+                id: 35,
+                type: "mcq",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The diaphragm is primarily involved in:",
+                options: [
+                    "Digestion",
+                    "Breathing",
+                    "Blood circulation",
+                    "Muscle movement"
+                ],
+                correct: 1,
+                explanation: "The diaphragm is the primary muscle of respiration. It contracts during inhalation to expand the chest cavity and draw air into the lungs."
+            },
+
+            // ==========================================
+            // UNIT 8: KINESIOLOGY & BIOMECHANICS - MCQs
+            // ==========================================
+            {
+                id: 36,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Kinesiology is the scientific study of:",
+                options: [
+                    "Human movement",
+                    "Plant biology",
+                    "Weather patterns",
+                    "Chemical reactions"
+                ],
+                correct: 0,
+                explanation: "Kinesiology is the scientific study of human body movement, encompassing anatomical, physiological, biomechanical, and psychological aspects."
+            },
+            {
+                id: 37,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Biomechanics primarily deals with:",
+                options: [
+                    "Study of living organisms only",
+                    "Application of mechanical principles to human movement",
+                    "Chemical processes in the body",
+                    "Electrical signals in the brain"
+                ],
+                correct: 1,
+                explanation: "Biomechanics applies mechanical principles (forces, motion, leverage) to understand, analyze, and improve human movement."
+            },
+            {
+                id: 38,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The three cardinal planes of the body are:",
+                options: [
+                    "Sagittal, Frontal, Transverse",
+                    "Upper, Middle, Lower",
+                    "Left, Right, Center",
+                    "Anterior, Posterior, Lateral"
+                ],
+                correct: 0,
+                explanation: "The three cardinal planes are: Sagittal (divides left/right), Frontal/Coronal (divides front/back), and Transverse/Horizontal (divides top/bottom)."
+            },
+            {
+                id: 39,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Flexion refers to:",
+                options: [
+                    "Straightening a joint",
+                    "Bending a joint to decrease the angle between body parts",
+                    "Rotating a joint",
+                    "Moving a limb away from the body's midline"
+                ],
+                correct: 1,
+                explanation: "Flexion is the movement that decreases the angle between body parts, like bending the elbow or knee."
+            },
+            {
+                id: 40,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Extension means:",
+                options: [
+                    "Bending a joint",
+                    "Straightening a joint to increase the angle between body parts",
+                    "Circular movement of a limb",
+                    "Side-to-side movement"
+                ],
+                correct: 1,
+                explanation: "Extension is the opposite of flexion - it increases the angle between body parts, straightening a joint."
+            },
+            {
+                id: 41,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Abduction is the movement:",
+                options: [
+                    "Toward the midline of the body",
+                    "Away from the midline of the body",
+                    "In a circular pattern",
+                    "Forward and backward only"
+                ],
+                correct: 1,
+                explanation: "Abduction is movement away from the body's midline, like raising your arm or leg sideways away from your body."
+            },
+            {
+                id: 42,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Adduction is the movement:",
+                options: [
+                    "Away from the midline",
+                    "Toward the midline of the body",
+                    "Upward only",
+                    "Downward only"
+                ],
+                correct: 1,
+                explanation: "Adduction is movement toward the body's midline, bringing a limb back to or across the body's center."
+            },
+            {
+                id: 43,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The center of gravity in a standing human body is located approximately at:",
+                options: [
+                    "Head level",
+                    "Chest level",
+                    "Second sacral vertebra (lower abdomen)",
+                    "Knee level"
+                ],
+                correct: 2,
+                explanation: "The center of gravity in an anatomical standing position is approximately at the level of the second sacral vertebra, slightly below the navel."
+            },
+            {
+                id: 44,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "In a first-class lever, the fulcrum is located:",
+                options: [
+                    "Between the effort and the load",
+                    "At one end with load at the other",
+                    "At the load position",
+                    "Outside the lever system"
+                ],
+                correct: 0,
+                explanation: "In a first-class lever, the fulcrum is between the effort and load (like a seesaw). Example: the skull rotating on the atlas vertebra."
+            },
+            {
+                id: 45,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Newton's First Law of Motion (Law of Inertia) states:",
+                options: [
+                    "Force = Mass × Acceleration",
+                    "Every action has an equal and opposite reaction",
+                    "A body remains at rest or in uniform motion unless acted upon by an external force",
+                    "Energy cannot be created or destroyed"
+                ],
+                correct: 2,
+                explanation: "Newton's First Law states that an object will remain at rest or continue moving in a straight line at constant velocity unless acted upon by an external force."
+            },
+            {
+                id: 46,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Newton's Second Law of Motion can be expressed as:",
+                options: [
+                    "F = m × a (Force = Mass × Acceleration)",
+                    "F = m × v (Force = Mass × Velocity)",
+                    "F = m / a (Force = Mass / Acceleration)",
+                    "F = a / m (Force = Acceleration / Mass)"
+                ],
+                correct: 0,
+                explanation: "Newton's Second Law states that Force equals Mass times Acceleration (F = ma). Greater mass or acceleration requires greater force."
+            },
+            {
+                id: 47,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Newton's Third Law of Motion states:",
+                options: [
+                    "Objects at rest stay at rest",
+                    "Force equals mass times acceleration",
+                    "For every action, there is an equal and opposite reaction",
+                    "Momentum is always conserved"
+                ],
+                correct: 2,
+                explanation: "Newton's Third Law states that for every action (force), there is an equal and opposite reaction. When you push the ground, the ground pushes back on you."
+            },
+            {
+                id: 48,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Pronation of the forearm means:",
+                options: [
+                    "Palm facing upward",
+                    "Palm facing downward",
+                    "Bending the elbow",
+                    "Straightening the elbow"
+                ],
+                correct: 1,
+                explanation: "Pronation is the rotational movement of the forearm that turns the palm to face downward or backward."
+            },
+            {
+                id: 49,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Supination of the forearm means:",
+                options: [
+                    "Palm facing upward",
+                    "Palm facing downward",
+                    "Wrist bending",
+                    "Finger extension"
+                ],
+                correct: 0,
+                explanation: "Supination is the rotational movement of the forearm that turns the palm to face upward or forward (like holding a bowl of soup)."
+            },
+            {
+                id: 50,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The longitudinal axis of the body runs:",
+                options: [
+                    "From side to side",
+                    "From front to back",
+                    "From head to toe (vertically)",
+                    "Diagonally"
+                ],
+                correct: 2,
+                explanation: "The longitudinal (vertical) axis runs from head to toe, allowing rotational movements like twisting or spinning."
+            },
+            {
+                id: 51,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Circumduction is:",
+                options: [
+                    "Rotation around a single axis",
+                    "Circular movement combining flexion, extension, abduction, and adduction",
+                    "Movement toward the midline",
+                    "Movement away from the midline"
+                ],
+                correct: 1,
+                explanation: "Circumduction is a circular movement that combines flexion, extension, abduction, and adduction, creating a cone-shaped movement pattern."
+            },
+            {
+                id: 52,
+                type: "mcq",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Which type of lever is most common in the human body?",
+                options: [
+                    "First-class lever",
+                    "Second-class lever",
+                    "Third-class lever",
+                    "Fourth-class lever"
+                ],
+                correct: 2,
+                explanation: "Third-class levers are most common in the human body, where the effort is between the fulcrum and load, providing speed and range of motion."
+            },
+
+                        // ==========================================
+            // TRUE/FALSE QUESTIONS - UNIT 6
+            // ==========================================
+            {
+                id: 53,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Measurement and evaluation are the same concepts in physical education.",
+                correct: false,
+                explanation: "Measurement is the process of collecting quantitative data, while evaluation is the process of making judgments based on that data. They are related but distinct concepts."
+            },
+            {
+                id: 54,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "A valid test is always reliable.",
+                correct: false,
+                explanation: "A test can be reliable (consistent) without being valid (measuring what it claims to measure). However, a valid test must be reliable. Validity requires reliability, but reliability doesn't guarantee validity."
+            },
+            {
+                id: 55,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Sit and Reach Test measures cardiovascular endurance.",
+                correct: false,
+                explanation: "The Sit and Reach Test measures flexibility, specifically of the lower back and hamstring muscles, not cardiovascular endurance."
+            },
+            {
+                id: 56,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "BMI is calculated by dividing weight in kilograms by height in meters squared.",
+                correct: true,
+                explanation: "The correct formula for BMI is: Weight (kg) ÷ Height² (m²). For example, a person weighing 70 kg and 1.75 m tall has BMI = 70 ÷ (1.75)² = 22.86."
+            },
+            {
+                id: 57,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Formative evaluation is conducted only at the end of a course.",
+                correct: false,
+                explanation: "Formative evaluation is conducted during the learning process to provide continuous feedback and improve learning. Summative evaluation is conducted at the end of a course."
+            },
+            {
+                id: 58,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Harvard Step Test is used to measure cardiovascular fitness.",
+                correct: true,
+                explanation: "The Harvard Step Test assesses cardiovascular fitness by measuring heart rate recovery after a standardized stepping exercise."
+            },
+            {
+                id: 59,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Objectivity means different scorers will give different scores for the same performance.",
+                correct: false,
+                explanation: "Objectivity means different scorers will arrive at the SAME score for the same performance, minimizing personal bias and subjective judgment."
+            },
+            {
+                id: 60,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Standing Broad Jump test measures explosive leg power.",
+                correct: true,
+                explanation: "The Standing Broad Jump (Long Jump) measures explosive leg power - the ability to generate maximum force in a single explosive movement."
+            },
+            {
+                id: 61,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Criterion-referenced evaluation compares students with each other.",
+                correct: false,
+                explanation: "Criterion-referenced evaluation compares student performance against predetermined standards or criteria. Norm-referenced evaluation compares students with each other."
+            },
+            {
+                id: 62,
+                type: "tf",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Cooper 12-minute Run Test measures cardiorespiratory endurance.",
+                correct: true,
+                explanation: "The Cooper 12-minute Run Test is specifically designed to measure cardiorespiratory (aerobic) endurance by determining the maximum distance covered in 12 minutes."
+            },
+
+            // ==========================================
+            // TRUE/FALSE QUESTIONS - UNIT 7
+            // ==========================================
+            {
+                id: 63,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "An adult human body has 206 bones.",
+                correct: true,
+                explanation: "An adult human skeleton consists of 206 bones. Infants are born with approximately 270-300 bones, which fuse together during growth."
+            },
+            {
+                id: 64,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The humerus is the longest bone in the human body.",
+                correct: false,
+                explanation: "The femur (thigh bone) is the longest and strongest bone in the human body. The humerus is the bone of the upper arm."
+            },
+            {
+                id: 65,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The human heart has four chambers.",
+                correct: true,
+                explanation: "The human heart has four chambers: two atria (upper chambers) that receive blood and two ventricles (lower chambers) that pump blood out."
+            },
+            {
+                id: 66,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Arteries carry deoxygenated blood away from the heart.",
+                correct: false,
+                explanation: "Most arteries carry oxygenated blood away from the heart. The exception is the pulmonary artery, which carries deoxygenated blood from the heart to the lungs."
+            },
+            {
+                id: 67,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Skeletal muscles are involuntary muscles.",
+                correct: false,
+                explanation: "Skeletal muscles are voluntary muscles under conscious control. Smooth muscles and cardiac muscle are involuntary muscles."
+            },
+            {
+                id: 68,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The normal resting heart rate for adults is between 60-100 beats per minute.",
+                correct: true,
+                explanation: "The normal resting heart rate for healthy adults ranges from 60 to 100 beats per minute. Well-trained athletes may have lower rates."
+            },
+            {
+                id: 69,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The vertebral column consists of 33 vertebrae.",
+                correct: true,
+                explanation: "The vertebral column has 33 vertebrae: 7 cervical, 12 thoracic, 5 lumbar, 5 sacral (fused into sacrum), and 4 coccygeal (fused into coccyx)."
+            },
+            {
+                id: 70,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The knee joint is an example of a ball and socket joint.",
+                correct: false,
+                explanation: "The knee joint is a hinge joint, allowing movement primarily in one plane. Ball and socket joints are found at the hip and shoulder."
+            },
+            {
+                id: 71,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The diaphragm is the main muscle used for breathing.",
+                correct: true,
+                explanation: "The diaphragm is the primary muscle of respiration. When it contracts, it creates negative pressure in the chest cavity, drawing air into the lungs."
+            },
+            {
+                id: 72,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Cardiac muscle is found in the walls of blood vessels.",
+                correct: false,
+                explanation: "Cardiac muscle is found only in the heart. Blood vessel walls contain smooth muscle, which is also involuntary but structurally different."
+            },
+            {
+                id: 73,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The aorta is the largest artery in the human body.",
+                correct: true,
+                explanation: "The aorta is the largest artery, originating from the left ventricle of the heart and distributing oxygenated blood to the entire body."
+            },
+            {
+                id: 74,
+                type: "tf",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Diastolic blood pressure is higher than systolic blood pressure.",
+                correct: false,
+                explanation: "Systolic pressure (when heart contracts) is always higher than diastolic pressure (when heart relaxes). Normal BP is 120/80 mmHg."
+            },
+
+            // ==========================================
+            // TRUE/FALSE QUESTIONS - UNIT 8
+            // ==========================================
+            {
+                id: 75,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Kinesiology is the study of human movement.",
+                correct: true,
+                explanation: "Kinesiology is the scientific study of human body movement, including anatomical, physiological, biomechanical, and psychological aspects."
+            },
+            {
+                id: 76,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Flexion increases the angle at a joint.",
+                correct: false,
+                explanation: "Flexion decreases the angle at a joint (bending). Extension increases the angle at a joint (straightening)."
+            },
+            {
+                id: 77,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Abduction is movement toward the midline of the body.",
+                correct: false,
+                explanation: "Abduction is movement AWAY from the midline of the body. Adduction is movement TOWARD the midline."
+            },
+            {
+                id: 78,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The sagittal plane divides the body into left and right halves.",
+                correct: true,
+                explanation: "The sagittal (median) plane divides the body into left and right portions. Movements in this plane include flexion and extension."
+            },
+            {
+                id: 79,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Newton's Third Law states that Force equals Mass times Acceleration.",
+                correct: false,
+                explanation: "Newton's Second Law states F = ma. Newton's Third Law states that for every action, there is an equal and opposite reaction."
+            },
+            {
+                id: 80,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The center of gravity in a standing person is located approximately at the level of the second sacral vertebra.",
+                correct: true,
+                explanation: "In a standard anatomical standing position, the center of gravity is located approximately at the level of the second sacral vertebra, slightly below the navel."
+            },
+            {
+                id: 81,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Pronation of the forearm turns the palm to face upward.",
+                correct: false,
+                explanation: "Pronation turns the palm to face downward or backward. Supination turns the palm to face upward or forward."
+            },
+            {
+                id: 82,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Third-class levers are the most common type of lever in the human body.",
+                correct: true,
+                explanation: "Third-class levers, where the effort is between the fulcrum and load, are most common in the body, providing speed and range of motion."
+            },
+            {
+                id: 83,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The transverse plane divides the body into upper and lower portions.",
+                correct: true,
+                explanation: "The transverse (horizontal) plane divides the body into superior (upper) and inferior (lower) portions. Rotation occurs in this plane."
+            },
+            {
+                id: 84,
+                type: "tf",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Inertia is the tendency of a body to resist changes in its state of motion.",
+                correct: true,
+                explanation: "Inertia, as described in Newton's First Law, is the property of matter that causes it to resist changes in velocity (whether at rest or in motion)."
+            },
+
+            // ==========================================
+            // FILL IN THE BLANKS - UNIT 6
+            // ==========================================
+            {
+                id: 85,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The degree to which a test measures what it claims to measure is called _______.",
+                correct: ["validity", "Validity", "VALIDITY"],
+                explanation: "Validity is the extent to which a test accurately measures what it is intended to measure."
+            },
+            {
+                id: 86,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The consistency of test results when repeated under similar conditions is called _______.",
+                correct: ["reliability", "Reliability", "RELIABILITY"],
+                explanation: "Reliability refers to the consistency and stability of test scores across multiple administrations."
+            },
+            {
+                id: 87,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "BMI stands for Body _______ Index.",
+                correct: ["Mass", "mass", "MASS"],
+                explanation: "BMI stands for Body Mass Index, a measure of body fat based on height and weight."
+            },
+            {
+                id: 88,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The _______ Step Test is used to measure cardiovascular endurance.",
+                correct: ["Harvard", "harvard", "HARVARD"],
+                explanation: "The Harvard Step Test is a classic cardiovascular endurance test that measures heart rate recovery after stepping exercise."
+            },
+            {
+                id: 89,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Evaluation conducted at the end of a course is called _______ evaluation.",
+                correct: ["summative", "Summative", "SUMMATIVE"],
+                explanation: "Summative evaluation occurs at the end of an instructional period to assess overall achievement."
+            },
+            {
+                id: 90,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Evaluation conducted during the learning process is called _______ evaluation.",
+                correct: ["formative", "Formative", "FORMATIVE"],
+                explanation: "Formative evaluation is ongoing assessment during learning that provides feedback for improvement."
+            },
+            {
+                id: 91,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The Sit and Reach Test measures _______ of the lower back and hamstrings.",
+                correct: ["flexibility", "Flexibility", "FLEXIBILITY"],
+                explanation: "The Sit and Reach Test specifically measures the flexibility of the lower back and hamstring muscles."
+            },
+            {
+                id: 92,
+                type: "fib",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "The 50-meter dash test primarily measures _______.",
+                correct: ["speed", "Speed", "SPEED"],
+                explanation: "The 50-meter dash is a sprint test that measures speed - the ability to move quickly over a short distance."
+            },
+
+            // ==========================================
+            // FILL IN THE BLANKS - UNIT 7
+            // ==========================================
+            {
+                id: 93,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "An adult human skeleton consists of _______ bones.",
+                correct: ["206", "two hundred and six", "two hundred six"],
+                explanation: "The adult human skeleton has 206 bones. Babies are born with more bones that fuse together during growth."
+            },
+            {
+                id: 94,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The _______ is the longest bone in the human body.",
+                correct: ["femur", "Femur", "FEMUR", "thigh bone"],
+                explanation: "The femur (thigh bone) is the longest, heaviest, and strongest bone in the human body."
+            },
+            {
+                id: 95,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The human heart has _______ chambers.",
+                correct: ["four", "4", "Four", "FOUR"],
+                explanation: "The human heart has four chambers: two atria (upper) and two ventricles (lower)."
+            },
+            {
+                id: 96,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The normal resting heart rate for adults is _______ to 100 beats per minute.",
+                correct: ["60", "sixty", "Sixty"],
+                explanation: "The normal resting heart rate for healthy adults ranges from 60 to 100 beats per minute."
+            },
+            {
+                id: 97,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The _______ is the largest artery in the human body.",
+                correct: ["aorta", "Aorta", "AORTA"],
+                explanation: "The aorta is the main and largest artery that carries oxygenated blood from the left ventricle to the body."
+            },
+            {
+                id: 98,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The vertebral column consists of _______ vertebrae.",
+                correct: ["33", "thirty-three", "thirty three", "Thirty-three"],
+                explanation: "The vertebral column has 33 vertebrae: 7 cervical, 12 thoracic, 5 lumbar, 5 sacral (fused), and 4 coccygeal (fused)."
+            },
+            {
+                id: 99,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "The _______ muscle is the primary muscle used for breathing.",
+                correct: ["diaphragm", "Diaphragm", "DIAPHRAGM"],
+                explanation: "The diaphragm is the dome-shaped muscle below the lungs that is the primary muscle of respiration."
+            },
+            {
+                id: 100,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "_______ muscles are under voluntary control.",
+                correct: ["Skeletal", "skeletal", "SKELETAL"],
+                explanation: "Skeletal muscles are voluntary muscles that we consciously control for movement activities."
+            },
+            {
+                id: 101,
+                type: "fib",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Normal blood pressure for a healthy adult is approximately 120/_______ mmHg.",
+                correct: ["80", "eighty", "Eighty"],
+                explanation: "Normal blood pressure is around 120/80 mmHg, where 120 is systolic and 80 is diastolic pressure."
+            },
+
+            // ==========================================
+            // FILL IN THE BLANKS - UNIT 8
+            // ==========================================
+            {
+                id: 102,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "_______ is the scientific study of human movement.",
+                correct: ["Kinesiology", "kinesiology", "KINESIOLOGY"],
+                explanation: "Kinesiology is the scientific study of human body movement, encompassing various scientific disciplines."
+            },
+            {
+                id: 103,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The three cardinal planes of the body are sagittal, frontal, and _______.",
+                correct: ["transverse", "Transverse", "TRANSVERSE", "horizontal", "Horizontal"],
+                explanation: "The three cardinal planes are Sagittal, Frontal (Coronal), and Transverse (Horizontal)."
+            },
+            {
+                id: 104,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "_______ is the movement that decreases the angle at a joint.",
+                correct: ["Flexion", "flexion", "FLEXION"],
+                explanation: "Flexion is the bending movement that decreases the angle between body parts at a joint."
+            },
+            {
+                id: 105,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Movement away from the midline of the body is called _______.",
+                correct: ["abduction", "Abduction", "ABDUCTION"],
+                explanation: "Abduction is the movement of a body part away from the midline of the body."
+            },
+            {
+                id: 106,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Movement toward the midline of the body is called _______.",
+                correct: ["adduction", "Adduction", "ADDUCTION"],
+                explanation: "Adduction is the movement of a body part toward the midline of the body."
+            },
+            {
+                id: 107,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Newton's First Law is also known as the Law of _______.",
+                correct: ["Inertia", "inertia", "INERTIA"],
+                explanation: "Newton's First Law (Law of Inertia) states that a body remains at rest or in uniform motion unless acted upon by an external force."
+            },
+            {
+                id: 108,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "According to Newton's Second Law, Force equals Mass times _______.",
+                correct: ["Acceleration", "acceleration", "ACCELERATION"],
+                explanation: "Newton's Second Law: F = m × a (Force = Mass × Acceleration)."
+            },
+            {
+                id: 109,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "_______ of the forearm turns the palm to face downward.",
+                correct: ["Pronation", "pronation", "PRONATION"],
+                explanation: "Pronation is the rotational movement of the forearm that turns the palm to face downward or backward."
+            },
+            {
+                id: 110,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "_______ of the forearm turns the palm to face upward.",
+                correct: ["Supination", "supination", "SUPINATION"],
+                explanation: "Supination is the rotational movement of the forearm that turns the palm to face upward or forward."
+            },
+            {
+                id: 111,
+                type: "fib",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "The _______ axis runs vertically from head to toe.",
+                correct: ["longitudinal", "Longitudinal", "LONGITUDINAL", "vertical", "Vertical"],
+                explanation: "The longitudinal (vertical) axis runs from head to toe, allowing rotational movements like twisting."
+            },
+
+                        // ==========================================
+            // MATCH THE FOLLOWING - UNIT 6
+            // ==========================================
+            {
+                id: 112,
+                type: "match",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Match the following tests with what they measure:",
+                leftColumn: [
+                    "Harvard Step Test",
+                    "Sit and Reach Test",
+                    "50-meter Dash",
+                    "Standing Broad Jump",
+                    "Zig-Zag Run"
+                ],
+                rightColumn: [
+                    "Cardiovascular Endurance",
+                    "Flexibility",
+                    "Speed",
+                    "Explosive Leg Power",
+                    "Agility"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4
+                },
+                explanation: "Each physical fitness test is designed to measure a specific component of fitness: Harvard Step Test (cardiovascular endurance), Sit and Reach (flexibility), 50m Dash (speed), Standing Broad Jump (explosive power), Zig-Zag Run (agility)."
+            },
+            {
+                id: 113,
+                type: "match",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Match the evaluation types with their descriptions:",
+                leftColumn: [
+                    "Formative Evaluation",
+                    "Summative Evaluation",
+                    "Norm-Referenced",
+                    "Criterion-Referenced"
+                ],
+                rightColumn: [
+                    "During learning process",
+                    "At end of course",
+                    "Compares with other students",
+                    "Compares with set standards"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3
+                },
+                explanation: "Formative evaluation happens during learning for feedback; Summative is at the end for grading; Norm-referenced compares students; Criterion-referenced compares to standards."
+            },
+            {
+                id: 114,
+                type: "match",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Match the test characteristics with their meanings:",
+                leftColumn: [
+                    "Validity",
+                    "Reliability",
+                    "Objectivity",
+                    "Practicability"
+                ],
+                rightColumn: [
+                    "Measures what it claims to measure",
+                    "Gives consistent results",
+                    "Different scorers give same score",
+                    "Easy to administer"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3
+                },
+                explanation: "Validity ensures accuracy of measurement; Reliability ensures consistency; Objectivity minimizes scorer bias; Practicability ensures feasibility."
+            },
+            {
+                id: 115,
+                type: "match",
+                unit: 6,
+                unitName: "Test, Measurement & Evaluation",
+                question: "Match the BMI categories with their ranges:",
+                leftColumn: [
+                    "Underweight",
+                    "Normal weight",
+                    "Overweight",
+                    "Obese"
+                ],
+                rightColumn: [
+                    "Below 18.5",
+                    "18.5 - 24.9",
+                    "25 - 29.9",
+                    "30 and above"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3
+                },
+                explanation: "BMI categories: Underweight (<18.5), Normal (18.5-24.9), Overweight (25-29.9), Obese (≥30)."
+            },
+
+            // ==========================================
+            // MATCH THE FOLLOWING - UNIT 7
+            // ==========================================
+            {
+                id: 116,
+                type: "match",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Match the bones with their locations:",
+                leftColumn: [
+                    "Femur",
+                    "Humerus",
+                    "Tibia",
+                    "Radius",
+                    "Sternum"
+                ],
+                rightColumn: [
+                    "Thigh",
+                    "Upper arm",
+                    "Lower leg (shin)",
+                    "Forearm",
+                    "Chest (breastbone)"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4
+                },
+                explanation: "Femur is in the thigh; Humerus in upper arm; Tibia is the shin bone; Radius is in forearm; Sternum is the breastbone."
+            },
+            {
+                id: 117,
+                type: "match",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Match the joint types with their examples:",
+                leftColumn: [
+                    "Ball and Socket Joint",
+                    "Hinge Joint",
+                    "Pivot Joint",
+                    "Gliding Joint"
+                ],
+                rightColumn: [
+                    "Shoulder, Hip",
+                    "Elbow, Knee",
+                    "Neck (atlas-axis)",
+                    "Wrist, Ankle"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3
+                },
+                explanation: "Ball and socket joints (shoulder, hip) allow multi-directional movement; Hinge joints (elbow, knee) allow bending; Pivot allows rotation; Gliding allows sliding movements."
+            },
+            {
+                id: 118,
+                type: "match",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Match the muscle types with their characteristics:",
+                leftColumn: [
+                    "Skeletal Muscle",
+                    "Cardiac Muscle",
+                    "Smooth Muscle"
+                ],
+                rightColumn: [
+                    "Voluntary, attached to bones",
+                    "Involuntary, found only in heart",
+                    "Involuntary, found in organs"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2
+                },
+                explanation: "Skeletal muscles are voluntary and move bones; Cardiac muscle is heart-specific and involuntary; Smooth muscle is found in internal organs and is involuntary."
+            },
+            {
+                id: 119,
+                type: "match",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Match the blood vessels with their functions:",
+                leftColumn: [
+                    "Aorta",
+                    "Pulmonary Artery",
+                    "Vena Cava",
+                    "Pulmonary Vein"
+                ],
+                rightColumn: [
+                    "Carries oxygenated blood to body",
+                    "Carries deoxygenated blood to lungs",
+                    "Returns deoxygenated blood to heart",
+                    "Returns oxygenated blood from lungs"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3
+                },
+                explanation: "Aorta distributes oxygenated blood; Pulmonary artery takes deoxygenated blood to lungs; Vena cava returns used blood to heart; Pulmonary vein brings fresh oxygenated blood from lungs."
+            },
+            {
+                id: 120,
+                type: "match",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Match the vertebrae regions with their counts:",
+                leftColumn: [
+                    "Cervical",
+                    "Thoracic",
+                    "Lumbar",
+                    "Sacral",
+                    "Coccygeal"
+                ],
+                rightColumn: [
+                    "7 vertebrae",
+                    "12 vertebrae",
+                    "5 vertebrae",
+                    "5 vertebrae (fused)",
+                    "4 vertebrae (fused)"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4
+                },
+                explanation: "Cervical (neck): 7; Thoracic (chest): 12; Lumbar (lower back): 5; Sacral: 5 fused; Coccygeal (tailbone): 4 fused. Total = 33."
+            },
+            {
+                id: 121,
+                type: "match",
+                unit: 7,
+                unitName: "Anatomy & Physiology",
+                question: "Match the heart chambers with their functions:",
+                leftColumn: [
+                    "Right Atrium",
+                    "Right Ventricle",
+                    "Left Atrium",
+                    "Left Ventricle"
+                ],
+                rightColumn: [
+                    "Receives deoxygenated blood from body",
+                    "Pumps blood to lungs",
+                    "Receives oxygenated blood from lungs",
+                    "Pumps blood to entire body"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3
+                },
+                explanation: "Right side handles deoxygenated blood going to lungs; Left side handles oxygenated blood going to the body."
+            },
+
+            // ==========================================
+            // MATCH THE FOLLOWING - UNIT 8
+            // ==========================================
+            {
+                id: 122,
+                type: "match",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Match the movements with their definitions:",
+                leftColumn: [
+                    "Flexion",
+                    "Extension",
+                    "Abduction",
+                    "Adduction",
+                    "Rotation"
+                ],
+                rightColumn: [
+                    "Decreasing angle at joint",
+                    "Increasing angle at joint",
+                    "Moving away from midline",
+                    "Moving toward midline",
+                    "Turning around an axis"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2,
+                    3: 3,
+                    4: 4
+                },
+                explanation: "Flexion bends/decreases angle; Extension straightens/increases angle; Abduction moves away from body center; Adduction moves toward center; Rotation turns around an axis."
+            },
+            {
+                id: 123,
+                type: "match",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Match Newton's Laws with their statements:",
+                leftColumn: [
+                    "First Law",
+                    "Second Law",
+                    "Third Law"
+                ],
+                rightColumn: [
+                    "Law of Inertia - body stays at rest or motion",
+                    "Force = Mass × Acceleration",
+                    "Action and Reaction are equal and opposite"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2
+                },
+                explanation: "Newton's First Law (Inertia): Objects resist change in motion. Second Law: F=ma. Third Law: Every action has equal and opposite reaction."
+            },
+            {
+                id: 124,
+                type: "match",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Match the body planes with what they divide:",
+                leftColumn: [
+                    "Sagittal Plane",
+                    "Frontal Plane",
+                    "Transverse Plane"
+                ],
+                rightColumn: [
+                    "Left and Right halves",
+                    "Front and Back halves",
+                    "Upper and Lower halves"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2
+                },
+                explanation: "Sagittal divides left/right; Frontal (Coronal) divides front/back; Transverse (Horizontal) divides upper/lower."
+            },
+            {
+                id: 125,
+                type: "match",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Match the lever classes with fulcrum positions:",
+                leftColumn: [
+                    "First-Class Lever",
+                    "Second-Class Lever",
+                    "Third-Class Lever"
+                ],
+                rightColumn: [
+                    "Fulcrum between effort and load",
+                    "Load between fulcrum and effort",
+                    "Effort between fulcrum and load"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2
+                },
+                explanation: "First-class: Fulcrum in middle (seesaw). Second-class: Load in middle (wheelbarrow). Third-class: Effort in middle (most body levers)."
+            },
+            {
+                id: 126,
+                type: "match",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Match the forearm movements with palm positions:",
+                leftColumn: [
+                    "Pronation",
+                    "Supination"
+                ],
+                rightColumn: [
+                    "Palm facing downward",
+                    "Palm facing upward"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1
+                },
+                explanation: "Pronation turns palm down (like typing). Supination turns palm up (like holding soup)."
+            },
+            {
+                id: 127,
+                type: "match",
+                unit: 8,
+                unitName: "Kinesiology & Biomechanics",
+                question: "Match the axes with their orientations:",
+                leftColumn: [
+                    "Longitudinal Axis",
+                    "Frontal Axis",
+                    "Sagittal Axis"
+                ],
+                rightColumn: [
+                    "Vertical (head to toe)",
+                    "Horizontal (side to side)",
+                    "Horizontal (front to back)"
+                ],
+                correctMatches: {
+                    0: 0,
+                    1: 1,
+                    2: 2
+                },
+                explanation: "Longitudinal axis is vertical; Frontal axis goes side to side; Sagittal axis goes front to back."
+            }
+        ];
+
+        // ============================================
+        // QUIZ STATE VARIABLES
+        // ============================================
+        let currentQuestions = [...allQuestions];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let answeredQuestions = {};
+        let currentFilter = { type: 'all', unit: 'all' };
+        
+        // Match the following state
+        let selectedLeft = null;
+        let selectedRight = null;
+        let matchedPairs = {};
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        function initQuiz() {
+            shuffleArray(currentQuestions);
+            updateQuestionCounts();
+            displayQuestion();
+            updateStats();
+            updateProgress();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // ============================================
+        // FILTERING FUNCTIONS
+        // ============================================
+        function filterByType(type) {
+            currentFilter.type = type;
+            applyFilters();
+            
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.type === type) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        function filterByUnit(unit) {
+            currentFilter.unit = unit;
+            applyFilters();
+            
+            document.querySelectorAll('.unit-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function applyFilters() {
+            currentQuestions = allQuestions.filter(q => {
+                const typeMatch = currentFilter.type === 'all' || q.type === currentFilter.type;
+                const unitMatch = currentFilter.unit === 'all' || q.unit === currentFilter.unit;
+                return typeMatch && unitMatch;
+            });
+            
+            shuffleArray(currentQuestions);
+            currentQuestionIndex = 0;
+            
+            if (currentQuestions.length === 0) {
+                document.getElementById('quizContainer').innerHTML = `
+                    <div class="question-card" style="text-align: center; padding: 60px;">
+                        <i class="fas fa-search" style="font-size: 4em; color: #cbd5e1; margin-bottom: 20px;"></i>
+                        <h3 style="color: #64748b;">No questions found</h3>
+                        <p style="color: #94a3b8;">Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            displayQuestion();
+            updateProgress();
+        }
+
+        function updateQuestionCounts() {
+            document.getElementById('countAll').textContent = allQuestions.length;
+            document.getElementById('countMCQ').textContent = allQuestions.filter(q => q.type === 'mcq').length;
+            document.getElementById('countTF').textContent = allQuestions.filter(q => q.type === 'tf').length;
+            document.getElementById('countFIB').textContent = allQuestions.filter(q => q.type === 'fib').length;
+            document.getElementById('countMatch').textContent = allQuestions.filter(q => q.type === 'match').length;
+        }
+
+        // ============================================
+        // DISPLAY QUESTION BASED ON TYPE
+        // ============================================
+        function displayQuestion() {
+            if (currentQuestions.length === 0) return;
+            
+            const question = currentQuestions[currentQuestionIndex];
+            const container = document.getElementById('quizContainer');
+            
+            // Reset match state for new question
+            selectedLeft = null;
+            selectedRight = null;
+            matchedPairs = {};
+            
+            let questionHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-badges">
+                            <span class="badge badge-unit">Unit ${question.unit}: ${question.unitName}</span>
+                            <span class="badge badge-type">${getTypeLabel(question.type)}</span>
+                        </div>
+                        <span class="question-number">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</span>
+                    </div>
+                    <div class="question-text">${question.question}</div>
+            `;
+            
+            // Generate content based on question type
+            switch (question.type) {
+                case 'mcq':
+                    questionHTML += generateMCQContent(question);
+                    break;
+                case 'tf':
+                    questionHTML += generateTFContent(question);
+                    break;
+                case 'fib':
+                    questionHTML += generateFIBContent(question);
+                    break;
+                case 'match':
+                    questionHTML += generateMatchContent(question);
+                    break;
+            }
+            
+            questionHTML += `
+                    <div class="explanation-box" id="explanationBox">
+                        <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+                        <p>${question.explanation}</p>
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button class="nav-btn prev" onclick="previousQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button class="nav-btn next" onclick="nextQuestion()">
+                            ${currentQuestionIndex === currentQuestions.length - 1 ? 'Finish Quiz' : 'Next'} <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = questionHTML;
+            
+            // Restore state if question was already answered
+            if (answeredQuestions[question.id]) {
+                restoreAnsweredState(question);
+            }
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                'mcq': '📝 Multiple Choice',
+                'tf': '✓✗ True/False',
+                'fib': '✏️ Fill in the Blank',
+                'match': '🔗 Match the Following'
+            };
+            return labels[type] || type;
+        }
+
+        // ============================================
+        // MCQ CONTENT GENERATION
+        // ============================================
+        function generateMCQContent(question) {
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            let html = '<div class="options-container">';
+            
+            question.options.forEach((option, index) => {
+                html += `
+                    <div class="option" onclick="selectMCQOption(${index})" data-index="${index}">
+                        <span class="option-letter">${letters[index]}</span>
+                        <span class="option-text">${option}</span>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        function selectMCQOption(selectedIndex) {
+            const question = currentQuestions[currentQuestionIndex];
+            if (answeredQuestions[question.id]) return;
+            
+            const options = document.querySelectorAll('.option');
+            const isCorrect = selectedIndex === question.correct;
+            
+            options.forEach((opt, index) => {
+                opt.classList.add('disabled');
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                }
+                if (index === selectedIndex && !isCorrect) {
+                    opt.classList.add('wrong');
+                }
+            });
+            
+            recordAnswer(question.id, isCorrect);
+        }
+
+                // ============================================
+        // TRUE/FALSE CONTENT GENERATION
+        // ============================================
+        function generateTFContent(question) {
+            return `
+                <div class="tf-container">
+                    <button class="tf-btn true-btn" onclick="selectTFOption(true)" data-value="true">
+                        <i class="fas fa-check-circle"></i>
+                        <span>TRUE</span>
+                    </button>
+                    <button class="tf-btn false-btn" onclick="selectTFOption(false)" data-value="false">
+                        <i class="fas fa-times-circle"></i>
+                        <span>FALSE</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function selectTFOption(selectedValue) {
+            const question = currentQuestions[currentQuestionIndex];
+            if (answeredQuestions[question.id]) return;
+            
+            const trueBtn = document.querySelector('.true-btn');
+            const falseBtn = document.querySelector('.false-btn');
+            const isCorrect = selectedValue === question.correct;
+            
+            trueBtn.classList.add('disabled');
+            falseBtn.classList.add('disabled');
+            
+            if (selectedValue === true) {
+                trueBtn.classList.add('selected');
+            } else {
+                falseBtn.classList.add('selected');
+            }
+            
+            // Show correct answer
+            if (question.correct === true) {
+                trueBtn.classList.add('correct-answer');
+                if (!isCorrect) {
+                    falseBtn.classList.add('wrong-answer');
+                }
+            } else {
+                falseBtn.classList.add('correct-answer');
+                if (!isCorrect) {
+                    trueBtn.classList.add('wrong-answer');
+                }
+            }
+            
+            recordAnswer(question.id, isCorrect);
+        }
+
+        // ============================================
+        // FILL IN THE BLANK CONTENT GENERATION
+        // ============================================
+        function generateFIBContent(question) {
+            return `
+                <div class="fib-container">
+                    <div class="fib-input-wrapper">
+                        <input type="text" class="fib-input" id="fibInput" 
+                               placeholder="Type your answer here..." 
+                               onkeypress="handleFIBKeypress(event)"
+                               autocomplete="off">
+                    </div>
+                    <button class="fib-submit" onclick="submitFIBAnswer()">
+                        <i class="fas fa-paper-plane"></i> Submit Answer
+                    </button>
+                    <div class="correct-answer-display" id="correctAnswerDisplay" style="display: none;"></div>
+                </div>
+            `;
+        }
+
+        function handleFIBKeypress(event) {
+            if (event.key === 'Enter') {
+                submitFIBAnswer();
+            }
+        }
+
+        function submitFIBAnswer() {
+            const question = currentQuestions[currentQuestionIndex];
+            if (answeredQuestions[question.id]) return;
+            
+            const input = document.getElementById('fibInput');
+            const submitBtn = document.querySelector('.fib-submit');
+            const correctDisplay = document.getElementById('correctAnswerDisplay');
+            const userAnswer = input.value.trim();
+            
+            if (!userAnswer) {
+                input.style.borderColor = '#f59e0b';
+                input.placeholder = 'Please enter an answer!';
+                setTimeout(() => {
+                    input.style.borderColor = '#e2e8f0';
+                    input.placeholder = 'Type your answer here...';
+                }, 1500);
+                return;
+            }
+            
+            // Check if answer is correct (case-insensitive, trim whitespace)
+            const isCorrect = question.correct.some(ans => 
+                ans.toLowerCase().trim() === userAnswer.toLowerCase().trim()
+            );
+            
+            input.disabled = true;
+            submitBtn.disabled = true;
+            
+            if (isCorrect) {
+                input.classList.add('correct');
+            } else {
+                input.classList.add('wrong');
+                correctDisplay.innerHTML = `<i class="fas fa-check"></i> Correct answer: <strong>${question.correct[0]}</strong>`;
+                correctDisplay.style.display = 'block';
+            }
+            
+            recordAnswer(question.id, isCorrect);
+        }
+
+        // ============================================
+        // MATCH THE FOLLOWING CONTENT GENERATION
+        // ============================================
+        function generateMatchContent(question) {
+            // Shuffle the right column for display
+            let shuffledRight = question.rightColumn.map((item, index) => ({ item, originalIndex: index }));
+            shuffleArray(shuffledRight);
+            
+            // Store the shuffled mapping
+            window.currentMatchQuestion = {
+                ...question,
+                shuffledRight: shuffledRight
+            };
+            
+            let html = `
+                <div class="match-container" id="matchContainer">
+                    <div class="match-column" id="leftColumn">
+                        <div class="match-column-title">Column A</div>
+            `;
+            
+            question.leftColumn.forEach((item, index) => {
+                html += `
+                    <div class="match-item" data-side="left" data-index="${index}" onclick="selectMatchItem('left', ${index})">
+                        ${index + 1}. ${item}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <div class="match-column" id="rightColumn">
+                        <div class="match-column-title">Column B</div>
+            `;
+            
+            shuffledRight.forEach((item, displayIndex) => {
+                const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+                html += `
+                    <div class="match-item" data-side="right" data-index="${displayIndex}" data-original="${item.originalIndex}" onclick="selectMatchItem('right', ${displayIndex})">
+                        ${letters[displayIndex]}. ${item.item}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <button class="match-check-btn" onclick="checkMatchAnswers()" id="matchCheckBtn">
+                        <i class="fas fa-check-double"></i> Check All Matches
+                    </button>
+                </div>
+                <div class="match-status" id="matchStatus" style="text-align: center; margin-top: 15px; font-weight: 600; color: #64748b;"></div>
+            `;
+            
+            return html;
+        }
+
+        function selectMatchItem(side, index) {
+            const question = currentQuestions[currentQuestionIndex];
+            if (answeredQuestions[question.id]) return;
+            
+            const item = document.querySelector(`.match-item[data-side="${side}"][data-index="${index}"]`);
+            
+            // Check if already matched
+            if (item.classList.contains('matched')) return;
+            
+            if (side === 'left') {
+                // Deselect previous left selection
+                document.querySelectorAll('.match-item[data-side="left"]').forEach(el => {
+                    if (!el.classList.contains('matched')) {
+                        el.classList.remove('selected');
+                    }
+                });
+                item.classList.add('selected');
+                selectedLeft = index;
+            } else {
+                // Deselect previous right selection
+                document.querySelectorAll('.match-item[data-side="right"]').forEach(el => {
+                    if (!el.classList.contains('matched')) {
+                        el.classList.remove('selected');
+                    }
+                });
+                item.classList.add('selected');
+                selectedRight = index;
+            }
+            
+            // If both sides selected, make a match
+            if (selectedLeft !== null && selectedRight !== null) {
+                makeMatch();
+            }
+            
+            updateMatchStatus();
+        }
+
+        function makeMatch() {
+            const question = window.currentMatchQuestion;
+            const rightItem = document.querySelector(`.match-item[data-side="right"][data-index="${selectedRight}"]`);
+            const originalRightIndex = parseInt(rightItem.dataset.original);
+            
+            // Store the match
+            matchedPairs[selectedLeft] = originalRightIndex;
+            
+            // Mark both items as matched
+            const leftItem = document.querySelector(`.match-item[data-side="left"][data-index="${selectedLeft}"]`);
+            leftItem.classList.remove('selected');
+            leftItem.classList.add('matched');
+            leftItem.style.background = getMatchColor(Object.keys(matchedPairs).length - 1);
+            
+            rightItem.classList.remove('selected');
+            rightItem.classList.add('matched');
+            rightItem.style.background = getMatchColor(Object.keys(matchedPairs).length - 1);
+            
+            // Reset selections
+            selectedLeft = null;
+            selectedRight = null;
+            
+            updateMatchStatus();
+        }
+
+        function getMatchColor(index) {
+            const colors = [
+                'linear-gradient(135deg, #a7f3d0, #6ee7b7)',
+                'linear-gradient(135deg, #bfdbfe, #93c5fd)',
+                'linear-gradient(135deg, #fde68a, #fcd34d)',
+                'linear-gradient(135deg, #fbcfe8, #f9a8d4)',
+                'linear-gradient(135deg, #c4b5fd, #a78bfa)',
+                'linear-gradient(135deg, #fed7aa, #fdba74)'
+            ];
+            return colors[index % colors.length];
+        }
+
+        function updateMatchStatus() {
+            const question = currentQuestions[currentQuestionIndex];
+            const totalPairs = question.leftColumn.length;
+            const matchedCount = Object.keys(matchedPairs).length;
+            const status = document.getElementById('matchStatus');
+            
+            if (matchedCount === 0) {
+                status.textContent = 'Select an item from Column A, then match it with Column B';
+            } else if (matchedCount < totalPairs) {
+                status.textContent = `${matchedCount} of ${totalPairs} pairs matched`;
+            } else {
+                status.textContent = 'All pairs matched! Click "Check All Matches" to verify.';
+            }
+        }
+
+        function checkMatchAnswers() {
+            const question = currentQuestions[currentQuestionIndex];
+            if (answeredQuestions[question.id]) return;
+            
+            const totalPairs = question.leftColumn.length;
+            const matchedCount = Object.keys(matchedPairs).length;
+            
+            if (matchedCount < totalPairs) {
+                document.getElementById('matchStatus').innerHTML = 
+                    '<span style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Please match all pairs before checking!</span>';
+                return;
+            }
+            
+            let correctMatches = 0;
+            
+            // Check each match
+            Object.keys(matchedPairs).forEach(leftIndex => {
+                const userRightIndex = matchedPairs[leftIndex];
+                const correctRightIndex = question.correctMatches[leftIndex];
+                
+                const leftItem = document.querySelector(`.match-item[data-side="left"][data-index="${leftIndex}"]`);
+                const rightItem = document.querySelector(`.match-item[data-side="right"][data-original="${userRightIndex}"]`);
+                
+                if (userRightIndex === correctRightIndex) {
+                    correctMatches++;
+                    leftItem.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+                    leftItem.style.borderColor = '#10b981';
+                    rightItem.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+                    rightItem.style.borderColor = '#10b981';
+                } else {
+                    leftItem.style.background = 'linear-gradient(135deg, #fee2e2, #fecaca)';
+                    leftItem.style.borderColor = '#ef4444';
+                    rightItem.style.background = 'linear-gradient(135deg, #fee2e2, #fecaca)';
+                    rightItem.style.borderColor = '#ef4444';
+                    
+                    // Show correct match
+                    const correctRightItem = document.querySelector(`.match-item[data-side="right"][data-original="${correctRightIndex}"]`);
+                    if (correctRightItem) {
+                        correctRightItem.style.border = '3px dashed #10b981';
+                    }
+                }
+            });
+            
+            // Disable all match items
+            document.querySelectorAll('.match-item').forEach(item => {
+                item.classList.add('disabled');
+                item.onclick = null;
+            });
+            
+            document.getElementById('matchCheckBtn').disabled = true;
+            
+            const isCorrect = correctMatches === totalPairs;
+            const partialScore = correctMatches / totalPairs;
+            
+            document.getElementById('matchStatus').innerHTML = isCorrect
+                ? `<span style="color: #10b981;"><i class="fas fa-check-circle"></i> Perfect! All ${totalPairs} matches are correct!</span>`
+                : `<span style="color: #f59e0b;"><i class="fas fa-info-circle"></i> ${correctMatches} of ${totalPairs} matches correct</span>`;
+            
+            recordAnswer(question.id, isCorrect, partialScore);
+        }
+
+        // ============================================
+        // RESTORE ANSWERED STATE
+        // ============================================
+        function restoreAnsweredState(question) {
+            const answer = answeredQuestions[question.id];
+            document.getElementById('explanationBox').classList.add('show');
+            
+            switch (question.type) {
+                case 'mcq':
+                    const options = document.querySelectorAll('.option');
+                    options.forEach((opt, index) => {
+                        opt.classList.add('disabled');
+                        opt.onclick = null;
+                        if (index === question.correct) {
+                            opt.classList.add('correct');
+                        }
+                    });
+                    break;
+                    
+                case 'tf':
+                    const trueBtn = document.querySelector('.true-btn');
+                    const falseBtn = document.querySelector('.false-btn');
+                    trueBtn.classList.add('disabled');
+                    falseBtn.classList.add('disabled');
+                    trueBtn.onclick = null;
+                    falseBtn.onclick = null;
+                    if (question.correct === true) {
+                        trueBtn.classList.add('correct-answer');
+                    } else {
+                        falseBtn.classList.add('correct-answer');
+                    }
+                    break;
+                    
+                case 'fib':
+                    const input = document.getElementById('fibInput');
+                    const submitBtn = document.querySelector('.fib-submit');
+                    input.disabled = true;
+                    submitBtn.disabled = true;
+                    input.value = answer.userAnswer || question.correct[0];
+                    input.classList.add(answer.isCorrect ? 'correct' : 'wrong');
+                    if (!answer.isCorrect) {
+                        const correctDisplay = document.getElementById('correctAnswerDisplay');
+                        correctDisplay.innerHTML = `<i class="fas fa-check"></i> Correct answer: <strong>${question.correct[0]}</strong>`;
+                        correctDisplay.style.display = 'block';
+                    }
+                    break;
+                    
+                case 'match':
+                    document.querySelectorAll('.match-item').forEach(item => {
+                        item.classList.add('disabled');
+                        item.onclick = null;
+                    });
+                    document.getElementById('matchCheckBtn').disabled = true;
+                    document.getElementById('matchStatus').innerHTML = answer.isCorrect
+                        ? '<span style="color: #10b981;"><i class="fas fa-check-circle"></i> You answered this correctly!</span>'
+                        : '<span style="color: #f59e0b;"><i class="fas fa-info-circle"></i> Review the correct matches above</span>';
+                    break;
+            }
+        }
+
+        // ============================================
+        // RECORD ANSWER & UPDATE STATS
+        // ============================================
+        function recordAnswer(questionId, isCorrect, partialScore = null) {
+            const question = currentQuestions[currentQuestionIndex];
+            
+            answeredQuestions[questionId] = {
+                isCorrect: isCorrect,
+                partialScore: partialScore,
+                userAnswer: question.type === 'fib' ? document.getElementById('fibInput')?.value : null
+            };
+            
+            if (isCorrect) {
+                correctCount++;
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+                score += question.type === 'match' ? 2 : 1; // Match questions worth more
+            } else {
+                wrongCount++;
+                streak = 0;
+                if (partialScore) {
+                    score += partialScore; // Partial credit for match questions
+                }
+            }
+            
+            // Show explanation
+            document.getElementById('explanationBox').classList.add('show');
+            
+            updateStats();
+            updateProgress();
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+                updateProgress();
+            } else {
+                showCompletionScreen();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+                updateProgress();
+            }
+        }
+
+        // ============================================
+        // UPDATE UI ELEMENTS
+        // ============================================
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = currentQuestions.length;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('wrongCount').textContent = wrongCount;
+            document.getElementById('streakCount').textContent = streak;
+            
+            const totalAnswered = correctCount + wrongCount;
+            const accuracy = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+            document.getElementById('accuracyPercent').textContent = accuracy + '%';
+        }
+
+        function updateProgress() {
+            const current = currentQuestionIndex + 1;
+            const total = currentQuestions.length;
+            const percent = Math.round((current / total) * 100);
+            
+            document.getElementById('progressText').textContent = `Question ${current} of ${total}`;
+            document.getElementById('progressPercent').textContent = `${percent}%`;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+        }
+
+        // ============================================
+        // COMPLETION SCREEN
+        // ============================================
+        function showCompletionScreen() {
+            const totalAnswered = correctCount + wrongCount;
+            const accuracy = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+            
+            let emoji, message;
+            if (accuracy >= 90) {
+                emoji = '🏆';
+                message = 'Outstanding Performance! You\'re a champion!';
+            } else if (accuracy >= 75) {
+                emoji = '🌟';
+                message = 'Excellent Work! Keep it up!';
+            } else if (accuracy >= 60) {
+                emoji = '👍';
+                message = 'Good Job! Room for improvement!';
+            } else if (accuracy >= 40) {
+                emoji = '📚';
+                message = 'Keep Practicing! You\'ll get there!';
+            } else {
+                emoji = '💪';
+                message = 'Don\'t Give Up! Review the material and try again!';
+            }
+            
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('completionScreen').style.display = 'block';
+            document.getElementById('completionScreen').innerHTML = `
+                <div class="completion-screen">
+                    <div class="completion-icon">${emoji}</div>
+                    <h2>Quiz Complete!</h2>
+                    <div class="final-score">${accuracy}%</div>
+                    <p style="font-size: 1.3em; color: #4a5568; margin-bottom: 30px;">${message}</p>
+                    
+                    <div class="score-breakdown">
+                        <div class="breakdown-item">
+                            <div class="value">${correctCount}</div>
+                            <div class="label">Correct Answers</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="value">${wrongCount}</div>
+                            <div class="label">Wrong Answers</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="value">${totalAnswered}</div>
+                            <div class="label">Total Attempted</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="value">${maxStreak}</div>
+                            <div class="label">Best Streak</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px;">
+                        <button class="restart-btn" onclick="restartQuiz()">
+                            <i class="fas fa-redo"></i> Restart Quiz
+                        </button>
+                        <button class="restart-btn" onclick="reviewWrongAnswers()" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                            <i class="fas fa-book-open"></i> Review Wrong Answers
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // RESTART & REVIEW FUNCTIONS
+        // ============================================
+        function restartQuiz() {
+            // Reset all state
+            currentQuestions = [...allQuestions];
+            currentQuestionIndex = 0;
+            score = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            streak = 0;
+            maxStreak = 0;
+            answeredQuestions = {};
+            currentFilter = { type: 'all', unit: 'all' };
+            matchedPairs = {};
+            selectedLeft = null;
+            selectedRight = null;
+            
+            // Reset UI
+            document.querySelectorAll('.type-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.type === 'all') tab.classList.add('active');
+            });
+            
+            document.querySelectorAll('.unit-btn').forEach((btn, index) => {
+                btn.classList.remove('active');
+                if (index === 0) btn.classList.add('active');
+            });
+            
+            document.getElementById('completionScreen').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            shuffleArray(currentQuestions);
+            displayQuestion();
+            updateStats();
+            updateProgress();
+        }
+
+        function reviewWrongAnswers() {
+            // Filter to only wrong answers
+            const wrongQuestionIds = Object.keys(answeredQuestions)
+                .filter(id => !answeredQuestions[id].isCorrect)
+                .map(id => parseInt(id));
+            
+            if (wrongQuestionIds.length === 0) {
+                alert('Congratulations! You have no wrong answers to review!');
+                return;
+            }
+            
+            currentQuestions = allQuestions.filter(q => wrongQuestionIds.includes(q.id));
+            currentQuestionIndex = 0;
+            
+            // Reset answered state for review
+            answeredQuestions = {};
+            correctCount = 0;
+            wrongCount = 0;
+            streak = 0;
+            
+            document.getElementById('completionScreen').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            displayQuestion();
+            updateStats();
+            updateProgress();
+        }
+
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', function(event) {
+            const question = currentQuestions[currentQuestionIndex];
+            if (!question || answeredQuestions[question.id]) {
+                // Navigation only when question is answered
+                if (event.key === 'ArrowRight' || event.key === 'Enter') {
+                    if (answeredQuestions[question?.id]) {
+                        nextQuestion();
+                    }
+                } else if (event.key === 'ArrowLeft') {
+                    previousQuestion();
+                }
+                return;
+            }
+            
+            // MCQ shortcuts (1-4 or A-D)
+            if (question.type === 'mcq') {
+                const keyMap = { '1': 0, '2': 1, '3': 2, '4': 3, 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
+                const key = event.key.toLowerCase();
+                if (keyMap.hasOwnProperty(key) && keyMap[key] < question.options.length) {
+                    selectMCQOption(keyMap[key]);
+                }
+            }
+            
+            // True/False shortcuts (T/F)
+            if (question.type === 'tf') {
+                if (event.key.toLowerCase() === 't') {
+                    selectTFOption(true);
+                } else if (event.key.toLowerCase() === 'f') {
+                    selectTFOption(false);
+                }
+            }
+        });
+
+        // ============================================
+        // INITIALIZE ON PAGE LOAD
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+        });
+
+        // Start the quiz
+        initQuiz();
+    </script>
+</body>
+</html>
