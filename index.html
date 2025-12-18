@@ -572,6 +572,13 @@
       -webkit-background-clip:text; background-clip:text; color: transparent;
     }
 
+    .section-subtitle {
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      margin: 0 0 8px;
+      opacity: 0.85;
+    }
+
     /* REDESIGNED TOPICS SECTION - 3D ENHANCED */
     .topics{
       display: grid;
@@ -903,6 +910,196 @@
 
     @keyframes shimmer {
       to { left: 100%; }
+    }
+
+    /* Topic Description */
+    .topic-description {
+      margin: 12px 0 16px;
+      padding: 0;
+    }
+
+    .topic-description p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      margin: 0;
+      opacity: 0.85;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .topic:hover .topic-description p {
+      opacity: 1;
+      color: var(--text);
+    }
+
+    /* Topic Stats */
+    .topic-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .topic-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .topic-stat .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--brand-2);
+      transition: all 0.3s ease;
+    }
+
+    .topic:hover .topic-stat .stat-value {
+      color: var(--lime);
+      text-shadow: 0 0 15px rgba(183,255,74,.4);
+    }
+
+    .topic-stat .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+    }
+
+    /* Topic CTA Button */
+    .topic-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, rgba(124,77,255,.2), rgba(0,229,255,.2));
+      border: 1px solid rgba(124,77,255,.3);
+      border-radius: 12px;
+      color: var(--brand-2);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topic-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .topic:hover .topic-cta::before {
+      left: 100%;
+    }
+
+    .topic:hover .topic-cta {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: var(--bg);
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(124,77,255,.4);
+    }
+
+    /* Topic Glow Effect */
+    .topic-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% 0%, rgba(124,77,255,.3), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .topic:hover .topic-glow {
+      opacity: 1;
+    }
+
+    /* Topic Shine Effect */
+    .topic-shine {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+
+    .topic:hover .topic-shine {
+      left: 150%;
+    }
+
+    /* Topic 3D Badge */
+    .topic-3d-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 54px;
+      height: 54px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow:
+        0 8px 20px rgba(124,77,255,.4),
+        0 4px 8px rgba(0,0,0,.2),
+        inset 0 1px 0 rgba(255,255,255,.2);
+      transform: translateZ(25px) rotate(8deg);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+      border: 2px solid rgba(255,255,255,.15);
+    }
+
+    .topic:hover .topic-3d-badge {
+      transform: translateZ(45px) rotate(-8deg) scale(1.15);
+      box-shadow:
+        0 15px 35px rgba(124,77,255,.5),
+        0 8px 15px rgba(0,0,0,.3),
+        inset 0 1px 0 rgba(255,255,255,.3);
+      border-color: rgba(255,255,255,.3);
+    }
+
+    /* Responsive adjustments for new elements */
+    @media (max-width: 768px) {
+      .topic-description p {
+        -webkit-line-clamp: 2;
+      }
+
+      .topic-stats {
+        gap: 16px;
+      }
+
+      .topic-stat .stat-value {
+        font-size: 16px;
+      }
+
+      .topic-3d-badge {
+        width: 46px;
+        height: 46px;
+        font-size: 20px;
+        top: -8px;
+        right: -8px;
+      }
     }
 
     /* 3D Floating Animation */
@@ -1843,10 +2040,14 @@
   <!-- REDESIGNED TOPICS SECTION -->
   <section class="section" id="topics">
     <h2 class="reveal">Popular Topics</h2>
+    <p class="section-subtitle reveal">Master the fundamentals of accounting with our comprehensive topic guides</p>
     <div class="topics">
 
       <!-- Basic Concepts -->
       <div class="topic reveal" data-topic="basic-concepts">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📚</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="book-open"></i></div>
           <div class="topic-content">
@@ -1854,137 +2055,434 @@
             <small>Entity, Money Measurement, Going Concern, Dual Aspect.</small>
           </div>
         </div>
+        <div class="topic-description">
+          <p>Foundation of accounting principles including Business Entity, Money Measurement, Going Concern, Accounting Period, Cost Concept, and Dual Aspect concepts.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-easy"><i data-lucide="zap" style="width:12px;height:12px"></i> Beginner</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 15 min</span>
+          <span class="topic-tag"><i data-lucide="file-text" style="width:12px;height:12px"></i> 6 Concepts</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.2K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.8</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+        </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Accounting Equation -->
       <div class="topic reveal" data-topic="accounting-equation">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">⚖️</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="scale"></i></div>
           <div class="topic-content">
             <b>Accounting Equation</b>
-            <small>Assets = Capital + Liabilities.</small>
+            <small>Assets = Capital + Liabilities</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>The fundamental equation that forms the backbone of double-entry bookkeeping. Learn how every transaction maintains balance between assets, liabilities, and capital.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-easy"><i data-lucide="zap" style="width:12px;height:12px"></i> Beginner</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 20 min</span>
+          <span class="topic-tag"><i data-lucide="calculator" style="width:12px;height:12px"></i> Practice</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">2.1K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.9</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Source Documents -->
       <div class="topic reveal" data-topic="source-documents">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📄</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="file-text"></i></div>
           <div class="topic-content">
             <b>Source Documents</b>
-            <small>Invoice, Cash Memo, Debit/Credit Note, Voucher.</small>
+            <small>Invoice, Cash Memo, Debit/Credit Note, Voucher</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Learn about original documents that serve as evidence for business transactions including invoices, cash memos, receipts, debit notes, credit notes, and vouchers.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-easy"><i data-lucide="zap" style="width:12px;height:12px"></i> Beginner</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 25 min</span>
+          <span class="topic-tag"><i data-lucide="image" style="width:12px;height:12px"></i> Examples</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">980</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.7</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Journal -->
       <div class="topic reveal" data-topic="journal">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📓</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="notebook"></i></div>
           <div class="topic-content">
             <b>Journal</b>
-            <small>General journal entries &amp; narration.</small>
+            <small>General journal entries &amp; narration</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Master the art of recording transactions chronologically. Learn journal entry formats, narration writing, compound entries, and the rules of debit and credit.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-medium"><i data-lucide="flame" style="width:12px;height:12px"></i> Intermediate</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 35 min</span>
+          <span class="topic-tag"><i data-lucide="pen-tool" style="width:12px;height:12px"></i> Practical</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.8K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.8</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Ledger -->
       <div class="topic reveal" data-topic="ledger">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📒</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="book-copy"></i></div>
           <div class="topic-content">
             <b>Ledger</b>
-            <small>Posting from journal, balancing accounts.</small>
+            <small>Posting from journal, balancing accounts</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>The principal book of accounts where all transactions are classified account-wise. Learn posting techniques, T-accounts, and how to balance ledger accounts correctly.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-medium"><i data-lucide="flame" style="width:12px;height:12px"></i> Intermediate</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 40 min</span>
+          <span class="topic-tag"><i data-lucide="layers" style="width:12px;height:12px"></i> T-Format</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.5K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.6</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Cash Book -->
       <div class="topic reveal" data-topic="cash-book">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">💰</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="wallet"></i></div>
           <div class="topic-content">
             <b>Cash Book</b>
-            <small>Single, double, triple column cash book.</small>
+            <small>Single, double, triple column cash book</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Special journal for recording all cash and bank transactions. Master single-column, double-column (cash + bank), and triple-column (cash + bank + discount) formats.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-medium"><i data-lucide="flame" style="width:12px;height:12px"></i> Intermediate</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 45 min</span>
+          <span class="topic-tag"><i data-lucide="columns" style="width:12px;height:12px"></i> 3 Types</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.3K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.7</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Trial Balance -->
       <div class="topic reveal" data-topic="trial-balance">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📋</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="clipboard-list"></i></div>
           <div class="topic-content">
             <b>Trial Balance</b>
-            <small>Methods of preparation, error types.</small>
+            <small>Methods of preparation, error types</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>A statement to check arithmetic accuracy of ledger accounts. Learn balance method, total method, types of errors revealed and not revealed by trial balance.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-medium"><i data-lucide="flame" style="width:12px;height:12px"></i> Intermediate</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 30 min</span>
+          <span class="topic-tag"><i data-lucide="check-circle" style="width:12px;height:12px"></i> Verification</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.1K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.5</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Depreciation -->
       <div class="topic reveal" data-topic="depreciation">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📉</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="trending-down"></i></div>
           <div class="topic-content">
             <b>Depreciation</b>
-            <small>Straight-line, WDV, disposal of asset.</small>
+            <small>Straight-line, WDV, disposal of asset</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Systematic allocation of the cost of fixed assets. Learn Straight Line Method (SLM), Written Down Value (WDV), asset disposal, and depreciation accounting entries.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-hard"><i data-lucide="target" style="width:12px;height:12px"></i> Advanced</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 50 min</span>
+          <span class="topic-tag"><i data-lucide="calculator" style="width:12px;height:12px"></i> Formulas</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">890</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.6</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Bank Reconciliation -->
       <div class="topic reveal" data-topic="bank-reconciliation">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">🏦</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="landmark"></i></div>
           <div class="topic-content">
             <b>Bank Reconciliation</b>
-            <small>Causes of difference &amp; statement.</small>
+            <small>Causes of difference &amp; BRS statement</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Reconcile differences between cash book and bank statement. Learn causes of disagreement, cheques in transit, direct debits/credits, and BRS preparation methods.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-hard"><i data-lucide="target" style="width:12px;height:12px"></i> Advanced</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 55 min</span>
+          <span class="topic-tag"><i data-lucide="git-compare" style="width:12px;height:12px"></i> Matching</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">760</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.5</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Rectification -->
       <div class="topic reveal" data-topic="rectification">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">🔧</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="wrench"></i></div>
           <div class="topic-content">
             <b>Rectification of Errors</b>
-            <small>Before/after trial balance.</small>
+            <small>Before/after trial balance correction</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Learn to identify and correct accounting errors. Understand one-sided, two-sided errors, suspense accounts, and rectification entries before and after closing.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-hard"><i data-lucide="target" style="width:12px;height:12px"></i> Advanced</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 45 min</span>
+          <span class="topic-tag"><i data-lucide="alert-triangle" style="width:12px;height:12px"></i> Error Types</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">650</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.4</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- GST -->
       <div class="topic reveal" data-topic="gst">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">🧾</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="receipt"></i></div>
           <div class="topic-content">
             <b>Accounting for GST</b>
-            <small>CGST, SGST, IGST basics.</small>
+            <small>CGST, SGST, IGST accounting</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Goods and Services Tax accounting in India. Learn Input Tax Credit, Output Tax, CGST, SGST, IGST, inter-state vs intra-state transactions, and GST journal entries.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-medium"><i data-lucide="flame" style="width:12px;height:12px"></i> Intermediate</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 40 min</span>
+          <span class="topic-tag"><i data-lucide="badge-indian-rupee" style="width:12px;height:12px"></i> Tax</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.4K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.7</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
 
       <!-- Final Accounts -->
       <div class="topic reveal" data-topic="final-accounts">
+        <div class="topic-glow"></div>
+        <div class="topic-shine"></div>
+        <div class="topic-3d-badge">📊</div>
         <div class="topic-header">
           <div class="topic-icon"><i data-lucide="bar-chart"></i></div>
           <div class="topic-content">
             <b>Final Accounts (Intro)</b>
-            <small>Trading, P&amp;L, Balance Sheet basics.</small>
+            <small>Trading, P&amp;L, Balance Sheet</small>
           </div>
+        </div>
+        <div class="topic-description">
+          <p>Prepare financial statements from trial balance. Learn Trading Account (Gross Profit), Profit &amp; Loss Account (Net Profit), and Balance Sheet preparation with adjustments.</p>
+        </div>
+        <div class="topic-meta">
+          <span class="topic-tag difficulty-hard"><i data-lucide="target" style="width:12px;height:12px"></i> Advanced</span>
+          <span class="topic-tag"><i data-lucide="clock" style="width:12px;height:12px"></i> 60 min</span>
+          <span class="topic-tag"><i data-lucide="file-spreadsheet" style="width:12px;height:12px"></i> Statements</span>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-stat">
+            <span class="stat-value">1.9K</span>
+            <span class="stat-label">Learners</span>
+          </div>
+          <div class="topic-stat">
+            <span class="stat-value">4.8</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        <div class="topic-cta">
+          <span>Start Learning</span>
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
         </div>
         <div class="topic-progress"></div>
       </div>
