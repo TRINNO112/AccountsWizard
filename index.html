@@ -26,6 +26,78 @@
       --speed: 500ms;
     }
 
+    /* ========= PERFORMANCE OPTIMIZATIONS ========= */
+    /* Disable animations for users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .floaters, .bubble, .floating-icon { display: none !important; }
+    }
+
+    /* Disable heavy animations on small screens for better performance */
+    @media (max-width: 768px) {
+      .floaters, .bubble { display: none !important; }
+      .floating-icon { display: none !important; }
+
+      /* Disable 3D transforms and heavy hover effects on mobile */
+      .topic {
+        animation: none !important;
+        transform: none !important;
+        perspective: none !important;
+      }
+      .topic:hover {
+        transform: translateY(-4px) !important;
+      }
+      .topic::before, .topic::after { display: none !important; }
+      .topic-glow, .topic-shine { display: none !important; }
+      .topic-3d-badge, .topic-3d-layer { display: none !important; }
+      .topic-preview { display: none !important; }
+      .topic-progress::after { display: none !important; }
+
+      /* Simplify card hover */
+      .card:hover { transform: translateY(-2px) !important; filter: none !important; }
+      .neon-card:hover { transform: translateY(-4px) !important; }
+      .neon-icon-bg::before { display: none !important; }
+
+      /* Disable CTA band animations */
+      .cta-band::before { display: none !important; }
+      .cta-wizard { animation: none !important; }
+      .cta-wizard::after { display: none !important; }
+      .cta-sparkle { animation: none !important; }
+
+      /* Disable step dots animation */
+      .step-dot { animation: none !important; }
+      .step-dot::after { display: none !important; }
+
+      /* Disable formula hover effects */
+      .neon-card:hover .formula-item { transform: none !important; }
+      .neon-card:hover .infographic-icon { transform: none !important; }
+    }
+
+    /* Touch device detection - disable hover effects */
+    @media (hover: none) and (pointer: coarse) {
+      .topic:hover { transform: none !important; }
+      .topic:hover::before, .topic:hover::after { opacity: 0 !important; }
+      .topic:hover .topic-icon { transform: none !important; }
+      .topic:hover .topic-cta { transform: none !important; }
+      .card:hover { transform: none !important; filter: none !important; }
+      .neon-card:hover { transform: none !important; }
+      .pill:hover { transform: none !important; }
+      .ghost:hover { transform: none !important; }
+    }
+
+    /* GPU acceleration for smoother animations on desktop */
+    @media (min-width: 769px) {
+      .bubble { will-change: transform; transform: translateZ(0); }
+      .topic { will-change: transform; }
+      .neon-card { will-change: transform; }
+      .floating-icon { will-change: transform; }
+      .cta-wizard { will-change: transform; }
+    }
+
     * { box-sizing: border-box; }
     html, body { margin:0; padding:0; }
     body{
@@ -579,13 +651,12 @@
       opacity: 0.85;
     }
 
-    /* REDESIGNED TOPICS SECTION - 3D ENHANCED */
+    /* REDESIGNED TOPICS SECTION - OPTIMIZED FOR PERFORMANCE */
     .topics{
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 24px;
       margin-top: 24px;
-      perspective: 1000px;
     }
 
     .topic {
@@ -596,106 +667,72 @@
       min-height: 200px;
       cursor: pointer;
       position: relative;
-      overflow: visible;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
-      box-shadow:
-        0 10px 30px rgba(0,0,0,.3),
-        0 5px 15px rgba(0,0,0,.2),
-        inset 0 1px 0 rgba(255,255,255,.05);
+      overflow: hidden;
+      /* OPTIMIZED: Only transition transform and border-color for GPU acceleration */
+      transition: transform 0.25s ease, border-color 0.25s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+      will-change: transform;
     }
 
-    /* 3D Tilt Effect Container */
-    .topic-inner {
-      transform-style: preserve-3d;
-      transition: transform 0.3s ease;
-    }
-
+    /* OPTIMIZED: Simple overlay instead of complex gradient */
     .topic::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: 24px;
-      background: linear-gradient(135deg,
-        transparent,
-        rgba(124,77,255,.15),
-        rgba(0,229,255,.15)
-      );
+      background: rgba(124,77,255,.08);
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
     .topic:hover::before {
       opacity: 1;
     }
 
-    /* Glowing Border Effect */
+    /* REMOVED: Heavy blur filter and gradient animation - replaced with simple glow */
     .topic::after {
       content: '';
       position: absolute;
-      inset: -2px;
-      background: linear-gradient(45deg,
-        var(--brand),
-        var(--brand-2),
-        var(--accent),
-        var(--lime),
-        var(--brand)
-      );
-      border-radius: 26px;
+      inset: 0;
+      border-radius: 24px;
+      box-shadow: inset 0 0 0 2px rgba(0,229,255,.3);
       opacity: 0;
-      z-index: -1;
-      transition: opacity 0.4s ease;
-      background-size: 400% 400%;
-      animation: gradient-border 3s ease infinite;
-      filter: blur(8px);
-    }
-
-    @keyframes gradient-border {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
     .topic:hover::after {
-      opacity: 0.5;
+      opacity: 1;
     }
 
+    /* OPTIMIZED: Simple translateY only - no 3D transforms */
     .topic:hover {
-      transform: translateY(-12px) rotateX(5deg) scale(1.02);
-      box-shadow:
-        0 30px 60px rgba(0,229,255,.2),
-        0 15px 30px rgba(124,77,255,.15),
-        0 50px 100px rgba(0,0,0,.3),
-        inset 0 1px 0 rgba(255,255,255,.1);
-      border-color: rgba(255,255,255,.2);
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,.15);
     }
 
-    /* Floating 3D Layer Effect */
+    /* OPTIMIZED: Simplified 3D layer - static, no animation */
     .topic-3d-layer {
       position: absolute;
       top: -8px;
       right: -8px;
-      width: 60px;
-      height: 60px;
+      width: 54px;
+      height: 54px;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      border-radius: 16px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      box-shadow:
-        0 10px 25px rgba(124,77,255,.4),
-        0 5px 10px rgba(0,0,0,.3);
-      transform: translateZ(30px) rotate(10deg);
-      transition: all 0.4s ease;
+      font-size: 22px;
+      box-shadow: 0 8px 20px rgba(124,77,255,.35);
+      transform: rotate(8deg);
       z-index: 10;
     }
 
     .topic:hover .topic-3d-layer {
-      transform: translateZ(50px) rotate(-5deg) scale(1.1);
-      box-shadow:
-        0 15px 35px rgba(124,77,255,.5),
-        0 8px 15px rgba(0,0,0,.4);
+      /* Minimal change on hover */
+      box-shadow: 0 10px 25px rgba(124,77,255,.45);
     }
 
     .topic-header {
@@ -715,19 +752,13 @@
       justify-content: center;
       font-size: 24px;
       flex-shrink: 0;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow:
-        0 8px 20px rgba(124,77,255,.2),
-        inset 0 1px 0 rgba(255,255,255,.1);
-      transform: translateZ(20px);
+      /* OPTIMIZED: Simple transition */
+      transition: background 0.2s ease;
+      box-shadow: 0 6px 16px rgba(124,77,255,.2);
     }
 
     .topic:hover .topic-icon {
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      transform: translateZ(40px) rotate(10deg) scale(1.15);
-      box-shadow:
-        0 12px 30px rgba(124,77,255,.4),
-        inset 0 1px 0 rgba(255,255,255,.2);
     }
 
     .topic-content {
@@ -739,13 +770,14 @@
       display: block;
       margin-bottom: 8px;
       color: var(--text);
-      transition: all 0.3s ease;
+      /* OPTIMIZED: Simple color transition */
+      transition: color 0.2s ease;
       font-weight: 700;
     }
 
     .topic:hover b {
       color: var(--lime);
-      text-shadow: 0 0 20px rgba(183,255,74,.3);
+      /* REMOVED: text-shadow causes repaints */
     }
 
     .topic small {
@@ -754,11 +786,7 @@
       font-size: clamp(0.85rem, 1.5vw, 0.95rem);
       line-height: 1.6;
       display: block;
-      transition: opacity 0.3s ease;
-    }
-
-    .topic:hover small {
-      opacity: 1;
+      /* REMOVED: opacity transition not needed */
     }
 
     /* Topic Meta Info */
@@ -782,13 +810,13 @@
       color: var(--brand-2);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      transition: all 0.3s ease;
+      /* OPTIMIZED: No transition on tags - they don't need animation */
     }
 
     .topic:hover .topic-tag {
       background: rgba(124,77,255,.25);
       border-color: rgba(124,77,255,.4);
-      transform: translateY(-2px);
+      /* REMOVED: transform animation */
     }
 
     .topic-tag.difficulty-easy {
@@ -987,65 +1015,19 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      overflow: hidden;
+      /* OPTIMIZED: Simple transition */
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .topic-cta::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .topic:hover .topic-cta::before {
-      left: 100%;
-    }
+    /* REMOVED: Shine sweep effect - was causing layout recalculations */
 
     .topic:hover .topic-cta {
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       color: var(--bg);
       border-color: transparent;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(124,77,255,.4);
     }
 
-    /* Topic Glow Effect */
-    .topic-glow {
-      position: absolute;
-      inset: 0;
-      border-radius: 24px;
-      background: radial-gradient(circle at 50% 0%, rgba(124,77,255,.3), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-
-    .topic:hover .topic-glow {
-      opacity: 1;
-    }
-
-    /* Topic Shine Effect */
-    .topic-shine {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
-      transform: skewX(-20deg);
-      transition: left 0.6s ease;
-      pointer-events: none;
-    }
-
-    .topic:hover .topic-shine {
-      left: 150%;
-    }
+    /* REMOVED: topic-glow and topic-shine effects - too heavy for smooth performance */
 
     /* Topic 3D Badge */
     .topic-3d-badge {
@@ -1102,34 +1084,9 @@
       }
     }
 
-    /* 3D Floating Animation */
-    @keyframes float3d {
-      0%, 100% {
-        transform: translateY(0) rotateX(0deg) rotateY(0deg);
-      }
-      25% {
-        transform: translateY(-5px) rotateX(2deg) rotateY(1deg);
-      }
-      50% {
-        transform: translateY(-8px) rotateX(0deg) rotateY(-1deg);
-      }
-      75% {
-        transform: translateY(-3px) rotateX(-2deg) rotateY(1deg);
-      }
-    }
-
-    .topic:nth-child(odd) {
-      animation: float3d 6s ease-in-out infinite;
-    }
-
-    .topic:nth-child(even) {
-      animation: float3d 6s ease-in-out infinite;
-      animation-delay: -3s;
-    }
-
-    .topic:hover {
-      animation-play-state: paused;
-    }
+    /* REMOVED: Constant 3D floating animation was causing major lag
+       Each of the 12 topic cards had a separate animation running,
+       causing continuous GPU/CPU work and repaints */
 
     .cta-band{
       margin-top: 40px;
@@ -2645,9 +2602,52 @@
     © <span id="year"></span> AccountsWizard • Made for Grade 11 learners • Trinno Asphalt • <a href="about.html">About</a>
   </footer>
 
-  <script type="module">
-    import { createIcons, icons } from "https://unpkg.com/lucide@latest/dist/esm/lucide.js";
-    createIcons({ icons });
+  <!-- Inline SVG Icons - No external CDN needed, instant loading -->
+  <script>
+    // Define only the icons we need - much faster than loading entire Lucide library
+    const lucideIcons = {
+      'book-open': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+      'scale': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>',
+      'file-text': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>',
+      'notebook': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="6" x2="16" y2="6"/><line x1="12" y1="10" x2="16" y2="10"/><line x1="12" y1="14" x2="16" y2="14"/><line x1="12" y1="18" x2="16" y2="18"/></svg>',
+      'book-copy': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14"/><path d="M6 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><rect x="10" y="7" width="12" height="14" rx="2"/></svg>',
+      'wallet': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
+      'clipboard-list': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>',
+      'trending-down': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>',
+      'landmark': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>',
+      'wrench': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+      'receipt': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg>',
+      'bar-chart': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+      'zap': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+      'clock': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      'calculator': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>',
+      'image': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+      'flame': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+      'pen-tool': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>',
+      'layers': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+      'columns': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>',
+      'check-circle': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      'target': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      'git-compare': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg>',
+      'alert-triangle': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      'badge-indian-rupee': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="m13 17-5-5"/></svg>',
+      'file-spreadsheet': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13h2"/><path d="M8 17h2"/><path d="M14 13h2"/><path d="M14 17h2"/></svg>',
+      'arrow-right': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>'
+    };
+
+    // Replace all data-lucide elements with inline SVGs
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('[data-lucide]').forEach(el => {
+        const iconName = el.getAttribute('data-lucide');
+        if (lucideIcons[iconName]) {
+          el.innerHTML = lucideIcons[iconName];
+          // Copy width/height styles to the SVG
+          const svg = el.querySelector('svg');
+          if (svg && el.style.width) svg.style.width = el.style.width;
+          if (svg && el.style.height) svg.style.height = el.style.height;
+        }
+      });
+    });
   </script>
 
 
@@ -2736,199 +2736,1310 @@
     let authMode = 'signin';
     let currentUser = null;
 
-    // Topic data
+    // Topic data - NCERT Aligned for Grade 11 Accountancy
     const topicData = {
       'basic-concepts': {
-        title: 'Basic Accounting Concepts',
+        title: 'Basic Accounting Concepts (NCERT Chapter 2)',
         content: `
-          <p>Accounting concepts are fundamental principles that guide how financial transactions are recorded and reported.</p>
-          
-          <h4>Key Concepts:</h4>
+          <p>Accounting concepts are the fundamental assumptions and rules that form the foundation of accounting. As per NCERT, these concepts ensure uniformity and consistency in recording financial transactions.</p>
+
+          <h4>Fundamental Accounting Concepts:</h4>
           <ul>
-            <li><strong>Business Entity Concept:</strong> The business is treated as separate from its owner. Personal transactions of the owner are not recorded in business books.</li>
-            <li><strong>Money Measurement Concept:</strong> Only transactions that can be expressed in monetary terms are recorded. Non-monetary events (like employee morale) are not recorded.</li>
-            <li><strong>Going Concern Concept:</strong> It is assumed that the business will continue for an indefinite period. Assets are valued based on continued use, not liquidation value.</li>
-            <li><strong>Dual Aspect Concept:</strong> Every transaction has two aspects - debit and credit. This forms the basis of double-entry bookkeeping.</li>
-            <li><strong>Cost Concept:</strong> Assets are recorded at their purchase price (historical cost), not current market value.</li>
-            <li><strong>Accounting Period Concept:</strong> Business life is divided into equal periods (usually one year) for reporting purposes.</li>
+            <li><strong>Business Entity Concept:</strong> The business is treated as a separate entity from its owner. Personal transactions of the owner are NOT recorded in business books. Example: If owner pays ₹5,000 from personal savings for shop rent, it's recorded as Capital introduced, not as owner's expense.</li>
+            <li><strong>Money Measurement Concept:</strong> Only transactions that can be expressed in monetary terms are recorded. Events like employee loyalty, brand reputation, or manager's skills cannot be recorded as they can't be measured in money.</li>
+            <li><strong>Going Concern Concept:</strong> It is assumed that the business will continue operations indefinitely. This is why we record assets at cost price (not selling price) and charge depreciation over useful life.</li>
+            <li><strong>Accounting Period Concept:</strong> The indefinite life of business is divided into shorter periods (usually 1 year: April 1 to March 31 in India) for measuring profit/loss and financial position.</li>
+            <li><strong>Cost Concept:</strong> Assets are recorded at their original purchase price (historical cost). Example: Land bought for ₹10 lakhs 10 years ago is still shown at ₹10 lakhs, even if current market value is ₹50 lakhs.</li>
+            <li><strong>Dual Aspect Concept:</strong> Every transaction has two aspects - debit and credit of equal amount. This forms the basis of Double Entry System. Assets = Liabilities + Capital</li>
+            <li><strong>Revenue Recognition (Realisation) Concept:</strong> Revenue is recognized only when it is earned (goods delivered/services rendered), not when cash is received. Example: Goods sold on credit - revenue recorded on sale date, not payment date.</li>
+            <li><strong>Matching Concept:</strong> Expenses incurred to earn revenue should be matched with that revenue in the same accounting period. Example: If goods worth ₹1,00,000 are sold in March, the cost of those goods (say ₹70,000) must be recorded in March, not when purchased.</li>
+            <li><strong>Full Disclosure Concept:</strong> All material information must be disclosed in financial statements. Nothing significant should be hidden from users of accounts.</li>
+            <li><strong>Consistency Concept:</strong> Same accounting methods should be followed year after year. If depreciation is charged by SLM method, it should continue in future years.</li>
+            <li><strong>Conservatism (Prudence) Concept:</strong> Anticipate no profits, but provide for all possible losses. Example: Stock is valued at Cost or Market Price, whichever is LOWER.</li>
+            <li><strong>Materiality Concept:</strong> Only significant items need detailed treatment. Small items like a ₹50 duster can be expensed immediately rather than depreciated over years.</li>
           </ul>
-          
-          <h4>Why These Matter:</h4>
-          <p>These concepts ensure consistency, reliability, and comparability in financial statements across different businesses and time periods.</p>
+
+          <h4>Accounting Standards (Important for Exams):</h4>
+          <p>Accounting Standards are written policy documents issued by expert accounting bodies (ICAI in India) covering aspects of recognition, measurement, presentation, and disclosure of accounting transactions.</p>
+
+          <h4>Key Terms to Remember:</h4>
+          <ul>
+            <li><strong>GAAP:</strong> Generally Accepted Accounting Principles</li>
+            <li><strong>ICAI:</strong> Institute of Chartered Accountants of India</li>
+            <li><strong>IFRS:</strong> International Financial Reporting Standards</li>
+          </ul>
+
+          <h4>Common Exam Questions:</h4>
+          <ul>
+            <li>Why is machinery not recorded at market value? (Cost Concept)</li>
+            <li>Why do we create provision for doubtful debts? (Conservatism)</li>
+            <li>Why can't we record brand value? (Money Measurement)</li>
+          </ul>
         `
       },
       'accounting-equation': {
-        title: 'Accounting Equation',
+        title: 'Accounting Equation (NCERT Chapter 3)',
         content: `
-          <p>The accounting equation is the foundation of double-entry bookkeeping and shows the relationship between assets, liabilities, and capital.</p>
-          
-          <h4>The Basic Equation:</h4>
-          <p style="text-align:center; font-size:1.3rem; color:var(--ok); font-weight:900; margin:16px 0;">
-            Assets = Capital + Liabilities
+          <p>The Accounting Equation shows the relationship between Assets, Liabilities, and Capital. It is the foundation of the Double Entry System and forms the basis of the Balance Sheet.</p>
+
+          <h4>The Fundamental Equation:</h4>
+          <p style="text-align:center; font-size:1.4rem; color:var(--ok); font-weight:900; margin:16px 0; padding:16px; background:rgba(39,225,163,.1); border-radius:12px;">
+            Assets = Liabilities + Capital
           </p>
-          
-          <h4>Understanding Each Component:</h4>
-          <ul>
-            <li><strong>Assets:</strong> Resources owned by the business (cash, inventory, equipment, building)</li>
-            <li><strong>Capital:</strong> Owner's investment in the business (also called equity or net worth)</li>
-            <li><strong>Liabilities:</strong> Amounts owed to outsiders (loans, creditors, outstanding expenses)</li>
-          </ul>
-          
+
           <h4>Alternative Forms:</h4>
           <ul>
-            <li>Capital = Assets - Liabilities</li>
-            <li>Liabilities = Assets - Capital</li>
+            <li><strong>Capital = Assets - Liabilities</strong> (Owner's claim on assets)</li>
+            <li><strong>Liabilities = Assets - Capital</strong> (Outsiders' claim on assets)</li>
           </ul>
-          
-          <h4>Key Point:</h4>
-          <p>This equation always remains balanced. Every transaction affects at least two items, but the equation stays in balance.</p>
-          
-          <h4>Example:</h4>
-          <p>If you start a business with ₹50,000 cash:</p>
-          <p>Assets (Cash) = ₹50,000 | Capital = ₹50,000 | Liabilities = ₹0</p>
-          <p>The equation balances: ₹50,000 = ₹50,000 + ₹0 ✓</p>
+
+          <h4>Understanding Components:</h4>
+          <ul>
+            <li><strong>Assets:</strong> Economic resources owned by the business
+              <ul>
+                <li>Current Assets: Cash, Bank, Debtors, Stock, Prepaid expenses</li>
+                <li>Fixed Assets: Land, Building, Machinery, Furniture, Vehicles</li>
+                <li>Intangible Assets: Goodwill, Patents, Trademarks</li>
+              </ul>
+            </li>
+            <li><strong>Liabilities:</strong> Obligations to pay to outsiders
+              <ul>
+                <li>Current Liabilities: Creditors, Bills Payable, Outstanding expenses, Bank Overdraft</li>
+                <li>Long-term Liabilities: Loans, Debentures, Mortgage</li>
+              </ul>
+            </li>
+            <li><strong>Capital:</strong> Owner's investment = Opening Capital + Additional Capital + Profit - Drawings - Losses</li>
+          </ul>
+
+          <h4>Effect of Transactions on Accounting Equation:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.9rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Transaction</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Assets</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Liabilities</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Capital</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Started business with ₹1,00,000</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">+1,00,000 (Cash)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">+1,00,000</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Bought furniture ₹20,000 cash</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">+20,000 (Furn) -20,000 (Cash)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Bought goods on credit ₹30,000</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">+30,000 (Stock)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">+30,000 (Creditors)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Paid rent ₹5,000</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">-5,000 (Cash)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">-5,000 (Expense)</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Received commission ₹2,000</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">+2,000 (Cash)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">+2,000 (Income)</td>
+            </tr>
+          </table>
+
+          <h4>Important Rules:</h4>
+          <ul>
+            <li>The equation ALWAYS balances after every transaction</li>
+            <li>Revenue/Income increases Capital</li>
+            <li>Expenses/Losses decrease Capital</li>
+            <li>Drawings (owner's withdrawal) decrease Capital</li>
+          </ul>
+
+          <h4>Practice Problem:</h4>
+          <p>Mohan started business with ₹50,000 cash. He bought goods for ₹30,000 cash and ₹20,000 on credit. He sold goods costing ₹25,000 for ₹35,000 cash. Show the Accounting Equation after each transaction.</p>
         `
       },
       'source-documents': {
-        title: 'Source Documents',
+        title: 'Source Documents & Vouchers (NCERT Chapter 4)',
         content: `
-          <p>Source documents are the original records of business transactions that provide evidence and details for accounting entries.</p>
-          
+          <p>Source documents are the original written evidence of business transactions. They form the basis for recording entries in the books of accounts and are legally important for audit and verification.</p>
+
           <h4>Types of Source Documents:</h4>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">1. Cash Memo</h5>
           <ul>
-            <li><strong>Invoice:</strong> A document sent by the seller to the buyer detailing goods sold on credit.</li>
-            <li><strong>Cash Memo:</strong> A document for cash sales, given to the customer at the time of purchase.</li>
-            <li><strong>Receipt:</strong> Acknowledgment of money received.</li>
-            <li><strong>Debit Note:</strong> Sent by buyer to seller for return of goods or overcharge.</li>
-            <li><strong>Credit Note:</strong> Sent by seller to buyer acknowledging return of goods or overcharge.</li>
-            <li><strong>Voucher:</strong> Internal document prepared as evidence of transaction.</li>
+            <li>Issued for CASH sales</li>
+            <li>Given to customer at the time of sale</li>
+            <li>Contains: Date, description of goods, quantity, rate, amount, signature</li>
+            <li>Original to buyer, duplicate retained by seller</li>
           </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">2. Invoice / Bill</h5>
+          <ul>
+            <li>Issued for CREDIT sales</li>
+            <li>Sent by seller to buyer</li>
+            <li>Contains: Invoice number, date, names of buyer & seller, description of goods, terms of payment, GST details</li>
+            <li>Minimum 2 copies: Original (buyer), Duplicate (seller)</li>
+            <li>For the SELLER: Invoice is evidence of sale (Sales Book)</li>
+            <li>For the BUYER: Invoice is evidence of purchase (Purchases Book)</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">3. Receipt</h5>
+          <ul>
+            <li>Acknowledgment of money received</li>
+            <li>Issued by the receiver of money to the payer</li>
+            <li>Contains: Date, amount (in words & figures), purpose, signature</li>
+            <li>Receipt numbers should be serial</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">4. Debit Note</h5>
+          <ul>
+            <li>Prepared by the BUYER</li>
+            <li>Sent to seller when:</li>
+            <ul>
+              <li>Goods are returned to seller (Purchase Return)</li>
+              <li>Overcharge in invoice detected</li>
+              <li>Inferior quality goods received</li>
+            </ul>
+            <li>Indicates: Seller's account is DEBITED (reduced) in buyer's books</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">5. Credit Note</h5>
+          <ul>
+            <li>Prepared by the SELLER</li>
+            <li>Sent to buyer when:</li>
+            <ul>
+              <li>Goods are returned by buyer (Sales Return)</li>
+              <li>Overcharge admitted by seller</li>
+              <li>Allowance given for damaged goods</li>
+            </ul>
+            <li>Indicates: Buyer's account is CREDITED (reduced) in seller's books</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">6. Pay-in-Slip</h5>
+          <ul>
+            <li>Used to deposit cash/cheques into bank</li>
+            <li>Counterfoil retained by depositor as proof</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">7. Cheque</h5>
+          <ul>
+            <li>Written order to bank to pay specified amount</li>
+            <li>Types: Bearer, Order, Crossed</li>
+            <li>Parties: Drawer (who writes), Drawee (bank), Payee (who receives)</li>
+          </ul>
+
+          <h4>Accounting Vouchers:</h4>
+          <p>Vouchers are internal documents prepared by the accountant based on source documents. Types:</p>
+          <ul>
+            <li><strong>Cash Voucher:</strong> For cash transactions (Receipt/Payment)</li>
+            <li><strong>Non-Cash/Transfer Voucher:</strong> For non-cash transactions (credit purchases, depreciation)</li>
+            <li><strong>Supporting Voucher:</strong> Original bills attached to main voucher</li>
+          </ul>
+
+          <h4>Importance of Source Documents:</h4>
+          <ul>
+            <li>Legal evidence of transactions</li>
+            <li>Basis for recording in books</li>
+            <li>Required for audit verification</li>
+            <li>Helps in GST input tax credit claims</li>
+            <li>Settlement of disputes</li>
+          </ul>
+
+          <h4>Remember for Exams:</h4>
+          <p style="background:rgba(255,209,102,.1); padding:12px; border-radius:8px; border-left:4px solid var(--warn);">
+            Debit Note → Sent by BUYER → Purchase Return<br>
+            Credit Note → Sent by SELLER → Sales Return
+          </p>
         `
       },
       'journal': {
-        title: 'Journal Entries',
+        title: 'Journal Entries (NCERT Chapter 3 & 4)',
         content: `
-          <p>The journal is the book of original entry where transactions are first recorded in chronological order.</p>
-          
+          <p>The Journal is the book of original/prime/first entry where transactions are recorded in chronological order (date-wise) before being posted to the ledger. It's also called the "Day Book".</p>
+
           <h4>Format of Journal:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1); width:15%;">Date</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1); width:40%;">Particulars</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1); width:10%;">L.F.</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1); width:17%;">Debit (₹)</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1); width:18%;">Credit (₹)</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">2024<br>April 1</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cash A/c &nbsp;&nbsp;&nbsp;&nbsp;...Dr.<br>&nbsp;&nbsp;&nbsp;&nbsp;To Capital A/c<br><em>(Started business with cash)</em></td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">1<br>5</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">1,00,000</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"><br>1,00,000</td>
+            </tr>
+          </table>
+
+          <h4>Rules of Debit and Credit (Golden Rules):</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Type of Account</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Debit</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Credit</th>
+            </tr>
+            <tr>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);"><strong>Personal A/c</strong><br>(Debtors, Creditors, Capital)</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--error);">The Receiver</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">The Giver</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);"><strong>Real A/c</strong><br>(Cash, Stock, Assets)</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--error);">What Comes In</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">What Goes Out</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);"><strong>Nominal A/c</strong><br>(Expenses, Incomes)</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--error);">Expenses & Losses</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">Incomes & Gains</td>
+            </tr>
+          </table>
+
+          <h4>Modern Approach (Classification):</h4>
           <ul>
-            <li>Date column</li>
-            <li>Particulars (account names)</li>
-            <li>L.F. (Ledger Folio)</li>
-            <li>Debit amount column</li>
-            <li>Credit amount column</li>
-            <li>Narration (brief explanation)</li>
+            <li><strong>Assets:</strong> Increase → Debit, Decrease → Credit</li>
+            <li><strong>Liabilities:</strong> Increase → Credit, Decrease → Debit</li>
+            <li><strong>Capital:</strong> Increase → Credit, Decrease → Debit</li>
+            <li><strong>Revenue/Income:</strong> Credit</li>
+            <li><strong>Expenses:</strong> Debit</li>
           </ul>
-          
-          <h4>Rules of Debit and Credit:</h4>
-          <ul>
-            <li><strong>Personal A/c:</strong> Debit the receiver, Credit the giver</li>
-            <li><strong>Real A/c:</strong> Debit what comes in, Credit what goes out</li>
-            <li><strong>Nominal A/c:</strong> Debit expenses/losses, Credit incomes/gains</li>
-          </ul>
+
+          <h4>Important Journal Entries (Learn These!):</h4>
+
+          <p><strong>1. Starting Business:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Cash/Bank A/c        ...Dr.    [Amount]
+    To Capital A/c                    [Amount]</pre>
+
+          <p><strong>2. Purchase of Goods:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Purchases A/c        ...Dr.    [Amount]
+    To Cash/Creditor A/c              [Amount]</pre>
+
+          <p><strong>3. Sale of Goods:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Cash/Debtor A/c      ...Dr.    [Amount]
+    To Sales A/c                      [Amount]</pre>
+
+          <p><strong>4. Purchase Return:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Creditor A/c         ...Dr.    [Amount]
+    To Purchase Return A/c            [Amount]</pre>
+
+          <p><strong>5. Sales Return:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Sales Return A/c     ...Dr.    [Amount]
+    To Debtor A/c                     [Amount]</pre>
+
+          <p><strong>6. Payment of Expenses:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Rent/Salary/Wages A/c ...Dr.   [Amount]
+    To Cash/Bank A/c                  [Amount]</pre>
+
+          <p><strong>7. Receiving Income:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Cash/Bank A/c        ...Dr.    [Amount]
+    To Commission/Interest A/c        [Amount]</pre>
+
+          <p><strong>8. Drawings by Owner:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Drawings A/c         ...Dr.    [Amount]
+    To Cash/Stock A/c                 [Amount]</pre>
+
+          <p><strong>9. Depreciation:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Depreciation A/c     ...Dr.    [Amount]
+    To Asset A/c                      [Amount]</pre>
+
+          <h4>Compound Entry:</h4>
+          <p>When a transaction affects more than two accounts:</p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Furniture A/c        ...Dr.    50,000
+Cash A/c             ...Dr.    10,000
+    To Ram's Capital A/c              60,000
+(Ram started business with furniture ₹50,000 and cash ₹10,000)</pre>
+
+          <h4>Opening Entry:</h4>
+          <p>First entry of new year bringing forward old balances:</p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">All Asset A/cs       ...Dr.    [Amounts]
+    To All Liability A/cs             [Amounts]
+    To Capital A/c                    [Balancing figure]</pre>
         `
       },
       'ledger': {
-        title: 'Ledger',
+        title: 'Ledger Posting (NCERT Chapter 4)',
         content: `
-          <p>A ledger is the principal book where all accounts are maintained. Journal entries are posted to respective ledger accounts.</p>
-          
-          <h4>Process:</h4>
+          <p>The Ledger is the principal book of accounts where all transactions from the journal are posted (transferred) to respective accounts. It is also called the "Book of Final Entry" or "Book of Secondary Entry".</p>
+
+          <h4>Format of Ledger Account (T-Format):</h4>
+          <div style="background:rgba(0,0,0,.3); padding:16px; border-radius:8px; margin:16px 0;">
+            <p style="text-align:center; font-weight:700; margin-bottom:12px;">_________________ Account</p>
+            <table style="width:100%; border-collapse:collapse;">
+              <tr>
+                <th colspan="4" style="border:1px solid rgba(255,255,255,.2); padding:8px; text-align:center;">Dr.</th>
+                <th colspan="4" style="border:1px solid rgba(255,255,255,.2); padding:8px; text-align:center;">Cr.</th>
+              </tr>
+              <tr style="font-size:0.85rem;">
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">Date</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">Particulars</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">J.F.</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">Amt (₹)</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">Date</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">Particulars</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">J.F.</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px;">Amt (₹)</td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Rules for Posting:</h4>
           <ul>
-            <li>Create separate account for each item</li>
-            <li>Post debits to debit side, credits to credit side</li>
-            <li>Balance the account periodically</li>
+            <li>Account DEBITED in Journal → Posted on DEBIT (Left) side of that account</li>
+            <li>Account CREDITED in Journal → Posted on CREDIT (Right) side of that account</li>
+            <li>In Particulars column, write the NAME of the OTHER account (not the same account)</li>
+            <li>Use "To" for credit side entries and "By" for debit side entries</li>
+          </ul>
+
+          <h4>Example:</h4>
+          <p>Journal Entry: Cash A/c Dr. 50,000 | To Sales A/c 50,000</p>
+          <p>Posting in Cash Account:</p>
+          <div style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; margin:8px 0;">
+            <p style="text-align:center; font-weight:600;">Cash Account</p>
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <tr>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px; width:50%;">To Sales A/c &nbsp;&nbsp;&nbsp;&nbsp; 50,000</td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px; width:50%;"></td>
+              </tr>
+            </table>
+          </div>
+
+          <p>Posting in Sales Account:</p>
+          <div style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; margin:8px 0;">
+            <p style="text-align:center; font-weight:600;">Sales Account</p>
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <tr>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px; width:50%;"></td>
+                <td style="border:1px solid rgba(255,255,255,.2); padding:6px; width:50%;">By Cash A/c &nbsp;&nbsp;&nbsp;&nbsp; 50,000</td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Balancing of Accounts:</h4>
+          <ol>
+            <li>Add both sides of the account</li>
+            <li>Find the difference between two sides</li>
+            <li>If Debit side > Credit side → Credit balance (write "By Balance c/d" on credit side)</li>
+            <li>If Credit side > Debit side → Debit balance (write "To Balance c/d" on debit side)</li>
+            <li>Write total on both sides (equal amounts)</li>
+            <li>Bring down balance to next period as "To/By Balance b/d"</li>
+          </ol>
+
+          <h4>Types of Balances:</h4>
+          <ul>
+            <li><strong>Debit Balance:</strong> Assets, Expenses, Losses, Drawings, Debtors</li>
+            <li><strong>Credit Balance:</strong> Liabilities, Capital, Income, Gains, Creditors</li>
+          </ul>
+
+          <h4>Difference: Journal vs Ledger</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Basis</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Journal</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Ledger</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Order</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Chronological (Date-wise)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Analytical (Account-wise)</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Entry</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Book of original entry</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Book of final entry</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Narration</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Required</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Not required</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Balancing</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Not done</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Done periodically</td>
+            </tr>
+          </table>
+
+          <h4>Subdivision of Ledger:</h4>
+          <ul>
+            <li><strong>Debtors/Sales Ledger:</strong> Individual accounts of all debtors</li>
+            <li><strong>Creditors/Purchase Ledger:</strong> Individual accounts of all creditors</li>
+            <li><strong>General Ledger:</strong> All other accounts (assets, expenses, income)</li>
           </ul>
         `
       },
       'cash-book': {
-        title: 'Cash Book',
+        title: 'Cash Book (NCERT Chapter 5)',
         content: `
-          <p>Cash book records all cash and bank transactions. It serves as both journal and ledger for cash/bank.</p>
-          
-          <h4>Types:</h4>
+          <p>Cash Book is a special journal that records ALL cash and bank transactions. It serves as both Journal (book of original entry) and Ledger (no need for separate cash/bank account in ledger). It is also called a Subsidiary Book.</p>
+
+          <h4>Types of Cash Book:</h4>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">1. Simple/Single Column Cash Book</h5>
           <ul>
-            <li><strong>Single Column:</strong> Only cash transactions</li>
-            <li><strong>Double Column:</strong> Cash and bank transactions</li>
-            <li><strong>Triple Column:</strong> Cash, bank, and discount</li>
+            <li>Only ONE amount column on each side</li>
+            <li>Records only CASH transactions</li>
+            <li>Debit side: All cash receipts</li>
+            <li>Credit side: All cash payments</li>
           </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">2. Double Column Cash Book (Cash & Bank)</h5>
+          <ul>
+            <li>TWO amount columns on each side (Cash + Bank)</li>
+            <li>Records both cash AND bank transactions</li>
+            <li>Most commonly used in practice</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">3. Triple Column Cash Book (Cash, Bank & Discount)</h5>
+          <ul>
+            <li>THREE amount columns on each side</li>
+            <li>Cash column, Bank column, Discount column</li>
+            <li>Discount Allowed (Dr. side) - given to debtors</li>
+            <li>Discount Received (Cr. side) - received from creditors</li>
+          </ul>
+
+          <h4>Format of Triple Column Cash Book:</h4>
+          <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.75rem; min-width:600px;">
+              <tr style="background:rgba(124,77,255,.2);">
+                <th colspan="5" style="padding:8px; border:1px solid rgba(255,255,255,.1);">DEBIT (Receipts)</th>
+                <th colspan="5" style="padding:8px; border:1px solid rgba(255,255,255,.1);">CREDIT (Payments)</th>
+              </tr>
+              <tr>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Date</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Particulars</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Disc.</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Cash</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Bank</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Date</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Particulars</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Disc.</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Cash</td>
+                <td style="padding:6px; border:1px solid rgba(255,255,255,.1);">Bank</td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Contra Entry (Very Important!):</h4>
+          <p style="background:rgba(0,229,255,.1); padding:12px; border-radius:8px; border-left:4px solid var(--brand-2);">
+            A Contra Entry is when cash is deposited into bank OR cash is withdrawn from bank. It appears on BOTH sides of the cash book.
+          </p>
+          <ul>
+            <li><strong>Cash deposited into bank:</strong> Bank (Dr.) | Cash (Cr.) - marked with "C" in L.F.</li>
+            <li><strong>Cash withdrawn from bank:</strong> Cash (Dr.) | Bank (Cr.) - marked with "C" in L.F.</li>
+            <li>"C" in L.F. column indicates Contra Entry (no posting to ledger needed)</li>
+          </ul>
+
+          <h4>Bank Overdraft:</h4>
+          <ul>
+            <li>When Bank column shows CREDIT balance (more payments than deposits)</li>
+            <li>Shown on DEBIT side as "By Balance b/d" (to make it balance)</li>
+            <li>It's a LIABILITY for the business</li>
+          </ul>
+
+          <h4>Petty Cash Book:</h4>
+          <ul>
+            <li>For recording small/petty expenses (postage, tea, stationery)</li>
+            <li>Maintained by Petty Cashier</li>
+            <li><strong>Imprest System:</strong> Fixed amount given to petty cashier, reimbursed when spent</li>
+            <li>Example: ₹5,000 given on 1st. Spent ₹4,200. On 1st of next month, ₹4,200 reimbursed to make it ₹5,000 again.</li>
+          </ul>
+
+          <h4>Important Points:</h4>
+          <ul>
+            <li>Cash Book always shows DEBIT balance (you can't pay more cash than you have)</li>
+            <li>Bank column can show Credit balance (overdraft)</li>
+            <li>Discount columns are NOT balanced - totals transferred to P&L A/c</li>
+            <li>Opening balance: Cash/Bank → Debit side, Overdraft → Credit side</li>
+          </ul>
+
+          <h4>Common Transactions:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Transaction</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Debit Side</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Credit Side</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cash Sales</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cash column</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cheque received from debtor</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Bank column</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Paid rent by cheque</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Bank column</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Paid to creditor, received discount</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">-</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cash + Disc. columns</td>
+            </tr>
+          </table>
         `
       },
       'trial-balance': {
-        title: 'Trial Balance',
+        title: 'Trial Balance (NCERT Chapter 6)',
         content: `
-          <p>A statement showing the balances of all ledger accounts to check arithmetical accuracy.</p>
-          
-          <h4>Key Points:</h4>
+          <p>A Trial Balance is a statement showing the debit and credit balances of ALL ledger accounts on a particular date. It is prepared to check the arithmetical accuracy of the books of accounts.</p>
+
+          <h4>Purpose of Trial Balance:</h4>
           <ul>
-            <li>Total of debit column must equal credit column</li>
-            <li>Prepared at the end of accounting period</li>
-            <li>Does not guarantee 100% accuracy (some errors may not affect trial balance)</li>
+            <li>To check arithmetical accuracy (Total Debits = Total Credits)</li>
+            <li>To provide summary of all ledger balances</li>
+            <li>To help in preparing Final Accounts</li>
+            <li>To detect errors in recording/posting</li>
+          </ul>
+
+          <h4>Format of Trial Balance:</h4>
+          <div style="background:rgba(0,0,0,.3); padding:16px; border-radius:8px; margin:16px 0;">
+            <p style="text-align:center; font-weight:700;">Trial Balance of M/s XYZ as on 31st March, 2024</p>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px;">
+              <tr style="background:rgba(124,77,255,.2);">
+                <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Particulars</th>
+                <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">L.F.</th>
+                <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Debit (₹)</th>
+                <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Credit (₹)</th>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Items on DEBIT Side:</h4>
+          <ul>
+            <li>All Assets (Cash, Bank, Debtors, Stock, Furniture, Machinery, Building, Land)</li>
+            <li>All Expenses (Rent, Salary, Wages, Carriage, Advertising, Insurance)</li>
+            <li>All Losses (Bad Debts, Loss by Fire)</li>
+            <li>Drawings</li>
+            <li>Purchases, Purchase Returns (shown separately)</li>
+            <li>Opening Stock</li>
+          </ul>
+
+          <h4>Items on CREDIT Side:</h4>
+          <ul>
+            <li>All Liabilities (Creditors, Loans, Bank Overdraft, Bills Payable)</li>
+            <li>Capital</li>
+            <li>All Incomes (Commission Received, Interest Received, Rent Received)</li>
+            <li>All Gains (Profit on Sale of Asset)</li>
+            <li>Sales, Sales Returns (shown separately)</li>
+            <li>Provisions (for Depreciation, Bad Debts)</li>
+          </ul>
+
+          <h4>Errors NOT Disclosed by Trial Balance:</h4>
+          <p style="background:rgba(255,71,87,.1); padding:12px; border-radius:8px; border-left:4px solid var(--error);">
+            Even if Trial Balance tallies, these errors may exist:
+          </p>
+          <ol>
+            <li><strong>Error of Omission:</strong> Transaction completely omitted (not recorded at all)</li>
+            <li><strong>Error of Commission:</strong> Wrong amount in both accounts (₹560 written as ₹650)</li>
+            <li><strong>Error of Principle:</strong> Wrong classification (Asset treated as Expense - Machinery debited to Repairs)</li>
+            <li><strong>Compensating Errors:</strong> Two errors cancel each other out</li>
+            <li><strong>Error of Original Entry:</strong> Wrong amount from source document</li>
+            <li><strong>Error of Complete Reversal:</strong> Debit & Credit reversed (both sides equal but wrong)</li>
+          </ol>
+
+          <h4>Errors Disclosed by Trial Balance:</h4>
+          <ul>
+            <li>Posting only one aspect of a transaction</li>
+            <li>Posting to wrong side of an account</li>
+            <li>Wrong totaling/balancing of an account</li>
+            <li>Wrong amount posted (in one account only)</li>
+            <li>Omitting to post an account</li>
+          </ul>
+
+          <h4>Suspense Account:</h4>
+          <ul>
+            <li>When Trial Balance doesn't tally, difference is put in Suspense A/c</li>
+            <li>It's a TEMPORARY account</li>
+            <li>If Debit > Credit → Suspense A/c (Cr.)</li>
+            <li>If Credit > Debit → Suspense A/c (Dr.)</li>
+            <li>As errors are found and corrected, Suspense A/c gets eliminated</li>
+          </ul>
+
+          <h4>Methods of Preparing Trial Balance:</h4>
+          <ol>
+            <li><strong>Balance Method:</strong> Only closing balances are shown (most common)</li>
+            <li><strong>Total Method:</strong> Total of debit and credit sides of each account</li>
+            <li><strong>Balance cum Total Method:</strong> Both totals and balances shown</li>
+          </ol>
+
+          <h4>Important Points for Exams:</h4>
+          <ul>
+            <li>Trial Balance is NOT an account - it's a STATEMENT</li>
+            <li>It can be prepared at any time, not just year-end</li>
+            <li>Tallying of Trial Balance is necessary but not sufficient proof of accuracy</li>
+            <li>Closing Stock is NOT shown in Trial Balance (it's calculated at year-end)</li>
           </ul>
         `
       },
       'depreciation': {
-        title: 'Depreciation',
+        title: 'Depreciation (NCERT Chapter 7)',
         content: `
-          <p>Systematic allocation of cost of fixed asset over its useful life.</p>
-          
-          <h4>Methods:</h4>
+          <p>Depreciation is the systematic allocation of the depreciable amount (cost - residual value) of an asset over its useful life. It represents the decrease in value of fixed assets due to use, wear and tear, passage of time, or obsolescence.</p>
+
+          <h4>Causes of Depreciation:</h4>
           <ul>
-            <li><strong>Straight Line:</strong> Fixed amount each year</li>
-            <li><strong>Written Down Value:</strong> Fixed percentage on reducing balance</li>
+            <li><strong>Wear and Tear:</strong> Physical deterioration from use</li>
+            <li><strong>Efflux of Time:</strong> Passage of time (even if not used)</li>
+            <li><strong>Obsolescence:</strong> New technology makes asset outdated</li>
+            <li><strong>Accidents:</strong> Damage from accidents</li>
+            <li><strong>Depletion:</strong> Extraction of natural resources (mines, oil wells)</li>
           </ul>
+
+          <h4>Key Terms:</h4>
+          <ul>
+            <li><strong>Cost:</strong> Purchase price + installation + transport (all costs to make asset ready for use)</li>
+            <li><strong>Residual/Scrap Value:</strong> Expected value at end of useful life</li>
+            <li><strong>Depreciable Amount:</strong> Cost - Residual Value</li>
+            <li><strong>Useful Life:</strong> Expected period of use OR expected units of production</li>
+          </ul>
+
+          <h4>Methods of Depreciation:</h4>
+
+          <h5 style="color:var(--ok); margin-top:16px;">1. Straight Line Method (SLM) / Fixed Instalment Method</h5>
+          <p style="text-align:center; font-size:1.1rem; color:var(--ok); font-weight:700; background:rgba(39,225,163,.1); padding:12px; border-radius:8px; margin:12px 0;">
+            Annual Depreciation = (Cost - Residual Value) ÷ Useful Life
+          </p>
+          <ul>
+            <li>Same amount charged every year</li>
+            <li>Simple to calculate</li>
+            <li>Suitable for assets with uniform utility (Furniture, Building)</li>
+          </ul>
+          <p><strong>Example:</strong> Machine cost ₹1,00,000, Scrap Value ₹10,000, Life 5 years</p>
+          <p>Depreciation = (1,00,000 - 10,000) ÷ 5 = ₹18,000 per year</p>
+
+          <h5 style="color:var(--warn); margin-top:16px;">2. Written Down Value (WDV) / Diminishing Balance Method</h5>
+          <p style="text-align:center; font-size:1.1rem; color:var(--warn); font-weight:700; background:rgba(255,209,102,.1); padding:12px; border-radius:8px; margin:12px 0;">
+            Depreciation = Rate % × Book Value at beginning of year
+          </p>
+          <ul>
+            <li>Fixed RATE applied on REDUCING balance</li>
+            <li>Higher depreciation in early years, lower in later years</li>
+            <li>Suitable for assets losing more value initially (Machinery, Vehicles)</li>
+            <li>Book Value = Cost - Accumulated Depreciation</li>
+          </ul>
+          <p><strong>Example:</strong> Machine ₹1,00,000, Rate 20% WDV</p>
+          <ul style="font-size:0.9rem;">
+            <li>Year 1: 20% of 1,00,000 = ₹20,000 (Book Value: ₹80,000)</li>
+            <li>Year 2: 20% of 80,000 = ₹16,000 (Book Value: ₹64,000)</li>
+            <li>Year 3: 20% of 64,000 = ₹12,800 (Book Value: ₹51,200)</li>
+          </ul>
+
+          <h4>Comparison: SLM vs WDV</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Basis</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">SLM</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">WDV</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Amount</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Fixed every year</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Decreasing every year</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Calculated on</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Original Cost</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Book Value</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Book Value</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Becomes Zero/Scrap</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Never becomes Zero</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Suitable for</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Patents, Furniture</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Machinery, Vehicles</td>
+            </tr>
+          </table>
+
+          <h4>Journal Entries for Depreciation:</h4>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">1. Charging Depreciation:
+   Depreciation A/c       ...Dr.    [Amount]
+       To Asset A/c                      [Amount]
+
+2. Transferring to P&L:
+   Profit & Loss A/c      ...Dr.    [Amount]
+       To Depreciation A/c               [Amount]</pre>
+
+          <h4>Disposal of Asset:</h4>
+          <ul>
+            <li><strong>Profit on Sale:</strong> Sale Price > Book Value → Credit to P&L A/c</li>
+            <li><strong>Loss on Sale:</strong> Sale Price < Book Value → Debit to P&L A/c</li>
+          </ul>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">On Sale of Asset:
+Bank/Cash A/c            ...Dr.    [Sale Price]
+Accumulated Dep. A/c     ...Dr.    [Total Dep.]
+Loss on Sale A/c         ...Dr.    [If Loss]
+    To Asset A/c                       [Original Cost]
+    To Profit on Sale A/c              [If Profit]</pre>
         `
       },
       'bank-reconciliation': {
-        title: 'Bank Reconciliation Statement',
+        title: 'Bank Reconciliation Statement (NCERT Chapter 5)',
         content: `
-          <p>Statement to reconcile the difference between cash book and bank statement balance.</p>
-          
-          <h4>Common Causes of Difference:</h4>
+          <p>Bank Reconciliation Statement (BRS) is a statement prepared to reconcile the difference between the balance shown in the Cash Book (Bank Column) and the balance shown in the Bank Statement/Passbook on a particular date.</p>
+
+          <h4>Why Differences Arise:</h4>
+          <p style="background:rgba(124,77,255,.1); padding:12px; border-radius:8px; margin:12px 0;">
+            Cash Book is maintained by the BUSINESS, while Bank Statement is maintained by the BANK. Due to timing differences and certain transactions, balances may differ.
+          </p>
+
+          <h4>Causes of Difference:</h4>
+
+          <h5 style="color:var(--brand-2);">A. Timing Differences (Affect both books eventually):</h5>
+          <ol>
+            <li><strong>Cheques Issued but Not Presented:</strong>
+              <ul>
+                <li>Business has credited Bank A/c (payment made)</li>
+                <li>But cheque not yet presented to bank by receiver</li>
+                <li>Bank balance higher in Passbook</li>
+              </ul>
+            </li>
+            <li><strong>Cheques Deposited but Not Cleared/Collected:</strong>
+              <ul>
+                <li>Business has debited Bank A/c (deposit made)</li>
+                <li>But bank hasn't credited yet (clearance takes time)</li>
+                <li>Bank balance lower in Passbook</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h5 style="color:var(--brand-2);">B. Transactions in Passbook Only (Not in Cash Book):</h5>
+          <ol start="3">
+            <li><strong>Bank Charges:</strong> Debited by bank, not yet recorded in Cash Book</li>
+            <li><strong>Interest on Overdraft:</strong> Charged by bank</li>
+            <li><strong>Interest Credited:</strong> Interest on deposits credited by bank</li>
+            <li><strong>Direct Deposits:</strong> Customers pay directly to bank (ECS, NEFT)</li>
+            <li><strong>Direct Payments:</strong> Standing instructions (insurance premium, EMI)</li>
+            <li><strong>Dishonoured Cheques:</strong> Cheque deposited but bounced</li>
+            <li><strong>Dividend/Interest Collected:</strong> Bank collects on behalf of business</li>
+          </ol>
+
+          <h5 style="color:var(--brand-2);">C. Errors:</h5>
           <ul>
-            <li>Cheques issued but not presented</li>
-            <li>Cheques deposited but not cleared</li>
-            <li>Bank charges/interest</li>
-            <li>Direct deposits/payments by bank</li>
+            <li>Errors in Cash Book</li>
+            <li>Errors in Bank Statement (rare, but possible)</li>
           </ul>
+
+          <h4>Format of BRS (Starting from Cash Book Balance):</h4>
+          <div style="background:rgba(0,0,0,.3); padding:16px; border-radius:8px; margin:16px 0;">
+            <p style="text-align:center; font-weight:700;">Bank Reconciliation Statement as on ___________</p>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px; font-size:0.85rem;">
+              <tr style="background:rgba(124,77,255,.2);">
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Particulars</th>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Add (₹)</th>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Less (₹)</th>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Balance as per Cash Book</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">XXX</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"></td>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cheques issued but not presented</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">XXX</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"></td>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cheques deposited but not cleared</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"></td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">XXX</td>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Bank charges not recorded</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"></td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">XXX</td>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Interest credited by bank</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">XXX</td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"></td>
+              </tr>
+              <tr style="background:rgba(39,225,163,.2);">
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"><strong>Balance as per Bank Statement</strong></td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"><strong>XXX</strong></td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1);"></td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Golden Rules for BRS:</h4>
+          <p style="background:rgba(0,229,255,.1); padding:12px; border-radius:8px; border-left:4px solid var(--brand-2);">
+            <strong>Starting from Cash Book (Favourable) Balance:</strong><br>
+            • ADD items that INCREASE Bank balance<br>
+            • DEDUCT items that DECREASE Bank balance
+          </p>
+
+          <h4>Quick Reference:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.8rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Item</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">From CB to Pass Book</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cheques issued not presented</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">ADD</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Cheques deposited not cleared</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">DEDUCT</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Bank charges (not in CB)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">DEDUCT</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Interest credited (not in CB)</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">ADD</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Direct deposit by customer</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">ADD</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Dishonoured cheque</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">DEDUCT</td>
+            </tr>
+          </table>
+
+          <h4>Amended Cash Book:</h4>
+          <p>Sometimes errors/omissions in Cash Book are corrected first by preparing an Amended Cash Book, then BRS is prepared from the amended balance.</p>
         `
       },
       'rectification': {
-        title: 'Rectification of Errors',
+        title: 'Rectification of Errors (NCERT Chapter 6)',
         content: `
-          <p>Process of correcting errors in accounting records.</p>
-          
-          <h4>Types of Errors:</h4>
+          <p>Errors may occur while recording transactions in the books of accounts. Rectification of Errors involves locating these errors and correcting them through proper journal entries.</p>
+
+          <h4>Classification of Errors:</h4>
+
+          <h5 style="color:var(--error); margin-top:16px;">A. Errors Affecting Trial Balance (One-Sided Errors):</h5>
+          <ol>
+            <li><strong>Wrong Casting (Totaling):</strong> Addition mistake in any book</li>
+            <li><strong>Wrong Balancing:</strong> Incorrect balance of an account</li>
+            <li><strong>Posting to Wrong Side:</strong> Debit posted as Credit or vice versa</li>
+            <li><strong>Posting Wrong Amount:</strong> Different amount posted than recorded</li>
+            <li><strong>Omission of Posting:</strong> Entry in journal but not posted to ledger</li>
+            <li><strong>Double Posting:</strong> Same entry posted twice</li>
+          </ol>
+
+          <h5 style="color:var(--ok); margin-top:16px;">B. Errors NOT Affecting Trial Balance (Two-Sided Errors):</h5>
+          <ol>
+            <li><strong>Error of Omission:</strong> Transaction completely left out
+              <ul><li>Example: Credit sale to Ram not recorded at all</li></ul>
+            </li>
+            <li><strong>Error of Commission:</strong> Correct accounts, wrong amount
+              <ul><li>Example: ₹450 recorded as ₹540 in both accounts</li></ul>
+            </li>
+            <li><strong>Error of Principle:</strong> Wrong classification of account
+              <ul><li>Example: Machinery (Asset) debited to Repairs (Expense)</li></ul>
+            </li>
+            <li><strong>Compensating Errors:</strong> Two errors cancel each other
+              <ul><li>Example: Debit side excess ₹100, Credit side also excess ₹100</li></ul>
+            </li>
+            <li><strong>Error of Original Entry:</strong> Wrong from source document
+              <ul><li>Example: Invoice was ₹500, recorded as ₹50 everywhere</li></ul>
+            </li>
+            <li><strong>Error of Complete Reversal:</strong> Debit and Credit exchanged
+              <ul><li>Example: Cash received from Ram - Ram debited, Cash credited (wrong)</li></ul>
+            </li>
+          </ol>
+
+          <h4>Methods of Rectification:</h4>
+
+          <h5 style="color:var(--brand-2);">1. Before Preparing Trial Balance:</h5>
           <ul>
-            <li><strong>Errors affecting trial balance:</strong> One-sided errors</li>
-            <li><strong>Errors not affecting trial balance:</strong> Two-sided errors with equal effect</li>
+            <li>One-sided errors: Corrected by noting on the affected side</li>
+            <li>Two-sided errors: Corrected by passing journal entry</li>
+          </ul>
+
+          <h5 style="color:var(--brand-2);">2. After Trial Balance (Suspense A/c Used):</h5>
+          <ul>
+            <li>When TB doesn't tally, difference put in Suspense A/c</li>
+            <li>All one-sided errors rectified through Suspense A/c</li>
+            <li>Suspense A/c gets eliminated when all errors corrected</li>
+          </ul>
+
+          <h4>Rectification Entries - Examples:</h4>
+
+          <p><strong>1. Purchases Book overcast by ₹1,000:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Suspense A/c             ...Dr.    1,000
+    To Purchases A/c                      1,000</pre>
+
+          <p><strong>2. Sales to Mohan ₹500 not posted to his account:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Mohan A/c                ...Dr.    500
+    To Suspense A/c                       500</pre>
+
+          <p><strong>3. Furniture purchased ₹5,000 debited to Purchases A/c:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Furniture A/c            ...Dr.    5,000
+    To Purchases A/c                      5,000</pre>
+
+          <p><strong>4. Salary paid ₹3,000 debited to employee's personal account:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Salary A/c               ...Dr.    3,000
+    To Employee A/c                       3,000</pre>
+
+          <p><strong>5. Cash received from Hari ₹800 credited toHari's A/c:</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Hari A/c                 ...Dr.    1,600
+    To Suspense A/c                       1,600
+(Double the amount because error was on wrong side)</pre>
+
+          <h4>Effect of Errors on Profit:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Error</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Effect on Profit</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Expense understated</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">Profit Overstated</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Expense overstated</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">Profit Understated</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Income understated</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">Profit Understated</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Income overstated</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--ok);">Profit Overstated</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Asset treated as Expense</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1); color:var(--error);">Profit Understated</td>
+            </tr>
+          </table>
+
+          <h4>Important Points:</h4>
+          <ul>
+            <li>Suspense A/c is a TEMPORARY account</li>
+            <li>If Suspense A/c has Debit balance → shown on Assets side of Balance Sheet</li>
+            <li>If Suspense A/c has Credit balance → shown on Liabilities side</li>
+            <li>After all errors corrected, Suspense A/c balance becomes NIL</li>
           </ul>
         `
       },
       'gst': {
-        title: 'GST Accounting',
+        title: 'GST Accounting (NCERT Chapter 8)',
         content: `
-          <p>Goods and Services Tax - indirect tax on supply of goods and services.</p>
-          
-          <h4>Types:</h4>
+          <p>Goods and Services Tax (GST) is an indirect tax levied on the supply of goods and services in India. It replaced multiple indirect taxes (Excise, VAT, Service Tax) and came into effect from July 1, 2017.</p>
+
+          <h4>Types of GST:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Type</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Full Form</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">When Applicable</th>
+              <th style="padding:10px; border:1px solid rgba(255,255,255,.1);">Collected By</th>
+            </tr>
+            <tr>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--brand-2); font-weight:700;">CGST</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Central GST</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Intra-state (within same state)</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Central Govt.</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--ok); font-weight:700;">SGST</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">State GST</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Intra-state (within same state)</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">State Govt.</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1); color:var(--warn); font-weight:700;">IGST</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Integrated GST</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Inter-state (between states)</td>
+              <td style="padding:10px; border:1px solid rgba(255,255,255,.1);">Central Govt.</td>
+            </tr>
+          </table>
+
+          <h4>Key Concepts:</h4>
           <ul>
-            <li><strong>CGST:</strong> Central GST (collected by central government)</li>
-            <li><strong>SGST:</strong> State GST (collected by state government)</li>
-            <li><strong>IGST:</strong> Integrated GST (for inter-state transactions)</li>
+            <li><strong>Input Tax:</strong> GST paid on PURCHASES (can be claimed as credit)</li>
+            <li><strong>Output Tax:</strong> GST collected on SALES (to be paid to govt.)</li>
+            <li><strong>Input Tax Credit (ITC):</strong> Input Tax can be set off against Output Tax</li>
+            <li><strong>Net GST Payable:</strong> Output Tax - Input Tax Credit</li>
+          </ul>
+
+          <h4>GST Rate Structure:</h4>
+          <p style="background:rgba(0,229,255,.1); padding:12px; border-radius:8px;">
+            For Intra-state: If GST rate is 18%, then CGST = 9% and SGST = 9%<br>
+            For Inter-state: IGST = 18% (full rate)
+          </p>
+
+          <h4>Journal Entries for GST:</h4>
+
+          <p><strong>1. Purchase of Goods (Intra-state, GST 18%):</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Purchases A/c            ...Dr.    1,00,000
+Input CGST A/c           ...Dr.        9,000
+Input SGST A/c           ...Dr.        9,000
+    To Creditor/Cash A/c                  1,18,000</pre>
+
+          <p><strong>2. Sale of Goods (Intra-state, GST 18%):</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Debtor/Cash A/c          ...Dr.    1,18,000
+    To Sales A/c                          1,00,000
+    To Output CGST A/c                        9,000
+    To Output SGST A/c                        9,000</pre>
+
+          <p><strong>3. Inter-state Purchase (IGST 18%):</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Purchases A/c            ...Dr.    1,00,000
+Input IGST A/c           ...Dr.       18,000
+    To Creditor/Cash A/c                  1,18,000</pre>
+
+          <p><strong>4. Inter-state Sale (IGST 18%):</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Debtor/Cash A/c          ...Dr.    1,18,000
+    To Sales A/c                          1,00,000
+    To Output IGST A/c                       18,000</pre>
+
+          <p><strong>5. Payment of GST to Government (After Set-off):</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Output CGST A/c          ...Dr.    [Amount]
+Output SGST A/c          ...Dr.    [Amount]
+    To Input CGST A/c                     [Amount]
+    To Input SGST A/c                     [Amount]
+    To Cash/Bank A/c                      [Balance]</pre>
+
+          <h4>ITC Set-off Rules:</h4>
+          <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem;">
+            <tr style="background:rgba(124,77,255,.2);">
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Input Tax</th>
+              <th style="padding:8px; border:1px solid rgba(255,255,255,.1);">Can be set off against</th>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Input CGST</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Output CGST, then Output IGST</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Input SGST</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Output SGST, then Output IGST</td>
+            </tr>
+            <tr>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Input IGST</td>
+              <td style="padding:8px; border:1px solid rgba(255,255,255,.1);">Output IGST, then CGST, then SGST</td>
+            </tr>
+          </table>
+
+          <h4>Treatment of GST in Final Accounts:</h4>
+          <ul>
+            <li><strong>Input GST (if ITC available):</strong> Shown as Current Asset in Balance Sheet</li>
+            <li><strong>Output GST (payable):</strong> Shown as Current Liability in Balance Sheet</li>
+            <li><strong>Purchases/Sales:</strong> Recorded at value EXCLUDING GST</li>
+            <li><strong>GST Paid on Expenses:</strong> Can be claimed as ITC if business is registered</li>
+          </ul>
+
+          <h4>GST on Purchase/Sales Returns:</h4>
+          <p><strong>Purchase Return (Debit Note):</strong></p>
+          <pre style="background:rgba(0,0,0,.3); padding:12px; border-radius:8px; overflow-x:auto;">Creditor A/c             ...Dr.    [Gross Amount]
+    To Purchase Return A/c                [Net Amount]
+    To Input CGST A/c                     [CGST]
+    To Input SGST A/c                     [SGST]</pre>
+
+          <h4>Important Points for Exams:</h4>
+          <ul>
+            <li>GST is a DESTINATION based tax (collected where goods consumed)</li>
+            <li>Registration mandatory if turnover exceeds ₹40 lakhs (₹20 lakhs for services)</li>
+            <li>Composition scheme available for small businesses (up to ₹1.5 crore)</li>
+            <li>GSTIN is 15-digit identification number</li>
           </ul>
         `
       },
       'final-accounts': {
-        title: 'Final Accounts',
+        title: 'Final Accounts (NCERT Chapter 9 & 10)',
         content: `
-          <p>Financial statements prepared at the end of accounting period.</p>
-          
-          <h4>Components:</h4>
+          <p>Final Accounts are the financial statements prepared at the end of an accounting year to show the financial performance and position of a business. For a sole proprietor, Final Accounts consist of Trading Account, Profit & Loss Account, and Balance Sheet.</p>
+
+          <h4>Components of Final Accounts:</h4>
+
+          <h5 style="color:var(--brand-2); margin-top:16px;">1. Trading Account</h5>
           <ul>
-            <li><strong>Trading Account:</strong> Gross profit/loss</li>
-            <li><strong>Profit & Loss Account:</strong> Net profit/loss</li>
-            <li><strong>Balance Sheet:</strong> Financial position</li>
+            <li>Shows GROSS PROFIT or GROSS LOSS</li>
+            <li>Gross Profit = Net Sales - Cost of Goods Sold</li>
+            <li>Cost of Goods Sold = Opening Stock + Purchases - Closing Stock</li>
           </ul>
+
+          <h5 style="color:var(--ok); margin-top:16px;">2. Profit & Loss Account</h5>
+          <ul>
+            <li>Shows NET PROFIT or NET LOSS</li>
+            <li>Net Profit = Gross Profit + Other Incomes - Operating Expenses</li>
+            <li>All indirect expenses and incomes are recorded here</li>
+          </ul>
+
+          <h5 style="color:var(--warn); margin-top:16px;">3. Balance Sheet</h5>
+          <ul>
+            <li>Shows FINANCIAL POSITION on a specific date</li>
+            <li>Lists all Assets, Liabilities, and Capital</li>
+            <li>Assets = Liabilities + Capital (must always balance)</li>
+          </ul>
+
+          <h4>Format of Trading Account:</h4>
+          <div style="background:rgba(0,0,0,.3); padding:16px; border-radius:8px; margin:16px 0; overflow-x:auto;">
+            <p style="text-align:center; font-weight:700;">Trading Account for the year ended 31st March, 2024</p>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px; font-size:0.8rem; min-width:500px;">
+              <tr>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1); width:50%; text-align:left;">Dr. (Expenses)</th>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1); width:50%; text-align:left;">Cr. (Revenues)</th>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1); vertical-align:top;">
+                  To Opening Stock<br>
+                  To Purchases<br>
+                  &nbsp;&nbsp;Less: Purchase Return<br>
+                  To Carriage Inward<br>
+                  To Wages<br>
+                  To Factory Expenses<br>
+                  To Gross Profit c/d<br>
+                </td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1); vertical-align:top;">
+                  By Sales<br>
+                  &nbsp;&nbsp;Less: Sales Return<br>
+                  By Closing Stock<br>
+                  By Gross Loss c/d<br>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Format of Profit & Loss Account:</h4>
+          <div style="background:rgba(0,0,0,.3); padding:16px; border-radius:8px; margin:16px 0; overflow-x:auto;">
+            <p style="text-align:center; font-weight:700;">Profit & Loss Account for the year ended 31st March, 2024</p>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px; font-size:0.8rem; min-width:500px;">
+              <tr>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1); width:50%; text-align:left;">Dr. (Expenses & Losses)</th>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1); width:50%; text-align:left;">Cr. (Incomes & Gains)</th>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1); vertical-align:top;">
+                  To Gross Loss b/d<br>
+                  To Salaries<br>
+                  To Rent<br>
+                  To Insurance<br>
+                  To Depreciation<br>
+                  To Bad Debts<br>
+                  To Interest on Loan<br>
+                  To Office Expenses<br>
+                  To Net Profit (transferred to Capital)<br>
+                </td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1); vertical-align:top;">
+                  By Gross Profit b/d<br>
+                  By Commission Received<br>
+                  By Interest Received<br>
+                  By Discount Received<br>
+                  By Rent Received<br>
+                  By Profit on Sale of Asset<br>
+                  By Net Loss (transferred to Capital)<br>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Format of Balance Sheet:</h4>
+          <div style="background:rgba(0,0,0,.3); padding:16px; border-radius:8px; margin:16px 0; overflow-x:auto;">
+            <p style="text-align:center; font-weight:700;">Balance Sheet as on 31st March, 2024</p>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px; font-size:0.8rem; min-width:500px;">
+              <tr>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1); width:50%; text-align:left;">Liabilities</th>
+                <th style="padding:8px; border:1px solid rgba(255,255,255,.1); width:50%; text-align:left;">Assets</th>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1); vertical-align:top;">
+                  <strong>Capital:</strong><br>
+                  &nbsp;&nbsp;Opening Capital<br>
+                  &nbsp;&nbsp;Add: Net Profit / Additional Capital<br>
+                  &nbsp;&nbsp;Less: Drawings / Net Loss<br>
+                  <strong>Long-term Liabilities:</strong><br>
+                  &nbsp;&nbsp;Loans<br>
+                  <strong>Current Liabilities:</strong><br>
+                  &nbsp;&nbsp;Creditors<br>
+                  &nbsp;&nbsp;Bills Payable<br>
+                  &nbsp;&nbsp;Outstanding Expenses<br>
+                  &nbsp;&nbsp;Bank Overdraft<br>
+                </td>
+                <td style="padding:8px; border:1px solid rgba(255,255,255,.1); vertical-align:top;">
+                  <strong>Fixed Assets:</strong><br>
+                  &nbsp;&nbsp;Land & Building<br>
+                  &nbsp;&nbsp;Plant & Machinery<br>
+                  &nbsp;&nbsp;Furniture<br>
+                  &nbsp;&nbsp;(Less: Depreciation)<br>
+                  <strong>Current Assets:</strong><br>
+                  &nbsp;&nbsp;Closing Stock<br>
+                  &nbsp;&nbsp;Debtors<br>
+                  &nbsp;&nbsp;Bills Receivable<br>
+                  &nbsp;&nbsp;Prepaid Expenses<br>
+                  &nbsp;&nbsp;Cash in Hand<br>
+                  &nbsp;&nbsp;Cash at Bank<br>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <h4>Important Adjustments:</h4>
+
+          <p><strong>1. Closing Stock:</strong></p>
+          <ul>
+            <li>Credit side of Trading A/c (reduces cost)</li>
+            <li>Asset side of Balance Sheet</li>
+          </ul>
+
+          <p><strong>2. Outstanding Expenses (Due but not paid):</strong></p>
+          <ul>
+            <li>ADD to respective expense in P&L A/c</li>
+            <li>Show as Current Liability in Balance Sheet</li>
+          </ul>
+
+          <p><strong>3. Prepaid Expenses (Paid in advance):</strong></p>
+          <ul>
+            <li>DEDUCT from respective expense in P&L A/c</li>
+            <li>Show as Current Asset in Balance Sheet</li>
+          </ul>
+
+          <p><strong>4. Accrued Income (Earned but not received):</strong></p>
+          <ul>
+            <li>ADD to respective income in P&L A/c</li>
+            <li>Show as Current Asset in Balance Sheet</li>
+          </ul>
+
+          <p><strong>5. Income Received in Advance:</strong></p>
+          <ul>
+            <li>DEDUCT from respective income in P&L A/c</li>
+            <li>Show as Current Liability in Balance Sheet</li>
+          </ul>
+
+          <p><strong>6. Depreciation:</strong></p>
+          <ul>
+            <li>Debit to P&L A/c (expense)</li>
+            <li>DEDUCT from respective asset in Balance Sheet</li>
+          </ul>
+
+          <p><strong>7. Bad Debts:</strong></p>
+          <ul>
+            <li>Debit to P&L A/c</li>
+            <li>DEDUCT from Debtors in Balance Sheet</li>
+          </ul>
+
+          <p><strong>8. Provision for Doubtful Debts:</strong></p>
+          <ul>
+            <li>Calculate on Debtors AFTER deducting bad debts</li>
+            <li>Debit to P&L A/c</li>
+            <li>Deduct from Debtors in Balance Sheet</li>
+          </ul>
+
+          <h4>Adjustment Entry Summary:</h4>
+          <p style="background:rgba(0,229,255,.1); padding:12px; border-radius:8px; font-size:0.9rem;">
+            <strong>Rule:</strong> If an adjustment affects both P&L and Balance Sheet, it appears in BOTH places. If it only affects one (like Closing Stock given outside Trial Balance), it appears in both Trading A/c and Balance Sheet.
+          </p>
         `
       }
     };
