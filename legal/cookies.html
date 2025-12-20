@@ -4,32 +4,422 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cookie Policy | AccountsWizard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background: #111; color: #eee; margin: 0; padding: 0; }
-    a { color: #6366f1; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    section { max-width: 900px; margin: 50px auto; padding: 20px; background: #1f1f1f; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.5);}
-    h1 { color: #f472b6; text-align: center; margin-bottom: 20px; }
-    h2 { color: #818cf8; margin-top: 25px; }
-    ul { margin-left: 20px; }
-    p { line-height: 1.6; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.02) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    .invitation-card {
+      max-width: 750px;
+      width: 100%;
+      background: linear-gradient(145deg, #1c1c1c 0%, #0d0d0d 100%);
+      border-radius: 20px;
+      padding: 60px 50px;
+      position: relative;
+      box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .invitation-card::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .invitation-card::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      right: 25px;
+      bottom: 25px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .corner-ornament {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.6;
+    }
+
+    .corner-ornament::before,
+    .corner-ornament::after {
+      content: '❧';
+      position: absolute;
+      font-size: 24px;
+      color: #d4af37;
+    }
+
+    .top-left { top: 30px; left: 30px; }
+    .top-right { top: 30px; right: 30px; transform: scaleX(-1); }
+    .bottom-left { bottom: 30px; left: 30px; transform: scaleY(-1); }
+    .bottom-right { bottom: 30px; right: 30px; transform: scale(-1); }
+
+    .header-flourish {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header-flourish::before {
+      content: '~ ❦ ~';
+      font-size: 24px;
+      color: #d4af37;
+      letter-spacing: 10px;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 35px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+    }
+
+    .divider-icon {
+      color: #d4af37;
+      font-size: 18px;
+      margin: 0 20px;
+    }
+
+    .intro-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: #c9c9c9;
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: #d4af37;
+      text-align: center;
+      margin: 40px 0 25px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h2::before, h2::after {
+      content: ' ✦ ';
+      font-size: 0.7rem;
+      vertical-align: middle;
+    }
+
+    .cookie-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cookie-list li {
+      font-size: 1.15rem;
+      color: #e0e0e0;
+      line-height: 1.9;
+      padding: 15px 25px;
+      margin: 15px 0;
+      background: rgba(212, 175, 55, 0.03);
+      border-left: 3px solid rgba(212, 175, 55, 0.4);
+      border-radius: 0 8px 8px 0;
+      position: relative;
+    }
+
+    .cookie-list li::before {
+      content: '☙';
+      color: #d4af37;
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+
+    .funny-clause {
+      font-size: 1.1rem;
+      color: #aaa;
+      font-style: italic;
+      padding: 20px 30px;
+      margin: 20px 0;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 175, 55, 0.02) 100%);
+      border-radius: 10px;
+      border: 1px dashed rgba(212, 175, 55, 0.3);
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .funny-clause .emoji {
+      font-size: 1.3rem;
+      margin: 0 5px;
+    }
+
+    .geopolitical-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: #888;
+      text-align: center;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .footer-section {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .back-link {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      color: #d4af37;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 15px 40px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50px;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+    }
+
+    .back-link:hover {
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .signature {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: #d4af37;
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0.8;
+    }
+
+    .legal-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .legal-links a {
+      font-family: 'Cormorant Garamond', serif;
+      color: #777;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .legal-links a:hover {
+      color: #d4af37;
+    }
+
+    @media (max-width: 600px) {
+      .invitation-card {
+        padding: 40px 25px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .cookie-list li {
+        padding: 12px 15px;
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <section>
-    <h1>Cookie Policy</h1>
-    <p>AccountsWizard uses minimal cookies to enhance your experience:</p>
+  <div class="invitation-card">
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
 
-    <ul>
-      <li>Remembering quiz progress or scores (optional).</li>
-      <li>Tracking anonymous usage statistics for improving website performance.</li>
-      <li>No cookies for ads or external tracking.</li>
+    <div class="header-flourish"></div>
+
+    <h1>Cookie Policy</h1>
+    <p class="subtitle">A Sacred Digital Treaty</p>
+
+    <div class="divider">
+      <span class="divider-icon">✧</span>
+    </div>
+
+    <p class="intro-text">
+      With great honor and humble reverence, AccountsWizard cordially presents<br>
+      the sacred covenant of cookies that shall unite your browser with our servers<br>
+      in a bond more stable than most UN resolutions.
+    </p>
+
+    <h2>The Holy Cookies We Bestow</h2>
+
+    <ul class="cookie-list">
+      <li>Remembering your quiz progress — unlike how Britain "forgot" to return the Kohinoor</li>
+      <li>Tracking anonymous usage statistics — more transparent than Swiss bank accounts</li>
+      <li>Absolutely NO advertising cookies — we have more integrity than election promises</li>
+      <li>Session management — expires faster than most peace treaties in the Middle East</li>
+      <li>Theme preferences — because unlike the UN, we actually remember your choices</li>
     </ul>
 
-    <h2>Your Control</h2>
-    <p>You can disable cookies in your browser, but some features may not work as intended.</p>
+    <div class="funny-clause">
+      <span class="emoji">🍪</span>
+      "By accepting these cookies, you agree that pineapple on pizza is a valid culinary choice,<br>
+      and that the Oxford comma is non-negotiable — unlike Crimea."
+      <span class="emoji">🍪</span>
+      <p class="geopolitical-note">~ This clause has more international support than most Security Council votes ~</p>
+    </div>
 
-    <p><a href="../index.html">← Back to Home</a></p>
-  </section>
+    <h2>Types of Cookies Explained</h2>
+
+    <ul class="cookie-list">
+      <li><strong>Essential Cookies:</strong> Required for basic functionality — like how oil is "essential" for certain foreign policies</li>
+      <li><strong>Preference Cookies:</strong> Remember your settings — more reliable than campaign promises about healthcare</li>
+      <li><strong>Analytics Cookies:</strong> Help us improve — our feedback loop is faster than Congress passing a bill</li>
+      <li><strong>Zero Third-Party Cookies:</strong> We don't share with others — unlike intelligence agencies with their "Five Eyes"</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🔍</span>
+      "Our cookie tracking is so minimal, even the NSA would be disappointed.<br>
+      We collect less data than a census in a country that doesn't believe in counting."
+      <span class="emoji">🔍</span>
+      <p class="geopolitical-note">~ Edward Snowden would approve of our data practices ~</p>
+    </div>
+
+    <h2>Your Sovereign Rights</h2>
+
+    <ul class="cookie-list">
+      <li>You may disable cookies faster than the US can impose sanctions</li>
+      <li>Some features may break — like diplomatic relations after a controversial tweet</li>
+      <li>We respect your choice more than superpowers respect smaller nations' airspace</li>
+      <li>Clear cookies anytime — easier than clearing your name after a WikiLeaks dump</li>
+      <li>No cookie consent dark patterns — we're more honest than a politician's autobiography</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🌍</span>
+      "These cookies are neutral territory — like Switzerland, but actually useful.<br>
+      They won't spy on you, sell your data, or mysteriously end up in Panama Papers."
+      <span class="emoji">🌍</span>
+      <p class="geopolitical-note">~ Our data protection is stronger than NATO Article 5 ~</p>
+    </div>
+
+    <h2>Cookie Retention Period</h2>
+
+    <ul class="cookie-list">
+      <li>Session cookies vanish when you leave — unlike US military bases, they don't overstay</li>
+      <li>Persistent cookies last 30 days max — shorter than most government shutdowns</li>
+      <li>We auto-delete old data — more efficiently than the FBI "loses" inconvenient evidence</li>
+      <li>No eternal tracking — our cookies have term limits, unlike some world leaders</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">⏰</span>
+      "Our cookies expire with more regularity than Brexit deadlines,<br>
+      and with considerably less drama than Italian government coalitions."
+      <span class="emoji">⏰</span>
+      <p class="geopolitical-note">~ Cookie lifecycle managed better than most infrastructure bills ~</p>
+    </div>
+
+    <h2>International Cookie Compliance</h2>
+
+    <ul class="cookie-list">
+      <li>GDPR Compliant — we follow EU rules better than the UK did</li>
+      <li>CCPA Friendly — California can't sue us (please don't)</li>
+      <li>Global standards — our compliance spans more borders than Amazon's tax avoidance</li>
+      <li>Transparent practices — clearer than any trade deal negotiation in history</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🏛️</span>
+      "We comply with more international regulations than most multinational corporations,<br>
+      and we didn't even need an army of lawyers or a Luxembourg mailbox."
+      <span class="emoji">🏛️</span>
+      <p class="geopolitical-note">~ Our legal compliance rivals the Geneva Convention's clarity ~</p>
+    </div>
+
+    <div class="divider">
+      <span class="divider-icon">❦</span>
+    </div>
+
+    <div class="footer-section">
+      <a href="../index.html" class="back-link">← Return to Kingdom</a>
+
+      <div class="legal-links">
+        <a href="privacy.html">Privacy Accord</a>
+        <a href="terms.html">Terms of Alliance</a>
+      </div>
+
+      <p class="signature">AccountsWizard</p>
+    </div>
+  </div>
 </body>
 </html>

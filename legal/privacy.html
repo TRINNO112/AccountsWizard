@@ -4,36 +4,491 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy | AccountsWizard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background: #111; color: #eee; margin: 0; padding: 0; }
-    a { color: #6366f1; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    section { max-width: 900px; margin: 50px auto; padding: 20px; background: #1f1f1f; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.5);}
-    h1 { color: #f472b6; text-align: center; margin-bottom: 20px; }
-    h2 { color: #818cf8; margin-top: 25px; }
-    ul { margin-left: 20px; }
-    p { line-height: 1.6; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.02) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    .invitation-card {
+      max-width: 750px;
+      width: 100%;
+      background: linear-gradient(145deg, #1c1c1c 0%, #0d0d0d 100%);
+      border-radius: 20px;
+      padding: 60px 50px;
+      position: relative;
+      box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .invitation-card::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .invitation-card::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      right: 25px;
+      bottom: 25px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .corner-ornament {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.6;
+    }
+
+    .corner-ornament::before,
+    .corner-ornament::after {
+      content: '❧';
+      position: absolute;
+      font-size: 24px;
+      color: #d4af37;
+    }
+
+    .top-left { top: 30px; left: 30px; }
+    .top-right { top: 30px; right: 30px; transform: scaleX(-1); }
+    .bottom-left { bottom: 30px; left: 30px; transform: scaleY(-1); }
+    .bottom-right { bottom: 30px; right: 30px; transform: scale(-1); }
+
+    .header-flourish {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header-flourish::before {
+      content: '~ ❦ ~';
+      font-size: 24px;
+      color: #d4af37;
+      letter-spacing: 10px;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 35px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+    }
+
+    .divider-icon {
+      color: #d4af37;
+      font-size: 18px;
+      margin: 0 20px;
+    }
+
+    .intro-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: #c9c9c9;
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: #d4af37;
+      text-align: center;
+      margin: 40px 0 25px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h2::before, h2::after {
+      content: ' ✦ ';
+      font-size: 0.7rem;
+      vertical-align: middle;
+    }
+
+    .policy-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .policy-list li {
+      font-size: 1.15rem;
+      color: #e0e0e0;
+      line-height: 1.9;
+      padding: 15px 25px;
+      margin: 15px 0;
+      background: rgba(212, 175, 55, 0.03);
+      border-left: 3px solid rgba(212, 175, 55, 0.4);
+      border-radius: 0 8px 8px 0;
+      position: relative;
+    }
+
+    .policy-list li::before {
+      content: '☙';
+      color: #d4af37;
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+
+    .funny-clause {
+      font-size: 1.1rem;
+      color: #aaa;
+      font-style: italic;
+      padding: 20px 30px;
+      margin: 20px 0;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 175, 55, 0.02) 100%);
+      border-radius: 10px;
+      border: 1px dashed rgba(212, 175, 55, 0.3);
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .funny-clause .emoji {
+      font-size: 1.3rem;
+      margin: 0 5px;
+    }
+
+    .geopolitical-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: #888;
+      text-align: center;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .sacred-vow {
+      text-align: center;
+      padding: 25px;
+      margin: 30px 0;
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+      border-radius: 15px;
+    }
+
+    .sacred-vow p {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8rem;
+      color: #d4af37;
+      line-height: 1.6;
+    }
+
+    .sacred-vow .attribution {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 15px;
+      letter-spacing: 2px;
+    }
+
+    .footer-section {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .back-link {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      color: #d4af37;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 15px 40px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50px;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+    }
+
+    .back-link:hover {
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .signature {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: #d4af37;
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0.8;
+    }
+
+    .legal-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .legal-links a {
+      font-family: 'Cormorant Garamond', serif;
+      color: #777;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .legal-links a:hover {
+      color: #d4af37;
+    }
+
+    @media (max-width: 600px) {
+      .invitation-card {
+        padding: 40px 25px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .policy-list li {
+        padding: 12px 15px;
+        font-size: 1rem;
+      }
+      .sacred-vow p {
+        font-size: 1.4rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <section>
-    <h1>Privacy Policy</h1>
-    <p>At AccountsWizard, your privacy is respected. This page explains how we handle data and information.</p>
+  <div class="invitation-card">
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
 
-    <h2>Information We Collect</h2>
-    <ul>
-      <li>Basic user inputs on quizzes (optional for saving results).</li>
-      <li>Anonymous analytics for improving website functionality.</li>
-      <li>No personal info is shared with third parties.</li>
+    <div class="header-flourish"></div>
+
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">The Sacred Scroll of Data Protection</p>
+
+    <div class="divider">
+      <span class="divider-icon">✧</span>
+    </div>
+
+    <p class="intro-text">
+      Hear ye, hear ye! At AccountsWizard, your privacy is guarded<br>
+      with more vigilance than Area 51, and with considerably more transparency<br>
+      than most government agencies claim to have.
+    </p>
+
+    <div class="sacred-vow">
+      <p>"What happens on AccountsWizard, stays on AccountsWizard"</p>
+      <span class="attribution">— A Promise More Reliable Than Trade Agreements</span>
+    </div>
+
+    <h2>Intelligence We Gather</h2>
+
+    <ul class="policy-list">
+      <li>Basic quiz inputs — stored locally, not shipped to any foreign intelligence agency</li>
+      <li>Anonymous analytics — less invasive than CCTV cameras in London</li>
+      <li>Zero personal data sold to third parties — we're not Facebook, we promise</li>
+      <li>Browser type and OS — we know less about you than your smart TV does</li>
+      <li>Page visit patterns — tracked with less precision than a drone strike</li>
     </ul>
 
-    <h2>Cookies</h2>
-    <p>We may use cookies to improve your experience, but no tracking for advertisements is done.</p>
+    <div class="funny-clause">
+      <span class="emoji">🕵️</span>
+      "Your data is safer here than classified documents at Mar-a-Lago,<br>
+      and we actually remember where we put them."
+      <span class="emoji">🕵️</span>
+      <p class="geopolitical-note">~ We have better document handling than most former world leaders ~</p>
+    </div>
 
-    <h2>Changes</h2>
-    <p>We may update this policy occasionally. Please check back for the latest version.</p>
+    <h2>What We Don't Collect</h2>
 
-    <p><a href="../index.html">← Back to Home</a></p>
-  </section>
+    <ul class="policy-list">
+      <li>Your real name — we care less about your identity than witness protection programs</li>
+      <li>Your location — we're not the CIA, and you're not a "person of interest"</li>
+      <li>Your contacts — unlike certain messaging apps owned by certain social media giants</li>
+      <li>Your browsing history — what you do elsewhere is between you and incognito mode</li>
+      <li>Biometric data — we can't even tell if you're a bot (please don't be a bot)</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🙈</span>
+      "We know less about you than Cambridge Analytica knew about Facebook users,<br>
+      and considerably less than your ex knows from still following your finsta."
+      <span class="emoji">🙈</span>
+      <p class="geopolitical-note">~ Our data minimalism rivals a monk's possessions ~</p>
+    </div>
+
+    <h2>The Cookie Covenant</h2>
+
+    <ul class="policy-list">
+      <li>Cookies for functionality only — no tracking your entire digital life like Big Tech</li>
+      <li>No advertising cookies — our ethics are stronger than oil lobbyist money</li>
+      <li>You can disable them anytime — unlike some international treaties</li>
+      <li>No cross-site tracking — we don't follow you around like a clingy ex or targeted ads</li>
+      <li>Cookie consent is genuine — not a dark pattern designed by psychology PhDs</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🛡️</span>
+      "We protect your data like Switzerland protects its neutrality —<br>
+      except we don't have Nazi gold in our vaults (we checked)."
+      <span class="emoji">🛡️</span>
+      <p class="geopolitical-note">~ Our encryption is tighter than sanctions on North Korea ~</p>
+    </div>
+
+    <h2>Data Security Measures</h2>
+
+    <ul class="policy-list">
+      <li>HTTPS everywhere — our connection is more secure than most embassy communications</li>
+      <li>No data breaches so far — a better track record than Equifax, Yahoo, and LinkedIn combined</li>
+      <li>Regular security audits — conducted by me, staring at code at 2 AM</li>
+      <li>Encrypted storage — your quiz scores are guarded like nuclear launch codes</li>
+      <li>No third-party access — not even if they ask nicely with a court order (kidding, we'd comply)</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🔐</span>
+      "Our security is so tight, even Russian hackers would give up and go back to<br>
+      targeting critical infrastructure instead. (That's... not reassuring, is it?)"
+      <span class="emoji">🔐</span>
+      <p class="geopolitical-note">~ Fort Knox wishes it had our commitment to security ~</p>
+    </div>
+
+    <h2>Your Sacred Rights</h2>
+
+    <ul class="policy-list">
+      <li>Right to access — see your data faster than a FOIA request gets processed</li>
+      <li>Right to deletion — we'll forget you exist like the League of Nations forgot its purpose</li>
+      <li>Right to portability — take your data and leave, like Britain did with the EU</li>
+      <li>Right to object — complain more effectively than at a UN Human Rights Council session</li>
+      <li>Right to be forgotten — disappear from our records like MH370 (too soon?)</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">⚖️</span>
+      "Exercise your rights more easily than voting in some democracies,<br>
+      and with considerably less gerrymandering involved."
+      <span class="emoji">⚖️</span>
+      <p class="geopolitical-note">~ Your data rights are more respected here than human rights in some nations ~</p>
+    </div>
+
+    <h2>Policy Amendments</h2>
+
+    <ul class="policy-list">
+      <li>We may update this policy — with more notice than Brexit negotiations gave anyone</li>
+      <li>Changes will be posted here — not hidden like offshore accounts</li>
+      <li>Your continued use means acceptance — like accepting that climate change is real</li>
+      <li>Major changes get announcements — unlike surprise tariffs at 3 AM via tweet</li>
+      <li>We keep version history — more organized than government email servers</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">📜</span>
+      "This privacy policy has been ratified by exactly one person (me),<br>
+      which is still more democratic than some countries' elections."
+      <span class="emoji">📜</span>
+      <p class="geopolitical-note">~ Last updated with more transparency than most defense budgets ~</p>
+    </div>
+
+    <h2>Contact & Complaints</h2>
+
+    <ul class="policy-list">
+      <li>Questions welcome — we respond faster than government hotlines</li>
+      <li>Complaints accepted — handled with more care than airline customer service</li>
+      <li>No automated responses — unlike calling literally any corporation ever</li>
+      <li>Resolution guaranteed — or at least attempted, which is more than most can say</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">📧</span>
+      "Reach out anytime — our response time is better than emergency services in some countries,<br>
+      and we won't put you on hold for 47 minutes listening to elevator music."
+      <span class="emoji">📧</span>
+      <p class="geopolitical-note">~ Customer service that would make Jeff Bezos jealous (but without the union busting) ~</p>
+    </div>
+
+    <div class="divider">
+      <span class="divider-icon">❦</span>
+    </div>
+
+    <div class="footer-section">
+      <a href="../index.html" class="back-link">← Return to Kingdom</a>
+
+      <div class="legal-links">
+        <a href="cookies.html">Cookie Covenant</a>
+        <a href="terms.html">Terms of Alliance</a>
+      </div>
+
+      <p class="signature">AccountsWizard</p>
+    </div>
+  </div>
 </body>
 </html>

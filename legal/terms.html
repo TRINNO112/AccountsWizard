@@ -4,30 +4,554 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms & Conditions | AccountsWizard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background: #111; color: #eee; margin: 0; padding: 0; }
-    a { color: #6366f1; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    section { max-width: 900px; margin: 50px auto; padding: 20px; background: #1f1f1f; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.5);}
-    h1 { color: #f472b6; text-align: center; margin-bottom: 20px; }
-    h2 { color: #818cf8; margin-top: 25px; }
-    ul { margin-left: 20px; }
-    p { line-height: 1.6; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.02) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    .invitation-card {
+      max-width: 750px;
+      width: 100%;
+      background: linear-gradient(145deg, #1c1c1c 0%, #0d0d0d 100%);
+      border-radius: 20px;
+      padding: 60px 50px;
+      position: relative;
+      box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .invitation-card::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .invitation-card::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      right: 25px;
+      bottom: 25px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .corner-ornament {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.6;
+    }
+
+    .corner-ornament::before,
+    .corner-ornament::after {
+      content: '❧';
+      position: absolute;
+      font-size: 24px;
+      color: #d4af37;
+    }
+
+    .top-left { top: 30px; left: 30px; }
+    .top-right { top: 30px; right: 30px; transform: scaleX(-1); }
+    .bottom-left { bottom: 30px; left: 30px; transform: scaleY(-1); }
+    .bottom-right { bottom: 30px; right: 30px; transform: scale(-1); }
+
+    .header-flourish {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header-flourish::before {
+      content: '~ ❦ ~';
+      font-size: 24px;
+      color: #d4af37;
+      letter-spacing: 10px;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 35px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+    }
+
+    .divider-icon {
+      color: #d4af37;
+      font-size: 18px;
+      margin: 0 20px;
+    }
+
+    .intro-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: #c9c9c9;
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: #d4af37;
+      text-align: center;
+      margin: 40px 0 25px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h2::before, h2::after {
+      content: ' ✦ ';
+      font-size: 0.7rem;
+      vertical-align: middle;
+    }
+
+    .terms-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .terms-list li {
+      font-size: 1.15rem;
+      color: #e0e0e0;
+      line-height: 1.9;
+      padding: 15px 25px;
+      margin: 15px 0;
+      background: rgba(212, 175, 55, 0.03);
+      border-left: 3px solid rgba(212, 175, 55, 0.4);
+      border-radius: 0 8px 8px 0;
+      position: relative;
+    }
+
+    .terms-list li::before {
+      content: '☙';
+      color: #d4af37;
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+
+    .funny-clause {
+      font-size: 1.1rem;
+      color: #aaa;
+      font-style: italic;
+      padding: 20px 30px;
+      margin: 20px 0;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 175, 55, 0.02) 100%);
+      border-radius: 10px;
+      border: 1px dashed rgba(212, 175, 55, 0.3);
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .funny-clause .emoji {
+      font-size: 1.3rem;
+      margin: 0 5px;
+    }
+
+    .geopolitical-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: #888;
+      text-align: center;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .royal-decree {
+      text-align: center;
+      padding: 30px;
+      margin: 35px 0;
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .royal-decree .decree-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      color: #888;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+    }
+
+    .royal-decree p {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8rem;
+      color: #d4af37;
+      line-height: 1.6;
+    }
+
+    .royal-decree .decree-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: #666;
+      margin-top: 15px;
+      font-style: italic;
+    }
+
+    .student-disclaimer {
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.1) 0%, rgba(129, 140, 248, 0.1) 100%);
+      border: 1px solid rgba(244, 114, 182, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .student-disclaimer .title {
+      font-family: 'Cinzel', serif;
+      color: #f472b6;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .student-disclaimer p {
+      font-family: 'Cormorant Garamond', serif;
+      color: #c9c9c9;
+      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .footer-section {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .back-link {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      color: #d4af37;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      padding: 15px 40px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50px;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+    }
+
+    .back-link:hover {
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .signature {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: #d4af37;
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0.8;
+    }
+
+    .legal-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .legal-links a {
+      font-family: 'Cormorant Garamond', serif;
+      color: #777;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .legal-links a:hover {
+      color: #d4af37;
+    }
+
+    @media (max-width: 600px) {
+      .invitation-card {
+        padding: 40px 25px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .terms-list li {
+        padding: 12px 15px;
+        font-size: 1rem;
+      }
+      .royal-decree p {
+        font-size: 1.4rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <section>
-    <h1>Terms & Conditions</h1>
-    <p>Welcome! By using AccountsWizard, you agree to the following terms:</p>
+  <div class="invitation-card">
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
 
-    <ul>
-      <li>All content is for educational purposes and personal learning.</li>
-      <li>No guarantees of accuracy or completeness; always cross-check with your syllabus.</li>
-      <li>You may not redistribute or sell the content without permission.</li>
-      <li>Using this website is at your own risk. I’m still a student experimenting 😅.</li>
+    <div class="header-flourish"></div>
+
+    <h1>Terms & Conditions</h1>
+    <p class="subtitle">The Grand Alliance Treaty</p>
+
+    <div class="divider">
+      <span class="divider-icon">✧</span>
+    </div>
+
+    <p class="intro-text">
+      Welcome, noble scholar! By entering these digital halls,<br>
+      you agree to terms more binding than any international peace accord,<br>
+      yet infinitely more reasonable than most software EULAs.
+    </p>
+
+    <div class="royal-decree">
+      <span class="decree-title">BY ROYAL DECREE</span>
+      <p>"Let it be known across all lands and browsers..."</p>
+      <span class="decree-note">— Proclaimed with more authority than a Twitter CEO memo</span>
+    </div>
+
+    <h2>The Sacred Commandments</h2>
+
+    <ul class="terms-list">
+      <li>All content is for educational purposes — not for world domination (we leave that to tech billionaires)</li>
+      <li>No guarantees of accuracy — our error rate is still lower than weather forecasts and election polls</li>
+      <li>Cross-check with your syllabus — trust but verify, like Cold War nuclear inspectors</li>
+      <li>No redistribution without permission — we're stricter than China with VPNs, but friendlier about it</li>
+      <li>Use responsibly — with great accounting knowledge comes great responsibility (and tax anxiety)</li>
     </ul>
 
-    <p><a href="../index.html">← Back to Home</a></p>
-  </section>
+    <div class="funny-clause">
+      <span class="emoji">⚖️</span>
+      "By agreeing to these terms, you acknowledge that tabs are superior to spaces,<br>
+      and that debugging at 3 AM is a rite of passage, not a cry for help."
+      <span class="emoji">⚖️</span>
+      <p class="geopolitical-note">~ This clause is non-negotiable, unlike most G20 climate commitments ~</p>
+    </div>
+
+    <h2>Acceptable Use Policy</h2>
+
+    <ul class="terms-list">
+      <li>No hacking attempts — we're not the Pentagon, but we'd still notice (probably)</li>
+      <li>No spamming — send less unsolicited content than a desperate country's UN ambassador</li>
+      <li>No scraping data — our robots.txt is more respected than international maritime law</li>
+      <li>Be respectful — maintain more decorum than a parliamentary session in Taiwan</li>
+      <li>No illegal activities — we comply with laws better than tax-haven-utilizing corporations</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🚫</span>
+      "Violators will be banned with more efficiency than Russia gets banned from sporting events,<br>
+      and with considerably less opportunity for appeal."
+      <span class="emoji">🚫</span>
+      <p class="geopolitical-note">~ Our moderation is swifter than sanctions committee decisions ~</p>
+    </div>
+
+    <h2>Liability Limitations</h2>
+
+    <ul class="terms-list">
+      <li>Use at your own risk — like investing in crypto or trusting politicians' promises</li>
+      <li>We're not responsible for failed exams — blame can be directed at 2020 instead</li>
+      <li>Website may have bugs — still fewer bugs than US healthcare.gov launch</li>
+      <li>Uptime not guaranteed — our servers have better work-life balance than Japanese salarymen</li>
+      <li>No liability for emotional damage — if accounting makes you cry, that's between you and your therapist</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🎭</span>
+      "In case of disputes, the arbitration will be conducted via<br>
+      a strongly-worded UN resolution that everyone will subsequently ignore."
+      <span class="emoji">🎭</span>
+      <p class="geopolitical-note">~ Our conflict resolution is still faster than WTO dispute settlements ~</p>
+    </div>
+
+    <h2>Service Availability</h2>
+
+    <ul class="terms-list">
+      <li>We aim for 99% uptime — more reliable than democracies in coup-prone regions</li>
+      <li>Maintenance happens — scheduled better than most infrastructure bills</li>
+      <li>Outages are rare — less frequent than government shutdowns in the US</li>
+      <li>We'll try to notify you — with more advance warning than surprise missile tests</li>
+      <li>Patience appreciated — Rome wasn't built in a day, neither was this website (it was 3 days)</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🔧</span>
+      "Our maintenance windows are shorter than peace negotiations,<br>
+      and considerably more productive than most congressional sessions."
+      <span class="emoji">🔧</span>
+      <p class="geopolitical-note">~ Downtime measured in minutes, not election cycles ~</p>
+    </div>
+
+    <h2>Intellectual Property</h2>
+
+    <ul class="terms-list">
+      <li>Content belongs to us — unlike contested territories, this ownership is clear</li>
+      <li>Don't copy without asking — we're nicer about it than Disney's legal team</li>
+      <li>Fair use is welcome — share knowledge like Europe shares blame for colonialism</li>
+      <li>Attribution appreciated — cite us like a proper academic, not like a plagiarizing politician</li>
+      <li>Trademarks respected — ours and others', because we're not patent trolls</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🏛️</span>
+      "These terms are written in plain English,<br>
+      not the incomprehensible dialect spoken at EU bureaucracy meetings."
+      <span class="emoji">🏛️</span>
+      <p class="geopolitical-note">~ More readable than any trade agreement ever drafted ~</p>
+    </div>
+
+    <h2>User Conduct</h2>
+
+    <ul class="terms-list">
+      <li>Be kind to others — spread positivity like propaganda, but the wholesome kind</li>
+      <li>No harassment — we have zero tolerance, unlike the UN with actual human rights violations</li>
+      <li>Keep it legal — follow more laws than multinational corporations do</li>
+      <li>Report issues — be a whistleblower without the exile to Russia</li>
+      <li>Have fun learning — mandatory enjoyment (this is the only authoritarian rule here)</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🤝</span>
+      "Treat fellow users with more respect than countries treat their neighbors' borders,<br>
+      and with considerably more warmth than trade war participants."
+      <span class="emoji">🤝</span>
+      <p class="geopolitical-note">~ Our community standards exceed Geneva Convention minimums ~</p>
+    </div>
+
+    <h2>Termination Rights</h2>
+
+    <ul class="terms-list">
+      <li>We can terminate access — with more due process than some emergency powers allow</li>
+      <li>You can leave anytime — easier than leaving the EU, no 4-year drama required</li>
+      <li>Banned users stay banned — more permanent than Olympic bans on doping nations</li>
+      <li>Appeals considered — evaluated faster than asylum applications</li>
+      <li>No hard feelings — we part ways more amicably than most political coalitions</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🚪</span>
+      "Exit procedures are simpler than Brexit negotiations,<br>
+      and won't require three prime ministers and a constitutional crisis."
+      <span class="emoji">🚪</span>
+      <p class="geopolitical-note">~ Leaving is easier than escaping a gym membership contract ~</p>
+    </div>
+
+    <h2>Governing Law</h2>
+
+    <ul class="terms-list">
+      <li>Indian law applies — more straightforward than international maritime disputes</li>
+      <li>Jurisdiction is clear — unlike the South China Sea situation</li>
+      <li>Disputes resolved locally — not in some offshore arbitration tribunal</li>
+      <li>Fair hearings guaranteed — more balanced than most state media coverage</li>
+    </ul>
+
+    <div class="funny-clause">
+      <span class="emoji">🏴</span>
+      "These terms are governed by actual law, not by whoever has the biggest navy<br>
+      or the most creative interpretation of 'historical waters'."
+      <span class="emoji">🏴</span>
+      <p class="geopolitical-note">~ Legal clarity that would make international law professors weep with joy ~</p>
+    </div>
+
+    <div class="student-disclaimer">
+      <span class="title">A HUMBLE CONFESSION</span>
+      <p>
+        I'm still a student experimenting with web development.<br>
+        This website has more passion than budget, and more dreams than infrastructure.<br>
+        Think of it like a developing nation — full of potential, occasionally chaotic,<br>
+        but definitely not accepting IMF loans. We're bootstrapped like a Silicon Valley<br>
+        startup, except without the venture capital, the ping pong tables, or the eventual enshittification.
+      </p>
+    </div>
+
+    <div class="divider">
+      <span class="divider-icon">❦</span>
+    </div>
+
+    <div class="footer-section">
+      <a href="../index.html" class="back-link">← Return to Kingdom</a>
+
+      <div class="legal-links">
+        <a href="cookies.html">Cookie Covenant</a>
+        <a href="privacy.html">Privacy Accord</a>
+      </div>
+
+      <p class="signature">AccountsWizard</p>
+    </div>
+  </div>
 </body>
 </html>
