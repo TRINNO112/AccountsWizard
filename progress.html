@@ -36,6 +36,35 @@
       min-height: 100dvh;
     }
 
+    /* Animated floating orbs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(124,77,255,0.15), transparent 70%);
+      top: -100px;
+      right: -100px;
+      animation: floatOrb 20s ease-in-out infinite;
+    }
+    body::after {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0,229,255,0.12), transparent 70%);
+      bottom: 10%;
+      left: -50px;
+      animation: floatOrb 15s ease-in-out infinite reverse;
+    }
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, 30px) scale(1.1); }
+    }
+
     header{
       position: sticky; top: 0; z-index: 20;
       backdrop-filter: blur(10px);
@@ -215,22 +244,46 @@
       overflow: hidden;
       animation: fadeIn .6s ease;
       animation-fill-mode: both;
-      transition: transform .2s ease;
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
     }
 
+    .item-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transition: left 0.5s;
+    }
+
+    .item-card:hover::before {
+      left: 100%;
+    }
+
     .item-card:hover{
-      transform: translateY(-4px);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
 
     .item-card.completed{
       border-color: var(--ok);
-      background: linear-gradient(180deg, rgba(39,225,163,.1), rgba(39,225,163,.05));
+      background: linear-gradient(135deg, rgba(39,225,163,.15), rgba(39,225,163,.05));
+    }
+
+    .item-card.completed:hover {
+      box-shadow: 0 20px 40px rgba(39,225,163,0.2);
     }
 
     .item-card.in-progress{
       border-color: var(--warn);
-      background: linear-gradient(180deg, rgba(255,209,102,.1), rgba(255,209,102,.05));
+      background: linear-gradient(135deg, rgba(255,209,102,.15), rgba(255,209,102,.05));
+    }
+
+    .item-card.in-progress:hover {
+      box-shadow: 0 20px 40px rgba(255,209,102,0.2);
     }
 
     .item-number{
@@ -383,6 +436,208 @@
       to{ transform: rotate(360deg); }
     }
 
+    /* Achievement Badges Section */
+    .achievements-section {
+      background: linear-gradient(135deg, rgba(255,122,198,.1), rgba(124,77,255,.1));
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      margin-bottom: 40px;
+      animation: slideUp .6s ease;
+    }
+
+    .achievements-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .achievements-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .achievements-title span {
+      font-size: 1.5rem;
+    }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .achievement-badge {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 20px 15px;
+      text-align: center;
+      transition: all .3s ease;
+      position: relative;
+    }
+
+    .achievement-badge.unlocked {
+      background: linear-gradient(135deg, rgba(183,255,74,.1), rgba(39,225,163,.1));
+      border-color: var(--lime);
+    }
+
+    .achievement-badge.unlocked::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(135deg, var(--lime), var(--ok));
+      border-radius: 18px;
+      z-index: -1;
+      opacity: 0.3;
+      animation: pulse 2s infinite;
+    }
+
+    .achievement-badge:hover {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .achievement-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      filter: grayscale(100%);
+      opacity: 0.4;
+      transition: all .3s ease;
+    }
+
+    .achievement-badge.unlocked .achievement-icon {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+
+    .achievement-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .achievement-badge.unlocked .achievement-name {
+      color: var(--text);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Level Progress Bar */
+    .level-section {
+      background: linear-gradient(135deg, rgba(124,77,255,.15), rgba(0,229,255,.1));
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      padding: 20px 25px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      animation: slideUp .5s ease;
+    }
+
+    .level-badge {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      box-shadow: 0 8px 25px rgba(124,77,255,0.4);
+      flex-shrink: 0;
+    }
+
+    .level-info {
+      flex: 1;
+    }
+
+    .level-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--text);
+    }
+
+    .level-bar {
+      height: 10px;
+      background: rgba(255,255,255,.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .level-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--lime));
+      border-radius: 999px;
+      transition: width 1s ease;
+    }
+
+    .level-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Quick Stats Mini Cards */
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .mini-stat {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      transition: all .3s ease;
+    }
+
+    .mini-stat:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.15);
+    }
+
+    .mini-stat-icon {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .mini-stat-value {
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--text), var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0;
+    }
+
+    .mini-stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 4px 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     @media (max-width: 768px) {
       .nav {
         flex-direction: column;
@@ -437,13 +692,51 @@
 
       <!-- OVERVIEW TAB -->
       <div id="overviewTab" class="tab-content active">
+        <!-- Level Progress -->
+        <div class="level-section">
+          <div class="level-badge" id="levelBadge">1</div>
+          <div class="level-info">
+            <h3 class="level-title" id="levelTitle">Accounting Beginner</h3>
+            <div class="level-bar">
+              <div class="level-fill" id="levelFill" style="width: 0%"></div>
+            </div>
+            <p class="level-text" id="levelText">0 / 100 XP to next level</p>
+          </div>
+        </div>
+
+        <!-- Mini Stats -->
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-icon">📚</div>
+            <h3 class="mini-stat-value" id="totalLessonsCount">0/17</h3>
+            <p class="mini-stat-label">Lessons Done</p>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-icon">🎯</div>
+            <h3 class="mini-stat-value" id="completedQuizzes">0</h3>
+            <p class="mini-stat-label">Quizzes Done</p>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-icon">⭐</div>
+            <h3 class="mini-stat-value" id="totalScore">0</h3>
+            <p class="mini-stat-label">Total Points</p>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-icon">📈</div>
+            <h3 class="mini-stat-value" id="averageScore">0%</h3>
+            <p class="mini-stat-label">Avg Score</p>
+          </div>
+        </div>
+
+        <!-- Main Progress Ring -->
         <div class="overall-progress">
           <div class="progress-ring">
             <svg>
               <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" style="stop-color:#7c4dff;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#00e5ff;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#00e5ff;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#b7ff4a;stop-opacity:1" />
                 </linearGradient>
               </defs>
               <circle cx="100" cy="100" r="90" class="progress-ring-bg"></circle>
@@ -451,23 +744,40 @@
             </svg>
             <div class="progress-percentage" id="overallPercentage">0%</div>
           </div>
-          
-          <div class="progress-stats">
-            <div class="progress-stat">
-              <h3 class="progress-stat-value" id="completedLessons">0</h3>
-              <p class="progress-stat-label">Lessons Completed</p>
+
+          <h3 style="margin: 0 0 5px; font-size: 1.2rem;">Overall Mastery</h3>
+          <p style="margin: 0; color: var(--muted); font-size: 0.9rem;" id="masteryText">Complete lessons to increase mastery</p>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="achievements-section">
+          <div class="achievements-header">
+            <h3 class="achievements-title"><span>🏆</span> Achievements</h3>
+          </div>
+          <div class="achievements-grid" id="achievementsGrid">
+            <div class="achievement-badge" data-achievement="first-lesson" title="Complete your first lesson">
+              <div class="achievement-icon">📖</div>
+              <p class="achievement-name">First Step</p>
             </div>
-            <div class="progress-stat">
-              <h3 class="progress-stat-value" id="completedQuizzes">0</h3>
-              <p class="progress-stat-label">Quizzes Completed</p>
+            <div class="achievement-badge" data-achievement="five-lessons" title="Complete 5 lessons">
+              <div class="achievement-icon">📚</div>
+              <p class="achievement-name">Bookworm</p>
             </div>
-            <div class="progress-stat">
-              <h3 class="progress-stat-value" id="totalScore">0</h3>
-              <p class="progress-stat-label">Total Points</p>
+            <div class="achievement-badge" data-achievement="ten-lessons" title="Complete 10 lessons">
+              <div class="achievement-icon">🎓</div>
+              <p class="achievement-name">Scholar</p>
             </div>
-            <div class="progress-stat">
-              <h3 class="progress-stat-value" id="averageScore">0%</h3>
-              <p class="progress-stat-label">Average Score</p>
+            <div class="achievement-badge" data-achievement="all-lessons" title="Complete all 17 lessons">
+              <div class="achievement-icon">👑</div>
+              <p class="achievement-name">Master</p>
+            </div>
+            <div class="achievement-badge" data-achievement="perfect-score" title="Get 100% on any lesson">
+              <div class="achievement-icon">💯</div>
+              <p class="achievement-name">Perfectionist</p>
+            </div>
+            <div class="achievement-badge" data-achievement="high-scorer" title="Average score above 80%">
+              <div class="achievement-icon">🌟</div>
+              <p class="achievement-name">High Scorer</p>
             </div>
           </div>
         </div>
@@ -542,11 +852,14 @@
       7: 'Double Entry System',
       8: 'Origin of Transactions – Source Documents',
       9: 'Books of Original Entry – Journal',
-      10: 'Books of Original Entry – Cash Book',
-      11: 'Bank Reconciliation Statement',
-      12: 'Subsidiary Books',
+      10: 'Accounting for GST',
+      11: 'Books of Original Entry – Cash Book',
+      12: 'Special Purpose Subsidiary Books',
       13: 'Ledger',
-      14: 'Trial Balance and Errors'
+      14: 'Trial Balance and Errors',
+      15: 'Rectification of Errors',
+      16: 'Bank Reconciliation Statement',
+      17: 'Depreciation'
     };
 
     window.switchTab = function(tab) {
@@ -605,19 +918,71 @@
         // Calculate overall stats
         const totalScore = totalLessonScore + totalQuizScore;
         const totalQuestions = totalLessonQuestions + totalQuizQuestions;
-        const overallPercentage = totalQuestions > 0 
-          ? Math.round((totalScore / totalQuestions) * 100) 
+        const overallPercentage = totalQuestions > 0
+          ? Math.round((totalScore / totalQuestions) * 100)
           : 0;
-        
+
+        // Check for perfect scores and high scores
+        let hasPerfectScore = false;
+        let totalPercentages = 0;
+        let countWithScore = 0;
+
+        Object.values(lessonDataMap).forEach(data => {
+          if (data.percentage === 100) hasPerfectScore = true;
+          if (data.percentage > 0) {
+            totalPercentages += data.percentage;
+            countWithScore++;
+          }
+        });
+
+        const avgScore = countWithScore > 0 ? Math.round(totalPercentages / countWithScore) : 0;
+
         console.log('📊 Overall:', totalScore, '/', totalQuestions, '=', overallPercentage + '%');
-        
+
         // Update overview
         document.getElementById('overallPercentage').textContent = overallPercentage + '%';
-        document.getElementById('completedLessons').textContent = completedLessons;
+        document.getElementById('totalLessonsCount').textContent = completedLessons + '/17';
         document.getElementById('completedQuizzes').textContent = completedQuizzes;
         document.getElementById('totalScore').textContent = totalScore;
-        document.getElementById('averageScore').textContent = overallPercentage + '%';
-        
+        document.getElementById('averageScore').textContent = avgScore + '%';
+
+        // Update mastery text
+        const masteryText = document.getElementById('masteryText');
+        if (overallPercentage >= 90) {
+          masteryText.textContent = "Outstanding! You're an accounting master! 🏆";
+        } else if (overallPercentage >= 70) {
+          masteryText.textContent = "Great progress! Keep pushing forward! 💪";
+        } else if (overallPercentage >= 50) {
+          masteryText.textContent = "Good start! Practice makes perfect! 📈";
+        } else if (completedLessons > 0) {
+          masteryText.textContent = "You're on your way! Keep learning! 🚀";
+        }
+
+        // Update Level System
+        const xp = totalScore * 5; // 5 XP per point
+        const level = Math.floor(xp / 100) + 1;
+        const xpInLevel = xp % 100;
+        const levelTitles = {
+          1: 'Accounting Beginner',
+          2: 'Ledger Learner',
+          3: 'Journal Journeyman',
+          4: 'Balance Pro',
+          5: 'Trial Balance Expert',
+          6: 'GST Guru',
+          7: 'Depreciation Master',
+          8: 'Accounting Champion',
+          9: 'Financial Wizard',
+          10: 'Accounting Legend'
+        };
+
+        document.getElementById('levelBadge').textContent = level;
+        document.getElementById('levelTitle').textContent = levelTitles[Math.min(level, 10)] || 'Accounting Legend';
+        document.getElementById('levelFill').style.width = xpInLevel + '%';
+        document.getElementById('levelText').textContent = `${xpInLevel} / 100 XP to next level`;
+
+        // Update Achievements
+        updateAchievements(completedLessons, hasPerfectScore, avgScore);
+
         const progressRing = document.getElementById('progressRing');
         const circumference = 2 * Math.PI * 90;
         const offset = circumference - (overallPercentage / 100) * circumference;
@@ -627,8 +992,10 @@
         const lessonsGrid = document.getElementById('lessonsGrid');
         lessonsGrid.innerHTML = '';
         
-        for (let i = 1; i <= 14; i++) {
-          const card = createLessonCard(i, lessonDataMap[i]);
+        // Lesson numbers array (skipping 3 and 5 which don't exist)
+        const lessonNumbers = [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        for (const lessonNum of lessonNumbers) {
+          const card = createLessonCard(lessonNum, lessonDataMap[lessonNum]);
           lessonsGrid.appendChild(card);
         }
 
@@ -720,6 +1087,29 @@
       };
       
       return card;
+    }
+
+    // Update Achievements based on progress
+    function updateAchievements(completedLessons, hasPerfectScore, avgScore) {
+      const achievements = {
+        'first-lesson': completedLessons >= 1,
+        'five-lessons': completedLessons >= 5,
+        'ten-lessons': completedLessons >= 10,
+        'all-lessons': completedLessons >= 17,
+        'perfect-score': hasPerfectScore,
+        'high-scorer': avgScore >= 80
+      };
+
+      Object.entries(achievements).forEach(([key, unlocked]) => {
+        const badge = document.querySelector(`[data-achievement="${key}"]`);
+        if (badge) {
+          if (unlocked) {
+            badge.classList.add('unlocked');
+          } else {
+            badge.classList.remove('unlocked');
+          }
+        }
+      });
     }
 
     function createQuizCard(data, idx) {

@@ -969,14 +969,244 @@
       }
     }
 
+    /* ========================================
+       HAMBURGER MENU FOR MOBILE
+       ======================================== */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 2000;
+      box-shadow: 0 4px 20px rgba(124, 77, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .mobile-menu-btn i {
+      color: #fff;
+      font-size: 1.4rem;
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-btn.active i {
+      transform: rotate(90deg);
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1500;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Mobile Menu Panel */
+    .mobile-menu-panel {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #1a1f3c 0%, #0d1025 100%);
+      border-radius: 24px 24px 0 0;
+      padding: 24px 20px 100px;
+      z-index: 1600;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu-panel.active {
+      transform: translateY(0);
+    }
+
+    .mobile-menu-panel::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+    }
+
+    /* Mobile Menu Sections */
+    .mobile-menu-section {
+      margin-bottom: 24px;
+    }
+
+    .mobile-menu-section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--brand-2);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-menu-section-title i {
+      font-size: 0.9rem;
+    }
+
+    /* Mobile Stats Grid */
+    .mobile-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .mobile-stat-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-stat-item i {
+      color: var(--brand-2);
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .mobile-stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .mobile-stat-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* Mobile Filter Buttons */
+    .mobile-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mobile-filter-btn {
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mobile-filter-btn:hover,
+    .mobile-filter-btn.active {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .mobile-filter-btn i {
+      font-size: 0.8rem;
+    }
+
+    /* Mobile Sort Select */
+    .mobile-sort-select {
+      width: 100%;
+      padding: 14px 40px 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300e5ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+
+    .mobile-sort-select option {
+      background: var(--card);
+      color: var(--text);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .page-title { font-size: 2rem; }
-      .lessons-grid { 
-        grid-template-columns: 1fr; 
+      .lessons-grid {
+        grid-template-columns: 1fr;
         gap: 20px;
       }
       .lesson-card { padding: 25px; }
+
+      /* Hide desktop elements on mobile */
+      .quick-stats,
+      .filter-container,
+      .sort-container,
+      .recently-viewed {
+        display: none !important;
+      }
+
+      /* Show mobile menu elements */
+      .mobile-menu-btn,
+      .mobile-menu-overlay,
+      .mobile-menu-panel {
+        display: block;
+      }
+
+      /* Adjust body padding for FAB */
+      body {
+        padding-bottom: 80px;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-menu-btn,
+      .mobile-menu-overlay,
+      .mobile-menu-panel {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -1608,6 +1838,81 @@
     </div>
   </main>
 
+  <!-- Mobile Menu Button (FAB) -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+  <!-- Mobile Menu Panel -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel">
+    <!-- Stats Section -->
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-section-title">
+        <i class="fas fa-chart-bar"></i>
+        <span>Quick Stats</span>
+      </div>
+      <div class="mobile-stats-grid">
+        <div class="mobile-stat-item">
+          <i class="fas fa-book"></i>
+          <div class="mobile-stat-value">17</div>
+          <div class="mobile-stat-label">Lessons</div>
+        </div>
+        <div class="mobile-stat-item">
+          <i class="fas fa-layer-group"></i>
+          <div class="mobile-stat-value">5</div>
+          <div class="mobile-stat-label">Categories</div>
+        </div>
+        <div class="mobile-stat-item">
+          <i class="fas fa-star"></i>
+          <div class="mobile-stat-value" id="mobileFavoriteCount">0</div>
+          <div class="mobile-stat-label">Favorites</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-section-title">
+        <i class="fas fa-filter"></i>
+        <span>Category Filter</span>
+      </div>
+      <div class="mobile-filters">
+        <button class="mobile-filter-btn active" data-filter="all">
+          <i class="fas fa-th-large"></i> All
+        </button>
+        <button class="mobile-filter-btn" data-filter="basics">
+          <i class="fas fa-seedling"></i> Basics
+        </button>
+        <button class="mobile-filter-btn" data-filter="books">
+          <i class="fas fa-book-open"></i> Books
+        </button>
+        <button class="mobile-filter-btn" data-filter="gst">
+          <i class="fas fa-percent"></i> GST
+        </button>
+        <button class="mobile-filter-btn" data-filter="advanced">
+          <i class="fas fa-rocket"></i> Advanced
+        </button>
+      </div>
+    </div>
+
+    <!-- Sort Section -->
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-section-title">
+        <i class="fas fa-sort"></i>
+        <span>Sort Lessons</span>
+      </div>
+      <select class="mobile-sort-select" id="mobileSortSelect">
+        <option value="number">Lesson Number</option>
+        <option value="name">Alphabetical (A-Z)</option>
+        <option value="difficulty">Difficulty</option>
+        <option value="favorites">Favorites First</option>
+      </select>
+    </div>
+  </div>
+
   <script>
     // ========================================
     // DOM ELEMENTS
@@ -1872,12 +2177,107 @@
     });
 
     // ========================================
+    // MOBILE MENU FUNCTIONALITY
+    // ========================================
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const mobileFilterBtns = document.querySelectorAll('.mobile-filter-btn');
+    const mobileSortSelect = document.getElementById('mobileSortSelect');
+    const mobileFavoriteCountEl = document.getElementById('mobileFavoriteCount');
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+      const isActive = mobileMenuPanel.classList.contains('active');
+
+      if (isActive) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    }
+
+    function openMobileMenu() {
+      mobileMenuBtn.classList.add('active');
+      mobileMenuOverlay.classList.add('active');
+      mobileMenuPanel.classList.add('active');
+      mobileMenuBtn.querySelector('i').classList.remove('fa-bars');
+      mobileMenuBtn.querySelector('i').classList.add('fa-times');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileMenuBtn.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      mobileMenuPanel.classList.remove('active');
+      mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+      mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+      document.body.style.overflow = '';
+    }
+
+    // Event listeners for mobile menu
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+    // Mobile filter buttons
+    mobileFilterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Update active state
+        mobileFilterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        // Sync with desktop filters
+        const filter = this.getAttribute('data-filter');
+        currentFilter = filter;
+
+        // Update desktop filter buttons too
+        filterBtns.forEach(b => {
+          if (b.getAttribute('data-filter') === filter) {
+            b.classList.add('active');
+          } else {
+            b.classList.remove('active');
+          }
+        });
+
+        // Apply filter
+        filterAndSearch();
+
+        // Close menu after selection
+        closeMobileMenu();
+      });
+    });
+
+    // Mobile sort select
+    mobileSortSelect.addEventListener('change', function() {
+      sortLessons(this.value);
+      // Sync with desktop sort
+      sortSelect.value = this.value;
+      // Close menu after selection
+      closeMobileMenu();
+    });
+
+    // Update mobile favorite count
+    function updateMobileFavoriteCount() {
+      const count = getFavorites().length;
+      if (mobileFavoriteCountEl) mobileFavoriteCountEl.textContent = count;
+    }
+
+    // Override updateFavoriteCount to also update mobile
+    const originalUpdateFavoriteCount = updateFavoriteCount;
+    updateFavoriteCount = function() {
+      const count = getFavorites().length;
+      if (favoriteCountEl) favoriteCountEl.textContent = count;
+      if (mobileFavoriteCountEl) mobileFavoriteCountEl.textContent = count;
+    };
+
+    // ========================================
     // INITIALIZATION
     // ========================================
     document.addEventListener('DOMContentLoaded', function() {
       renderRecentlyViewed();
       renderFavorites();
-      console.log('Lessons page loaded with all features: filters, favorites, sorting, recently viewed!');
+      updateMobileFavoriteCount();
+      console.log('Lessons page loaded with all features: filters, favorites, sorting, recently viewed, mobile menu!');
     });
   </script>
 </body>
