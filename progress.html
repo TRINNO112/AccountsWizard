@@ -708,7 +708,7 @@
         <div class="mini-stats">
           <div class="mini-stat">
             <div class="mini-stat-icon">📚</div>
-            <h3 class="mini-stat-value" id="totalLessonsCount">0/17</h3>
+            <h3 class="mini-stat-value" id="totalLessonsCount">0/18</h3>
             <p class="mini-stat-label">Lessons Done</p>
           </div>
           <div class="mini-stat">
@@ -767,7 +767,7 @@
               <div class="achievement-icon">🎓</div>
               <p class="achievement-name">Scholar</p>
             </div>
-            <div class="achievement-badge" data-achievement="all-lessons" title="Complete all 17 lessons">
+            <div class="achievement-badge" data-achievement="all-lessons" title="Complete all 18 lessons">
               <div class="achievement-icon">👑</div>
               <p class="achievement-name">Master</p>
             </div>
@@ -859,7 +859,8 @@
       14: 'Trial Balance and Errors',
       15: 'Rectification of Errors',
       16: 'Bank Reconciliation Statement',
-      17: 'Depreciation'
+      17: 'Depreciation',
+      18: 'Provisions and Reserves'
     };
 
     window.switchTab = function(tab) {
@@ -941,7 +942,7 @@
 
         // Update overview
         document.getElementById('overallPercentage').textContent = overallPercentage + '%';
-        document.getElementById('totalLessonsCount').textContent = completedLessons + '/17';
+        document.getElementById('totalLessonsCount').textContent = completedLessons + '/18';
         document.getElementById('completedQuizzes').textContent = completedQuizzes;
         document.getElementById('totalScore').textContent = totalScore;
         document.getElementById('averageScore').textContent = avgScore + '%';
@@ -993,7 +994,7 @@
         lessonsGrid.innerHTML = '';
         
         // Lesson numbers array (skipping 3 and 5 which don't exist)
-        const lessonNumbers = [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        const lessonNumbers = [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
         for (const lessonNum of lessonNumbers) {
           const card = createLessonCard(lessonNum, lessonDataMap[lessonNum]);
           lessonsGrid.appendChild(card);
@@ -1095,7 +1096,7 @@
         'first-lesson': completedLessons >= 1,
         'five-lessons': completedLessons >= 5,
         'ten-lessons': completedLessons >= 10,
-        'all-lessons': completedLessons >= 17,
+        'all-lessons': completedLessons >= 18,
         'perfect-score': hasPerfectScore,
         'high-scorer': avgScore >= 80
       };

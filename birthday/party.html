@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Anime circle mask reveal */
+        .circle-mask {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            animation: circleExpand 2s ease-out forwards;
+        }
+
+        @keyframes circleExpand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                width: 300vmax;
+                height: 300vmax;
+                opacity: 0;
+            }
+        }
+
+        /* Light burst effect */
+        .light-burst {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, transparent 70%);
+            opacity: 0;
+            z-index: 500;
+            pointer-events: none;
+        }
+
+        .light-burst.flash {
+            animation: lightFlash 0.8s ease-out forwards;
+        }
+
+        @keyframes lightFlash {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Main content container */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* Scene 1 - Intro text */
+        .scene-intro {
+            opacity: 0;
+        }
+
+        .scene-intro.show {
+            animation: fadeIn 1.5s forwards;
+        }
+
+        .scene-intro.hide {
+            animation: fadeOut 1s forwards;
+        }
+
+        .intro-en {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+
+        .intro-jp {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: rgba(255, 200, 200, 0.9);
+        }
+
+        /* Scene 2 - Birthday reveal */
+        .scene-birthday {
+            opacity: 0;
+            display: none;
+        }
+
+        .scene-birthday.show {
+            display: block;
+            animation: fadeIn 1s forwards;
+        }
+
+        .birthday-text {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(90deg, #ff6b9d, #ffd93d, #6bcb77, #4d96ff, #ff6b9d);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 4s linear infinite;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .birthday-name {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        .birthday-name-jp {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(255, 200, 200, 0.9);
+            margin-top: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Page transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         CONFIG - CUSTOMIZE HERE
+         ======================================== -->
+    <script>
+        const CONFIG = {
+            // Intro text (before birthday reveal)
+            introEnglish: "A special surprise awaits...",
+            introJapanese: "特別なサプライズが待っています",
+
+            // Birthday person's name
+            name: "Sarah",
+            nameJapanese: "サラ",
+
+            // Next page
+            nextPage: "main.html",
+
+            // Auto-redirect time (ms) - set to 0 to disable
+            redirectTime: 12000
+        };
+    </script>
+
+    <!-- Anime circle mask -->
+    <div class="circle-mask"></div>
+
+    <!-- Light burst -->
+    <div class="light-burst" id="lightBurst"></div>
+
+    <!-- Page transition -->
+    <div class="page-transition" id="transition"></div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Scene 1: Intro -->
+        <div class="scene-intro" id="sceneIntro">
+            <p class="intro-en" id="introEn"></p>
+            <p class="intro-jp" id="introJp"></p>
+        </div>
+
+        <!-- Scene 2: Birthday reveal -->
+        <div class="scene-birthday" id="sceneBirthday">
+            <h1 class="birthday-text">Happy Birthday!</h1>
+            <p class="birthday-name" id="birthdayName"></p>
+            <p class="birthday-name-jp" id="birthdayNameJp"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sceneIntro = document.getElementById('sceneIntro');
+            const sceneBirthday = document.getElementById('sceneBirthday');
+            const introEn = document.getElementById('introEn');
+            const introJp = document.getElementById('introJp');
+            const birthdayName = document.getElementById('birthdayName');
+            const birthdayNameJp = document.getElementById('birthdayNameJp');
+            const lightBurst = document.getElementById('lightBurst');
+            const transition = document.getElementById('transition');
+
+            // Set content
+            introEn.textContent = CONFIG.introEnglish;
+            introJp.textContent = CONFIG.introJapanese;
+            birthdayName.textContent = CONFIG.name;
+            birthdayNameJp.textContent = CONFIG.nameJapanese;
+
+            // Confetti function
+            function launchConfetti() {
+                // Main burst
+                confetti({
+                    particleCount: 120,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#ff6b9d', '#ffd93d', '#6bcb77', '#4d96ff', '#ff8a5c']
+                });
+
+                // Side bursts
+                confetti({
+                    particleCount: 40,
+                    angle: 60,
+                    spread: 50,
+                    origin: { x: 0, y: 0.7 },
+                    colors: ['#ff6b9d', '#ffd93d', '#6bcb77']
+                });
+
+                confetti({
+                    particleCount: 40,
+                    angle: 120,
+                    spread: 50,
+                    origin: { x: 1, y: 0.7 },
+                    colors: ['#4d96ff', '#ff8a5c', '#ffd93d']
+                });
+
+                // Continuous gentle fall
+                const duration = 4000;
+                const end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 3,
+                        spread: 100,
+                        origin: { y: 0 },
+                        colors: ['#ff6b9d', '#ffd93d', '#6bcb77', '#4d96ff']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                })();
+            }
+
+            // Timeline
+            // Scene 1: Show intro after circle animation
+            setTimeout(() => {
+                sceneIntro.classList.add('show');
+            }, 2200);
+
+            // Transition to Scene 2
+            setTimeout(() => {
+                sceneIntro.classList.add('hide');
+            }, 5500);
+
+            setTimeout(() => {
+                sceneIntro.style.display = 'none';
+                lightBurst.classList.add('flash');
+                sceneBirthday.classList.add('show');
+                launchConfetti();
+            }, 6500);
+
+            // Redirect to main page
+            if (CONFIG.redirectTime > 0) {
+                setTimeout(() => {
+                    transition.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = CONFIG.nextPage;
+                    }, 1500);
+                }, CONFIG.redirectTime);
+            }
+        });
+    </script>
+</body>
+</html>
