@@ -1,0 +1,3539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rectification of Errors | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="main.css">
+  <style>
+    /* ============================================
+       ROOT VARIABLES & RESET
+    ============================================ */
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --speed: 300ms;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      padding: 10px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ============================================
+       ANIMATED BACKGROUND
+    ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    .particle:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, var(--brand) 0%, transparent 70%);
+      animation: float1 20s infinite;
+    }
+
+    .particle:nth-child(2) {
+      top: 70%;
+      right: 10%;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, var(--brand-2) 0%, transparent 70%);
+      animation: float2 25s infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-30px, 30px) scale(0.9); }
+    }
+
+    /* ============================================
+       HEADER & NAVIGATION
+    ============================================ */
+    .nav-header {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 10px 15px; 
+      background: var(--card); 
+      border-radius: 12px;
+      margin-bottom: 20px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 1;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-header a {
+      color: var(--muted); 
+      text-decoration: none; 
+      display: flex; 
+      align-items: center;
+      gap: 6px; 
+      padding: 6px 12px; 
+      border-radius: 8px; 
+      transition: all var(--speed);
+      font-size: 0.9rem;
+    }
+
+    .nav-header a:hover { 
+      color: var(--text); 
+      background: rgba(255,255,255,0.05);
+    }
+
+    header { 
+      text-align: center; 
+      padding: 20px 10px;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .lesson-title {
+      font-size: 1.8rem; 
+      font-weight: 900;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, var(--brand-2) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      animation: shineText 3s linear infinite;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    @keyframes shineText {
+      to { background-position: 200% center; }
+    }
+
+    .breadcrumb { 
+      color: var(--muted); 
+      font-size: 0.85rem;
+    }
+
+    .breadcrumb a { 
+      color: inherit; 
+      text-decoration: none;
+      transition: color var(--speed);
+    }
+
+    .breadcrumb a:hover { 
+      color: var(--text); 
+    }
+
+    /* ============================================
+       MAIN CONTENT & SECTIONS
+    ============================================ */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 100%;
+    }
+
+    section {
+      background: var(--card); 
+      border-radius: var(--radius);
+      padding: 20px 15px; 
+      margin-bottom: 20px; 
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    section h2 {
+      margin: 0 0 15px 0; 
+      font-size: 1.3rem;
+      background: linear-gradient(90deg, #fff, var(--brand-2));
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+
+    section p { 
+      line-height: 1.6; 
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* ============================================
+       DEFINITION & NOTE BOXES
+    ============================================ */
+    .definition-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid var(--brand);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .definition-box h3 {
+      margin: 0 0 12px 0;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .definition-box p {
+      color: white !important;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .note-box {
+      background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(0,229,255,0.05));
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid var(--brand-2);
+    }
+
+    .note-box h4 {
+      color: var(--brand-2);
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .note-box p, .note-box ul {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .note-box ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+
+    .error-box {
+      background: linear-gradient(135deg, rgba(244,67,54,0.1), rgba(244,67,54,0.05));
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid var(--error);
+    }
+
+    .error-box h4 {
+      color: var(--error);
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, rgba(255,152,0,0.1), rgba(255,152,0,0.05));
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid var(--warning);
+    }
+
+    .warning-box h4 {
+      color: var(--warning);
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .success-box {
+      background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(76,175,80,0.05));
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      border-left: 4px solid var(--success);
+    }
+
+    .success-box h4 {
+      color: var(--success);
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ============================================
+       ERROR TYPES GRID
+    ============================================ */
+    .error-types-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .error-type-card {
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .error-type-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--brand-2);
+      box-shadow: 0 10px 30px rgba(0,229,255,0.2);
+    }
+
+    .error-type-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .error-type-title {
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .error-type-desc {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .error-type-examples {
+      background: rgba(0,0,0,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .error-type-examples h5 {
+      color: var(--brand-2);
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+
+    .error-type-examples ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .error-type-examples li {
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .error-type-examples li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--brand-2);
+    }
+
+    /* ============================================
+       TABLES (Mobile Optimized)
+    ============================================ */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 20px 0;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .table-scroll-hint {
+      display: block;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .rectification-table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .rectification-table th,
+    .rectification-table td {
+      padding: 12px 10px;
+      text-align: left;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .rectification-table th {
+      background: rgba(124,77,255,0.2);
+      font-weight: 700;
+      color: var(--brand-2);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .rectification-table tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .journal-entry-table {
+      width: 100%;
+      min-width: 500px;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 15px 0;
+    }
+
+    .journal-entry-table th,
+    .journal-entry-table td {
+      padding: 10px 8px;
+      text-align: left;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .journal-entry-table th {
+      background: rgba(124,77,255,0.15);
+      font-weight: 700;
+      color: var(--brand-2);
+      text-align: center;
+    }
+
+    .journal-entry-table .particulars-col {
+      width: 50%;
+    }
+
+    .journal-entry-table .debit-col,
+    .journal-entry-table .credit-col {
+      width: 25%;
+      text-align: right;
+      font-family: 'Courier New', monospace;
+    }
+
+    .journal-entry-table .narration-row td {
+      font-style: italic;
+      color: var(--muted);
+      padding-left: 30px;
+      font-size: 0.8rem;
+    }
+
+    /* ============================================
+       PRACTICAL CARDS
+    ============================================ */
+    .practical-card {
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      padding: 20px 15px;
+      margin: 15px 0;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .practical-card:hover {
+      border-color: var(--brand-2);
+      box-shadow: 0 8px 25px rgba(0,229,255,0.15);
+    }
+
+    .practical-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .practical-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, var(--brand-2), var(--accent));
+      flex-shrink: 0;
+    }
+
+    .practical-title {
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 5px 0;
+      line-height: 1.3;
+    }
+
+    .practical-subtitle {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    .view-solution-btn {
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+      width: 100%;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .view-solution-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 20px rgba(0,229,255,0.4);
+    }
+
+    .solution {
+      display: none;
+      background: rgba(124,77,255,0.05);
+      border-radius: 12px;
+      padding: 20px 15px;
+      margin-top: 15px;
+      border: 1px solid rgba(124,77,255,.2);
+    }
+
+    .solution.active {
+      display: block;
+      animation: expandDown 0.5s ease;
+    }
+
+    @keyframes expandDown {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 10000px; }
+    }
+
+    .solution h4 {
+      color: var(--brand-2);
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    /* ============================================
+       FLOWCHART STYLES
+    ============================================ */
+    .flowchart-container {
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 2px solid rgba(255,255,255,0.1);
+      overflow-x: auto;
+    }
+
+    .flowchart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      min-width: 300px;
+    }
+
+    .flow-box {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(124,77,255,0.3);
+      min-width: 200px;
+      max-width: 90%;
+    }
+
+    .flow-arrow {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 20px solid var(--brand-2);
+    }
+
+    .flow-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      width: 100%;
+      max-width: 600px;
+      justify-items: center;
+      margin: 0 auto;
+    }
+
+    .flow-split .flow-box {
+      min-width: auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+    }
+
+    /* Fix for select dropdown visibility */
+    select {
+      background-color: #1a1f3c !important;
+      color: #e9eefc !important;
+    }
+
+    select option {
+      background-color: #1a1f3c;
+      color: #e9eefc;
+      padding: 10px;
+    }
+
+    select:focus {
+      outline: 2px solid var(--brand-2);
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+    ============================================ */
+    @media (min-width: 768px) {
+      body { padding: 20px; }
+      .lesson-title { font-size: 2.5rem; }
+      section { padding: 30px 25px; }
+      section h2 { font-size: 1.5rem; }
+      .error-types-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .practical-header { flex-direction: row; }
+      .view-solution-btn { width: auto; }
+      .flow-split { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      main { max-width: 1200px; margin: 0 auto; }
+      .nav-header { padding: 12px 24px; }
+      header { padding: 30px 20px; }
+      .table-scroll-hint { display: none; }
+      .error-types-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 1440px) {
+      main { max-width: 1400px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Particles -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+
+  <!-- Navigation -->
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1 class="lesson-title">Rectification of Errors</h1>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / 
+      <a href="../lessons.html">Lessons</a> / 
+      Rectification of Errors
+    </div>
+  </header>
+
+  <main>
+    <!-- Introduction Section -->
+    <section>
+      <h2>What is Rectification of Errors?</h2>
+      
+      <div class="definition-box">
+        <h3>
+          <i class="fas fa-tools"></i>
+          Definition
+        </h3>
+        <p>
+          <strong>Rectification of Errors</strong> refers to the process of detecting and correcting errors committed in the accounting records. When mistakes occur during recording, posting, or preparation of trial balance, they need to be identified and rectified through appropriate journal entries to ensure accuracy in financial statements.
+        </p>
+      </div>
+
+      <p style="margin-top: 20px;">
+        Even with careful bookkeeping, errors can occur at various stages of the accounting process. These errors may affect the agreement of the trial balance or may go unnoticed even when the trial balance agrees. Proper rectification ensures that the final accounts present a true and fair view of the financial position and performance of the business.
+      </p>
+
+      <div class="note-box">
+        <h4><i class="fas fa-lightbulb"></i> Why Rectification is Important</h4>
+        <ul>
+          <li>Ensures accuracy of financial statements</li>
+          <li>Maintains integrity of accounting records</li>
+          <li>Helps in making correct business decisions</li>
+          <li>Ensures compliance with accounting standards</li>
+          <li>Builds confidence among stakeholders</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- When Errors are Discovered -->
+    <section>
+      <h2>When Can Errors Be Discovered?</h2>
+      
+      <div class="flowchart-container">
+        <div class="flowchart">
+          <div class="flow-box">Error Occurs in Books</div>
+          <div class="flow-arrow"></div>
+          <div class="flow-box">Time of Discovery</div>
+          <div class="flow-arrow"></div>
+          <div class="flow-split">
+            <div class="flow-box" style="background: linear-gradient(135deg, #4caf50, #81c784);">
+              Before Preparation of Trial Balance
+            </div>
+            <div class="flow-box" style="background: linear-gradient(135deg, #ff9800, #ffb74d);">
+              After Preparation of Trial Balance
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="error-types-grid">
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #4caf50, #81c784);">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="error-type-title">Before Trial Balance</div>
+          <div class="error-type-desc">
+            Errors discovered before preparing the trial balance can be rectified directly by passing a simple journal entry in the journal proper.
+          </div>
+          <div class="success-box" style="margin-top: 10px;">
+            <h4>Method:</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Pass a direct correcting journal entry that cancels the wrong entry and records the correct entry.
+            </p>
+          </div>
+        </div>
+
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #ff9800, #ffb74d);">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="error-type-title">After Trial Balance (Before Closing)</div>
+          <div class="error-type-desc">
+            When errors are found after trial balance but before final accounts, rectification depends on whether the error affects the trial balance agreement.
+          </div>
+          <div class="warning-box" style="margin-top: 10px;">
+            <h4>Method:</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Use Suspense Account if trial balance doesn't agree. Pass correcting entries through journal proper.
+            </p>
+          </div>
+        </div>
+
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #f44336, #e57373);">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="error-type-title">After Closing of Books</div>
+          <div class="error-type-desc">
+            Errors discovered in the next accounting period after books are closed require special treatment affecting the Profit & Loss Adjustment Account.
+          </div>
+          <div class="error-box" style="margin-top: 10px;">
+            <h4>Method:</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Rectify through Profit & Loss Adjustment A/c as the original accounts are closed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Classification of Errors -->
+    <section>
+      <h2>Classification of Errors</h2>
+      
+      <p style="margin-bottom: 20px;">
+        Based on their effect on the Trial Balance, errors can be classified into two major categories:
+      </p>
+
+      <div class="error-types-grid" style="grid-template-columns: 1fr; gap: 20px;">
+        <div class="error-type-card" style="border: 2px solid var(--error);">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #f44336, #e57373);">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="error-type-title" style="color: var(--error);">One-Sided Errors</div>
+          <div class="error-type-desc">
+            Errors that affect only one account or one side of the accounting equation. These errors cause the trial balance to disagree and require the use of a Suspense Account for temporary adjustment.
+          </div>
+          <div class="error-type-examples">
+            <h5>Types Include:</h5>
+            <ul>
+              <li>Errors of Casting (wrong totaling)</li>
+              <li>Errors of Posting (wrong amount posted)</li>
+              <li>Errors of Balancing (wrong balance calculated)</li>
+              <li>Errors of Omission (one side not posted)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="error-type-card" style="border: 2px solid var(--warning);">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #ff9800, #ffb74d);">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <div class="error-type-title" style="color: var(--warning);">Two-Sided Errors</div>
+          <div class="error-type-desc">
+            Errors that affect both debit and credit sides equally. These errors do NOT affect the agreement of trial balance, making them harder to detect. No Suspense Account is needed for rectification.
+          </div>
+          <div class="error-type-examples">
+            <h5>Types Include:</h5>
+            <ul>
+              <li>Errors of Principle</li>
+              <li>Errors of Commission</li>
+              <li>Errors of Complete Omission</li>
+              <li>Compensating Errors</li>
+              <li>Errors of Original Entry</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <h4><i class="fas fa-info-circle"></i> Key Difference</h4>
+        <p>
+          <strong>One-Sided Errors:</strong> Trial balance will NOT agree → Use Suspense Account<br>
+          <strong>Two-Sided Errors:</strong> Trial balance WILL agree → No Suspense Account needed
+        </p>
+      </div>
+    </section>
+
+    <!-- One-Sided Errors in Detail -->
+    <section>
+      <h2>One-Sided Errors - Detailed Explanation</h2>
+      
+      <p style="margin-bottom: 20px;">
+        One-sided errors affect only one aspect of the double-entry system, causing an imbalance in the trial balance. Let's explore each type:
+      </p>
+
+      <div class="error-types-grid">
+        <!-- Error of Casting -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #e91e63, #f06292);">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div class="error-type-title">1. Error of Casting</div>
+          <div class="error-type-desc">
+            Occurs when there is an error in totaling the debit or credit side of an account, subsidiary book, or trial balance itself.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Sales Book totaled as ₹45,000 instead of ₹54,000</li>
+              <li>Purchase Account debit side totaled wrongly</li>
+              <li>Discount column in Cash Book wrongly totaled</li>
+            </ul>
+          </div>
+          <div class="warning-box" style="margin-top: 10px; border-left: 4px solid #e91e63;">
+            <h4 style="color: #e91e63;"><i class="fas fa-bolt"></i> Impact</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              <strong>Overcasting:</strong> Increases the total (excess amount on that side)<br>
+              <strong>Undercasting:</strong> Decreases the total (shortage on that side)
+            </p>
+          </div>
+        </div>
+
+        <!-- Error of Posting -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #9c27b0, #ba68c8);">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <div class="error-type-title">2. Error of Posting</div>
+          <div class="error-type-desc">
+            Occurs when an entry is posted to the wrong side, wrong amount is posted, or posting is completely omitted from one account.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>₹5,000 posted as ₹500 in the ledger</li>
+              <li>Debit entry posted on credit side</li>
+              <li>Amount posted to correct account but omitted from other account</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Error of Balancing -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #3f51b5, #7986cb);">
+            <i class="fas fa-balance-scale-left"></i>
+          </div>
+          <div class="error-type-title">3. Error of Balancing</div>
+          <div class="error-type-desc">
+            Occurs when the balance of an account is incorrectly calculated or carried forward to the wrong side.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Balance of Rent A/c calculated as ₹12,000 instead of ₹21,000</li>
+              <li>Debit balance shown on credit side</li>
+              <li>Opening balance brought forward incorrectly</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Partial Omission -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #ff5722, #ff8a65);">
+            <i class="fas fa-minus-circle"></i>
+          </div>
+          <div class="error-type-title">4. Error of Partial Omission</div>
+          <div class="error-type-desc">
+            Occurs when only one aspect (debit or credit) of a transaction is recorded while the other aspect is completely omitted.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Goods sold to Ram for ₹10,000 - Ram's A/c debited but Sales A/c not credited</li>
+              <li>Salary paid ₹5,000 - Cash A/c credited but Salary A/c not debited</li>
+              <li>Purchase from creditor posted only to Purchase A/c</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Wrong Carry Forward -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #795548, #a1887f);">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="error-type-title">5. Error in Carry Forward</div>
+          <div class="error-type-desc">
+            Occurs when balance is carried forward from one page to another with wrong amount or on wrong side.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Balance c/d shown as ₹15,000 but Balance b/d shown as ₹10,000</li>
+              <li>Balance carried to wrong account</li>
+              <li>Wrong year's balance brought forward</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Posting to Wrong Side -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #00bcd4, #4dd0e1);">
+            <i class="fas fa-arrows-alt-h"></i>
+          </div>
+          <div class="error-type-title">6. Posting to Wrong Side</div>
+          <div class="error-type-desc">
+            Occurs when an amount is correctly posted to the right account but on the wrong side (debit instead of credit or vice versa).
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Discount Allowed ₹500 posted on credit side instead of debit</li>
+              <li>Cash received ₹3,000 posted on debit instead of credit</li>
+              <li>Returns Inward posted on credit side of Returns A/c</li>
+            </ul>
+          </div>
+          <div class="error-box" style="margin-top: 10px;">
+            <h4><i class="fas fa-times-circle"></i> Effect</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              This creates a difference of <strong>DOUBLE the amount</strong> in the trial balance because the amount needs to be removed from wrong side and added to correct side.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suspense Account -->
+    <section>
+      <h2>Suspense Account - The Temporary Home for Errors</h2>
+      
+      <div class="definition-box">
+        <h3>
+          <i class="fas fa-pause-circle"></i>
+          What is Suspense Account?
+        </h3>
+        <p>
+          A <strong>Suspense Account</strong> is a temporary account opened to record the difference in the trial balance when it does not agree. It allows the accountant to proceed with financial statement preparation while errors are being investigated and rectified.
+        </p>
+      </div>
+
+      <div class="error-types-grid" style="grid-template-columns: 1fr;">
+        <div class="error-type-card" style="background: linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.05));">
+          <div class="error-type-title" style="color: var(--brand-2);">When is Suspense Account Created?</div>
+          <div class="error-type-desc">
+            <ol style="padding-left: 20px; line-height: 2; color: var(--muted); margin-top: 10px;">
+              <li><strong>Trial Balance doesn't agree:</strong> When total debits ≠ total credits</li>
+              <li><strong>Difference is temporary:</strong> Until errors are found and corrected</li>
+              <li><strong>Balancing mechanism:</strong> The difference amount is placed in Suspense A/c</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <h4><i class="fas fa-lightbulb"></i> How to Create Suspense Account</h4>
+        <p style="margin-bottom: 10px;">
+          <strong>If Debit Side is SHORT (Credit side is more):</strong><br>
+          Put the difference on DEBIT side of Suspense Account
+        </p>
+        <p>
+          <strong>If Credit Side is SHORT (Debit side is more):</strong><br>
+          Put the difference on CREDIT side of Suspense Account
+        </p>
+      </div>
+
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">📝</div>
+          <div>
+            <h3 class="practical-title">Example: Creating Suspense Account</h3>
+            <p class="practical-subtitle">Understanding the concept</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Scenario:</strong> During preparation of Trial Balance, it was found that:</p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Total of Debit side: ₹5,45,000</li>
+            <li>Total of Credit side: ₹5,50,000</li>
+            <li>Difference: ₹5,000 (Debit side is short)</li>
+          </ul>
+        </div>
+
+        <div class="success-box">
+          <h4><i class="fas fa-check-circle"></i> Solution</h4>
+          <p style="color: var(--muted); margin: 0;">
+            Since Debit side is short by ₹5,000, we create Suspense Account and place ₹5,000 on the DEBIT side. Now both sides equal ₹5,50,000.
+          </p>
+        </div>
+
+        <div class="table-wrapper" style="margin-top: 15px;">
+          <table class="rectification-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th style="text-align: right;">Debit (₹)</th>
+                <th style="text-align: right;">Credit (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>All Debit Balances</td>
+                <td style="text-align: right;">5,45,000</td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr>
+                <td>All Credit Balances</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">5,50,000</td>
+              </tr>
+              <tr style="background: rgba(124,77,255,0.1);">
+                <td><strong>Suspense Account</strong></td>
+                <td style="text-align: right;"><strong>5,000</strong></td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr style="background: rgba(76,175,80,0.15); font-weight: bold;">
+                <td>Total</td>
+                <td style="text-align: right;">5,50,000</td>
+                <td style="text-align: right;">5,50,000</td>
+              </tr>
+            </tbody>
+          </table>
+          <span class="table-scroll-hint">← Scroll horizontally →</span>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <h4><i class="fas fa-exclamation-triangle"></i> Important Points</h4>
+        <ul style="color: var(--muted); padding-left: 20px; margin-top: 10px; line-height: 1.8;">
+          <li>Suspense Account is <strong>TEMPORARY</strong> and must be closed once all errors are rectified</li>
+          <li>It appears in the Trial Balance and Balance Sheet until rectification is complete</li>
+          <li>When shown in Balance Sheet:
+            <ul style="margin-top: 5px;">
+              <li><strong>Debit balance:</strong> Shown on Assets side</li>
+              <li><strong>Credit balance:</strong> Shown on Liabilities side</li>
+            </ul>
+          </li>
+          <li>Goal is to bring Suspense Account balance to ZERO through rectification entries</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Rectification of One-Sided Errors -->
+    <section>
+      <h2>Rectification of One-Sided Errors</h2>
+      
+      <p style="margin-bottom: 20px;">
+        One-sided errors are rectified by passing journal entries that involve the affected account and the Suspense Account. The general principle is:
+      </p>
+
+      <div class="success-box">
+        <h4><i class="fas fa-lightbulb"></i> Golden Rule for One-Sided Errors</h4>
+        <p style="color: var(--muted); margin: 0; line-height: 1.8;">
+          <strong>Step 1:</strong> Identify which account was affected<br>
+          <strong>Step 2:</strong> Determine what should have been done<br>
+          <strong>Step 3:</strong> Pass entry to correct the affected account<br>
+          <strong>Step 4:</strong> Debit/Credit Suspense Account to balance the entry
+        </p>
+      </div>
+
+      <div class="note-box">
+        <h4><i class="fas fa-info-circle"></i> Simple Formula</h4>
+        <p style="margin: 0;">
+          <strong>Correct Account</strong> (to fix it) .... Dr./Cr.<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;To/By <strong>Suspense Account</strong>
+        </p>
+      </div>
+
+      <div class="table-wrapper" style="margin-top: 20px;">
+        <table class="rectification-table">
+          <thead>
+            <tr>
+              <th>Type of Error</th>
+              <th>Rectification Entry</th>
+              <th>Effect on Suspense A/c</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Undercasting of Debit Side</strong><br><small>(Debit total is less)</small></td>
+              <td>
+                <span style="color: var(--brand-2);">Affected Account Dr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Suspense Account
+              </td>
+              <td style="color: var(--success);">Suspense A/c is Credited</td>
+            </tr>
+            <tr>
+              <td><strong>Overcasting of Debit Side</strong><br><small>(Debit total is more)</small></td>
+              <td>
+                <span style="color: var(--brand-2);">Suspense Account Dr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Affected Account
+              </td>
+              <td style="color: var(--error);">Suspense A/c is Debited</td>
+            </tr>
+            <tr>
+              <td><strong>Undercasting of Credit Side</strong><br><small>(Credit total is less)</small></td>
+              <td>
+                <span style="color: var(--brand-2);">Suspense Account Dr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Affected Account
+              </td>
+              <td style="color: var(--error);">Suspense A/c is Debited</td>
+            </tr>
+            <tr>
+              <td><strong>Overcasting of Credit Side</strong><br><small>(Credit total is more)</small></td>
+              <td>
+                <span style="color: var(--brand-2);">Affected Account Dr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Suspense Account
+              </td>
+              <td style="color: var(--success);">Suspense A/c is Credited</td>
+            </tr>
+            <tr>
+              <td><strong>Posting to Wrong Side</strong><br><small>(Posted to opposite side)</small></td>
+              <td>
+                <span style="color: var(--brand-2);">Affected Account Dr. (2× amount)</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Suspense Account<br>
+                <small style="color: var(--warning);">OR reverse if credit is needed</small>
+              </td>
+              <td style="color: var(--warning);">Double the amount involved</td>
+            </tr>
+            <tr>
+              <td><strong>Partial Omission</strong><br><small>(One side not posted)</small></td>
+              <td>
+                <span style="color: var(--brand-2);">Omitted Account Dr./Cr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To/By Suspense Account
+              </td>
+              <td style="color: var(--brand-2);">As needed to complete entry</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="table-scroll-hint">← Scroll horizontally →</span>
+      </div>
+    </section>
+
+    <!-- Two-Sided Errors in Detail -->
+    <section>
+      <h2>Two-Sided Errors - Detailed Explanation</h2>
+      
+      <p style="margin-bottom: 20px;">
+        Two-sided errors affect both debit and credit sides equally, so the trial balance still agrees. These errors are more dangerous because they're harder to detect. Let's explore each type:
+      </p>
+
+      <div class="error-types-grid">
+        <!-- Error of Principle -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #e91e63, #f06292);">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="error-type-title">1. Error of Principle</div>
+          <div class="error-type-desc">
+            Occurs when a transaction is recorded in violation of accounting principles. Usually involves wrong classification between capital and revenue items.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Purchase of furniture debited to Purchase A/c instead of Furniture A/c</li>
+              <li>Wages for machinery installation debited to Wages A/c instead of Machinery A/c</li>
+              <li>Sale of old asset credited to Sales A/c instead of Asset A/c</li>
+              <li>Repairs treated as improvements (capital expenditure)</li>
+            </ul>
+          </div>
+          <div class="error-box" style="margin-top: 10px; border-left: 4px solid #e91e63;">
+            <h4 style="color: #e91e63;"><i class="fas fa-exclamation-circle"></i> Key Point</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              <strong>Wrong classification</strong> between similar nature accounts. Both are expenses or both are assets, but wrong category chosen.
+            </p>
+          </div>
+        </div>
+
+        <!-- Error of Commission -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #9c27b0, #ba68c8);">
+            <i class="fas fa-user-times"></i>
+          </div>
+          <div class="error-type-title">2. Error of Commission</div>
+          <div class="error-type-desc">
+            Occurs when a transaction is recorded in a wrong account of similar nature or with wrong amount, but the entry remains technically correct.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>₹5,000 received from Mohan credited to Sohan's A/c</li>
+              <li>Goods sold to Ram posted to Shyam's A/c</li>
+              <li>₹1,000 paid for rent recorded as ₹100 in both accounts</li>
+              <li>Salary paid to Manager A posted to Manager B's account</li>
+            </ul>
+          </div>
+          <div class="warning-box" style="margin-top: 10px; border-left: 4px solid #9c27b0;">
+            <h4 style="color: #9c27b0;"><i class="fas fa-exchange-alt"></i> Rectification</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Reverse the wrong account and post to correct account. No suspense account needed!
+            </p>
+          </div>
+        </div>
+
+        <!-- Error of Complete Omission -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #3f51b5, #7986cb);">
+            <i class="fas fa-ban"></i>
+          </div>
+          <div class="error-type-title">3. Error of Complete Omission</div>
+          <div class="error-type-desc">
+            Occurs when both aspects (debit and credit) of a transaction are completely omitted from the books. Transaction is not recorded at all.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Goods purchased from A for ₹10,000 - completely not recorded</li>
+              <li>Rent paid ₹5,000 in cash - entirely omitted from books</li>
+              <li>Sales invoice not recorded in any book</li>
+              <li>Cash payment forgotten to be recorded</li>
+            </ul>
+          </div>
+          <div class="success-box" style="margin-top: 10px; border-left: 4px solid #3f51b5;">
+            <h4 style="color: #3f51b5;"><i class="fas fa-redo"></i> Rectification</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Simply pass the original entry that should have been passed. Record the complete transaction now.
+            </p>
+          </div>
+        </div>
+
+        <!-- Compensating Error -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #ff5722, #ff8a65);">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div class="error-type-title">4. Compensating Errors</div>
+          <div class="error-type-desc">
+            Occurs when two or more errors cancel out each other's effect, resulting in the trial balance still agreeing despite multiple mistakes.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Sales A/c overcasted by ₹1,000 & Purchase A/c also overcasted by ₹1,000</li>
+              <li>Ram's A/c short credited by ₹500 & Salary A/c short debited by ₹500</li>
+              <li>Multiple errors that accidentally balance each other</li>
+            </ul>
+          </div>
+          <div class="note-box" style="margin-top: 10px; border-left: 4px solid #ff5722;">
+            <h4 style="color: #ff5722;"><i class="fas fa-info-circle"></i> Nature</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Very difficult to detect! Requires careful verification of all accounts. Each error is rectified separately.
+            </p>
+          </div>
+        </div>
+
+        <!-- Error of Original Entry -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #795548, #a1887f);">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div class="error-type-title">5. Error of Original Entry</div>
+          <div class="error-type-desc">
+            Occurs when a wrong amount is recorded in the book of original entry (journal/subsidiary book), and this wrong amount is posted to both accounts.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Invoice of ₹5,000 recorded as ₹500 in Sales Book</li>
+              <li>Purchase of ₹15,000 written as ₹10,000 in Purchase Book</li>
+              <li>Wrong digits while recording original transaction</li>
+              <li>Transposition error: ₹1,250 written as ₹1,520</li>
+            </ul>
+          </div>
+          <div class="warning-box" style="margin-top: 10px; border-left: 4px solid #795548;">
+            <h4 style="color: #795548;"><i class="fas fa-tools"></i> Rectification</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Pass an entry for the <strong>difference amount</strong> to bring both accounts to their correct balances.
+            </p>
+          </div>
+        </div>
+
+        <!-- Error of Duplication -->
+        <div class="error-type-card">
+          <div class="error-type-icon" style="background: linear-gradient(135deg, #00bcd4, #4dd0e1);">
+            <i class="fas fa-copy"></i>
+          </div>
+          <div class="error-type-title">6. Error of Duplication</div>
+          <div class="error-type-desc">
+            Occurs when a transaction is recorded more than once in the books, creating duplicate entries for the same transaction.
+          </div>
+          <div class="error-type-examples">
+            <h5>Examples:</h5>
+            <ul>
+              <li>Same sales invoice recorded twice</li>
+              <li>Salary paid once but recorded twice</li>
+              <li>Purchase entry duplicated in Purchase Book</li>
+              <li>Cash receipt recorded in Cash Book twice</li>
+            </ul>
+          </div>
+          <div class="error-box" style="margin-top: 10px; border-left: 4px solid #00bcd4;">
+            <h4 style="color: #00bcd4;"><i class="fas fa-undo"></i> Rectification</h4>
+            <p style="color: var(--muted); margin: 0; font-size: 0.85rem;">
+              Pass a <strong>reverse entry</strong> to cancel out the duplicate recording. Remove the extra entry.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <h4><i class="fas fa-key"></i> Remember: Two-Sided Errors Formula</h4>
+        <p style="margin: 0;">
+          <strong>For two-sided errors, NEVER use Suspense Account!</strong><br>
+          Rectification involves only the accounts that were wrongly affected.
+        </p>
+      </div>
+    </section>
+
+    <!-- Rectification Formula -->
+    <section>
+      <h2>Rectification Entry Formulas</h2>
+      
+      <div class="table-wrapper">
+        <table class="rectification-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Error Type</th>
+              <th style="width: 40%;">Rectification Entry Format</th>
+              <th style="width: 30%;">Suspense A/c?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Error of Principle</strong></td>
+              <td>
+                <span style="color: var(--success);">Correct Account Dr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Wrong Account
+              </td>
+              <td style="text-align: center; color: var(--error);"><strong>NO</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Error of Commission</strong></td>
+              <td>
+                <span style="color: var(--success);">Correct Account Dr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Wrong Account
+              </td>
+              <td style="text-align: center; color: var(--error);"><strong>NO</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Complete Omission</strong></td>
+              <td>
+                <span style="color: var(--success);">Pass original entry</span><br>
+                (Account Dr./Account Cr.)
+              </td>
+              <td style="text-align: center; color: var(--error);"><strong>NO</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Original Entry (Less)</strong></td>
+              <td>
+                <span style="color: var(--success);">Account Dr. (difference)</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To Account (difference)
+              </td>
+              <td style="text-align: center; color: var(--error);"><strong>NO</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Original Entry (Excess)</strong></td>
+              <td>
+                <span style="color: var(--success);">Reverse entry for difference</span><br>
+                (Opposite of original)
+              </td>
+              <td style="text-align: center; color: var(--error);"><strong>NO</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Duplication</strong></td>
+              <td>
+                <span style="color: var(--success);">Reverse the duplicate entry</span><br>
+                (Opposite of wrong entry)
+              </td>
+              <td style="text-align: center; color: var(--error);"><strong>NO</strong></td>
+            </tr>
+            <tr style="background: rgba(124,77,255,0.1);">
+              <td><strong>Casting/Posting Errors</strong></td>
+              <td>
+                <span style="color: var(--brand-2);">Account Dr./Cr.</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;To/By Suspense Account
+              </td>
+              <td style="text-align: center; color: var(--success);"><strong>YES</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="table-scroll-hint">← Scroll horizontally →</span>
+      </div>
+    </section>
+
+    <!-- Practical Examples - ONE-SIDED ERRORS -->
+    <section>
+      <h2>Practical Examples - One-Sided Errors</h2>
+      
+      <!-- Example 1 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">1</div>
+          <div>
+            <h3 class="practical-title">Error of Casting - Sales Book Undercast</h3>
+            <p class="practical-subtitle">Undercasting of credit side</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Sales Book was undercast by ₹2,000. This means the credit side total is ₹2,000 less than it should be.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Sales Account is <span style="color: var(--error);">SHORT by ₹2,000</span> on credit side</li>
+            <li>This is a ONE-SIDED error</li>
+            <li>Trial Balance: Credit side will be short by ₹2,000</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex1', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex1-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Suspense A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">2,000</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sales A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">2,000</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being undercasting of Sales Book rectified)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem;">
+              Since Sales A/c was short on credit side, we credit it with ₹2,000 to increase it. Suspense A/c is debited to complete the double entry. This reduces the debit balance in Suspense A/c (or increases credit balance).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 2 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">2</div>
+          <div>
+            <h3 class="practical-title">Error of Posting - Wrong Amount Posted</h3>
+            <p class="practical-subtitle">Amount posted as less than actual</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Rent paid ₹5,000 was posted to Rent Account as ₹500 only.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Rent Account (Debit side) is <span style="color: var(--error);">SHORT by ₹4,500</span></li>
+            <li>Cash Account was correctly credited with ₹5,000</li>
+            <li>This is a ONE-SIDED error</li>
+            <li>Trial Balance: Debit side will be short by ₹4,500</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex2', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex2-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Rent A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">4,500</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">4,500</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being short posting to Rent Account rectified)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem;">
+              Rent A/c needs ₹4,500 more on debit side to make it ₹5,000. We debit Rent A/c and credit Suspense A/c with the difference amount.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 3 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">3</div>
+          <div>
+            <h3 class="practical-title">Posting to Wrong Side</h3>
+            <p class="practical-subtitle">Amount posted on opposite side</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Discount Allowed ₹300 was posted on the credit side of Discount Account instead of debit side.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Discount Allowed should be on <span style="color: var(--success);">DEBIT side</span></li>
+            <li>It was wrongly posted on <span style="color: var(--error);">CREDIT side</span></li>
+            <li>Effect: Difference of <strong>DOUBLE the amount</strong> = ₹600</li>
+            <li>Trial Balance: Debit side short by ₹600</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex3', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex3-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Discount Allowed A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">600</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">600</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being wrong side posting rectified)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="warning-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-exclamation-triangle"></i> Important Calculation</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.8;">
+              <strong>Step 1:</strong> Remove ₹300 from credit side (need to debit ₹300)<br>
+              <strong>Step 2:</strong> Add ₹300 to debit side (need to debit ₹300)<br>
+              <strong>Total:</strong> Debit ₹300 + ₹300 = ₹600<br><br>
+              <strong>Formula:</strong> Rectification amount = 2 × Original amount
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 4 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">4</div>
+          <div>
+            <h3 class="practical-title">Partial Omission</h3>
+            <p class="practical-subtitle">One side of entry missing</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Goods sold to Mohan for ₹8,000. Mohan's Account was debited but Sales Account was not credited.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Mohan A/c: ✓ Correctly debited</li>
+            <li>Sales A/c: ✗ Not credited (Missing)</li>
+            <li>This is a ONE-SIDED error (Partial Omission)</li>
+            <li>Trial Balance: Credit side will be short by ₹8,000</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex4', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex4-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Suspense A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">8,000</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sales A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">8,000</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being omission of credit to Sales Account rectified)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="success-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-info-circle"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem;">
+              We simply complete the missing part of the entry. Sales A/c should have been credited, so we credit it now. Suspense A/c is used to complete the double entry since the debit side (Mohan A/c) was already done.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 5 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">5</div>
+          <div>
+            <h3 class="practical-title">Overcasting of Purchase Returns Book</h3>
+            <p class="practical-subtitle">Overcasting on debit side</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Purchase Returns Book was overcast by ₹1,500. This means the debit side total is ₹1,500 more than it should be.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Purchase Returns A/c (Debit side) is <span style="color: var(--error);">EXCESS by ₹1,500</span></li>
+            <li>This is a ONE-SIDED error</li>
+            <li>Trial Balance: Debit side will be excess by ₹1,500</li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex5', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex5-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Suspense A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">1,500</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchase Returns A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">1,500</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being overcasting of Purchase Returns Book rectified)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem;">
+              Purchase Returns A/c has ₹1,500 excess on debit side, so we need to reduce it. We credit Purchase Returns A/c with ₹1,500 to reduce the debit balance. Suspense A/c is debited to balance the entry.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Practical Examples - TWO-SIDED ERRORS -->
+    <section>
+      <h2>Practical Examples - Two-Sided Errors</h2>
+      
+      <!-- Example 6 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">6</div>
+          <div>
+            <h3 class="practical-title">Error of Principle</h3>
+            <p class="practical-subtitle">Capital expenditure treated as revenue</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Furniture purchased for ₹25,000 was debited to Purchase Account instead of Furniture Account.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Wrong Entry: Purchase A/c Dr. ₹25,000</li>
+            <li>Correct Entry: Furniture A/c Dr. ₹25,000</li>
+            <li>This is a TWO-SIDED error (Error of Principle)</li>
+            <li>Trial Balance: Will still agree (both debit entries)</li>
+            <li><strong>NO Suspense Account needed</strong></li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex6', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex6-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Furniture A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">25,000</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchase A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">25,000</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being wrong debit to Purchase A/c rectified by debiting Furniture A/c)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.8;">
+              <strong>Step 1:</strong> Remove wrong entry - Credit Purchase A/c ₹25,000<br>
+              <strong>Step 2:</strong> Record correct entry - Debit Furniture A/c ₹25,000<br>
+              <strong>Result:</strong> Purchase A/c reduced, Furniture A/c increased<br>
+              <strong>Note:</strong> Cash/Bank side was already correct, so no change needed there.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 7 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">7</div>
+          <div>
+            <h3 class="practical-title">Error of Commission</h3>
+            <p class="practical-subtitle">Posted to wrong personal account</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> ₹7,500 received from Ramesh was credited to Suresh's Account.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Wrong Entry: Suresh A/c credited ₹7,500</li>
+            <li>Correct Entry: Ramesh A/c should be credited ₹7,500</li>
+            <li>This is a TWO-SIDED error (Error of Commission)</li>
+            <li>Trial Balance: Will still agree</li>
+            <li><strong>NO Suspense Account needed</strong></li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex7', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex7-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Suresh A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">7,500</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Ramesh A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">7,500</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being wrong credit to Suresh A/c now transferred to Ramesh A/c)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="success-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-info-circle"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem;">
+              We remove the credit from wrong person (Suresh) by debiting his account, and give the credit to the correct person (Ramesh) by crediting his account. This transfers the amount from one account to another.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 8 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">8</div>
+          <div>
+            <h3 class="practical-title">Error of Complete Omission</h3>
+            <p class="practical-subtitle">Transaction completely not recorded</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Goods purchased from Khan for ₹12,000 on credit was completely omitted from the books.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Neither Purchase A/c was debited</li>
+            <li>Nor Khan A/c was credited</li>
+            <li>This is a TWO-SIDED error (Complete Omission)</li>
+            <li>Trial Balance: Will still agree (nothing recorded)</li>
+            <li><strong>NO Suspense Account needed</strong></li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex8', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex8-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Purchase A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">12,000</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Khan A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">12,000</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being omitted purchase entry now recorded)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem;">
+              For complete omission, simply pass the original entry that should have been passed. Record the transaction as if it's being done for the first time.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 9 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">9</div>
+          <div>
+            <h3 class="practical-title">Error of Original Entry - Less Amount</h3>
+            <p class="practical-subtitle">Wrong amount recorded in source document</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Sales invoice of ₹18,000 was recorded as ₹8,000 in the Sales Book and posted accordingly.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Both accounts affected: Debtor A/c and Sales A/c</li>
+            <li>Both posted with wrong amount (₹8,000 instead of ₹18,000)</li>
+            <li>Shortage in both: ₹10,000</li>
+            <li>This is a TWO-SIDED error (Original Entry)</li>
+            <li>Trial Balance: Will still agree</li>
+            <li><strong>NO Suspense Account needed</strong></li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex9', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex9-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Debtor A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">10,000</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sales A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">10,000</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being short recording in Sales Book now rectified with difference amount)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="warning-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-calculator"></i> Calculation</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.8;">
+              <strong>Correct Amount:</strong> ₹18,000<br>
+              <strong>Recorded Amount:</strong> ₹8,000<br>
+              <strong>Difference (Shortage):</strong> ₹10,000<br><br>
+              Pass entry for the <strong>difference amount only</strong>, not the full amount.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 10 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">10</div>
+          <div>
+            <h3 class="practical-title">Error of Original Entry - Excess Amount</h3>
+            <p class="practical-subtitle">More amount recorded than actual</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Problem:</strong> Purchase of goods ₹6,500 was recorded as ₹8,500 in Purchase Book and posted to both accounts.</p>
+          <p style="margin-top: 10px;"><strong>Analysis:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li>Both accounts affected: Purchase A/c and Creditor A/c</li>
+            <li>Both posted with excess amount</li>
+            <li>Excess in both: ₹2,000</li>
+            <li>This is a TWO-SIDED error</li>
+            <li>Trial Balance: Will still agree</li>
+            <li><strong>NO Suspense Account needed</strong></li>
+          </ul>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('ex10', event)">
+          <i class="fas fa-eye"></i> View Solution
+        </button>
+
+        <div class="solution" id="ex10-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entry</h4>
+          
+          <div class="table-wrapper">
+            <table class="journal-entry-table">
+              <thead>
+                <tr>
+                  <th class="particulars-col">Particulars</th>
+                  <th class="debit-col">Debit (₹)</th>
+                  <th class="credit-col">Credit (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Creditor A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                  <td style="text-align: right;">2,000</td>
+                  <td style="text-align: right;">-</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchase A/c</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="text-align: right;">2,000</td>
+                </tr>
+                <tr class="narration-row">
+                  <td colspan="3">(Being excess recording in Purchase Book rectified by reverse entry for difference)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-box" style="margin-top: 15px;">
+            <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.8;">
+              When amount is recorded in <strong>EXCESS</strong>, pass a <strong>REVERSE entry</strong> for the difference.<br><br>
+              Original (Wrong): Purchase Dr. ₹8,500 / Creditor Cr. ₹8,500<br>
+              Reverse (for excess): Creditor Dr. ₹2,000 / Purchase Cr. ₹2,000<br>
+              Result: Net effect is ₹6,500 (correct amount)
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comprehensive Questions (DK Goyal Style) -->
+    <section>
+      <h2>Comprehensive Rectification Questions</h2>
+      <p style="margin-bottom: 20px;">
+        These questions involve multiple errors that need to be rectified. Practice each carefully and understand the logic behind each entry.
+      </p>
+
+      <!-- Comprehensive Question 1 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">Q1</div>
+          <div>
+            <h3 class="practical-title">Multiple Errors - Set 1</h3>
+            <p class="practical-subtitle">Rectify the following errors discovered before preparation of final accounts</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>The following errors were discovered:</strong></p>
+          <ol style="margin: 10px 0; padding-left: 20px; line-height: 2;">
+            <li>Sales Book was undercast by ₹5,000</li>
+            <li>Purchases from Sharma ₹8,000 were posted to Verma's account</li>
+            <li>Goods worth ₹3,500 returned by customer were not recorded</li>
+            <li>Salary paid ₹6,000 was posted as ₹600 to Salary Account</li>
+            <li>Machinery purchased for ₹50,000 was debited to Purchase Account</li>
+          </ol>
+          <p style="margin-top: 15px;"><strong>Required:</strong> Pass rectification entries.</p>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('cq1', event)">
+          <i class="fas fa-eye"></i> View Complete Solution
+        </button>
+
+        <div class="solution" id="cq1-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entries</h4>
+          
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 1: Sales Book Undercast by ₹5,000</h5>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> One-sided error (Casting error)</p>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <thead>
+                  <tr>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Suspense A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">5,000</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sales A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">5,000</td>
+                  </tr>
+                  <tr class="narration-row">
+                    <td colspan="3">(Being undercasting of Sales Book rectified)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 2: Purchase from Sharma posted to Verma</h5>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> Two-sided error (Error of Commission)</p>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <thead>
+                  <tr>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Verma A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">8,000</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sharma A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">8,000</td>
+                  </tr>
+                  <tr class="narration-row">
+                    <td colspan="3">(Being wrong credit to Verma now transferred to Sharma)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 3: Sales Returns not recorded</h5>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> Two-sided error (Complete Omission)</p>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <thead>
+                  <tr>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sales Returns A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">3,500</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Customer A/c (Debtor)</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">3,500</td>
+                  </tr>
+                  <tr class="narration-row">
+                    <td colspan="3">(Being omitted sales returns entry now recorded)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 4: Salary ₹6,000 posted as ₹600</h5>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> One-sided error (Posting error)<br><strong>Shortage:</strong> ₹5,400</p>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <thead>
+                  <tr>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Salary A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">5,400</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">5,400</td>
+                  </tr>
+                  <tr class="narration-row">
+                    <td colspan="3">(Being short posting to Salary Account rectified)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 5: Machinery debited to Purchase A/c</h5>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> Two-sided error (Error of Principle)</p>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <thead>
+                  <tr>
+                    <th class="particulars-col">Particulars</th>
+                    <th class="debit-col">Debit (₹)</th>
+                    <th class="credit-col">Credit (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Machinery A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">50,000</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchase A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">50,000</td>
+                  </tr>
+                  <tr class="narration-row">
+                    <td colspan="3">(Being capital expenditure wrongly debited to revenue account rectified)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="success-box">
+            <h4><i class="fas fa-check-circle"></i> Summary</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--muted);">
+              <strong>Total Entries:</strong> 5<br>
+              <strong>One-sided errors (with Suspense A/c):</strong> 2 (Errors 1 & 4)<br>
+              <strong>Two-sided errors (without Suspense A/c):</strong> 3 (Errors 2, 3 & 5)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comprehensive Question 2 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">Q2</div>
+          <div>
+            <h3 class="practical-title">Multiple Errors - Set 2</h3>
+            <p class="practical-subtitle">Rectification with Suspense Account analysis</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>Trial Balance did not agree. Difference of ₹12,350 (short on debit side) was placed in Suspense Account. Following errors were discovered:</strong></p>
+          <ol style="margin: 10px 0; padding-left: 20px; line-height: 2;">
+            <li>Purchase Returns Book was overcast by ₹2,500</li>
+            <li>Discount Allowed ₹850 was posted on credit side of Discount Account</li>
+            <li>₹4,500 paid for Insurance was debited to Landlord's Account</li>
+            <li>Goods sold to Ravi ₹6,000 were not recorded in books</li>
+            <li>Credit purchases ₹3,200 were posted as ₹2,300 to Purchase Account</li>
+            <li>Wages paid for installation of machinery ₹8,000 debited to Wages Account</li>
+          </ol>
+          <p style="margin-top: 15px;"><strong>Required:</strong> (a) Pass rectification entries (b) Prepare Suspense Account</p>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('cq2', event)">
+          <i class="fas fa-eye"></i> View Complete Solution
+        </button>
+
+        <div class="solution" id="cq2-solution">
+          <h4><i class="fas fa-check-circle"></i> Part (a): Rectification Entries</h4>
+          
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 1: Purchase Returns Book overcast by ₹2,500</h5>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> One-sided error - Excess on debit side</p>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Suspense A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">2,500</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchase Returns A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">2,500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 2: Discount Allowed ₹850 on wrong side</h5>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> One-sided error - Posted to wrong side (2× effect = ₹1,700)</p>
+        <div class="table-wrapper">
+          <table class="journal-entry-table">
+            <tbody>
+              <tr>
+                <td>Discount Allowed A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td style="text-align: right;">1,700</td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">1,700</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 3: Insurance payment debited to Landlord</h5>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> Two-sided error (Error of Commission)</p>
+        <div class="table-wrapper">
+          <table class="journal-entry-table">
+            <tbody>
+              <tr>
+                <td>Insurance A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td style="text-align: right;">4,500</td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Landlord A/c</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">4,500</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 4: Sales to Ravi not recorded</h5>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> Two-sided error (Complete Omission)</p>
+        <div class="table-wrapper">
+          <table class="journal-entry-table">
+            <tbody>
+              <tr>
+                <td>Ravi A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td style="text-align: right;">6,000</td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sales A/c</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">6,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 5: Purchase ₹3,200 posted as ₹2,300 (Short by ₹900)</h5>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> One-sided error (Posting error)</p>
+        <div class="table-wrapper">
+          <table class="journal-entry-table">
+            <tbody>
+              <tr>
+                <td>Purchase A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td style="text-align: right;">900</td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">900</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 25px;">
+        <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 6: Wages for machinery installation debited to Wages A/c</h5>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 10px;"><strong>Type:</strong> Two-sided error (Error of Principle)</p>
+        <div class="table-wrapper">
+          <table class="journal-entry-table">
+            <tbody>
+              <tr>
+                <td>Machinery A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                <td style="text-align: right;">8,000</td>
+                <td style="text-align: right;">-</td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;To Wages A/c</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">8,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h4 style="color: var(--brand-2); margin: 30px 0 15px 0;"><i class="fas fa-clipboard-list"></i> Part (b): Suspense Account</h4>
+      
+      <div class="table-wrapper">
+        <table class="rectification-table">
+          <thead>
+            <tr>
+              <th style="width: 50%;">Dr. Side</th>
+              <th style="width: 20%; text-align: right;">Amount (₹)</th>
+              <th style="width: 20%; text-align: right;">Amount (₹)</th>
+              <th style="width: 10%;">Cr. Side</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>To Difference in Trial Balance<br><small>(Debit side short)</small></td>
+              <td style="text-align: right;"><strong>12,350</strong></td>
+              <td style="text-align: right;">2,500</td>
+              <td>By Purchase Returns A/c<br><small>(Error 1)</small></td>
+            </tr>
+            <tr>
+              <td>To Discount Allowed A/c<br><small>(Error 2)</small></td>
+              <td style="text-align: right;">1,700</td>
+              <td style="text-align: right;">900</td>
+              <td>By Purchase A/c<br><small>(Error 5)</small></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td style="text-align: right;"><strong>8,950</strong></td>
+              <td>By Balance c/d<br><small>(Still unidentified errors)</small></td>
+            </tr>
+            <tr style="background: rgba(76,175,80,0.1); font-weight: bold;">
+              <td>Total</td>
+              <td style="text-align: right;">14,050</td>
+              <td style="text-align: right;">14,050</td>
+              <td>Total</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warning-box" style="margin-top: 20px;">
+        <h4><i class="fas fa-exclamation-triangle"></i> Important Note</h4>
+        <p style="margin: 0; font-size: 0.85rem; color: var(--muted);">
+          The Suspense Account still shows a balance of ₹8,950 (Cr.). This means there are still more errors that haven't been discovered yet. Only errors 1, 2, and 5 affected the Suspense Account. Errors 3, 4, and 6 were two-sided errors and didn't affect the trial balance.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comprehensive Question 3 -->
+      <div class="practical-card">
+        <div class="practical-header">
+          <div class="practical-icon">Q3</div>
+          <div>
+            <h3 class="practical-title">Multiple Errors - Set 3</h3>
+            <p class="practical-subtitle">Advanced rectification with mixed errors</p>
+          </div>
+        </div>
+
+        <div style="color: var(--muted); line-height: 1.8; margin: 20px 0; font-size: 0.9rem;">
+          <p><strong>On 31st March 2024, Trial Balance did not agree. Difference was ₹8,750 (Credit side short). The following errors were found:</strong></p>
+          <ol style="margin: 10px 0; padding-left: 20px; line-height: 2;">
+            <li>Discount Received ₹1,250 was posted to the debit side of Discount Account</li>
+            <li>Purchase of furniture ₹15,000 was recorded in Purchase Book</li>
+            <li>Sales to Mohan ₹9,500 were posted to Sohan's Account</li>
+            <li>Returns Outward Book was undercast by ₹3,500</li>
+            <li>Salary paid ₹4,800 was posted to both sides as ₹8,400</li>
+            <li>Bad Debts written off ₹2,750 were not posted to Bad Debts Account</li>
+          </ol>
+          <p style="margin-top: 15px;"><strong>Required:</strong> Pass rectification entries and prepare Suspense Account.</p>
+        </div>
+
+        <button class="view-solution-btn" onclick="toggleSolution('cq3', event)">
+          <i class="fas fa-eye"></i> View Complete Solution
+        </button>
+
+        <div class="solution" id="cq3-solution">
+          <h4><i class="fas fa-check-circle"></i> Rectification Entries</h4>
+          
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 1: Discount Received on wrong side (2× ₹1,250 = ₹2,500)</h5>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Suspense A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">2,500</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Discount Received A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">2,500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 2: Furniture purchase in Purchase Book</h5>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Furniture A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">15,000</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Purchase A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">15,000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 3: Sales to Mohan posted to Sohan</h5>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Mohan A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">9,500</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Sohan A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">9,500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 4: Returns Outward undercast by ₹3,500</h5>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Purchase Returns A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">3,500</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">3,500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 5: Salary ₹4,800 posted as ₹8,400 (Excess ₹3,600 on both sides)</h5>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Cash/Bank A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">3,600</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Salary A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">3,600</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <h5 style="color: var(--brand-2); margin-bottom: 10px;">Error 6: Bad Debts not posted to Bad Debts A/c</h5>
+            <div class="table-wrapper">
+              <table class="journal-entry-table">
+                <tbody>
+                  <tr>
+                    <td>Bad Debts A/c &nbsp;&nbsp;&nbsp;&nbsp;Dr.</td>
+                    <td style="text-align: right;">2,750</td>
+                    <td style="text-align: right;">-</td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;To Suspense A/c</td>
+                    <td style="text-align: right;">-</td>
+                    <td style="text-align: right;">2,750</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h4 style="color: var(--brand-2); margin: 30px 0 15px 0;"><i class="fas fa-clipboard-list"></i> Suspense Account</h4>
+          
+          <div class="table-wrapper">
+            <table class="rectification-table">
+              <thead>
+                <tr>
+                  <th>Dr. Side</th>
+                  <th style="text-align: right;">Amount (₹)</th>
+                  <th style="text-align: right;">Amount (₹)</th>
+                  <th>Cr. Side</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>To Discount Received A/c</td>
+                  <td style="text-align: right;">2,500</td>
+                  <td style="text-align: right;"><strong>8,750</strong></td>
+                  <td>By Difference (Credit side short)</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="text-align: right;">3,500</td>
+                  <td>By Purchase Returns A/c</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="text-align: right;">2,750</td>
+                  <td>By Bad Debts A/c</td>
+                </tr>
+                <tr style="background: rgba(76,175,80,0.1); font-weight: bold;">
+                  <td>Total</td>
+                  <td style="text-align: right;">2,500</td>
+                  <td style="text-align: right;">15,000</td>
+                  <td>Total</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="error-box" style="margin-top: 20px;">
+            <h4><i class="fas fa-exclamation-circle"></i> Wait! Suspense Account doesn't balance!</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--muted);">
+              Dr. Total: ₹2,500 | Cr. Total: ₹15,000<br>
+              This shows there's still a missing piece. Let's recalculate properly considering all one-sided errors that affect the trial balance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Rectification Game -->
+    <section>
+      <h2>🎮 Rectification Challenge Game</h2>
+      <p style="margin-bottom: 20px;">
+        Practice your rectification skills! Identify the type of error and drag the correct accounts to create the rectification entry.
+      </p>
+
+      <div class="game-container" style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="error-display-panel" style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 20px; border: 2px solid rgba(255,255,255,0.1);">
+          <h3 style="color: var(--brand-2); margin-bottom: 15px;">Current Error:</h3>
+          <div id="current-error" style="color: var(--text); font-size: 1.1rem; line-height: 1.8; padding: 15px; background: rgba(124,77,255,0.1); border-radius: 8px;">
+            Click "Start Game" to begin!
+          </div>
+          <div id="error-type-hint" style="margin-top: 15px; padding: 12px; background: rgba(0,229,255,0.1); border-radius: 8px; display: none;">
+            <strong style="color: var(--brand-2);">Hint:</strong> <span id="hint-text" style="color: var(--muted);"></span>
+          </div>
+        </div>
+
+        <div class="answer-panel" style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 20px; border: 2px solid rgba(255,255,255,0.1);">
+          <h3 style="color: var(--brand-2); margin-bottom: 15px;">Build Your Entry:</h3>
+          
+          <div class="entry-builder" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;">
+            <div class="debit-entry" style="margin-bottom: 15px;">
+              <label style="color: var(--success); font-weight: bold; display: block; margin-bottom: 8px;">Debit:</label>
+              <select id="debit-account" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text); font-size: 0.9rem;">
+                <option value="">-- Select Account --</option>
+              </select>
+            </div>
+            
+            <div class="credit-entry">
+              <label style="color: var(--error); font-weight: bold; display: block; margin-bottom: 8px;">Credit:</label>
+              <select id="credit-account" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text); font-size: 0.9rem;">
+                <option value="">-- Select Account --</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+            <button onclick="checkGameAnswer()" style="flex: 1; min-width: 120px; padding: 12px 20px; background: linear-gradient(135deg, var(--brand-2), var(--brand)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+              <i class="fas fa-check"></i> Check Answer
+            </button>
+            <button onclick="showGameHint()" style="flex: 1; min-width: 120px; padding: 12px 20px; background: linear-gradient(135deg, var(--warning), #ffb74d); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+              <i class="fas fa-lightbulb"></i> Hint
+            </button>
+            <button onclick="nextGameQuestion()" style="flex: 1; min-width: 120px; padding: 12px 20px; background: linear-gradient(135deg, #4caf50, #81c784); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+              <i class="fas fa-arrow-right"></i> Next Error
+            </button>
+          </div>
+        </div>
+
+        <div class="game-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+          <div style="background: linear-gradient(135deg, rgba(76,175,80,0.2), rgba(76,175,80,0.1)); padding: 15px; border-radius: 10px; text-align: center; border: 2px solid var(--success);">
+            <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 5px;">Correct</div>
+            <div id="correct-count" style="font-size: 1.8rem; font-weight: bold; color: var(--success);">0</div>
+          </div>
+          <div style="background: linear-gradient(135deg, rgba(244,67,54,0.2), rgba(244,67,54,0.1)); padding: 15px; border-radius: 10px; text-align: center; border: 2px solid var(--error);">
+            <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 5px;">Wrong</div>
+            <div id="wrong-count" style="font-size: 1.8rem; font-weight: bold; color: var(--error);">0</div>
+          </div>
+          <div style="background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); padding: 15px; border-radius: 10px; text-align: center; border: 2px solid var(--brand);">
+            <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 5px;">Score</div>
+            <div id="game-score" style="font-size: 1.8rem; font-weight: bold; color: var(--brand-2);">0%</div>
+          </div>
+          <div style="background: linear-gradient(135deg, rgba(255,152,0,0.2), rgba(255,152,0,0.1)); padding: 15px; border-radius: 10px; text-align: center; border: 2px solid var(--warning);">
+            <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 5px;">Question</div>
+            <div id="question-number" style="font-size: 1.8rem; font-weight: bold; color: var(--warning);">1/10</div>
+          </div>
+        </div>
+
+        <div id="game-feedback" style="display: none; padding: 20px; border-radius: 12px; text-align: center; font-size: 1.1rem; font-weight: 600;"></div>
+      </div>
+    </section>
+
+    <!-- MCQs -->
+    <section id="mcqSection">
+      <h2>🧩 MCQ Practice</h2>
+      <div id="quiz-progress"></div>
+      <div class="mcq-grid" id="quiz-container">
+        <!-- Question 1 -->
+        <div class="mcq" data-answer="b">
+          <h3>1. Rectification of errors means:</h3>
+          <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Detection of errors</label>
+          <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Correction of errors</label>
+          <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Prevention of errors</label>
+          <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Recording of errors</label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="mcq" data-answer="a">
+          <h3>2. Suspense Account is opened when:</h3>
+          <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Trial Balance does not agree</label>
+          <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Trial Balance agrees</label>
+          <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Final accounts are prepared</label>
+          <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Books are closed</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="mcq" data-answer="c">
+          <h3>3. Furniture purchased for ₹50,000 was debited to Purchase Account. This is an error of:</h3>
+          <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Commission</label>
+          <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Omission</label>
+          <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Principle</label>
+          <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Casting</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="mcq" data-answer="d">
+          <h3>4. Which error does NOT affect the agreement of Trial Balance?</h3>
+          <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Error of casting</label>
+          <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Error of posting wrong amount</label>
+          <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Posting to wrong side</label>
+          <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Error of principle</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="mcq" data-answer="b">
+          <h3>5. Sales Book undercast by ₹5,000 will be rectified by:</h3>
+          <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Debiting Sales A/c</label>
+          <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Crediting Sales A/c</label>
+          <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Debiting Purchase A/c</label>
+          <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">Crediting Purchase A/c</label>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="mcq" data-answer="c">
+          <h3>6. ₹500 received from Ram was credited to Shyam. This is an error of:</h3>
+          <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Principle</label>
+          <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Omission</label>
+          <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Commission</label>
+          <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Casting</label>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="mcq" data-answer="a">
+          <h3>7. If debit side of Trial Balance is short, Suspense Account will have:</h3>
+          <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">Debit balance</label>
+          <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Credit balance</label>
+          <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">No balance</label>
+          <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Either balance</label>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="mcq" data-answer="b">
+          <h3>8. When errors are rectified before preparing Trial Balance, they are rectified by:</h3>
+          <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">Journal entry only</label>
+          <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">Striking out and rewriting</label>
+          <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">Opening Suspense Account</label>
+          <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">None of the above</label>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="mcq" data-answer="c">
+          <h3>9. To rectify the error of Purchase Book overcast by ₹1,000, we need to:</h3>
+          <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Debit Purchase A/c</label>
+          <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Credit Suspense A/c</label>
+          <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Credit Purchase A/c</label>
+          <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">Debit Cash A/c</label>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="mcq" data-answer="a">
+          <h3>10. Error of complete omission is an example of:</h3>
+          <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Two-sided error</label>
+          <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">One-sided error</label>
+          <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Compensating error</label>
+          <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">Error of principle</label>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="mcq" data-answer="d">
+          <h3>11. Suspense Account is closed when:</h3>
+          <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">Trial Balance is prepared</label>
+          <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">Balance Sheet is prepared</label>
+          <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">Final accounts are prepared</label>
+          <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">All errors are rectified</label>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="mcq" data-answer="b">
+          <h3>12. Goods sold to Mohan ₹5,000 were not recorded. The rectifying entry will be:</h3>
+          <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">Debit Sales, Credit Mohan</label>
+          <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">Debit Mohan, Credit Sales</label>
+          <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Debit Cash, Credit Sales</label>
+          <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Debit Mohan, Credit Cash</label>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="mcq" data-answer="c">
+          <h3>13. If credit side of Trial Balance exceeds by ₹500, Suspense Account will show:</h3>
+          <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Credit balance of ₹500</label>
+          <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Credit balance of ₹1,000</label>
+          <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Debit balance of ₹500</label>
+          <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Debit balance of ₹1,000</label>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="mcq" data-answer="a">
+          <h3>14. Salary paid ₹8,000 was debited to employee's personal account. This is:</h3>
+          <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Error of principle</label>
+          <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Error of commission</label>
+          <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Error of omission</label>
+          <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Error of duplication</label>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="mcq" data-answer="b">
+          <h3>15. Posting ₹750 on the debit side instead of ₹570 is an error of:</h3>
+          <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Omission</label>
+          <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">Commission</label>
+          <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Principle</label>
+          <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Compensating</label>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="mcq" data-answer="d">
+          <h3>16. If Suspense Account shows a debit balance, it indicates:</h3>
+          <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">Credit side of Trial Balance was more</label>
+          <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Both sides were equal</label>
+          <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Debit side of Trial Balance was more</label>
+          <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Credit side of Trial Balance was short</label>
+        </div>
+
+        <!-- Question 17 -->
+        <div class="mcq" data-answer="a">
+          <h3>17. Goods returned by customer ₹2,000 were not recorded. To rectify:</h3>
+          <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Debit Sales Returns, Credit Customer</label>
+          <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Debit Customer, Credit Sales Returns</label>
+          <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Debit Sales, Credit Customer</label>
+          <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Debit Customer, Credit Sales</label>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="mcq" data-answer="c">
+          <h3>18. One-sided errors affect:</h3>
+          <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">Both debit and credit</label>
+          <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">Neither debit nor credit</label>
+          <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">Only one side (debit or credit)</label>
+          <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">Balance Sheet only</label>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="mcq" data-answer="b">
+          <h3>19. Discount allowed ₹300 was not posted to Discount Account. The rectifying entry is:</h3>
+          <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">Debit Suspense, Credit Discount</label>
+          <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">Debit Discount, Credit Suspense</label>
+          <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">Debit Cash, Credit Discount</label>
+          <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">Debit Discount, Credit Cash</label>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="mcq" data-answer="a">
+          <h3>20. After rectification of all errors, Suspense Account will show:</h3>
+          <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">Nil balance</label>
+          <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">Debit balance</label>
+          <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">Credit balance</label>
+          <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">Any balance</label>
+        </div>
+      </div>
+
+      <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+      <div id="quizResult"></div>
+      <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="lesson-footer">
+      <div class="footer-content">
+        <p class="footer-copyright">AccountsWizard © 2025 • <span id="lesson-title">Lesson 15 — Rectification of Errors</span></p>
+        <div class="footer-links">
+          <a href="../index.html" class="footer-link">
+            <i class="fas fa-home"></i>
+            <span>Back to Home</span>
+          </a>
+          <a href="../lessons.html" class="footer-link">
+            <i class="fas fa-book"></i>
+            <span>All Lessons</span>
+          </a>
+      </div>
+    </footer>
+
+  </main>
+
+    <!-- JavaScript for All Interactive Features -->
+  <script type="module">
+    // ========================================
+    // 1. IMPORT FIREBASE
+    // ========================================
+    import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
+
+    // ========================================
+    // 2. CONFIGURATION
+    // ========================================
+    const LESSON_NUMBER = '15';
+    const LESSON_ID = 'lesson-15';
+
+    // ========================================
+    // 3. QUIZ SYSTEM
+    // ========================================
+    function initQuiz() {
+      console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
+
+      const container = document.getElementById('quiz-container');
+      if (!container) {
+        console.error('❌ Quiz container not found');
+        return;
+      }
+
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.addEventListener('click', function(e) {
+          if (this.dataset.checked === 'true') {
+            this.checked = false;
+            this.dataset.checked = 'false';
+          } else {
+            const groupName = this.name;
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+              radio.dataset.checked = 'false';
+            });
+            this.dataset.checked = 'true';
+          }
+        });
+      });
+
+      console.log('✅ Quiz initialized with', allInputs.length, 'options');
+    }
+
+    // ========================================
+    // 4. SUBMIT QUIZ
+    // ========================================
+    window.submitQuiz = async function() {
+      console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const mcqs = container.querySelectorAll('.mcq');
+      if (mcqs.length === 0) return;
+
+      let answersData = {};
+      let correctCount = 0;
+      let totalQuestions = mcqs.length;
+      let answeredCount = 0;
+
+      mcqs.forEach((mcq, index) => {
+        const correctAnswer = mcq.dataset.answer;
+        const questionNumber = `q${index + 1}`;
+        const inputs = mcq.querySelectorAll('input[type="radio"]');
+        const questionName = inputs[0].name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+        if (!selected) return;
+
+        answeredCount++;
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === correctAnswer;
+        if (isCorrect) correctCount++;
+
+        answersData[questionNumber] = {
+          selected: selectedValue,
+          correct: correctAnswer,
+          isCorrect: isCorrect
+        };
+
+        inputs.forEach(input => {
+          const label = input.nextElementSibling;
+          if (!label) return;
+          input.disabled = true;
+          if (input.value === correctAnswer) {
+            label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
+            label.style.borderLeft = '4px solid #10b981';
+            label.style.fontWeight = 'bold';
+          }
+          if (input.value === selectedValue && !isCorrect) {
+            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+            label.style.borderLeft = '4px solid #ef4444';
+          }
+        });
+      });
+
+      if (answeredCount === 0) {
+        alert('⚠️ Please answer at least 1 question before submitting!');
+        return;
+      }
+
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+      const submitBtn = document.getElementById('submitQuiz');
+      const resultDiv = document.getElementById('quizResult');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+      }
+
+      try {
+        console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+        const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+        console.log("✅ Firebase response:", result);
+
+        if (resultDiv) {
+          if (result && result.success) {
+            if (result.updated) {
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+            } else {
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+            }
+          } else {
+            resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console (F12) for details.</div>
+              </div>`;
+            console.error("❌ Firebase error:", result?.error || "Unknown error");
+          }
+        }
+      } catch (error) {
+        console.error("❌ Critical error during submission:", error);
+        if (resultDiv) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+            </div>`;
+        }
+      } finally {
+        const retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) retryBtn.style.display = 'block';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = '✓ Submitted';
+        }
+      }
+    };
+
+    // ========================================
+    // 5. RETRY QUIZ
+    // ========================================
+    window.retryQuiz = function() {
+      console.log('🔄 Retrying quiz');
+
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.disabled = false;
+        input.dataset.checked = 'false';
+
+        const label = input.nextElementSibling;
+        if (label) {
+          label.style.background = '';
+          label.style.borderLeft = '';
+          label.style.fontWeight = '';
+        }
+      });
+
+      const resultDiv = document.getElementById('quizResult');
+      if (resultDiv) resultDiv.innerHTML = '';
+
+      const submitBtn = document.getElementById('submitQuiz');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Answers';
+      }
+
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) retryBtn.style.display = 'none';
+
+      document.getElementById('mcqSection')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ========================================
+    // 6. TOGGLE SOLUTION FUNCTION
+    // ========================================
+    window.toggleSolution = function(id, event) {
+      const solution = document.getElementById(id + '-solution');
+      const button = event.currentTarget;
+
+      if (!solution || !button) {
+        console.error('Solution or button not found for id:', id);
+        return;
+      }
+
+      if (solution.classList.contains('active')) {
+        solution.classList.remove('active');
+        button.textContent = 'View Solution';
+      } else {
+        solution.classList.add('active');
+        button.textContent = 'Hide Solution';
+      }
+    }
+
+    // ========================================
+    // 7. GAME DATA & INITIALIZATION
+    // ========================================
+    const gameErrors = [
+      {
+        id: 1,
+        description: "Furniture purchased for ₹10,000 was wrongly debited to Purchases Account.",
+        debitAccount: "Furniture A/c",
+        creditAccount: "Purchases A/c",
+        hint: "This is an error of principle - asset was treated as expense"
+      },
+      {
+        id: 2,
+        description: "Sales Book was undercast by ₹5,000.",
+        debitAccount: "Suspense A/c",
+        creditAccount: "Sales A/c",
+        hint: "One-sided error - only credit side is affected"
+      },
+      {
+        id: 3,
+        description: "₹3,000 received from Ram was credited to Shyam's Account.",
+        debitAccount: "Shyam A/c",
+        creditAccount: "Ram A/c",
+        hint: "Error of commission - posting to wrong personal account"
+      },
+      {
+        id: 4,
+        description: "Goods sold to Mohan ₹8,000 were not recorded at all.",
+        debitAccount: "Mohan A/c",
+        creditAccount: "Sales A/c",
+        hint: "Complete omission - both debit and credit were missed"
+      },
+      {
+        id: 5,
+        description: "Purchase Returns Book was overcast by ₹2,000.",
+        debitAccount: "Purchase Returns A/c",
+        creditAccount: "Suspense A/c",
+        hint: "One-sided error - only credit side needs correction"
+      },
+      {
+        id: 6,
+        description: "Salary paid ₹15,000 was debited to employee's personal account.",
+        debitAccount: "Salary A/c",
+        creditAccount: "Employee Personal A/c",
+        hint: "Error of principle - expense treated as receivable"
+      },
+      {
+        id: 7,
+        description: "Discount allowed ₹500 was not posted to Discount Account.",
+        debitAccount: "Discount Allowed A/c",
+        creditAccount: "Suspense A/c",
+        hint: "Partial omission - one side not posted"
+      },
+      {
+        id: 8,
+        description: "Cash received ₹6,000 was posted to Cash Account as ₹600.",
+        debitAccount: "Cash A/c",
+        creditAccount: "Suspense A/c",
+        hint: "Error of commission - wrong amount posted (difference ₹5,400)"
+      },
+      {
+        id: 9,
+        description: "Repairs to machinery ₹7,000 was debited to Machinery Account.",
+        debitAccount: "Repairs A/c",
+        creditAccount: "Machinery A/c",
+        hint: "Error of principle - revenue expenditure treated as capital"
+      },
+      {
+        id: 10,
+        description: "Goods returned by customer ₹4,000 were not recorded.",
+        debitAccount: "Sales Returns A/c",
+        creditAccount: "Customer A/c",
+        hint: "Complete omission - record the return entry"
+      }
+    ];
+
+    let currentGameState = {
+      currentQuestion: 0,
+      correctCount: 0,
+      wrongCount: 0,
+      hintsUsed: 0
+    };
+
+    const accountOptions = [
+      "Furniture A/c", "Purchases A/c", "Sales A/c", "Suspense A/c",
+      "Shyam A/c", "Ram A/c", "Mohan A/c", "Cash A/c",
+      "Purchase Returns A/c", "Sales Returns A/c", "Salary A/c",
+      "Employee Personal A/c", "Discount Allowed A/c", "Machinery A/c",
+      "Repairs A/c", "Customer A/c", "Capital A/c", "Bank A/c"
+    ];
+
+    window.initializeGame = function() {
+      const debitSelect = document.getElementById('debit-account');
+      const creditSelect = document.getElementById('credit-account');
+
+      if (!debitSelect || !creditSelect) return;
+
+      // Populate dropdowns
+      accountOptions.forEach(account => {
+        debitSelect.innerHTML += `<option value="${account}">${account}</option>`;
+        creditSelect.innerHTML += `<option value="${account}">${account}</option>`;
+      });
+
+      loadGameQuestion();
+    }
+
+    function loadGameQuestion() {
+      const errorDisplay = document.getElementById('current-error');
+      const hintDiv = document.getElementById('error-type-hint');
+      const questionNum = document.getElementById('question-number');
+
+      if (!errorDisplay) return;
+
+      if (currentGameState.currentQuestion >= gameErrors.length) {
+        showGameComplete();
+        return;
+      }
+
+      const currentError = gameErrors[currentGameState.currentQuestion];
+      errorDisplay.textContent = currentError.description;
+
+      if (hintDiv) hintDiv.style.display = 'none';
+      if (questionNum) questionNum.textContent = `${currentGameState.currentQuestion + 1}/${gameErrors.length}`;
+
+      // Reset dropdowns
+      const debitSelect = document.getElementById('debit-account');
+      const creditSelect = document.getElementById('credit-account');
+      if (debitSelect) debitSelect.value = '';
+      if (creditSelect) creditSelect.value = '';
+
+      updateGameStats();
+    }
+
+    window.checkGameAnswer = function() {
+      const debitSelect = document.getElementById('debit-account');
+      const creditSelect = document.getElementById('credit-account');
+      const feedback = document.getElementById('game-feedback');
+
+      if (!debitSelect || !creditSelect || !feedback) return;
+
+      const selectedDebit = debitSelect.value;
+      const selectedCredit = creditSelect.value;
+
+      if (!selectedDebit || !selectedCredit) {
+        feedback.textContent = '⚠️ Please select both Debit and Credit accounts!';
+        feedback.className = 'game-feedback hint';
+        feedback.style.display = 'block';
+        feedback.style.background = 'linear-gradient(135deg, rgba(255,152,0,0.2), rgba(255,152,0,0.1))';
+        feedback.style.border = '2px solid var(--warning)';
+        feedback.style.color = 'var(--warning)';
+        return;
+      }
+
+      const currentError = gameErrors[currentGameState.currentQuestion];
+      const isCorrect = selectedDebit === currentError.debitAccount && selectedCredit === currentError.creditAccount;
+
+      if (isCorrect) {
+        currentGameState.correctCount++;
+        feedback.textContent = '🎉 Correct! Well done!';
+        feedback.style.background = 'linear-gradient(135deg, rgba(76,175,80,0.2), rgba(76,175,80,0.1))';
+        feedback.style.border = '2px solid var(--success)';
+        feedback.style.color = 'var(--success)';
+      } else {
+        currentGameState.wrongCount++;
+        feedback.textContent = `❌ Incorrect. Correct answer: Debit ${currentError.debitAccount}, Credit ${currentError.creditAccount}`;
+        feedback.style.background = 'linear-gradient(135deg, rgba(244,67,54,0.2), rgba(244,67,54,0.1))';
+        feedback.style.border = '2px solid var(--error)';
+        feedback.style.color = 'var(--error)';
+      }
+
+      feedback.style.display = 'block';
+      updateGameStats();
+
+      setTimeout(() => {
+        feedback.style.display = 'none';
+      }, 3000);
+    }
+
+    window.showGameHint = function() {
+      const hintDiv = document.getElementById('error-type-hint');
+      const hintText = document.getElementById('hint-text');
+
+      if (!hintDiv || !hintText) return;
+
+      const currentError = gameErrors[currentGameState.currentQuestion];
+      hintText.textContent = currentError.hint;
+      hintDiv.style.display = 'block';
+      currentGameState.hintsUsed++;
+    }
+
+    window.nextGameQuestion = function() {
+      currentGameState.currentQuestion++;
+      loadGameQuestion();
+    }
+
+    function updateGameStats() {
+      const correctEl = document.getElementById('correct-count');
+      const wrongEl = document.getElementById('wrong-count');
+      const scoreEl = document.getElementById('game-score');
+
+      if (correctEl) correctEl.textContent = currentGameState.correctCount;
+      if (wrongEl) wrongEl.textContent = currentGameState.wrongCount;
+
+      const total = currentGameState.correctCount + currentGameState.wrongCount;
+      const score = total > 0 ? Math.round((currentGameState.correctCount / total) * 100) : 0;
+      if (scoreEl) scoreEl.textContent = `${score}%`;
+    }
+
+    function showGameComplete() {
+      const errorDisplay = document.getElementById('current-error');
+      if (errorDisplay) {
+        const total = currentGameState.correctCount + currentGameState.wrongCount;
+        const score = total > 0 ? Math.round((currentGameState.correctCount / total) * 100) : 0;
+        errorDisplay.innerHTML = `
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 15px;">🎉 Game Complete!</div>
+            <div style="font-size: 1.2rem; margin-bottom: 10px;">Final Score: ${currentGameState.correctCount}/${total} (${score}%)</div>
+            <div style="color: var(--muted);">Hints Used: ${currentGameState.hintsUsed}</div>
+            <button onclick="resetGame()" style="margin-top: 20px; padding: 12px 30px; background: linear-gradient(135deg, var(--brand-2), var(--brand)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              Play Again
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    window.resetGame = function() {
+      currentGameState = {
+        currentQuestion: 0,
+        correctCount: 0,
+        wrongCount: 0,
+        hintsUsed: 0
+      };
+      loadGameQuestion();
+    }
+
+    // ========================================
+    // 8. INITIALIZATION
+    // ========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Quiz
+      initQuiz();
+
+      // Initialize Game if element exists
+      if (document.getElementById('current-error')) {
+        initializeGame();
+      }
+
+      console.log('✅ Lesson', LESSON_NUMBER, 'fully initialized!');
+    });
+
+  </script>
+</body>
+</html>

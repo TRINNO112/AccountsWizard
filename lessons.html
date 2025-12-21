@@ -210,6 +210,402 @@
       margin-top: 10px;
     }
 
+    /* Quick Stats Header */
+    .quick-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(17, 22, 51, 0.7);
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .stat-info {
+      text-align: left;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Category Filters */
+    .filter-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px auto 30px;
+      max-width: 900px;
+      padding: 0 20px;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      background: rgba(17, 22, 51, 0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--brand-2);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 5px 20px rgba(124, 77, 255, 0.4);
+    }
+
+    .filter-btn i {
+      font-size: 0.85rem;
+    }
+
+    /* Recently Viewed Section */
+    .recently-viewed {
+      max-width: 1400px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .recently-viewed.hidden {
+      display: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-header i {
+      color: var(--brand-2);
+      font-size: 1.2rem;
+    }
+
+    .section-header h3 {
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .recent-cards {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--brand) transparent;
+    }
+
+    .recent-cards::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .recent-cards::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+
+    .recent-cards::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 10px;
+    }
+
+    .recent-card {
+      min-width: 250px;
+      padding: 16px 20px;
+      background: rgba(17, 22, 51, 0.8);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .recent-card:hover {
+      border-color: var(--brand-2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+    }
+
+    .recent-card-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(0,229,255,0.2));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .recent-card-info h4 {
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .recent-card-info span {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* Difficulty Badge */
+    .difficulty-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .difficulty-badge.beginner {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.1));
+      color: #4caf50;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+
+    .difficulty-badge.intermediate {
+      background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 152, 0, 0.1));
+      color: #ff9800;
+      border: 1px solid rgba(255, 152, 0, 0.3);
+    }
+
+    .difficulty-badge.advanced {
+      background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(244, 67, 54, 0.1));
+      color: #f44336;
+      border: 1px solid rgba(244, 67, 54, 0.3);
+    }
+
+    /* Bookmark/Favorite Button */
+    .bookmark-btn {
+      position: absolute;
+      top: 75px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 5;
+    }
+
+    .bookmark-btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.1);
+    }
+
+    .bookmark-btn i {
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .bookmark-btn.active {
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2));
+      border-color: #ffc107;
+    }
+
+    .bookmark-btn.active i {
+      color: #ffc107;
+    }
+
+    /* Status Badge (New, Updated, Popular) */
+    .status-badge {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 10;
+    }
+
+    .status-badge.new {
+      background: linear-gradient(135deg, #4caf50, #81c784);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    .status-badge.updated {
+      background: linear-gradient(135deg, #2196f3, #64b5f6);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+    }
+
+    .status-badge.popular {
+      background: linear-gradient(135deg, #ff9800, #ffb74d);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+    }
+
+    /* Sort Options */
+    .sort-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin: 0 auto 30px;
+      flex-wrap: wrap;
+    }
+
+    .sort-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sort-select {
+      padding: 10px 35px 10px 15px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 25px;
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300e5ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+
+    .sort-select:hover, .sort-select:focus {
+      border-color: var(--brand-2);
+    }
+
+    .sort-select option {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    /* Related Lessons in Tooltip */
+    .tooltip-related {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .tooltip-related-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .tooltip-related-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tooltip-related-link {
+      font-size: 0.75rem;
+      color: var(--brand-2);
+      background: rgba(0, 229, 255, 0.1);
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-decoration: none;
+    }
+
+    /* Enhanced Tooltip Meta Info */
+    .tooltip-meta {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .tooltip-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .tooltip-meta-item i {
+      color: var(--brand-2);
+      font-size: 0.7rem;
+    }
+
+    .tooltip-prereq {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tooltip-prereq i {
+      font-size: 0.7rem;
+    }
+
     /* Search Bar */
     .search-container {
       max-width: 600px;
@@ -493,6 +889,100 @@
     .lesson-card:nth-child(11) { animation-delay: 0.6s; }
     .lesson-card:nth-child(12) { animation-delay: 0.65s; }
     .lesson-card:nth-child(13) { animation-delay: 0.7s; }
+    .lesson-card:nth-child(14) { animation-delay: 0.75s; }
+    .lesson-card:nth-child(15) { animation-delay: 0.8s; }
+    .lesson-card:nth-child(16) { animation-delay: 0.85s; }
+    .lesson-card:nth-child(17) { animation-delay: 0.9s; }
+
+    /* Hover Tooltip System */
+    .lesson-card {
+      position: relative;
+    }
+
+    .lesson-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: linear-gradient(135deg, #1a1f3c 0%, #0d1025 100%);
+      border: 1px solid var(--brand-2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      width: 280px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+      pointer-events: none;
+      box-shadow: 0 10px 40px rgba(0, 229, 255, 0.3);
+    }
+
+    .lesson-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-top-color: var(--brand-2);
+    }
+
+    .lesson-card:hover .lesson-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .tooltip-header i {
+      color: var(--brand-2);
+      font-size: 1rem;
+    }
+
+    .tooltip-header span {
+      color: var(--brand-2);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tooltip-content {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .tooltip-topics {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tooltip-tag {
+      background: rgba(124, 77, 255, 0.2);
+      color: var(--brand);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* Hide tooltip on mobile */
+    @media (max-width: 768px) {
+      .lesson-tooltip {
+        display: none;
+      }
+    }
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -521,18 +1011,87 @@
   <header>
     <h1 class="page-title">Grade 11 Accounting Lessons</h1>
     <p class="page-subtitle">DK Goyal Syllabus - Complete Course Material</p>
+
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-book"></i></div>
+        <div class="stat-info">
+          <div class="stat-value">17</div>
+          <div class="stat-label">Total Lessons</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+        <div class="stat-info">
+          <div class="stat-value">5</div>
+          <div class="stat-label">Categories</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <div class="stat-info">
+          <div class="stat-value" id="favoriteCount">0</div>
+          <div class="stat-label">Favorites</div>
+        </div>
+      </div>
+    </div>
   </header>
+
+  <!-- Category Filters -->
+  <div class="filter-container">
+    <button class="filter-btn active" data-filter="all">
+      <i class="fas fa-th-large"></i> All
+    </button>
+    <button class="filter-btn" data-filter="basics">
+      <i class="fas fa-seedling"></i> Basics
+    </button>
+    <button class="filter-btn" data-filter="books">
+      <i class="fas fa-book-open"></i> Books & Records
+    </button>
+    <button class="filter-btn" data-filter="gst">
+      <i class="fas fa-percent"></i> GST
+    </button>
+    <button class="filter-btn" data-filter="advanced">
+      <i class="fas fa-rocket"></i> Advanced
+    </button>
+  </div>
+
+  <!-- Recently Viewed Section -->
+  <div class="recently-viewed hidden" id="recentlyViewed">
+    <div class="section-header">
+      <i class="fas fa-history"></i>
+      <h3>Continue Learning</h3>
+    </div>
+    <div class="recent-cards" id="recentCards">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
 
   <!-- Search Bar -->
   <div class="search-container">
-    <input 
-      type="text" 
-      id="searchInput" 
-      class="search-box" 
+    <input
+      type="text"
+      id="searchInput"
+      class="search-box"
       placeholder="Search lessons by title or chapter..."
       autocomplete="off"
     />
     <i class="fas fa-search search-icon"></i>
+  </div>
+
+  <!-- Sort Options -->
+  <div class="sort-container">
+    <div class="sort-label">
+      <i class="fas fa-sort"></i>
+      <span>Sort by:</span>
+    </div>
+    <select class="sort-select" id="sortSelect">
+      <option value="number">Lesson Number</option>
+      <option value="name">Alphabetical (A-Z)</option>
+      <option value="difficulty">Difficulty</option>
+      <option value="favorites">Favorites First</option>
+    </select>
   </div>
 
   <!-- Main Content -->
@@ -540,7 +1099,30 @@
     <div class="lessons-grid" id="lessonsGrid">
       
       <!-- Lesson 1 -->
-      <a href="lessons/lesson-1.html" class="lesson-card" data-lesson="1" data-element="light">
+      <a href="lessons/lesson-1.html" class="lesson-card" data-lesson="1" data-element="light" data-category="basics" data-difficulty="beginner" data-title="Meaning and Objectives of Accounting" data-icon="fa-lightbulb" data-related="2,4">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Learn why accounting is called the "language of business" and how it helps in decision-making.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Definition</span>
+            <span class="tooltip-tag">Objectives</span>
+            <span class="tooltip-tag">Functions</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 25 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L2: Terms</span>
+              <span class="tooltip-related-link">L4: Process</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge popular">Popular</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+        <div class="bookmark-btn" data-lesson="1"><i class="far fa-star"></i></div>
         <div class="lesson-number">1</div>
         <div class="lesson-icon">
           <i class="fas fa-lightbulb" style="color: var(--warning);"></i>
@@ -551,7 +1133,31 @@
       </a>
 
       <!-- Lesson 2 -->
-      <a href="lessons/lesson-2.html" class="lesson-card" data-lesson="2" data-element="wind">
+      <a href="lessons/lesson-2.html" class="lesson-card" data-lesson="2" data-element="wind" data-category="basics" data-difficulty="beginner" data-title="Basic Accounting Terms" data-icon="fa-book-open" data-related="1,6">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Master the vocabulary of accounting - essential terms you'll use throughout the course.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Assets</span>
+            <span class="tooltip-tag">Liabilities</span>
+            <span class="tooltip-tag">Capital</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 30 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L1</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L1: Meaning</span>
+              <span class="tooltip-related-link">L6: Equations</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge popular">Popular</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+        <div class="bookmark-btn" data-lesson="2"><i class="far fa-star"></i></div>
         <div class="lesson-number">2</div>
         <div class="lesson-icon">
           <i class="fas fa-book-open" style="color: var(--brand-2);"></i>
@@ -562,7 +1168,30 @@
       </a>
 
       <!-- Lesson 4 -->
-      <a href="lessons/lesson-4.html" class="lesson-card" data-lesson="4" data-element="earth">
+      <a href="lessons/lesson-4.html" class="lesson-card" data-lesson="4" data-element="earth" data-category="basics" data-difficulty="beginner" data-title="Process and Bases of Accounting" data-icon="fa-cogs" data-related="1,7">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Understand when to record transactions - Cash vs Accrual basis explained simply.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Cash Basis</span>
+            <span class="tooltip-tag">Accrual Basis</span>
+            <span class="tooltip-tag">Process</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 25 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L1, L2</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L1: Meaning</span>
+              <span class="tooltip-related-link">L7: Double Entry</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge beginner">Beginner</span>
+        <div class="bookmark-btn" data-lesson="4"><i class="far fa-star"></i></div>
         <div class="lesson-number">4</div>
         <div class="lesson-icon">
           <i class="fas fa-cogs" style="color: var(--accent);"></i>
@@ -573,7 +1202,30 @@
       </a>
 
       <!-- Lesson 6 -->
-      <a href="lessons/lesson-6.html" class="lesson-card" data-lesson="6" data-element="fire">
+      <a href="lessons/lesson-6.html" class="lesson-card" data-lesson="6" data-element="fire" data-category="basics" data-difficulty="intermediate" data-title="Accounting Equations" data-icon="fa-equals" data-related="2,7">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">The foundation of all accounting: Assets = Liabilities + Capital. Learn how every transaction affects this equation.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">A = L + C</span>
+            <span class="tooltip-tag">Transactions</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 35 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L2</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L2: Terms</span>
+              <span class="tooltip-related-link">L7: Double Entry</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge popular">Popular</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="6"><i class="far fa-star"></i></div>
         <div class="lesson-number">6</div>
         <div class="lesson-icon">
           <i class="fas fa-equals" style="color: var(--success);"></i>
@@ -584,7 +1236,31 @@
       </a>
 
       <!-- Lesson 7 -->
-      <a href="lessons/lesson-7.html" class="lesson-card" data-lesson="7" data-element="cosmic">
+      <a href="lessons/lesson-7.html" class="lesson-card" data-lesson="7" data-element="cosmic" data-category="basics" data-difficulty="intermediate" data-title="Double Entry System" data-icon="fa-exchange-alt" data-related="6,9">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Every debit has a credit! Learn the golden rules that make accounting work perfectly.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Debit</span>
+            <span class="tooltip-tag">Credit</span>
+            <span class="tooltip-tag">Golden Rules</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 40 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L6</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L6: Equations</span>
+              <span class="tooltip-related-link">L9: Journal</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge popular">Popular</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="7"><i class="far fa-star"></i></div>
         <div class="lesson-number">7</div>
         <div class="lesson-icon">
           <i class="fas fa-exchange-alt" style="color: var(--brand);"></i>
@@ -595,7 +1271,30 @@
       </a>
 
       <!-- Lesson 8 -->
-      <a href="lessons/lesson-8.html" class="lesson-card" data-lesson="8" data-element="nature">
+      <a href="lessons/lesson-8.html" class="lesson-card" data-lesson="8" data-element="nature" data-category="books" data-difficulty="beginner" data-title="Origin of Transactions: Source Documents" data-icon="fa-file-invoice" data-related="9,11">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Invoices, receipts, vouchers - the evidence behind every transaction in your books.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Invoice</span>
+            <span class="tooltip-tag">Receipt</span>
+            <span class="tooltip-tag">Voucher</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 20 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L7</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L9: Journal</span>
+              <span class="tooltip-related-link">L11: Cash Book</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge beginner">Beginner</span>
+        <div class="bookmark-btn" data-lesson="8"><i class="far fa-star"></i></div>
         <div class="lesson-number">8</div>
         <div class="lesson-icon">
           <i class="fas fa-file-invoice" style="color: var(--warning);"></i>
@@ -606,7 +1305,30 @@
       </a>
 
       <!-- Lesson 9 -->
-      <a href="lessons/lesson-9.html" class="lesson-card" data-lesson="9" data-element="wind">
+      <a href="lessons/lesson-9.html" class="lesson-card" data-lesson="9" data-element="wind" data-category="books" data-difficulty="intermediate" data-title="Books of Original Entry – Journal" data-icon="fa-journal-whills" data-related="7,13">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">The first book where transactions are recorded chronologically with narration.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Journal Entry</span>
+            <span class="tooltip-tag">Narration</span>
+            <span class="tooltip-tag">Posting</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 45 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L7, L8</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L7: Double Entry</span>
+              <span class="tooltip-related-link">L13: Ledger</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="9"><i class="far fa-star"></i></div>
         <div class="lesson-number">9</div>
         <div class="lesson-icon">
           <i class="fas fa-journal-whills" style="color: var(--brand-2);"></i>
@@ -617,7 +1339,31 @@
       </a>
 
       <!-- Lesson 10 -->
-      <a href="lessons/lesson-10.html" class="lesson-card" data-lesson="10" data-element="electric">
+      <a href="lessons/lesson-10.html" class="lesson-card" data-lesson="10" data-element="electric" data-category="gst" data-difficulty="intermediate" data-title="Accounting for Goods and Service Tax (GST)" data-icon="fa-percent" data-related="9,12">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">CGST, SGST, IGST - understand India's unified tax system and how to record it.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">CGST</span>
+            <span class="tooltip-tag">SGST</span>
+            <span class="tooltip-tag">IGST</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 40 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L9</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L9: Journal</span>
+              <span class="tooltip-related-link">L12: Subsidiary</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge updated">Updated</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="10"><i class="far fa-star"></i></div>
         <div class="lesson-number">10</div>
         <div class="lesson-icon">
           <i class="fas fa-percent" style="color: var(--accent);"></i>
@@ -628,7 +1374,30 @@
       </a>
 
       <!-- Lesson 11 -->
-      <a href="lessons/lesson-11.html" class="lesson-card" data-lesson="11" data-element="water">
+      <a href="lessons/lesson-11.html" class="lesson-card" data-lesson="11" data-element="water" data-category="books" data-difficulty="intermediate" data-title="Books of Original Entry – Cash Book" data-icon="fa-money-bill-wave" data-related="8,12">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Single, double, and triple column cash books - track all cash & bank transactions.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Cash</span>
+            <span class="tooltip-tag">Bank</span>
+            <span class="tooltip-tag">Discount</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 50 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L8, L9</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L8: Source Docs</span>
+              <span class="tooltip-related-link">L12: Subsidiary</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="11"><i class="far fa-star"></i></div>
         <div class="lesson-number">11</div>
         <div class="lesson-icon">
           <i class="fas fa-money-bill-wave" style="color: var(--success);"></i>
@@ -639,7 +1408,30 @@
       </a>
 
       <!-- Lesson 12 -->
-      <a href="lessons/lesson-12.html" class="lesson-card" data-lesson="12" data-element="earth">
+      <a href="lessons/lesson-12.html" class="lesson-card" data-lesson="12" data-element="earth" data-category="books" data-difficulty="intermediate" data-title="Special Purpose Subsidiary Books" data-icon="fa-book-bookmark" data-related="10,11,13">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Purchase Book, Sales Book, Returns Books - specialized books for frequent transactions.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Purchase Book</span>
+            <span class="tooltip-tag">Sales Book</span>
+            <span class="tooltip-tag">Returns</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 45 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L10, L11</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L10: GST</span>
+              <span class="tooltip-related-link">L13: Ledger</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="12"><i class="far fa-star"></i></div>
         <div class="lesson-number">12</div>
         <div class="lesson-icon">
           <i class="fas fa-book-bookmark" style="color: var(--brand);"></i>
@@ -650,7 +1442,30 @@
       </a>
 
       <!-- Lesson 13 -->
-      <a href="lessons/lesson-13.html" class="lesson-card" data-lesson="13" data-element="nature">
+      <a href="lessons/lesson-13.html" class="lesson-card" data-lesson="13" data-element="nature" data-category="books" data-difficulty="intermediate" data-title="Ledger" data-icon="fa-book" data-related="9,14">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">The principal book of accounts - posting, balancing, and maintaining individual accounts.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Posting</span>
+            <span class="tooltip-tag">Balancing</span>
+            <span class="tooltip-tag">T-Format</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 50 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L9, L12</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L9: Journal</span>
+              <span class="tooltip-related-link">L14: Trial Balance</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="13"><i class="far fa-star"></i></div>
         <div class="lesson-number">13</div>
         <div class="lesson-icon">
           <i class="fas fa-book" style="color: var(--warning);"></i>
@@ -661,13 +1476,141 @@
       </a>
 
       <!-- Lesson 14 -->
-      <a href="lessons/lesson-14.html" class="lesson-card" data-lesson="14" data-element="light">
+      <a href="lessons/lesson-14.html" class="lesson-card" data-lesson="14" data-element="light" data-category="advanced" data-difficulty="advanced" data-title="Trial Balance and Errors" data-icon="fa-balance-scale" data-related="13,15">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Check if your books are correct! Learn to prepare trial balance and identify errors.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Trial Balance</span>
+            <span class="tooltip-tag">Errors</span>
+            <span class="tooltip-tag">Types</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 55 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L13</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L13: Ledger</span>
+              <span class="tooltip-related-link">L15: Rectification</span>
+            </div>
+          </div>
+        </div>
+        <span class="difficulty-badge advanced">Advanced</span>
+        <div class="bookmark-btn" data-lesson="14"><i class="far fa-star"></i></div>
         <div class="lesson-number">14</div>
         <div class="lesson-icon">
           <i class="fas fa-balance-scale" style="color: var(--brand-2);"></i>
         </div>
         <h3 class="lesson-title">Trial Balance and Errors</h3>
         <p class="lesson-description">Preparation of trial balance and identification of errors in accounting records.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 15 -->
+      <a href="lessons/lesson-15.html" class="lesson-card" data-lesson="15" data-element="fire" data-category="advanced" data-difficulty="advanced" data-title="Rectification of Errors" data-icon="fa-wrench" data-related="14,16">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Found errors in your books? Learn how to correct them using Suspense Account and journal entries.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">Suspense A/c</span>
+            <span class="tooltip-tag">Rectification</span>
+            <span class="tooltip-tag">One-sided</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 50 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L14</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L14: Trial Balance</span>
+              <span class="tooltip-related-link">L16: BRS</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge new">New</span>
+        <span class="difficulty-badge advanced">Advanced</span>
+        <div class="bookmark-btn" data-lesson="15"><i class="far fa-star"></i></div>
+        <div class="lesson-number">15</div>
+        <div class="lesson-icon">
+          <i class="fas fa-wrench" style="color: var(--error);"></i>
+        </div>
+        <h3 class="lesson-title">Rectification of Errors</h3>
+        <p class="lesson-description">Methods to rectify errors before and after preparation of trial balance using Suspense Account.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 16 -->
+      <a href="lessons/lesson-16.html" class="lesson-card" data-lesson="16" data-element="water" data-category="books" data-difficulty="intermediate" data-title="Bank Reconciliation Statement" data-icon="fa-university" data-related="11,15">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Match your Cash Book with Bank Statement - find discrepancies and prepare BRS.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">BRS</span>
+            <span class="tooltip-tag">Bank Statement</span>
+            <span class="tooltip-tag">Reconciliation</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 45 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L11</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L11: Cash Book</span>
+              <span class="tooltip-related-link">L15: Rectification</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge new">New</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+        <div class="bookmark-btn" data-lesson="16"><i class="far fa-star"></i></div>
+        <div class="lesson-number">16</div>
+        <div class="lesson-icon">
+          <i class="fas fa-university" style="color: var(--brand-2);"></i>
+        </div>
+        <h3 class="lesson-title">Bank Reconciliation Statement</h3>
+        <p class="lesson-description">Preparation of BRS to reconcile differences between Cash Book and Bank Statement balances.</p>
+        <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
+      </a>
+
+      <!-- Lesson 17 -->
+      <a href="lessons/lesson-17.html" class="lesson-card" data-lesson="17" data-element="fire" data-category="advanced" data-difficulty="advanced" data-title="Depreciation" data-icon="fa-chart-line" data-related="16,14">
+        <div class="lesson-tooltip">
+          <div class="tooltip-header"><i class="fas fa-info-circle"></i><span>Quick Overview</span></div>
+          <div class="tooltip-content">Account for asset value decline over time - SLM, WDV methods and their journal entries.</div>
+          <div class="tooltip-topics">
+            <span class="tooltip-tag">SLM</span>
+            <span class="tooltip-tag">WDV</span>
+            <span class="tooltip-tag">Asset A/c</span>
+          </div>
+          <div class="tooltip-meta">
+            <div class="tooltip-meta-item"><i class="fas fa-clock"></i> 55 min</div>
+            <div class="tooltip-meta-item"><i class="fas fa-question-circle"></i> 20 MCQs</div>
+          </div>
+          <div class="tooltip-prereq"><i class="fas fa-lock-open"></i> Prereq: L13, L14</div>
+          <div class="tooltip-related">
+            <div class="tooltip-related-label">Related Lessons</div>
+            <div class="tooltip-related-links">
+              <span class="tooltip-related-link">L16: BRS</span>
+              <span class="tooltip-related-link">L14: Trial Balance</span>
+            </div>
+          </div>
+        </div>
+        <span class="status-badge new">New</span>
+        <span class="difficulty-badge advanced">Advanced</span>
+        <div class="bookmark-btn" data-lesson="17"><i class="far fa-star"></i></div>
+        <div class="lesson-number">17</div>
+        <div class="lesson-icon">
+          <i class="fas fa-chart-line" style="color: var(--warning);"></i>
+        </div>
+        <h3 class="lesson-title">Depreciation</h3>
+        <p class="lesson-description">Methods of depreciation calculation (SLM, WDV), journal entries, and impact on financial statements.</p>
         <span class="lesson-link">Start Learning <i class="fas fa-arrow-right"></i></span>
       </a>
     </div>
@@ -681,11 +1624,21 @@
   </main>
 
   <script>
-    // Search functionality with highlighting
+    // ========================================
+    // DOM ELEMENTS
+    // ========================================
     const searchInput = document.getElementById('searchInput');
     const lessonsGrid = document.getElementById('lessonsGrid');
     const noResults = document.getElementById('noResults');
     const lessonCards = document.querySelectorAll('.lesson-card');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const recentlyViewedSection = document.getElementById('recentlyViewed');
+    const recentCardsContainer = document.getElementById('recentCards');
+    const sortSelect = document.getElementById('sortSelect');
+    const favoriteCountEl = document.getElementById('favoriteCount');
+
+    // Current filter state
+    let currentFilter = 'all';
 
     // Store original titles
     const originalTitles = new Map();
@@ -694,15 +1647,120 @@
       originalTitles.set(card, titleElement.textContent);
     });
 
+    // ========================================
+    // FAVORITES/BOOKMARKS (localStorage)
+    // ========================================
+    function getFavorites() {
+      const favs = localStorage.getItem('favoriteLessons');
+      return favs ? JSON.parse(favs) : [];
+    }
+
+    function saveFavorites(favs) {
+      localStorage.setItem('favoriteLessons', JSON.stringify(favs));
+      updateFavoriteCount();
+    }
+
+    function toggleFavorite(lessonNum) {
+      let favs = getFavorites();
+      if (favs.includes(lessonNum)) {
+        favs = favs.filter(f => f !== lessonNum);
+      } else {
+        favs.push(lessonNum);
+      }
+      saveFavorites(favs);
+      return favs.includes(lessonNum);
+    }
+
+    function updateFavoriteCount() {
+      const count = getFavorites().length;
+      if (favoriteCountEl) favoriteCountEl.textContent = count;
+    }
+
+    function renderFavorites() {
+      const favs = getFavorites();
+      document.querySelectorAll('.bookmark-btn').forEach(btn => {
+        const lessonNum = btn.getAttribute('data-lesson');
+        const icon = btn.querySelector('i');
+        if (favs.includes(lessonNum)) {
+          btn.classList.add('active');
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+        } else {
+          btn.classList.remove('active');
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+        }
+      });
+      updateFavoriteCount();
+    }
+
+    // Bookmark button click handler
+    document.querySelectorAll('.bookmark-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const lessonNum = this.getAttribute('data-lesson');
+        const isNowFavorite = toggleFavorite(lessonNum);
+        const icon = this.querySelector('i');
+
+        if (isNowFavorite) {
+          this.classList.add('active');
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+        } else {
+          this.classList.remove('active');
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+        }
+      });
+    });
+
+    // ========================================
+    // SORTING FUNCTIONALITY
+    // ========================================
+    const difficultyOrder = { 'beginner': 1, 'intermediate': 2, 'advanced': 3 };
+
+    function sortLessons(sortBy) {
+      const cardsArray = Array.from(lessonCards);
+
+      cardsArray.sort((a, b) => {
+        switch(sortBy) {
+          case 'number':
+            return parseInt(a.dataset.lesson) - parseInt(b.dataset.lesson);
+          case 'name':
+            return a.dataset.title.localeCompare(b.dataset.title);
+          case 'difficulty':
+            return difficultyOrder[a.dataset.difficulty] - difficultyOrder[b.dataset.difficulty];
+          case 'favorites':
+            const favs = getFavorites();
+            const aFav = favs.includes(a.dataset.lesson) ? 0 : 1;
+            const bFav = favs.includes(b.dataset.lesson) ? 0 : 1;
+            if (aFav !== bFav) return aFav - bFav;
+            return parseInt(a.dataset.lesson) - parseInt(b.dataset.lesson);
+          default:
+            return 0;
+        }
+      });
+
+      // Re-append sorted cards
+      cardsArray.forEach(card => lessonsGrid.appendChild(card));
+    }
+
+    sortSelect.addEventListener('change', function() {
+      sortLessons(this.value);
+    });
+
+    // ========================================
+    // SEARCH FUNCTIONALITY
+    // ========================================
     function highlightText(text, searchTerm) {
       if (!searchTerm) return text;
-      
       const regex = new RegExp(`(${searchTerm})`, 'gi');
       return text.replace(regex, '<span class="highlight">$1</span>');
     }
 
-    searchInput.addEventListener('input', function(e) {
-      const searchTerm = e.target.value.toLowerCase().trim();
+    function filterAndSearch() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
       let visibleCount = 0;
 
       lessonCards.forEach(card => {
@@ -710,21 +1768,25 @@
         const originalTitle = originalTitles.get(card);
         const description = card.querySelector('.lesson-description').textContent.toLowerCase();
         const lessonNumber = card.getAttribute('data-lesson');
+        const category = card.getAttribute('data-category');
 
         // Reset title to original
         titleElement.innerHTML = originalTitle;
 
-        if (searchTerm && (
-            originalTitle.toLowerCase().includes(searchTerm) || 
-            description.includes(searchTerm) || 
-            lessonNumber.includes(searchTerm) ||
-            `chapter ${lessonNumber}`.includes(searchTerm))) {
-          
-          // Highlight matching text in title
-          titleElement.innerHTML = highlightText(originalTitle, searchTerm);
-          card.style.display = 'block';
-          visibleCount++;
-        } else if (!searchTerm) {
+        // Check category filter
+        const categoryMatch = currentFilter === 'all' || category === currentFilter;
+
+        // Check search term
+        const searchMatch = !searchTerm ||
+          originalTitle.toLowerCase().includes(searchTerm) ||
+          description.includes(searchTerm) ||
+          lessonNumber.includes(searchTerm) ||
+          `chapter ${lessonNumber}`.includes(searchTerm);
+
+        if (categoryMatch && searchMatch) {
+          if (searchTerm) {
+            titleElement.innerHTML = highlightText(originalTitle, searchTerm);
+          }
           card.style.display = 'block';
           visibleCount++;
         } else {
@@ -740,11 +1802,97 @@
         lessonsGrid.style.display = 'grid';
         noResults.style.display = 'none';
       }
+    }
+
+    searchInput.addEventListener('input', filterAndSearch);
+
+    // ========================================
+    // CATEGORY FILTER FUNCTIONALITY
+    // ========================================
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Update active state
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        // Update current filter
+        currentFilter = this.getAttribute('data-filter');
+
+        // Apply filter
+        filterAndSearch();
+      });
     });
 
-    // Prevent default link behavior for cards and handle navigation
+    // ========================================
+    // RECENTLY VIEWED (localStorage)
+    // ========================================
+    function getRecentlyViewed() {
+      const recent = localStorage.getItem('recentlyViewedLessons');
+      return recent ? JSON.parse(recent) : [];
+    }
+
+    function addToRecentlyViewed(lessonData) {
+      let recent = getRecentlyViewed();
+
+      // Remove if already exists
+      recent = recent.filter(item => item.lesson !== lessonData.lesson);
+
+      // Add to beginning
+      recent.unshift(lessonData);
+
+      // Keep only last 5
+      recent = recent.slice(0, 5);
+
+      localStorage.setItem('recentlyViewedLessons', JSON.stringify(recent));
+    }
+
+    function renderRecentlyViewed() {
+      const recent = getRecentlyViewed();
+
+      if (recent.length === 0) {
+        recentlyViewedSection.classList.add('hidden');
+        return;
+      }
+
+      recentlyViewedSection.classList.remove('hidden');
+      recentCardsContainer.innerHTML = '';
+
+      recent.forEach(item => {
+        const card = document.createElement('a');
+        card.href = `lessons/lesson-${item.lesson}.html`;
+        card.className = 'recent-card';
+        card.innerHTML = `
+          <div class="recent-card-icon">
+            <i class="fas ${item.icon}" style="color: var(--brand-2);"></i>
+          </div>
+          <div class="recent-card-info">
+            <h4>Lesson ${item.lesson}</h4>
+            <span>${item.title}</span>
+          </div>
+        `;
+        recentCardsContainer.appendChild(card);
+      });
+    }
+
+    // Track lesson clicks
+    lessonCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const lessonData = {
+          lesson: this.getAttribute('data-lesson'),
+          title: this.getAttribute('data-title'),
+          icon: this.getAttribute('data-icon')
+        };
+        addToRecentlyViewed(lessonData);
+      });
+    });
+
+    // ========================================
+    // INITIALIZATION
+    // ========================================
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Lessons page loaded successfully with elemental effects');
+      renderRecentlyViewed();
+      renderFavorites();
+      console.log('Lessons page loaded with all features: filters, favorites, sorting, recently viewed!');
     });
   </script>
 </body>
