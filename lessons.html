@@ -689,28 +689,13 @@
       border: 1px solid rgba(255,255,255,0.1);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       cursor: pointer;
       animation: fadeInUp 0.6s ease-out;
       animation-fill-mode: both;
     }
 
-    /* Shimmer Effect */
-    .lesson-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.6s;
-      pointer-events: none;
-    }
-
-    .lesson-card:hover::after {
-      left: 100%;
-    }
+    /* Shimmer Effect - Removed to allow tooltip overflow */
 
     @keyframes fadeInUp {
       from {
@@ -912,7 +897,7 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
-      z-index: 100;
+      z-index: 1000;
       pointer-events: none;
       box-shadow: 0 10px 40px rgba(0, 229, 255, 0.3);
     }
