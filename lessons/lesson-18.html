@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Provisions and Reserves | AccountsWizard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="main.css">
+  <style>
+    /* ============================================
+       ROOT VARIABLES & RESET - EMERALD NEON THEME
+    ============================================ */
+    :root {
+      --bg: #050a0f;
+      --bg-2: #0a1218;
+      --card: #0d1a1f;
+      --card-2: #122428;
+      --muted: #8fb8c4;
+      --brand: #10b981;
+      --brand-2: #06d6a0;
+      --accent: #f472b6;
+      --accent-2: #a78bfa;
+      --text: #e8f4f8;
+      --success: #22c55e;
+      --warning: #fbbf24;
+      --error: #ef4444;
+      --info: #38bdf8;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 25px 50px rgba(0,0,0,.6);
+      --shadow-glow: 0 0 50px rgba(16,185,129,0.2);
+      --speed: 0.3s;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 12px;
+      overflow-x: hidden;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       ANIMATED BACKGROUND - EMERALD AURORA
+    ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 10%, rgba(6,214,160,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(167,139,250,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      animation: auroraShift 15s ease-in-out infinite;
+    }
+
+    @keyframes auroraShift {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Hexagonal Grid Background */
+    .hex-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.03'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9z'/%3E%3Cpath d='M0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      animation: hexFloat 30s linear infinite;
+    }
+
+    @keyframes hexFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-49px); }
+    }
+
+    /* Floating Orbs */
+    .floating-orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+
+    .orb-1 {
+      top: 10%;
+      left: 5%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(16,185,129,0.25), transparent 70%);
+      animation: orbFloat1 20s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      bottom: 15%;
+      right: 5%;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(6,214,160,0.2), transparent 70%);
+      animation: orbFloat2 25s ease-in-out infinite;
+    }
+
+    .orb-3 {
+      top: 50%;
+      left: 60%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(167,139,250,0.15), transparent 70%);
+      animation: orbFloat3 18s ease-in-out infinite;
+    }
+
+    @keyframes orbFloat1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(60px, -40px) scale(1.1); }
+      66% { transform: translate(-40px, 50px) scale(0.9); }
+    }
+
+    @keyframes orbFloat2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-70px, -50px) scale(1.15); }
+    }
+
+    @keyframes orbFloat3 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(40px, 50px); }
+      75% { transform: translate(-50px, -40px); }
+    }
+
+    /* ============================================
+       NAVIGATION HEADER
+    ============================================ */
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, var(--card), var(--card-2));
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 10;
+      border: 1px solid rgba(16,185,129,0.2);
+      animation: slideDown 0.7s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-header a {
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      transition: all var(--speed);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .nav-header a:hover {
+      color: var(--text);
+      background: rgba(16,185,129,0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       HEADER
+    ============================================ */
+    header {
+      text-align: center;
+      padding: 35px 15px;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 0.9s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lesson-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 25px rgba(16,185,129,0.5);
+      animation: badgePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 4px 25px rgba(16,185,129,0.5); }
+      50% { box-shadow: 0 4px 40px rgba(16,185,129,0.7); }
+    }
+
+    .lesson-title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, var(--brand) 35%, var(--brand-2) 65%, var(--accent-2) 100%);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 5s linear infinite;
+      margin-bottom: 14px;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% center; }
+      100% { background-position: 300% center; }
+    }
+
+    .lesson-subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 650px;
+      margin: 0 auto 18px;
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb a {
+      color: var(--brand-2);
+      text-decoration: none;
+      transition: color var(--speed);
+    }
+
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+
+    /* ============================================
+       MAIN CONTENT & SECTIONS
+    ============================================ */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 100%;
+    }
+
+    section {
+      background: linear-gradient(145deg, var(--card), var(--card-2));
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: sectionReveal 0.8s ease-out;
+      border: 1px solid rgba(16,185,129,0.15);
+      transition: all var(--speed);
+    }
+
+    section:hover {
+      border-color: rgba(16,185,129,0.3);
+      box-shadow: var(--shadow), var(--shadow-glow);
+    }
+
+    @keyframes sectionReveal {
+      from { opacity: 0; transform: translateY(35px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Top Glow Line */
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--brand), var(--brand-2), var(--accent-2), transparent);
+      opacity: 0;
+      transition: opacity var(--speed);
+    }
+
+    section:hover::before {
+      opacity: 1;
+    }
+
+    section h2 {
+      margin: 0 0 20px 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--text);
+    }
+
+    section h2 .icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+    }
+
+    section p {
+      line-height: 1.75;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    section p strong {
+      color: var(--text);
+    }
+
+    /* ============================================
+       DEFINITION BOX
+    ============================================ */
+    .definition-box {
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,214,160,0.08));
+      padding: 26px 22px;
+      border-radius: var(--radius-sm);
+      margin: 22px 0;
+      border-left: 5px solid var(--brand);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .definition-box::before {
+      content: '❝';
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 80px;
+      color: rgba(16,185,129,0.08);
+      font-family: Georgia, serif;
+      pointer-events: none;
+    }
+
+    .definition-box h3 {
+      margin: 0 0 14px 0;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--brand-2);
+    }
+
+    .definition-box p {
+      color: var(--text) !important;
+      font-size: 1.02rem;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* ============================================
+       INFO BOXES
+    ============================================ */
+    .info-box {
+      padding: 20px;
+      border-radius: var(--radius-sm);
+      margin: 20px 0;
+    }
+
+    .info-box h4 {
+      margin: 0 0 12px 0;
+      font-size: 1.02rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-box p, .info-box ul {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .info-box ul {
+      padding-left: 22px;
+      margin-top: 10px;
+    }
+
+    .info-box li {
+      margin-bottom: 8px;
+    }
+
+    .info-box li strong {
+      color: var(--text);
+    }
+
+    .note-box {
+      background: linear-gradient(135deg, rgba(56,189,248,0.12), rgba(56,189,248,0.04));
+      border-left: 4px solid var(--info);
+    }
+    .note-box h4 { color: var(--info); }
+
+    .warning-box {
+      background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(251,191,36,0.04));
+      border-left: 4px solid var(--warning);
+    }
+    .warning-box h4 { color: var(--warning); }
+
+    .tip-box {
+      background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.04));
+      border-left: 4px solid var(--brand);
+    }
+    .tip-box h4 { color: var(--brand); }
+
+    .important-box {
+      background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(239,68,68,0.04));
+      border-left: 4px solid var(--error);
+    }
+    .important-box h4 { color: var(--error); }
+
+    /* ============================================
+       COMPARISON CARDS
+    ============================================ */
+    .comparison-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 25px 0;
+    }
+
+    .compare-card {
+      background: linear-gradient(145deg, rgba(16,185,129,0.08), rgba(16,185,129,0.03));
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all var(--speed);
+    }
+
+    .compare-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--brand);
+      box-shadow: 0 15px 40px rgba(16,185,129,0.15);
+    }
+
+    .compare-card.provision {
+      border-top: 4px solid var(--brand);
+    }
+
+    .compare-card.reserve {
+      border-top: 4px solid var(--accent-2);
+    }
+
+    .compare-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 16px;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .compare-card h3 i {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .compare-card.provision h3 i {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    }
+
+    .compare-card.reserve h3 i {
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+    }
+
+    .compare-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .compare-card li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--muted);
+      font-size: 0.92rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .compare-card li:last-child {
+      border-bottom: none;
+    }
+
+    .compare-card li i {
+      color: var(--brand-2);
+      margin-top: 3px;
+    }
+
+    /* ============================================
+       TYPES GRID
+    ============================================ */
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+      margin: 25px 0;
+    }
+
+    .type-card {
+      background: linear-gradient(145deg, var(--card), var(--card-2));
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: all var(--speed);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .type-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at top right, rgba(16,185,129,0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .type-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--brand-2);
+      box-shadow: 0 12px 35px rgba(16,185,129,0.12);
+    }
+
+    .type-card .type-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+    }
+
+    .type-card h4 {
+      margin: 0 0 10px;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .type-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       JOURNAL ENTRY TABLE
+    ============================================ */
+    .journal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.92rem;
+      background: rgba(16,185,129,0.03);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .journal-table th {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .journal-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--muted);
+    }
+
+    .journal-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .journal-table tr:hover td {
+      background: rgba(16,185,129,0.08);
+    }
+
+    .journal-table .debit {
+      color: var(--error);
+      font-weight: 600;
+    }
+
+    .journal-table .credit {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .journal-table .narration {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       FLOW CHART
+    ============================================ */
+    .flow-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .flow-item {
+      background: linear-gradient(135deg, var(--card), var(--card-2));
+      border: 2px solid rgba(16,185,129,0.25);
+      border-radius: 12px;
+      padding: 18px 24px;
+      text-align: center;
+      min-width: 150px;
+      transition: all var(--speed);
+    }
+
+    .flow-item:hover {
+      border-color: var(--brand-2);
+      transform: scale(1.05);
+    }
+
+    .flow-item i {
+      font-size: 1.8rem;
+      color: var(--brand-2);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .flow-item span {
+      display: block;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: var(--brand);
+    }
+
+    /* ============================================
+       MCQ STYLES
+    ============================================ */
+    .mcq {
+      background: linear-gradient(145deg, var(--card), var(--card-2));
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 22px;
+      transition: all var(--speed);
+    }
+
+    .mcq:hover {
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    .mcq-question {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 18px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .mcq-question .q-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-right: 12px;
+      font-weight: 700;
+    }
+
+    .mcq-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mcq-options input[type="radio"] {
+      display: none;
+    }
+
+    .mcq-options label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(16,185,129,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all var(--speed);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .mcq-options label:hover {
+      background: rgba(16,185,129,0.12);
+      border-color: rgba(16,185,129,0.3);
+      color: var(--text);
+    }
+
+    .mcq-options input[type="radio"]:checked + label {
+      background: linear-gradient(90deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1));
+      border-color: var(--brand);
+      color: var(--text);
+    }
+
+    .mcq-options .option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .mcq-options input[type="radio"]:checked + label .option-letter {
+      background: var(--brand);
+      color: white;
+    }
+
+    /* Submit Button */
+    .view-solution-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 30px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--speed);
+      box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+    }
+
+    .view-solution-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(16,185,129,0.5);
+    }
+
+    .view-solution-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ============================================
+       RESPONSIVE
+    ============================================ */
+    @media (max-width: 768px) {
+      .lesson-title {
+        font-size: 1.6rem;
+      }
+      section {
+        padding: 22px 16px;
+      }
+      .comparison-container {
+        grid-template-columns: 1fr;
+      }
+      .flow-container {
+        flex-direction: column;
+      }
+      .flow-arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .lesson-title {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background Elements -->
+  <div class="hex-bg"></div>
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
+  <!-- Navigation -->
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="lesson-badge">
+      <i class="fas fa-piggy-bank"></i>
+      <span>Chapter 18</span>
+    </div>
+    <h1 class="lesson-title">Provisions and Reserves</h1>
+    <p class="lesson-subtitle">Understanding the creation and accounting treatment of provisions and reserves for financial stability</p>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="../lessons.html">Lessons</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Chapter 18</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Introduction Section -->
+    <section>
+      <h2><span class="icon-box"><i class="fas fa-info-circle"></i></span> Introduction</h2>
+      <p>In accounting, businesses need to set aside funds for future uncertainties and expansion. This is done through two important concepts: <strong>Provisions</strong> and <strong>Reserves</strong>. While both involve keeping aside a part of profits, they serve different purposes and have different accounting treatments.</p>
+
+      <div class="definition-box">
+        <h3><i class="fas fa-quote-left"></i> Key Concept</h3>
+        <p>Provisions are amounts set aside for known liabilities or losses, while Reserves are amounts set aside out of profits to strengthen the financial position of a business.</p>
+      </div>
+    </section>
+
+    <!-- Provisions Section -->
+    <section>
+      <h2><span class="icon-box"><i class="fas fa-shield-alt"></i></span> What is a Provision?</h2>
+
+      <div class="definition-box">
+        <h3><i class="fas fa-book"></i> Definition</h3>
+        <p>A <strong>Provision</strong> is an amount set aside out of profits for a known liability or expense, the amount of which cannot be determined with accuracy. It is a charge against profits, meaning it must be created irrespective of whether there are profits or not.</p>
+      </div>
+
+      <div class="info-box note-box">
+        <h4><i class="fas fa-lightbulb"></i> Key Characteristics of Provisions</h4>
+        <ul>
+          <li><strong>Mandatory:</strong> Must be created whether there are profits or losses</li>
+          <li><strong>Charge against Profit:</strong> Debited to Profit & Loss Account</li>
+          <li><strong>Specific Purpose:</strong> Created for a specific known liability</li>
+          <li><strong>Amount Uncertain:</strong> The exact amount cannot be determined accurately</li>
+          <li><strong>Not Available for Distribution:</strong> Cannot be distributed as dividends</li>
+        </ul>
+      </div>
+
+      <h3 style="color: var(--brand-2); margin: 25px 0 15px;">Types of Provisions</h3>
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-user-slash"></i></div>
+          <h4>Provision for Bad Debts</h4>
+          <p>Amount set aside for debtors who may not pay their dues. Usually calculated as a percentage of debtors.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-percent"></i></div>
+          <h4>Provision for Discount on Debtors</h4>
+          <p>Amount set aside for cash discounts that may be allowed to debtors for early payment.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-chart-line"></i></div>
+          <h4>Provision for Depreciation</h4>
+          <p>Amount set aside for the decrease in value of fixed assets due to wear and tear, obsolescence, etc.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+          <h4>Provision for Taxation</h4>
+          <p>Amount set aside for income tax liability that is expected to be payable on profits earned.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-tools"></i></div>
+          <h4>Provision for Repairs</h4>
+          <p>Amount set aside for anticipated repair costs of machinery and other fixed assets.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-gavel"></i></div>
+          <h4>Provision for Legal Charges</h4>
+          <p>Amount set aside for anticipated legal expenses related to pending lawsuits.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reserves Section -->
+    <section>
+      <h2><span class="icon-box"><i class="fas fa-university"></i></span> What is a Reserve?</h2>
+
+      <div class="definition-box">
+        <h3><i class="fas fa-book"></i> Definition</h3>
+        <p>A <strong>Reserve</strong> is an amount set aside out of profits and retained in the business to strengthen the financial position or to meet future contingencies. It is an appropriation of profits, not a charge against profits.</p>
+      </div>
+
+      <div class="info-box tip-box">
+        <h4><i class="fas fa-star"></i> Key Characteristics of Reserves</h4>
+        <ul>
+          <li><strong>Voluntary:</strong> Created only when there are sufficient profits</li>
+          <li><strong>Appropriation of Profit:</strong> Created after charging all expenses</li>
+          <li><strong>Strengthens Financial Position:</strong> Increases the net worth of business</li>
+          <li><strong>May be Distributed:</strong> Certain reserves can be distributed as dividends</li>
+          <li><strong>No Specific Liability:</strong> Not created for any specific known liability</li>
+        </ul>
+      </div>
+
+      <h3 style="color: var(--accent-2); margin: 25px 0 15px;">Types of Reserves</h3>
+
+      <!-- Revenue vs Capital Reserves -->
+      <div class="comparison-container">
+        <div class="compare-card provision">
+          <h3><i class="fas fa-coins"></i> Revenue Reserves</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Created from operating profits</li>
+            <li><i class="fas fa-check"></i> Available for distribution as dividends</li>
+            <li><i class="fas fa-check"></i> Examples: General Reserve, Dividend Equalization Reserve</li>
+            <li><i class="fas fa-check"></i> Can be used to write off revenue losses</li>
+          </ul>
+        </div>
+        <div class="compare-card reserve">
+          <h3><i class="fas fa-landmark"></i> Capital Reserves</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Created from capital profits</li>
+            <li><i class="fas fa-check"></i> Not available for distribution as dividends</li>
+            <li><i class="fas fa-check"></i> Examples: Securities Premium, Capital Redemption Reserve</li>
+            <li><i class="fas fa-check"></i> Can only be used for capital purposes</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-piggy-bank"></i></div>
+          <h4>General Reserve</h4>
+          <p>Created to strengthen financial position without any specific purpose. Can be used for any future need.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-hand-holding-usd"></i></div>
+          <h4>Dividend Equalization Reserve</h4>
+          <p>Created to maintain a steady rate of dividend even during years of low profits.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-building"></i></div>
+          <h4>Capital Redemption Reserve</h4>
+          <p>Created when shares are redeemed out of profits. It's a capital reserve and cannot be distributed.</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon"><i class="fas fa-plus-circle"></i></div>
+          <h4>Securities Premium Reserve</h4>
+          <p>Created when shares are issued at a price above their face value. It's a capital reserve.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section>
+      <h2><span class="icon-box"><i class="fas fa-balance-scale"></i></span> Provisions vs Reserves: Key Differences</h2>
+
+      <table class="journal-table">
+        <thead>
+          <tr>
+            <th>Basis</th>
+            <th>Provision</th>
+            <th>Reserve</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nature</strong></td>
+            <td>Charge against profit</td>
+            <td>Appropriation of profit</td>
+          </tr>
+          <tr>
+            <td><strong>Creation</strong></td>
+            <td>Mandatory (even if loss)</td>
+            <td>Voluntary (only if profit exists)</td>
+          </tr>
+          <tr>
+            <td><strong>Purpose</strong></td>
+            <td>Specific known liability</td>
+            <td>General financial strength</td>
+          </tr>
+          <tr>
+            <td><strong>Dividend</strong></td>
+            <td>Cannot be distributed</td>
+            <td>Revenue reserves can be distributed</td>
+          </tr>
+          <tr>
+            <td><strong>Balance Sheet</strong></td>
+            <td>Shown as liability or deducted from asset</td>
+            <td>Shown under Reserves & Surplus</td>
+          </tr>
+          <tr>
+            <td><strong>Accuracy</strong></td>
+            <td>Amount is estimated</td>
+            <td>Amount is certain</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box warning-box">
+        <h4><i class="fas fa-exclamation-triangle"></i> Important Point</h4>
+        <p>Provisions reduce profits and hence reduce tax liability. Reserves, being appropriation of profits, do not reduce tax liability as they are created after calculating net profit.</p>
+      </div>
+    </section>
+
+    <!-- Secret Reserves Section -->
+    <section>
+      <h2><span class="icon-box"><i class="fas fa-user-secret"></i></span> Secret Reserves</h2>
+
+      <div class="definition-box">
+        <h3><i class="fas fa-eye-slash"></i> What are Secret Reserves?</h3>
+        <p>A <strong>Secret Reserve</strong> exists when the net assets of a business are understated or liabilities are overstated in the Balance Sheet, thus showing a lower profit and financial position than actually exists.</p>
+      </div>
+
+      <h3 style="color: var(--warning); margin: 20px 0 15px;">Methods of Creating Secret Reserves</h3>
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);"><i class="fas fa-arrow-down"></i></div>
+          <h4>Undervaluation of Assets</h4>
+          <p>Showing fixed assets at lower values than their actual worth</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);"><i class="fas fa-arrow-up"></i></div>
+          <h4>Overvaluation of Liabilities</h4>
+          <p>Showing liabilities at higher amounts than actually owed</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);"><i class="fas fa-percent"></i></div>
+          <h4>Excessive Depreciation</h4>
+          <p>Charging higher depreciation than actually required</p>
+        </div>
+        <div class="type-card">
+          <div class="type-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);"><i class="fas fa-shield-alt"></i></div>
+          <h4>Excess Provisions</h4>
+          <p>Creating provisions more than actually needed</p>
+        </div>
+      </div>
+
+      <div class="info-box important-box">
+        <h4><i class="fas fa-ban"></i> Legality of Secret Reserves</h4>
+        <p>Secret reserves are generally <strong>not allowed</strong> for companies as they hide the true financial position from shareholders. However, they may be permitted in certain financial institutions like banks and insurance companies.</p>
+      </div>
+    </section>
+
+    <!-- Journal Entries Section -->
+    <section>
+      <h2><span class="icon-box"><i class="fas fa-pen"></i></span> Journal Entries</h2>
+
+      <h3 style="color: var(--brand-2); margin: 0 0 15px;">For Creating Provision for Bad Debts</h3>
+      <table class="journal-table">
+        <thead>
+          <tr>
+            <th>Particulars</th>
+            <th>Debit (₹)</th>
+            <th>Credit (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="debit">Profit & Loss A/c</span> <span style="margin-left: 20px;">Dr.</span>
+              <br><span style="margin-left: 30px;">To Provision for Bad Debts A/c</span>
+              <br><span class="narration">(Being provision for bad debts created)</span>
+            </td>
+            <td class="debit">XXX</td>
+            <td class="credit">XXX</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color: var(--brand-2); margin: 25px 0 15px;">For Creating General Reserve</h3>
+      <table class="journal-table">
+        <thead>
+          <tr>
+            <th>Particulars</th>
+            <th>Debit (₹)</th>
+            <th>Credit (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="debit">Profit & Loss Appropriation A/c</span> <span style="margin-left: 20px;">Dr.</span>
+              <br><span style="margin-left: 30px;">To General Reserve A/c</span>
+              <br><span class="narration">(Being amount transferred to General Reserve)</span>
+            </td>
+            <td class="debit">XXX</td>
+            <td class="credit">XXX</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box note-box">
+        <h4><i class="fas fa-info-circle"></i> Note the Difference</h4>
+        <p><strong>Provisions</strong> are debited to <em>Profit & Loss Account</em> (as they are expenses), while <strong>Reserves</strong> are debited to <em>Profit & Loss Appropriation Account</em> (as they are appropriation of profits after calculating net profit).</p>
+      </div>
+    </section>
+
+    <!-- MCQ Section -->
+    <section id="mcqSection">
+      <h2><span class="icon-box"><i class="fas fa-question-circle"></i></span> Test Your Knowledge</h2>
+      <p style="margin-bottom: 25px;">Answer these multiple-choice questions to assess your understanding of Provisions and Reserves.</p>
+
+      <div id="quiz-container">
+        <!-- Q1 -->
+        <div class="mcq" data-answer="B">
+          <div class="mcq-question">
+            <span class="q-num">1</span>
+            Provision is a:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q1a" name="q1" value="A">
+            <label for="q1a"><span class="option-letter">A</span> Appropriation of profit</label>
+            <input type="radio" id="q1b" name="q1" value="B">
+            <label for="q1b"><span class="option-letter">B</span> Charge against profit</label>
+            <input type="radio" id="q1c" name="q1" value="C">
+            <label for="q1c"><span class="option-letter">C</span> Liability</label>
+            <input type="radio" id="q1d" name="q1" value="D">
+            <label for="q1d"><span class="option-letter">D</span> Asset</label>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="mcq" data-answer="A">
+          <div class="mcq-question">
+            <span class="q-num">2</span>
+            Reserve is created from:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q2a" name="q2" value="A">
+            <label for="q2a"><span class="option-letter">A</span> Profits only</label>
+            <input type="radio" id="q2b" name="q2" value="B">
+            <label for="q2b"><span class="option-letter">B</span> Profits and losses both</label>
+            <input type="radio" id="q2c" name="q2" value="C">
+            <label for="q2c"><span class="option-letter">C</span> Capital</label>
+            <input type="radio" id="q2d" name="q2" value="D">
+            <label for="q2d"><span class="option-letter">D</span> Borrowings</label>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="mcq" data-answer="C">
+          <div class="mcq-question">
+            <span class="q-num">3</span>
+            Which of the following is a capital reserve?
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q3a" name="q3" value="A">
+            <label for="q3a"><span class="option-letter">A</span> General Reserve</label>
+            <input type="radio" id="q3b" name="q3" value="B">
+            <label for="q3b"><span class="option-letter">B</span> Dividend Equalization Reserve</label>
+            <input type="radio" id="q3c" name="q3" value="C">
+            <label for="q3c"><span class="option-letter">C</span> Securities Premium Reserve</label>
+            <input type="radio" id="q3d" name="q3" value="D">
+            <label for="q3d"><span class="option-letter">D</span> Workmen Compensation Reserve</label>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="mcq" data-answer="B">
+          <div class="mcq-question">
+            <span class="q-num">4</span>
+            Provision for bad debts is shown in Balance Sheet:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q4a" name="q4" value="A">
+            <label for="q4a"><span class="option-letter">A</span> On the liability side</label>
+            <input type="radio" id="q4b" name="q4" value="B">
+            <label for="q4b"><span class="option-letter">B</span> By deducting from Sundry Debtors</label>
+            <input type="radio" id="q4c" name="q4" value="C">
+            <label for="q4c"><span class="option-letter">C</span> On the asset side</label>
+            <input type="radio" id="q4d" name="q4" value="D">
+            <label for="q4d"><span class="option-letter">D</span> Under Reserves & Surplus</label>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="mcq" data-answer="D">
+          <div class="mcq-question">
+            <span class="q-num">5</span>
+            General Reserve can be used for:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q5a" name="q5" value="A">
+            <label for="q5a"><span class="option-letter">A</span> Writing off bad debts</label>
+            <input type="radio" id="q5b" name="q5" value="B">
+            <label for="q5b"><span class="option-letter">B</span> Paying dividends</label>
+            <input type="radio" id="q5c" name="q5" value="C">
+            <label for="q5c"><span class="option-letter">C</span> Meeting unforeseen contingencies</label>
+            <input type="radio" id="q5d" name="q5" value="D">
+            <label for="q5d"><span class="option-letter">D</span> All of the above</label>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="mcq" data-answer="A">
+          <div class="mcq-question">
+            <span class="q-num">6</span>
+            Secret reserve is created by:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q6a" name="q6" value="A">
+            <label for="q6a"><span class="option-letter">A</span> Undervaluing assets</label>
+            <input type="radio" id="q6b" name="q6" value="B">
+            <label for="q6b"><span class="option-letter">B</span> Undervaluing liabilities</label>
+            <input type="radio" id="q6c" name="q6" value="C">
+            <label for="q6c"><span class="option-letter">C</span> Overvaluing assets</label>
+            <input type="radio" id="q6d" name="q6" value="D">
+            <label for="q6d"><span class="option-letter">D</span> Correctly valuing assets</label>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="mcq" data-answer="C">
+          <div class="mcq-question">
+            <span class="q-num">7</span>
+            Which reserve cannot be distributed as dividend?
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q7a" name="q7" value="A">
+            <label for="q7a"><span class="option-letter">A</span> General Reserve</label>
+            <input type="radio" id="q7b" name="q7" value="B">
+            <label for="q7b"><span class="option-letter">B</span> Revenue Reserve</label>
+            <input type="radio" id="q7c" name="q7" value="C">
+            <label for="q7c"><span class="option-letter">C</span> Capital Reserve</label>
+            <input type="radio" id="q7d" name="q7" value="D">
+            <label for="q7d"><span class="option-letter">D</span> Dividend Equalization Reserve</label>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="mcq" data-answer="B">
+          <div class="mcq-question">
+            <span class="q-num">8</span>
+            Provision for depreciation is:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q8a" name="q8" value="A">
+            <label for="q8a"><span class="option-letter">A</span> A reserve</label>
+            <input type="radio" id="q8b" name="q8" value="B">
+            <label for="q8b"><span class="option-letter">B</span> A provision</label>
+            <input type="radio" id="q8c" name="q8" value="C">
+            <label for="q8c"><span class="option-letter">C</span> A capital reserve</label>
+            <input type="radio" id="q8d" name="q8" value="D">
+            <label for="q8d"><span class="option-letter">D</span> A revenue reserve</label>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="mcq" data-answer="A">
+          <div class="mcq-question">
+            <span class="q-num">9</span>
+            Provision is created for:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q9a" name="q9" value="A">
+            <label for="q9a"><span class="option-letter">A</span> Known liability of uncertain amount</label>
+            <input type="radio" id="q9b" name="q9" value="B">
+            <label for="q9b"><span class="option-letter">B</span> Unknown liability</label>
+            <input type="radio" id="q9c" name="q9" value="C">
+            <label for="q9c"><span class="option-letter">C</span> Strengthening financial position</label>
+            <input type="radio" id="q9d" name="q9" value="D">
+            <label for="q9d"><span class="option-letter">D</span> Distribution to shareholders</label>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="mcq" data-answer="D">
+          <div class="mcq-question">
+            <span class="q-num">10</span>
+            Which of the following is NOT a provision?
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q10a" name="q10" value="A">
+            <label for="q10a"><span class="option-letter">A</span> Provision for Bad Debts</label>
+            <input type="radio" id="q10b" name="q10" value="B">
+            <label for="q10b"><span class="option-letter">B</span> Provision for Depreciation</label>
+            <input type="radio" id="q10c" name="q10" value="C">
+            <label for="q10c"><span class="option-letter">C</span> Provision for Taxation</label>
+            <input type="radio" id="q10d" name="q10" value="D">
+            <label for="q10d"><span class="option-letter">D</span> General Reserve</label>
+          </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="mcq" data-answer="B">
+          <div class="mcq-question">
+            <span class="q-num">11</span>
+            Reserves are shown in Balance Sheet under:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q11a" name="q11" value="A">
+            <label for="q11a"><span class="option-letter">A</span> Current Liabilities</label>
+            <input type="radio" id="q11b" name="q11" value="B">
+            <label for="q11b"><span class="option-letter">B</span> Reserves and Surplus</label>
+            <input type="radio" id="q11c" name="q11" value="C">
+            <label for="q11c"><span class="option-letter">C</span> Fixed Assets</label>
+            <input type="radio" id="q11d" name="q11" value="D">
+            <label for="q11d"><span class="option-letter">D</span> Current Assets</label>
+          </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="mcq" data-answer="C">
+          <div class="mcq-question">
+            <span class="q-num">12</span>
+            Dividend Equalization Reserve is a:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q12a" name="q12" value="A">
+            <label for="q12a"><span class="option-letter">A</span> Capital Reserve</label>
+            <input type="radio" id="q12b" name="q12" value="B">
+            <label for="q12b"><span class="option-letter">B</span> Provision</label>
+            <input type="radio" id="q12c" name="q12" value="C">
+            <label for="q12c"><span class="option-letter">C</span> Revenue Reserve</label>
+            <input type="radio" id="q12d" name="q12" value="D">
+            <label for="q12d"><span class="option-letter">D</span> Secret Reserve</label>
+          </div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="mcq" data-answer="A">
+          <div class="mcq-question">
+            <span class="q-num">13</span>
+            Capital Reserve is created from:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q13a" name="q13" value="A">
+            <label for="q13a"><span class="option-letter">A</span> Capital profits</label>
+            <input type="radio" id="q13b" name="q13" value="B">
+            <label for="q13b"><span class="option-letter">B</span> Revenue profits</label>
+            <input type="radio" id="q13c" name="q13" value="C">
+            <label for="q13c"><span class="option-letter">C</span> Both capital and revenue profits</label>
+            <input type="radio" id="q13d" name="q13" value="D">
+            <label for="q13d"><span class="option-letter">D</span> Donations received</label>
+          </div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="mcq" data-answer="B">
+          <div class="mcq-question">
+            <span class="q-num">14</span>
+            Provision for discount on debtors is calculated on:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q14a" name="q14" value="A">
+            <label for="q14a"><span class="option-letter">A</span> Total Debtors</label>
+            <input type="radio" id="q14b" name="q14" value="B">
+            <label for="q14b"><span class="option-letter">B</span> Good Debtors (after deducting bad debts provision)</label>
+            <input type="radio" id="q14c" name="q14" value="C">
+            <label for="q14c"><span class="option-letter">C</span> Bad Debtors</label>
+            <input type="radio" id="q14d" name="q14" value="D">
+            <label for="q14d"><span class="option-letter">D</span> Creditors</label>
+          </div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="mcq" data-answer="D">
+          <div class="mcq-question">
+            <span class="q-num">15</span>
+            Which statement is TRUE about provisions?
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q15a" name="q15" value="A">
+            <label for="q15a"><span class="option-letter">A</span> Provisions increase profit</label>
+            <input type="radio" id="q15b" name="q15" value="B">
+            <label for="q15b"><span class="option-letter">B</span> Provisions can be distributed as dividends</label>
+            <input type="radio" id="q15c" name="q15" value="C">
+            <label for="q15c"><span class="option-letter">C</span> Provisions are optional</label>
+            <input type="radio" id="q15d" name="q15" value="D">
+            <label for="q15d"><span class="option-letter">D</span> Provisions reduce taxable profit</label>
+          </div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="mcq" data-answer="C">
+          <div class="mcq-question">
+            <span class="q-num">16</span>
+            Reserve Fund means:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q16a" name="q16" value="A">
+            <label for="q16a"><span class="option-letter">A</span> Cash kept in reserve</label>
+            <input type="radio" id="q16b" name="q16" value="B">
+            <label for="q16b"><span class="option-letter">B</span> Any reserve created</label>
+            <input type="radio" id="q16c" name="q16" value="C">
+            <label for="q16c"><span class="option-letter">C</span> Reserve invested in outside securities</label>
+            <input type="radio" id="q16d" name="q16" value="D">
+            <label for="q16d"><span class="option-letter">D</span> Secret reserve</label>
+          </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="mcq" data-answer="A">
+          <div class="mcq-question">
+            <span class="q-num">17</span>
+            Premium on issue of shares is a:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q17a" name="q17" value="A">
+            <label for="q17a"><span class="option-letter">A</span> Capital Reserve</label>
+            <input type="radio" id="q17b" name="q17" value="B">
+            <label for="q17b"><span class="option-letter">B</span> Revenue Reserve</label>
+            <input type="radio" id="q17c" name="q17" value="C">
+            <label for="q17c"><span class="option-letter">C</span> Provision</label>
+            <input type="radio" id="q17d" name="q17" value="D">
+            <label for="q17d"><span class="option-letter">D</span> Current Liability</label>
+          </div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="mcq" data-answer="B">
+          <div class="mcq-question">
+            <span class="q-num">18</span>
+            Specific reserve is created for:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q18a" name="q18" value="A">
+            <label for="q18a"><span class="option-letter">A</span> Any general purpose</label>
+            <input type="radio" id="q18b" name="q18" value="B">
+            <label for="q18b"><span class="option-letter">B</span> A particular purpose</label>
+            <input type="radio" id="q18c" name="q18" value="C">
+            <label for="q18c"><span class="option-letter">C</span> Known liability</label>
+            <input type="radio" id="q18d" name="q18" value="D">
+            <label for="q18d"><span class="option-letter">D</span> Unknown liability</label>
+          </div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="mcq" data-answer="C">
+          <div class="mcq-question">
+            <span class="q-num">19</span>
+            Secret reserves are NOT allowed for:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q19a" name="q19" value="A">
+            <label for="q19a"><span class="option-letter">A</span> Banks</label>
+            <input type="radio" id="q19b" name="q19" value="B">
+            <label for="q19b"><span class="option-letter">B</span> Insurance companies</label>
+            <input type="radio" id="q19c" name="q19" value="C">
+            <label for="q19c"><span class="option-letter">C</span> Joint stock companies</label>
+            <input type="radio" id="q19d" name="q19" value="D">
+            <label for="q19d"><span class="option-letter">D</span> Sole proprietorship</label>
+          </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="mcq" data-answer="D">
+          <div class="mcq-question">
+            <span class="q-num">20</span>
+            Transfer to General Reserve is debited to:
+          </div>
+          <div class="mcq-options">
+            <input type="radio" id="q20a" name="q20" value="A">
+            <label for="q20a"><span class="option-letter">A</span> Trading Account</label>
+            <input type="radio" id="q20b" name="q20" value="B">
+            <label for="q20b"><span class="option-letter">B</span> Profit & Loss Account</label>
+            <input type="radio" id="q20c" name="q20" value="C">
+            <label for="q20c"><span class="option-letter">C</span> Balance Sheet</label>
+            <input type="radio" id="q20d" name="q20" value="D">
+            <label for="q20d"><span class="option-letter">D</span> Profit & Loss Appropriation Account</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Submit Button -->
+      <button class="view-solution-btn" id="submitQuiz" onclick="submitQuiz()" style="margin-top: 25px; max-width: 300px;">
+        <i class="fas fa-paper-plane"></i> Submit Answers
+      </button>
+
+      <button class="view-solution-btn" id="retry-btn" onclick="retryQuiz()" style="margin-top: 15px; max-width: 300px; display: none; background: linear-gradient(135deg, #666, #888);">
+        <i class="fas fa-redo"></i> Try Again
+      </button>
+
+      <div id="quizResult"></div>
+    </section>
+
+    <!-- Footer Section -->
+    <section style="text-align: center; padding: 35px 20px;">
+      <div style="margin-bottom: 22px;">
+        <i class="fas fa-graduation-cap" style="font-size: 3rem; background: linear-gradient(135deg, var(--brand), var(--brand-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+      </div>
+      <h3 style="color: var(--text); margin-bottom: 12px; font-size: 1.4rem;">Lesson Complete!</h3>
+      <p style="color: var(--muted); max-width: 550px; margin: 0 auto 25px; font-size: 0.98rem;">
+        You've learned the important concepts of Provisions and Reserves, their differences, types, and accounting treatment. Practice more problems to master these concepts!
+      </p>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <a href="../lessons.html" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: white; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s; box-shadow: 0 4px 20px rgba(16,185,129,0.3);">
+          <i class="fas fa-book"></i> More Lessons
+        </a>
+        <a href="#mcqSection" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: rgba(255,255,255,0.05); color: var(--text); text-decoration: none; border-radius: 12px; font-weight: 600; border: 2px solid rgba(255,255,255,0.15); transition: all 0.3s;">
+          <i class="fas fa-redo"></i> Retake Quiz
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    // ========================================
+    // 1. IMPORT FIREBASE
+    // ========================================
+    import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
+
+    // ========================================
+    // 2. CONFIGURATION
+    // ========================================
+    const LESSON_NUMBER = '18';
+    const LESSON_ID = 'lesson-18';
+
+    // ========================================
+    // 3. QUIZ SYSTEM
+    // ========================================
+    function initQuiz() {
+      console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
+
+      const container = document.getElementById('quiz-container');
+      if (!container) {
+        console.error('❌ Quiz container not found');
+        return;
+      }
+
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.addEventListener('click', function(e) {
+          if (this.dataset.checked === 'true') {
+            this.checked = false;
+            this.dataset.checked = 'false';
+          } else {
+            const groupName = this.name;
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+              radio.dataset.checked = 'false';
+            });
+            this.dataset.checked = 'true';
+          }
+        });
+      });
+
+      console.log('✅ Quiz initialized with', allInputs.length, 'options');
+    }
+
+    // ========================================
+    // 4. SUBMIT QUIZ
+    // ========================================
+    window.submitQuiz = async function() {
+      console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const mcqs = container.querySelectorAll('.mcq');
+      if (mcqs.length === 0) return;
+
+      let answersData = {};
+      let correctCount = 0;
+      let totalQuestions = mcqs.length;
+      let answeredCount = 0;
+
+      mcqs.forEach((mcq, index) => {
+        const correctAnswer = mcq.dataset.answer;
+        const questionNumber = `q${index + 1}`;
+        const inputs = mcq.querySelectorAll('input[type="radio"]');
+        const questionName = inputs[0].name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+        if (!selected) return;
+
+        answeredCount++;
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === correctAnswer;
+        if (isCorrect) correctCount++;
+
+        answersData[questionNumber] = {
+          selected: selectedValue,
+          correct: correctAnswer,
+          isCorrect: isCorrect
+        };
+
+        inputs.forEach(input => {
+          const label = input.nextElementSibling;
+          if (!label) return;
+          input.disabled = true;
+          if (input.value === correctAnswer) {
+            label.style.background = 'linear-gradient(90deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1))';
+            label.style.borderLeft = '4px solid #22c55e';
+            label.style.fontWeight = 'bold';
+          }
+          if (input.value === selectedValue && !isCorrect) {
+            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+            label.style.borderLeft = '4px solid #ef4444';
+          }
+        });
+      });
+
+      if (answeredCount === 0) {
+        alert('⚠️ Please answer at least 1 question before submitting!');
+        return;
+      }
+
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+      const submitBtn = document.getElementById('submitQuiz');
+      const retryBtn = document.getElementById('retry-btn');
+      const resultDiv = document.getElementById('quizResult');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(16,185,129,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+      }
+
+      try {
+        console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+        const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+        console.log("✅ Firebase response:", result);
+
+        if (retryBtn) retryBtn.style.display = 'flex';
+
+        if (resultDiv) {
+          if (result && result.success) {
+            if (result.updated) {
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1)); border-radius: 12px; border: 2px solid #22c55e;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #22c55e; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+            } else {
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #22c55e;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+            }
+          } else {
+            resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console for details.</div>
+              </div>`;
+          }
+        }
+      } catch (error) {
+        console.error("❌ Critical error during submission:", error);
+        if (retryBtn) retryBtn.style.display = 'flex';
+        if (resultDiv) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+            </div>`;
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.style.display = 'none';
+        }
+      }
+    };
+
+    // ========================================
+    // 5. RETRY QUIZ
+    // ========================================
+    window.retryQuiz = function() {
+      location.reload();
+    };
+
+    // ========================================
+    // 6. INITIALIZE
+    // ========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      initQuiz();
+    });
+  </script>
+</body>
+</html>
