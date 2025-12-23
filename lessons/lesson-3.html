@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3 – Accounting Principles | AccountsWizard</title>
+  
+  <!-- External Dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="main.css">
+  
+  <style>
+    /* ========================================
+       CSS VARIABLES
+    ======================================== */
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2,6,23,.55);
+      --speed: 300ms;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #fbbf24;
+      --info: #3b82f6;
+    }
+
+    /* ========================================
+       GLOBAL RESET & BASE STYLES
+    ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 50%, #0d1a2d 100%);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background animated gradient */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(124, 77, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0, 229, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255, 122, 198, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ========================================
+       NAVIGATION HEADER
+    ======================================== */
+    .nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem 2rem;
+      background: rgba(11, 16, 32, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(124, 77, 255, 0.15);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-header a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1.5rem;
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 229, 255, 0.1));
+      border: 1px solid rgba(124, 77, 255, 0.25);
+      border-radius: 50px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all var(--speed) ease;
+    }
+
+    .nav-header a:hover {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2));
+      border-color: var(--brand);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(124, 77, 255, 0.25);
+    }
+
+    .nav-header a i {
+      font-size: 1rem;
+      color: var(--brand-2);
+    }
+
+    /* ========================================
+       PAGE HEADER
+    ======================================== */
+    header {
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--brand), var(--brand-2), transparent);
+      border-radius: 2px;
+    }
+
+    .lesson-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, var(--brand-2) 50%, var(--accent) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 4s ease infinite;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    @keyframes gradientFlow {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    .breadcrumb {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .breadcrumb a {
+      color: var(--brand-2);
+      text-decoration: none;
+      transition: color var(--speed) ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--accent);
+    }
+
+    /* ========================================
+       MAIN CONTENT AREA
+    ======================================== */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ========================================
+       SECTION CARDS
+    ======================================== */
+    section {
+      background: linear-gradient(145deg, var(--card), rgba(17, 22, 51, 0.8));
+      border: 1px solid rgba(124, 77, 255, 0.12);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      transition: all var(--speed) ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent));
+      opacity: 0;
+      transition: opacity var(--speed) ease;
+    }
+
+    section:hover::before {
+      opacity: 1;
+    }
+
+    section:hover {
+      border-color: rgba(124, 77, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 25px 50px rgba(2, 6, 23, 0.6);
+    }
+
+    section h2 {
+      font-size: 1.6rem;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(124, 77, 255, 0.15);
+    }
+
+    section h2 i {
+      color: var(--brand-2);
+      font-size: 1.4rem;
+    }
+
+    section p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    section ul, section ol {
+      color: var(--muted);
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    section li {
+      margin-bottom: 0.6rem;
+    }
+
+    section li strong {
+      color: var(--brand-2);
+    }
+
+    /* ========================================
+       ACCORDION COMPONENT
+    ======================================== */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .accordion-item {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(124, 77, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all var(--speed) ease;
+    }
+
+    .accordion-item:hover {
+      border-color: rgba(124, 77, 255, 0.25);
+    }
+
+    .accordion-header {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--speed) ease;
+    }
+
+    .accordion-header:hover {
+      background: rgba(124, 77, 255, 0.08);
+    }
+
+    .accordion-header span {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .accordion-header span i {
+      color: var(--brand-2);
+      font-size: 1.1rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 255, 0.1);
+      border-radius: 8px;
+    }
+
+    .accordion-header > i {
+      color: var(--muted);
+      transition: transform var(--speed) ease;
+      font-size: 0.9rem;
+    }
+
+    .accordion-header.active > i {
+      transform: rotate(90deg);
+      color: var(--brand-2);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      background: rgba(0, 229, 255, 0.02);
+    }
+
+    .accordion-body.open {
+      max-height: 1500px;
+      padding: 1.5rem;
+      border-top: 1px solid rgba(124, 77, 255, 0.1);
+    }
+
+    .accordion-body p {
+      margin-bottom: 0.8rem;
+    }
+
+    .accordion-body ul {
+      margin: 0.8rem 0;
+    }
+
+    .accordion-body .example-box {
+      background: rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--success);
+      padding: 1rem 1.2rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1rem 0;
+    }
+
+    .accordion-body .example-box strong {
+      color: var(--success);
+    }
+
+    .accordion-body .note-box {
+      background: rgba(251, 191, 36, 0.08);
+      border-left: 3px solid var(--warning);
+      padding: 1rem 1.2rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1rem 0;
+    }
+
+    .accordion-body .note-box strong {
+      color: var(--warning);
+    }
+
+    /* ========================================
+       HIERARCHY CONTAINER (CLASSIFICATION)
+    ======================================== */
+    .hierarchy-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    .hierarchy-level {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .hierarchy-level::before {
+      content: '';
+      position: absolute;
+      top: -1rem;
+      left: 50%;
+      width: 2px;
+      height: 1rem;
+      background: linear-gradient(to bottom, transparent, rgba(124, 77, 255, 0.4));
+    }
+
+    .hierarchy-level:first-child::before {
+      display: none;
+    }
+
+    .hierarchy-card {
+      background: rgba(17, 22, 51, 0.9);
+      border: 1px solid rgba(124, 77, 255, 0.15);
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all var(--speed) ease;
+      position: relative;
+      min-width: 180px;
+      max-width: 280px;
+    }
+
+    .hierarchy-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(124, 77, 255, 0.2);
+    }
+
+    .hierarchy-card i {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .hierarchy-card h3, .hierarchy-card h4 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .hierarchy-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    /* Root Card (Top Level) */
+    .root-card {
+      background: linear-gradient(145deg, rgba(124, 77, 255, 0.2), rgba(124, 77, 255, 0.08));
+      border-color: var(--brand);
+      min-width: 280px;
+    }
+
+    .root-card i {
+      color: var(--brand);
+    }
+
+    /* Type Cards (Second Level) */
+    .type-card {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .assumption-card {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+      border-color: var(--success);
+    }
+
+    .assumption-card i {
+      color: var(--success);
+    }
+
+    .convention-card {
+      background: linear-gradient(145deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
+      border-color: var(--warning);
+    }
+
+    .convention-card i {
+      color: var(--warning);
+    }
+
+    .constraint-card {
+      background: linear-gradient(145deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+      border-color: var(--error);
+    }
+
+    .constraint-card i {
+      color: var(--error);
+    }
+
+    .principle-card {
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.15), rgba(0, 229, 255, 0.05));
+      border-color: var(--brand-2);
+    }
+
+    .principle-card i {
+      color: var(--brand-2);
+    }
+
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .icon-badge i {
+      font-size: 0.75rem;
+      margin-bottom: 0;
+    }
+
+    /* ========================================
+       DETAIL GRID (INFORMATION CARDS)
+    ======================================== */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .detail-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(124, 77, 255, 0.1);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: all var(--speed) ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detail-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--brand), var(--brand-2));
+      opacity: 0;
+      transition: opacity var(--speed) ease;
+    }
+
+    .detail-card:hover {
+      border-color: rgba(124, 77, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .detail-card:hover::before {
+      opacity: 1;
+    }
+
+    .detail-card h5 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .detail-card h5 i {
+      color: var(--brand-2);
+      font-size: 1rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 255, 0.1);
+      border-radius: 8px;
+    }
+
+    .detail-card p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .detail-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .detail-card li {
+      position: relative;
+      padding-left: 1.2rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .detail-card li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--brand-2);
+    }
+
+    /* ========================================
+       COMPARISON TABLE
+    ======================================== */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-radius: 12px;
+      border: 1px solid rgba(124, 77, 255, 0.15);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(0, 0, 0, 0.2);
+      min-width: 600px;
+    }
+
+    .comparison-table thead {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+    }
+
+    .comparison-table th {
+      padding: 1.2rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 2px solid rgba(124, 77, 255, 0.2);
+    }
+
+    .comparison-table th i {
+      margin-right: 0.5rem;
+      color: var(--brand-2);
+    }
+
+    .comparison-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(124, 77, 255, 0.08);
+      color: var(--muted);
+      vertical-align: top;
+    }
+
+    .comparison-table tbody tr {
+      transition: background var(--speed) ease;
+    }
+
+    .comparison-table tbody tr:hover {
+      background: rgba(124, 77, 255, 0.05);
+    }
+
+    .comparison-table td strong {
+      color: var(--text);
+    }
+
+    /* ========================================
+       FORMULA BOX
+    ======================================== */
+    .formula-box {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.12), rgba(0, 229, 255, 0.08));
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+
+    .formula-box h4 {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .formula {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--brand-2);
+      font-family: 'Courier New', monospace;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      letter-spacing: 1px;
+    }
+
+    /* ========================================
+       KEY POINTS BOX
+    ======================================== */
+    .key-points {
+      background: linear-gradient(135deg, rgba(255, 122, 198, 0.1), rgba(255, 122, 198, 0.05));
+      border: 1px solid rgba(255, 122, 198, 0.2);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .key-points h4 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .key-points ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .key-points li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      color: var(--muted);
+    }
+
+    .key-points li::before {
+      content: '★';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* ========================================
+       VISUAL DIAGRAM
+    ======================================== */
+    .principles-visual {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+
+    .principle-bubble {
+      background: linear-gradient(145deg, rgba(124, 77, 255, 0.15), rgba(0, 229, 255, 0.08));
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: center;
+      transition: all var(--speed) ease;
+      cursor: default;
+    }
+
+    .principle-bubble:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(124, 77, 255, 0.2);
+      border-color: var(--brand);
+    }
+
+    .principle-bubble i {
+      font-size: 1.8rem;
+      margin-bottom: 0.6rem;
+      display: block;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .principle-bubble span {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+    .lesson-footer {
+      background: linear-gradient(180deg, transparent, rgba(11, 16, 32, 0.95));
+      border-top: 1px solid rgba(124, 77, 255, 0.1);
+      padding: 3rem 2rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-copyright {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-copyright #lesson-title {
+      color: var(--brand-2);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      background: rgba(124, 77, 255, 0.1);
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all var(--speed) ease;
+    }
+
+    .footer-link:hover {
+      background: rgba(124, 77, 255, 0.2);
+      border-color: var(--brand);
+      transform: translateY(-2px);
+    }
+
+    .footer-link i {
+      color: var(--brand-2);
+    }
+
+    /* ========================================
+       BACK TO TOP BUTTON
+    ======================================== */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--speed) ease;
+      box-shadow: 0 8px 25px rgba(124, 77, 255, 0.4);
+      z-index: 999;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(124, 77, 255, 0.5);
+    }
+
+    .back-to-top i {
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    /* ========================================
+       LEARNING OBJECTIVES BOX
+    ======================================== */
+    .learning-objectives {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .learning-objectives h4 {
+      color: var(--info);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .learning-objectives ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .learning-objectives li {
+      padding: 0.6rem 0;
+      padding-left: 2rem;
+      position: relative;
+      color: var(--muted);
+    }
+
+    .learning-objectives li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+      background: rgba(16, 185, 129, 0.1);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    /* ========================================
+       MEMORY AID BOX
+    ======================================== */
+    .memory-aid {
+      background: linear-gradient(135deg, rgba(147, 51, 234, 0.12), rgba(147, 51, 234, 0.06));
+      border: 1px solid rgba(147, 51, 234, 0.25);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+
+    .memory-aid::before {
+      content: '💡';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      font-size: 1.5rem;
+      background: var(--card);
+      padding: 0 0.5rem;
+    }
+
+    .memory-aid h4 {
+      color: #a78bfa;
+      margin-bottom: 1rem;
+    }
+
+    .memory-aid .mnemonic {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+    }
+
+    .memory-aid .mnemonic span {
+      color: var(--brand-2);
+    }
+
+    /* ========================================
+       RESPONSIVE DESIGN
+    ======================================== */
+    @media (max-width: 768px) {
+      .nav-header {
+        padding: 0.8rem 1rem;
+        gap: 0.8rem;
+      }
+
+      .nav-header a {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .nav-header a span {
+        display: none;
+      }
+
+      header {
+        padding: 3rem 1.5rem 2rem;
+      }
+
+      .lesson-title {
+        font-size: 1.8rem;
+      }
+
+      main {
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      section h2 {
+        font-size: 1.3rem;
+      }
+
+      .hierarchy-card {
+        min-width: 150px;
+        padding: 1rem;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principles-visual {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 1rem;
+      }
+
+      .formula {
+        font-size: 1.1rem;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .back-to-top {
+        width: 45px;
+        height: 45px;
+        bottom: 1.5rem;
+        right: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hierarchy-level {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hierarchy-card {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .principles-visual {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+
+      .principle-bubble {
+        padding: 1rem;
+      }
+
+      .accordion-header {
+        padding: 1rem;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+    <!-- ========================================
+       A. NAVIGATION HEADER
+  ======================================== -->
+    <div class="nav-header">
+        <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+    </div>
+
+    <!-- ========================================
+       B. PAGE HEADER
+  ======================================== -->
+    <header>
+        <h1 class="lesson-title">Accounting Principles</h1>
+        <div class="breadcrumb">
+            <a href="../index.html">Home</a> /
+            <a href="../lessons.html">Lessons</a> /
+            Chapter 3: Accounting Principles
+        </div>
+    </header>
+
+    <!-- ========================================
+       C. MAIN CONTENT
+  ======================================== -->
+    <main>
+
+        <!-- ==========================================
+         SECTION 1: INTRODUCTION
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+            <p>
+                <strong>Accounting Principles</strong> are the foundational rules, guidelines, and conventions that
+                govern how financial transactions are recorded, reported, and interpreted. They ensure that financial
+                statements are <em>consistent, reliable, comparable, and understandable</em> across different
+                organizations and time periods.
+            </p>
+            <p>
+                Without these principles, every business could record transactions in its own way, making it impossible
+                to compare financial statements or trust the information they provide. Accounting principles create a
+                <strong>"common language"</strong> for the business world.
+            </p>
+
+            <div class="learning-objectives">
+                <h4><i class="fas fa-bullseye"></i> Learning Objectives</h4>
+                <ul>
+                    <li>Understand what accounting principles are and why they matter</li>
+                    <li>Differentiate between accounting concepts, conventions, and standards</li>
+                    <li>Learn and apply the fundamental accounting concepts (Entity, Going Concern, Money Measurement,
+                        etc.)</li>
+                    <li>Understand accounting conventions (Consistency, Conservatism, Materiality, Full Disclosure)</li>
+                    <li>Recognize how GAAP guides financial reporting</li>
+                    <li>Apply these principles to real-world accounting scenarios</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 2: WHY ACCOUNTING PRINCIPLES MATTER
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-question-circle"></i> Why Do Accounting Principles Matter?</h2>
+
+            <div class="principles-visual">
+                <div class="principle-bubble">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Consistency</span>
+                </div>
+                <div class="principle-bubble">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Comparability</span>
+                </div>
+                <div class="principle-bubble">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Reliability</span>
+                </div>
+                <div class="principle-bubble">
+                    <i class="fas fa-eye"></i>
+                    <span>Transparency</span>
+                </div>
+                <div class="principle-bubble">
+                    <i class="fas fa-handshake"></i>
+                    <span>Trust</span>
+                </div>
+                <div class="principle-bubble">
+                    <i class="fas fa-gavel"></i>
+                    <span>Legal Compliance</span>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <h5><i class="fas fa-users"></i> For Investors & Creditors</h5>
+                    <p>Principles ensure financial statements can be trusted for making investment and lending
+                        decisions.</p>
+                    <ul>
+                        <li>Compare different companies</li>
+                        <li>Assess financial health accurately</li>
+                        <li>Make informed decisions</li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-building"></i> For Businesses</h5>
+                    <p>Standardized rules help maintain organized records and meet regulatory requirements.</p>
+                    <ul>
+                        <li>Consistent record-keeping</li>
+                        <li>Legal protection</li>
+                        <li>Easier audits</li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-landmark"></i> For Government & Regulators</h5>
+                    <p>Uniform standards enable proper tax collection and economic policy-making.</p>
+                    <ul>
+                        <li>Accurate tax assessment</li>
+                        <li>Economic data reliability</li>
+                        <li>Fraud detection</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 3: CLASSIFICATION HIERARCHY
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-sitemap"></i> Classification of Accounting Principles</h2>
+            <p>Accounting principles can be broadly classified into three categories. Understanding this classification
+                helps you see how these rules work together to create a complete framework.</p>
+
+            <div class="hierarchy-container">
+                <!-- Root Level -->
+                <div class="hierarchy-level">
+                    <div class="hierarchy-card root-card">
+                        <i class="fas fa-book-open"></i>
+                        <h3>ACCOUNTING PRINCIPLES</h3>
+                        <p>The complete framework governing financial accounting</p>
+                    </div>
+                </div>
+
+                <!-- Second Level - Three Categories -->
+                <div class="hierarchy-level">
+                    <div class="hierarchy-card type-card assumption-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h4>Accounting Concepts</h4>
+                        <p>Basic assumptions & theoretical foundations</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-layer-group"></i> 10+ Concepts
+                        </div>
+                    </div>
+                    <div class="hierarchy-card type-card convention-card">
+                        <i class="fas fa-handshake"></i>
+                        <h4>Accounting Conventions</h4>
+                        <p>Customs & practices developed over time</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-layer-group"></i> 4 Main Conventions
+                        </div>
+                    </div>
+                    <div class="hierarchy-card type-card principle-card">
+                        <i class="fas fa-file-contract"></i>
+                        <h4>Accounting Standards</h4>
+                        <p>Formal rules by regulatory bodies (GAAP/IFRS)</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-globe"></i> Legal Requirements
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-points">
+                <h4><i class="fas fa-star"></i> Key Distinction</h4>
+                <ul>
+                    <li><strong>Concepts</strong> = Theoretical foundation (WHY we do things)</li>
+                    <li><strong>Conventions</strong> = Practical customs (HOW we've always done things)</li>
+                    <li><strong>Standards</strong> = Legal requirements (WHAT we must do)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 4: FUNDAMENTAL ACCOUNTING CONCEPTS
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-cubes"></i> Fundamental Accounting Concepts</h2>
+            <p>These are the basic assumptions that form the foundation of accounting. They are universally accepted and
+                form the backbone of all financial reporting.</p>
+
+            <div class="memory-aid">
+                <h4>🧠 Memory Aid - Remember "BIG CAMP DR MC"</h4>
+                <div class="mnemonic">
+                    <span>B</span>usiness Entity • <span>G</span>oing Concern • <span>C</span>ost • <span>A</span>ccrual
+                    • <span>M</span>oney Measurement • <span>P</span>eriodicity • <span>D</span>ual Aspect •
+                    <span>R</span>evenue Recognition • <span>M</span>atching • <span>C</span>onsistency
+                </div>
+            </div>
+
+            <div class="accordion">
+                <!-- Concept 1: Business Entity -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-building"></i> 1. Business Entity Concept (Separate Entity)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> The business is treated as a separate entity distinct from its
+                            owners. Personal transactions of owners should never be mixed with business transactions.
+                        </p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> Mr. Sharma owns a shop. He buys groceries worth ₹5,000 for his
+                            home using shop money. This ₹5,000 is recorded as "Drawings" (money taken by owner), NOT as
+                            a business expense. The shop and Mr. Sharma are separate entities in accounting!
+                        </div>
+
+                        <ul>
+                            <li><strong>Why it matters:</strong> Keeps business records accurate and meaningful</li>
+                            <li><strong>Violation example:</strong> Recording owner's personal car as a business asset
+                            </li>
+                            <li><strong>Applies to:</strong> All business types (sole proprietorship, partnership,
+                                company)</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> Even in a sole proprietorship where legally the owner and
+                            business are same, accounting treats them as SEPARATE entities!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 2: Money Measurement -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-rupee-sign"></i> 2. Money Measurement Concept</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Only transactions that can be expressed in monetary terms are
+                            recorded in accounting books. Non-monetary events, no matter how important, are excluded.
+                        </p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A company hires an extremely talented CEO. The CEO's skills and
+                            leadership ability cannot be measured in rupees, so they are NOT recorded as an asset. But
+                            the CEO's salary (₹50 lakh/year) IS recorded because it's a monetary transaction.
+                        </div>
+
+                        <ul>
+                            <li><strong>What IS recorded:</strong> Sales, purchases, salaries, rent, assets bought</li>
+                            <li><strong>What is NOT recorded:</strong> Employee loyalty, brand reputation, management
+                                quality, staff morale</li>
+                            <li><strong>Limitation:</strong> Important factors like customer satisfaction are ignored
+                            </li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "If you can't put a rupee sign on it, you can't record it!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 3: Going Concern -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-infinity"></i> 3. Going Concern Concept (Continuity)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> It is assumed that the business will continue to operate
+                            indefinitely and has no intention of closing down or significantly reducing operations.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A company buys machinery for ₹10,00,000 with a useful life of
+                            10 years. Because we assume the company will exist for 10+ years, we spread the cost over 10
+                            years (depreciation of ₹1,00,000/year). If the company was closing next year, we'd have to
+                            value the machinery at its immediate sale price instead!
+                        </div>
+
+                        <ul>
+                            <li><strong>Why it matters:</strong> Justifies depreciation, prepaid expenses, long-term
+                                assets</li>
+                            <li><strong>If not assumed:</strong> All assets would be valued at liquidation (sale) value
+                            </li>
+                            <li><strong>Exception:</strong> When business IS closing, we use "Break-up" or "Liquidation"
+                                basis</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> Going Concern = The business is "going" to "continue"
+                            indefinitely!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 4: Accounting Period -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-calendar-alt"></i> 4. Accounting Period Concept (Periodicity)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> The indefinite life of a business is divided into shorter, equal
+                            periods (usually one year) for reporting financial results. This allows regular assessment
+                            of performance.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A company started in 2020 and is still running. Instead of
+                            waiting until the company closes to calculate profit/loss, we divide its life into
+                            accounting years (April 2023 – March 2024, April 2024 – March 2025, etc.) and prepare
+                            financial statements for each period.
+                        </div>
+
+                        <ul>
+                            <li><strong>Standard period:</strong> 1 year (April 1 to March 31 in India)</li>
+                            <li><strong>Other periods:</strong> Quarterly (3 months), Half-yearly (6 months)</li>
+                            <li><strong>Creates need for:</strong> Accruals, prepayments, adjustments at period end</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> Without this concept, we'd only know profit/loss when business
+                            ENDS – not very useful!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 5: Cost Concept -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-tag"></i> 5. Cost Concept (Historical Cost)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Assets are recorded at their original purchase price (historical
+                            cost), not at their current market value. This cost remains the basis for all future
+                            accounting.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A company bought land in 2010 for ₹20,00,000. Today in 2024,
+                            the land is worth ₹2,00,00,000 (2 Crore). In the books, the land is STILL shown at
+                            ₹20,00,000 (original cost) – not its current market value!
+                        </div>
+
+                        <ul>
+                            <li><strong>Advantage:</strong> Objective, verifiable, based on actual transactions</li>
+                            <li><strong>Disadvantage:</strong> Balance sheet may not show true current value</li>
+                            <li><strong>Exception:</strong> Investments may be shown at market value in some cases</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "What you PAID is what you RECORD" – regardless of current
+                            value!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 6: Dual Aspect -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-balance-scale-right"></i> 6. Dual Aspect Concept (Duality)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Every transaction has TWO aspects – a debit and a credit of
+                            equal amounts. This is the foundation of the double-entry bookkeeping system.</p>
+
+                        <div class="formula-box">
+                            <h4>The Accounting Equation</h4>
+                            <div class="formula">Assets = Liabilities + Capital</div>
+                        </div>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> Business buys furniture for ₹50,000 cash.
+                            <br>• <strong>Aspect 1:</strong> Furniture (Asset) INCREASES by ₹50,000 → DEBIT Furniture
+                            <br>• <strong>Aspect 2:</strong> Cash (Asset) DECREASES by ₹50,000 → CREDIT Cash
+                            <br>Both sides change by ₹50,000, keeping the equation balanced!
+                        </div>
+
+                        <ul>
+                            <li><strong>Every debit has:</strong> An equal and opposite credit</li>
+                            <li><strong>Result:</strong> Trial balance always balances (Debits = Credits)</li>
+                            <li><strong>Foundation of:</strong> Double-entry bookkeeping system</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Concept 7: Revenue Recognition -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-hand-holding-usd"></i> 7. Revenue Recognition Concept
+                            (Realisation)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Revenue is recognized (recorded) when it is EARNED, not when
+                            cash is received. Revenue is earned when goods are delivered or services are rendered.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> On March 25, a shop sells goods worth ₹1,00,000 on credit.
+                            Customer will pay in April.
+                            <br>• Revenue is recorded in MARCH (when sale happened)
+                            <br>• Even though cash comes in April, the earning happened in March
+                            <br>• This is called "Accrual Basis" of accounting
+                        </div>
+
+                        <ul>
+                            <li><strong>Revenue earned when:</strong> Goods delivered, services completed, ownership
+                                transferred</li>
+                            <li><strong>NOT earned when:</strong> Order received, advance payment received, goods
+                                manufactured</li>
+                            <li><strong>Advance received:</strong> Treated as liability, not revenue, until earned</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "EARNED it? Record it! Regardless of cash!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 8: Matching -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-link"></i> 8. Matching Concept</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Expenses should be matched with the revenues they help generate
+                            in the SAME accounting period. This ensures accurate profit calculation.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A shop buys 100 shirts for ₹500 each (₹50,000 total) in
+                            February. It sells 80 shirts in March for ₹800 each (₹64,000 revenue).
+                            <br>• <strong>March Revenue:</strong> ₹64,000 (80 shirts sold)
+                            <br>• <strong>March Expense:</strong> ₹40,000 (cost of 80 shirts SOLD, not all 100)
+                            <br>• <strong>March Profit:</strong> ₹24,000
+                            <br>• The cost of 20 unsold shirts (₹10,000) remains as inventory – not an expense yet!
+                        </div>
+
+                        <ul>
+                            <li><strong>Expense recorded when:</strong> The related revenue is earned</li>
+                            <li><strong>Creates need for:</strong> Depreciation, prepaid expenses, accrued expenses</li>
+                            <li><strong>Result:</strong> Accurate profit/loss for each period</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "Match the COST with the REVENUE it generated!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 9: Accrual -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-clock"></i> 9. Accrual Concept</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Transactions are recorded when they OCCUR, not when cash is
+                            exchanged. Revenue is recorded when earned; expenses when incurred – regardless of cash
+                            flow.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> Rent for March (₹20,000) is due but paid in April.
+                            <br>• Under <strong>Cash Basis:</strong> Record expense in April (when paid)
+                            <br>• Under <strong>Accrual Basis:</strong> Record expense in March (when incurred) ✓
+                            <br>The accrual method gives a more accurate picture of March's expenses!
+                        </div>
+
+                        <ul>
+                            <li><strong>Opposite of:</strong> Cash basis accounting</li>
+                            <li><strong>Required by:</strong> GAAP and most accounting standards</li>
+                            <li><strong>Creates:</strong> Accrued income, accrued expenses, prepaid items</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Concept 10: Objectivity/Verifiability -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-check-double"></i> 10. Objectivity Concept (Verifiability)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Accounting entries should be based on objective, verifiable
+                            evidence (like invoices, receipts, contracts) rather than personal opinions or estimates.
+                        </p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> You buy office supplies. What do you record?
+                            <br>• ❌ "I think it cost around ₹3,000" (Personal estimate – NOT acceptable)
+                            <br>• ✓ "The invoice shows ₹2,847" (Documented evidence – ACCEPTABLE)
+                        </div>
+
+                        <ul>
+                            <li><strong>Evidence includes:</strong> Invoices, receipts, bank statements, contracts,
+                                vouchers</li>
+                            <li><strong>Purpose:</strong> Prevents manipulation, allows verification, supports audits
+                            </li>
+                            <li><strong>When estimates needed:</strong> Must be reasonable and documented</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 5: ACCOUNTING CONVENTIONS
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-handshake"></i> Accounting Conventions</h2>
+            <p>Conventions are customs and practices that have evolved over time to guide accountants in preparing
+                financial statements. They help in situations where concepts alone don't provide enough guidance.</p>
+
+            <div class="memory-aid">
+                <h4>🧠 Memory Aid - Remember "CCMD"</h4>
+                <div class="mnemonic">
+                    <span>C</span>onsistency • <span>C</span>onservatism • <span>M</span>ateriality •
+                    <span>D</span>isclosure
+                </div>
+            </div>
+
+            <div class="accordion">
+                <!-- Convention 1: Consistency -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-equals"></i> 1. Convention of Consistency</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Once an accounting method is adopted, it should be followed
+                            consistently from one period to another. Changes should only be made with valid reasons and
+                            must be disclosed.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A company uses "Straight Line Method" for depreciation in 2022.
+                            <br>• In 2023, they should continue using Straight Line Method
+                            <br>• If they switch to "Written Down Value Method," they must:
+                            <br>&nbsp;&nbsp;→ Have a valid reason
+                            <br>&nbsp;&nbsp;→ Disclose the change in financial statements
+                            <br>&nbsp;&nbsp;→ Show the impact of the change
+                        </div>
+
+                        <ul>
+                            <li><strong>Applies to:</strong> Depreciation methods, inventory valuation, revenue
+                                recognition</li>
+                            <li><strong>Purpose:</strong> Enables comparison between different periods</li>
+                            <li><strong>Flexibility:</strong> Changes allowed if they provide more accurate results</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "Same method, same way, year after year!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Convention 2: Conservatism/Prudence -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-shield-alt"></i> 2. Convention of Conservatism (Prudence)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> When in doubt, choose the option that results in lower profit,
+                            lower assets, or higher liabilities. "Anticipate no profits, but provide for all possible
+                            losses."</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example 1 - Inventory Valuation:</strong>
+                            <br>Inventory cost: ₹50,000 | Market value: ₹45,000
+                            <br>• Record inventory at ₹45,000 (lower value) ✓
+                            <br>
+                            <br><strong>📌 Example 2 - Provision for Bad Debts:</strong>
+                            <br>Debtors: ₹1,00,000 | Estimated bad debts: ₹5,000
+                            <br>• Create provision of ₹5,000 immediately (anticipate the loss) ✓
+                            <br>• Don't wait until debts actually become bad
+                        </div>
+
+                        <ul>
+                            <li><strong>"Cost or Market Value, whichever is LOWER"</strong> – for inventory</li>
+                            <li><strong>Record losses:</strong> When probable (even if uncertain)</li>
+                            <li><strong>Record profits:</strong> Only when actually realized</li>
+                            <li><strong>Purpose:</strong> Protects users from overstated financial position</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "Play it SAFE! When in doubt, be pessimistic!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Convention 3: Materiality -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-weight-hanging"></i> 3. Convention of Materiality</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Only items significant enough to influence the decisions of
+                            financial statement users should be separately disclosed. Immaterial (trivial) items can be
+                            ignored or merged.</p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A large company with ₹500 crore revenue:
+                            <br>• Buys a stapler for ₹200 – treat as expense immediately (immaterial)
+                            <br>• Buys machinery for ₹50 lakh – treat as asset, depreciate over life (material)
+                            <br>
+                            <br>Technically, the stapler will last 5 years, but depreciating ₹40/year is meaningless for
+                            a company this size!
+                        </div>
+
+                        <ul>
+                            <li><strong>Material item:</strong> Its omission or misstatement could influence decisions
+                            </li>
+                            <li><strong>Immaterial item:</strong> So small that nobody cares about exact treatment</li>
+                            <li><strong>No fixed rule:</strong> Materiality depends on size and nature of business</li>
+                            <li><strong>Purpose:</strong> Keeps accounting practical and cost-effective</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "Don't sweat the small stuff – focus on what MATTERS!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Convention 4: Full Disclosure -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-file-alt"></i> 4. Convention of Full Disclosure</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Financial statements must disclose ALL material information that
+                            could influence the decisions of users. Nothing significant should be hidden or obscured.
+                        </p>
+
+                        <div class="example-box">
+                            <strong>📌 Example:</strong> A company is facing a major lawsuit that could result in ₹10
+                            crore penalty.
+                            <br>• Even though the case isn't decided yet, this MUST be disclosed
+                            <br>• Disclosed as "Contingent Liability" in notes to accounts
+                            <br>• Users need to know about this potential risk!
+                        </div>
+
+                        <ul>
+                            <li><strong>Disclosed in:</strong> Financial statements OR notes to accounts</li>
+                            <li><strong>Examples:</strong> Accounting policies, contingent liabilities, related party
+                                transactions, changes in methods</li>
+                            <li><strong>Purpose:</strong> Complete and fair picture for users</li>
+                        </ul>
+
+                        <div class="note-box">
+                            <strong>💡 Remember:</strong> "If it's important, TELL THEM about it!"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 6: GAAP (Generally Accepted Accounting Principles)
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-globe"></i> GAAP – Generally Accepted Accounting Principles</h2>
+            <p><strong>GAAP</strong> refers to the common set of accounting rules, standards, and procedures that
+                companies must follow when preparing financial statements. It's like the "rulebook" for accounting in a
+                country.</p>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <h5><i class="fas fa-flag-usa"></i> US GAAP</h5>
+                    <p>Accounting standards followed in the United States, issued by FASB (Financial Accounting
+                        Standards Board).</p>
+                    <ul>
+                        <li>Detailed, rules-based approach</li>
+                        <li>Mandatory for US public companies</li>
+                        <li>Comprehensive and specific</li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-globe-asia"></i> Indian GAAP</h5>
+                    <p>Accounting Standards (AS) issued by ICAI and notified by MCA for Indian companies.</p>
+                    <ul>
+                        <li>33 Accounting Standards (AS)</li>
+                        <li>Governed by Companies Act 2013</li>
+                        <li>Moving towards Ind AS (Indian version of IFRS)</li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-globe-europe"></i> IFRS (International)</h5>
+                    <p>International Financial Reporting Standards – global accounting language used in 140+ countries.
+                    </p>
+                    <ul>
+                        <li>Principles-based approach</li>
+                        <li>Promotes global comparability</li>
+                        <li>Issued by IASB (International Accounting Standards Board)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-points">
+                <h4><i class="fas fa-star"></i> Why GAAP Matters</h4>
+                <ul>
+                    <li>Creates standardized, comparable financial statements</li>
+                    <li>Builds investor and creditor confidence</li>
+                    <li>Required for legal compliance and audits</li>
+                    <li>Enables cross-border business and investment</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 7: COMPARISON TABLE
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-columns"></i> Concepts vs Conventions – Quick Comparison</h2>
+
+            <div class="table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-list"></i> Basis</th>
+                            <th><i class="fas fa-lightbulb"></i> Accounting Concepts</th>
+                            <th><i class="fas fa-handshake"></i> Accounting Conventions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Meaning</strong></td>
+                            <td>Basic assumptions/postulates forming the foundation of accounting</td>
+                            <td>Customs and traditions developed through practice over time</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nature</strong></td>
+                            <td>Theoretical foundations</td>
+                            <td>Practical guidelines</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flexibility</strong></td>
+                            <td>More rigid – universally applied</td>
+                            <td>More flexible – can vary based on judgment</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Focus</strong></td>
+                            <td>HOW to record transactions</td>
+                            <td>HOW to present and report information</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Examples</strong></td>
+                            <td>Business Entity, Going Concern, Money Measurement, Dual Aspect</td>
+                            <td>Consistency, Conservatism, Materiality, Full Disclosure</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Origin</strong></td>
+                            <td>Based on logic and theoretical reasoning</td>
+                            <td>Evolved from accounting practices over decades</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         SECTION 8: SUMMARY & KEY TAKEAWAYS
+    =========================================== -->
+        <section>
+            <h2><i class="fas fa-clipboard-check"></i> Summary & Key Takeaways</h2>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <h5><i class="fas fa-building"></i> Entity Concept</h5>
+                    <p>Business ≠ Owner. Keep personal and business transactions separate.</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-rupee-sign"></i> Money Measurement</h5>
+                    <p>Only record what can be expressed in money. No rupee sign = no entry.</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-infinity"></i> Going Concern</h5>
+                    <p>Assume business will continue indefinitely. Enables depreciation.</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-calendar"></i> Periodicity</h5>
+                    <p>Divide business life into equal periods for regular reporting.</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-tag"></i> Cost Concept</h5>
+                    <p>Record assets at purchase cost, not current market value.</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-balance-scale"></i> Dual Aspect</h5>
+                    <p>Every transaction has two equal and opposite effects (Debit & Credit).</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-shield-alt"></i> Conservatism</h5>
+                    <p>Anticipate losses, not profits. When in doubt, be cautious.</p>
+                </div>
+                <div class="detail-card">
+                    <h5><i class="fas fa-equals"></i> Consistency</h5>
+                    <p>Use same methods year after year for comparability.</p>
+                </div>
+            </div>
+
+            <div class="key-points">
+                <h4><i class="fas fa-exclamation-circle"></i> Exam Tips</h4>
+                <ul>
+                    <li>Know the difference between CONCEPTS (theoretical) and CONVENTIONS (practical)</li>
+                    <li>Remember examples for each principle – MCQs often test application</li>
+                    <li>Dual Aspect Concept = Foundation of Double Entry System</li>
+                    <li>Conservatism = "Lower of Cost or Market Value"</li>
+                    <li>Going Concern allows depreciation; without it, use liquidation value</li>
+                </ul>
+            </div>
+        </section>
+
+            <!-- ==========================================
+         SECTION 9: MCQ PRACTICE
+    =========================================== -->
+    <section class="card" id="mcqSection">
+      <h2>🧩 MCQ Practice</h2>
+      <p style="color: var(--muted); margin-bottom: 1.5rem;">Test your understanding of Accounting Principles. Answer all questions and submit to see your score!</p>
+      
+      <!-- Progress Bar Container -->
+      <div id="quiz-progress"></div>
+      
+      <!-- Quiz Container -->
+      <div class="mcq-grid" id="quiz-container">
+
+        <!-- Question 1 -->
+        <div class="mcq" data-answer="b">
+          <h3>1. The concept that treats a business as separate from its owner is called:</h3>
+          <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Going Concern Concept</label>
+          <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Business Entity Concept</label>
+          <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Money Measurement Concept</label>
+          <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Dual Aspect Concept</label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="mcq" data-answer="c">
+          <h3>2. Which of the following CANNOT be recorded in accounting books?</h3>
+          <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Purchase of machinery for ₹5,00,000</label>
+          <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Salary paid to employees</label>
+          <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Dedication and loyalty of employees</label>
+          <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Rent received in advance</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="mcq" data-answer="a">
+          <h3>3. Depreciation of fixed assets is possible due to which concept?</h3>
+          <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Going Concern Concept</label>
+          <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Cost Concept</label>
+          <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Conservatism Convention</label>
+          <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Materiality Convention</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="mcq" data-answer="d">
+          <h3>4. "Assets = Liabilities + Capital" is an expression of which concept?</h3>
+          <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Cost Concept</label>
+          <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Matching Concept</label>
+          <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Money Measurement Concept</label>
+          <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Dual Aspect Concept</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="mcq" data-answer="b">
+          <h3>5. Land purchased in 2010 for ₹10 lakh is now worth ₹1 crore. In the books, it will be shown at:</h3>
+          <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">₹1 crore (current market value)</label>
+          <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">₹10 lakh (historical cost)</label>
+          <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">₹55 lakh (average of both)</label>
+          <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">₹90 lakh (market value less 10%)</label>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="mcq" data-answer="c">
+          <h3>6. "Anticipate no profit, but provide for all possible losses" describes which convention?</h3>
+          <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Consistency</label>
+          <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Materiality</label>
+          <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Conservatism (Prudence)</label>
+          <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Full Disclosure</label>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="mcq" data-answer="a">
+          <h3>7. Inventory is valued at "Cost or Net Realizable Value, whichever is lower" due to:</h3>
+          <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">Convention of Conservatism</label>
+          <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Convention of Consistency</label>
+          <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">Matching Concept</label>
+          <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Accrual Concept</label>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="mcq" data-answer="d">
+          <h3>8. Recording salary expense in December even though it will be paid in January follows which concept?</h3>
+          <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">Cash Basis Accounting</label>
+          <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">Going Concern Concept</label>
+          <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">Cost Concept</label>
+          <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">Accrual Concept</label>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="mcq" data-answer="b">
+          <h3>9. A company changes its depreciation method from SLM to WDV. Which convention requires this change to be disclosed?</h3>
+          <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Conservatism</label>
+          <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Consistency & Full Disclosure</label>
+          <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Materiality</label>
+          <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">Money Measurement</label>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="mcq" data-answer="c">
+          <h3>10. A large company treats a ₹500 calculator as an expense instead of an asset. This is justified by:</h3>
+          <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Cost Concept</label>
+          <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">Consistency Convention</label>
+          <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Materiality Convention</label>
+          <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">Conservatism Convention</label>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="mcq" data-answer="a">
+          <h3>11. The owner withdraws ₹50,000 from business for personal use. This is recorded as:</h3>
+          <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">Drawings (due to Business Entity Concept)</label>
+          <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">Business Expense</label>
+          <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">Salary to Owner</label>
+          <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">Not recorded at all</label>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="mcq" data-answer="d">
+          <h3>12. Which concept requires expenses to be recorded in the same period as the revenue they help generate?</h3>
+          <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">Revenue Recognition Concept</label>
+          <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">Accrual Concept</label>
+          <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Periodicity Concept</label>
+          <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Matching Concept</label>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="mcq" data-answer="b">
+          <h3>13. A pending lawsuit that may result in significant liability should be disclosed due to:</h3>
+          <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Conservatism Convention only</label>
+          <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Full Disclosure Convention</label>
+          <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Materiality Convention only</label>
+          <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Consistency Convention</label>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="mcq" data-answer="a">
+          <h3>14. Revenue is recognized when:</h3>
+          <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Goods are delivered or services are rendered</label>
+          <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Order is received from customer</label>
+          <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Cash is received from customer</label>
+          <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Goods are manufactured</label>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="mcq" data-answer="c">
+          <h3>15. The accounting period concept divides the life of a business into:</h3>
+          <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Random periods based on convenience</label>
+          <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">One long period until business closes</label>
+          <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Shorter, equal periods (usually one year)</label>
+          <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Periods decided by owners each year</label>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="mcq" data-answer="b">
+          <h3>16. GAAP stands for:</h3>
+          <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">General Accounting And Principles</label>
+          <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Generally Accepted Accounting Principles</label>
+          <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Government Approved Accounting Practices</label>
+          <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Global Accounting And Procedures</label>
+        </div>
+
+        <!-- Question 17 -->
+        <div class="mcq" data-answer="d">
+          <h3>17. If a business is expected to close down soon, which concept is violated?</h3>
+          <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Money Measurement Concept</label>
+          <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Business Entity Concept</label>
+          <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Cost Concept</label>
+          <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Going Concern Concept</label>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="mcq" data-answer="a">
+          <h3>18. Provision for doubtful debts is created based on which convention?</h3>
+          <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">Conservatism (Prudence)</label>
+          <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">Consistency</label>
+          <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">Materiality</label>
+          <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">Entity Concept</label>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="mcq" data-answer="c">
+          <h3>19. The Objectivity Concept requires accounting entries to be based on:</h3>
+          <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">Accountant's best judgment</label>
+          <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">Owner's personal estimates</label>
+          <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">Verifiable documentary evidence</label>
+          <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">Industry averages</label>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="mcq" data-answer="b">
+          <h3>20. Which of the following correctly distinguishes concepts from conventions?</h3>
+          <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">Concepts are practical; Conventions are theoretical</label>
+          <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">Concepts are theoretical foundations; Conventions are practical customs</label>
+          <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">Concepts are optional; Conventions are mandatory</label>
+          <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">There is no difference between them</label>
+        </div>
+
+      </div>
+      
+      <!-- Submit Button -->
+      <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+      
+      <!-- Result Display -->
+      <div id="quizResult"></div>
+      
+      <!-- Retry Button -->
+      <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
+    </section>
+
+        <!-- ==========================================
+         D. FOOTER
+    =========================================== -->
+    <footer class="lesson-footer">
+      <div class="footer-content">
+        <p class="footer-copyright">AccountsWizard © 2025 • <span id="lesson-title">Lesson 3 – Accounting Principles</span></p>
+        <div class="footer-links">
+          <a href="../index.html" class="footer-link"><i class="fas fa-home"></i><span>Back to Home</span></a>
+          <a href="../lessons.html" class="footer-link"><i class="fas fa-book"></i><span>All Lessons</span></a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ==========================================
+         E. BACK TO TOP BUTTON
+    =========================================== -->
+    <div class="back-to-top" id="backToTop">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+
+  </main>
+
+  <!-- ==========================================
+       F. JAVASCRIPT MODULE
+  =========================================== -->
+  <script type="module">
+    // ========================================
+    // 1. FIREBASE IMPORTS (REQUIRED)
+    // ========================================
+    import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
+
+    // ========================================
+    // 2. CONFIGURATION (LESSON-SPECIFIC)
+    // ========================================
+    const LESSON_NUMBER = '3';
+    const LESSON_ID = 'lesson-3';
+
+    // ========================================
+    // 3. INITIALIZE QUIZ
+    // ========================================
+    function initQuiz() {
+      console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) {
+        console.error('❌ Quiz container not found');
+        return;
+      }
+
+      // Add event listeners to all radio buttons
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        // Update progress bar on change
+        input.addEventListener('change', updateProgressBar);
+        
+        // ✨ Unclick functionality (toggle selection)
+        input.addEventListener('click', function(e) {
+          if (this.dataset.checked === 'true') {
+            this.checked = false;
+            this.dataset.checked = 'false';
+            updateProgressBar();
+          } else {
+            const groupName = this.name;
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+              radio.dataset.checked = 'false';
+            });
+            this.dataset.checked = 'true';
+          }
+        });
+      });
+
+      console.log('✅ Quiz initialized with', allInputs.length, 'options');
+      updateProgressBar();
+    }
+
+    // ========================================
+    // 4. UPDATE PROGRESS BAR (REAL-TIME)
+    // ========================================
+    function updateProgressBar() {
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const allQuestions = container.querySelectorAll('.mcq');
+      const totalQuestions = allQuestions.length;
+
+      let answeredCount = 0;
+      allQuestions.forEach(mcq => {
+        const questionInput = mcq.querySelector('input[type="radio"]');
+        if (questionInput) {
+          const questionName = questionInput.name;
+          const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+          if (selected) answeredCount++;
+        }
+      });
+
+      const progressPercentage = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+
+      const progressDiv = document.getElementById('quiz-progress');
+      if (progressDiv) {
+        progressDiv.innerHTML = `
+          <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+              <span>Questions Answered</span>
+              <span><strong style="color: var(--brand-2);">${answeredCount}/${totalQuestions}</strong></span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+              <div style="width: ${progressPercentage}%; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // ========================================
+    // 5. SUBMIT QUIZ (FIREBASE INTEGRATION)
+    // ========================================
+    window.submitQuiz = async function() {
+      console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const mcqs = container.querySelectorAll('.mcq');
+      if (mcqs.length === 0) return;
+
+      let answersData = {};
+      let correctCount = 0;
+      let totalQuestions = mcqs.length;
+      let answeredCount = 0;
+
+      // Check each question
+      mcqs.forEach((mcq, index) => {
+        const correctAnswer = mcq.dataset.answer;
+        const questionNumber = `q${index + 1}`;
+        const inputs = mcq.querySelectorAll('input[type="radio"]');
+        const questionName = inputs[0]?.name;
+        
+        if (!questionName) return;
+        
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+        if (!selected) return;
+
+        answeredCount++;
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === correctAnswer;
+        if (isCorrect) correctCount++;
+
+        answersData[questionNumber] = {
+          selected: selectedValue,
+          correct: correctAnswer,
+          isCorrect: isCorrect
+        };
+
+        // Visual feedback
+        inputs.forEach(input => {
+          const label = input.nextElementSibling;
+          if (!label) return;
+          input.disabled = true;
+          
+          // Highlight correct answer
+          if (input.value === correctAnswer) {
+            label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
+            label.style.borderLeft = '4px solid #10b981';
+            label.style.fontWeight = 'bold';
+          }
+          
+          // Highlight wrong answer
+          if (input.value === selectedValue && !isCorrect) {
+            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+            label.style.borderLeft = '4px solid #ef4444';
+          }
+        });
+      });
+
+      // Validation
+      if (answeredCount === 0) {
+        alert('⚠️ Please answer at least 1 question before submitting!');
+        return;
+      }
+
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+      const submitBtn = document.getElementById('submitQuiz');
+      const resultDiv = document.getElementById('quizResult');
+
+      // Show loading state
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+      }
+
+      // Submit to Firebase
+      try {
+        console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+        const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+        console.log("✅ Firebase response:", result);
+
+        // Display result
+        if (resultDiv) {
+          if (result && result.success) {
+            if (result.updated) {
+              // New best score!
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+            } else {
+              // Previous score was better
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+            }
+          } else {
+            // Firebase failed but still show score
+            resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console for details.</div>
+              </div>`;
+          }
+        }
+      } catch (error) {
+        console.error("❌ Critical error during submission:", error);
+        if (resultDiv) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+            </div>`;
+        }
+      } finally {
+        // Always show retry button
+        const retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) retryBtn.style.display = 'block';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = '✓ Submitted';
+        }
+      }
+    };
+
+    // ========================================
+    // 6. RETRY QUIZ
+    // ========================================
+    window.retryQuiz = function() {
+      console.log('🔄 Retrying quiz');
+      
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      // Reset all inputs
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.disabled = false;
+        input.dataset.checked = 'false';
+        
+        const label = input.nextElementSibling;
+        if (label) {
+          label.style.background = '';
+          label.style.borderLeft = '';
+          label.style.fontWeight = '';
+        }
+      });
+
+      // Reset UI
+      const resultDiv = document.getElementById('quizResult');
+      if (resultDiv) resultDiv.innerHTML = '';
+
+      const submitBtn = document.getElementById('submitQuiz');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Answers';
+      }
+
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) retryBtn.style.display = 'none';
+
+      updateProgressBar();
+      document.getElementById('mcqSection')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ========================================
+    // 7. SCROLL ANIMATIONS FOR CARDS
+    // ========================================
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.detail-card, .hierarchy-card, .principle-bubble').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.5s ease';
+      observer.observe(card);
+    });
+
+    // ========================================
+    // 8. ACCORDION FUNCTIONALITY
+    // ========================================
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const body = header.nextElementSibling;
+        const isOpen = body.classList.contains('open');
+        
+        // Close all accordion items
+        document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+        
+        // Open clicked item if it was closed
+        if (!isOpen) {
+          body.classList.add('open');
+          header.classList.add('active');
+        }
+      });
+    });
+
+    // ========================================
+    // 9. BACK TO TOP BUTTON
+    // ========================================
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 400) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // ========================================
+    // 10. INITIALIZE ON PAGE LOAD
+    // ========================================
+    initQuiz();
+    console.log('✅ Lesson', LESSON_NUMBER, 'Accounting Principles quiz ready!');
+
+  </script>
+</body>
+</html>
