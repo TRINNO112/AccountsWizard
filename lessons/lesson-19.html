@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 19 – Capital and Revenue | AccountsWizard</title>
+
+  <!-- CRITICAL: External dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="main.css"> <!-- ⚠️ NEVER REMOVE: Contains MCQ styles -->
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0f1733;
+      --card: #111633;
+      --muted: #b8c2ff;
+      --brand: #7c4dff;
+      --brand-2: #00e5ff;
+      --accent: #ff7ac6;
+      --text: #e9eefc;
+      --radius: 16px;
+      --shadow: 0 18px 40px rgba(2, 6, 23, .55);
+      --speed: 300ms;
+      --success: #4caf50;
+      --error: #f44336;
+      --warning: #ffd166;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* Navigation Header */
+    .nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(17, 22, 51, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(124, 77, 255, 0.2);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      /* Changed from default */
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-header a {
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: all var(--speed);
+      font-weight: 500;
+    }
+
+    .nav-header a:hover {
+      color: var(--brand-2);
+      background: rgba(124, 77, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Page Header */
+    header {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.1) 0%, rgba(0, 229, 255, 0.1) 100%);
+      border-bottom: 2px solid rgba(124, 77, 255, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .lesson-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+
+      0%,
+      100% {
+        filter: hue-rotate(0deg);
+      }
+
+      50% {
+        filter: hue-rotate(20deg);
+      }
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .breadcrumb a {
+      color: var(--brand-2);
+      text-decoration: none;
+      transition: color var(--speed);
+    }
+
+    .breadcrumb a:hover {
+      color: var(--brand);
+    }
+
+    /* Main Content */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      transition: transform var(--speed), box-shadow var(--speed);
+    }
+
+    section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(124, 77, 255, 0.3);
+    }
+
+    section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--brand-2);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    section h2 i {
+      color: var(--brand);
+    }
+
+    /* Special Introduction Section Styling */
+    section:first-of-type {
+      background: linear-gradient(135deg,
+          rgba(124, 77, 255, 0.15) 0%,
+          rgba(0, 229, 255, 0.1) 50%,
+          rgba(255, 122, 198, 0.1) 100%);
+      border: 2px solid rgba(124, 77, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    section:first-of-type::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(124, 77, 255, 0.1) 0%, transparent 70%);
+      animation: rotateGradient 15s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotateGradient {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    section:first-of-type h2 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    section:first-of-type p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text);
+      text-align: justify;
+      position: relative;
+      z-index: 1;
+      padding: 0.5rem 0;
+    }
+
+    section:first-of-type p:first-of-type::first-letter {
+      font-size: 3rem;
+      font-weight: bold;
+      float: left;
+      line-height: 1;
+      margin: 0 10px 0 0;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Accordion */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .accordion-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      transition: all var(--speed);
+    }
+
+    .accordion-item:hover {
+      border-color: var(--brand);
+    }
+
+    .accordion-header {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--speed);
+    }
+
+    .accordion-header:hover {
+      background: rgba(124, 77, 255, 0.1);
+    }
+
+    .accordion-header.active {
+      background: rgba(124, 77, 255, 0.15);
+      color: var(--brand-2);
+    }
+
+    .accordion-header i.fa-chevron-right {
+      transition: transform var(--speed);
+    }
+
+    .accordion-header.active i.fa-chevron-right {
+      transform: rotate(90deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .accordion-body.open {
+      max-height: 2000px;
+    }
+
+    .accordion-body>div {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(124, 77, 255, 0.2);
+    }
+
+    .accordion-body p {
+      margin-bottom: 1rem;
+      color: var(--muted);
+    }
+
+    .accordion-body ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .accordion-body li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      color: var(--muted);
+    }
+
+    .accordion-body li:before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--brand-2);
+      font-weight: bold;
+    }
+
+    /* Hierarchy Container */
+    .hierarchy-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .hierarchy-level {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hierarchy-card {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.1) 0%, rgba(0, 229, 255, 0.05) 100%);
+      border: 2px solid rgba(124, 77, 255, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-width: 250px;
+      text-align: center;
+      transition: all var(--speed);
+      position: relative;
+    }
+
+    .hierarchy-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--brand-2);
+      box-shadow: 0 12px 30px rgba(124, 77, 255, 0.4);
+    }
+
+    .hierarchy-card.root-card {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      border: none;
+      color: white;
+      font-size: 1.1rem;
+      min-width: 300px;
+    }
+
+    .hierarchy-card > i {  /* Only direct child icons, not nested ones */
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--brand-2);
+    }
+
+    .hierarchy-card.root-card i {
+      color: white;
+    }
+
+    .hierarchy-card h3,
+    .hierarchy-card h4 {
+      margin: 0.5rem 0;
+      color: var(--text);
+    }
+
+    .hierarchy-card.root-card h3 {
+      color: white;
+    }
+
+    .hierarchy-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .hierarchy-card.root-card p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 2rem !important;
+      padding: 0.4rem 1rem;
+      background: rgba(124, 77, 255, 0.2);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--brand-2);
+      font-weight: 600;
+    }
+
+    .icon-badge i {
+      font-size: 0.9rem;
+      /* Smaller icon size */
+    }
+
+    .capital-card {
+      border-color: rgba(124, 77, 255, 0.5);
+    }
+
+    .revenue-card {
+      border-color: rgba(0, 229, 255, 0.5);
+    }
+
+    /* Detail Grid */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .detail-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(124, 77, 255, 0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all var(--speed);
+    }
+
+    .detail-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--brand);
+      box-shadow: 0 10px 25px rgba(124, 77, 255, 0.3);
+    }
+
+    .detail-card h5 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--brand-2);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detail-card p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .detail-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .detail-card li {
+      padding: 0.4rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .detail-card li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    /* Comparison Table */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border-radius: 12px;
+      border: 1px solid rgba(124, 77, 255, 0.2);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .comparison-table thead {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.2) 0%, rgba(0, 229, 255, 0.2) 100%);
+    }
+
+    .comparison-table th {
+      padding: 1.2rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--brand-2);
+      border-bottom: 2px solid rgba(124, 77, 255, 0.3);
+    }
+
+    .comparison-table td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid rgba(124, 77, 255, 0.1);
+      color: var(--muted);
+    }
+
+    .comparison-table tbody tr {
+      transition: background var(--speed);
+    }
+
+    .comparison-table tbody tr:hover {
+      background: rgba(124, 77, 255, 0.05);
+    }
+
+    .comparison-table td strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .lesson-footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: rgba(17, 22, 51, 0.8);
+      border-top: 2px solid rgba(124, 77, 255, 0.3);
+      border-radius: var(--radius);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copyright {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-copyright span {
+      color: var(--brand-2);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-link {
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--speed);
+    }
+
+    .footer-link:hover {
+      color: var(--brand-2);
+      transform: translateY(-2px);
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: all var(--speed);
+      box-shadow: 0 4px 15px rgba(124, 77, 255, 0.4);
+      z-index: 99;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(124, 77, 255, 0.6);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .lesson-title {
+        font-size: 1.8rem;
+      }
+
+      .nav-header {
+        padding: 1rem;
+      }
+
+      main {
+        padding: 0 1rem;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      .hierarchy-level {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .comparison-table {
+        font-size: 0.85rem;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 0.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Header -->
+  <div class="nav-header">
+    <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+  </div>
+
+  <!-- Page Header -->
+  <header>
+    <h1 class="lesson-title">Lesson 19 – Capital and Revenue</h1>
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> /
+      <a href="../lessons.html">Lessons</a> /
+      Chapter 19: Capital and Revenue
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Introduction Section -->
+    <section>
+      <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+      <p>Understanding the distinction between capital and revenue items is fundamental in accounting. This
+        classification affects the preparation of financial statements, calculation of profits, and assessment of a
+        business's financial position. Capital items relate to the acquisition and improvement of fixed assets, while
+        revenue items are concerned with day-to-day business operations.</p>
+      <p>This lesson will help you distinguish between capital and revenue expenditure, receipts, profits, and losses,
+        which is essential for accurate financial reporting and decision-making.</p>
+    </section>
+
+    <!-- Main Classification -->
+    <section>
+      <h2><i class="fas fa-layer-group"></i> Main Classification</h2>
+      <div class="hierarchy-container">
+        <div class="hierarchy-level">
+          <div class="hierarchy-card root-card">
+            <i class="fas fa-balance-scale"></i>
+            <h3>Capital vs Revenue</h3>
+            <p>Two fundamental categories in accounting classification</p>
+          </div>
+        </div>
+
+        <div class="hierarchy-level">
+          <div class="hierarchy-card capital-card">
+            <i class="fas fa-building"></i>
+            <h4>Capital Items</h4>
+            <p>Long-term investments in assets and major improvements</p>
+            <div class="icon-badge">
+              <i class="fas fa-chart-line"></i> Long-term benefit
+            </div>
+          </div>
+
+          <div class="hierarchy-card revenue-card">
+            <i class="fas fa-sync-alt"></i>
+            <h4>Revenue Items</h4>
+            <p>Day-to-day operational expenses and income</p>
+            <div class="icon-badge">
+              <i class="fas fa-clock"></i> Short-term benefit
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capital Expenditure -->
+    <section>
+      <h2><i class="fas fa-money-bill-wave"></i> Capital Expenditure</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-landmark"></i> Definition of Capital Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Definition:</strong> Capital expenditure is money spent on acquiring, improving, or extending
+                the useful life of fixed assets. These expenditures provide benefits to the business over multiple
+                accounting periods.</p>
+              <ul>
+                <li><strong>Characteristics:</strong> Non-recurring, creates or enhances assets, benefits multiple
+                  periods</li>
+                <li><strong>Accounting Treatment:</strong> Capitalized in the balance sheet as fixed assets</li>
+                <li><strong>Impact:</strong> Increases the value of assets, subject to depreciation</li>
+                <li><strong>Example:</strong> Purchase of machinery, construction of building, major renovations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-list-check"></i> Types of Capital Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Categories of Capital Expenditure:</strong></p>
+              <ul>
+                <li><strong>Purchase of Fixed Assets:</strong> Buying land, buildings, machinery, vehicles, furniture
+                </li>
+                <li><strong>Improvements to Fixed Assets:</strong> Major renovations, extensions, upgrades that increase
+                  capacity</li>
+                <li><strong>Installation Costs:</strong> Expenses for installing machinery or equipment</li>
+                <li><strong>Legal Costs:</strong> Legal fees for purchasing property or defending title to assets</li>
+                <li><strong>Transportation Costs:</strong> Freight and delivery charges for fixed assets</li>
+                <li><strong>Preliminary Expenses:</strong> Formation costs of a company (now treated differently under
+                  modern standards)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-grid" style="margin-top: 2rem;">
+        <div class="detail-card">
+          <h5><i class="fas fa-industry"></i> Machinery Purchase</h5>
+          <p>Includes cost of machinery, delivery, installation, and testing</p>
+          <ul>
+            <li>Purchase price</li>
+            <li>Import duties and taxes</li>
+            <li>Transportation costs</li>
+            <li>Installation charges</li>
+            <li>Pre-production testing</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-home"></i> Building Construction</h5>
+          <p>All costs necessary to bring the building to usable condition</p>
+          <ul>
+            <li>Land purchase price</li>
+            <li>Construction costs</li>
+            <li>Architect fees</li>
+            <li>Legal fees</li>
+            <li>Site preparation</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-car"></i> Vehicle Acquisition</h5>
+          <p>Complete cost to make vehicle ready for business use</p>
+          <ul>
+            <li>Purchase price</li>
+            <li>Registration fees</li>
+            <li>Delivery charges</li>
+            <li>Initial modifications</li>
+            <li>Company branding</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Revenue Expenditure -->
+    <section>
+      <h2><i class="fas fa-receipt"></i> Revenue Expenditure</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-file-invoice-dollar"></i> Definition of Revenue Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Definition:</strong> Revenue expenditure is money spent on day-to-day running expenses of the
+                business. These expenses are consumed within the current accounting period and do not create assets.</p>
+              <ul>
+                <li><strong>Characteristics:</strong> Recurring, maintains existing assets, benefits current period only
+                </li>
+                <li><strong>Accounting Treatment:</strong> Charged to the income statement (profit and loss account)
+                </li>
+                <li><strong>Impact:</strong> Reduces profit for the period, does not create assets</li>
+                <li><strong>Example:</strong> Salaries, rent, repairs, electricity, office supplies</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-clipboard-list"></i> Types of Revenue Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Categories of Revenue Expenditure:</strong></p>
+              <ul>
+                <li><strong>Operating Expenses:</strong> Salaries, wages, rent, utilities, insurance</li>
+                <li><strong>Maintenance and Repairs:</strong> Routine repairs to maintain assets in working condition
+                </li>
+                <li><strong>Administrative Expenses:</strong> Office supplies, postage, telephone, stationery</li>
+                <li><strong>Selling and Distribution:</strong> Advertising, sales commissions, delivery expenses</li>
+                <li><strong>Financial Expenses:</strong> Interest on loans, bank charges</li>
+                <li><strong>Depreciation:</strong> Systematic allocation of capital cost over asset's useful life</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-grid" style="margin-top: 2rem;">
+        <div class="detail-card">
+          <h5><i class="fas fa-tools"></i> Repairs & Maintenance</h5>
+          <p>Routine expenses to keep assets in working condition</p>
+          <ul>
+            <li>Regular servicing</li>
+            <li>Minor repairs</li>
+            <li>Replacement of parts</li>
+            <li>Painting and decoration</li>
+            <li>Cleaning services</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-users"></i> Personnel Costs</h5>
+          <p>Wages and salaries for employees</p>
+          <ul>
+            <li>Gross salaries</li>
+            <li>Employer contributions</li>
+            <li>Staff training</li>
+            <li>Employee benefits</li>
+            <li>Overtime payments</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-bolt"></i> Utilities & Services</h5>
+          <p>Essential services for business operations</p>
+          <ul>
+            <li>Electricity</li>
+            <li>Water charges</li>
+            <li>Heating/Cooling</li>
+            <li>Internet & phone</li>
+            <li>Waste disposal</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section>
+      <h2><i class="fas fa-columns"></i> Capital vs Revenue Expenditure Comparison</h2>
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th><i class="fas fa-question-circle"></i> Aspect</th>
+              <th><i class="fas fa-building"></i> Capital Expenditure</th>
+              <th><i class="fas fa-receipt"></i> Revenue Expenditure</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Purpose</strong></td>
+              <td>Acquire or improve fixed assets</td>
+              <td>Maintain day-to-day operations</td>
+            </tr>
+            <tr>
+              <td><strong>Frequency</strong></td>
+              <td>Non-recurring or infrequent</td>
+              <td>Recurring regularly</td>
+            </tr>
+            <tr>
+              <td><strong>Benefit Period</strong></td>
+              <td>Multiple accounting periods (long-term)</td>
+              <td>Current accounting period only (short-term)</td>
+            </tr>
+            <tr>
+              <td><strong>Accounting Treatment</strong></td>
+              <td>Capitalized in Balance Sheet</td>
+              <td>Charged to Income Statement</td>
+            </tr>
+            <tr>
+              <td><strong>Effect on Assets</strong></td>
+              <td>Creates or increases asset value</td>
+              <td>No effect on asset value</td>
+            </tr>
+            <tr>
+              <td><strong>Effect on Profit</strong></td>
+              <td>No immediate effect (depreciated over time)</td>
+              <td>Reduces current period profit</td>
+            </tr>
+            <tr>
+              <td><strong>Examples</strong></td>
+              <td>Purchase of machinery, building construction</td>
+              <td>Salaries, rent, repairs, utilities</td>
+            </tr>
+            <tr>
+              <td><strong>Depreciation</strong></td>
+              <td>Subject to depreciation</td>
+              <td>Not subject to depreciation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Capital and Revenue Receipts -->
+    <section>
+      <h2><i class="fas fa-hand-holding-usd"></i> Capital and Revenue Receipts</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-piggy-bank"></i> Capital Receipts</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Definition:</strong> Capital receipts are amounts received that are not part of the normal
+                trading activities and do not arise from the sale of goods or services. They typically involve long-term
+                financing or sale of fixed assets.</p>
+              <ul>
+                <li><strong>Owner's Capital:</strong> Money invested by the owner(s) in the business</li>
+                <li><strong>Loans Received:</strong> Long-term borrowings from banks or financial institutions</li>
+                <li><strong>Sale of Fixed Assets:</strong> Proceeds from selling machinery, vehicles, or property</li>
+                <li><strong>Debentures Issued:</strong> Money raised by issuing debentures</li>
+                <li><strong>Share Capital:</strong> Funds raised by issuing shares (for companies)</li>
+                <li><strong>Accounting Treatment:</strong> Shown in the balance sheet, not in income statement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-cash-register"></i> Revenue Receipts</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Definition:</strong> Revenue receipts are amounts received from normal business operations or
+                activities that generate income. These are regular and recurring in nature.</p>
+              <ul>
+                <li><strong>Sales Revenue:</strong> Income from selling goods or services</li>
+                <li><strong>Commission Received:</strong> Income from agency or brokerage services</li>
+                <li><strong>Rent Received:</strong> Income from renting out property or assets</li>
+                <li><strong>Interest Received:</strong> Income from investments or bank deposits</li>
+                <li><strong>Discount Received:</strong> Cash discounts from suppliers for early payment</li>
+                <li><strong>Accounting Treatment:</strong> Credited to income statement as income</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capital and Revenue Profits/Losses -->
+    <section>
+      <h2><i class="fas fa-chart-line"></i> Capital and Revenue Profits & Losses</h2>
+
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5><i class="fas fa-trophy"></i> Capital Profit</h5>
+          <p>Profit arising from sale or revaluation of fixed assets</p>
+          <ul>
+            <li>Profit on sale of machinery</li>
+            <li>Profit on sale of land/building</li>
+            <li>Revaluation surplus</li>
+            <li>Not part of normal trading</li>
+            <li>Transferred to capital reserve</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-exclamation-triangle"></i> Capital Loss</h5>
+          <p>Loss arising from sale or disposal of fixed assets</p>
+          <ul>
+            <li>Loss on sale of machinery</li>
+            <li>Loss on sale of vehicles</li>
+            <li>Revaluation deficit</li>
+            <li>Not part of normal trading</li>
+            <li>Charged to capital account</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-dollar-sign"></i> Revenue Profit</h5>
+          <p>Profit from normal business operations</p>
+          <ul>
+            <li>Gross profit from trading</li>
+            <li>Net profit after expenses</li>
+            <li>Regular and recurring</li>
+            <li>Shown in income statement</li>
+            <li>Available for distribution</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-chart-line-down"></i> Revenue Loss</h5>
+          <p>Loss from normal business operations</p>
+          <ul>
+            <li>Trading losses</li>
+            <li>Operating losses</li>
+            <li>Regular and recurring</li>
+            <li>Shown in income statement</li>
+            <li>Reduces owner's equity</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deferred Revenue Expenditure -->
+    <section>
+      <h2><i class="fas fa-hourglass-half"></i> Deferred Revenue Expenditure</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-clock"></i> Understanding Deferred Revenue Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Definition:</strong> Deferred revenue expenditure is revenue expenditure that has been incurred
+                during the current accounting period but benefits of which will extend over more than one period. It is
+                initially treated as an asset and gradually written off over the benefit period.</p>
+              <ul>
+                <li><strong>Nature:</strong> Revenue in nature but capital in effect</li>
+                <li><strong>Examples:</strong> Heavy advertising campaign, preliminary expenses, research & development
+                  costs</li>
+                <li><strong>Treatment:</strong> Shown as asset initially, written off over multiple periods</li>
+                <li><strong>Rationale:</strong> Matching principle - expense should be matched with revenue over benefit
+                  period</li>
+                <li><strong>Presentation:</strong> Unamortized portion shown in balance sheet, amortized portion charged
+                  to P&L</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-list-ol"></i> Examples of Deferred Revenue Expenditure</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="accordion-body">
+            <div>
+              <p><strong>Common Examples:</strong></p>
+              <ul>
+                <li><strong>Large Advertising Campaign:</strong> Expenditure on a major promotional campaign with
+                  long-term benefits</li>
+                <li><strong>Development Costs:</strong> Costs of developing new products or services</li>
+                <li><strong>Preliminary Expenses:</strong> Formation costs of a company (legal fees, registration)</li>
+                <li><strong>Major Repairs:</strong> Extensive repairs that extend useful life significantly</li>
+                <li><strong>Underwriting Commission:</strong> Commission paid on issue of shares or debentures</li>
+                <li><strong>Discount on Issue of Shares:</strong> Written off over several years</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Practical Guidelines -->
+    <section>
+      <h2><i class="fas fa-compass"></i> Practical Guidelines for Classification</h2>
+      <div class="detail-grid">
+        <div class="detail-card">
+          <h5><i class="fas fa-question"></i> Key Questions to Ask</h5>
+          <p>Questions to determine proper classification</p>
+          <ul>
+            <li>Does it create a new asset?</li>
+            <li>Does it enhance existing asset value?</li>
+            <li>What is the benefit period?</li>
+            <li>Is it recurring in nature?</li>
+            <li>Does it maintain or increase capacity?</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-exclamation-circle"></i> Common Mistakes</h5>
+          <p>Errors to avoid in classification</p>
+          <ul>
+            <li>Treating major improvements as repairs</li>
+            <li>Capitalizing routine maintenance</li>
+            <li>Confusing installation with operation costs</li>
+            <li>Misclassifying asset purchases</li>
+            <li>Ignoring materiality concept</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-lightbulb"></i> Best Practices</h5>
+          <p>Tips for accurate classification</p>
+          <ul>
+            <li>Apply substance over form principle</li>
+            <li>Consider the benefit period</li>
+            <li>Document classification decisions</li>
+            <li>Be consistent in treatment</li>
+            <li>Review materiality thresholds</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h5><i class="fas fa-balance-scale"></i> Impact on Financial Statements</h5>
+          <p>Consequences of proper classification</p>
+          <ul>
+            <li>Accurate asset valuation</li>
+            <li>Correct profit calculation</li>
+            <li>Proper tax computation</li>
+            <li>Reliable financial position</li>
+            <li>Informed decision-making</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MCQ Practice Section -->
+    <section class="card" id="mcqSection">
+      <h2>🧩 MCQ Practice</h2>
+      <div id="quiz-progress"></div>
+      <div class="mcq-grid" id="quiz-container">
+
+        <!-- Question 1 -->
+        <div class="mcq" data-answer="a">
+          <h3>1. Which of the following is a capital expenditure?</h3>
+          <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Purchase of machinery</label>
+          <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Payment of salaries</label>
+          <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Electricity charges</label>
+          <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Rent paid</label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="mcq" data-answer="c">
+          <h3>2. Revenue expenditure is:</h3>
+          <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Shown in the balance sheet</label>
+          <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Capitalized as an asset</label>
+          <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Charged to the income statement</label>
+          <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Subject to depreciation</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="mcq" data-answer="b">
+          <h3>3. Which of the following is a revenue receipt?</h3>
+          <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Loan received from bank</label>
+          <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Sales revenue from goods</label>
+          <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Capital invested by owner</label>
+          <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Proceeds from sale of machinery</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="mcq" data-answer="d">
+          <h3>4. Installation charges for new equipment should be treated as:</h3>
+          <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Revenue expenditure</label>
+          <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Operating expense</label>
+          <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Administrative expense</label>
+          <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Capital expenditure</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="mcq" data-answer="b">
+          <h3>5. Repairs to maintain machinery in working condition are:</h3>
+          <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Capital expenditure</label>
+          <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Revenue expenditure</label>
+          <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Capital receipt</label>
+          <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">Deferred expenditure</label>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="mcq" data-answer="a">
+          <h3>6. Which provides benefit over multiple accounting periods?</h3>
+          <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Capital expenditure</label>
+          <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Revenue expenditure</label>
+          <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Operating expenses</label>
+          <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Administrative costs</label>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="mcq" data-answer="c">
+          <h3>7. Carriage paid on purchase of machinery is:</h3>
+          <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">Revenue expenditure</label>
+          <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Operating expense</label>
+          <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">Capital expenditure</label>
+          <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Administrative expense</label>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="mcq" data-answer="b">
+          <h3>8. Profit on sale of fixed assets is:</h3>
+          <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">Revenue profit</label>
+          <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">Capital profit</label>
+          <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">Operating profit</label>
+          <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">Gross profit</label>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="mcq" data-answer="d">
+          <h3>9. Which of the following is a capital receipt?</h3>
+          <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Interest received</label>
+          <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Commission received</label>
+          <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Discount received</label>
+          <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">Loan from bank</label>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="mcq" data-answer="a">
+          <h3>10. Extension of factory building is:</h3>
+          <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Capital expenditure</label>
+          <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">Revenue expenditure</label>
+          <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Operating expense</label>
+          <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">Administrative expense</label>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="mcq" data-answer="c">
+          <h3>11. Deferred revenue expenditure is:</h3>
+          <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">Pure capital expenditure</label>
+          <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">Pure revenue expenditure</label>
+          <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">Revenue expenditure with benefit over
+            multiple periods</label>
+          <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">Capital receipt</label>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="mcq" data-answer="b">
+          <h3>12. Wages paid for installation of machinery are:</h3>
+          <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">Revenue expenditure</label>
+          <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">Capital expenditure</label>
+          <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Operating expense</label>
+          <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Administrative expense</label>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="mcq" data-answer="d">
+          <h3>13. Regular wages paid to factory workers are:</h3>
+          <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Capital expenditure</label>
+          <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Capital receipt</label>
+          <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Deferred expenditure</label>
+          <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Revenue expenditure</label>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="mcq" data-answer="a">
+          <h3>14. Legal fees paid for purchasing land are:</h3>
+          <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Capital expenditure</label>
+          <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Revenue expenditure</label>
+          <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Operating expense</label>
+          <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Administrative expense</label>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="mcq" data-answer="c">
+          <h3>15. Incorrect classification of capital expenditure as revenue will:</h3>
+          <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Overstate profit</label>
+          <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">Overstate assets</label>
+          <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Understate profit and assets</label>
+          <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Have no effect</label>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="mcq" data-answer="b">
+          <h3>16. Painting an old building to improve its appearance is:</h3>
+          <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">Capital expenditure</label>
+          <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Revenue expenditure</label>
+          <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Deferred expenditure</label>
+          <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Capital receipt</label>
+        </div>
+
+        <!-- Question 17 -->
+        <div class="mcq" data-answer="a">
+          <h3>17. Major overhaul that extends machinery life by 5 years is:</h3>
+          <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Capital expenditure</label>
+          <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Revenue expenditure</label>
+          <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Operating expense</label>
+          <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Administrative expense</label>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="mcq" data-answer="d">
+          <h3>18. Sale proceeds of old furniture are:</h3>
+          <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">Revenue receipt</label>
+          <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">Operating income</label>
+          <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">Trading income</label>
+          <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">Capital receipt</label>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="mcq" data-answer="c">
+          <h3>19. Heavy advertising expenditure with long-term benefit should be treated as:</h3>
+          <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">Pure capital expenditure</label>
+          <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">Pure revenue expenditure</label>
+          <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">Deferred revenue expenditure</label>
+          <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">Capital receipt</label>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="mcq" data-answer="b">
+          <h3>20. Insurance premium paid on factory building is:</h3>
+          <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">Capital expenditure</label>
+          <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">Revenue expenditure</label>
+          <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">Deferred expenditure</label>
+          <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">Capital receipt</label>
+        </div>
+
+      </div>
+
+      <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+      <div id="quizResult"></div>
+      <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="lesson-footer">
+      <div class="footer-content">
+        <p class="footer-copyright">AccountsWizard © 2025 • <span id="lesson-title">Lesson 19 – Capital and
+            Revenue</span></p>
+        <div class="footer-links">
+          <a href="../index.html" class="footer-link"><i class="fas fa-home"></i><span>Back to Home</span></a>
+          <a href="../lessons.html" class="footer-link"><i class="fas fa-book"></i><span>All Lessons</span></a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+  </main>
+
+  <!-- JavaScript Module -->
+  <script type="module">
+    // ========================================
+    // 1. FIREBASE IMPORTS
+    // ========================================
+    import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
+
+    // ========================================
+    // 2. CONFIGURATION
+    // ========================================
+    const LESSON_NUMBER = '19';
+    const LESSON_ID = 'lesson-19';
+
+    // ========================================
+    // 3. INITIALIZE QUIZ
+    // ========================================
+    function initQuiz() {
+      console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
+
+      const container = document.getElementById('quiz-container');
+      if (!container) {
+        console.error('❌ Quiz container not found');
+        return;
+      }
+
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.addEventListener('change', updateProgressBar);
+
+        input.addEventListener('click', function (e) {
+          if (this.dataset.checked === 'true') {
+            this.checked = false;
+            this.dataset.checked = 'false';
+            updateProgressBar();
+          } else {
+            const groupName = this.name;
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+              radio.dataset.checked = 'false';
+            });
+            this.dataset.checked = 'true';
+          }
+        });
+      });
+
+      console.log('✅ Quiz initialized with', allInputs.length, 'options');
+      updateProgressBar();
+    }
+
+    // ========================================
+    // 4. UPDATE PROGRESS BAR
+    // ========================================
+    function updateProgressBar() {
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const allQuestions = container.querySelectorAll('.mcq');
+      const totalQuestions = allQuestions.length;
+
+      let answeredCount = 0;
+      allQuestions.forEach(mcq => {
+        const questionName = mcq.querySelector('input[type="radio"]').name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+        if (selected) answeredCount++;
+      });
+
+      const progressPercentage = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+
+      const progressDiv = document.getElementById('quiz-progress');
+      if (progressDiv) {
+        progressDiv.innerHTML = `
+          <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+              <span>Questions Answered</span>
+              <span><strong style="color: var(--brand-2);">${answeredCount}/${totalQuestions}</strong></span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+              <div style="width: ${progressPercentage}%; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // ========================================
+    // 5. SUBMIT QUIZ
+    // ========================================
+    window.submitQuiz = async function () {
+      console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const mcqs = container.querySelectorAll('.mcq');
+      if (mcqs.length === 0) return;
+
+      let answersData = {};
+      let correctCount = 0;
+      let totalQuestions = mcqs.length;
+      let answeredCount = 0;
+
+      mcqs.forEach((mcq, index) => {
+        const correctAnswer = mcq.dataset.answer;
+        const questionNumber = `q${index + 1}`;
+        const inputs = mcq.querySelectorAll('input[type="radio"]');
+        const questionName = inputs[0].name;
+        const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+        if (!selected) return;
+
+        answeredCount++;
+        const selectedValue = selected.value;
+        const isCorrect = selectedValue === correctAnswer;
+        if (isCorrect) correctCount++;
+
+        answersData[questionNumber] = {
+          selected: selectedValue,
+          correct: correctAnswer,
+          isCorrect: isCorrect
+        };
+
+        inputs.forEach(input => {
+          const label = input.nextElementSibling;
+          if (!label) return;
+          input.disabled = true;
+
+          if (input.value === correctAnswer) {
+            label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
+            label.style.borderLeft = '4px solid #10b981';
+            label.style.fontWeight = 'bold';
+          }
+
+          if (input.value === selectedValue && !isCorrect) {
+            label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+            label.style.borderLeft = '4px solid #ef4444';
+          }
+        });
+      });
+
+      if (answeredCount === 0) {
+        alert('⚠️ Please answer at least 1 question before submitting!');
+        return;
+      }
+
+      const percentage = Math.round((correctCount / totalQuestions) * 100);
+      const submitBtn = document.getElementById('submitQuiz');
+      const resultDiv = document.getElementById('quizResult');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+      }
+
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+      }
+
+      try {
+        console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+        const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+        console.log("✅ Firebase response:", result);
+
+        if (resultDiv) {
+          if (result && result.success) {
+            if (result.updated) {
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+            } else {
+              resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+            }
+          } else {
+            resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console for details.</div>
+              </div>`;
+          }
+        }
+      } catch (error) {
+        console.error("❌ Critical error during submission:", error);
+        if (resultDiv) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+            </div>`;
+        }
+      } finally {
+        const retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) retryBtn.style.display = 'block';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = '✓ Submitted';
+        }
+      }
+    };
+
+    // ========================================
+    // 6. RETRY QUIZ
+    // ========================================
+    window.retryQuiz = function () {
+      console.log('🔄 Retrying quiz');
+
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+
+      const allInputs = container.querySelectorAll('input[type="radio"]');
+      allInputs.forEach(input => {
+        input.checked = false;
+        input.disabled = false;
+        input.dataset.checked = 'false';
+
+        const label = input.nextElementSibling;
+        if (label) {
+          label.style.background = '';
+          label.style.borderLeft = '';
+          label.style.fontWeight = '';
+        }
+      });
+
+      const resultDiv = document.getElementById('quizResult');
+      if (resultDiv) resultDiv.innerHTML = '';
+
+      const submitBtn = document.getElementById('submitQuiz');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Answers';
+      }
+
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) retryBtn.style.display = 'none';
+
+      updateProgressBar();
+      document.getElementById('mcqSection')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ========================================
+    // 7. SCROLL ANIMATIONS
+    // ========================================
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.detail-card, .hierarchy-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.5s ease';
+      observer.observe(card);
+    });
+
+    // ========================================
+    // 8. ACCORDION FUNCTIONALITY
+    // ========================================
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const body = header.nextElementSibling;
+        const isOpen = body.classList.contains('open');
+
+        document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+
+        if (!isOpen) {
+          body.classList.add('open');
+          header.classList.add('active');
+        }
+      });
+    });
+
+    // ========================================
+    // 9. BACK TO TOP BUTTON
+    // ========================================
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ========================================
+    // 10. INITIALIZE ON PAGE LOAD
+    // ========================================
+    initQuiz();
+    console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
+  </script>
+</body>
+
+</html>

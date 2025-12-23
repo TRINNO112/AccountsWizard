@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 21 – Financial Statements with Adjustments | AccountsWizard</title>
+
+    <!-- CRITICAL: External dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="main.css">
+
+    <style>
+        :root {
+            --bg: #0b1020;
+            --bg-2: #0f1733;
+            --card: #111633;
+            --muted: #b8c2ff;
+            --brand: #7c4dff;
+            --brand-2: #00e5ff;
+            --accent: #ff7ac6;
+            --text: #e9eefc;
+            --radius: 16px;
+            --shadow: 0 18px 40px rgba(2, 6, 23, .55);
+            --speed: 300ms;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ffd166;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            gap: 20px;
+            padding: 15px 30px;
+            background: rgba(17, 22, 51, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .nav-header a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all var(--speed);
+            font-weight: 500;
+        }
+
+        .nav-header a:hover {
+            color: var(--brand-2);
+            background: rgba(124, 77, 255, 0.1);
+        }
+
+        /* Page Header */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, rgba(124, 77, 255, 0.1) 0%, transparent 100%);
+        }
+
+        .lesson-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 50%, var(--accent) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 4s ease infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes gradientFlow {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--brand-2);
+            text-decoration: none;
+            transition: color var(--speed);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(124, 77, 255, 0.1);
+        }
+
+        section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: var(--brand-2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        section h2 i {
+            color: var(--accent);
+        }
+
+        section p {
+            color: var(--muted);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        /* Accordion Styles */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .accordion-item {
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 18px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--speed);
+        }
+
+        .accordion-header:hover {
+            background: rgba(124, 77, 255, 0.1);
+        }
+
+        .accordion-header span {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .accordion-header i:last-child {
+            transition: transform var(--speed);
+            color: var(--brand);
+        }
+
+        .accordion-header.active i:last-child {
+            transform: rotate(90deg);
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0 20px;
+        }
+
+        .accordion-body.open {
+            max-height: 800px;
+            padding: 0 20px 20px;
+        }
+
+        .accordion-body ul {
+            margin-left: 20px;
+            color: var(--muted);
+        }
+
+        .accordion-body li {
+            margin-bottom: 8px;
+        }
+
+        /* Hierarchy Container */
+        .hierarchy-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .hierarchy-level {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .hierarchy-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all var(--speed);
+            min-width: 200px;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .hierarchy-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--brand);
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.2);
+        }
+
+        .hierarchy-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .hierarchy-card h3,
+        .hierarchy-card h4 {
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .hierarchy-card p {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .root-card {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            border-color: var(--brand);
+            max-width: 400px;
+        }
+
+        .root-card i {
+            color: var(--brand-2);
+        }
+
+        .type-card i {
+            color: var(--accent);
+        }
+
+        .asset-card {
+            border-left: 4px solid #10b981;
+        }
+
+        .liability-card {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .expense-card {
+            border-left: 4px solid #ef4444;
+        }
+
+        .income-card {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(124, 77, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--brand-2);
+            margin-top: 10px;
+        }
+
+        /* Detail Grid */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(124, 77, 255, 0.15);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all var(--speed);
+        }
+
+        .detail-card:hover {
+            border-color: var(--brand-2);
+            transform: translateY(-3px);
+        }
+
+        .detail-card h5 {
+            color: var(--brand-2);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-card p {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .detail-card ul {
+            margin-left: 18px;
+            color: var(--muted);
+        }
+
+        .detail-card li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 229, 255, 0.1));
+            border: 2px solid var(--brand);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .formula-box h4 {
+            color: var(--brand-2);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .formula {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Comparison Table */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(124, 77, 255, 0.2);
+            color: var(--brand-2);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table td {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(124, 77, 255, 0.05);
+        }
+
+        .comparison-table i {
+            margin-right: 8px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(124, 77, 255, 0.1));
+            border-left: 4px solid var(--brand-2);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .info-box h4 {
+            color: var(--brand-2);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 122, 198, 0.1), rgba(255, 209, 102, 0.1));
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box h4 {
+            color: var(--accent);
+        }
+
+        /* MCQ Section */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(124, 77, 255, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: var(--brand-2);
+        }
+
+        .mcq-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .mcq {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(124, 77, 255, 0.15);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .mcq h3 {
+            color: var(--text);
+            font-size: 1.05rem;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .mcq input[type="radio"] {
+            display: none;
+        }
+
+        .mcq label {
+            display: block;
+            padding: 12px 18px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--speed);
+            color: var(--muted);
+        }
+
+        .mcq label:hover {
+            background: rgba(124, 77, 255, 0.1);
+            border-color: var(--brand);
+        }
+
+        .mcq input[type="radio"]:checked+label {
+            background: rgba(124, 77, 255, 0.2);
+            border-color: var(--brand);
+            color: var(--text);
+        }
+
+        #submitQuiz,
+        #retry-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto 0;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--speed);
+        }
+
+        #submitQuiz:hover,
+        #retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.4);
+        }
+
+        #submitQuiz:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #retry-btn {
+            background: linear-gradient(135deg, var(--accent), #ff9a9e);
+            margin-top: 15px;
+        }
+
+        /* Footer */
+        .lesson-footer {
+            background: var(--card);
+            border-top: 1px solid rgba(124, 77, 255, 0.2);
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-copyright {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all var(--speed);
+        }
+
+        .footer-link:hover {
+            color: var(--brand-2);
+            background: rgba(124, 77, 255, 0.1);
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--speed);
+            box-shadow: 0 5px 20px rgba(124, 77, 255, 0.4);
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        .back-to-top i {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Treatment Box */
+        .treatment-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+        }
+
+        .treatment-box.debit {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .treatment-box.credit {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .treatment-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .treatment-text {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-header {
+                padding: 12px 15px;
+                gap: 10px;
+            }
+
+            .nav-header a span {
+                display: none;
+            }
+
+            header {
+                padding: 40px 15px 30px;
+            }
+
+            section,
+            .card {
+                padding: 25px 20px;
+            }
+
+            .hierarchy-card {
+                min-width: 100%;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- A. NAVIGATION HEADER -->
+    <div class="nav-header">
+        <a href="../index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="../lessons.html"><i class="fa-solid fa-book"></i><span>All Lessons</span></a>
+    </div>
+
+    <!-- B. PAGE HEADER -->
+    <header>
+        <h1 class="lesson-title">Financial Statements with Adjustments</h1>
+        <div class="breadcrumb">
+            <a href="../index.html">Home</a> /
+            <a href="../lessons.html">Lessons</a> /
+            Chapter 21: Financial Statements with Adjustments
+        </div>
+    </header>
+
+    <!-- C. MAIN CONTENT -->
+    <main>
+        <!-- Introduction Section -->
+        <section>
+            <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+            <p>Financial statements prepared from the Trial Balance alone may not reflect the true financial position of
+                a business. Certain items that relate to the accounting period but are not recorded in the books require
+                <strong>adjustments</strong> to present an accurate picture.</p>
+            <p>This chapter covers how various adjustments are treated in the Trading Account, Profit & Loss Account,
+                and Balance Sheet to ensure that financial statements follow the <strong>accrual concept</strong> and
+                <strong>matching principle</strong>.</p>
+
+            <div class="info-box">
+                <h4><i class="fas fa-lightbulb"></i> Learning Objectives</h4>
+                <ul style="margin-left: 20px; color: var(--muted);">
+                    <li>Understand why adjustments are necessary in financial statements</li>
+                    <li>Learn the treatment of common adjustments</li>
+                    <li>Apply adjustments correctly in Trading, P&L Account, and Balance Sheet</li>
+                    <li>Prepare final accounts with multiple adjustments</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- What are Adjustments -->
+        <section>
+            <h2><i class="fas fa-sliders-h"></i> What are Adjustments?</h2>
+            <p>Adjustments are entries made at the end of the accounting period to update accounts and ensure that all
+                revenues and expenses relating to the period are properly recorded.</p>
+
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-question-circle"></i> Why are Adjustments Necessary?</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Key Reasons:</strong></p>
+                        <ul>
+                            <li><strong>Accrual Principle:</strong> Record revenues when earned and expenses when
+                                incurred, not when cash is received or paid</li>
+                            <li><strong>Matching Principle:</strong> Match expenses with the revenues they help generate
+                                in the same period</li>
+                            <li><strong>True & Fair View:</strong> Present accurate financial position to stakeholders
+                            </li>
+                            <li><strong>Periodic Concept:</strong> Allocate items correctly between accounting periods
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-sync-alt"></i> The Golden Rule of Adjustments</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Most adjustments appear at TWO places:</strong></p>
+                        <ul>
+                            <li><strong>Once in Trading/P&L Account</strong> – to affect the profit calculation</li>
+                            <li><strong>Once in Balance Sheet</strong> – to show the asset or liability position</li>
+                        </ul>
+                        <p style="margin-top: 15px; color: var(--accent);"><strong>Exception:</strong> Closing Stock
+                            appears at two places (Trading Account Credit side + Balance Sheet Assets), but both
+                            represent the same value.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Types of Adjustments -->
+        <section>
+            <h2><i class="fas fa-layer-group"></i> Types of Adjustments</h2>
+            <p>The most common adjustments encountered in final accounts preparation:</p>
+
+            <div class="hierarchy-container">
+                <div class="hierarchy-level">
+                    <div class="hierarchy-card root-card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>ADJUSTMENTS</h3>
+                        <p>Items requiring treatment at year-end</p>
+                    </div>
+                </div>
+
+                <div class="hierarchy-level">
+                    <div class="hierarchy-card type-card asset-card">
+                        <i class="fas fa-boxes"></i>
+                        <h4>Closing Stock</h4>
+                        <p>Unsold inventory at year-end</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-warehouse"></i> Asset
+                        </div>
+                    </div>
+
+                    <div class="hierarchy-card type-card liability-card">
+                        <i class="fas fa-clock"></i>
+                        <h4>Outstanding Expenses</h4>
+                        <p>Expenses due but not yet paid</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-file-invoice"></i> Liability
+                        </div>
+                    </div>
+
+                    <div class="hierarchy-card type-card asset-card">
+                        <i class="fas fa-forward"></i>
+                        <h4>Prepaid Expenses</h4>
+                        <p>Expenses paid in advance</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-hand-holding-usd"></i> Asset
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hierarchy-level">
+                    <div class="hierarchy-card type-card asset-card">
+                        <i class="fas fa-hourglass-half"></i>
+                        <h4>Accrued Income</h4>
+                        <p>Income earned but not received</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-coins"></i> Asset
+                        </div>
+                    </div>
+
+                    <div class="hierarchy-card type-card liability-card">
+                        <i class="fas fa-calendar-minus"></i>
+                        <h4>Unearned Income</h4>
+                        <p>Income received in advance</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-hand-paper"></i> Liability
+                        </div>
+                    </div>
+
+                    <div class="hierarchy-card type-card expense-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Depreciation</h4>
+                        <p>Decrease in asset value</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-arrow-down"></i> Expense
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hierarchy-level">
+                    <div class="hierarchy-card type-card expense-card">
+                        <i class="fas fa-user-slash"></i>
+                        <h4>Bad Debts</h4>
+                        <p>Irrecoverable debts written off</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-ban"></i> Loss
+                        </div>
+                    </div>
+
+                    <div class="hierarchy-card type-card liability-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Provision for Doubtful Debts</h4>
+                        <p>Reserve for potential bad debts</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-percentage"></i> Contra Asset
+                        </div>
+                    </div>
+
+                    <div class="hierarchy-card type-card expense-card">
+                        <i class="fas fa-percent"></i>
+                        <h4>Interest on Capital</h4>
+                        <p>Return on owner's investment</p>
+                        <div class="icon-badge">
+                            <i class="fas fa-user-tie"></i> Expense
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Treatment in Trading Account -->
+        <section>
+            <h2><i class="fas fa-balance-scale"></i> Adjustments in Trading Account</h2>
+            <p>The Trading Account is used to calculate <strong>Gross Profit</strong>. Only adjustments related to
+                purchase and sale of goods appear here.</p>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <h5><i class="fas fa-boxes"></i> Closing Stock</h5>
+                    <p>Value of unsold goods at year-end.</p>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📗 Treatment:</div>
+                        <div class="treatment-text">Credit side of Trading A/c + Asset side of Balance Sheet</div>
+                    </div>
+                    <ul>
+                        <li>Always valued at Cost or NRV (whichever is lower)</li>
+                        <li>Increases Gross Profit</li>
+                    </ul>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-truck-loading"></i> Opening Stock</h5>
+                    <p>Value of unsold goods from previous year.</p>
+                    <div class="treatment-box debit">
+                        <div class="treatment-title">📕 Treatment:</div>
+                        <div class="treatment-text">Debit side of Trading A/c</div>
+                    </div>
+                    <ul>
+                        <li>Appears in Trial Balance</li>
+                        <li>Carried forward from last year</li>
+                    </ul>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-fire-alt"></i> Goods Lost by Fire/Accident</h5>
+                    <p>Cost of goods destroyed (if uninsured).</p>
+                    <div class="treatment-box debit">
+                        <div class="treatment-title">📕 Treatment:</div>
+                        <div class="treatment-text">Debit P&L A/c (Loss) OR Credit Purchases if reducing cost</div>
+                    </div>
+                    <ul>
+                        <li>If insured: Insurance Claim A/c (Asset)</li>
+                        <li>Reduce from purchases or show separately</li>
+                    </ul>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-gift"></i> Goods Withdrawn for Personal Use</h5>
+                    <p>Goods taken by owner (Drawings).</p>
+                    <div class="treatment-box credit">
+                        <div class="treatment-title">📘 Treatment:</div>
+                        <div class="treatment-text">Deduct from Purchases (Trading A/c) OR Credit Purchases + Debit
+                            Drawings</div>
+                    </div>
+                    <ul>
+                        <li>Reduces total purchases</li>
+                        <li>Added to Drawings in Capital section</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <h4>Gross Profit Formula</h4>
+                <div class="formula">Gross Profit = Net Sales − Cost of Goods Sold</div>
+            </div>
+
+            <div class="formula-box">
+                <h4>Cost of Goods Sold (COGS)</h4>
+                <div class="formula">COGS = Opening Stock + Net Purchases − Closing Stock</div>
+            </div>
+        </section>
+
+        <!-- Treatment in P&L Account -->
+        <section>
+            <h2><i class="fas fa-file-invoice-dollar"></i> Adjustments in Profit & Loss Account</h2>
+            <p>The Profit & Loss Account calculates <strong>Net Profit</strong> by considering all indirect expenses and
+                incomes.</p>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <h5><i class="fas fa-clock"></i> Outstanding Expenses</h5>
+                    <p>Expenses incurred but not yet paid (e.g., outstanding salary, rent).</p>
+                    <div class="treatment-box debit">
+                        <div class="treatment-title">📕 P&L Treatment:</div>
+                        <div class="treatment-text">Add to the respective expense on Debit side</div>
+                    </div>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📊 Balance Sheet:</div>
+                        <div class="treatment-text">Show as Current Liability</div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-forward"></i> Prepaid Expenses</h5>
+                    <p>Expenses paid in advance for next period (e.g., prepaid insurance).</p>
+                    <div class="treatment-box credit">
+                        <div class="treatment-title">📘 P&L Treatment:</div>
+                        <div class="treatment-text">Deduct from the respective expense on Debit side</div>
+                    </div>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📊 Balance Sheet:</div>
+                        <div class="treatment-text">Show as Current Asset</div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-hourglass-half"></i> Accrued Income</h5>
+                    <p>Income earned but not yet received (e.g., accrued interest, commission).</p>
+                    <div class="treatment-box credit">
+                        <div class="treatment-title">📘 P&L Treatment:</div>
+                        <div class="treatment-text">Add to the respective income on Credit side</div>
+                    </div>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📊 Balance Sheet:</div>
+                        <div class="treatment-text">Show as Current Asset</div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-calendar-minus"></i> Income Received in Advance</h5>
+                    <p>Income received for next period (e.g., rent received in advance).</p>
+                    <div class="treatment-box debit">
+                        <div class="treatment-title">📕 P&L Treatment:</div>
+                        <div class="treatment-text">Deduct from the respective income on Credit side</div>
+                    </div>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📊 Balance Sheet:</div>
+                        <div class="treatment-text">Show as Current Liability</div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-chart-line"></i> Depreciation</h5>
+                    <p>Decrease in value of fixed assets due to use, wear & tear.</p>
+                    <div class="treatment-box debit">
+                        <div class="treatment-title">📕 P&L Treatment:</div>
+                        <div class="treatment-text">Show on Debit side as expense</div>
+                    </div>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📊 Balance Sheet:</div>
+                        <div class="treatment-text">Deduct from respective Fixed Asset</div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-user-slash"></i> Bad Debts</h5>
+                    <p>Debts that are confirmed irrecoverable.</p>
+                    <div class="treatment-box debit">
+                        <div class="treatment-title">📕 P&L Treatment:</div>
+                        <div class="treatment-text">Show on Debit side (add to TB bad debts if any)</div>
+                    </div>
+                    <div class="treatment-box">
+                        <div class="treatment-title">📊 Balance Sheet:</div>
+                        <div class="treatment-text">Deduct from Sundry Debtors</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Provision for Doubtful Debts -->
+        <section>
+            <h2><i class="fas fa-shield-alt"></i> Provision for Doubtful Debts</h2>
+            <p>A provision created for debts that may become bad in the future. It follows the principle of
+                <strong>prudence/conservatism</strong>.</p>
+
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-calculator"></i> How to Calculate New Provision</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Steps to calculate:</strong></p>
+                        <ul>
+                            <li><strong>Step 1:</strong> Start with Debtors from Trial Balance</li>
+                            <li><strong>Step 2:</strong> Deduct Additional Bad Debts (given in adjustments)</li>
+                            <li><strong>Step 3:</strong> Calculate the required % on remaining debtors</li>
+                            <li><strong>Step 4:</strong> Compare with Old Provision</li>
+                        </ul>
+                        <div class="formula-box" style="margin-top: 15px;">
+                            <h4>New Provision Formula</h4>
+                            <div class="formula">New Provision = (Debtors − New Bad Debts) × Rate%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-exchange-alt"></i> Treatment Based on Comparison</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>If New Provision > Old Provision:</strong></p>
+                        <ul>
+                            <li>Increase = New Provision − Old Provision</li>
+                            <li>Debit P&L A/c with the increase</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>If New Provision < Old Provision:</strong>
+                        </p>
+                        <ul>
+                            <li>Decrease = Old Provision − New Provision</li>
+                            <li>Credit P&L A/c with the decrease (as income)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span><i class="fas fa-file-alt"></i> Balance Sheet Presentation</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p><strong>Debtors in Balance Sheet:</strong></p>
+                        <ul>
+                            <li>Sundry Debtors (from TB): ₹XX,XXX</li>
+                            <li>Less: Additional Bad Debts: ₹X,XXX</li>
+                            <li>Less: New Provision for Doubtful Debts: ₹X,XXX</li>
+                            <li><strong>Net Debtors: ₹XX,XXX</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box" style="margin-top: 20px;">
+                <h4><i class="fas fa-exclamation-triangle"></i> Important Note</h4>
+                <p style="color: var(--muted);">Provision for Doubtful Debts is calculated on <strong>Good
+                        Debtors</strong> only (after deducting bad debts). Never calculate provision on bad debts!</p>
+            </div>
+        </section>
+
+        <!-- Comprehensive Treatment Table -->
+        <section>
+            <h2><i class="fas fa-table"></i> Summary: Treatment of All Adjustments</h2>
+            <p>Quick reference table for all common adjustments:</p>
+
+            <div class="table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-list"></i> Adjustment</th>
+                            <th><i class="fas fa-receipt"></i> Trading / P&L Account</th>
+                            <th><i class="fas fa-balance-scale-right"></i> Balance Sheet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Closing Stock</strong></td>
+                            <td>Credit side of Trading A/c</td>
+                            <td>Asset (Current Asset)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Outstanding Expenses</strong></td>
+                            <td>Add to expense (Debit side P&L)</td>
+                            <td>Current Liability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prepaid Expenses</strong></td>
+                            <td>Deduct from expense (Debit side P&L)</td>
+                            <td>Current Asset</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Accrued Income</strong></td>
+                            <td>Add to income (Credit side P&L)</td>
+                            <td>Current Asset</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Income Received in Advance</strong></td>
+                            <td>Deduct from income (Credit side P&L)</td>
+                            <td>Current Liability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Depreciation</strong></td>
+                            <td>Debit side of P&L A/c</td>
+                            <td>Deduct from Fixed Asset</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bad Debts (Additional)</strong></td>
+                            <td>Add to TB Bad Debts (Debit P&L)</td>
+                            <td>Deduct from Debtors</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Provision for Doubtful Debts (New > Old)</strong></td>
+                            <td>Debit P&L with increase</td>
+                            <td>Deduct from Debtors</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Provision for Doubtful Debts (New < Old)</strong>
+                            </td>
+                            <td>Credit P&L with decrease</td>
+                            <td>Deduct from Debtors</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interest on Capital</strong></td>
+                            <td>Debit side of P&L A/c</td>
+                            <td>Add to Capital</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interest on Drawings</strong></td>
+                            <td>Credit side of P&L A/c</td>
+                            <td>Add to Drawings (reduce Capital)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Goods Distributed as Free Samples</strong></td>
+                            <td>Deduct from Purchases / Debit Advertisement</td>
+                            <td>No effect</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manager's Commission on Net Profit</strong></td>
+                            <td>Debit P&L A/c</td>
+                            <td>Current Liability</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Key Points -->
+        <section>
+            <h2><i class="fas fa-star"></i> Key Points to Remember</h2>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <h5><i class="fas fa-check-circle"></i> Double Entry Principle</h5>
+                    <p>Every adjustment affects two places in the final accounts — this maintains the balance.</p>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-plus-minus"></i> Outstanding vs Prepaid</h5>
+                    <p><strong>Outstanding:</strong> Add to expense + Liability<br><strong>Prepaid:</strong> Deduct from
+                        expense + Asset</p>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-coins"></i> Accrued vs Unearned</h5>
+                    <p><strong>Accrued:</strong> Add to income + Asset<br><strong>Unearned:</strong> Deduct from income
+                        + Liability</p>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-warehouse"></i> Closing Stock Location</h5>
+                    <p>If given inside Trial Balance: Only Balance Sheet<br>If given outside: Trading A/c + Balance
+                        Sheet</p>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-user-tie"></i> Manager's Commission</h5>
+                    <p>If on Net Profit <em>before</em> charging commission: Calculate on NP<br>If on Net Profit
+                        <em>after</em> charging: Use formula method</p>
+                </div>
+
+                <div class="detail-card">
+                    <h5><i class="fas fa-percentage"></i> Provision Calculation</h5>
+                    <p>Always calculate on <strong>Good Debtors</strong> = Debtors − Additional Bad Debts</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MCQ Section -->
+        <section class="card" id="mcqSection">
+            <h2>🧩 MCQ Practice</h2>
+
+            <div id="quiz-progress"></div>
+
+            <div class="mcq-grid" id="quiz-container">
+
+                <div class="mcq" data-answer="b">
+                    <h3>1. Closing stock is shown in:</h3>
+                    <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Debit side of Trading Account
+                        only</label>
+                    <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Credit side of Trading Account and
+                        Asset side of Balance Sheet</label>
+                    <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Credit side of Profit & Loss
+                        Account</label>
+                    <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Liability side of Balance
+                        Sheet</label>
+                </div>
+
+                <div class="mcq" data-answer="c">
+                    <h3>2. Outstanding salary is a:</h3>
+                    <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Current Asset</label>
+                    <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Fixed Asset</label>
+                    <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Current Liability</label>
+                    <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Fixed Liability</label>
+                </div>
+
+                <div class="mcq" data-answer="a">
+                    <h3>3. Prepaid insurance will be shown as:</h3>
+                    <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">Current Asset in Balance
+                        Sheet</label>
+                    <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Current Liability in Balance
+                        Sheet</label>
+                    <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Added to insurance expense</label>
+                    <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Debit side of Trading
+                        Account</label>
+                </div>
+
+                <div class="mcq" data-answer="d">
+                    <h3>4. Accrued commission receivable is treated as:</h3>
+                    <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">Deducted from commission
+                        received</label>
+                    <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">Current Liability</label>
+                    <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">Expense in P&L Account</label>
+                    <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Added to commission and shown as
+                        Current Asset</label>
+                </div>
+
+                <div class="mcq" data-answer="b">
+                    <h3>5. Depreciation on machinery will appear:</h3>
+                    <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Credit side of P&L Account</label>
+                    <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Debit side of P&L Account and
+                        deducted from Machinery in Balance Sheet</label>
+                    <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Credit side of Trading
+                        Account</label>
+                    <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">Added to Machinery in Balance
+                        Sheet</label>
+                </div>
+
+                <div class="mcq" data-answer="c">
+                    <h3>6. Provision for doubtful debts is calculated on:</h3>
+                    <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Total Debtors including bad
+                        debts</label>
+                    <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Bad Debts only</label>
+                    <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Good Debtors (after deducting bad
+                        debts)</label>
+                    <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Creditors</label>
+                </div>
+
+                <div class="mcq" data-answer="a">
+                    <h3>7. If new provision for doubtful debts is greater than old provision, the difference is:</h3>
+                    <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">Debited to Profit & Loss
+                        Account</label>
+                    <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Credited to Profit & Loss
+                        Account</label>
+                    <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">Added to Debtors</label>
+                    <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Shown as Current Asset</label>
+                </div>
+
+                <div class="mcq" data-answer="b">
+                    <h3>8. Rent received in advance is a:</h3>
+                    <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">Current Asset</label>
+                    <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">Current Liability</label>
+                    <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">Fixed Liability</label>
+                    <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">Income to be added</label>
+                </div>
+
+                <div class="mcq" data-answer="d">
+                    <h3>9. Goods withdrawn by the owner for personal use should be:</h3>
+                    <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Added to Sales</label>
+                    <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Added to Purchases</label>
+                    <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Shown as expense in P&L
+                        Account</label>
+                    <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">Deducted from Purchases and added
+                        to Drawings</label>
+                </div>
+
+                <div class="mcq" data-answer="a">
+                    <h3>10. Interest on capital is:</h3>
+                    <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Debited to P&L A/c and added to
+                        Capital</label>
+                    <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">Credited to P&L A/c and
+                        deducted from Capital</label>
+                    <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Shown only in Balance
+                        Sheet</label>
+                    <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">Added to Drawings</label>
+                </div>
+
+                <div class="mcq" data-answer="c">
+                    <h3>11. If closing stock appears inside the Trial Balance, it should be shown:</h3>
+                    <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">In Trading Account only</label>
+                    <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">In Trading Account and Balance
+                        Sheet both</label>
+                    <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">In Balance Sheet only</label>
+                    <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">In Profit & Loss
+                        Account</label>
+                </div>
+
+                <div class="mcq" data-answer="b">
+                    <h3>12. Interest on drawings is:</h3>
+                    <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">An expense for the
+                        business</label>
+                    <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">An income for the business,
+                        credited to P&L A/c</label>
+                    <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Added to Capital
+                        directly</label>
+                    <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Deducted from Purchases</label>
+                </div>
+
+                <div class="mcq" data-answer="a">
+                    <h3>13. Goods distributed as free samples should be:</h3>
+                    <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Deducted from Purchases and
+                        debited to Advertisement A/c</label>
+                    <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Added to Sales</label>
+                    <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Shown as Current Asset</label>
+                    <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Added to Drawings</label>
+                </div>
+
+                <div class="mcq" data-answer="d">
+                    <h3>14. Bad debts recovered (previously written off) is:</h3>
+                    <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Debited to P&L Account</label>
+                    <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Added to Debtors</label>
+                    <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Shown as Liability</label>
+                    <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Credited to P&L Account as
+                        income</label>
+                </div>
+
+                <div class="mcq" data-answer="c">
+                    <h3>15. Closing stock is valued at:</h3>
+                    <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Cost price only</label>
+                    <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">Market price only</label>
+                    <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Cost or Net Realizable Value,
+                        whichever is lower</label>
+                    <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Cost or Market price, whichever
+                        is higher</label>
+                </div>
+
+                <div class="mcq" data-answer="b">
+                    <h3>16. Manager's commission payable at year-end is:</h3>
+                    <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">Current Asset</label>
+                    <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Current Liability and debited
+                        to P&L A/c</label>
+                    <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Credited to P&L A/c</label>
+                    <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Added to Manager's
+                        Capital</label>
+                </div>
+
+                <div class="mcq" data-answer="a">
+                    <h3>17. The principle behind creating provision for doubtful debts is:</h3>
+                    <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Prudence/Conservatism</label>
+                    <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Going Concern</label>
+                    <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Money Measurement</label>
+                    <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Cost Concept</label>
+                </div>
+
+                <div class="mcq" data-answer="c">
+                    <h3>18. Adjustments are necessary to follow the:</h3>
+                    <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">Cash basis of
+                        accounting</label>
+                    <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">Single entry system</label>
+                    <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">Accrual basis and matching
+                        principle</label>
+                    <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">Cost concept only</label>
+                </div>
+
+                <div class="mcq" data-answer="d">
+                    <h3>19. If goods worth ₹5,000 are lost by fire and insurance claim admitted is ₹4,000, then:</h3>
+                    <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">₹5,000 shown as loss in P&L
+                        A/c</label>
+                    <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">₹4,000 shown as income in P&L
+                        A/c</label>
+                    <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">₹4,000 as Asset and ₹5,000 as
+                        loss</label>
+                    <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">₹4,000 as Asset (Insurance
+                        Claim) and ₹1,000 as loss in P&L A/c</label>
+                </div>
+
+                <div class="mcq" data-answer="b">
+                    <h3>20. If debtors are ₹50,000, additional bad debts ₹2,000, and provision @ 5% is required, the new
+                        provision will be:</h3>
+                    <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">₹2,500</label>
+                    <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">₹2,400</label>
+                    <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">₹2,600</label>
+                    <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">₹2,000</label>
+                </div>
+
+            </div>
+
+            <button id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+            <div id="quizResult"></div>
+            <button id="retry-btn" onclick="retryQuiz()" style="display:none;">Try Again</button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="lesson-footer">
+            <div class="footer-content">
+                <p class="footer-copyright">AccountsWizard © 2025 • <span id="lesson-title">Lesson 21 – Financial
+                        Statements with Adjustments</span></p>
+                <div class="footer-links">
+                    <a href="../index.html" class="footer-link"><i class="fas fa-home"></i><span>Back to Home</span></a>
+                    <a href="../lessons.html" class="footer-link"><i class="fas fa-book"></i><span>All
+                            Lessons</span></a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Back to Top Button -->
+        <div class="back-to-top" id="backToTop">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </main>
+
+    <!-- JavaScript Module -->
+    <script type="module">
+        // ========================================
+        // 1. FIREBASE IMPORTS (REQUIRED)
+        // ========================================
+        import { submitLessonAttempt, loadPreviousAnswers } from '../firebase-config.js';
+
+        // ========================================
+        // 2. CONFIGURATION
+        // ========================================
+        const LESSON_NUMBER = '21';
+        const LESSON_ID = 'lesson-21';
+
+        // ========================================
+        // 3. INITIALIZE QUIZ
+        // ========================================
+        function initQuiz() {
+            console.log('🎯 Initializing quiz for Lesson', LESSON_NUMBER);
+
+            const container = document.getElementById('quiz-container');
+            if (!container) {
+                console.error('❌ Quiz container not found');
+                return;
+            }
+
+            const allInputs = container.querySelectorAll('input[type="radio"]');
+            allInputs.forEach(input => {
+                input.addEventListener('change', updateProgressBar);
+
+                input.addEventListener('click', function (e) {
+                    if (this.dataset.checked === 'true') {
+                        this.checked = false;
+                        this.dataset.checked = 'false';
+                        updateProgressBar();
+                    } else {
+                        const groupName = this.name;
+                        document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+                            radio.dataset.checked = 'false';
+                        });
+                        this.dataset.checked = 'true';
+                    }
+                });
+            });
+
+            console.log('✅ Quiz initialized with', allInputs.length, 'options');
+            updateProgressBar();
+        }
+
+        // ========================================
+        // 4. UPDATE PROGRESS BAR
+        // ========================================
+        function updateProgressBar() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const allQuestions = container.querySelectorAll('.mcq');
+            const totalQuestions = allQuestions.length;
+
+            let answeredCount = 0;
+            allQuestions.forEach(mcq => {
+                const questionName = mcq.querySelector('input[type="radio"]').name;
+                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (selected) answeredCount++;
+            });
+
+            const progressPercentage = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+
+            const progressDiv = document.getElementById('quiz-progress');
+            if (progressDiv) {
+                progressDiv.innerHTML = `
+          <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+              <span>Questions Answered</span>
+              <span><strong style="color: var(--brand-2);">${answeredCount}/${totalQuestions}</strong></span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+              <div style="width: ${progressPercentage}%; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+        `;
+            }
+        }
+
+        // ========================================
+        // 5. SUBMIT QUIZ
+        // ========================================
+        window.submitQuiz = async function () {
+            console.log('📤 Submitting quiz for Lesson', LESSON_NUMBER);
+
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const mcqs = container.querySelectorAll('.mcq');
+            if (mcqs.length === 0) return;
+
+            let answersData = {};
+            let correctCount = 0;
+            let totalQuestions = mcqs.length;
+            let answeredCount = 0;
+
+            mcqs.forEach((mcq, index) => {
+                const correctAnswer = mcq.dataset.answer;
+                const questionNumber = `q${index + 1}`;
+                const inputs = mcq.querySelectorAll('input[type="radio"]');
+                const questionName = inputs[0].name;
+                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+
+                if (!selected) return;
+
+                answeredCount++;
+                const selectedValue = selected.value;
+                const isCorrect = selectedValue === correctAnswer;
+                if (isCorrect) correctCount++;
+
+                answersData[questionNumber] = {
+                    selected: selectedValue,
+                    correct: correctAnswer,
+                    isCorrect: isCorrect
+                };
+
+                inputs.forEach(input => {
+                    const label = input.nextElementSibling;
+                    if (!label) return;
+                    input.disabled = true;
+
+                    if (input.value === correctAnswer) {
+                        label.style.background = 'linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1))';
+                        label.style.borderLeft = '4px solid #10b981';
+                        label.style.fontWeight = 'bold';
+                    }
+
+                    if (input.value === selectedValue && !isCorrect) {
+                        label.style.background = 'linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+                        label.style.borderLeft = '4px solid #ef4444';
+                    }
+                });
+            });
+
+            if (answeredCount === 0) {
+                alert('⚠️ Please answer at least 1 question before submitting!');
+                return;
+            }
+
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+            const submitBtn = document.getElementById('submitQuiz');
+            const resultDiv = document.getElementById('quizResult');
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+            }
+
+            if (resultDiv) {
+                resultDiv.innerHTML = `
+          <div style="padding: 20px; margin-top: 20px; background: rgba(124,77,255,0.1); border-radius: 12px; text-align: center;">
+            <div style="font-size: 1.2rem; color: var(--brand-2);">⚙️ Saving your progress...</div>
+          </div>`;
+            }
+
+            try {
+                console.log("📤 Submitting to Firebase:", { lessonNumber: LESSON_NUMBER, correctCount, totalQuestions, percentage });
+                const result = await submitLessonAttempt(LESSON_NUMBER, answersData, correctCount, totalQuestions);
+                console.log("✅ Firebase response:", result);
+
+                if (resultDiv) {
+                    if (result && result.success) {
+                        if (result.updated) {
+                            resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1)); border-radius: 12px; border: 2px solid #10b981;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #10b981; margin-bottom: 10px;">🎉 New Best Score!</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">✅ Progress saved to cloud</div>
+                </div>`;
+                        } else {
+                            resultDiv.innerHTML = `
+                <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border-radius: 12px; border: 2px solid #fbbf24;">
+                  <div style="font-size: 1.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 10px;">📊 Quiz Completed</div>
+                  <div style="font-size: 1.2rem; margin-bottom: 10px;">Current Score: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                  <div style="font-size: 1.1rem; margin-bottom: 10px; color: #10b981;">Your Best: <strong>${result.bestScore}/${result.totalQuestions}</strong> (${result.percentage}%)</div>
+                  <div style="color: var(--muted); font-size: 0.9rem;">Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                  <div style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">💡 Try again to beat your best score!</div>
+                </div>`;
+                        }
+                    } else {
+                        resultDiv.innerHTML = `
+              <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+                <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+                <div style="color: #fbbf24; font-size: 0.85rem; margin-top: 10px;">⚠️ Could not save to cloud. Check console for details.</div>
+              </div>`;
+                    }
+                }
+            } catch (error) {
+                console.error("❌ Critical error during submission:", error);
+                if (resultDiv) {
+                    resultDiv.innerHTML = `
+            <div style="padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(124,77,255,0.2), rgba(124,77,255,0.1)); border-radius: 12px; border: 2px solid var(--brand);">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--brand-2); margin-bottom: 10px;">📊 Your Score</div>
+              <div style="font-size: 1.2rem; margin-bottom: 10px;">You scored: <strong>${correctCount}/${totalQuestions}</strong> (${percentage}%)</div>
+              <div style="color: var(--muted); font-size: 0.9rem;">✅ Answered ${answeredCount} out of ${totalQuestions} questions</div>
+              <div style="color: #ef4444; font-size: 0.85rem; margin-top: 10px;">❌ Error: ${error.message}</div>
+            </div>`;
+                }
+            } finally {
+                const retryBtn = document.getElementById('retry-btn');
+                if (retryBtn) retryBtn.style.display = 'block';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = '✓ Submitted';
+                }
+            }
+        };
+
+        // ========================================
+        // 6. RETRY QUIZ
+        // ========================================
+        window.retryQuiz = function () {
+            console.log('🔄 Retrying quiz');
+
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const allInputs = container.querySelectorAll('input[type="radio"]');
+            allInputs.forEach(input => {
+                input.checked = false;
+                input.disabled = false;
+                input.dataset.checked = 'false';
+
+                const label = input.nextElementSibling;
+                if (label) {
+                    label.style.background = '';
+                    label.style.borderLeft = '';
+                    label.style.fontWeight = '';
+                }
+            });
+
+            const resultDiv = document.getElementById('quizResult');
+            if (resultDiv) resultDiv.innerHTML = '';
+
+            const submitBtn = document.getElementById('submitQuiz');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Answers';
+            }
+
+            const retryBtn = document.getElementById('retry-btn');
+            if (retryBtn) retryBtn.style.display = 'none';
+
+            updateProgressBar();
+            document.getElementById('mcqSection')?.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // ========================================
+        // 7. SCROLL ANIMATIONS
+        // ========================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.detail-card, .hierarchy-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            observer.observe(card);
+        });
+
+        // ========================================
+        // 8. ACCORDION FUNCTIONALITY
+        // ========================================
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const body = header.nextElementSibling;
+                const isOpen = body.classList.contains('open');
+
+                document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+                document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+
+                if (!isOpen) {
+                    body.classList.add('open');
+                    header.classList.add('active');
+                }
+            });
+        });
+
+        // ========================================
+        // 9. BACK TO TOP BUTTON
+        // ========================================
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ========================================
+        // 10. INITIALIZE ON PAGE LOAD
+        // ========================================
+        initQuiz();
+        console.log('✅ Lesson', LESSON_NUMBER, 'quiz ready!');
+    </script>
+</body>
+
+</html>
