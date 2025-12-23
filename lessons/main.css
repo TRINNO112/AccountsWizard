@@ -80,10 +80,12 @@
   border-radius: 20px;
   padding: 35px;
   border: 1px solid rgba(0, 255, 255, 0.3);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   overflow: visible;
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .mcq:hover {
@@ -167,20 +169,18 @@ input[type="radio"],
   align-items: center;
   padding: 20px 26px;
   margin: 16px 0;
-  background: linear-gradient(135deg, 
-    rgba(42, 42, 62, 0.4), 
-    rgba(18, 18, 26, 0.4));
+  background: rgba(30, 30, 45, 0.85);
   border: 1px solid rgba(0, 255, 255, 0.15);
   border-radius: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
   color: var(--quiz-text-muted);
   font-size: 1.05rem;
   user-select: none;
   position: relative;
-  backdrop-filter: blur(10px);
   line-height: 1.6;
   overflow: hidden;
+  will-change: transform;
 }
 
 /* Option indicator */

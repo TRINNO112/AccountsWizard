@@ -699,127 +699,6 @@
     }
 
     /* ============================================
-       MCQ STYLES
-    ============================================ */
-    .mcq {
-      background: linear-gradient(145deg, var(--card), var(--card-2));
-      border: 1px solid rgba(16,185,129,0.15);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 22px;
-      transition: all var(--speed);
-    }
-
-    .mcq:hover {
-      border-color: rgba(16,185,129,0.3);
-    }
-
-    .mcq-question {
-      font-size: 1.05rem;
-      color: var(--text);
-      margin-bottom: 18px;
-      font-weight: 600;
-      line-height: 1.6;
-    }
-
-    .mcq-question .q-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      border-radius: 8px;
-      font-size: 0.85rem;
-      margin-right: 12px;
-      font-weight: 700;
-    }
-
-    .mcq-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .mcq-options input[type="radio"] {
-      display: none;
-    }
-
-    .mcq-options label {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
-      background: rgba(16,185,129,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all var(--speed);
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .mcq-options label:hover {
-      background: rgba(16,185,129,0.12);
-      border-color: rgba(16,185,129,0.3);
-      color: var(--text);
-    }
-
-    .mcq-options input[type="radio"]:checked + label {
-      background: linear-gradient(90deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1));
-      border-color: var(--brand);
-      color: var(--text);
-    }
-
-    .mcq-options .option-letter {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      flex-shrink: 0;
-    }
-
-    .mcq-options input[type="radio"]:checked + label .option-letter {
-      background: var(--brand);
-      color: white;
-    }
-
-    /* Submit Button */
-    .view-solution-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 16px 30px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all var(--speed);
-      box-shadow: 0 4px 20px rgba(16,185,129,0.4);
-    }
-
-    .view-solution-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(16,185,129,0.5);
-    }
-
-    .view-solution-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ============================================
        INTERACTIVE CALCULATOR STYLES
     ============================================ */
     .calculator-container {
@@ -2597,372 +2476,173 @@
       </div>
     </section>
 
-    <!-- MCQ Section -->
-    <section id="mcqSection">
-      <h2><span class="icon-box"><i class="fas fa-question-circle"></i></span> Test Your Knowledge</h2>
-      <p style="margin-bottom: 25px;">Answer these multiple-choice questions to assess your understanding of Provisions and Reserves.</p>
+    <!-- MCQs -->
+    <section class="card" id="mcqSection">
+    <h2>MCQ Practice</h2>
+    <div id="quiz-progress"></div>
 
-      <div id="quiz-container">
-        <!-- Q1 -->
-        <div class="mcq" data-answer="B">
-          <div class="mcq-question">
-            <span class="q-num">1</span>
-            Provision is a:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q1a" name="q1" value="A">
-            <label for="q1a"><span class="option-letter">A</span> Appropriation of profit</label>
-            <input type="radio" id="q1b" name="q1" value="B">
-            <label for="q1b"><span class="option-letter">B</span> Charge against profit</label>
-            <input type="radio" id="q1c" name="q1" value="C">
-            <label for="q1c"><span class="option-letter">C</span> Liability</label>
-            <input type="radio" id="q1d" name="q1" value="D">
-            <label for="q1d"><span class="option-letter">D</span> Asset</label>
-          </div>
-        </div>
+    <div class="mcq-grid" id="quiz-container">
 
-        <!-- Q2 -->
-        <div class="mcq" data-answer="A">
-          <div class="mcq-question">
-            <span class="q-num">2</span>
-            Reserve is created from:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q2a" name="q2" value="A">
-            <label for="q2a"><span class="option-letter">A</span> Profits only</label>
-            <input type="radio" id="q2b" name="q2" value="B">
-            <label for="q2b"><span class="option-letter">B</span> Profits and losses both</label>
-            <input type="radio" id="q2c" name="q2" value="C">
-            <label for="q2c"><span class="option-letter">C</span> Capital</label>
-            <input type="radio" id="q2d" name="q2" value="D">
-            <label for="q2d"><span class="option-letter">D</span> Borrowings</label>
-          </div>
-        </div>
+      <div class="mcq" data-answer="b">
+      <h3>1. Provision is a:</h3>
+      <input type="radio" name="q1" id="q1a" value="a"><label for="q1a">Appropriation of profit</label>
+      <input type="radio" name="q1" id="q1b" value="b"><label for="q1b">Charge against profit</label>
+      <input type="radio" name="q1" id="q1c" value="c"><label for="q1c">Liability</label>
+      <input type="radio" name="q1" id="q1d" value="d"><label for="q1d">Asset</label>
+    </div>
 
-        <!-- Q3 -->
-        <div class="mcq" data-answer="C">
-          <div class="mcq-question">
-            <span class="q-num">3</span>
-            Which of the following is a capital reserve?
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q3a" name="q3" value="A">
-            <label for="q3a"><span class="option-letter">A</span> General Reserve</label>
-            <input type="radio" id="q3b" name="q3" value="B">
-            <label for="q3b"><span class="option-letter">B</span> Dividend Equalization Reserve</label>
-            <input type="radio" id="q3c" name="q3" value="C">
-            <label for="q3c"><span class="option-letter">C</span> Securities Premium Reserve</label>
-            <input type="radio" id="q3d" name="q3" value="D">
-            <label for="q3d"><span class="option-letter">D</span> Workmen Compensation Reserve</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="a">
+      <h3>2. Reserve is created from:</h3>
+      <input type="radio" name="q2" id="q2a" value="a"><label for="q2a">Profits only</label>
+      <input type="radio" name="q2" id="q2b" value="b"><label for="q2b">Profits and losses both</label>
+      <input type="radio" name="q2" id="q2c" value="c"><label for="q2c">Capital</label>
+      <input type="radio" name="q2" id="q2d" value="d"><label for="q2d">Borrowings</label>
+    </div>
 
-        <!-- Q4 -->
-        <div class="mcq" data-answer="B">
-          <div class="mcq-question">
-            <span class="q-num">4</span>
-            Provision for bad debts is shown in Balance Sheet:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q4a" name="q4" value="A">
-            <label for="q4a"><span class="option-letter">A</span> On the liability side</label>
-            <input type="radio" id="q4b" name="q4" value="B">
-            <label for="q4b"><span class="option-letter">B</span> By deducting from Sundry Debtors</label>
-            <input type="radio" id="q4c" name="q4" value="C">
-            <label for="q4c"><span class="option-letter">C</span> On the asset side</label>
-            <input type="radio" id="q4d" name="q4" value="D">
-            <label for="q4d"><span class="option-letter">D</span> Under Reserves & Surplus</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="c">
+      <h3>3. Which of the following is a capital reserve?</h3>
+      <input type="radio" name="q3" id="q3a" value="a"><label for="q3a">General Reserve</label>
+      <input type="radio" name="q3" id="q3b" value="b"><label for="q3b">Dividend Equalization Reserve</label>
+      <input type="radio" name="q3" id="q3c" value="c"><label for="q3c">Securities Premium Reserve</label>
+      <input type="radio" name="q3" id="q3d" value="d"><label for="q3d">Workmen Compensation Reserve</label>
+    </div>
 
-        <!-- Q5 -->
-        <div class="mcq" data-answer="D">
-          <div class="mcq-question">
-            <span class="q-num">5</span>
-            General Reserve can be used for:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q5a" name="q5" value="A">
-            <label for="q5a"><span class="option-letter">A</span> Writing off bad debts</label>
-            <input type="radio" id="q5b" name="q5" value="B">
-            <label for="q5b"><span class="option-letter">B</span> Paying dividends</label>
-            <input type="radio" id="q5c" name="q5" value="C">
-            <label for="q5c"><span class="option-letter">C</span> Meeting unforeseen contingencies</label>
-            <input type="radio" id="q5d" name="q5" value="D">
-            <label for="q5d"><span class="option-letter">D</span> All of the above</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="b">
+      <h3>4. Provision for bad debts is shown in Balance Sheet:</h3>
+      <input type="radio" name="q4" id="q4a" value="a"><label for="q4a">On the liability side</label>
+      <input type="radio" name="q4" id="q4b" value="b"><label for="q4b">By deducting from Sundry Debtors</label>
+      <input type="radio" name="q4" id="q4c" value="c"><label for="q4c">On the asset side</label>
+      <input type="radio" name="q4" id="q4d" value="d"><label for="q4d">Under Reserves & Surplus</label>
+    </div>
 
-        <!-- Q6 -->
-        <div class="mcq" data-answer="A">
-          <div class="mcq-question">
-            <span class="q-num">6</span>
-            Secret reserve is created by:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q6a" name="q6" value="A">
-            <label for="q6a"><span class="option-letter">A</span> Undervaluing assets</label>
-            <input type="radio" id="q6b" name="q6" value="B">
-            <label for="q6b"><span class="option-letter">B</span> Undervaluing liabilities</label>
-            <input type="radio" id="q6c" name="q6" value="C">
-            <label for="q6c"><span class="option-letter">C</span> Overvaluing assets</label>
-            <input type="radio" id="q6d" name="q6" value="D">
-            <label for="q6d"><span class="option-letter">D</span> Correctly valuing assets</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="d">
+      <h3>5. General Reserve can be used for:</h3>
+      <input type="radio" name="q5" id="q5a" value="a"><label for="q5a">Writing off bad debts</label>
+      <input type="radio" name="q5" id="q5b" value="b"><label for="q5b">Paying dividends</label>
+      <input type="radio" name="q5" id="q5c" value="c"><label for="q5c">Meeting unforeseen contingencies</label>
+      <input type="radio" name="q5" id="q5d" value="d"><label for="q5d">All of the above</label>
+    </div>
 
-        <!-- Q7 -->
-        <div class="mcq" data-answer="C">
-          <div class="mcq-question">
-            <span class="q-num">7</span>
-            Which reserve cannot be distributed as dividend?
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q7a" name="q7" value="A">
-            <label for="q7a"><span class="option-letter">A</span> General Reserve</label>
-            <input type="radio" id="q7b" name="q7" value="B">
-            <label for="q7b"><span class="option-letter">B</span> Revenue Reserve</label>
-            <input type="radio" id="q7c" name="q7" value="C">
-            <label for="q7c"><span class="option-letter">C</span> Capital Reserve</label>
-            <input type="radio" id="q7d" name="q7" value="D">
-            <label for="q7d"><span class="option-letter">D</span> Dividend Equalization Reserve</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="a">
+      <h3>6. Secret reserve is created by:</h3>
+      <input type="radio" name="q6" id="q6a" value="a"><label for="q6a">Undervaluing assets</label>
+      <input type="radio" name="q6" id="q6b" value="b"><label for="q6b">Undervaluing liabilities</label>
+      <input type="radio" name="q6" id="q6c" value="c"><label for="q6c">Overvaluing assets</label>
+      <input type="radio" name="q6" id="q6d" value="d"><label for="q6d">Correctly valuing assets</label>
+    </div>
 
-        <!-- Q8 -->
-        <div class="mcq" data-answer="B">
-          <div class="mcq-question">
-            <span class="q-num">8</span>
-            Provision for depreciation is:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q8a" name="q8" value="A">
-            <label for="q8a"><span class="option-letter">A</span> A reserve</label>
-            <input type="radio" id="q8b" name="q8" value="B">
-            <label for="q8b"><span class="option-letter">B</span> A provision</label>
-            <input type="radio" id="q8c" name="q8" value="C">
-            <label for="q8c"><span class="option-letter">C</span> A capital reserve</label>
-            <input type="radio" id="q8d" name="q8" value="D">
-            <label for="q8d"><span class="option-letter">D</span> A revenue reserve</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="c">
+      <h3>7. Which reserve cannot be distributed as dividend?</h3>
+      <input type="radio" name="q7" id="q7a" value="a"><label for="q7a">General Reserve</label>
+      <input type="radio" name="q7" id="q7b" value="b"><label for="q7b">Revenue Reserve</label>
+      <input type="radio" name="q7" id="q7c" value="c"><label for="q7c">Capital Reserve</label>
+      <input type="radio" name="q7" id="q7d" value="d"><label for="q7d">Dividend Equalization Reserve</label>
+    </div>
 
-        <!-- Q9 -->
-        <div class="mcq" data-answer="A">
-          <div class="mcq-question">
-            <span class="q-num">9</span>
-            Provision is created for:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q9a" name="q9" value="A">
-            <label for="q9a"><span class="option-letter">A</span> Known liability of uncertain amount</label>
-            <input type="radio" id="q9b" name="q9" value="B">
-            <label for="q9b"><span class="option-letter">B</span> Unknown liability</label>
-            <input type="radio" id="q9c" name="q9" value="C">
-            <label for="q9c"><span class="option-letter">C</span> Strengthening financial position</label>
-            <input type="radio" id="q9d" name="q9" value="D">
-            <label for="q9d"><span class="option-letter">D</span> Distribution to shareholders</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="b">
+      <h3>8. Provision for depreciation is:</h3>
+      <input type="radio" name="q8" id="q8a" value="a"><label for="q8a">A reserve</label>
+      <input type="radio" name="q8" id="q8b" value="b"><label for="q8b">A provision</label>
+      <input type="radio" name="q8" id="q8c" value="c"><label for="q8c">A capital reserve</label>
+      <input type="radio" name="q8" id="q8d" value="d"><label for="q8d">A revenue reserve</label>
+    </div>
 
-        <!-- Q10 -->
-        <div class="mcq" data-answer="D">
-          <div class="mcq-question">
-            <span class="q-num">10</span>
-            Which of the following is NOT a provision?
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q10a" name="q10" value="A">
-            <label for="q10a"><span class="option-letter">A</span> Provision for Bad Debts</label>
-            <input type="radio" id="q10b" name="q10" value="B">
-            <label for="q10b"><span class="option-letter">B</span> Provision for Depreciation</label>
-            <input type="radio" id="q10c" name="q10" value="C">
-            <label for="q10c"><span class="option-letter">C</span> Provision for Taxation</label>
-            <input type="radio" id="q10d" name="q10" value="D">
-            <label for="q10d"><span class="option-letter">D</span> General Reserve</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="a">
+      <h3>9. Provision is created for:</h3>
+      <input type="radio" name="q9" id="q9a" value="a"><label for="q9a">Known liability of uncertain amount</label>
+      <input type="radio" name="q9" id="q9b" value="b"><label for="q9b">Unknown liability</label>
+      <input type="radio" name="q9" id="q9c" value="c"><label for="q9c">Strengthening financial position</label>
+      <input type="radio" name="q9" id="q9d" value="d"><label for="q9d">Distribution to shareholders</label>
+    </div>
 
-        <!-- Q11 -->
-        <div class="mcq" data-answer="B">
-          <div class="mcq-question">
-            <span class="q-num">11</span>
-            Reserves are shown in Balance Sheet under:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q11a" name="q11" value="A">
-            <label for="q11a"><span class="option-letter">A</span> Current Liabilities</label>
-            <input type="radio" id="q11b" name="q11" value="B">
-            <label for="q11b"><span class="option-letter">B</span> Reserves and Surplus</label>
-            <input type="radio" id="q11c" name="q11" value="C">
-            <label for="q11c"><span class="option-letter">C</span> Fixed Assets</label>
-            <input type="radio" id="q11d" name="q11" value="D">
-            <label for="q11d"><span class="option-letter">D</span> Current Assets</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="d">
+      <h3>10. Which of the following is NOT a provision?</h3>
+      <input type="radio" name="q10" id="q10a" value="a"><label for="q10a">Provision for Bad Debts</label>
+      <input type="radio" name="q10" id="q10b" value="b"><label for="q10b">Provision for Depreciation</label>
+      <input type="radio" name="q10" id="q10c" value="c"><label for="q10c">Provision for Taxation</label>
+      <input type="radio" name="q10" id="q10d" value="d"><label for="q10d">General Reserve</label>
+    </div>
 
-        <!-- Q12 -->
-        <div class="mcq" data-answer="C">
-          <div class="mcq-question">
-            <span class="q-num">12</span>
-            Dividend Equalization Reserve is a:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q12a" name="q12" value="A">
-            <label for="q12a"><span class="option-letter">A</span> Capital Reserve</label>
-            <input type="radio" id="q12b" name="q12" value="B">
-            <label for="q12b"><span class="option-letter">B</span> Provision</label>
-            <input type="radio" id="q12c" name="q12" value="C">
-            <label for="q12c"><span class="option-letter">C</span> Revenue Reserve</label>
-            <input type="radio" id="q12d" name="q12" value="D">
-            <label for="q12d"><span class="option-letter">D</span> Secret Reserve</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="b">
+      <h3>11. Reserves are shown in Balance Sheet under:</h3>
+      <input type="radio" name="q11" id="q11a" value="a"><label for="q11a">Current Liabilities</label>
+      <input type="radio" name="q11" id="q11b" value="b"><label for="q11b">Reserves and Surplus</label>
+      <input type="radio" name="q11" id="q11c" value="c"><label for="q11c">Fixed Assets</label>
+      <input type="radio" name="q11" id="q11d" value="d"><label for="q11d">Current Assets</label>
+    </div>
 
-        <!-- Q13 -->
-        <div class="mcq" data-answer="A">
-          <div class="mcq-question">
-            <span class="q-num">13</span>
-            Capital Reserve is created from:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q13a" name="q13" value="A">
-            <label for="q13a"><span class="option-letter">A</span> Capital profits</label>
-            <input type="radio" id="q13b" name="q13" value="B">
-            <label for="q13b"><span class="option-letter">B</span> Revenue profits</label>
-            <input type="radio" id="q13c" name="q13" value="C">
-            <label for="q13c"><span class="option-letter">C</span> Both capital and revenue profits</label>
-            <input type="radio" id="q13d" name="q13" value="D">
-            <label for="q13d"><span class="option-letter">D</span> Donations received</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="c">
+      <h3>12. Dividend Equalization Reserve is a:</h3>
+      <input type="radio" name="q12" id="q12a" value="a"><label for="q12a">Capital Reserve</label>
+      <input type="radio" name="q12" id="q12b" value="b"><label for="q12b">Provision</label>
+      <input type="radio" name="q12" id="q12c" value="c"><label for="q12c">Revenue Reserve</label>
+      <input type="radio" name="q12" id="q12d" value="d"><label for="q12d">Secret Reserve</label>
+    </div>
 
-        <!-- Q14 -->
-        <div class="mcq" data-answer="B">
-          <div class="mcq-question">
-            <span class="q-num">14</span>
-            Provision for discount on debtors is calculated on:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q14a" name="q14" value="A">
-            <label for="q14a"><span class="option-letter">A</span> Total Debtors</label>
-            <input type="radio" id="q14b" name="q14" value="B">
-            <label for="q14b"><span class="option-letter">B</span> Good Debtors (after deducting bad debts provision)</label>
-            <input type="radio" id="q14c" name="q14" value="C">
-            <label for="q14c"><span class="option-letter">C</span> Bad Debtors</label>
-            <input type="radio" id="q14d" name="q14" value="D">
-            <label for="q14d"><span class="option-letter">D</span> Creditors</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="a">
+      <h3>13. Capital Reserve is created from:</h3>
+      <input type="radio" name="q13" id="q13a" value="a"><label for="q13a">Capital profits</label>
+      <input type="radio" name="q13" id="q13b" value="b"><label for="q13b">Revenue profits</label>
+      <input type="radio" name="q13" id="q13c" value="c"><label for="q13c">Both capital and revenue profits</label>
+      <input type="radio" name="q13" id="q13d" value="d"><label for="q13d">Donations received</label>
+    </div>
 
-        <!-- Q15 -->
-        <div class="mcq" data-answer="D">
-          <div class="mcq-question">
-            <span class="q-num">15</span>
-            Which statement is TRUE about provisions?
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q15a" name="q15" value="A">
-            <label for="q15a"><span class="option-letter">A</span> Provisions increase profit</label>
-            <input type="radio" id="q15b" name="q15" value="B">
-            <label for="q15b"><span class="option-letter">B</span> Provisions can be distributed as dividends</label>
-            <input type="radio" id="q15c" name="q15" value="C">
-            <label for="q15c"><span class="option-letter">C</span> Provisions are optional</label>
-            <input type="radio" id="q15d" name="q15" value="D">
-            <label for="q15d"><span class="option-letter">D</span> Provisions reduce taxable profit</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="b">
+      <h3>14. Provision for discount on debtors is calculated on:</h3>
+      <input type="radio" name="q14" id="q14a" value="a"><label for="q14a">Total Debtors</label>
+      <input type="radio" name="q14" id="q14b" value="b"><label for="q14b">Good Debtors (after deducting bad debts provision)</label>
+      <input type="radio" name="q14" id="q14c" value="c"><label for="q14c">Bad Debtors</label>
+      <input type="radio" name="q14" id="q14d" value="d"><label for="q14d">Creditors</label>
+    </div>
 
-        <!-- Q16 -->
-        <div class="mcq" data-answer="C">
-          <div class="mcq-question">
-            <span class="q-num">16</span>
-            Reserve Fund means:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q16a" name="q16" value="A">
-            <label for="q16a"><span class="option-letter">A</span> Cash kept in reserve</label>
-            <input type="radio" id="q16b" name="q16" value="B">
-            <label for="q16b"><span class="option-letter">B</span> Any reserve created</label>
-            <input type="radio" id="q16c" name="q16" value="C">
-            <label for="q16c"><span class="option-letter">C</span> Reserve invested in outside securities</label>
-            <input type="radio" id="q16d" name="q16" value="D">
-            <label for="q16d"><span class="option-letter">D</span> Secret reserve</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="d">
+      <h3>15. Which statement is TRUE about provisions?</h3>
+      <input type="radio" name="q15" id="q15a" value="a"><label for="q15a">Provisions increase profit</label>
+      <input type="radio" name="q15" id="q15b" value="b"><label for="q15b">Provisions can be distributed as dividends</label>
+      <input type="radio" name="q15" id="q15c" value="c"><label for="q15c">Provisions are optional</label>
+      <input type="radio" name="q15" id="q15d" value="d"><label for="q15d">Provisions reduce taxable profit</label>
+    </div>
 
-        <!-- Q17 -->
-        <div class="mcq" data-answer="A">
-          <div class="mcq-question">
-            <span class="q-num">17</span>
-            Premium on issue of shares is a:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q17a" name="q17" value="A">
-            <label for="q17a"><span class="option-letter">A</span> Capital Reserve</label>
-            <input type="radio" id="q17b" name="q17" value="B">
-            <label for="q17b"><span class="option-letter">B</span> Revenue Reserve</label>
-            <input type="radio" id="q17c" name="q17" value="C">
-            <label for="q17c"><span class="option-letter">C</span> Provision</label>
-            <input type="radio" id="q17d" name="q17" value="D">
-            <label for="q17d"><span class="option-letter">D</span> Current Liability</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="c">
+      <h3>16. Reserve Fund means:</h3>
+      <input type="radio" name="q16" id="q16a" value="a"><label for="q16a">Cash kept in reserve</label>
+      <input type="radio" name="q16" id="q16b" value="b"><label for="q16b">Any reserve created</label>
+      <input type="radio" name="q16" id="q16c" value="c"><label for="q16c">Reserve invested in outside securities</label>
+      <input type="radio" name="q16" id="q16d" value="d"><label for="q16d">Secret reserve</label>
+    </div>
 
-        <!-- Q18 -->
-        <div class="mcq" data-answer="B">
-          <div class="mcq-question">
-            <span class="q-num">18</span>
-            Specific reserve is created for:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q18a" name="q18" value="A">
-            <label for="q18a"><span class="option-letter">A</span> Any general purpose</label>
-            <input type="radio" id="q18b" name="q18" value="B">
-            <label for="q18b"><span class="option-letter">B</span> A particular purpose</label>
-            <input type="radio" id="q18c" name="q18" value="C">
-            <label for="q18c"><span class="option-letter">C</span> Known liability</label>
-            <input type="radio" id="q18d" name="q18" value="D">
-            <label for="q18d"><span class="option-letter">D</span> Unknown liability</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="a">
+      <h3>17. Premium on issue of shares is a:</h3>
+      <input type="radio" name="q17" id="q17a" value="a"><label for="q17a">Capital Reserve</label>
+      <input type="radio" name="q17" id="q17b" value="b"><label for="q17b">Revenue Reserve</label>
+      <input type="radio" name="q17" id="q17c" value="c"><label for="q17c">Provision</label>
+      <input type="radio" name="q17" id="q17d" value="d"><label for="q17d">Current Liability</label>
+    </div>
 
-        <!-- Q19 -->
-        <div class="mcq" data-answer="C">
-          <div class="mcq-question">
-            <span class="q-num">19</span>
-            Secret reserves are NOT allowed for:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q19a" name="q19" value="A">
-            <label for="q19a"><span class="option-letter">A</span> Banks</label>
-            <input type="radio" id="q19b" name="q19" value="B">
-            <label for="q19b"><span class="option-letter">B</span> Insurance companies</label>
-            <input type="radio" id="q19c" name="q19" value="C">
-            <label for="q19c"><span class="option-letter">C</span> Joint stock companies</label>
-            <input type="radio" id="q19d" name="q19" value="D">
-            <label for="q19d"><span class="option-letter">D</span> Sole proprietorship</label>
-          </div>
-        </div>
+    <div class="mcq" data-answer="b">
+      <h3>18. Specific reserve is created for:</h3>
+      <input type="radio" name="q18" id="q18a" value="a"><label for="q18a">Any general purpose</label>
+      <input type="radio" name="q18" id="q18b" value="b"><label for="q18b">A particular purpose</label>
+      <input type="radio" name="q18" id="q18c" value="c"><label for="q18c">Known liability</label>
+      <input type="radio" name="q18" id="q18d" value="d"><label for="q18d">Unknown liability</label>
+    </div>
 
-        <!-- Q20 -->
-        <div class="mcq" data-answer="D">
-          <div class="mcq-question">
-            <span class="q-num">20</span>
-            Transfer to General Reserve is debited to:
-          </div>
-          <div class="mcq-options">
-            <input type="radio" id="q20a" name="q20" value="A">
-            <label for="q20a"><span class="option-letter">A</span> Trading Account</label>
-            <input type="radio" id="q20b" name="q20" value="B">
-            <label for="q20b"><span class="option-letter">B</span> Profit & Loss Account</label>
-            <input type="radio" id="q20c" name="q20" value="C">
-            <label for="q20c"><span class="option-letter">C</span> Balance Sheet</label>
-            <input type="radio" id="q20d" name="q20" value="D">
-            <label for="q20d"><span class="option-letter">D</span> Profit & Loss Appropriation Account</label>
-          </div>
-        </div>
-      </div>
+    <div class="mcq" data-answer="c">
+      <h3>19. Secret reserves are NOT allowed for:</h3>
+      <input type="radio" name="q19" id="q19a" value="a"><label for="q19a">Banks</label>
+      <input type="radio" name="q19" id="q19b" value="b"><label for="q19b">Insurance companies</label>
+      <input type="radio" name="q19" id="q19c" value="c"><label for="q19c">Joint stock companies</label>
+      <input type="radio" name="q19" id="q19d" value="d"><label for="q19d">Sole proprietorship</label>
+    </div>
+
+    <div class="mcq" data-answer="d">
+      <h3>20. Transfer to General Reserve is debited to:</h3>
+      <input type="radio" name="q20" id="q20a" value="a"><label for="q20a">Trading Account</label>
+      <input type="radio" name="q20" id="q20b" value="b"><label for="q20b">Profit & Loss Account</label>
+      <input type="radio" name="q20" id="q20c" value="c"><label for="q20c">Balance Sheet</label>
+      <input type="radio" name="q20" id="q20d" value="d"><label for="q20d">Profit & Loss Appropriation Account</label>
+    </div>
+    </div>
 
       <!-- Quiz Submit Button -->
       <button class="view-solution-btn" id="submitQuiz" onclick="submitQuiz()" style="margin-top: 25px; max-width: 300px;">
