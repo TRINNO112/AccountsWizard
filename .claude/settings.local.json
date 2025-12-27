@@ -7,7 +7,9 @@
       "Bash(npm create vite:*)",
       "Bash(npm install)",
       "Bash(npm install:*)",
-      "Bash(timeout 15 npm run dev:*)"
+      "Bash(timeout 15 npm run dev:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File add-favicon.ps1:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File remove-blank-line.ps1)"
     ]
   }
 }
