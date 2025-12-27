@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+  <link rel="shortcut icon" href="favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="favicon/site.webmanifest" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Progress – AccountsWizard</title>
@@ -767,7 +772,7 @@
               <div class="achievement-icon">🎓</div>
               <p class="achievement-name">Scholar</p>
             </div>
-            <div class="achievement-badge" data-achievement="all-lessons" title="Complete all 21 lessons">
+            <div class="achievement-badge" data-achievement="all-lessons" title="Complete all 23 lessons">
               <div class="achievement-icon">👑</div>
               <p class="achievement-name">Master</p>
             </div>
@@ -847,7 +852,9 @@
     const lessonTitles = {
       1: 'Meaning and Objectives of Accounting',
       2: 'Basic Accounting Terms',
+      3: 'Accounting Principles',
       4: 'Process and Bases of Accounting',
+      5: 'Accounting Standards and IFRS',
       6: 'Accounting Equations',
       7: 'Double Entry System',
       8: 'Origin of Transactions – Source Documents',
@@ -945,7 +952,7 @@
 
         // Update overview
         document.getElementById('overallPercentage').textContent = overallPercentage + '%';
-        document.getElementById('totalLessonsCount').textContent = completedLessons + '/21';
+        document.getElementById('totalLessonsCount').textContent = completedLessons + '/23';
         document.getElementById('completedQuizzes').textContent = completedQuizzes;
         document.getElementById('totalScore').textContent = totalScore;
         document.getElementById('averageScore').textContent = avgScore + '%';
@@ -996,8 +1003,8 @@
         const lessonsGrid = document.getElementById('lessonsGrid');
         lessonsGrid.innerHTML = '';
         
-        // Lesson numbers array (skipping 3 and 5 which don't exist)
-        const lessonNumbers = [1, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+        // Lesson numbers array (all 23 lessons)
+        const lessonNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
         for (const lessonNum of lessonNumbers) {
           const card = createLessonCard(lessonNum, lessonDataMap[lessonNum]);
           lessonsGrid.appendChild(card);
@@ -1099,7 +1106,7 @@
         'first-lesson': completedLessons >= 1,
         'five-lessons': completedLessons >= 5,
         'ten-lessons': completedLessons >= 10,
-        'all-lessons': completedLessons >= 21,
+        'all-lessons': completedLessons >= 23,
         'perfect-score': hasPerfectScore,
         'high-scorer': avgScore >= 80
       };
@@ -1215,6 +1222,112 @@
     }
   };
   
+  // TRINNO Easter Egg - Secret Cheat Code
+    let easterEggSequence = '';
+    let easterEggTimeout;
+    const CHEAT_CODE = 'TRINNO';
+
+    document.addEventListener('keydown', function(e) {
+      // Add the pressed key to the sequence
+      easterEggSequence += e.key.toUpperCase();
+
+      // Keep only the last 6 characters (length of TRINNO)
+      if (easterEggSequence.length > 6) {
+        easterEggSequence = easterEggSequence.slice(-6);
+      }
+
+      // Check if the sequence matches
+      if (easterEggSequence === CHEAT_CODE) {
+        activateEasterEgg();
+        easterEggSequence = ''; // Reset
+      }
+
+      // Reset sequence after 2 seconds of inactivity
+      clearTimeout(easterEggTimeout);
+      easterEggTimeout = setTimeout(() => {
+        easterEggSequence = '';
+      }, 2000);
+    });
+
+    async function activateEasterEgg() {
+      // Show cool notification
+      showEasterEggNotification();
+
+      // Unlock 50% of achievements (3 out of 6)
+      const achievementBadges = document.querySelectorAll('.achievement-badge');
+      const badgesToUnlock = ['first-lesson', 'five-lessons', 'perfect-score'];
+
+      badgesToUnlock.forEach(achievementName => {
+        const badge = document.querySelector(`[data-achievement="${achievementName}"]`);
+        if (badge && !badge.classList.contains('unlocked')) {
+          badge.classList.add('unlocked');
+
+          // Add a cool animation
+          badge.style.animation = 'none';
+          setTimeout(() => {
+            badge.style.animation = 'pulse 1s ease-in-out 3';
+          }, 10);
+        }
+      });
+
+      console.log('🎉 TRINNO Easter Egg Activated! 50% achievements unlocked!');
+    }
+
+    function showEasterEggNotification() {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: linear-gradient(135deg, #7c4dff, #00e5ff, #b7ff4a);
+        color: #0b1020;
+        padding: 30px 50px;
+        border-radius: 20px;
+        font-size: 1.5rem;
+        font-weight: 900;
+        text-align: center;
+        z-index: 10000;
+        box-shadow: 0 20px 60px rgba(124, 77, 255, 0.5);
+        animation: easterEggPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      `;
+
+      notification.innerHTML = `
+        <div style="font-size: 3rem; margin-bottom: 10px;">🎉✨🏆</div>
+        <div style="margin-bottom: 10px;">TRINNO CODE ACTIVATED!</div>
+        <div style="font-size: 1rem; opacity: 0.9;">50% Achievements Unlocked! 🎯</div>
+      `;
+
+      // Add animation keyframes
+      if (!document.getElementById('easter-egg-styles')) {
+        const style = document.createElement('style');
+        style.id = 'easter-egg-styles';
+        style.textContent = `
+          @keyframes easterEggPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+          }
+          @keyframes easterEggFadeOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      document.body.appendChild(notification);
+
+      // Remove after 3 seconds with fade out
+      setTimeout(() => {
+        notification.style.animation = 'easterEggFadeOut 0.5s ease-out forwards';
+        setTimeout(() => {
+          notification.remove();
+        }, 500);
+      }, 3000);
+    }
+
   // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
