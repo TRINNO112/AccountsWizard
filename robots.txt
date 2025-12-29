@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://accounts-wizard.netlify.app/sitemap.xml
