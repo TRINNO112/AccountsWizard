@@ -9,7 +9,22 @@
       "Bash(npm install:*)",
       "Bash(timeout 15 npm run dev:*)",
       "Bash(powershell -ExecutionPolicy Bypass -File add-favicon.ps1:*)",
-      "Bash(powershell -ExecutionPolicy Bypass -File remove-blank-line.ps1)"
+      "Bash(powershell -ExecutionPolicy Bypass -File remove-blank-line.ps1)",
+      "Bash(start Memories.html)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(start Yearbook.html)",
+      "Bash(xcopy:*)",
+      "Bash(mkdir:*)",
+      "Bash(copy turnjs4libturn.min.js yearbookjs )",
+      "Bash(copy turnjs4libturn.js yearbookjs)",
+      "Bash(cp:*)",
+      "Bash(start steve-jobs/index.html)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl:*)",
+      "Bash(findstr:*)",
+      "Bash(echo \"<div class=''page-content''><h2>Page 5</h2><p>More content goes here</p></div>\")",
+      "Bash(echo:*)"
     ]
   }
 }
