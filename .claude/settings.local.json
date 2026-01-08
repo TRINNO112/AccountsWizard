@@ -24,7 +24,11 @@
       "Bash(curl:*)",
       "Bash(findstr:*)",
       "Bash(echo \"<div class=''page-content''><h2>Page 5</h2><p>More content goes here</p></div>\")",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(del \"C:\\\\Users\\\\Amit Pathak\\\\Documents\\\\AccountsWIzard\\\\OSEM_Yearbook_2025.html\")",
+      "Bash(powershell -Command:*)",
+      "Bash(cat:*)",
+      "Bash(npm run dev:*)"
     ]
   }
 }
