@@ -28,7 +28,9 @@
       "Bash(del \"C:\\\\Users\\\\Amit Pathak\\\\Documents\\\\AccountsWIzard\\\\OSEM_Yearbook_2025.html\")",
       "Bash(powershell -Command:*)",
       "Bash(cat:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(start YouthParliament_Script.html)",
+      "Bash(start script.html)"
     ]
   }
 }
