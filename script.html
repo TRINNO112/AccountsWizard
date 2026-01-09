@@ -1,0 +1,4036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Youth Parliament - Official Anchoring Script</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+        :root {
+            --saffron: #FF9933;
+            --saffron-dark: #cc7a29;
+            --white-primary: #FFFFFF;
+            --green-primary: #138808;
+            --green-dark: #0d5c06;
+            --navy-primary: #000080;
+            --navy-light: #1a1a5e;
+            --cream: #faf8f0;
+            --parchment: #f5f0e1;
+            --ink: #1a1a1a;
+            --ashoka-blue: #000080;
+            --gold-accent: #d4af37;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1.9;
+            color: var(--ink);
+            background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* Floating Action Buttons */
+        .floating-actions {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .action-btn {
+            padding: 15px 25px;
+            border: 2px solid var(--navy-primary);
+            background: linear-gradient(135deg, var(--cream), var(--parchment));
+            color: var(--navy-primary);
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 128, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: var(--navy-primary);
+            color: var(--cream);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 128, 0.5);
+        }
+
+        .action-btn.saffron {
+            border-color: var(--saffron);
+            color: var(--saffron-dark);
+        }
+
+        .action-btn.saffron:hover {
+            background: var(--saffron);
+            color: white;
+        }
+
+        .action-btn.green {
+            border-color: var(--green-primary);
+            color: var(--green-dark);
+        }
+
+        .action-btn.green:hover {
+            background: var(--green-primary);
+            color: white;
+        }
+
+        /* Main Document Container */
+        .document-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--parchment);
+            box-shadow:
+                0 0 0 3px var(--saffron),
+                0 0 0 6px var(--white-primary),
+                0 0 0 9px var(--green-primary),
+                0 25px 80px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Tricolor Top Border */
+        .tricolor-border {
+            height: 12px;
+            background: linear-gradient(to bottom,
+                    var(--saffron) 0%, var(--saffron) 33.33%,
+                    var(--white-primary) 33.33%, var(--white-primary) 66.66%,
+                    var(--green-primary) 66.66%, var(--green-primary) 100%);
+        }
+
+        /* Decorative Border Pattern */
+        .document-container::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid var(--navy-primary);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .document-container::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid var(--gold-accent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .document-inner {
+            padding: 60px 70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Corner Decorations - Ashoka Chakra Inspired */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            z-index: 3;
+        }
+
+        .corner-decoration::before {
+            content: '☸';
+            font-size: 30px;
+            color: var(--ashoka-blue);
+            opacity: 0.3;
+        }
+
+        .corner-tl {
+            top: 35px;
+            left: 25px;
+        }
+
+        .corner-tr {
+            top: 35px;
+            right: 25px;
+        }
+
+        .corner-bl {
+            bottom: 25px;
+            left: 25px;
+        }
+
+        .corner-br {
+            bottom: 25px;
+            right: 25px;
+        }
+
+        /* Header Section */
+        .document-header {
+            text-align: center;
+            padding-bottom: 40px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .header-emblem {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--cream), var(--white-primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 0 4px var(--ashoka-blue),
+                0 0 0 8px var(--saffron),
+                0 0 0 12px var(--green-primary),
+                0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .header-emblem::before {
+            content: '☸';
+            font-size: 70px;
+            color: var(--ashoka-blue);
+        }
+
+        .header-emblem::after {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border: 2px dashed var(--ashoka-blue);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .document-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--navy-primary);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .document-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            color: var(--saffron-dark);
+            margin: 15px 0;
+        }
+
+        .document-type {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 6px;
+            color: var(--green-dark);
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        .header-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 15px;
+        }
+
+        .header-divider .line {
+            height: 2px;
+            width: 120px;
+        }
+
+        .header-divider .line.saffron {
+            background: linear-gradient(90deg, transparent, var(--saffron));
+        }
+
+        .header-divider .line.green {
+            background: linear-gradient(90deg, var(--green-primary), transparent);
+        }
+
+        .header-divider .ornament {
+            font-size: 28px;
+            color: var(--ashoka-blue);
+        }
+
+        .document-meta {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #888;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy-primary);
+        }
+
+                /* Preamble - Opening Declaration */
+        .preamble {
+            background: linear-gradient(135deg, var(--cream), var(--parchment));
+            border: 3px solid var(--navy-primary);
+            border-left: 8px solid var(--saffron);
+            border-right: 8px solid var(--green-primary);
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+            text-align: center;
+        }
+        
+        .preamble::before {
+            content: '❝';
+            position: absolute;
+            top: -25px;
+            left: 40px;
+            font-size: 60px;
+            color: var(--saffron);
+            line-height: 1;
+        }
+        
+        .preamble::after {
+            content: '❞';
+            position: absolute;
+            bottom: -25px;
+            right: 40px;
+            font-size: 60px;
+            color: var(--green-primary);
+            line-height: 1;
+        }
+        
+        .preamble-title {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--navy-primary);
+            margin-bottom: 20px;
+        }
+        
+        .preamble-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--ink);
+        }
+        
+        /* Table of Contents */
+        .toc {
+            background: var(--cream);
+            border: 2px solid var(--navy-primary);
+            padding: 35px 45px;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .toc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--saffron), var(--white-primary), var(--green-primary));
+        }
+        
+        .toc-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 22px;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--navy-primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gold-accent);
+        }
+        
+        .toc-columns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 50px;
+        }
+        
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 10px 15px;
+            border-bottom: 1px dotted var(--navy-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .toc-item:hover {
+            background: linear-gradient(90deg, rgba(255, 153, 51, 0.1), rgba(19, 136, 8, 0.1));
+            transform: translateX(5px);
+        }
+        
+        .toc-part {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: var(--navy-primary);
+        }
+        
+        .toc-page {
+            color: var(--saffron-dark);
+            font-weight: 500;
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Part/Section Styling */
+        .part {
+            margin-bottom: 60px;
+            page-break-inside: avoid;
+            position: relative;
+        }
+        
+        .part-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 30px 0;
+        }
+        
+        .part-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--saffron), var(--navy-primary), var(--green-primary));
+        }
+        
+        .part-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-primary), var(--navy-primary), var(--saffron));
+        }
+        
+        .part-number {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--saffron-dark);
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .part-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy-primary);
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .part-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--green-dark);
+        }
+        
+        .part-underline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .part-underline .line {
+            height: 2px;
+            width: 80px;
+        }
+        
+        .part-underline .line.left {
+            background: linear-gradient(90deg, transparent, var(--saffron));
+        }
+        
+        .part-underline .line.right {
+            background: linear-gradient(90deg, var(--green-primary), transparent);
+        }
+        
+        .part-underline .chakra {
+            font-size: 20px;
+            color: var(--ashoka-blue);
+        }
+        
+        /* Section Header within Parts */
+        .section {
+            margin-bottom: 35px;
+            padding: 20px 0;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, var(--cream), rgba(255, 153, 51, 0.1));
+            border-left: 5px solid var(--navy-primary);
+            padding: 15px 25px;
+            margin-bottom: 25px;
+        }
+        
+        .section-label {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--saffron-dark);
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy-primary);
+        }
+        
+        /* Speaker/Anchor Dialogue Boxes */
+        .dialogue-block {
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .anchor-dialogue {
+            background: linear-gradient(135deg, #fff, var(--cream));
+            border: 2px solid var(--navy-primary);
+            border-radius: 0;
+            padding: 0;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .anchor-dialogue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .anchor-dialogue.anchor-1 {
+            border-left: 6px solid var(--saffron);
+        }
+        
+        .anchor-dialogue.anchor-2 {
+            border-left: 6px solid var(--green-primary);
+        }
+        
+        .anchor-header {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .anchor-dialogue.anchor-1 .anchor-header {
+            background: linear-gradient(135deg, var(--saffron), var(--saffron-dark));
+        }
+        
+        .anchor-dialogue.anchor-2 .anchor-header {
+            background: linear-gradient(135deg, var(--green-primary), var(--green-dark));
+        }
+        
+        .anchor-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .anchor-dialogue.anchor-1 .anchor-icon {
+            color: var(--saffron-dark);
+        }
+        
+        .anchor-dialogue.anchor-2 .anchor-icon {
+            color: var(--green-dark);
+        }
+        
+        .anchor-name {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .anchor-role {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 1px;
+        }
+        
+        .dialogue-content {
+            padding: 25px 30px;
+            font-size: 17px;
+            line-height: 1.9;
+            color: var(--ink);
+            text-align: justify;
+        }
+        
+        .dialogue-content em {
+            color: var(--navy-primary);
+            font-style: italic;
+        }
+        
+        .dialogue-content strong {
+            color: var(--navy-primary);
+            font-weight: 600;
+        }
+        
+        .dialogue-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-style: italic;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid var(--gold-accent);
+            margin: 15px 0;
+            color: #444;
+        }
+        
+        /* Action Cue Boxes */
+        .action-cue {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px dashed var(--green-dark);
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .action-cue::before {
+            content: '🎬 ACTION';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--green-primary);
+            color: white;
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .action-cue-content {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--green-dark);
+            line-height: 1.7;
+            margin-top: 5px;
+        }
+        
+        .action-cue-content strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+        
+        /* Stage Direction Box */
+        .stage-direction {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid var(--saffron);
+            border-left: 6px solid var(--saffron);
+            padding: 20px 25px;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .stage-direction::before {
+            content: '🎭 STAGE DIRECTION';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--saffron);
+            color: white;
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            padding: 4px 15px;
+            font-weight: 600;
+        }
+        
+        .stage-direction-content {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--saffron-dark);
+            line-height: 1.7;
+            margin-top: 5px;
+        }
+        
+        /* Dignitary/Tarif Section */
+        .dignitary-section {
+            background: linear-gradient(135deg, #fff, var(--cream));
+            border: 3px double var(--navy-primary);
+            margin: 35px 0;
+            padding: 0;
+            position: relative;
+        }
+        
+        .dignitary-section::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid var(--gold-accent);
+            pointer-events: none;
+        }
+        
+        .dignitary-header {
+            background: linear-gradient(135deg, var(--navy-primary), var(--navy-light));
+            padding: 15px 25px;
+            text-align: center;
+        }
+        
+        .dignitary-label {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold-accent);
+        }
+        
+        .dignitary-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 20px;
+            color: var(--white-primary);
+            margin-top: 5px;
+        }
+        
+        .dignitary-body {
+            padding: 30px;
+        }
+        
+        .dignitary-intro {
+            text-align: center;
+            font-size: 16px;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .dignitary-item {
+            padding: 25px;
+            margin: 20px 0;
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid;
+            position: relative;
+        }
+        
+        .dignitary-item.trustee-1 {
+            border-left-color: var(--saffron);
+        }
+        
+        .dignitary-item.trustee-2 {
+            border-left-color: var(--green-primary);
+        }
+        
+        .dignitary-item.principal {
+            border-left-color: var(--navy-primary);
+        }
+        
+        .dignitary-role {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dignitary-item.trustee-1 .dignitary-role {
+            color: var(--saffron-dark);
+        }
+        
+        .dignitary-item.trustee-2 .dignitary-role {
+            color: var(--green-dark);
+        }
+        
+        .dignitary-item.principal .dignitary-role {
+            color: var(--navy-primary);
+        }
+        
+        .dignitary-name-field {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: var(--navy-primary);
+            padding: 10px 0;
+            border-bottom: 2px dotted var(--navy-primary);
+            margin-bottom: 15px;
+            min-height: 50px;
+        }
+        
+        .dignitary-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--ink);
+            text-align: justify;
+        }
+        
+        /* Performance/Cultural Section Box */
+        .performance-box {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            border: 2px solid #c2185b;
+            border-radius: 0;
+            padding: 0;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .performance-box::before {
+            content: '🎭';
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            opacity: 0.3;
+        }
+        
+        .performance-header {
+            background: linear-gradient(135deg, #c2185b, #ad1457);
+            padding: 15px 25px;
+            color: white;
+        }
+        
+        .performance-label {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        
+        .performance-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 22px;
+            margin-top: 5px;
+        }
+        
+        .performance-body {
+            padding: 25px;
+        }
+        
+        .performance-description {
+            font-size: 16px;
+            font-style: italic;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* Note Boxes */
+        .note-box {
+            padding: 25px 30px;
+            margin: 30px 0;
+            position: relative;
+            border-radius: 0;
+        }
+        
+        .note-box::before {
+            position: absolute;
+            left: 25px;
+            top: -12px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 4px 15px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+        
+        .note-box.important {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 2px solid var(--saffron);
+            border-left: 6px solid var(--saffron);
+        }
+        
+        .note-box.important::before {
+            content: '⚠ Important Notice';
+            background: var(--saffron);
+            color: white;
+        }
+        
+        .note-box.tip {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--green-primary);
+            border-left: 6px solid var(--green-primary);
+        }
+        
+        .note-box.tip::before {
+            content: '💡 Pro Tip';
+            background: var(--green-primary);
+            color: white;
+        }
+        
+        .note-box.ceremonial {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--navy-primary);
+            border-left: 6px solid var(--navy-primary);
+        }
+        
+        .note-box.ceremonial::before {
+            content: '🏛 Ceremonial Note';
+            background: var(--navy-primary);
+            color: white;
+        }
+        
+        .note-box-content {
+            margin-top: 10px;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        
+        /* Transition Dividers */
+        .transition-divider {
+            text-align: center;
+            margin: 50px 0;
+            position: relative;
+        }
+        
+        .transition-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--navy-primary), transparent);
+        }
+        
+        .transition-ornament {
+            display: inline-block;
+            background: var(--parchment);
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .transition-ornament span {
+            font-size: 24px;
+            color: var(--navy-primary);
+        }
+        
+        /* Tricolor Divider */
+        .tricolor-divider {
+            height: 6px;
+            margin: 40px 0;
+            background: linear-gradient(90deg, 
+                var(--saffron) 0%, var(--saffron) 33.33%,
+                var(--white-primary) 33.33%, var(--white-primary) 66.66%,
+                var(--green-primary) 66.66%, var(--green-primary) 100%);
+            position: relative;
+        }
+        
+        .tricolor-divider::before {
+            content: '☸';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--parchment);
+            padding: 5px 15px;
+            font-size: 20px;
+            color: var(--ashoka-blue);
+        }
+        
+        /* Page Break Styling */
+        .page-break {
+            page-break-after: always;
+            break-after: page;
+            height: 0;
+            margin: 0;
+            border: none;
+        }
+        
+        .page-break-before {
+            page-break-before: always;
+            break-before: page;
+        }
+        
+        .page-break-indicator {
+            text-align: center;
+            padding: 30px 0;
+            margin: 40px 0;
+            border-top: 2px dashed #ccc;
+            border-bottom: 2px dashed #ccc;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0,0,0,0.02) 10px,
+                rgba(0,0,0,0.02) 20px
+            );
+        }
+        
+        .page-break-indicator span {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #999;
+            background: var(--parchment);
+            padding: 5px 20px;
+        }
+        
+        /* Keep Together Classes */
+        .keep-together {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        
+        .avoid-break-after {
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        
+        .avoid-break-before {
+            page-break-before: avoid;
+            break-before: avoid;
+        }
+
+                /* Speech Box Section */
+        .speech-box {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border: 2px solid #7b1fa2;
+            margin: 30px 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .speech-box::before {
+            content: '🎤';
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            opacity: 0.3;
+        }
+        
+        .speech-box-header {
+            background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+            padding: 15px 25px;
+            color: white;
+        }
+        
+        .speech-box-label {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        
+        .speech-box-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 20px;
+            margin-top: 5px;
+        }
+        
+        .speech-box-body {
+            padding: 25px;
+        }
+        
+        .speech-box-intro {
+            font-size: 15px;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #7b1fa2;
+        }
+        
+        /* Lamp Lighting Ceremony Box */
+        .ceremony-box {
+            background: linear-gradient(135deg, #fffde7, #fff9c4);
+            border: 3px solid var(--gold-accent);
+            margin: 35px 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ceremony-box::before {
+            content: '🪔';
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            font-size: 60px;
+            opacity: 0.15;
+        }
+        
+        .ceremony-header {
+            background: linear-gradient(135deg, var(--gold-accent), #b8860b);
+            padding: 20px 30px;
+            text-align: center;
+        }
+        
+        .ceremony-label {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .ceremony-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 24px;
+            color: white;
+            margin-top: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .ceremony-body {
+            padding: 30px;
+        }
+        
+        .ceremony-description {
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--ink);
+            text-align: center;
+            font-style: italic;
+        }
+        
+        /* Acknowledgment Section */
+        .acknowledgment-section {
+            background: linear-gradient(135deg, #e8eaf6, #c5cae9);
+            border: 2px solid #3f51b5;
+            margin: 40px 0;
+            padding: 0;
+            position: relative;
+        }
+        
+        .acknowledgment-header {
+            background: linear-gradient(135deg, #3f51b5, #303f9f);
+            padding: 20px 30px;
+            text-align: center;
+        }
+        
+        .acknowledgment-label {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .acknowledgment-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 22px;
+            color: white;
+            margin-top: 8px;
+        }
+        
+        .acknowledgment-body {
+            padding: 30px;
+        }
+        
+        .acknowledgment-text {
+            font-size: 16px;
+            line-height: 1.9;
+            color: var(--ink);
+            text-align: justify;
+        }
+        
+        .acknowledgment-highlight {
+            background: rgba(63, 81, 181, 0.1);
+            border-left: 4px solid #3f51b5;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        
+        /* Official Seal */
+        .official-seal {
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .seal-image {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--navy-primary), #0a0a40);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 0 4px var(--cream),
+                0 0 0 6px var(--saffron),
+                0 0 0 10px var(--cream),
+                0 0 0 12px var(--green-primary),
+                inset 0 0 30px rgba(0,0,0,0.4);
+            position: relative;
+        }
+        
+        .seal-image::before {
+            content: '☸';
+            font-size: 60px;
+            color: var(--gold-accent);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .seal-image::after {
+            content: '';
+            position: absolute;
+            inset: 15px;
+            border: 2px dashed var(--gold-accent);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+        
+        .seal-text {
+            margin-top: 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--navy-primary);
+        }
+        
+        .seal-subtext {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            font-style: italic;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        /* Document Footer */
+        .document-footer {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 3px double var(--navy-primary);
+            text-align: center;
+            position: relative;
+        }
+        
+        .document-footer::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 15px;
+            background: var(--parchment);
+        }
+        
+        .document-footer::after {
+            content: '☸';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            color: var(--ashoka-blue);
+            background: var(--parchment);
+            padding: 0 10px;
+        }
+        
+        .footer-ornament {
+            font-size: 28px;
+            color: var(--navy-primary);
+            margin-bottom: 25px;
+        }
+        
+        .footer-quote {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: var(--navy-primary);
+            margin-bottom: 15px;
+        }
+        
+        .footer-quote-source {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--saffron-dark);
+            margin-bottom: 25px;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            font-style: italic;
+            color: #666;
+            line-height: 1.8;
+            max-width: 650px;
+            margin: 0 auto 30px;
+        }
+        
+        .footer-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 25px;
+            background: var(--cream);
+            border: 1px solid var(--gold-accent);
+            margin-top: 30px;
+        }
+        
+        .footer-meta-item {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .footer-meta-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .footer-meta-value {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy-primary);
+        }
+        
+        .footer-tricolor {
+            height: 8px;
+            margin-top: 30px;
+            background: linear-gradient(90deg, 
+                var(--saffron) 0%, var(--saffron) 33.33%,
+                var(--white-primary) 33.33%, var(--white-primary) 66.66%,
+                var(--green-primary) 66.66%, var(--green-primary) 100%);
+        }
+        
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-family: 'Cinzel', serif;
+            font-size: 120px;
+            color: rgba(0, 0, 128, 0.02);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            user-select: none;
+        }
+        
+        /* Editable Fields Styling */
+        .editable-field {
+            border-bottom: 2px dotted var(--navy-primary);
+            min-width: 200px;
+            display: inline-block;
+            padding: 2px 10px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 22px;
+            color: var(--navy-primary);
+            background: rgba(212, 175, 55, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .editable-field:hover {
+            background: rgba(212, 175, 55, 0.15);
+        }
+        
+        .editable-field:focus {
+            outline: none;
+            background: rgba(212, 175, 55, 0.2);
+            border-bottom-style: solid;
+        }
+        
+        .editable-field[data-placeholder]:empty::before {
+            content: attr(data-placeholder);
+            color: #999;
+            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .floating-actions {
+                display: none !important;
+            }
+            
+            .watermark {
+                display: none !important;
+            }
+            
+            .document-container {
+                box-shadow: none !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .document-inner {
+                padding: 15mm 20mm !important;
+            }
+            
+            .part {
+                page-break-inside: avoid !important;
+            }
+            
+            .anchor-dialogue {
+                page-break-inside: avoid !important;
+                box-shadow: none !important;
+            }
+            
+            .action-cue {
+                page-break-inside: avoid !important;
+            }
+            
+            .dignitary-section {
+                page-break-inside: avoid !important;
+            }
+            
+            .performance-box {
+                page-break-inside: avoid !important;
+            }
+            
+            .ceremony-box {
+                page-break-inside: avoid !important;
+            }
+            
+            .page-break {
+                page-break-after: always !important;
+                break-after: page !important;
+            }
+            
+            .page-break-indicator {
+                display: none !important;
+            }
+            
+            .keep-together {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            .part-header {
+                page-break-after: avoid !important;
+            }
+            
+            .section-header {
+                page-break-after: avoid !important;
+            }
+            
+            /* Ensure headers don't get orphaned */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid !important;
+            }
+            
+            /* Ensure paragraphs have some content before break */
+            p {
+                orphans: 3;
+                widows: 3;
+            }
+            
+            /* Hide interactive elements */
+            .action-btn {
+                display: none !important;
+            }
+            
+            /* Print page settings */
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+            
+            @page :first {
+                margin-top: 10mm;
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .document-inner {
+                padding: 50px 50px;
+            }
+            
+            .document-title {
+                font-size: 32px;
+                letter-spacing: 3px;
+            }
+            
+            .document-subtitle {
+                font-size: 28px;
+            }
+            
+            .toc-columns {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            
+            .document-inner {
+                padding: 35px 25px;
+            }
+            
+            .document-title {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+            
+            .document-subtitle {
+                font-size: 22px;
+            }
+            
+            .document-type {
+                font-size: 12px;
+                letter-spacing: 4px;
+            }
+            
+            .header-emblem {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .header-emblem::before {
+                font-size: 50px;
+            }
+            
+            .part-title {
+                font-size: 22px;
+            }
+            
+            .part-number {
+                font-size: 12px;
+                letter-spacing: 4px;
+            }
+            
+            .anchor-dialogue {
+                margin: 15px 0;
+            }
+            
+            .anchor-header {
+                padding: 10px 15px;
+            }
+            
+            .anchor-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            .anchor-name {
+                font-size: 14px;
+            }
+            
+            .dialogue-content {
+                padding: 20px;
+                font-size: 15px;
+            }
+            
+            .action-cue {
+                padding: 18px 20px;
+            }
+            
+            .dignitary-section {
+                margin: 25px 0;
+            }
+            
+            .dignitary-body {
+                padding: 20px;
+            }
+            
+            .dignitary-name-field {
+                font-size: 22px;
+            }
+            
+            .ceremony-box {
+                margin: 25px 0;
+            }
+            
+            .ceremony-body {
+                padding: 20px;
+            }
+            
+            .performance-box {
+                margin: 20px 0;
+            }
+            
+            .performance-body {
+                padding: 20px;
+            }
+            
+            .footer-meta {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .floating-actions {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .action-btn {
+                padding: 10px 15px;
+                font-size: 11px;
+            }
+            
+            .preamble {
+                padding: 30px 20px;
+            }
+            
+            .preamble::before {
+                font-size: 40px;
+                top: -15px;
+                left: 20px;
+            }
+            
+            .preamble::after {
+                font-size: 40px;
+                bottom: -15px;
+                right: 20px;
+            }
+            
+            .preamble-text {
+                font-size: 17px;
+            }
+            
+            .toc {
+                padding: 25px 20px;
+            }
+            
+            .seal-image {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .seal-image::before {
+                font-size: 45px;
+            }
+            
+            .corner-decoration {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .document-inner {
+                padding: 25px 15px;
+            }
+            
+            .document-title {
+                font-size: 20px;
+                letter-spacing: 1px;
+            }
+            
+            .document-subtitle {
+                font-size: 18px;
+            }
+            
+            .document-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-divider .line {
+                width: 60px;
+            }
+            
+            .part-header {
+                padding: 20px 0;
+            }
+            
+            .part-title {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+            }
+            
+            .anchor-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            
+            .dialogue-content {
+                padding: 15px;
+                font-size: 14px;
+                text-align: left;
+            }
+            
+            .floating-actions {
+                position: fixed;
+                bottom: 10px;
+                top: auto;
+                right: 10px;
+                left: 10px;
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 10px;
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Watermark -->
+    <div class="watermark">PARLIAMENT</div>
+    
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <button class="action-btn saffron" onclick="window.print()">
+            <span>🖨</span> Print Script
+        </button>
+        <button class="action-btn" onclick="exportToPDF()">
+            <span>📄</span> Export PDF
+        </button>
+        <button class="action-btn green" onclick="saveProgress()">
+            <span>💾</span> Save Draft
+        </button>
+    </div>
+    
+    <!-- Main Document Container -->
+    <div class="document-container">
+        <!-- Tricolor Top Border -->
+        <div class="tricolor-border"></div>
+        
+        <!-- Corner Decorations -->
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-tr"></div>
+        <div class="corner-decoration corner-bl"></div>
+        <div class="corner-decoration corner-br"></div>
+        
+        <div class="document-inner">
+            <!-- Document Header -->
+            <header class="document-header">
+                <div class="header-emblem"></div>
+                
+                <h1 class="document-title">Modern Youth Parliament</h1>
+                <p class="document-subtitle">Official Anchoring Script</p>
+                <p class="document-type">Ceremonial Proceedings Document</p>
+                
+                <div class="header-divider">
+                    <div class="line saffron"></div>
+                    <div class="ornament">☸</div>
+                    <div class="line green"></div>
+                </div>
+                
+                <div class="document-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Document Type</span>
+                        <span class="meta-value">Anchoring Script</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Event Date</span>
+                        <span class="meta-value" contenteditable="true" data-placeholder="Enter Date">_____________</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Version</span>
+                        <span class="meta-value">Final Draft</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Classification</span>
+                        <span class="meta-value">Official</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Preamble -->
+            <div class="preamble">
+                <h3 class="preamble-title">Preamble</h3>
+                <p class="preamble-text">
+                    "The youth of today are the leaders of tomorrow. In this Modern Youth Parliament, 
+                    we gather not merely as students, but as the future architects of our great nation's destiny. 
+                    Let the spirit of democracy guide our words, and may the wisdom of our Constitution 
+                    illuminate our path forward."
+                </p>
+            </div>
+
+                        <!-- Table of Contents -->
+            <div class="toc">
+                <h2 class="toc-title">Table of Contents</h2>
+                <div class="toc-columns">
+                    <div class="toc-item" onclick="scrollToSection('part1')">
+                        <span class="toc-part">Part 1: The Grand Opening</span>
+                        <span class="toc-page">I</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('dignitary')">
+                        <span class="toc-part">The Dignitary Spotlight</span>
+                        <span class="toc-page">II</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('part2')">
+                        <span class="toc-part">Part 2: Lamp Lighting Ceremony</span>
+                        <span class="toc-page">III</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('speechbox')">
+                        <span class="toc-part">The Speech Box</span>
+                        <span class="toc-page">IV</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('part3')">
+                        <span class="toc-part">Part 3: Cultural Performances</span>
+                        <span class="toc-page">V</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('shiva')">
+                        <span class="toc-part">Shiva Dance & National Symbols</span>
+                        <span class="toc-page">VI</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('part4')">
+                        <span class="toc-part">Part 4: Grand Finale</span>
+                        <span class="toc-page">VII</span>
+                    </div>
+                    <div class="toc-item" onclick="scrollToSection('part5')">
+                        <span class="toc-part">Part 5: Tribute & Transition</span>
+                        <span class="toc-page">VIII</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tricolor Divider -->
+            <div class="tricolor-divider"></div>
+            
+            <!-- ==================== PART 1 ==================== -->
+            <section class="part keep-together" id="part1">
+                <div class="part-header">
+                    <span class="part-number">Part One</span>
+                    <h2 class="part-title">The Grand Opening</h2>
+                    <p class="part-subtitle">"Words of Honor"</p>
+                    <div class="part-underline">
+                        <div class="line left"></div>
+                        <span class="chakra">☸</span>
+                        <div class="line right"></div>
+                    </div>
+                </div>
+                
+                <!-- Opening Stage Direction -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        <strong>Anchors walk to the podium.</strong> Wait for the crowd to settle. 
+                        Anchor 1 speaks with a <strong>powerful, welcoming voice.</strong> 
+                        Maintain eye contact with the audience. Stand tall and confident.
+                    </div>
+                </div>
+                
+                <!-- Anchor 1 Opening Dialogue -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Lead Speaker</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "A very <strong>Good Morning</strong> to the luminaries on our stage, our dedicated faculty, 
+                            and the future leaders of our nation seated right here in this hall! Today, we gather to 
+                            witness the <em>Modern Youth Parliament</em>—a day where the vigor of youth meets the 
+                            gravity of governance."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 2 Response Dialogue -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Co-Speaker</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "They say that an institution is only as great as the visionaries who lead it. 
+                            Before we begin our deliberations, it is our <strong>absolute privilege</strong> to welcome 
+                            the architects of our school's success. We aren't just welcoming guests; 
+                            we are welcoming our <em>mentors</em>."
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page Break Indicator -->
+                <div class="page-break-indicator">
+                    <span>— Page Break for Printing —</span>
+                </div>
+                <div class="page-break"></div>
+                
+                <!-- Note Box -->
+                <div class="note-box tip">
+                    <div class="note-box-content">
+                        <strong>Delivery Tip:</strong> Pause briefly after "mentors" to allow the weight of the 
+                        statement to settle. This builds anticipation for the dignitary introductions that follow.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== DIGNITARY SPOTLIGHT ==================== -->
+            <section class="section keep-together" id="dignitary">
+                <div class="section-header">
+                    <span class="section-label">Special Section</span>
+                    <h3 class="section-title">The Dignitary Spotlight</h3>
+                </div>
+
+                <!-- Dignitary Introduction Section -->
+                <div class="dignitary-section">
+                    <div class="dignitary-header">
+                        <span class="dignitary-label">Honoring Our Esteemed Guests</span>
+                        <h3 class="dignitary-title">Words of Welcome & Gratitude</h3>
+                    </div>
+                    
+                    <div class="dignitary-body">
+                        <p class="dignitary-intro">
+                            The following tributes are to be delivered with utmost respect and sincerity. 
+                            Each dignitary deserves a moment of recognition for their invaluable contributions 
+                            to our institution.
+                        </p>
+
+                        <!-- Trustee 1 -->
+                        <div class="dignitary-item trustee-1">
+                            <div class="dignitary-role">
+                                <span>🏛</span>
+                                <span>For the Honorable Trustee</span>
+                            </div>
+                            
+                            <div class="dignitary-name-field" contenteditable="true" data-placeholder="Enter Trustee Name">
+                                __________________________
+                            </div>
+                            
+                            <div class="anchor-dialogue anchor-1" style="margin-top: 20px;">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">Delivers Tribute</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "It is an <strong>immense honor</strong> to welcome our Honorable Trustee, 
+                                    <span class="editable-field" contenteditable="true" data-placeholder="[Name]">__________________________</span>. 
+                                    Sir/Ma'am, your contribution to this institution goes beyond administration; 
+                                    it is about <em>building a legacy</em>. Your unwavering commitment to excellence 
+                                    and your visionary approach have transformed this school into a 
+                                    <strong>temple of learning</strong>. We are truly indebted to your 'Karma' and 
+                                    your passion for empowering the youth. Thank you for being our 
+                                    <em>constant pillar of strength</em>."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Page Break Indicator -->
+                        <div class="page-break-indicator">
+                            <span>— Page Break for Printing —</span>
+                        </div>
+                        <div class="page-break"></div>
+                        
+                        <!-- Action Cue -->
+                        <div class="action-cue">
+                            <div class="action-cue-content">
+                                <strong>Lead applause</strong> after the introduction. Wait for the dignitary to 
+                                acknowledge the welcome before proceeding to the next introduction.
+                            </div>
+                        </div>
+                        
+                        <!-- Trustee 2 -->
+                        <div class="dignitary-item trustee-2">
+                            <div class="dignitary-role">
+                                <span>🏛</span>
+                                <span>For the Second Honorable Trustee / Guest</span>
+                            </div>
+                            
+                            <div class="dignitary-name-field" contenteditable="true" data-placeholder="Enter Second Trustee Name">
+                                __________________________
+                            </div>
+                            
+                            <div class="anchor-dialogue anchor-2" style="margin-top: 20px;">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 2</span>
+                                        <span class="anchor-role">Delivers Tribute</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "We are equally graced by the presence of our Honorable Trustee, 
+                                    <span class="editable-field" contenteditable="true" data-placeholder="[Name]">__________________________</span>. 
+                                    Your presence here today adds a layer of <strong>prestige</strong> to this Parliament. 
+                                    Your belief that <em>'education is the most powerful weapon'</em> is reflected in 
+                                    every facility and every opportunity we enjoy. We thank you for your 
+                                    <strong>selfless service</strong> and for always pushing us to aim for the stars."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Cue -->
+                        <div class="action-cue">
+                            <div class="action-cue-content">
+                                <strong>Lead applause</strong> for the second trustee. Maintain a graceful demeanor 
+                                and smile warmly as the audience applauds.
+                            </div>
+                        </div>
+                        
+                        <!-- Principal -->
+                        <div class="dignitary-item principal">
+                            <div class="dignitary-role">
+                                <span>👩‍🏫</span>
+                                <span>For the Respected Principal</span>
+                            </div>
+                            
+                            <div class="dignitary-name-field" contenteditable="true" data-placeholder="Enter Principal Name">
+                                __________________________
+                            </div>
+                            
+                            <div class="anchor-dialogue anchor-1" style="margin-top: 20px;">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">Delivers Tribute</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "And finally, we welcome the <strong>captain of our ship</strong>, our Respected Principal, 
+                                    <span class="editable-field" contenteditable="true" data-placeholder="[Name]">__________________________</span>. 
+                                    More than a leader, you are a <em>philosopher and a guide</em>. Under your watchful eyes, 
+                                    we have learned that <strong>discipline and freedom go hand in hand</strong>. Thank you for 
+                                    fostering an environment where a 'Modern Youth Parliament' isn't just an event, 
+                                    but a <em>reality</em>. We are honored to have your grace on this stage today."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Cue -->
+                        <div class="action-cue">
+                            <div class="action-cue-content">
+                                <strong>Lead a warm round of applause</strong> for the Principal. This is a moment 
+                                of deep respect—ensure your body language conveys genuine gratitude.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Important Note -->
+                <div class="note-box important">
+                    <div class="note-box-content">
+                        <strong>Remember:</strong> The Tarif (tribute) section sets the tone for the entire event. 
+                        Speak slowly, clearly, and with genuine emotion. Make eye contact with each dignitary 
+                        as you introduce them. Your words should convey not just information, but heartfelt gratitude.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Transition Divider -->
+            <div class="transition-divider">
+                <div class="transition-ornament">
+                    <span>❧ ❦ ❧</span>
+                </div>
+            </div>
+            
+            <!-- Page Break Indicator -->
+            <div class="page-break-indicator">
+                <span>— Page Break for Printing —</span>
+            </div>
+            <div class="page-break"></div>
+            
+            <!-- ==================== PART 2 ==================== -->
+            <section class="part keep-together" id="part2">
+                <div class="part-header">
+                    <span class="part-number">Part Two</span>
+                    <h2 class="part-title">The Lamp Lighting Ceremony</h2>
+                    <p class="part-subtitle">Illuminating the Path of Knowledge</p>
+                    <div class="part-underline">
+                        <div class="line left"></div>
+                        <span class="chakra">☸</span>
+                        <div class="line right"></div>
+                    </div>
+                </div>
+                
+                <!-- Stage Direction for Music -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        <strong>Music starts</strong>—a soft, classical Indian flute or Sitar. 
+                        The atmosphere should become serene and reverent. Dim the main lights slightly 
+                        while keeping the stage well-lit.
+                    </div>
+                </div>
+                
+                <!-- Ceremony Box -->
+                <div class="ceremony-box">
+                    <div class="ceremony-header">
+                        <span class="ceremony-label">Sacred Tradition</span>
+                        <h3 class="ceremony-title">🪔 Deep Prajwalan 🪔</h3>
+                    </div>
+                    <div class="ceremony-body">
+                        <p class="ceremony-description">
+                            "From darkness to light, from ignorance to knowledge—the lighting of the lamp 
+                            symbolizes the eternal pursuit of wisdom that defines our great civilization."
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Anchor 2 Invitation -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Ceremony Introduction</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "<strong>Tradition is the anchor of our progress.</strong> To mark this auspicious beginning, 
+                            I humbly request our Honorable Trustees and our Respected Principal to kindly join us 
+                            at the center of the stage for the <em>Lamp Lighting Ceremony</em>."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 1 Significance -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Explains Significance</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "As they ignite the flame, let it represent the <strong>spark of intellect</strong> within 
+                            every delegate here. This light is a tribute to our history and a beacon for our future. 
+                            It reminds us that even in the heat of debate, the light of <em>'Truth'</em> must 
+                            <strong>never be extinguished</strong>."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Cue for Lamp Lighting -->
+                <div class="action-cue">
+                    <div class="action-cue-content">
+                        <strong>DIGNITARIES LIGHT THE LAMP.</strong> Anchors maintain respectful silence during 
+                        the lighting. Once complete, lead a <strong>warm round of applause</strong> as the guests 
+                        return to their seats. The music can fade out gradually.
+                    </div>
+                </div>
+                
+                <!-- Ceremonial Note -->
+                <div class="note-box ceremonial">
+                    <div class="note-box-content">
+                        <strong>Ceremonial Protocol:</strong> Ensure the lamp, matchsticks/lighter, and flowers 
+                        are arranged properly before the ceremony. Have a backup lighter ready. The lamp should 
+                        be positioned at center stage for maximum visibility.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Transition Divider -->
+            <div class="transition-divider">
+                <div class="transition-ornament">
+                    <span>❧ ❦ ❧</span>
+                </div>
+            </div>
+            
+            <!-- ==================== THE SPEECH BOX ==================== -->
+            <section class="section keep-together" id="speechbox">
+                <div class="section-header">
+                    <span class="section-label">Special Section</span>
+                    <h3 class="section-title">The Speech Box</h3>
+                </div>
+                
+                <!-- Speech Box Container -->
+                <div class="speech-box">
+                    <div class="speech-box-header">
+                        <span class="speech-box-label">Dignitary Addresses</span>
+                        <h3 class="speech-box-title">Words of Wisdom</h3>
+                    </div>
+                    <div class="speech-box-body">
+                        <p class="speech-box-intro">
+                            Use this section specifically when you invite the dignitaries to speak. 
+                            Each introduction should be delivered with grace and anticipation.
+                        </p>
+                        
+                        <!-- Trustee Speech Invitation -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-2">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 2</span>
+                                        <span class="anchor-role">Invites Trustee</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "<strong>Wisdom shared is wisdom doubled.</strong> I now request our Honorable Trustee, 
+                                    <span class="editable-field" contenteditable="true" data-placeholder="[Name]">__________________________</span>, 
+                                    to please grace the podium and share your <em>invaluable thoughts</em> with us. 
+                                    We are eager to learn from your journey."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Cue -->
+                        <div class="action-cue">
+                            <div class="action-cue-content">
+                                <strong>GUEST SPEECH 1 HAPPENS.</strong> Anchors step aside respectfully. 
+                                Remain attentive throughout the speech. Lead applause at the conclusion.
+                            </div>
+                        </div>
+                        
+                        <!-- Principal Speech Invitation -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-1">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">Invites Principal</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "Thank you, Sir/Ma'am, for those <strong>profound words</strong>. Now, I invite our 
+                                    Respected Principal to please address the house and <em>set the tone</em> for 
+                                    today's session."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Cue -->
+                        <div class="action-cue">
+                            <div class="action-cue-content">
+                                <strong>PRINCIPAL SPEECH HAPPENS.</strong> Pay close attention to the Principal's 
+                                words—you may need to reference them later. Lead enthusiastic applause at conclusion.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tip Note -->
+                <div class="note-box tip">
+                    <div class="note-box-content">
+                        <strong>Pro Tip:</strong> During speeches, position yourselves at the side of the stage, 
+                        visible but not distracting. Show active listening through your body language—nod 
+                        appropriately and maintain engaged expressions.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tricolor Divider -->
+            <div class="tricolor-divider"></div>
+            
+            <!-- Page Break Indicator -->
+            <div class="page-break-indicator">
+                <span>— Page Break for Printing —</span>
+            </div>
+            <div class="page-break"></div>
+
+                        <!-- ==================== PART 3 ==================== -->
+            <section class="part keep-together" id="part3">
+                <div class="part-header">
+                    <span class="part-number">Part Three</span>
+                    <h2 class="part-title">Transition to Culture</h2>
+                    <p class="part-subtitle">The First Dance — Ganesh Vandana</p>
+                    <div class="part-underline">
+                        <div class="line left"></div>
+                        <span class="chakra">☸</span>
+                        <div class="line right"></div>
+                    </div>
+                </div>
+                
+                <!-- Opening Dialogue for Cultural Section -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Cultural Introduction</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "With our hearts full of <strong>inspiration</strong>, it is time to bring some 
+                            <em>'Rhythm'</em> to our <em>'Reason.'</em> In India, no journey begins without 
+                            invoking the one who removes all hurdles."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 1 Response -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Performance Introduction</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "<strong>Exactly!</strong> To start this event on a divine note, we present the 
+                            <em>Ganesh Vandana</em>. A performance that blends devotion with the grace of 
+                            Indian classical dance. Let us welcome the <strong>elephant-headed God of Wisdom</strong> 
+                            to our Parliament!"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ganesh Vandana Performance Box -->
+                <div class="performance-box">
+                    <div class="performance-header">
+                        <span class="performance-label">Cultural Performance I</span>
+                        <h3 class="performance-name">🙏 Ganesh Vandana 🙏</h3>
+                    </div>
+                    <div class="performance-body">
+                        <p class="performance-description">
+                            "Vakratunda Mahakaya, Surya Koti Samaprabha — O Lord with the curved trunk and 
+                            massive body, whose brilliance equals a billion suns, remove all obstacles from 
+                            our path as we embark on this parliamentary journey."
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Action Cue for Performance -->
+                <div class="action-cue">
+                    <div class="action-cue-content">
+                        <strong>GANESH VANDANA DANCE PERFORMANCE BEGINS.</strong> Anchors step aside gracefully 
+                        to give the stage to the performers. Maintain respectful silence during the performance. 
+                        Position yourselves where you can easily return to the podium after the dance concludes.
+                    </div>
+                </div>
+                
+                <!-- Stage Direction -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        <strong>During the performance:</strong> Ensure smooth lighting transitions. 
+                        The atmosphere should be devotional and serene. Traditional music should accompany 
+                        the dance. Anchors should watch the performance attentively.
+                    </div>
+                </div>
+                
+                <!-- Important Note -->
+                <div class="note-box important">
+                    <div class="note-box-content">
+                        <strong>Timing Note:</strong> Be prepared to return to the podium as the Ganesh Vandana 
+                        concludes. Watch for the final pose of the dancers—this is your cue to begin walking 
+                        back to center stage. Lead applause enthusiastically.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Transition Divider -->
+            <div class="transition-divider">
+                <div class="transition-ornament">
+                    <span>❧ ❦ ❧</span>
+                </div>
+            </div>
+            
+            <!-- ==================== SHIVA DANCE & NATIONAL SYMBOLS ==================== -->
+            <section class="part keep-together" id="shiva">
+                <div class="part-header">
+                    <span class="part-number">Part Three — Continued</span>
+                    <h2 class="part-title">The Shiva Dance & National Symbols</h2>
+                    <p class="part-subtitle">From Divine Energy to National Pride</p>
+                    <div class="part-underline">
+                        <div class="line left"></div>
+                        <span class="chakra">☸</span>
+                        <div class="line right"></div>
+                    </div>
+                </div>
+                
+                <!-- Stage Direction - Return to Stage -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        <strong>Anchors enter center stage</strong> after the Ganesh Vandana. 
+                        Wait for the applause to die down. Maintain the elevated energy from the 
+                        previous performance.
+                    </div>
+                </div>
+                
+                <!-- Post Ganesh Vandana Dialogue -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Transition Speaker</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "What a <strong>magnificent start!</strong> That performance truly purified the atmosphere 
+                            and prepared us for the gravity of today's event."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 2 Transition -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Building Anticipation</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "But the journey of Indian culture is <strong>vast and powerful</strong>. From the serenity 
+                            of Ganesha, we now move to the raw energy of the <em>'Cosmic Dancer'</em>."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 1 Shiva Introduction -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Shiva Dance Introduction</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "Lord Shiva's <strong>Tandava</strong> is the dance of creation and destruction. 
+                            It symbolizes the ultimate discipline—the same discipline we expect to see in our 
+                            delegates today. To showcase this <em>divine power</em>, please put your hands together 
+                            for the <strong>Shiva Dance!</strong>"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shiva Dance Performance Box -->
+                <div class="performance-box" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-color: #4338ca;">
+                    <div class="performance-header" style="background: linear-gradient(135deg, #4338ca, #3730a3);">
+                        <span class="performance-label">Cultural Performance II</span>
+                        <h3 class="performance-name">🔱 Shiva Tandava 🔱</h3>
+                    </div>
+                    <div class="performance-body">
+                        <p class="performance-description">
+                            "Jatatavigalajjala pravahapavitasthale — The cosmic dance of Lord Shiva represents 
+                            the rhythm of the universe itself. In his dance, creation and dissolution become one, 
+                            reminding us that from every ending springs a new beginning."
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Action Cue -->
+                <div class="action-cue">
+                    <div class="action-cue-content">
+                        <strong>SHIVA DANCE PERFORMANCE HAPPENS.</strong> This is a high-energy performance. 
+                        The lighting should be dramatic with bold colors. Anchors maintain their position 
+                        at the side of the stage, ready for the next transition.
+                    </div>
+                </div>
+                
+                <!-- Page Break Indicator -->
+                <div class="page-break-indicator">
+                    <span>— Page Break for Printing —</span>
+                </div>
+                <div class="page-break"></div>
+                
+                <!-- Post Shiva Dance Return -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        <strong>After the Shiva Dance:</strong> Anchors return to center stage immediately 
+                        as the performance ends. The energy should remain high—carry the momentum forward.
+                    </div>
+                </div>
+                
+                <!-- Anchor 2 Post-Shiva Response -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Energy Acknowledgment</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "<strong>Electrifying!</strong> The energy in this room has just shifted to a 
+                            <em>whole new level</em>. Let's hear it one more time for our dancers!"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Cue for Applause -->
+                <div class="action-cue">
+                    <div class="action-cue-content">
+                        <strong>Lead extended applause</strong> for the Shiva Dance performers. 
+                        Allow the audience to fully express their appreciation before continuing.
+                    </div>
+                </div>
+                
+                <!-- Transition to National Symbols -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">National Pride Transition</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "Now, let's bring our focus to the <strong>soil we stand on</strong>. Our nation is 
+                            defined by symbols that represent our values—the <em>strength of the Tiger</em>, 
+                            the <em>grace of the Peacock</em>, and the <em>resilience of the Saffron, White, and Green</em>."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 2 Introduction of National Symbols Dance -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Performance Introduction</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "To celebrate the icons that make us proud to be Indians, we present the 
+                            <strong>National Symbol Dance</strong>. A tribute to the <em>identity of Bharat!</em>"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- National Symbols Performance Box -->
+                <div class="performance-box" style="background: linear-gradient(135deg, #fff7ed, #fed7aa); border-color: #c2410c;">
+                    <div class="performance-header" style="background: linear-gradient(90deg, #FF9933, #FFFFFF 50%, #138808);">
+                        <span class="performance-label" style="color: #1a1a2e;">Cultural Performance III</span>
+                        <h3 class="performance-name" style="color: #000080; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">🇮🇳 National Symbol Dance 🇮🇳</h3>
+                    </div>
+                    <div class="performance-body">
+                        <p class="performance-description">
+                            "From the majestic Royal Bengal Tiger to the graceful Indian Peacock, from the 
+                            sacred Lotus to the mighty Banyan—our national symbols embody the spirit of a 
+                            civilization that has stood the test of time. This dance celebrates India's 
+                            identity and the pride of being Bharatiya."
+                        </p>
+                        
+                        <!-- Symbols Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; text-align: center;">
+                            <div style="padding: 15px; background: rgba(255,153,51,0.1); border-radius: 8px;">
+                                <div style="font-size: 30px;">🐅</div>
+                                <div style="font-size: 12px; margin-top: 5px; font-family: 'Cinzel', serif; color: #c2410c;">Bengal Tiger</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(19,136,8,0.1); border-radius: 8px;">
+                                <div style="font-size: 30px;">🦚</div>
+                                <div style="font-size: 12px; margin-top: 5px; font-family: 'Cinzel', serif; color: #138808;">Peacock</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,153,51,0.1); border-radius: 8px;">
+                                <div style="font-size: 30px;">🪷</div>
+                                <div style="font-size: 12px; margin-top: 5px; font-family: 'Cinzel', serif; color: #c2410c;">Lotus</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(0,0,128,0.1); border-radius: 8px;">
+                                <div style="font-size: 30px;">🌳</div>
+                                <div style="font-size: 12px; margin-top: 5px; font-family: 'Cinzel', serif; color: #000080;">Banyan</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Cue -->
+                <div class="action-cue">
+                    <div class="action-cue-content">
+                        <strong>NATIONAL SYMBOL DANCE PERFORMANCE HAPPENS.</strong> This performance should 
+                        evoke patriotic emotions. Lighting can incorporate the tricolor theme—saffron, white, 
+                        and green. Music should be inspiring and uplifting.
+                    </div>
+                </div>
+                
+                <!-- Tip Note -->
+                <div class="note-box tip">
+                    <div class="note-box-content">
+                        <strong>Performance Flow:</strong> The cultural performances build in intensity—
+                        from the devotional Ganesh Vandana, to the powerful Shiva Tandava, to the 
+                        patriotic National Symbols Dance. Ensure your energy as anchors matches this 
+                        crescendo. The next performance is the Grand Finale!
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tricolor Divider -->
+            <div class="tricolor-divider"></div>
+            
+            <!-- Page Break Indicator -->
+            <div class="page-break-indicator">
+                <span>— Page Break for Printing —</span>
+            </div>
+            <div class="page-break"></div>
+            
+            <!-- ==================== PART 4 ==================== -->
+            <section class="part keep-together" id="part4">
+                <div class="part-header">
+                    <span class="part-number">Part Four</span>
+                    <h2 class="part-title">The Grand Finale</h2>
+                    <p class="part-subtitle">Jayate Jayate Bharat</p>
+                    <div class="part-underline">
+                        <div class="line left"></div>
+                        <span class="chakra">☸</span>
+                        <div class="line right"></div>
+                    </div>
+                </div>
+                
+                <!-- Stage Direction -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        <strong>Anchors enter immediately</strong> as the National Symbol Dance ends, 
+                        <strong>before the dancers leave the stage</strong>. This creates a seamless 
+                        transition and maintains the patriotic energy at its peak.
+                    </div>
+                </div>
+                
+                <!-- Anchor 1 Transition to Finale -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Finale Build-up</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "<strong>Simply beautiful.</strong> These symbols are the silent guardians of our democracy. 
+                            But there is one feeling that unites all these symbols, and that is the feeling of 
+                            <em>'Victory'</em>—the <strong>victory of our nation</strong>."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 2 Grand Finale Introduction -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Grand Announcement</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "To conclude our cultural prelude, we have the <strong>most awaited performance</strong> 
+                            of the morning. A celebration of our history, our diversity, and our future."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Anchor 1 Final Call -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">The Grand Call</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "Ladies and gentlemen, <strong>stand tall</strong> and feel the pride as we present 
+                            the <em>Grand Finale</em>: <strong>JAYATE JAYATE BHARAT!</strong>"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grand Finale Performance Box -->
+                <div class="performance-box" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 4px solid; border-image: linear-gradient(90deg, #FF9933, #000080, #138808) 1;">
+                    <div class="performance-header" style="background: linear-gradient(135deg, #000080, #1a1a5e);">
+                        <span class="performance-label">🌟 Grand Cultural Finale 🌟</span>
+                        <h3 class="performance-name">जयते जयते भारत</h3>
+                    </div>
+                    <div class="performance-body" style="text-align: center;">
+                        <p class="performance-description" style="font-size: 18px; color: #000080;">
+                            "Victory to India! Victory to Bharat!"
+                        </p>
+                        <p style="margin-top: 15px; font-size: 16px; line-height: 1.8; color: var(--ink);">
+                            This high-energy performance celebrates the triumph of the Indian spirit—
+                            from the freedom struggle to modern achievements, from unity in diversity 
+                            to the dreams of a billion hearts. Let every beat of the music remind us 
+                            of who we are and what we can become.
+                        </p>
+                        
+                        <!-- Tricolor Banner -->
+                        <div style="margin-top: 25px; padding: 20px; background: linear-gradient(90deg, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%); border-radius: 8px;">
+                            <span style="font-family: 'Cinzel Decorative', serif; font-size: 24px; color: #000080; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
+                                ☸ सत्यमेव जयते ☸
+                            </span>
+                            <p style="font-size: 12px; color: #000080; margin-top: 5px; font-style: italic;">
+                                "Truth Alone Triumphs"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Cue - High Energy -->
+                <div class="action-cue" style="background: linear-gradient(135deg, #fef9c3, #fef08a); border-color: #ca8a04;">
+                    <div class="action-cue-content">
+                        <strong>JAYATE JAYATE BHARAT PERFORMANCE HAPPENS — HIGH ENERGY!</strong>
+                        <br><br>
+                        This is the <strong>climax of the cultural segment</strong>. All performers should 
+                        give their absolute best. Lighting should be vibrant and dynamic. The audience 
+                        may be encouraged to clap along. Anchors can show enthusiasm from their positions.
+                        <br><br>
+                        <em>As the performance ends, be ready for a standing ovation!</em>
+                    </div>
+                </div>
+                
+                <!-- Important Note -->
+                <div class="note-box important">
+                    <div class="note-box-content">
+                        <strong>Critical Transition Ahead:</strong> After this performance, we move from the 
+                        cultural segment to the formal parliamentary proceedings. Take a moment to let 
+                        the energy settle, then transition with the gravity and seriousness befitting 
+                        the parliamentary session that follows.
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Transition Divider -->
+            <div class="transition-divider">
+                <div class="transition-ornament">
+                    <span>❧ ☸ ❧</span>
+                </div>
+            </div>
+
+                        <!-- Page Break Indicator -->
+            <div class="page-break-indicator">
+                <span>— Page Break for Printing —</span>
+            </div>
+            <div class="page-break"></div>
+            
+            <!-- ==================== PART 5 ==================== -->
+            <section class="part keep-together" id="part5">
+                <div class="part-header">
+                    <span class="part-number">Part Five</span>
+                    <h2 class="part-title">The Grand Transition</h2>
+                    <p class="part-subtitle">The Tribute to Leadership</p>
+                    <div class="part-underline">
+                        <div class="line left"></div>
+                        <span class="chakra">☸</span>
+                        <div class="line right"></div>
+                    </div>
+                </div>
+                
+                <!-- Stage Direction - Tone Shift -->
+                <div class="stage-direction">
+                    <div class="stage-direction-content">
+                        The music for "Jayate Jayate Bharat" ends. <strong>Anchors wait</strong> for the dancers 
+                        to clear the stage. The lights dim slightly, then brighten on the two anchors. 
+                        <br><br>
+                        <strong>Important:</strong> The tone is no longer just "excited"—it is <strong>deeply 
+                        respectful and powerful</strong>. This is a moment of acknowledgment and gratitude.
+                    </div>
+                </div>
+                
+                <!-- Acknowledgment Section -->
+                <div class="acknowledgment-section">
+                    <div class="acknowledgment-header">
+                        <span class="acknowledgment-label">A Moment of Gratitude</span>
+                        <h3 class="acknowledgment-title">Honoring the Architects of This Event</h3>
+                    </div>
+                    <div class="acknowledgment-body">
+                        
+                        <!-- Opening Acknowledgment -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-1">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">Reflective Tone</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "What a <strong>breathtaking spectacle!</strong> But as the echoes of the 
+                                    'Jayate Jayate Bharat' performance settle, let us take a moment to look 
+                                    <em>behind the curtain</em>. This Modern Youth Parliament is not merely a 
+                                    one-day event; it is the <strong>stellar culmination</strong> of weeks of 
+                                    unrelenting perseverance and meticulous orchestration."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Team Acknowledgment -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-2">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 2</span>
+                                        <span class="anchor-role">Team Recognition</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "Indeed, <span class="editable-field" contenteditable="true" data-placeholder="[Anchor 1 Name]" style="min-width: 120px;">_______</span>. 
+                                    While the spotlight is on us today, the foundation was built in the 
+                                    <strong>weeks of silence</strong> that preceded this morning. We must acknowledge 
+                                    the <em>synergistic collaboration</em> across our school's academic spectrum. 
+                                    We have our <strong>Junior Delegates</strong>, who have stepped up with a level of 
+                                    intellectual maturity that is truly commendable, and our <strong>Senior Delegates</strong>, 
+                                    who have shown a profound grasp of the complexities of our nation's governance."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Management Team Recognition -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-1">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">Behind-the-Scenes Heroes</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "But let's talk about the <em>'Engine'</em> of this event. A Parliament doesn't 
+                                    just run on speeches; it runs on <strong>precision</strong>. We must recognize 
+                                    the <strong>Grade 9 Management Team</strong>, our silent warriors, and the 
+                                    <strong>Grade 11 Batch</strong>, who stood tall as Mentors and Guardians of this 
+                                    session. To our seniors: you chose to <em>guide rather than to lead</em>, and in 
+                                    doing so, you showed us what <strong>true leadership</strong> looks like."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Highlight Box for Teams -->
+                        <div class="acknowledgment-highlight">
+                            <strong>Teams Acknowledged:</strong>
+                            <ul style="margin-top: 10px; margin-left: 20px;">
+                                <li>Junior Delegates — Intellectual Maturity</li>
+                                <li>Senior Delegates — Governance Understanding</li>
+                                <li>Grade 9 Management Team — Silent Warriors</li>
+                                <li>Grade 11 Batch — Mentors & Guardians</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tricolor Divider -->
+                <div class="tricolor-divider"></div>
+                
+                <!-- Special Tribute to Principal -->
+                <div class="dignitary-section" style="border-color: #7c3aed; background: linear-gradient(135deg, #f5f3ff, #ede9fe);">
+                    <div class="dignitary-header" style="background: linear-gradient(135deg, #7c3aed, #6d28d9);">
+                        <span class="dignitary-label">Special Tribute</span>
+                        <h3 class="dignitary-title">🌟 The Backbone of This Endeavor 🌟</h3>
+                    </div>
+                    
+                    <div class="dignitary-body">
+                        <!-- Anchor 2 - Principal Spotlight -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-2">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 2</span>
+                                        <span class="anchor-role">The Spotlight on Deepa Ma'am</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "However, every great ship needs a <strong>Captain</strong> who does not sleep until 
+                                    the destination is reached. Today, we must extend our most <em>profound gratitude</em> 
+                                    to our Respected Principal, <strong>Deepa Ma'am</strong>. Ma'am, you have been the 
+                                    <strong>indisputable backbone</strong> of this entire endeavor."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Anchor 1 - Detailed Tribute -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-1">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">Detailed Recognition</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "<strong>Absolutely.</strong> From the very first blueprint of this event to the 
+                                    final rehearsal, Deepa Ma'am has been there—not just as an observer, but as a 
+                                    <em>perfectionist</em>. She has personally <strong>audited every performance</strong>, 
+                                    scrutinized every script, and fine-tuned every transition to ensure that we are 
+                                    not just 'doing a show,' but <strong>representing the integrity of the Indian Parliament</strong>."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Anchor 2 - Continued Tribute -->
+                        <div class="dialogue-block">
+                            <div class="anchor-dialogue anchor-2">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 2</span>
+                                        <span class="anchor-role">Heartfelt Gratitude</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content">
+                                    "Your <strong>unwavering stewardship</strong>, Ma'am, and your eye for detail have 
+                                    pushed us to achieve a standard of excellence we didn't know we possessed. You 
+                                    didn't just plan an event; you <em>cultivated a culture</em> of <strong>erudition 
+                                    and civic consciousness</strong> within us. We are here today because you 
+                                    <strong>believed</strong> that we were capable of this monumental task."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quote Box -->
+                        <div style="background: linear-gradient(135deg, #7c3aed, #6d28d9); color: white; padding: 25px 30px; margin: 25px 0; text-align: center; position: relative;">
+                            <div style="font-family: 'Great Vibes', cursive; font-size: 28px; margin-bottom: 10px;">
+                                "A leader is one who knows the way, goes the way, and shows the way."
+                            </div>
+                            <div style="font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 3px; opacity: 0.8;">
+                                — JOHN C. MAXWELL
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Address to Trustees -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-1">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 1</span>
+                                <span class="anchor-role">Addressing Trustees</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "Our <strong>Honorable Trustees</strong>, we hope that as you watch the proceedings today, 
+                            you see the reflection of the values Deepa Ma'am and our dedicated faculty have 
+                            instilled in us. You are looking at a generation that is <em>articulate, aware, 
+                            and ready</em> to contribute to the <strong>democratic fabric of our country</strong>."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Final Transition Statement -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2">
+                        <div class="anchor-header">
+                            <div class="anchor-icon">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">Setting the Stage</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content">
+                            "The research is complete. The stage is set. The atmosphere is charged with the 
+                            energy of a <strong>thousand ideas</strong>. It is now time to transition from the 
+                            <em>'Artistic'</em> to the <em>'Legislative.'</em>"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- The Final Call -->
+                <div class="ceremony-box" style="border-color: #000080; background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+                    <div class="ceremony-header" style="background: linear-gradient(135deg, #000080, #1a1a5e);">
+                        <span class="ceremony-label">The Moment Has Arrived</span>
+                        <h3 class="ceremony-title">🏛 Parliament In Session 🏛</h3>
+                    </div>
+                    <div class="ceremony-body">
+                        <div class="dialogue-block" style="margin: 0;">
+                            <div class="anchor-dialogue anchor-1" style="border: none; box-shadow: none;">
+                                <div class="anchor-header">
+                                    <div class="anchor-icon">🎙</div>
+                                    <div>
+                                        <span class="anchor-name">Anchor 1</span>
+                                        <span class="anchor-role">The Official Call</span>
+                                    </div>
+                                </div>
+                                <div class="dialogue-content" style="font-size: 18px;">
+                                    "With a heart full of <strong>pride</strong> and with the blessings of our Principal 
+                                    and Trustees, I now <strong>officially request</strong> the <em>Speaker of the House</em> 
+                                    to please ascend the podium and <strong>take the Chair</strong>."
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grand Closing Statement -->
+                <div class="dialogue-block">
+                    <div class="anchor-dialogue anchor-2" style="border-left-width: 8px; border-color: #000080;">
+                        <div class="anchor-header" style="background: linear-gradient(135deg, #000080, #1a1a5e);">
+                            <div class="anchor-icon" style="color: #000080;">🎙</div>
+                            <div>
+                                <span class="anchor-name">Anchor 2</span>
+                                <span class="anchor-role">The Grand Declaration</span>
+                            </div>
+                        </div>
+                        <div class="dialogue-content" style="font-size: 20px; text-align: center; padding: 35px;">
+                            "Ladies and Gentlemen, prepare to witness the <strong>leaders of tomorrow</strong>. 
+                            <br><br>
+                            <span style="font-family: 'Cinzel Decorative', serif; font-size: 24px; color: #000080;">
+                                The Modern Youth Parliament 
+                                <span class="editable-field" contenteditable="true" data-placeholder="[Year]" style="min-width: 80px;">____</span> 
+                                is now <strong>OFFICIALLY IN SESSION!</strong>
+                            </span>"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Final Action Cue -->
+                <div class="action-cue" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-color: #1d4ed8;">
+                    <div class="action-cue-content">
+                        <strong>FINAL ACTION:</strong> Anchors give a <strong>deep, synchronized bow</strong> toward:
+                        <ol style="margin: 15px 0 15px 25px;">
+                            <li><strong>Deepa Ma'am (The Principal)</strong> — First and foremost</li>
+                            <li><strong>The Trustees</strong> — With equal respect</li>
+                            <li><strong>The Audience</strong> — Acknowledging all present</li>
+                        </ol>
+                        They exit with a <strong>formal, steady gait</strong> as the Speaker enters. 
+                        Do not rush—maintain dignity and poise throughout the exit.
+                    </div>
+                </div>
+                
+                <!-- Ceremonial Note -->
+                <div class="note-box ceremonial">
+                    <div class="note-box-content">
+                        <strong>End of Anchoring Script:</strong> Your role as anchors concludes here. 
+                        The Speaker of the House will now take over the proceedings. Remain available 
+                        backstage in case you are needed for any announcements during breaks or 
+                        at the conclusion of the Parliament session.
+                        <br><br>
+                        <em>Congratulations on a job well done!</em>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Tricolor Divider -->
+            <div class="tricolor-divider"></div>
+            
+            <!-- ==================== OFFICIAL SEAL ==================== -->
+            <div class="official-seal">
+                <div class="seal-image"></div>
+                <p class="seal-text">Official Document</p>
+                <p class="seal-subtext">Modern Youth Parliament — Anchoring Script</p>
+            </div>
+            
+            <!-- ==================== DOCUMENT FOOTER ==================== -->
+            <footer class="document-footer">
+                <div class="footer-ornament">❧ ☸ ❧</div>
+                
+                <p class="footer-quote">"Democracy is not just a form of government; it is a way of life."</p>
+                <p class="footer-quote-source">— Dr. B.R. Ambedkar</p>
+                
+                <p class="footer-text">
+                    This script has been prepared with utmost care and dedication to ensure the 
+                    smooth conduct of the Modern Youth Parliament. May the spirit of democracy, 
+                    debate, and mutual respect guide all proceedings. Jai Hind!
+                </p>
+                
+                <div class="footer-meta">
+                    <div class="footer-meta-item">
+                        <span class="footer-meta-label">Prepared By</span>
+                        <span class="footer-meta-value" contenteditable="true">Event Committee</span>
+                    </div>
+                    <div class="footer-meta-item">
+                        <span class="footer-meta-label">Approved By</span>
+                        <span class="footer-meta-value" contenteditable="true">Principal's Office</span>
+                    </div>
+                    <div class="footer-meta-item">
+                        <span class="footer-meta-label">Document Version</span>
+                        <span class="footer-meta-value">Final v1.0</span>
+                    </div>
+                </div>
+                
+                <div class="footer-tricolor"></div>
+                
+                <!-- Copyright -->
+                <p style="margin-top: 25px; font-size: 12px; color: #888; letter-spacing: 1px;">
+                    © <span id="currentYear"></span> Modern Youth Parliament. All Rights Reserved.
+                </p>
+                
+                <!-- Motto -->
+                <div style="margin-top: 20px; padding: 15px; background: var(--cream); border: 1px solid var(--gold-accent); display: inline-block;">
+                    <span style="font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; color: var(--navy-primary);">
+                        ☸ सत्यमेव जयते ☸
+                    </span>
+                    <br>
+                    <span style="font-size: 11px; color: #666; font-style: italic;">Truth Alone Triumphs</span>
+                </div>
+            </footer>
+            
+        </div><!-- End of document-inner -->
+        
+        <!-- Bottom Tricolor Border -->
+        <div class="tricolor-border"></div>
+        
+    </div><!-- End of document-container -->
+
+         <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        /**
+         * Set current year in footer
+         */
+        function setCurrentYear() {
+            const yearElement = document.getElementById('currentYear');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+        }
+        
+        /**
+         * Scroll to a specific section smoothly
+         * @param {string} sectionId - The ID of the section to scroll to
+         */
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const offset = 100;
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Add highlight effect
+                section.style.transition = 'background-color 0.5s ease';
+                section.style.backgroundColor = 'rgba(212, 175, 55, 0.15)';
+                
+                setTimeout(() => {
+                    section.style.backgroundColor = 'transparent';
+                }, 2000);
+            }
+        }
+        
+        /**
+         * Show notification message
+         * @param {string} message - The message to display
+         * @param {string} type - The type of notification (success, error, info, warning)
+         */
+        function showNotification(message, type = 'success') {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.script-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'script-notification';
+            
+            // Set styles based on type
+            const colors = {
+                success: { bg: '#138808', icon: '✓' },
+                error: { bg: '#c62828', icon: '✗' },
+                info: { bg: '#000080', icon: 'ℹ' },
+                warning: { bg: '#FF9933', icon: '⚠' }
+            };
+            
+            const colorConfig = colors[type] || colors.info;
+            
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(0);
+                background: ${colorConfig.bg};
+                color: white;
+                padding: 15px 30px;
+                border-radius: 8px;
+                font-family: 'Cinzel', serif;
+                font-size: 14px;
+                letter-spacing: 1px;
+                box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                opacity: 0;
+                transition: all 0.3s ease;
+            `;
+            
+            notification.innerHTML = `<span style="font-size: 20px;">${colorConfig.icon}</span> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3500);
+        }
+        
+        // ============================================
+        // SAVE DRAFT FUNCTIONALITY (FIXED)
+        // ============================================
+        
+        /**
+         * Save current progress to localStorage
+         */
+        function saveProgress() {
+            try {
+                const editableFields = document.querySelectorAll('[contenteditable="true"]');
+                const savedData = {
+                    fields: {},
+                    metadata: {
+                        savedAt: new Date().toISOString(),
+                        savedAtFormatted: new Date().toLocaleString('en-IN'),
+                        version: '1.0',
+                        totalFields: editableFields.length
+                    }
+                };
+                
+                editableFields.forEach((field, index) => {
+                    const placeholder = field.getAttribute('data-placeholder') || `field_${index}`;
+                    const key = `field_${index}_${placeholder.replace(/[\s\[\]]/g, '_').toLowerCase()}`;
+                    
+                    // Only save if there's actual content
+                    const content = field.innerHTML.trim();
+                    if (content && !content.includes('____') && content !== '') {
+                        savedData.fields[key] = {
+                            index: index,
+                            placeholder: placeholder,
+                            content: content,
+                            text: field.textContent.trim()
+                        };
+                    }
+                });
+                
+                // Save to localStorage
+                localStorage.setItem('MYP_Script_Draft', JSON.stringify(savedData));
+                
+                // Show success notification
+                showNotification('✓ Draft saved successfully!', 'success');
+                
+                console.log('Draft saved:', savedData);
+                
+            } catch (error) {
+                console.error('Error saving draft:', error);
+                showNotification('Failed to save draft. Please try again.', 'error');
+            }
+        }
+        
+        /**
+         * Load saved progress from localStorage
+         */
+        function loadProgress() {
+            try {
+                const savedDataString = localStorage.getItem('MYP_Script_Draft');
+                
+                if (!savedDataString) {
+                    console.log('No saved draft found');
+                    return false;
+                }
+                
+                const savedData = JSON.parse(savedDataString);
+                
+                if (!savedData.fields) {
+                    console.log('Invalid draft format');
+                    return false;
+                }
+                
+                const editableFields = document.querySelectorAll('[contenteditable="true"]');
+                let restoredCount = 0;
+                
+                // Restore each field
+                Object.keys(savedData.fields).forEach(key => {
+                    const fieldData = savedData.fields[key];
+                    const index = fieldData.index;
+                    
+                    if (index < editableFields.length && fieldData.content) {
+                        editableFields[index].innerHTML = fieldData.content;
+                        restoredCount++;
+                    }
+                });
+                
+                if (restoredCount > 0) {
+                    const savedTime = savedData.metadata.savedAtFormatted || 'Unknown time';
+                    showNotification(`Loaded draft from ${savedTime}`, 'success');
+                    console.log(`Restored ${restoredCount} fields from draft`);
+                    return true;
+                }
+                
+                return false;
+                
+            } catch (error) {
+                console.error('Error loading draft:', error);
+                return false;
+            }
+        }
+        
+        /**
+         * Clear all saved data
+         */
+        function clearDraft() {
+            if (confirm('Are you sure you want to clear the saved draft?\n\nThis action cannot be undone.')) {
+                localStorage.removeItem('MYP_Script_Draft');
+                showNotification('Draft cleared successfully.', 'info');
+                
+                // Optional: Reset all editable fields
+                const editableFields = document.querySelectorAll('[contenteditable="true"]');
+                editableFields.forEach(field => {
+                    const placeholder = field.getAttribute('data-placeholder');
+                    if (placeholder) {
+                        field.innerHTML = '';
+                    }
+                });
+            }
+        }
+        
+        /**
+         * Check if draft exists
+         */
+        function hasSavedDraft() {
+            return localStorage.getItem('MYP_Script_Draft') !== null;
+        }
+        
+        // ============================================
+        // EXPORT TO PDF FUNCTIONALITY (FIXED)
+        // ============================================
+        
+        /**
+         * Export document as PDF using browser print
+         */
+        function exportToPDF() {
+            // Show preparing notification
+            showNotification('Preparing PDF... Please wait.', 'info');
+            
+            // Store original styles
+            const floatingActions = document.querySelector('.floating-actions');
+            const backToTopBtn = document.getElementById('backToTop');
+            const scrollProgress = document.getElementById('scrollProgress');
+            const notifications = document.querySelectorAll('.script-notification');
+            
+            // Hide UI elements
+            if (floatingActions) floatingActions.style.display = 'none';
+            if (backToTopBtn) backToTopBtn.style.display = 'none';
+            if (scrollProgress) scrollProgress.style.display = 'none';
+            notifications.forEach(n => n.style.display = 'none');
+            
+            // Add print-specific class to body
+            document.body.classList.add('printing-mode');
+            
+            // Small delay to ensure styles are applied
+            setTimeout(() => {
+                // Open print dialog
+                window.print();
+                
+                // Restore UI elements after print dialog closes
+                setTimeout(() => {
+                    if (floatingActions) floatingActions.style.display = 'flex';
+                    if (backToTopBtn) backToTopBtn.style.display = 'flex';
+                    if (scrollProgress) scrollProgress.style.display = 'block';
+                    document.body.classList.remove('printing-mode');
+                    
+                    showNotification('PDF export ready! Check your downloads.', 'success');
+                }, 1000);
+                
+            }, 300);
+        }
+        
+        /**
+         * Print with custom settings and instructions
+         */
+        function printWithInstructions() {
+            const instructions = `
+╔══════════════════════════════════════════╗
+║     PDF EXPORT / PRINT INSTRUCTIONS      ║
+╠══════════════════════════════════════════╣
+║                                          ║
+║  For best results, use these settings:   ║
+║                                          ║
+║  ✓ Destination: Save as PDF              ║
+║  ✓ Paper Size: A4                        ║
+║  ✓ Margins: Default                      ║
+║  ✓ Scale: 100%                           ║
+║  ✓ Background Graphics: ENABLED ✓        ║
+║    (Very Important!)                     ║
+║  ✓ Headers/Footers: OFF                  ║
+║                                          ║
+╚══════════════════════════════════════════╝
+
+Click OK to continue with export.`;
+            
+            if (confirm(instructions)) {
+                exportToPDF();
+            }
+        }
+        
+        // ============================================
+        // EXPORT AS HTML FILE
+        // ============================================
+        
+        /**
+         * Export document as standalone HTML file
+         */
+        function exportAsHTML() {
+            try {
+                showNotification('Preparing HTML export...', 'info');
+                
+                // Get the full document
+                const fullHTML = document.documentElement.outerHTML;
+                
+                // Create blob
+                const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+                
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().split('T')[0];
+                
+                link.href = url;
+                link.download = `MYP_Anchoring_Script_${timestamp}.html`;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Cleanup
+                URL.revokeObjectURL(url);
+                
+                showNotification('HTML file downloaded successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error exporting HTML:', error);
+                showNotification('Failed to export HTML. Please try again.', 'error');
+            }
+        }
+        
+        // ============================================
+        // EXPORT DATA AS JSON BACKUP
+        // ============================================
+        
+        /**
+         * Export all editable content as JSON backup
+         */
+        function exportAsJSON() {
+            try {
+                const editableFields = document.querySelectorAll('[contenteditable="true"]');
+                const exportData = {
+                    documentTitle: 'Modern Youth Parliament - Anchoring Script',
+                    exportedAt: new Date().toISOString(),
+                    exportedAtFormatted: new Date().toLocaleString('en-IN'),
+                    totalFields: editableFields.length,
+                    content: []
+                };
+                
+                editableFields.forEach((field, index) => {
+                    const content = field.innerHTML.trim();
+                    if (content && !content.includes('____')) {
+                        exportData.content.push({
+                            fieldIndex: index,
+                            placeholder: field.getAttribute('data-placeholder') || `Field ${index + 1}`,
+                            htmlContent: content,
+                            textContent: field.textContent.trim()
+                        });
+                    }
+                });
+                
+                // Create and download JSON file
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { 
+                    type: 'application/json' 
+                });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().split('T')[0];
+                
+                link.href = url;
+                link.download = `MYP_Script_Backup_${timestamp}.json`;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                
+                showNotification('JSON backup exported!', 'success');
+                
+            } catch (error) {
+                console.error('Error exporting JSON:', error);
+                showNotification('Failed to export JSON.', 'error');
+            }
+        }
+        
+        /**
+         * Import data from JSON backup file
+         */
+        function importFromJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.style.display = 'none';
+            
+            input.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const importData = JSON.parse(e.target.result);
+                        
+                        if (!importData.content || !Array.isArray(importData.content)) {
+                            throw new Error('Invalid backup file format');
+                        }
+                        
+                        const editableFields = document.querySelectorAll('[contenteditable="true"]');
+                        let importedCount = 0;
+                        
+                        importData.content.forEach(fieldData => {
+                            const index = fieldData.fieldIndex;
+                            if (index < editableFields.length && fieldData.htmlContent) {
+                                editableFields[index].innerHTML = fieldData.htmlContent;
+                                importedCount++;
+                            }
+                        });
+                        
+                        showNotification(`Imported ${importedCount} fields successfully!`, 'success');
+                        
+                    } catch (error) {
+                        console.error('Import error:', error);
+                        showNotification('Failed to import. Invalid file format.', 'error');
+                    }
+                };
+                
+                reader.onerror = function() {
+                    showNotification('Failed to read file.', 'error');
+                };
+                
+                reader.readAsText(file);
+            });
+            
+            document.body.appendChild(input);
+            input.click();
+            document.body.removeChild(input);
+        }
+        
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        
+        /**
+         * Handle keyboard shortcuts
+         */
+        function handleKeyboardShortcuts(event) {
+            const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+            
+            // Ctrl/Cmd + S = Save Draft
+            if (isCtrlOrCmd && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+                saveProgress();
+                return;
+            }
+            
+            // Ctrl/Cmd + P = Print/Export PDF
+            if (isCtrlOrCmd && event.key.toLowerCase() === 'p') {
+                event.preventDefault();
+                exportToPDF();
+                return;
+            }
+            
+            // Ctrl/Cmd + E = Export HTML
+            if (isCtrlOrCmd && event.key.toLowerCase() === 'e') {
+                event.preventDefault();
+                exportAsHTML();
+                return;
+            }
+            
+            // Escape = Scroll to top
+            if (event.key === 'Escape') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+        }
+        
+        // ============================================
+        // EDITABLE FIELD ENHANCEMENTS
+        // ============================================
+        
+        /**
+         * Initialize editable field behaviors
+         */
+        function initializeEditableFields() {
+            const editableFields = document.querySelectorAll('[contenteditable="true"]');
+            
+            editableFields.forEach((field, index) => {
+                // Add data attribute for identification
+                field.setAttribute('data-field-index', index);
+                
+                // Focus event - highlight and clear placeholder
+                field.addEventListener('focus', function() {
+                    this.style.backgroundColor = 'rgba(212, 175, 55, 0.25)';
+                    this.style.outline = '2px solid #d4af37';
+                    
+                    // Clear placeholder-like content
+                    const text = this.textContent.trim();
+                    if (text.includes('____') || text.includes('Enter') || text === '_______') {
+                        this.innerHTML = '';
+                    }
+                });
+                
+                // Blur event - remove highlight
+                field.addEventListener('blur', function() {
+                    this.style.backgroundColor = '';
+                    this.style.outline = '';
+                });
+                
+                // Paste event - paste as plain text
+                field.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+                    
+                    // Insert plain text
+                    const selection = window.getSelection();
+                    if (selection.rangeCount) {
+                        const range = selection.getRangeAt(0);
+                        range.deleteContents();
+                        range.insertNode(document.createTextNode(text));
+                        range.collapse(false);
+                    }
+                });
+                
+                // Input event - mark as modified
+                field.addEventListener('input', function() {
+                    this.setAttribute('data-modified', 'true');
+                });
+            });
+        }
+        
+        // ============================================
+        // SCROLL PROGRESS BAR
+        // ============================================
+        
+        /**
+         * Create and manage scroll progress indicator
+         */
+        function initializeScrollProgress() {
+            // Create progress bar
+            const progressBar = document.createElement('div');
+            progressBar.id = 'scrollProgress';
+            progressBar.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 5px;
+                background: linear-gradient(90deg, #FF9933, #FFFFFF, #138808);
+                width: 0%;
+                z-index: 9999;
+                transition: width 0.15s ease-out;
+                box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            `;
+            document.body.appendChild(progressBar);
+            
+            // Update on scroll
+            function updateProgress() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                progressBar.style.width = progress + '%';
+            }
+            
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            updateProgress(); // Initial call
+        }
+        
+        // ============================================
+        // BACK TO TOP BUTTON
+        // ============================================
+        
+        /**
+         * Create and manage back to top button
+         */
+        function initializeBackToTop() {
+            const button = document.createElement('button');
+            button.id = 'backToTop';
+            button.innerHTML = '⬆';
+            button.title = 'Back to Top (Press Escape)';
+            button.style.cssText = `
+                position: fixed;
+                bottom: 90px;
+                right: 25px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #000080, #1a1a5e);
+                color: #d4af37;
+                border: 2px solid #d4af37;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 998;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            `;
+            
+            document.body.appendChild(button);
+            
+            // Show/hide based on scroll
+            function toggleVisibility() {
+                if (window.pageYOffset > 400) {
+                    button.style.opacity = '1';
+                    button.style.visibility = 'visible';
+                } else {
+                    button.style.opacity = '0';
+                    button.style.visibility = 'hidden';
+                }
+            }
+            
+            window.addEventListener('scroll', toggleVisibility, { passive: true });
+            
+            // Click handler
+            button.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Hover effects
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.background = '#d4af37';
+                this.style.color = '#000080';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.background = 'linear-gradient(135deg, #000080, #1a1a5e)';
+                this.style.color = '#d4af37';
+            });
+        }
+        
+        // ============================================
+        // AUTO-SAVE FUNCTIONALITY
+        // ============================================
+        
+        let autoSaveTimer = null;
+        
+        /**
+         * Start auto-save timer
+         */
+        function startAutoSave(intervalMinutes = 3) {
+            if (autoSaveTimer) {
+                clearInterval(autoSaveTimer);
+            }
+            
+            autoSaveTimer = setInterval(function() {
+                // Check if any field was modified
+                const modifiedFields = document.querySelectorAll('[data-modified="true"]');
+                
+                if (modifiedFields.length > 0) {
+                    saveProgress();
+                    
+                    // Reset modified flags
+                    modifiedFields.forEach(field => {
+                        field.removeAttribute('data-modified');
+                    });
+                    
+                    console.log('Auto-saved at', new Date().toLocaleTimeString());
+                }
+            }, intervalMinutes * 60 * 1000);
+            
+            console.log(`Auto-save enabled: Every ${intervalMinutes} minutes`);
+        }
+        
+        /**
+         * Stop auto-save
+         */
+        function stopAutoSave() {
+            if (autoSaveTimer) {
+                clearInterval(autoSaveTimer);
+                autoSaveTimer = null;
+            }
+        }
+        
+        // ============================================
+        // ADD EXPORT OPTIONS DROPDOWN
+        // ============================================
+        
+        /**
+         * Create export options dropdown
+         */
+        function createExportDropdown() {
+            // Check if floating actions exist
+            const floatingActions = document.querySelector('.floating-actions');
+            if (!floatingActions) return;
+            
+            // Create dropdown container
+            const dropdownContainer = document.createElement('div');
+            dropdownContainer.className = 'export-dropdown-container';
+            dropdownContainer.style.cssText = `
+                position: relative;
+                display: inline-block;
+            `;
+            
+            // Create dropdown button
+            const dropdownBtn = document.createElement('button');
+            dropdownBtn.className = 'action-btn';
+            dropdownBtn.innerHTML = '<span>📥</span> More Options';
+            dropdownBtn.style.cssText = `
+                padding: 15px 25px;
+                border: 2px solid #000080;
+                background: linear-gradient(135deg, #f5f0e1, #faf8f0);
+                color: #000080;
+                cursor: pointer;
+                font-family: 'Cinzel', serif;
+                font-size: 14px;
+                font-weight: 600;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 128, 0.3);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            `;
+            
+            // Create dropdown menu
+            const dropdownMenu = document.createElement('div');
+            dropdownMenu.className = 'export-dropdown-menu';
+            dropdownMenu.style.cssText = `
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: white;
+                border: 2px solid #000080;
+                border-radius: 8px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                display: none;
+                min-width: 200px;
+                z-index: 1001;
+                margin-top: 5px;
+                overflow: hidden;
+            `;
+            
+            // Dropdown options
+            const options = [
+                { icon: '📄', text: 'Export as HTML', action: 'exportAsHTML()' },
+                { icon: '💾', text: 'Export as JSON', action: 'exportAsJSON()' },
+                { icon: '📂', text: 'Import from JSON', action: 'importFromJSON()' },
+                { icon: '🗑️', text: 'Clear Draft', action: 'clearDraft()' }
+            ];
+            
+            options.forEach(opt => {
+                const item = document.createElement('button');
+                item.innerHTML = `${opt.icon} ${opt.text}`;
+                item.style.cssText = `
+                    display: block;
+                    width: 100%;
+                    padding: 12px 20px;
+                    background: white;
+                    border: none;
+                    text-align: left;
+                    cursor: pointer;
+                    font-family: 'Cormorant Garamond', serif;
+                    font-size: 15px;
+                    transition: background 0.2s;
+                `;
+                item.setAttribute('onclick', opt.action);
+                
+                item.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(0, 0, 128, 0.1)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.background = 'white';
+                });
+                
+                dropdownMenu.appendChild(item);
+            });
+            
+            // Toggle dropdown on click
+            dropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isVisible = dropdownMenu.style.display === 'block';
+                dropdownMenu.style.display = isVisible ? 'none' : 'block';
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                dropdownMenu.style.display = 'none';
+            });
+            
+            dropdownContainer.appendChild(dropdownBtn);
+            dropdownContainer.appendChild(dropdownMenu);
+            floatingActions.appendChild(dropdownContainer);
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        /**
+         * Main initialization function
+         */
+        function initializeScript() {
+            console.log('🏛️ Initializing Modern Youth Parliament Script...');
+            
+            // Set current year
+            setCurrentYear();
+            
+            // Initialize UI components
+            initializeEditableFields();
+            initializeScrollProgress();
+            initializeBackToTop();
+            createExportDropdown();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboardShortcuts);
+            
+            // Load saved draft if exists
+            if (hasSavedDraft()) {
+                setTimeout(function() {
+                    const loaded = loadProgress();
+                    if (!loaded) {
+                        showNotification('Welcome! Fill in the details and save your draft.', 'info');
+                    }
+                }, 800);
+            } else {
+                setTimeout(function() {
+                    showNotification('Welcome! Use Ctrl+S to save your draft.', 'info');
+                }, 1000);
+            }
+            
+            // Start auto-save (every 3 minutes)
+            startAutoSave(3);
+            
+            // Log keyboard shortcuts
+            console.log('');
+            console.log('⌨️ Keyboard Shortcuts:');
+            console.log('   Ctrl+S → Save Draft');
+            console.log('   Ctrl+P → Export as PDF');
+            console.log('   Ctrl+E → Export as HTML');
+            console.log('   Escape → Scroll to Top');
+            console.log('');
+            console.log('✅ Script initialized successfully!');
+        }
+        
+        // ============================================
+        // DOM READY HANDLER
+        // ============================================
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeScript);
+        } else {
+            initializeScript();
+        }
+        
+        // ============================================
+        // BEFORE UNLOAD WARNING
+        // ============================================
+        
+        window.addEventListener('beforeunload', function(e) {
+            const modifiedFields = document.querySelectorAll('[data-modified="true"]');
+            
+            if (modifiedFields.length > 0) {
+                const message = 'You have unsaved changes. Are you sure you want to leave?';
+                e.preventDefault();
+                e.returnValue = message;
+                return message;
+            }
+        });
+        
+    </script>
+
+</body>
+</html>
