@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SECURE TRANSMISSION | TRINNO ASPHALT</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
     <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700&display=swap"
@@ -24,8 +24,8 @@
             color: var(--text-color);
             font-family: 'JetBrains Mono', monospace;
             margin: 0;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,7 +33,7 @@
 
         .container {
             text-align: center;
-            max-width: 600px;
+            max-width: 650px;
             padding: 2rem;
             position: relative;
             z-index: 2;
@@ -61,20 +61,12 @@
             border: 1px solid var(--neon-red);
             padding: 2rem;
             border-radius: 4px;
-            transform: scale(0.95);
-            opacity: 0.8;
             transition: all 0.5s;
-            position: relative;
         }
 
         .hidden-content {
             display: none;
             text-align: left;
-            border-color: var(--neon-green);
-        }
-
-        .visible-content {
-            opacity: 1;
         }
 
         .btn-decrypt {
@@ -96,7 +88,7 @@
             box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
         }
 
-        /* Scanline Overlay */
+        /* Scanline */
         .scanline {
             position: fixed;
             top: 0;
@@ -115,13 +107,16 @@
             color: #888;
             text-decoration: none;
             font-size: 0.8rem;
-            border-bottom: 1px solid transparent;
             transition: all 0.3s;
         }
 
         .back-link:hover {
             color: var(--neon-green);
-            border-color: var(--neon-green);
+        }
+
+        .apology-text p {
+            margin: 1rem 0;
+            line-height: 1.8;
         }
     </style>
 </head>
@@ -144,13 +139,15 @@
                 <button class="btn-decrypt" id="decrypt-btn">INITIATE DECRYPTION</button>
             </div>
 
-            <div id="unlocked-state" class="hidden-content">
-                <p style="color: var(--neon-green); margin-bottom: 1rem;">> ACCESS GRANTED</p>
+            <div id="unlocked-state" class="hidden-content apology-text">
+                <p style="color: var(--neon-green); margin-bottom: 1.5rem;">> ACCESS GRANTED</p>
                 <p>To my friends and unexpected visitors,</p>
                 <p>I know I've been absent. The code took over. The systems required architecture. But silence doesn't
                     mean I forgot.</p>
-                <p>This archive is my way of saying: I'm still here. And I've been building.</p>
-                <p style="text-align: right; margin-top: 1rem; color: var(--neon-green);">- Trinno Asphalt</p>
+                <p>I really would like to apologize if I ever made you feel ignored. That was never the intention.
+                    Building this was my way of staying connected, even when I couldn't be there in person.</p>
+                <p>This archive is my way of saying: I'm still here. And I've been building... for us.</p>
+                <p style="text-align: right; margin-top: 1.5rem; color: var(--neon-green);">- Trinno Asphalt</p>
 
                 <a href="index.html" class="back-link">
                     << RETURN TO SYSTEM CORE</a>
@@ -159,6 +156,70 @@
     </div>
 
     <script>
+        // --- AUDIO ENGINE ---
+        let audioCtx = null;
+
+        function initAudio() {
+            if (audioCtx) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+
+        function playAccessGrantedSound() {
+            if (!audioCtx) return;
+            // Deep, concerned tone
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(80, audioCtx.currentTime); // Very low
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.3);
+            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 1);
+
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.5);
+        }
+
+        function playSadAmbientDrone() {
+            if (!audioCtx) return;
+            // Low, melancholic drone
+            const osc = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const filter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+
+            osc.connect(filter);
+            osc2.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.type = 'sawtooth';
+            osc.frequency.value = 55; // Low A
+            osc2.type = 'sine';
+            osc2.frequency.value = 82.41; // Low E
+
+            filter.type = 'lowpass';
+            filter.frequency.value = 200;
+            filter.Q.value = 1;
+
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 2);
+            // Fade in slowly, stays for 30 seconds then fades
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime + 25);
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 30);
+
+            osc.start();
+            osc2.start();
+            osc.stop(audioCtx.currentTime + 30);
+            osc2.stop(audioCtx.currentTime + 30);
+        }
+
+        // --- MAIN LOGIC ---
         const decryptBtn = document.getElementById('decrypt-btn');
         const lockIcon = document.getElementById('lock-icon');
         const statusText = document.getElementById('status-text');
@@ -167,11 +228,11 @@
         const unlockedState = document.getElementById('unlocked-state');
 
         decryptBtn.addEventListener('click', () => {
-            // Decryption Animation
+            initAudio(); // User gesture required for audio
+
             decryptBtn.innerText = "DECRYPTING...";
             decryptBtn.style.opacity = 0.5;
 
-            // Glitch effect on text
             let steps = 0;
             const interval = setInterval(() => {
                 statusText.innerText = Math.random() > 0.5 ? "[01010101]" : "[ENCRYPTED]";
@@ -181,9 +242,10 @@
 
             setTimeout(() => {
                 // Success State
-                lockIcon.style.fill = "#00ff41"; // Green
+                playAccessGrantedSound();
+
+                lockIcon.style.fill = "#00ff41";
                 lockIcon.style.filter = "drop-shadow(0 0 20px rgba(0, 255, 65, 0.5))";
-                // Unlock path transform could go here if using complex SVG, simpler to just color change
 
                 statusText.innerText = "[UNLOCKED]";
                 statusText.style.color = "#00ff41";
@@ -196,6 +258,9 @@
                         lockedState.style.display = "none";
                         unlockedState.style.display = "block";
                         gsap.fromTo(unlockedState, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
+
+                        // Start sad ambient music after message appears
+                        setTimeout(() => { playSadAmbientDrone(); }, 500);
                     }
                 });
 
