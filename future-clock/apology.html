@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURE TRANSMISSION | TRINNO ASPHALT</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --neon-red: #ff3333;
+            --neon-green: #00ff41;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .lock-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+            fill: var(--neon-red);
+            filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.5));
+            transition: all 0.5s;
+        }
+
+        .status-text {
+            color: var(--neon-red);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .message-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--neon-red);
+            padding: 2rem;
+            border-radius: 4px;
+            transform: scale(0.95);
+            opacity: 0.8;
+            transition: all 0.5s;
+            position: relative;
+        }
+
+        .hidden-content {
+            display: none;
+            text-align: left;
+            border-color: var(--neon-green);
+        }
+
+        .visible-content {
+            opacity: 1;
+        }
+
+        .btn-decrypt {
+            background: transparent;
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+            padding: 1rem 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-decrypt:hover {
+            background: var(--neon-red);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+        }
+
+        /* Scanline Overlay */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scanline"></div>
+
+    <div class="container">
+        <!-- SVG Lock Icon -->
+        <svg class="lock-icon" id="lock-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM12 17C11.448 17 11 16.552 11 16V14C11 13.448 11.448 13 12 13C12.552 13 13 13.448 13 14V16C13 16.552 12.552 17 12 17Z" />
+        </svg>
+
+        <div class="status-text" id="status-text">[ENCRYPTED]</div>
+
+        <div class="message-box" id="msg-box">
+            <div id="locked-state">
+                <p>ACCESS DENIED. BIOMETRIC AUTHENTICATION REQUIRED.</p>
+                <button class="btn-decrypt" id="decrypt-btn">INITIATE DECRYPTION</button>
+            </div>
+
+            <div id="unlocked-state" class="hidden-content">
+                <p style="color: var(--neon-green); margin-bottom: 1rem;">> ACCESS GRANTED</p>
+                <p>To my friends and unexpected visitors,</p>
+                <p>I know I've been absent. The code took over. The systems required architecture. But silence doesn't
+                    mean I forgot.</p>
+                <p>This archive is my way of saying: I'm still here. And I've been building.</p>
+                <p style="text-align: right; margin-top: 1rem; color: var(--neon-green);">- Trinno Asphalt</p>
+
+                <a href="index.html" class="back-link">
+                    << RETURN TO SYSTEM CORE</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const decryptBtn = document.getElementById('decrypt-btn');
+        const lockIcon = document.getElementById('lock-icon');
+        const statusText = document.getElementById('status-text');
+        const msgBox = document.getElementById('msg-box');
+        const lockedState = document.getElementById('locked-state');
+        const unlockedState = document.getElementById('unlocked-state');
+
+        decryptBtn.addEventListener('click', () => {
+            // Decryption Animation
+            decryptBtn.innerText = "DECRYPTING...";
+            decryptBtn.style.opacity = 0.5;
+
+            // Glitch effect on text
+            let steps = 0;
+            const interval = setInterval(() => {
+                statusText.innerText = Math.random() > 0.5 ? "[01010101]" : "[ENCRYPTED]";
+                steps++;
+                if (steps > 5) clearInterval(interval);
+            }, 100);
+
+            setTimeout(() => {
+                // Success State
+                lockIcon.style.fill = "#00ff41"; // Green
+                lockIcon.style.filter = "drop-shadow(0 0 20px rgba(0, 255, 65, 0.5))";
+                // Unlock path transform could go here if using complex SVG, simpler to just color change
+
+                statusText.innerText = "[UNLOCKED]";
+                statusText.style.color = "#00ff41";
+
+                msgBox.style.borderColor = "#00ff41";
+                msgBox.style.boxShadow = "0 0 30px rgba(0, 255, 65, 0.1)";
+
+                gsap.to(lockedState, {
+                    opacity: 0, duration: 0.5, onComplete: () => {
+                        lockedState.style.display = "none";
+                        unlockedState.style.display = "block";
+                        gsap.fromTo(unlockedState, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
+                    }
+                });
+
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>
