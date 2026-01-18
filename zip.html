@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Zip - Number Chain Game</title>
+    <style>
+        :root {
+            --cell-size: 60px;
+            --gap: 4px;
+            --grid-cols: 5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .game-container {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35),
+                        0 10px 30px rgba(102, 126, 234, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0 0 10px 0;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        #message {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            min-height: 24px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .game-wrapper {
+            position: relative;
+            display: inline-block;
+            touch-action: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(var(--grid-cols), var(--cell-size));
+            grid-template-rows: repeat(var(--grid-cols), var(--cell-size));
+            gap: var(--gap);
+            background: linear-gradient(145deg, #d5d9e0, #e8ecf1);
+            padding: var(--gap);
+            border-radius: 12px;
+            position: relative;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1),
+                        0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .cell {
+            width: var(--cell-size);
+            height: var(--cell-size);
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08),
+                        0 2px 4px rgba(0, 0, 0, 0.06),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            z-index: 20;
+            animation: cellAppear 0.3s ease-out backwards;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        @keyframes cellAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .cell.has-number {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+                         0 0 8px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3),
+                        0 3px 6px rgba(118, 75, 162, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .cell.has-number:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4),
+                        0 4px 8px rgba(118, 75, 162, 0.3);
+        }
+
+        .cell.in-path {
+            background: linear-gradient(145deg, #a8b5ff 0%, #b399d4 100%);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.35),
+                        0 3px 6px rgba(118, 75, 162, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .cell.current {
+            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5),
+                        0 4px 10px rgba(118, 75, 162, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            animation: currentPulse 0.8s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes currentPulse {
+            0%, 100% {
+                transform: scale(1.1);
+                box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5),
+                            0 4px 10px rgba(118, 75, 162, 0.4);
+            }
+            50% {
+                transform: scale(1.15);
+                box-shadow: 0 12px 28px rgba(102, 126, 234, 0.6),
+                            0 6px 14px rgba(118, 75, 162, 0.5);
+            }
+        }
+
+        .cell.completed {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: completeBounce 0.6s ease-out;
+        }
+
+        @keyframes completeBounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2) rotate(-5deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            75% {
+                transform: scale(1.15) rotate(-3deg);
+            }
+        }
+
+        .cell.number-found {
+            animation: numberFound 0.5s ease-out;
+        }
+
+        @keyframes numberFound {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.3) rotate(10deg);
+            }
+            60% {
+                transform: scale(0.95) rotate(-5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        canvas {
+            position: absolute;
+            top: var(--gap);
+            left: var(--gap);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 28px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.4),
+                        0 3px 8px rgba(118, 75, 162, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5),
+                        0 4px 12px rgba(118, 75, 162, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .win-message {
+            animation: celebration 1s ease-out;
+        }
+
+        @keyframes celebration {
+            0% {
+                transform: scale(1);
+            }
+            10% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            20% {
+                transform: scale(0.95) rotate(-5deg);
+            }
+            30% {
+                transform: scale(1.15) rotate(3deg);
+            }
+            40% {
+                transform: scale(0.98) rotate(-3deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            border-radius: 50%;
+            z-index: 1000;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stats-panel {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .stats-header {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Link Zip</h1>
+        <div id="message">Drag from 1 to connect all numbers 1→12!</div>
+
+        <div class="game-wrapper" id="gameWrapper">
+            <canvas id="gameCanvas"></canvas>
+            <div class="grid" id="gridContainer"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="undoLastMove()">Undo</button>
+            <button onclick="resetGame()">Reset</button>
+            <button onclick="newLevel()">New Puzzle</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-label">Moves</div>
+                <div class="stat-value" id="moveCount">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Numbers</div>
+                <div class="stat-value" id="chainLength">0/12</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Grid</div>
+                <div class="stat-value" id="progressCount">0%</div>
+            </div>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stats-header">Your Stats</div>
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="winRate">0%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Best Moves</div>
+                    <div class="stat-value" id="bestMoves">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Streak</div>
+                    <div class="stat-value" id="currentStreak">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GRID_SIZE = 5;
+        const CELL_SIZE = 60;
+        const GAP = 4;
+        const MAX_NUMBER = 12;
+
+        let levelLayout = [];
+        let path = [];
+        let moveHistory = [];
+        let moveCount = 0;
+        let isComplete = false;
+        let isDrawing = false;
+
+        // Score tracking
+        let gameStats = {
+            gamesPlayed: 0,
+            gamesWon: 0,
+            bestMoves: Infinity,
+            totalMoves: 0,
+            currentStreak: 0,
+            bestStreak: 0
+        };
+
+        // Load stats from localStorage
+        function loadStats() {
+            const saved = localStorage.getItem('zipGameStats');
+            if (saved) {
+                gameStats = JSON.parse(saved);
+            }
+            updateStatsDisplay();
+        }
+
+        function saveStats() {
+            localStorage.setItem('zipGameStats', JSON.stringify(gameStats));
+        }
+
+        function saveScore() {
+            gameStats.gamesWon++;
+            gameStats.currentStreak++;
+            if (gameStats.currentStreak > gameStats.bestStreak) {
+                gameStats.bestStreak = gameStats.currentStreak;
+            }
+            if (moveCount < gameStats.bestMoves) {
+                gameStats.bestMoves = moveCount;
+            }
+            gameStats.totalMoves += moveCount;
+            saveStats();
+            updateStatsDisplay();
+        }
+
+        function updateStatsDisplay() {
+            const winRate = gameStats.gamesPlayed > 0
+                ? Math.round((gameStats.gamesWon / gameStats.gamesPlayed) * 100)
+                : 0;
+            const avgMoves = gameStats.gamesWon > 0
+                ? Math.round(gameStats.totalMoves / gameStats.gamesWon)
+                : 0;
+
+            document.getElementById('winRate').textContent = `${winRate}%`;
+            document.getElementById('bestMoves').textContent = gameStats.bestMoves === Infinity ? '-' : gameStats.bestMoves;
+            document.getElementById('currentStreak').textContent = gameStats.currentStreak;
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gridDiv = document.getElementById('gridContainer');
+        const msgDiv = document.getElementById('message');
+        const moveCountDiv = document.getElementById('moveCount');
+        const chainLengthDiv = document.getElementById('chainLength');
+        const progressCountDiv = document.getElementById('progressCount');
+
+        // Audio Context for sound effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Sound effect functions
+        function playMoveSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.frequency.value = 300;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function playNumberSound(number) {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.frequency.value = 300 + (number * 50);
+            oscillator.type = 'square';
+
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.2);
+        }
+
+        function playWinSound() {
+            const notes = [523.25, 587.33, 659.25, 783.99, 880.00];
+            notes.forEach((freq, i) => {
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+
+                const startTime = audioCtx.currentTime + (i * 0.1);
+                gainNode.gain.setValueAtTime(0.2, startTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.3);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.3);
+            });
+        }
+
+        function playErrorSound() {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.frequency.value = 200;
+            oscillator.type = 'sawtooth';
+
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.15);
+        }
+
+        function initCanvas() {
+            const size = (GRID_SIZE * CELL_SIZE) + ((GRID_SIZE - 1) * GAP);
+            canvas.width = size;
+            canvas.height = size;
+        }
+
+        // Generate a random solvable level that fills all 25 squares
+        function generateLevel() {
+            levelLayout = Array(GRID_SIZE).fill(0).map(() => Array(GRID_SIZE).fill(0));
+
+            // MUST fill entire grid - all 25 cells
+            const targetCells = GRID_SIZE * GRID_SIZE;
+
+            let solution = [];
+            let attempts = 0;
+            const maxAttempts = 100;
+
+            // Keep trying until we get a path that fills the entire grid
+            while (solution.length < targetCells && attempts < maxAttempts) {
+                attempts++;
+                solution = [];
+                const used = new Set();
+
+                // Start from a random position
+                let r = Math.floor(Math.random() * GRID_SIZE);
+                let c = Math.floor(Math.random() * GRID_SIZE);
+                solution.push({ r, c });
+                used.add(`${r},${c}`);
+
+                // Build path
+                let backtrackLimit = 1000;
+                while (solution.length < targetCells && backtrackLimit > 0) {
+                    backtrackLimit--;
+                    const last = solution[solution.length - 1];
+                    const possibleMoves = [
+                        { r: last.r - 1, c: last.c },
+                        { r: last.r + 1, c: last.c },
+                        { r: last.r, c: last.c - 1 },
+                        { r: last.r, c: last.c + 1 }
+                    ].filter(pos =>
+                        pos.r >= 0 && pos.r < GRID_SIZE &&
+                        pos.c >= 0 && pos.c < GRID_SIZE &&
+                        !used.has(`${pos.r},${pos.c}`)
+                    );
+
+                    if (possibleMoves.length === 0) {
+                        // Backtrack
+                        const removed = solution.pop();
+                        used.delete(`${removed.r},${removed.c}`);
+                    } else {
+                        // Choose move that maximizes future options
+                        possibleMoves.sort((a, b) => {
+                            const aScore = countAvailableNeighbors(a, used);
+                            const bScore = countAvailableNeighbors(b, used);
+                            return bScore - aScore;
+                        });
+                        const nextMove = possibleMoves[0];
+                        solution.push(nextMove);
+                        used.add(`${nextMove.r},${nextMove.c}`);
+                    }
+                }
+            }
+
+            // If we couldn't fill the grid, try again
+            if (solution.length < targetCells) {
+                return generateLevel();
+            }
+
+            // Now place the 12 numbers along the path
+            // Make numbers closer together but still challenging
+            const numberPositions = [];
+
+            // Place 1 at start
+            numberPositions.push(0);
+
+            // Place remaining numbers (2-12) with moderate spacing
+            const spacing = Math.floor(solution.length / (MAX_NUMBER + 1));
+            for (let i = 1; i < MAX_NUMBER; i++) {
+                // Add slight randomness but keep numbers closer
+                const basePos = i * spacing + Math.floor(Math.random() * (spacing / 2));
+                numberPositions.push(Math.min(basePos, solution.length - 1));
+            }
+
+            // Place 12 at the very end
+            numberPositions[MAX_NUMBER - 1] = solution.length - 1;
+
+            // Place numbers on the grid - NO DUPLICATES
+            for (let i = 0; i < MAX_NUMBER; i++) {
+                const pos = solution[numberPositions[i]];
+                levelLayout[pos.r][pos.c] = i + 1;
+            }
+        }
+
+        function countAvailableNeighbors(pos, used) {
+            const neighbors = [
+                { r: pos.r - 1, c: pos.c },
+                { r: pos.r + 1, c: pos.c },
+                { r: pos.r, c: pos.c - 1 },
+                { r: pos.r, c: pos.c + 1 }
+            ];
+            return neighbors.filter(n =>
+                n.r >= 0 && n.r < GRID_SIZE &&
+                n.c >= 0 && n.c < GRID_SIZE &&
+                !used.has(`${n.r},${n.c}`)
+            ).length;
+        }
+
+        function loadLevel() {
+            generateLevel();
+            path = [];
+            moveHistory = [];
+            moveCount = 0;
+            isComplete = false;
+            isDrawing = false;
+            gameStats.gamesPlayed++;
+            saveStats();
+            updateStats();
+            updateStatsDisplay();
+            renderGrid(true); // Full render only on new level
+            drawPath();
+            msgDiv.textContent = "Drag from 1 to connect all numbers AND fill all 25 squares!";
+            msgDiv.className = "";
+        }
+
+        function renderGrid(fullRender = false) {
+            if (fullRender) {
+                gridDiv.innerHTML = '';
+                for (let r = 0; r < GRID_SIZE; r++) {
+                    for (let c = 0; c < GRID_SIZE; c++) {
+                        const val = levelLayout[r][c];
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.dataset.r = r;
+                        cell.dataset.c = c;
+                        cell.style.animationDelay = `${(r * GRID_SIZE + c) * 0.02}s`;
+
+                        if (val > 0) {
+                            cell.textContent = val;
+                            cell.classList.add('has-number');
+                        }
+
+                        gridDiv.appendChild(cell);
+                    }
+                }
+            }
+
+            // Update cell states without recreating them
+            const cells = gridDiv.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.r);
+                const c = parseInt(cell.dataset.c);
+
+                // Remove all state classes
+                cell.classList.remove('in-path', 'current', 'completed', 'number-found');
+
+                const inPath = path.find(p => p.r === r && p.c === c);
+                if (inPath) {
+                    if (inPath === path[path.length - 1]) {
+                        cell.classList.add('current');
+                    } else {
+                        cell.classList.add('in-path');
+                    }
+                }
+
+                if (isComplete) {
+                    cell.classList.add('completed');
+                }
+
+                // Add number-found animation when number is reached
+                const val = levelLayout[r][c];
+                if (val > 0 && path.some(p => p.r === r && p.c === c && levelLayout[p.r][p.c] === val)) {
+                    if (inPath === path[path.length - 1] && val > 1) {
+                        cell.classList.add('number-found');
+                    }
+                }
+            });
+        }
+
+        function getGridPos(e) {
+            const rect = gridDiv.getBoundingClientRect();
+            let clientX, clientY;
+
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            const totalSize = CELL_SIZE + GAP;
+            const c = Math.floor((x - GAP) / totalSize);
+            const r = Math.floor((y - GAP) / totalSize);
+
+            if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) return null;
+            return { r, c };
+        }
+
+        function handleStart(e) {
+            if (isComplete) return;
+            e.preventDefault();
+
+            const pos = getGridPos(e);
+            if (!pos) return;
+
+            const cellValue = levelLayout[pos.r][pos.c];
+
+            if (path.length === 0) {
+                if (cellValue === 1) {
+                    isDrawing = true;
+                    path.push({ r: pos.r, c: pos.c, value: 1 });
+                    saveMove();
+                    renderGrid();
+                    drawPath();
+                    updateStats();
+                    playNumberSound(1);
+                } else {
+                    showMessage("Start from 1!", "#e74c3c");
+                    playErrorSound();
+                }
+            } else {
+                // Allow starting drag from current position
+                const lastCell = path[path.length - 1];
+                if (pos.r === lastCell.r && pos.c === lastCell.c) {
+                    isDrawing = true;
+                }
+            }
+        }
+
+        function handleMove(e) {
+            if (!isDrawing || isComplete) return;
+            e.preventDefault();
+
+            const pos = getGridPos(e);
+            if (!pos) return;
+
+            const lastCell = path[path.length - 1];
+
+            // Same cell, do nothing
+            if (pos.r === lastCell.r && pos.c === lastCell.c) return;
+
+            // Check for backtracking
+            if (path.length > 1) {
+                const prevCell = path[path.length - 2];
+                if (pos.r === prevCell.r && pos.c === prevCell.c) {
+                    path.pop();
+                    if (moveHistory.length > 0) moveHistory.pop();
+                    renderGrid();
+                    drawPath();
+                    updateStats();
+                    return;
+                }
+            }
+
+            // Check adjacency
+            const dr = Math.abs(pos.r - lastCell.r);
+            const dc = Math.abs(pos.c - lastCell.c);
+            const isAdjacent = (dr === 1 && dc === 0) || (dr === 0 && dc === 1);
+
+            if (!isAdjacent) return;
+
+            // Check if already in path
+            if (path.some(p => p.r === pos.r && p.c === pos.c)) return;
+
+            const cellValue = levelLayout[pos.r][pos.c];
+            const expectedValue = getExpectedNextValue();
+
+            if (cellValue === expectedValue) {
+                path.push({ r: pos.r, c: pos.c, value: cellValue });
+                saveMove();
+                renderGrid();
+                drawPath();
+                updateStats();
+                playNumberSound(cellValue);
+
+                if (cellValue === MAX_NUMBER) {
+                    checkWin();
+                    isDrawing = false;
+                }
+            } else if (cellValue === 0) {
+                path.push({ r: pos.r, c: pos.c, value: lastCell.value });
+                saveMove();
+                renderGrid();
+                drawPath();
+                updateStats();
+                playMoveSound();
+            }
+        }
+
+        function handleEnd(e) {
+            isDrawing = false;
+        }
+
+        function getExpectedNextValue() {
+            let maxFound = 0;
+            for (let p of path) {
+                const val = levelLayout[p.r][p.c];
+                if (val > maxFound) maxFound = val;
+            }
+            return maxFound + 1;
+        }
+
+        function drawPath() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (path.length < 2) return;
+
+            for (let i = 0; i < path.length - 1; i++) {
+                const start = path[i];
+                const end = path[i + 1];
+
+                const x1 = getCellCenter(start.c);
+                const y1 = getCellCenter(start.r);
+                const x2 = getCellCenter(end.c);
+                const y2 = getCellCenter(end.r);
+
+                const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+
+                ctx.beginPath();
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = CELL_SIZE * 0.4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+
+            // Draw dots
+            path.forEach((p, i) => {
+                const x = getCellCenter(p.c);
+                const y = getCellCenter(p.r);
+
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, Math.PI * 2);
+                ctx.fillStyle = i === path.length - 1 ? '#764ba2' : '#a8b5ff';
+                ctx.fill();
+            });
+        }
+
+        function getCellCenter(index) {
+            return GAP + (index * (CELL_SIZE + GAP)) + (CELL_SIZE / 2);
+        }
+
+        function saveMove() {
+            moveHistory.push([...path]);
+            moveCount++;
+        }
+
+        function undoLastMove() {
+            if (moveHistory.length <= 1) {
+                resetGame();
+                return;
+            }
+
+            moveHistory.pop();
+            path = JSON.parse(JSON.stringify(moveHistory[moveHistory.length - 1]));
+            renderGrid();
+            drawPath();
+            updateStats();
+            showMessage("Move undone", "#3498db");
+        }
+
+        function resetGame() {
+            path = [];
+            moveHistory = [];
+            moveCount = 0;
+            isComplete = false;
+            isDrawing = false;
+            updateStats();
+            renderGrid();
+            drawPath();
+            showMessage("Game reset!", "#95a5a6");
+        }
+
+        function newLevel() {
+            loadLevel();
+            showMessage("New puzzle generated!", "#3498db");
+        }
+
+        function checkWin() {
+            // Check if all 12 numbers are in the path
+            const hasAllNumbers = Array.from({ length: MAX_NUMBER }, (_, i) => i + 1).every(num =>
+                path.some(p => levelLayout[p.r][p.c] === num)
+            );
+
+            // Check if ALL 25 squares are filled
+            const allSquaresFilled = path.length === (GRID_SIZE * GRID_SIZE);
+
+            if (hasAllNumbers && allSquaresFilled) {
+                isComplete = true;
+                renderGrid();
+                showMessage("🎉 Perfect! You filled the entire grid!", "#27ae60");
+                msgDiv.classList.add('win-message');
+                playWinSound();
+                createConfetti();
+                saveScore();
+            } else if (hasAllNumbers && !allSquaresFilled) {
+                showMessage(`Got all numbers! Now fill all ${GRID_SIZE * GRID_SIZE} squares!`, "#f39c12");
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4'];
+            const gameContainer = document.querySelector('.game-container');
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    gameContainer.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        function showMessage(text, color) {
+            msgDiv.textContent = text;
+            msgDiv.style.color = color;
+        }
+
+        function updateStats() {
+            moveCountDiv.textContent = moveCount;
+
+            let numbersFound = 0;
+            for (let i = 1; i <= MAX_NUMBER; i++) {
+                if (path.some(p => levelLayout[p.r][p.c] === i)) {
+                    numbersFound = i;
+                }
+            }
+
+            chainLengthDiv.textContent = `${numbersFound}/${MAX_NUMBER}`;
+
+            // Show grid fill percentage
+            const gridFill = Math.round((path.length / (GRID_SIZE * GRID_SIZE)) * 100);
+            progressCountDiv.textContent = `${path.length}/25`;
+        }
+
+        // Mouse events
+        gridDiv.addEventListener('mousedown', handleStart);
+        gridDiv.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+
+        // Touch events
+        gridDiv.addEventListener('touchstart', handleStart, { passive: false });
+        gridDiv.addEventListener('touchmove', handleMove, { passive: false });
+        window.addEventListener('touchend', handleEnd);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                undoLastMove();
+            } else if (e.key === 'r') {
+                resetGame();
+            } else if (e.key === 'n') {
+                newLevel();
+            }
+        });
+
+        // Initialize
+        initCanvas();
+        loadStats();
+        loadLevel();
+    </script>
+</body>
+
+</html>
