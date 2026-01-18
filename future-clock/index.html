@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Redemption Arc | Trinno Asphalt</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="loading">
+    <div class="test-crt-scanline"></div>
+    <div id="grid-plane"></div>
+    <!-- New Liquid Shader Canvas -->
+    <canvas id="liquid-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
+    <div id="cursor"></div>
+
+    <!-- Boot Screen -->
+    <div id="boot-screen">
+        <canvas id="matrix-canvas"></canvas>
+        <div class="boot-container">
+            <div class="boot-header font-mono">
+                <span>SYSTEM_BOOT_SEQUENCE</span>
+                <span id="boot-percent">0%</span>
+            </div>
+            <div class="boot-log font-mono" id="boot-log"></div>
+            <div class="boot-cta" id="boot-cta" style="display: none;">
+                <button class="btn-glitch" id="init-btn" data-text="INITIALIZE SYSTEM">INITIALIZE SYSTEM</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD -->
+    <div class="hud-overlay">
+        <div class="hud-item top-left">
+            <span class="label">ARCHITECT</span>
+            <span class="value neon-text-pink">TRINNO ASPHALT</span>
+        </div>
+        <div class="hud-item top-right">
+            <span class="label">COORDS</span>
+            <span class="value" id="mouse-coords">0, 0</span>
+        </div>
+        <div class="hud-item bottom-left">
+            <span class="label">VERSION</span>
+            <span class="value">v5.1.0-EXPANDED</span>
+        </div>
+    </div>
+
+    <!-- Terminal -->
+    <div id="term-toggle-btn" class="sensitive" data-magnet="0.2"><i class="fas fa-terminal"></i></div>
+    <div id="terminal-wrapper" class="closed">
+        <div class="terminal-header">
+            <span>TRINNO_TERM_v1</span>
+            <div class="term-controls"><span class="dot red" id="term-close-btn"></span><span
+                    class="dot yellow"></span><span class="dot green"></span></div>
+        </div>
+        <div class="terminal-body font-mono" id="terminal-output">
+            <div class="term-line">Trinno OS [Version 5.1.0]</div>
+            <div class="term-line">Copyright (c) 2026 Trinno Asphalt.</div>
+            <div class="term-line">Voice Module: ONLINE.</div>
+            <div class="term-line">Expanded Command Set: LOADED.</div>
+            <div class="term-line"><br></div>
+            <div class="term-line">Type 'help' for commands.</div>
+        </div>
+        <div class="terminal-input-area font-mono">
+            <span class="prompt">Trinno@Asphalt:~$</span>
+            <input type="text" id="terminal-input" placeholder="...">
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section id="hero" class="full-screen-section">
+            <div class="clock-container sensitive" data-magnet="0.5">
+                <div class="clock-glitch-wrapper">
+                    <h1 id="rgb-clock" class="neon-text-cyan">00:00:00</h1>
+                    <div class="glitch-layer" id="clock-glitch">00:00:00</div>
+                </div>
+                <h2 class="hero-title font-display neon-text-pink"
+                    style="text-align:center; font-size: 2rem; margin-top: 1rem;">THE REDEMPTION ARC</h2>
+                <div class="architect-tag font-mono">
+                    <span class="bracket">[</span> System Architect: Trinno Asphalt <span class="bracket">]</span>
+                </div>
+            </div>
+            <div class="scroll-indicator"><span>SCROLL TO ACCESS DATA</span>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <!-- Narrative Section (Timeline) -->
+        <section id="story" class="content-section">
+            <h2 class="section-title neon-text-pink">THE ORIGIN LOG</h2>
+            <div class="timeline">
+
+                <!-- Grade 08 -->
+                <div class="timeline-item left glass-panel sensitive" data-magnet="0.2">
+                    <div class="year font-mono">GRADE 08</div>
+                    <div class="content">
+                        <h3>System Failure</h3>
+                        <p>The objective was simple: An RGB Clock. The result: Failure. Lack of knowledge was the fatal
+                            error.</p>
+                    </div>
+                </div>
+
+                <!-- Grade 09 -->
+                <div class="timeline-item right glass-panel sensitive" data-magnet="0.2">
+                    <div class="year font-mono">GRADE 09</div>
+                    <div class="content">
+                        <h3>Reboot & Learn</h3>
+                        <p>I didn't quit. I rebooted. Deep dive into the kernel of web development.</p>
+                    </div>
+                </div>
+
+                <!-- Grade 10 -->
+                <div class="timeline-item left glass-panel sensitive" data-magnet="0.2">
+                    <div class="year font-mono">GRADE 10</div>
+                    <div class="content">
+                        <h3>System Upgrade</h3>
+                        <p>New languages acquired. Frameworks integrated. The redemption began.</p>
+                    </div>
+                </div>
+
+                <!-- Grade 11 (NEW) -->
+                <div class="timeline-item right glass-panel sensitive highlight-border" data-magnet="0.2">
+                    <div class="year font-mono neon-text-green">GRADE 11 [CURRENT]</div>
+                    <div class="content">
+                        <h3>Scaling the Peak</h3>
+                        <p>Mastering complex algorithms, System Design, and building Legacy Architectures. The systems
+                            are now active.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- NEW: System Modules / Skills -->
+        <section id="modules" class="content-section">
+            <h2 class="section-title neon-text-purple">INSTALLED MODULES</h2>
+            <div class="modules-grid">
+                <div class="module sensitive" data-magnet="0.3"><i class="fab fa-react"></i><span>REACT.JS</span></div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fab fa-js"></i><span>JAVASCRIPT</span></div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fab fa-css3-alt"></i><span>TAILWIND</span>
+                </div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-server"></i><span>FIREBASE</span></div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-cube"></i><span>THREE.JS</span></div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-code"></i><span>TYPESCRIPT</span></div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-terminal"></i><span>CLI OPS</span>
+                </div>
+                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-magic"></i><span>GSAP</span></div>
+            </div>
+        </section>
+
+        <!-- Tech Portfolio -->
+        <section id="showcase" class="content-section">
+            <h2 class="section-title neon-text-cyan">THE LEGACY ARCHIVE</h2>
+            <div class="grid-showcase">
+
+                <!-- Accounts Wizard (Current) -->
+                <div class="tech-card sensitive" data-magnet="0.5">
+                    <div class="status">STATUS: ACTIVE</div>
+                    <span class="stat-line">ID: TRINNO-001 | LOC: CURRENT WORKSPACE</span>
+                    <h3>Accounts Wizard</h3>
+                    <p>You are here. This page is built within the project structure. This is the evolution of financial
+                        logic and system architecture.</p>
+                    <a href="../index.html" class="btn-access">ACCESS MAIN SYSTEM</a>
+                </div>
+
+                <!-- Minecraft Guide -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status">STATUS: DEPLOYED</div>
+                    <span class="stat-line">ID: TRINNO-002 | TYPE: GUIDE</span>
+                    <h3>Minecraft Guide</h3>
+                    <p>The Genesis. A comprehensive handbook for new players to survive the blocky wilderness. Helped
+                        new players understand the game from zero.</p>
+                </div>
+
+                <!-- Chaos Hub -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status">STATUS: EXPERIMENTAL</div>
+                    <span class="stat-line">ID: TRINNO-003 | TYPE: HUB</span>
+                    <h3>Chaos Hub</h3>
+                    <p>An experiment in disorder. A useless project idea that proved sometimes chaos spawns the greatest
+                        creativity. Pure playground.</p>
+                </div>
+
+                <!-- ArthShastra -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status">STATUS: EDUCATIONAL</div>
+                    <span class="stat-line">ID: TRINNO-004 | SUBJ: ECONOMICS</span>
+                    <h3>ArthShastra</h3>
+                    <p>Grade 11 Economics Logic Core. Simplifying complex markets for the next generation. A tool for
+                        students to master the subject.</p>
+                </div>
+
+                <!-- OSEM Yearbook -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status">STATUS: ARCHIVED</div>
+                    <span class="stat-line">ID: TRINNO-005 | STACK: TS + TAILWIND</span>
+                    <h3>OSEM Yearbook</h3>
+                    <p>A functional digital flipbook engineered with TypeScript & Tailwind CSS. Preserving memories in
+                        executable code.</p>
+                </div>
+
+                <!-- Nerd Tutors -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status">STATUS: LIVE</div>
+                    <span class="stat-line">ID: TRINNO-006 | API: GOOGLE</span>
+                    <h3>Nerd Tutors</h3>
+                    <p>Educational platform leveraging Google APIs to connect knowledge with curiosity. bridging the gap
+                        between tutors and students.</p>
+                </div>
+
+                <!-- Misc Adventure -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status waiting">STATUS: INTERACTIVE</div>
+                    <span class="stat-line">ID: TRINNO-007 | MODE: STORY</span>
+                    <h3>Misc. Adventure</h3>
+                    <p>A "Choose Your Own Path" story mode webpage. Your interactions drastically alter the narrative.
+                        Choices matter.</p>
+                </div>
+
+                <!-- Project Surprise -->
+                <div class="tech-card sensitive" data-magnet="0.3">
+                    <div class="status">STATUS: CELEBRATION</div>
+                    <span class="stat-line">ID: TRINNO-008 | TYPE: DYNAMIC</span>
+                    <h3>Project Surprise</h3>
+                    <p>A dynamic birthday engine. Configurable for any name, with high-end animations to wish anyone
+                        instantly. Reusable joy.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Apology Trigger -->
+        <section id="apology-gate" class="full-screen-section centered">
+            <div class="glass-panel sensitive"
+                style="text-align: center; border-color: var(--neon-purple); max-width: 600px;">
+                <h3 class="font-mono neon-text-purple" style="margin-bottom: 1rem;">[SECURE_CHANNEL_DETECTED]</h3>
+                <p style="margin-bottom: 2rem; color: #ccc;">Encrypted transmission waiting for decryption key.</p>
+                <a href="apology.html" class="btn-glitch" data-text="DECRYPT MESSAGE">DECRYPT MESSAGE</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="branding">
+                <span class="prefix">SYSTEM ARCHITECT:</span>
+                <span class="name glitch-text" data-text="TRINNO ASPHALT">TRINNO ASPHALT</span>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
