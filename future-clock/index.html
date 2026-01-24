@@ -128,8 +128,8 @@
         <section id="hero" class="full-screen-section">
             <div class="clock-container sensitive" data-magnet="0.5">
                 <div class="clock-glitch-wrapper">
-                    <h1 id="rgb-clock" class="neon-text-cyan">00:00:00</h1>
-                    <div class="glitch-layer" id="clock-glitch">00:00:00</div>
+                    <h1 id="rgb-clock" class="neon-text-cyan">--:--:--</h1>
+                    <div class="glitch-layer" id="clock-glitch">&nbsp;</div>
                 </div>
                 <h2 class="hero-title font-display neon-text-pink"
                     style="text-align:center; font-size: 2rem; margin-top: 1rem;">THE REDEMPTION ARC</h2>
@@ -217,7 +217,19 @@
                     <h3>Accounts Wizard</h3>
                     <p>You are here. This page is built within the project structure. This is the evolution of financial
                         logic and system architecture.</p>
-                    <a href="../index.html" class="btn-access">ACCESS MAIN SYSTEM</a>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">SYSTEM ANALYSIS</span>
+                            <p>Real-time data visualization and complex state management.</p>
+                            <a href="https://trinno112.github.io/AccountsWizard/" target="_blank"
+                                class="btn-access">VISIT SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/AccountsWizard/')">QUICK
+                                PREVIEW</button>
+                            <span class="preview-hint">CLICK TO ACCESS CORE</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Minecraft Guide -->
@@ -227,15 +239,36 @@
                     <h3>Minecraft Guide</h3>
                     <p>The Genesis. A comprehensive handbook for new players to survive the blocky wilderness. Helped
                         new players understand the game from zero.</p>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">WIKI / DOCS</span>
+                            <p>Interactive game documentation system.</p>
+                            <a href="https://trinno112.github.io/MinecraftGuide/" target="_blank"
+                                class="btn-access">VISIT SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/MinecraftGuide/')">QUICK
+                                PREVIEW</button>
+                            <span class="preview-hint">SYSTEM ARCHIVED</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Chaos Hub -->
                 <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status">STATUS: EXPERIMENTAL</div>
+                    <div class="status waiting">STATUS: COMING SOON</div>
                     <span class="stat-line">ID: TRINNO-003 | TYPE: HUB</span>
                     <h3>Chaos Hub</h3>
                     <p>An experiment in disorder. A useless project idea that proved sometimes chaos spawns the greatest
                         creativity. Pure playground.</p>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">CREATIVE LAB</span>
+                            <p>Random algorithmic generation and UI stress tests.</p>
+                            <span class="preview-hint">VIEW EXPERIMENTS</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ArthShastra -->
@@ -245,6 +278,18 @@
                     <h3>ArthShastra</h3>
                     <p>Grade 11 Economics Logic Core. Simplifying complex markets for the next generation. A tool for
                         students to master the subject.</p>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">EDUTECH</span>
+                            <p>Complex logic simplification and curriculum delivery.</p>
+                            <a href="https://trinno112.github.io/ArthShastra/" target="_blank" class="btn-access">VISIT
+                                SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/ArthShastra/')">QUICK PREVIEW</button>
+                            <span class="preview-hint">ANALYZING MARKETS...</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- OSEM Yearbook -->
@@ -254,6 +299,19 @@
                     <h3>OSEM Yearbook</h3>
                     <p>A functional digital flipbook engineered with TypeScript & Tailwind CSS. Preserving memories in
                         executable code.</p>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">FLIPBOOK V1</span>
+                            <p>Advanced page flipping mechanics and asset optimization.</p>
+                            <a href="https://trinno112.github.io/OSEM-YearBook/" target="_blank"
+                                class="btn-access">VISIT SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/OSEM-YearBook/')">QUICK
+                                PREVIEW</button>
+                            <span class="preview-hint">VIEW MEMORY REEL</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Nerd Tutors -->
@@ -263,6 +321,20 @@
                     <h3>Nerd Tutors</h3>
                     <p>Educational platform leveraging Google APIs to connect knowledge with curiosity. bridging the gap
                         between tutors and students.</p>
+                    <a href="https://nerdtutors25.vercel.app/" target="_blank" class="btn-access">VISIT
+                        PLATFORM</a>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">PLATFORM</span>
+                            <p>API integration and real-time collaboration tools.</p>
+                            <a href="https://trinno112.github.io/NerdTutors/" target="_blank" class="btn-access">VISIT
+                                SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/NerdTutors/')">QUICK PREVIEW</button>
+                            <span class="preview-hint">NETWORK ACTIVE</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Misc Adventure -->
@@ -272,6 +344,19 @@
                     <h3>Misc. Adventure</h3>
                     <p>A "Choose Your Own Path" story mode webpage. Your interactions drastically alter the narrative.
                         Choices matter.</p>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">INTERACTIVE FICTION</span>
+                            <p>Non-linear narrative engine and state branching.</p>
+                            <a href="https://trinno112.github.io/miscellaneous-adventure/" target="_blank"
+                                class="btn-access">VISIT SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/miscellaneous-adventure/')">QUICK
+                                PREVIEW</button>
+                            <span class="preview-hint">AWAITING PLAYER...</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Project Surprise -->
@@ -281,6 +366,18 @@
                     <h3>Project Surprise</h3>
                     <p>A dynamic birthday engine. Configurable for any name, with high-end animations to wish anyone
                         instantly. Reusable joy.</p>
+                    <div class="preview-overlay">
+                        <div class="scanline"></div>
+                        <div class="preview-content">
+                            <span class="preview-tag">VFX ENGINE</span>
+                            <p>Dynamic content rendering and high-performance animations.</p>
+                            <a href="https://trinno112.github.io/Surprise/" target="_blank" class="btn-access">VISIT
+                                SITE</a>
+                            <button class="btn-access preview-trigger"
+                                onclick="openPreview('https://trinno112.github.io/Surprise/')">QUICK PREVIEW</button>
+                            <span class="preview-hint">LAUNCHING SURPRISE...</span>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -304,6 +401,26 @@
             </div>
         </footer>
     </main>
+
+    <!-- Project Preview Modal -->
+    <div id="preview-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span id="modal-title">SITE_PREVIEW</span>
+                <div class="modal-controls">
+                    <a id="modal-external-link" href="#" target="_blank" title="Open in New Tab"><i
+                            class="fas fa-external-link-alt"></i></a>
+                    <button id="modal-close" onclick="closePreview()"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="loader-container" id="modal-loader">
+                    <div class="glitch-text" data-text="SYNCING_DATA...">SYNCING_DATA...</div>
+                </div>
+                <iframe id="preview-iframe" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

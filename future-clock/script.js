@@ -875,7 +875,70 @@ function initMatrixRain() { const canvas = document.getElementById('matrix-canva
 function timeEngine() {
     const now = new Date(); const t = now.toLocaleTimeString('en-US', { hour12: false });
     const clockEl = document.getElementById('rgb-clock');
-    if (clockEl) { clockEl.innerText = t; const hue = (Date.now() % 3000) / 3000 * 360; clockEl.style.color = `hsl(${hue},100%,50%)`; clockEl.style.textShadow = `0 0 30px hsl(${hue},100%,50%)`; }
+    const glitchEl = document.getElementById('clock-glitch');
+    if (clockEl) {
+        clockEl.innerText = t;
+        const hue = (Date.now() % 3000) / 3000 * 360;
+        const color = `hsl(${hue},100%,50%)`;
+        const shadow = `0 0 30px ${color}`;
+
+        clockEl.style.color = color;
+        clockEl.style.textShadow = shadow;
+
+        if (glitchEl) {
+            glitchEl.innerText = t;
+            glitchEl.style.color = color;
+            glitchEl.style.textShadow = shadow;
+        }
+    }
     requestAnimationFrame(timeEngine);
 }
 timeEngine();
+
+// --- PROJECT PREVIEW MODAL LOGIC ---
+const modal = document.getElementById('preview-modal');
+const iframe = document.getElementById('preview-iframe');
+const loader = document.getElementById('modal-loader');
+const externalLink = document.getElementById('modal-external-link');
+
+function openPreview(url) {
+    if (!modal || !iframe || !loader) return;
+
+    // Reset state
+    iframe.classList.remove('loaded');
+    iframe.src = '';
+    loader.style.display = 'block';
+    modal.classList.add('active');
+
+    // Set new content
+    iframe.src = url;
+    if (externalLink) externalLink.href = url;
+
+    // Smooth transition
+    iframe.onload = () => {
+        loader.style.display = 'none';
+        iframe.classList.add('loaded');
+    };
+
+    // Play system sound if available
+    if (window.sfx && typeof sfx.playBootBeep === 'function') sfx.playBootBeep();
+}
+
+function closePreview() {
+    if (!modal || !iframe) return;
+    modal.classList.remove('active');
+    iframe.src = '';
+    iframe.classList.remove('loaded');
+}
+
+// Close modal on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePreview();
+});
+
+// Close modal on outside click
+if (modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closePreview();
+    });
+}
