@@ -694,7 +694,18 @@ function runBootSequence() {
 function skipBootSequence() {
     document.body.classList.remove('loading');
     if (bootScreen) bootScreen.style.display = 'none';
-    gsap.to(".container", { opacity: 1, duration: 1 });
+    gsap.to(".container", { opacity: 1, duration: 1, onComplete: () => {
+        // Initialize hero enhancements for returning users
+        initHeroEnhancements();
+        // Initialize timeline enhancements for returning users
+        initTimelineEnhancements();
+        // Initialize skills enhancements for returning users
+        initSkillsEnhancements();
+        // Initialize project cards enhancements for returning users
+        initProjectCardsEnhancements();
+        // Initialize new sections for returning users
+        initNewSections();
+    }});
     const liquid = new LiquidEffects();
     document.addEventListener('mousemove', (e) => liquid.addRipple(e.clientX, e.clientY));
 
@@ -810,7 +821,7 @@ function initScrollAnimations() {
 
 if (initBtn) {
     initBtn.addEventListener('click', () => {
-        sfx.init(); sfx.playPowerUp(); jarvis.enable(); jarvis.speak("Identity Verified.");
+        sfx.init(); sfx.playPowerUp(); jarvis.speak("System online. All modules activated.");
         sessionStorage.setItem('booted', 'true');
         const liquid = new LiquidEffects();
         document.addEventListener('mousemove', (e) => { if (Math.random() > 0.8) liquid.addRipple(e.clientX, e.clientY); });
@@ -824,13 +835,24 @@ if (initBtn) {
                         // Initialize particles and scroll animations after transition
                         particleSystem = new ParticleSystem();
                         initScrollAnimations();
+                        // Initialize hero section enhancements (typing effect, floating code, glitch)
+                        initHeroEnhancements();
+                        // Initialize timeline enhancements (data stream, particles, progress)
+                        initTimelineEnhancements();
+                        // Initialize skills section enhancements (3D flip, counters, particles)
+                        initSkillsEnhancements();
+                        // Initialize project cards enhancements (3D tilt, tech badges, glow)
+                        initProjectCardsEnhancements();
+                        // Initialize new sections (stats dashboard, contact terminal)
+                        initNewSections();
                     }
                 });
             }
         });
     });
 }
-window.addEventListener('load', runBootSequence);
+// Boot sequence is now triggered after successful login
+// window.addEventListener('load', runBootSequence);
 
 // --- 10. TERMINAL ---
 const terminalInput = document.getElementById('terminal-input');
@@ -942,3 +964,1111 @@ if (modal) {
         if (e.target === modal) closePreview();
     });
 }
+
+// ============================================
+// HERO SECTION ENHANCEMENTS
+// ============================================
+
+class HeroEnhancements {
+    constructor() {
+        this.architectText = document.getElementById('architect-text');
+        this.floatingCodeContainer = document.getElementById('floating-code');
+        this.heroTitle = document.getElementById('hero-title');
+
+        this.fullText = 'System Architect: Trinno Asphalt';
+        this.typingSpeed = 80;
+        this.typingStarted = false;
+    }
+
+    init() {
+        // Start typing effect after a delay (after title animation)
+        setTimeout(() => {
+            this.startTypingEffect();
+        }, 3000); // Start after title letters finish animating
+
+        // Add interactive floating code behavior
+        this.initFloatingCodeInteraction();
+
+        // Add glitch effect to title on random intervals
+        this.initRandomGlitch();
+    }
+
+    startTypingEffect() {
+        if (this.typingStarted || !this.architectText) return;
+        this.typingStarted = true;
+
+        let index = 0;
+        const typeInterval = setInterval(() => {
+            if (index < this.fullText.length) {
+                this.architectText.textContent += this.fullText[index];
+
+                // Play typing sound if audio is available
+                if (window.sfx && sfx.initialized) {
+                    sfx.playKeyClick();
+                }
+
+                index++;
+            } else {
+                clearInterval(typeInterval);
+                // Remove cursor after typing is complete
+                setTimeout(() => {
+                    const cursor = document.querySelector('.typing-cursor-hero');
+                    if (cursor) {
+                        cursor.style.animation = 'none';
+                        cursor.style.opacity = '0';
+                    }
+                }, 2000);
+            }
+        }, this.typingSpeed);
+    }
+
+    initFloatingCodeInteraction() {
+        if (!this.floatingCodeContainer) return;
+
+        // Make floating code respond to mouse movement
+        document.addEventListener('mousemove', (e) => {
+            const snippets = this.floatingCodeContainer.querySelectorAll('.code-snippet');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            snippets.forEach((snippet, index) => {
+                const offsetX = (mouseX - 0.5) * 20 * (index % 2 === 0 ? 1 : -1);
+                const offsetY = (mouseY - 0.5) * 20 * (index % 2 === 0 ? -1 : 1);
+                snippet.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+        });
+    }
+
+    initRandomGlitch() {
+        if (!this.heroTitle) return;
+
+        // Random glitch effect every 5-10 seconds
+        const triggerGlitch = () => {
+            const letters = this.heroTitle.querySelectorAll('.title-letter');
+            const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+
+            if (randomLetter) {
+                randomLetter.style.animation = 'letterGlitch 0.3s ease';
+                randomLetter.style.color = 'var(--neon-cyan)';
+
+                setTimeout(() => {
+                    randomLetter.style.animation = '';
+                    randomLetter.style.color = '';
+                }, 300);
+            }
+
+            // Schedule next glitch
+            setTimeout(triggerGlitch, 5000 + Math.random() * 5000);
+        };
+
+        // Start after initial animations
+        setTimeout(triggerGlitch, 6000);
+    }
+}
+
+// Initialize hero enhancements after boot sequence completes
+let heroEnhancements = null;
+
+function initHeroEnhancements() {
+    if (!heroEnhancements) {
+        heroEnhancements = new HeroEnhancements();
+        heroEnhancements.init();
+    }
+}
+
+// ============================================
+// TIMELINE ENHANCEMENTS - PART 2
+// ============================================
+
+class TimelineEnhancements {
+    constructor() {
+        this.dataStreamContainer = document.getElementById('timeline-data-stream');
+        this.particlesContainer = document.getElementById('timeline-particles');
+        this.timeline = document.querySelector('.timeline');
+        this.timelineItems = document.querySelectorAll('.timeline-item');
+
+        // Data stream characters
+        this.dataChars = ['0', '1', '01', '10', '0x', 'FF', 'A0', '>>'];
+    }
+
+    init() {
+        this.createDataStream();
+        this.createTravelingParticles();
+        this.addScanLines();
+        this.initScrollProgress();
+    }
+
+    // Create flowing binary/hex data stream
+    createDataStream() {
+        if (!this.dataStreamContainer) return;
+
+        const createBit = () => {
+            const bit = document.createElement('span');
+            bit.className = 'data-bit' + (Math.random() > 0.5 ? ' alt' : '');
+            bit.textContent = this.dataChars[Math.floor(Math.random() * this.dataChars.length)];
+            bit.style.left = (Math.random() * 30 + 5) + 'px';
+            bit.style.animationDuration = (3 + Math.random() * 4) + 's';
+            bit.style.animationDelay = (Math.random() * 2) + 's';
+
+            this.dataStreamContainer.appendChild(bit);
+
+            // Remove after animation completes
+            setTimeout(() => {
+                bit.remove();
+            }, 8000);
+        };
+
+        // Create initial batch
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => createBit(), i * 200);
+        }
+
+        // Continuously create new bits
+        setInterval(() => {
+            if (this.isTimelineVisible()) {
+                createBit();
+            }
+        }, 400);
+    }
+
+    // Create traveling particles along the timeline
+    createTravelingParticles() {
+        if (!this.particlesContainer) return;
+
+        for (let i = 0; i < 3; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'timeline-particle';
+            this.particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Add scan line elements to each timeline card
+    addScanLines() {
+        this.timelineItems.forEach(item => {
+            const panel = item.querySelector('.glass-panel');
+            if (panel && !panel.querySelector('.scan-line')) {
+                const scanLine = document.createElement('div');
+                scanLine.className = 'scan-line';
+                panel.appendChild(scanLine);
+            }
+        });
+    }
+
+    // Check if timeline section is visible
+    isTimelineVisible() {
+        if (!this.timeline) return false;
+        const rect = this.timeline.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+
+    // Initialize scroll progress indicator
+    initScrollProgress() {
+        // Create progress bar
+        const progressBar = document.createElement('div');
+        progressBar.className = 'timeline-progress';
+        progressBar.innerHTML = '<div class="timeline-progress-fill"></div>';
+        document.body.appendChild(progressBar);
+
+        const progressFill = progressBar.querySelector('.timeline-progress-fill');
+
+        window.addEventListener('scroll', () => {
+            if (!this.timeline) return;
+
+            const rect = this.timeline.getBoundingClientRect();
+            const timelineTop = rect.top + window.scrollY;
+            const timelineHeight = this.timeline.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+
+            // Show progress bar only when timeline is in view
+            if (rect.top < windowHeight && rect.bottom > 0) {
+                progressBar.classList.add('visible');
+
+                // Calculate progress
+                const startPoint = timelineTop - windowHeight;
+                const endPoint = timelineTop + timelineHeight;
+                const currentProgress = ((scrollY - startPoint) / (endPoint - startPoint)) * 100;
+                const clampedProgress = Math.max(0, Math.min(100, currentProgress));
+
+                progressFill.style.height = clampedProgress + '%';
+            } else {
+                progressBar.classList.remove('visible');
+            }
+        });
+    }
+}
+
+// Initialize timeline enhancements
+let timelineEnhancements = null;
+
+function initTimelineEnhancements() {
+    if (!timelineEnhancements) {
+        timelineEnhancements = new TimelineEnhancements();
+        timelineEnhancements.init();
+    }
+}
+
+// ============================================
+// SKILLS SECTION ENHANCEMENTS - PART 3
+// ============================================
+
+class SkillsEnhancements {
+    constructor() {
+        this.moduleCards = document.querySelectorAll('.module-card');
+        this.skillsStats = document.getElementById('skills-stats');
+        this.modulesSection = document.getElementById('modules');
+    }
+
+    init() {
+        this.initScrollReveal();
+        this.initParticleBurst();
+        this.initStatsCounter();
+        this.initSoundEffects();
+    }
+
+    // Staggered reveal animation on scroll
+    initScrollReveal() {
+        if (!this.modulesSection) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.moduleCards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('animate-in');
+                        }, index * 100);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        observer.observe(this.modulesSection);
+    }
+
+    // Particle burst effect on hover
+    initParticleBurst() {
+        this.moduleCards.forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                this.createParticleBurst(card);
+            });
+        });
+    }
+
+    createParticleBurst(card) {
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        // Create particle container if not exists
+        let container = card.querySelector('.module-particles');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'module-particles';
+            card.appendChild(container);
+        }
+
+        // Create 8 particles
+        for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'skill-particle';
+
+            const angle = (i / 8) * Math.PI * 2;
+            const distance = 50 + Math.random() * 30;
+            const endX = centerX + Math.cos(angle) * distance;
+            const endY = centerY + Math.sin(angle) * distance;
+
+            particle.style.left = centerX + 'px';
+            particle.style.top = centerY + 'px';
+
+            container.appendChild(particle);
+
+            // Animate particle
+            particle.animate([
+                {
+                    transform: 'translate(-50%, -50%) scale(1)',
+                    opacity: 1
+                },
+                {
+                    transform: `translate(${endX - centerX}px, ${endY - centerY}px) scale(0)`,
+                    opacity: 0
+                }
+            ], {
+                duration: 600,
+                easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            }).onfinish = () => particle.remove();
+        }
+    }
+
+    // Animated stats counter
+    initStatsCounter() {
+        if (!this.skillsStats) return;
+
+        const totalSkillsEl = document.getElementById('total-skills');
+        const avgProficiencyEl = document.getElementById('avg-proficiency');
+        const expertCountEl = document.getElementById('expert-count');
+
+        // Calculate actual values
+        let totalSkills = this.moduleCards.length;
+        let totalProficiency = 0;
+        let expertCount = 0;
+
+        this.moduleCards.forEach(card => {
+            const skill = parseInt(card.dataset.skill) || 0;
+            totalProficiency += skill;
+            if (skill >= 90) expertCount++;
+        });
+
+        const avgProficiency = Math.round(totalProficiency / totalSkills);
+
+        // Animate counters when section is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateCounter(totalSkillsEl, 0, totalSkills, 1000);
+                    this.animateCounter(avgProficiencyEl, 0, avgProficiency, 1500, '%');
+                    this.animateCounter(expertCountEl, 0, expertCount, 800);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(this.skillsStats);
+    }
+
+    animateCounter(element, start, end, duration, suffix = '') {
+        if (!element) return;
+
+        const startTime = performance.now();
+
+        const updateCounter = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const current = Math.round(start + (end - start) * easeOutQuart);
+
+            element.textContent = current + suffix;
+            element.classList.add('counting');
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.classList.remove('counting');
+            }
+        };
+
+        requestAnimationFrame(updateCounter);
+    }
+
+    // Sound effects on interaction
+    initSoundEffects() {
+        this.moduleCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (window.sfx && sfx.initialized) {
+                    sfx.playBootBeep();
+                }
+            });
+        });
+    }
+}
+
+// Initialize skills enhancements
+let skillsEnhancements = null;
+
+function initSkillsEnhancements() {
+    if (!skillsEnhancements) {
+        skillsEnhancements = new SkillsEnhancements();
+        skillsEnhancements.init();
+    }
+}
+
+// ============================================
+// PROJECT CARDS ENHANCEMENTS - PART 4
+// ============================================
+
+class ProjectCardsEnhancements {
+    constructor() {
+        this.projectCards = document.querySelectorAll('.tech-card[data-tilt]');
+        this.projectsSection = document.getElementById('showcase');
+        this.projectsGrid = document.getElementById('projects-grid');
+    }
+
+    init() {
+        this.init3DTilt();
+        this.initScrollReveal();
+        this.initSoundEffects();
+    }
+
+    // 3D Tilt effect based on mouse position
+    init3DTilt() {
+        this.projectCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                this.handleTilt(card, e);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                this.resetTilt(card);
+            });
+
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.1s ease-out';
+            });
+        });
+    }
+
+    handleTilt(card, e) {
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const mouseX = e.clientX - centerX;
+        const mouseY = e.clientY - centerY;
+
+        // Calculate rotation (max 10 degrees)
+        const rotateY = (mouseX / (rect.width / 2)) * 10;
+        const rotateX = -(mouseY / (rect.height / 2)) * 10;
+
+        card.style.setProperty('--tilt-x', `${rotateX}deg`);
+        card.style.setProperty('--tilt-y', `${rotateY}deg`);
+    }
+
+    resetTilt(card) {
+        card.style.transition = 'transform 0.5s ease-out';
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+    }
+
+    // Staggered scroll reveal animation
+    initScrollReveal() {
+        if (!this.projectsSection) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.projectCards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('animate-in');
+                        }, index * 150);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(this.projectsSection);
+    }
+
+    // Sound effects on hover
+    initSoundEffects() {
+        this.projectCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (window.sfx && sfx.initialized) {
+                    sfx.playDataStream();
+                }
+            });
+        });
+    }
+}
+
+// Initialize project cards enhancements
+let projectCardsEnhancements = null;
+
+function initProjectCardsEnhancements() {
+    if (!projectCardsEnhancements) {
+        projectCardsEnhancements = new ProjectCardsEnhancements();
+        projectCardsEnhancements.init();
+    }
+}
+
+// ============================================
+// PART 5: NEW SECTIONS - STATS & CONTACT
+// ============================================
+
+class StatsEnhancements {
+    constructor() {
+        this.statsSection = document.getElementById('stats-dashboard');
+        this.statCards = document.querySelectorAll('.stat-card');
+        this.statNumbers = document.querySelectorAll('.stat-number');
+        this.achievementBadges = document.querySelectorAll('.achievement-badge');
+    }
+
+    init() {
+        this.initScrollReveal();
+        this.initAchievementHover();
+    }
+
+    // Animate stats when section comes into view
+    initScrollReveal() {
+        if (!this.statsSection) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animate stat cards
+                    this.statCards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('animate-in');
+                        }, index * 100);
+                    });
+
+                    // Animate numbers
+                    this.statNumbers.forEach(numEl => {
+                        const target = parseInt(numEl.dataset.target) || 0;
+                        this.animateNumber(numEl, 0, target, 2000);
+                    });
+
+                    // Animate achievements
+                    setTimeout(() => {
+                        this.achievementBadges.forEach((badge, index) => {
+                            setTimeout(() => {
+                                badge.style.opacity = '1';
+                                badge.style.transform = 'translateY(0)';
+                            }, index * 100);
+                        });
+                    }, 500);
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        // Set initial state for achievements
+        this.achievementBadges.forEach(badge => {
+            badge.style.opacity = '0';
+            badge.style.transform = 'translateY(20px)';
+            badge.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        });
+
+        observer.observe(this.statsSection);
+    }
+
+    // Animate number counting
+    animateNumber(element, start, end, duration) {
+        const startTime = performance.now();
+        const formatNumber = (num) => {
+            if (num >= 1000) {
+                return num.toLocaleString();
+            }
+            return num.toString();
+        };
+
+        const updateNumber = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(start + (end - start) * easeOut);
+
+            element.textContent = formatNumber(current);
+
+            if (progress < 1) {
+                requestAnimationFrame(updateNumber);
+            }
+        };
+
+        requestAnimationFrame(updateNumber);
+    }
+
+    // Achievement hover effects
+    initAchievementHover() {
+        this.achievementBadges.forEach(badge => {
+            badge.addEventListener('mouseenter', () => {
+                if (window.sfx && sfx.initialized && badge.classList.contains('unlocked')) {
+                    sfx.playPhaseComplete();
+                }
+            });
+        });
+    }
+}
+
+class ContactTerminal {
+    constructor() {
+        this.contactForm = document.getElementById('contact-form');
+        this.contactOutput = document.getElementById('contact-output');
+        this.nameInput = document.getElementById('contact-name');
+        this.emailInput = document.getElementById('contact-email');
+        this.subjectInput = document.getElementById('contact-subject');
+        this.messageInput = document.getElementById('contact-message');
+    }
+
+    init() {
+        if (!this.contactForm) return;
+        this.initFormHandling();
+        this.initTypingEffect();
+    }
+
+    initFormHandling() {
+        this.contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+        });
+
+        this.contactForm.addEventListener('reset', () => {
+            this.addTerminalLine('> FORM CLEARED');
+        });
+
+        // Add typing sounds to inputs
+        const inputs = this.contactForm.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('keydown', () => {
+                if (window.sfx && sfx.initialized) {
+                    sfx.playKeyClick();
+                }
+            });
+        });
+    }
+
+    handleSubmit() {
+        const name = this.nameInput.value;
+        const email = this.emailInput.value;
+        const subject = this.subjectInput.value || 'No Subject';
+        const message = this.messageInput.value;
+
+        // Simulate transmission
+        this.addTerminalLine('&nbsp;');
+        this.addTerminalLine('> INITIATING TRANSMISSION...');
+
+        setTimeout(() => {
+            this.addTerminalLine(`> FROM: ${name} <${email}>`);
+        }, 500);
+
+        setTimeout(() => {
+            this.addTerminalLine(`> SUBJECT: ${subject}`);
+        }, 1000);
+
+        setTimeout(() => {
+            this.addTerminalLine('> ENCRYPTING MESSAGE...');
+        }, 1500);
+
+        setTimeout(() => {
+            this.addTerminalLine('> TRANSMISSION SUCCESSFUL!');
+            this.addTerminalLine('> Message has been queued for delivery.');
+            this.addTerminalLine('&nbsp;');
+
+            // Play success sound
+            if (window.sfx && sfx.initialized) {
+                sfx.playSuccessFanfare();
+            }
+
+            // Create mailto link (actual email sending)
+            const mailtoLink = `mailto:trinnoasphalt@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`)}`;
+            window.open(mailtoLink, '_blank');
+
+            // Reset form
+            this.contactForm.reset();
+        }, 2500);
+    }
+
+    addTerminalLine(text) {
+        const line = document.createElement('div');
+        line.className = 'term-line-contact';
+        line.innerHTML = text;
+        this.contactOutput.appendChild(line);
+        this.contactOutput.scrollTop = this.contactOutput.scrollHeight;
+    }
+
+    initTypingEffect() {
+        // Focus effect on inputs
+        const inputs = this.contactForm.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('active');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('active');
+            });
+        });
+    }
+}
+
+// Initialize new sections
+let statsEnhancements = null;
+let contactTerminal = null;
+
+function initNewSections() {
+    if (!statsEnhancements) {
+        statsEnhancements = new StatsEnhancements();
+        statsEnhancements.init();
+    }
+    if (!contactTerminal) {
+        contactTerminal = new ContactTerminal();
+        contactTerminal.init();
+    }
+}
+
+// ============================================
+// FUTURISTIC LOGIN SCREEN FUNCTIONALITY
+// ============================================
+
+class LoginSystem {
+    constructor() {
+        this.loginScreen = document.getElementById('login-screen');
+        this.loginForm = document.getElementById('login-form');
+        this.passwordInput = document.getElementById('password-input');
+        this.loginContainer = document.querySelector('.login-container');
+        this.loginButton = document.querySelector('.login-button');
+        this.powerBtn = document.getElementById('power-btn');
+        this.easeBtn = document.getElementById('ease-btn');
+        this.inputGroup = document.querySelector('.input-group');
+        this.togglePasswordBtn = document.getElementById('toggle-password');
+        this.passwordVisible = false;
+
+        // Correct password
+        this.correctPassword = 'trinno2025';
+
+        // Initialize if login screen exists
+        if (this.loginScreen) {
+            this.init();
+        }
+    }
+
+    init() {
+        // Bind events
+        this.bindEvents();
+
+        // Focus password input after a short delay
+        setTimeout(() => {
+            if (this.passwordInput) {
+                this.passwordInput.focus();
+            }
+        }, 500);
+
+        // Add matrix rain effect to login background
+        this.createMatrixRain();
+    }
+
+    bindEvents() {
+        // Form submission
+        if (this.loginForm) {
+            this.loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.attemptLogin();
+            });
+        }
+
+        // Password input - remove error state on typing
+        if (this.passwordInput) {
+            this.passwordInput.addEventListener('input', () => {
+                this.clearError();
+            });
+
+            // Add typing sound effect
+            this.passwordInput.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter' && e.key !== 'Tab') {
+                    this.playKeySound();
+                }
+            });
+        }
+
+        // Toggle password visibility
+        if (this.togglePasswordBtn) {
+            this.togglePasswordBtn.addEventListener('click', () => {
+                this.togglePasswordVisibility();
+            });
+        }
+
+        // Power button - close the page
+        if (this.powerBtn) {
+            this.powerBtn.addEventListener('click', () => {
+                this.closePage();
+            });
+        }
+
+        // Accessibility button
+        if (this.easeBtn) {
+            this.easeBtn.addEventListener('click', () => {
+                this.toggleHighContrast();
+            });
+        }
+    }
+
+    togglePasswordVisibility() {
+        this.passwordVisible = !this.passwordVisible;
+
+        if (this.passwordVisible) {
+            this.passwordInput.type = 'text';
+            this.togglePasswordBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            this.togglePasswordBtn.classList.add('active');
+        } else {
+            this.passwordInput.type = 'password';
+            this.togglePasswordBtn.innerHTML = '<i class="fas fa-eye"></i>';
+            this.togglePasswordBtn.classList.remove('active');
+        }
+
+        // Keep focus on input
+        this.passwordInput.focus();
+    }
+
+    closePage() {
+        // Create shutdown overlay
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 999999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        `;
+        overlay.innerHTML = `
+            <div style="
+                color: var(--neon-green, #00ff41);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                text-align: center;
+            ">
+                <div style="margin-bottom: 15px;">> SYSTEM SHUTDOWN INITIATED</div>
+                <div style="opacity: 0.6;">Closing connection...</div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Fade to black
+        setTimeout(() => {
+            overlay.style.opacity = '1';
+        }, 10);
+
+        // Close the page after animation
+        setTimeout(() => {
+            // Try to close the window/tab
+            window.close();
+
+            // If window.close() doesn't work (browser restrictions),
+            // navigate to a blank page or show a message
+            setTimeout(() => {
+                // If still here, the browser blocked window.close()
+                overlay.innerHTML = `
+                    <div style="
+                        color: var(--neon-green, #00ff41);
+                        font-family: 'JetBrains Mono', monospace;
+                        font-size: 1rem;
+                        text-align: center;
+                    ">
+                        <div style="margin-bottom: 15px;">> SHUTDOWN BLOCKED BY BROWSER</div>
+                        <div style="opacity: 0.6; margin-bottom: 20px;">Please close this tab manually</div>
+                        <div style="opacity: 0.4; font-size: 0.8rem;">[Press Ctrl+W or Cmd+W]</div>
+                    </div>
+                `;
+            }, 500);
+        }, 800);
+    }
+
+    attemptLogin() {
+        const password = this.passwordInput.value;
+
+        // Show loading state
+        this.setLoadingState(true);
+
+        // Simulate authentication delay
+        setTimeout(() => {
+            if (password === this.correctPassword) {
+                this.loginSuccess();
+            } else {
+                this.loginFailed();
+            }
+        }, 800);
+    }
+
+    setLoadingState(loading) {
+        if (this.loginButton) {
+            if (loading) {
+                this.loginButton.classList.add('loading');
+            } else {
+                this.loginButton.classList.remove('loading');
+            }
+        }
+    }
+
+    loginSuccess() {
+        // Play success sound
+        this.playSuccessSound();
+
+        // Stop matrix rain animation
+        if (this.matrixInterval) {
+            clearInterval(this.matrixInterval);
+        }
+
+        // Speak "Identity Verified" AFTER successful authentication
+        if (window.jarvis && typeof jarvis.speak === 'function') {
+            jarvis.enable();
+            jarvis.speak('Identity Verified. Welcome back, Administrator.');
+        }
+
+        // Add success animation class
+        this.loginScreen.classList.add('success');
+
+        // Hide login screen after animation
+        setTimeout(() => {
+            this.loginScreen.classList.add('hidden');
+
+            // Trigger boot sequence after login
+            this.onLoginComplete();
+        }, 1000);
+    }
+
+    loginFailed() {
+        // Remove loading state
+        this.setLoadingState(false);
+
+        // Play error sound
+        this.playErrorSound();
+
+        // Add error states
+        this.loginContainer.classList.add('shake');
+        this.passwordInput.classList.add('error');
+        this.inputGroup.classList.add('error');
+
+        // Clear password
+        this.passwordInput.value = '';
+        this.passwordInput.focus();
+
+        // Remove shake after animation
+        setTimeout(() => {
+            this.loginContainer.classList.remove('shake');
+        }, 500);
+    }
+
+    clearError() {
+        this.passwordInput.classList.remove('error');
+        this.inputGroup.classList.remove('error');
+    }
+
+    onLoginComplete() {
+        // This function is called after successful login
+        console.log('[SYSTEM] Login successful. Initiating boot sequence...');
+
+        // Start the boot sequence now
+        if (typeof runBootSequence === 'function') {
+            runBootSequence();
+        }
+    }
+
+    createMatrixRain() {
+        // Create canvas for matrix rain effect
+        const canvas = document.createElement('canvas');
+        canvas.id = 'login-matrix-canvas';
+        canvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        `;
+
+        const background = document.querySelector('.login-background');
+        if (!background) return;
+        background.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Matrix characters
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 14;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = Array(columns).fill(1);
+
+        // Animation
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        };
+
+        // Store interval for cleanup
+        this.matrixInterval = setInterval(draw, 50);
+    }
+
+    toggleHighContrast() {
+        document.body.classList.toggle('high-contrast-login');
+
+        // Add high contrast styles if not already present
+        if (!document.getElementById('high-contrast-styles')) {
+            const style = document.createElement('style');
+            style.id = 'high-contrast-styles';
+            style.textContent = `
+                body.high-contrast-login #login-screen {
+                    filter: contrast(1.5) brightness(1.2);
+                }
+                body.high-contrast-login .login-input {
+                    background: #000 !important;
+                    border-color: #fff !important;
+                    color: #fff !important;
+                }
+                body.high-contrast-login .login-button {
+                    background: #fff !important;
+                    color: #000 !important;
+                    border-color: #fff !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    // Sound effects
+    playKeySound() {
+        if (window.sfx && sfx.initialized) {
+            sfx.playKeyClick();
+        }
+    }
+
+    playSuccessSound() {
+        if (window.sfx && sfx.initialized) {
+            sfx.playSuccessFanfare();
+        }
+    }
+
+    playErrorSound() {
+        if (window.sfx && sfx.initialized) {
+            // Create a quick error beep
+            if (sfx.ctx) {
+                const o = sfx.ctx.createOscillator();
+                const g = sfx.ctx.createGain();
+                o.connect(g);
+                g.connect(sfx.ctx.destination);
+                o.type = 'square';
+                o.frequency.setValueAtTime(200, sfx.ctx.currentTime);
+                o.frequency.setValueAtTime(150, sfx.ctx.currentTime + 0.1);
+                g.gain.setValueAtTime(0.1, sfx.ctx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, sfx.ctx.currentTime + 0.2);
+                o.start();
+                o.stop(sfx.ctx.currentTime + 0.2);
+            }
+        }
+    }
+}
+
+// Initialize Login System when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.loginSystem = new LoginSystem();
+});

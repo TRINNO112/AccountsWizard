@@ -31,7 +31,8 @@
       "Bash(npm run dev:*)",
       "Bash(start YouthParliament_Script.html)",
       "Bash(start script.html)",
-      "Bash(start zip.html)"
+      "Bash(start zip.html)",
+      "Bash(\"c:\\\\Users\\\\Amit Pathak\\\\Documents\\\\AccountsWIzard\\\\future-clock\\\\style.css\" -i \"login\\\\|windows\\\\|sign in\\\\|password\")"
     ]
   }
 }

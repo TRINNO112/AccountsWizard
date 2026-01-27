@@ -44,6 +44,66 @@
     <!-- Particle Canvas (Background) -->
     <canvas id="particle-canvas"></canvas>
 
+    <!-- Windows Login Screen -->
+    <div id="login-screen">
+        <div class="login-background"></div>
+        <div class="login-container">
+            <div class="login-header">
+                <div class="windows-logo">
+                    <div class="logo-square"></div>
+                    <div class="logo-square"></div>
+                    <div class="logo-square"></div>
+                    <div class="logo-square"></div>
+                </div>
+                <h2 class="login-title">Trinno OS</h2>
+            </div>
+
+            <div class="login-form">
+                <div class="user-avatar">
+                    <div class="avatar-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="user-name">Administrator</div>
+
+                <form id="login-form">
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password-input" class="login-input" placeholder="Enter password" autocomplete="off">
+                        <button type="button" class="toggle-password" id="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <div class="login-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember-me"> Keep me signed in
+                        </label>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <span class="button-text">Sign in</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+
+                    <div class="login-hint">
+                        Default password: <span class="neon-text-cyan">trinno2025</span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="login-footer">
+                <button class="footer-btn" id="power-btn">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <button class="footer-btn" id="ease-btn">
+                    <i class="fas fa-universal-access"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Boot Screen -->
     <div id="boot-screen">
         <canvas id="matrix-canvas"></canvas>
@@ -126,15 +186,52 @@
     <main class="container">
         <!-- Hero Section -->
         <section id="hero" class="full-screen-section">
+            <!-- Floating Code Snippets -->
+            <div class="floating-code-container" id="floating-code">
+                <div class="code-snippet" style="--delay: 0s; --x: 10%; --y: 20%;">const future = await dream();</div>
+                <div class="code-snippet" style="--delay: 2s; --x: 85%; --y: 15%;">if (passion) { build(); }</div>
+                <div class="code-snippet" style="--delay: 4s; --x: 5%; --y: 70%;">while (alive) { code(); }</div>
+                <div class="code-snippet" style="--delay: 6s; --x: 80%; --y: 75%;">return success;</div>
+                <div class="code-snippet" style="--delay: 1s; --x: 15%; --y: 45%;">import { Skills } from 'life';</div>
+                <div class="code-snippet" style="--delay: 3s; --x: 75%; --y: 50%;">export default Trinno;</div>
+                <div class="code-snippet" style="--delay: 5s; --x: 50%; --y: 85%;">// TODO: Change the world</div>
+                <div class="code-snippet" style="--delay: 7s; --x: 25%; --y: 10%;">async function redemption() {}</div>
+            </div>
+
             <div class="clock-container sensitive" data-magnet="0.5">
                 <div class="clock-glitch-wrapper">
                     <h1 id="rgb-clock" class="neon-text-cyan">--:--:--</h1>
                     <div class="glitch-layer" id="clock-glitch">&nbsp;</div>
+                    <!-- Clock pulse ring -->
+                    <div class="clock-pulse-ring"></div>
                 </div>
-                <h2 class="hero-title font-display neon-text-pink"
-                    style="text-align:center; font-size: 2rem; margin-top: 1rem;">THE REDEMPTION ARC</h2>
-                <div class="architect-tag font-mono">
-                    <span class="bracket">[</span> System Architect: Trinno Asphalt <span class="bracket">]</span>
+                <!-- Animated Hero Title -->
+                <h2 class="hero-title font-display neon-text-pink" id="hero-title">
+                    <span class="title-letter" style="--i: 0">T</span>
+                    <span class="title-letter" style="--i: 1">H</span>
+                    <span class="title-letter" style="--i: 2">E</span>
+                    <span class="title-letter" style="--i: 3">&nbsp;</span>
+                    <span class="title-letter" style="--i: 4">R</span>
+                    <span class="title-letter" style="--i: 5">E</span>
+                    <span class="title-letter" style="--i: 6">D</span>
+                    <span class="title-letter" style="--i: 7">E</span>
+                    <span class="title-letter" style="--i: 8">M</span>
+                    <span class="title-letter" style="--i: 9">P</span>
+                    <span class="title-letter" style="--i: 10">T</span>
+                    <span class="title-letter" style="--i: 11">I</span>
+                    <span class="title-letter" style="--i: 12">O</span>
+                    <span class="title-letter" style="--i: 13">N</span>
+                    <span class="title-letter" style="--i: 14">&nbsp;</span>
+                    <span class="title-letter" style="--i: 15">A</span>
+                    <span class="title-letter" style="--i: 16">R</span>
+                    <span class="title-letter" style="--i: 17">C</span>
+                </h2>
+                <!-- Typing Architect Tag -->
+                <div class="architect-tag font-mono" id="architect-tag">
+                    <span class="bracket">[</span>
+                    <span class="typing-text" id="architect-text"></span>
+                    <span class="typing-cursor-hero">|</span>
+                    <span class="bracket">]</span>
                 </div>
             </div>
             <div class="scroll-indicator"><span>SCROLL TO ACCESS DATA</span>
@@ -146,6 +243,10 @@
         <section id="story" class="content-section">
             <h2 class="section-title neon-text-pink">THE ORIGIN LOG</h2>
             <div class="timeline">
+                <!-- Data Stream Effect -->
+                <div class="timeline-data-stream" id="timeline-data-stream"></div>
+                <!-- Traveling Particles -->
+                <div class="timeline-particles" id="timeline-particles"></div>
 
                 <!-- Grade 08 -->
                 <div class="timeline-item left glass-panel sensitive" data-magnet="0.2">
@@ -192,31 +293,184 @@
         <section id="modules" class="content-section">
             <h2 class="section-title neon-text-purple">INSTALLED MODULES</h2>
             <div class="modules-grid">
-                <div class="module sensitive" data-magnet="0.3"><i class="fab fa-react"></i><span>REACT.JS</span></div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fab fa-js"></i><span>JAVASCRIPT</span></div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fab fa-css3-alt"></i><span>TAILWIND</span>
+                <!-- React.js -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="90">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fab fa-react"></i></div>
+                            <span class="module-name">REACT.JS</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 90%"></div></div>
+                            <span class="module-percent">90%</span>
+                            <span class="module-status">ADVANCED</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-server"></i><span>FIREBASE</span></div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-cube"></i><span>THREE.JS</span></div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-code"></i><span>TYPESCRIPT</span></div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-terminal"></i><span>CLI OPS</span>
+
+                <!-- JavaScript -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="95">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fab fa-js"></i></div>
+                            <span class="module-name">JAVASCRIPT</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 95%"></div></div>
+                            <span class="module-percent">95%</span>
+                            <span class="module-status">EXPERT</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="module sensitive" data-magnet="0.3"><i class="fas fa-magic"></i><span>GSAP</span></div>
+
+                <!-- Tailwind -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="85">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fab fa-css3-alt"></i></div>
+                            <span class="module-name">TAILWIND</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 85%"></div></div>
+                            <span class="module-percent">85%</span>
+                            <span class="module-status">ADVANCED</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Firebase -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="75">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fas fa-server"></i></div>
+                            <span class="module-name">FIREBASE</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 75%"></div></div>
+                            <span class="module-percent">75%</span>
+                            <span class="module-status">PROFICIENT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three.js -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="60">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fas fa-cube"></i></div>
+                            <span class="module-name">THREE.JS</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 60%"></div></div>
+                            <span class="module-percent">60%</span>
+                            <span class="module-status">LEARNING</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TypeScript -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="80">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fas fa-code"></i></div>
+                            <span class="module-name">TYPESCRIPT</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 80%"></div></div>
+                            <span class="module-percent">80%</span>
+                            <span class="module-status">ADVANCED</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLI OPS -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="70">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fas fa-terminal"></i></div>
+                            <span class="module-name">CLI OPS</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 70%"></div></div>
+                            <span class="module-percent">70%</span>
+                            <span class="module-status">PROFICIENT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GSAP -->
+                <div class="module-card sensitive" data-magnet="0.3" data-skill="85">
+                    <div class="module-inner">
+                        <div class="module-front">
+                            <div class="module-icon"><i class="fas fa-magic"></i></div>
+                            <span class="module-name">GSAP</span>
+                            <div class="module-glow"></div>
+                        </div>
+                        <div class="module-back">
+                            <span class="module-level-label">PROFICIENCY</span>
+                            <div class="module-level-bar"><div class="module-level-fill" style="--level: 85%"></div></div>
+                            <span class="module-percent">85%</span>
+                            <span class="module-status">ADVANCED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Skills Total Stats -->
+            <div class="skills-stats" id="skills-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="total-skills">8</span>
+                    <span class="stat-label">MODULES</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="avg-proficiency">80%</span>
+                    <span class="stat-label">AVG LEVEL</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="expert-count">2</span>
+                    <span class="stat-label">EXPERT</span>
+                </div>
             </div>
         </section>
 
         <!-- Tech Portfolio -->
         <section id="showcase" class="content-section">
             <h2 class="section-title neon-text-cyan">THE LEGACY ARCHIVE</h2>
-            <div class="grid-showcase">
+            <div class="grid-showcase" id="projects-grid">
 
                 <!-- Accounts Wizard (Current) -->
-                <div class="tech-card sensitive" data-magnet="0.5">
-                    <div class="status">STATUS: ACTIVE</div>
-                    <span class="stat-line">ID: TRINNO-001 | LOC: CURRENT WORKSPACE</span>
-                    <h3>Accounts Wizard</h3>
-                    <p>You are here. This page is built within the project structure. This is the evolution of financial
-                        logic and system architecture.</p>
+                <div class="tech-card sensitive" data-magnet="0.5" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status">STATUS: ACTIVE</div>
+                        <span class="stat-line">ID: TRINNO-001 | LOC: CURRENT WORKSPACE</span>
+                        <h3>Accounts Wizard</h3>
+                        <p>You are here. This page is built within the project structure. This is the evolution of financial
+                            logic and system architecture.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="js"><i class="fab fa-js"></i> JS</span>
+                            <span class="tech-badge" data-tech="css"><i class="fab fa-css3-alt"></i> CSS</span>
+                            <span class="tech-badge" data-tech="gsap"><i class="fas fa-magic"></i> GSAP</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -230,15 +484,28 @@
                             <span class="preview-hint">CLICK TO ACCESS CORE</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- Minecraft Guide -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status">STATUS: DEPLOYED</div>
-                    <span class="stat-line">ID: TRINNO-002 | TYPE: GUIDE</span>
-                    <h3>Minecraft Guide</h3>
-                    <p>The Genesis. A comprehensive handbook for new players to survive the blocky wilderness. Helped
-                        new players understand the game from zero.</p>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status">STATUS: DEPLOYED</div>
+                        <span class="stat-line">ID: TRINNO-002 | TYPE: GUIDE</span>
+                        <h3>Minecraft Guide</h3>
+                        <p>The Genesis. A comprehensive handbook for new players to survive the blocky wilderness. Helped
+                            new players understand the game from zero.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="html"><i class="fab fa-html5"></i> HTML</span>
+                            <span class="tech-badge" data-tech="css"><i class="fab fa-css3-alt"></i> CSS</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -252,15 +519,28 @@
                             <span class="preview-hint">SYSTEM ARCHIVED</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- Chaos Hub -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status waiting">STATUS: COMING SOON</div>
-                    <span class="stat-line">ID: TRINNO-003 | TYPE: HUB</span>
-                    <h3>Chaos Hub</h3>
-                    <p>An experiment in disorder. A useless project idea that proved sometimes chaos spawns the greatest
-                        creativity. Pure playground.</p>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status waiting">STATUS: COMING SOON</div>
+                        <span class="stat-line">ID: TRINNO-003 | TYPE: HUB</span>
+                        <h3>Chaos Hub</h3>
+                        <p>An experiment in disorder. A useless project idea that proved sometimes chaos spawns the greatest
+                            creativity. Pure playground.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="react"><i class="fab fa-react"></i> REACT</span>
+                            <span class="tech-badge" data-tech="node"><i class="fab fa-node-js"></i> NODE</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -269,15 +549,29 @@
                             <span class="preview-hint">VIEW EXPERIMENTS</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- ArthShastra -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status">STATUS: EDUCATIONAL</div>
-                    <span class="stat-line">ID: TRINNO-004 | SUBJ: ECONOMICS</span>
-                    <h3>ArthShastra</h3>
-                    <p>Grade 11 Economics Logic Core. Simplifying complex markets for the next generation. A tool for
-                        students to master the subject.</p>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status">STATUS: EDUCATIONAL</div>
+                        <span class="stat-line">ID: TRINNO-004 | SUBJ: ECONOMICS</span>
+                        <h3>ArthShastra</h3>
+                        <p>Grade 11 Economics Logic Core. Simplifying complex markets for the next generation. A tool for
+                            students to master the subject.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="js"><i class="fab fa-js"></i> JS</span>
+                            <span class="tech-badge" data-tech="css"><i class="fab fa-css3-alt"></i> CSS</span>
+                            <span class="tech-badge" data-tech="html"><i class="fab fa-html5"></i> HTML</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -290,15 +584,28 @@
                             <span class="preview-hint">ANALYZING MARKETS...</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- OSEM Yearbook -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status">STATUS: ARCHIVED</div>
-                    <span class="stat-line">ID: TRINNO-005 | STACK: TS + TAILWIND</span>
-                    <h3>OSEM Yearbook</h3>
-                    <p>A functional digital flipbook engineered with TypeScript & Tailwind CSS. Preserving memories in
-                        executable code.</p>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status">STATUS: ARCHIVED</div>
+                        <span class="stat-line">ID: TRINNO-005 | STACK: TS + TAILWIND</span>
+                        <h3>OSEM Yearbook</h3>
+                        <p>A functional digital flipbook engineered with TypeScript & Tailwind CSS. Preserving memories in
+                            executable code.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="ts"><i class="fas fa-code"></i> TS</span>
+                            <span class="tech-badge" data-tech="tailwind"><i class="fab fa-css3-alt"></i> TAILWIND</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -312,17 +619,29 @@
                             <span class="preview-hint">VIEW MEMORY REEL</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- Nerd Tutors -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status">STATUS: LIVE</div>
-                    <span class="stat-line">ID: TRINNO-006 | API: GOOGLE</span>
-                    <h3>Nerd Tutors</h3>
-                    <p>Educational platform leveraging Google APIs to connect knowledge with curiosity. bridging the gap
-                        between tutors and students.</p>
-                    <a href="https://nerdtutors25.vercel.app/" target="_blank" class="btn-access">VISIT
-                        PLATFORM</a>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status">STATUS: LIVE</div>
+                        <span class="stat-line">ID: TRINNO-006 | API: GOOGLE</span>
+                        <h3>Nerd Tutors</h3>
+                        <p>Educational platform leveraging Google APIs to connect knowledge with curiosity. bridging the gap
+                            between tutors and students.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="react"><i class="fab fa-react"></i> REACT</span>
+                            <span class="tech-badge" data-tech="firebase"><i class="fas fa-server"></i> FIREBASE</span>
+                            <span class="tech-badge" data-tech="api"><i class="fas fa-plug"></i> API</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -335,6 +654,7 @@
                             <span class="preview-hint">NETWORK ACTIVE</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- Misc Adventure -->
@@ -380,6 +700,182 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- Stats Dashboard Section -->
+        <section id="stats-dashboard" class="content-section">
+            <h2 class="section-title neon-text-green">SYSTEM METRICS</h2>
+            <div class="stats-grid">
+                <!-- Coding Stats -->
+                <div class="stat-card glass-panel" data-stat="projects">
+                    <div class="stat-icon"><i class="fas fa-code-branch"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" data-target="8">0</span>
+                        <span class="stat-label">PROJECTS DEPLOYED</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 80%"></div></div>
+                </div>
+
+                <div class="stat-card glass-panel" data-stat="commits">
+                    <div class="stat-icon"><i class="fas fa-history"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" data-target="500">0</span>
+                        <span class="stat-label">GIT COMMITS</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 65%"></div></div>
+                </div>
+
+                <div class="stat-card glass-panel" data-stat="lines">
+                    <div class="stat-icon"><i class="fas fa-file-code"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" data-target="25000">0</span>
+                        <span class="stat-label">LINES OF CODE</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 75%"></div></div>
+                </div>
+
+                <div class="stat-card glass-panel" data-stat="hours">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" data-target="1200">0</span>
+                        <span class="stat-label">CODING HOURS</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 60%"></div></div>
+                </div>
+
+                <div class="stat-card glass-panel" data-stat="coffee">
+                    <div class="stat-icon"><i class="fas fa-coffee"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" data-target="842">0</span>
+                        <span class="stat-label">CUPS OF COFFEE</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 90%"></div></div>
+                </div>
+
+                <div class="stat-card glass-panel" data-stat="bugs">
+                    <div class="stat-icon"><i class="fas fa-bug"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" data-target="347">0</span>
+                        <span class="stat-label">BUGS SQUASHED</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 70%"></div></div>
+                </div>
+            </div>
+
+            <!-- Achievement Badges -->
+            <div class="achievements-container">
+                <h3 class="subsection-title font-mono"><i class="fas fa-trophy"></i> UNLOCKED ACHIEVEMENTS</h3>
+                <div class="achievements-grid">
+                    <div class="achievement-badge unlocked" data-achievement="first-commit">
+                        <div class="badge-icon"><i class="fas fa-seedling"></i></div>
+                        <span class="badge-name">First Commit</span>
+                        <span class="badge-desc">Made first git commit</span>
+                    </div>
+                    <div class="achievement-badge unlocked" data-achievement="night-owl">
+                        <div class="badge-icon"><i class="fas fa-moon"></i></div>
+                        <span class="badge-name">Night Owl</span>
+                        <span class="badge-desc">Coded past midnight</span>
+                    </div>
+                    <div class="achievement-badge unlocked" data-achievement="bug-hunter">
+                        <div class="badge-icon"><i class="fas fa-crosshairs"></i></div>
+                        <span class="badge-name">Bug Hunter</span>
+                        <span class="badge-desc">Fixed 100+ bugs</span>
+                    </div>
+                    <div class="achievement-badge unlocked" data-achievement="framework-master">
+                        <div class="badge-icon"><i class="fas fa-layer-group"></i></div>
+                        <span class="badge-name">Framework Master</span>
+                        <span class="badge-desc">Learned 5+ frameworks</span>
+                    </div>
+                    <div class="achievement-badge unlocked" data-achievement="open-source">
+                        <div class="badge-icon"><i class="fab fa-github"></i></div>
+                        <span class="badge-name">Open Source</span>
+                        <span class="badge-desc">Published on GitHub</span>
+                    </div>
+                    <div class="achievement-badge locked" data-achievement="100-stars">
+                        <div class="badge-icon"><i class="fas fa-star"></i></div>
+                        <span class="badge-name">Star Collector</span>
+                        <span class="badge-desc">Get 100 GitHub stars</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Terminal Section -->
+        <section id="contact-terminal" class="content-section">
+            <h2 class="section-title neon-text-pink">ESTABLISH CONNECTION</h2>
+            <div class="contact-container">
+                <div class="terminal-contact glass-panel">
+                    <div class="terminal-header-contact">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title font-mono">CONTACT_TERMINAL v2.0</span>
+                    </div>
+                    <div class="terminal-body-contact">
+                        <div class="terminal-output-contact" id="contact-output">
+                            <div class="term-line-contact">> TRINNO COMMUNICATION SYSTEM INITIALIZED</div>
+                            <div class="term-line-contact">> SECURE CHANNEL: ACTIVE</div>
+                            <div class="term-line-contact">> AWAITING TRANSMISSION...</div>
+                            <div class="term-line-contact">&nbsp;</div>
+                        </div>
+                        <form id="contact-form" class="terminal-form">
+                            <div class="form-row">
+                                <span class="prompt-label">NAME:</span>
+                                <input type="text" id="contact-name" class="terminal-input-field" placeholder="Enter your identifier" required>
+                            </div>
+                            <div class="form-row">
+                                <span class="prompt-label">EMAIL:</span>
+                                <input type="email" id="contact-email" class="terminal-input-field" placeholder="Enter communication channel" required>
+                            </div>
+                            <div class="form-row">
+                                <span class="prompt-label">SUBJECT:</span>
+                                <input type="text" id="contact-subject" class="terminal-input-field" placeholder="Transmission subject">
+                            </div>
+                            <div class="form-row message-row">
+                                <span class="prompt-label">MESSAGE:</span>
+                                <textarea id="contact-message" class="terminal-input-field" placeholder="Enter your message..." rows="4" required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-transmit">
+                                    <i class="fas fa-paper-plane"></i> TRANSMIT MESSAGE
+                                </button>
+                                <button type="reset" class="btn-clear">
+                                    <i class="fas fa-trash"></i> CLEAR
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="quick-links">
+                    <h3 class="subsection-title font-mono"><i class="fas fa-link"></i> DIRECT CHANNELS</h3>
+                    <div class="links-grid">
+                        <a href="https://github.com/trinno112" target="_blank" class="link-card">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                            <span class="link-handle">@trinno112</span>
+                        </a>
+                        <a href="mailto:trinnoasphalt@gmail.com" class="link-card">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                            <span class="link-handle">trinnoasphalt@gmail.com</span>
+                        </a>
+                        <a href="#" class="link-card">
+                            <i class="fab fa-discord"></i>
+                            <span>Discord</span>
+                            <span class="link-handle">trinno_asphalt</span>
+                        </a>
+                        <a href="#" class="link-card">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                            <span class="link-handle">Coming Soon</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 
