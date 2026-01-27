@@ -6,23 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SECURE TRANSMISSION | TRINNO ASPHALT</title>
     <link rel="icon" type="image/png" href="favicon.png?v=2">
-    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root {
-            --bg-color: #050505;
+            --bg-color: #000;
             --neon-red: #ff3333;
             --neon-green: #00ff41;
+            --neon-cyan: #00f3ff;
             --text-color: #e0e0e0;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-display: 'Orbitron', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             margin: 0;
             min-height: 100vh;
             overflow-x: hidden;
@@ -31,37 +40,270 @@
             align-items: center;
         }
 
-        .container {
-            text-align: center;
-            max-width: 650px;
-            padding: 2rem;
-            position: relative;
-            z-index: 2;
+        /* Matrix Rain Canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.12;
+            pointer-events: none;
         }
 
+        /* Binary Overlay - shown during decryption */
+        #binary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--neon-green);
+            overflow: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        #binary-overlay.active {
+            opacity: 0.3;
+        }
+
+        .binary-column {
+            position: absolute;
+            top: -100%;
+            animation: binaryFall linear infinite;
+            white-space: nowrap;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        @keyframes binaryFall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        /* CRT Monitor Frame */
+        .crt-frame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .crt-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at center, transparent 0%, transparent 70%, rgba(0,0,0,0.4) 100%);
+            pointer-events: none;
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 4px 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Classified Watermark */
+        .classified-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-family: var(--font-display);
+            font-size: 8vw;
+            color: rgba(255, 51, 51, 0.03);
+            text-transform: uppercase;
+            letter-spacing: 20px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            user-select: none;
+        }
+
+        /* Corner Decorations */
+        .corner-decoration {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .corner-decoration.top-left {
+            top: 20px;
+            left: 20px;
+            border-top: 2px solid var(--neon-red);
+            border-left: 2px solid var(--neon-red);
+        }
+
+        .corner-decoration.top-right {
+            top: 20px;
+            right: 20px;
+            border-top: 2px solid var(--neon-red);
+            border-right: 2px solid var(--neon-red);
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 2px solid var(--neon-green);
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 2px solid var(--neon-green);
+            border-right: 2px solid var(--neon-green);
+        }
+
+        .corner-decoration::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+        }
+
+        .corner-decoration.top-left::after {
+            top: -2px;
+            left: -2px;
+            background: var(--neon-red);
+            box-shadow: 0 0 10px var(--neon-red);
+        }
+
+        .corner-decoration.top-right::after {
+            top: -2px;
+            right: -2px;
+            background: var(--neon-red);
+            box-shadow: 0 0 10px var(--neon-red);
+        }
+
+        .corner-decoration.bottom-left::after {
+            bottom: -2px;
+            left: -2px;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .corner-decoration.bottom-right::after {
+            bottom: -2px;
+            right: -2px;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Main Container */
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 700px;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Lock Icon */
         .lock-icon {
             width: 80px;
             height: 80px;
             margin-bottom: 2rem;
             fill: var(--neon-red);
-            filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.5));
-            transition: all 0.5s;
+            filter: drop-shadow(0 0 15px rgba(255, 51, 51, 0.6));
+            transition: all 0.8s ease;
         }
 
+        .lock-icon.unlocked {
+            fill: var(--neon-green);
+            filter: drop-shadow(0 0 20px rgba(0, 255, 65, 0.7));
+        }
+
+        /* Status Text */
         .status-text {
             color: var(--neon-red);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 2rem;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+            transition: all 0.5s ease;
         }
 
+        .status-text.success {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        /* Message Box - Terminal Style */
         .message-box {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             border: 1px solid var(--neon-red);
+            padding: 0;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-box.unlocked {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+        }
+
+        /* Terminal Header */
+        .terminal-header {
+            background: var(--neon-red);
+            color: #000;
+            padding: 8px 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.5s ease;
+        }
+
+        .terminal-header.unlocked {
+            background: var(--neon-green);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Message Content */
+        .message-content {
             padding: 2rem;
-            border-radius: 4px;
-            transition: all 0.5s;
         }
 
         .hidden-content {
@@ -69,60 +311,235 @@
             text-align: left;
         }
 
+        /* Decrypt Button - Terminal Style */
         .btn-decrypt {
+            width: 100%;
+            padding: 14px 25px;
             background: transparent;
             border: 1px solid var(--neon-red);
             color: var(--neon-red);
-            padding: 1rem 2rem;
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: all 0.3s;
-            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .btn-decrypt::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-red);
+            transition: left 0.3s ease;
+            z-index: -1;
         }
 
         .btn-decrypt:hover {
-            background: var(--neon-red);
             color: #000;
-            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+            box-shadow: 0 0 25px rgba(255, 51, 51, 0.5);
         }
 
-        /* Scanline */
-        .scanline {
-            position: fixed;
-            top: 0;
+        .btn-decrypt:hover::before {
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
-            z-index: 99;
         }
 
-        .back-link {
+        .btn-decrypt:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-decrypt i {
+            margin-right: 8px;
+        }
+
+        /* Apology Text Styling */
+        .apology-text p {
+            margin: 0;
+            padding: 0.8rem 0;
+            line-height: 1.9;
+            opacity: 0;
+            transform: translateY(10px);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .apology-text p:last-of-type {
+            border-bottom: none;
+        }
+
+        .apology-text p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .apology-text p:hover {
+            background: rgba(0, 255, 65, 0.05);
+            padding-left: 10px;
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .apology-text .greeting {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .apology-text .signature {
+            text-align: right;
+            color: var(--neon-green);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Typing Cursor */
+        .typing-cursor {
             display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--neon-green);
+            margin-left: 2px;
+            animation: cursorBlink 0.8s ease infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Timestamp */
+        .timestamp {
+            font-size: 0.7rem;
+            color: rgba(0, 255, 65, 0.5);
+            margin-top: 1.5rem;
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .timestamp.visible {
+            opacity: 1;
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             margin-top: 2rem;
-            color: #888;
+            padding: 10px 20px;
+            color: #666;
             text-decoration: none;
             font-size: 0.8rem;
-            transition: all 0.3s;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
         }
 
         .back-link:hover {
             color: var(--neon-green);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
         }
 
-        .apology-text p {
-            margin: 1rem 0;
-            line-height: 1.8;
+        /* Decryption Status Display */
+        .decrypt-status {
+            font-size: 0.8rem;
+            color: var(--neon-red);
+            margin-bottom: 1rem;
+            min-height: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* Audio Indicator */
+        .audio-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: var(--neon-green);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 50;
+        }
+
+        .audio-indicator.active {
+            opacity: 0.6;
+        }
+
+        .audio-indicator i {
+            animation: audioPulse 1.5s ease infinite;
+        }
+
+        @keyframes audioPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .message-content {
+                padding: 1.5rem;
+            }
+
+            .classified-watermark {
+                font-size: 15vw;
+            }
+
+            .corner-decoration {
+                width: 40px;
+                height: 40px;
+            }
+
+            .lock-icon {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Matrix Rain Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Binary Overlay -->
+    <div id="binary-overlay"></div>
+
+    <!-- CRT Frame -->
+    <div class="crt-frame"></div>
+
+    <!-- Scanlines -->
     <div class="scanline"></div>
+
+    <!-- Classified Watermark -->
+    <div class="classified-watermark">CLASSIFIED</div>
+
+    <!-- Corner Decorations -->
+    <div class="corner-decoration top-left"></div>
+    <div class="corner-decoration top-right"></div>
+    <div class="corner-decoration bottom-left"></div>
+    <div class="corner-decoration bottom-right"></div>
+
+    <!-- Audio Indicator -->
+    <div class="audio-indicator" id="audio-indicator">
+        <i class="fas fa-music"></i>
+        <span>AMBIENT AUDIO ACTIVE</span>
+    </div>
 
     <div class="container">
         <!-- SVG Lock Icon -->
@@ -131,140 +548,554 @@
                 d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM12 17C11.448 17 11 16.552 11 16V14C11 13.448 11.448 13 12 13C12.552 13 13 13.448 13 14V16C13 16.552 12.552 17 12 17Z" />
         </svg>
 
-        <div class="status-text" id="status-text">[ENCRYPTED]</div>
+        <div class="status-text" id="status-text">[ENCRYPTED TRANSMISSION]</div>
 
         <div class="message-box" id="msg-box">
-            <div id="locked-state">
-                <p>ACCESS DENIED. BIOMETRIC AUTHENTICATION REQUIRED.</p>
-                <button class="btn-decrypt" id="decrypt-btn">INITIATE DECRYPTION</button>
+            <div class="terminal-header" id="terminal-header">
+                <span>SECURE_MESSAGE.dat</span>
+                <div class="terminal-dots">
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                </div>
             </div>
 
-            <div id="unlocked-state" class="hidden-content apology-text">
-                <p style="color: var(--neon-green); margin-bottom: 1.5rem;">> ACCESS GRANTED</p>
-                <p>To my friends and unexpected visitors,</p>
-                <p>I know I've been absent. The code took over. The systems required architecture. But silence doesn't
-                    mean I forgot.</p>
-                <p>I really would like to apologize if I ever made you feel ignored. That was never the intention.
-                    Building this was my way of staying connected, even when I couldn't be there in person.</p>
-                <p>This archive is my way of saying: I'm still here. And I've been building... for us.</p>
-                <p style="text-align: right; margin-top: 1.5rem; color: var(--neon-green);">- Trinno Asphalt</p>
+            <div class="message-content">
+                <div id="locked-state">
+                    <p style="margin-bottom: 1rem; color: #888;">ACCESS LEVEL: <span style="color: var(--neon-red);">RESTRICTED</span></p>
+                    <p style="margin-bottom: 1rem;">This transmission contains encrypted personal data.</p>
+                    <p style="margin-bottom: 1rem;">Biometric authentication required to proceed.</p>
+                    <div class="decrypt-status" id="decrypt-status"></div>
+                    <button class="btn-decrypt" id="decrypt-btn">
+                        <i class="fas fa-unlock-alt"></i>
+                        <span id="btn-text">INITIATE DECRYPTION</span>
+                    </button>
+                </div>
 
-                <a href="index.html" class="back-link">
-                    << RETURN TO SYSTEM CORE</a>
+                <div id="unlocked-state" class="hidden-content apology-text">
+                    <p class="greeting" id="greeting"></p>
+                    <p id="para1"></p>
+                    <p id="para2"></p>
+                    <p id="para3"></p>
+                    <p class="signature" id="signature"></p>
+                    <div class="timestamp" id="timestamp"></div>
+                </div>
             </div>
         </div>
+
+        <a href="index.html" class="back-link" id="back-link" style="opacity: 0; pointer-events: none;">
+            <i class="fas fa-arrow-left"></i>
+            <span>RETURN TO SYSTEM CORE</span>
+        </a>
     </div>
 
     <script>
-        // --- AUDIO ENGINE ---
-        let audioCtx = null;
+        // ============================================
+        // MATRIX RAIN EFFECT (Subtle & Slow)
+        // ============================================
+        class MatrixRain {
+            constructor() {
+                this.canvas = document.getElementById('matrix-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
+                this.fontSize = 14;
+                this.columns = 0;
+                this.drops = [];
 
-        function initAudio() {
-            if (audioCtx) return;
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-        }
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                this.animate();
+            }
 
-        function playAccessGrantedSound() {
-            if (!audioCtx) return;
-            // Deep, concerned tone
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.columns = Math.floor(this.canvas.width / this.fontSize);
+                this.drops = Array(this.columns).fill(1);
+            }
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(80, audioCtx.currentTime); // Very low
-            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.3);
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 1);
+            animate() {
+                // Slower fade for more subtle effect
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+                this.ctx.fillStyle = '#00ff41';
+                this.ctx.font = `${this.fontSize}px monospace`;
 
-            osc.start();
-            osc.stop(audioCtx.currentTime + 1.5);
-        }
+                for (let i = 0; i < this.drops.length; i++) {
+                    // Only update some columns each frame for slower effect
+                    if (Math.random() > 0.7) continue;
 
-        function playSadAmbientDrone() {
-            if (!audioCtx) return;
-            // Low, melancholic drone
-            const osc = audioCtx.createOscillator();
-            const osc2 = audioCtx.createOscillator();
-            const filter = audioCtx.createBiquadFilter();
-            const gain = audioCtx.createGain();
+                    const char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                    this.ctx.fillText(char, i * this.fontSize, this.drops[i] * this.fontSize);
 
-            osc.connect(filter);
-            osc2.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.type = 'sawtooth';
-            osc.frequency.value = 55; // Low A
-            osc2.type = 'sine';
-            osc2.frequency.value = 82.41; // Low E
-
-            filter.type = 'lowpass';
-            filter.frequency.value = 200;
-            filter.Q.value = 1;
-
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 2);
-            // Fade in slowly, stays for 30 seconds then fades
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime + 25);
-            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 30);
-
-            osc.start();
-            osc2.start();
-            osc.stop(audioCtx.currentTime + 30);
-            osc2.stop(audioCtx.currentTime + 30);
-        }
-
-        // --- MAIN LOGIC ---
-        const decryptBtn = document.getElementById('decrypt-btn');
-        const lockIcon = document.getElementById('lock-icon');
-        const statusText = document.getElementById('status-text');
-        const msgBox = document.getElementById('msg-box');
-        const lockedState = document.getElementById('locked-state');
-        const unlockedState = document.getElementById('unlocked-state');
-
-        decryptBtn.addEventListener('click', () => {
-            initAudio(); // User gesture required for audio
-
-            decryptBtn.innerText = "DECRYPTING...";
-            decryptBtn.style.opacity = 0.5;
-
-            let steps = 0;
-            const interval = setInterval(() => {
-                statusText.innerText = Math.random() > 0.5 ? "[01010101]" : "[ENCRYPTED]";
-                steps++;
-                if (steps > 5) clearInterval(interval);
-            }, 100);
-
-            setTimeout(() => {
-                // Success State
-                playAccessGrantedSound();
-
-                lockIcon.style.fill = "#00ff41";
-                lockIcon.style.filter = "drop-shadow(0 0 20px rgba(0, 255, 65, 0.5))";
-
-                statusText.innerText = "[UNLOCKED]";
-                statusText.style.color = "#00ff41";
-
-                msgBox.style.borderColor = "#00ff41";
-                msgBox.style.boxShadow = "0 0 30px rgba(0, 255, 65, 0.1)";
-
-                gsap.to(lockedState, {
-                    opacity: 0, duration: 0.5, onComplete: () => {
-                        lockedState.style.display = "none";
-                        unlockedState.style.display = "block";
-                        gsap.fromTo(unlockedState, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
-
-                        // Start sad ambient music after message appears
-                        setTimeout(() => { playSadAmbientDrone(); }, 500);
+                    if (this.drops[i] * this.fontSize > this.canvas.height && Math.random() > 0.99) {
+                        this.drops[i] = 0;
                     }
+                    this.drops[i]++;
+                }
+
+                // Slower animation - 80ms instead of 50ms
+                setTimeout(() => requestAnimationFrame(() => this.animate()), 80);
+            }
+        }
+
+        // ============================================
+        // BINARY OVERLAY EFFECT
+        // ============================================
+        class BinaryOverlay {
+            constructor() {
+                this.container = document.getElementById('binary-overlay');
+                this.columns = 30;
+                this.createColumns();
+            }
+
+            createColumns() {
+                for (let i = 0; i < this.columns; i++) {
+                    const column = document.createElement('div');
+                    column.className = 'binary-column';
+                    column.style.left = `${(i / this.columns) * 100}%`;
+                    column.style.animationDuration = `${3 + Math.random() * 4}s`;
+                    column.style.animationDelay = `${Math.random() * 2}s`;
+                    column.innerHTML = this.generateBinary();
+                    this.container.appendChild(column);
+                }
+            }
+
+            generateBinary() {
+                let binary = '';
+                for (let i = 0; i < 50; i++) {
+                    binary += Math.random() > 0.5 ? '1' : '0';
+                    if (i % 8 === 7) binary += '<br>';
+                }
+                return binary;
+            }
+
+            show() {
+                this.container.classList.add('active');
+            }
+
+            hide() {
+                this.container.classList.remove('active');
+            }
+        }
+
+        // ============================================
+        // AUDIO ENGINE - Enhanced with Piano
+        // ============================================
+        class AudioEngine {
+            constructor() {
+                this.ctx = null;
+                this.initialized = false;
+                this.masterGain = null;
+            }
+
+            init() {
+                if (this.initialized) return;
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+                this.masterGain = this.ctx.createGain();
+                this.masterGain.connect(this.ctx.destination);
+                this.masterGain.gain.value = 0.5;
+                this.initialized = true;
+            }
+
+            // Typing sound for typewriter effect
+            playTypeSound() {
+                if (!this.initialized) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.masterGain);
+
+                osc.type = 'square';
+                osc.frequency.value = 800 + Math.random() * 400;
+                gain.gain.setValueAtTime(0.02, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.03);
+            }
+
+            // Unlock sound
+            playUnlockSound() {
+                if (!this.initialized) return;
+                const notes = [523, 659, 784, 1047]; // C5, E5, G5, C6 - Major arpeggio
+
+                notes.forEach((freq, i) => {
+                    setTimeout(() => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.masterGain);
+
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+
+                        osc.start();
+                        osc.stop(this.ctx.currentTime + 0.4);
+                    }, i * 100);
+                });
+            }
+
+            // Decryption processing sound
+            playDecryptSound() {
+                if (!this.initialized) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                const filter = this.ctx.createBiquadFilter();
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.masterGain);
+
+                osc.type = 'sawtooth';
+                filter.type = 'lowpass';
+                filter.frequency.value = 1000;
+
+                osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(500, this.ctx.currentTime + 0.1);
+                osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.2);
+
+                gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.2);
+            }
+
+            // Ambient Piano Notes - Melancholic
+            playAmbientPiano() {
+                if (!this.initialized) return;
+
+                document.getElementById('audio-indicator').classList.add('active');
+
+                // Piano-like notes using multiple oscillators for richness
+                const playNote = (freq, startTime, duration, velocity = 0.1) => {
+                    // Fundamental
+                    const osc1 = this.ctx.createOscillator();
+                    const osc2 = this.ctx.createOscillator();
+                    const osc3 = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    const filter = this.ctx.createBiquadFilter();
+
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    osc3.connect(gain);
+                    gain.connect(filter);
+                    filter.connect(this.masterGain);
+
+                    // Piano-like timbre
+                    osc1.type = 'sine';
+                    osc1.frequency.value = freq;
+                    osc2.type = 'sine';
+                    osc2.frequency.value = freq * 2; // First harmonic
+                    osc3.type = 'sine';
+                    osc3.frequency.value = freq * 3; // Second harmonic
+
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 2000;
+
+                    // Piano envelope - quick attack, slow decay
+                    gain.gain.setValueAtTime(0, startTime);
+                    gain.gain.linearRampToValueAtTime(velocity, startTime + 0.01);
+                    gain.gain.exponentialRampToValueAtTime(velocity * 0.3, startTime + 0.3);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                    osc1.start(startTime);
+                    osc2.start(startTime);
+                    osc3.start(startTime);
+                    osc1.stop(startTime + duration);
+                    osc2.stop(startTime + duration);
+                    osc3.stop(startTime + duration);
+                };
+
+                // Melancholic chord progression (Am - F - C - G pattern in lower octave)
+                const baseTime = this.ctx.currentTime;
+                const noteSequence = [
+                    // First phrase
+                    { freq: 220, time: 0, dur: 4 },      // A3
+                    { freq: 261.63, time: 0.5, dur: 3.5 }, // C4
+                    { freq: 329.63, time: 1, dur: 3 },   // E4
+
+                    { freq: 174.61, time: 4, dur: 4 },   // F3
+                    { freq: 220, time: 4.5, dur: 3.5 },  // A3
+                    { freq: 261.63, time: 5, dur: 3 },   // C4
+
+                    { freq: 130.81, time: 8, dur: 4 },   // C3
+                    { freq: 196, time: 8.5, dur: 3.5 },  // G3
+                    { freq: 261.63, time: 9, dur: 3 },   // C4
+
+                    { freq: 196, time: 12, dur: 4 },     // G3
+                    { freq: 246.94, time: 12.5, dur: 3.5 }, // B3
+                    { freq: 293.66, time: 13, dur: 3 },  // D4
+
+                    // Second phrase - more emotional
+                    { freq: 220, time: 16, dur: 5 },     // A3
+                    { freq: 277.18, time: 16.5, dur: 4.5 }, // C#4 (minor tension)
+                    { freq: 329.63, time: 17, dur: 4 },  // E4
+
+                    { freq: 174.61, time: 21, dur: 5 },  // F3
+                    { freq: 220, time: 21.5, dur: 4.5 }, // A3
+                    { freq: 293.66, time: 22, dur: 4 },  // D4
+
+                    { freq: 164.81, time: 26, dur: 6 },  // E3
+                    { freq: 207.65, time: 26.5, dur: 5.5 }, // G#3
+                    { freq: 246.94, time: 27, dur: 5 },  // B3
+
+                    // Ending - resolution
+                    { freq: 220, time: 32, dur: 8 },     // A3 (long sustain)
+                    { freq: 261.63, time: 32.5, dur: 7.5 }, // C4
+                    { freq: 329.63, time: 33, dur: 7 },  // E4
+                ];
+
+                noteSequence.forEach(note => {
+                    playNote(note.freq, baseTime + note.time, note.dur, 0.08);
                 });
 
-            }, 1500);
+                // Add subtle low drone
+                const drone = this.ctx.createOscillator();
+                const droneGain = this.ctx.createGain();
+                const droneFilter = this.ctx.createBiquadFilter();
+
+                drone.connect(droneFilter);
+                droneFilter.connect(droneGain);
+                droneGain.connect(this.masterGain);
+
+                drone.type = 'sine';
+                drone.frequency.value = 55; // Low A
+                droneFilter.type = 'lowpass';
+                droneFilter.frequency.value = 150;
+
+                droneGain.gain.setValueAtTime(0, baseTime);
+                droneGain.gain.linearRampToValueAtTime(0.04, baseTime + 2);
+                droneGain.gain.setValueAtTime(0.04, baseTime + 35);
+                droneGain.gain.linearRampToValueAtTime(0.001, baseTime + 40);
+
+                drone.start(baseTime);
+                drone.stop(baseTime + 40);
+            }
+        }
+
+        // ============================================
+        // TYPEWRITER EFFECT
+        // ============================================
+        class Typewriter {
+            constructor(audioEngine) {
+                this.audio = audioEngine;
+                this.cursor = document.createElement('span');
+                this.cursor.className = 'typing-cursor';
+            }
+
+            async type(element, text, speed = 40) {
+                element.innerHTML = '';
+                element.appendChild(this.cursor);
+                element.classList.add('visible');
+
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    const textNode = document.createTextNode(char);
+                    element.insertBefore(textNode, this.cursor);
+
+                    if (char !== ' ' && this.audio) {
+                        this.audio.playTypeSound();
+                    }
+
+                    await this.delay(speed + Math.random() * 20);
+                }
+            }
+
+            removeCursor(element) {
+                if (this.cursor.parentNode === element) {
+                    element.removeChild(this.cursor);
+                }
+            }
+
+            moveCursorTo(element) {
+                element.appendChild(this.cursor);
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // ============================================
+        // MAIN APPLICATION
+        // ============================================
+        class ApologyPage {
+            constructor() {
+                this.matrixRain = new MatrixRain();
+                this.binaryOverlay = new BinaryOverlay();
+                this.audio = new AudioEngine();
+                this.typewriter = new Typewriter(this.audio);
+
+                this.decryptBtn = document.getElementById('decrypt-btn');
+                this.btnText = document.getElementById('btn-text');
+                this.lockIcon = document.getElementById('lock-icon');
+                this.statusText = document.getElementById('status-text');
+                this.msgBox = document.getElementById('msg-box');
+                this.terminalHeader = document.getElementById('terminal-header');
+                this.lockedState = document.getElementById('locked-state');
+                this.unlockedState = document.getElementById('unlocked-state');
+                this.decryptStatus = document.getElementById('decrypt-status');
+                this.backLink = document.getElementById('back-link');
+
+                this.messages = {
+                    greeting: '> ACCESS GRANTED - TRANSMISSION DECRYPTED',
+                    para1: 'To my friends and unexpected visitors,',
+                    para2: 'I know I\'ve been absent. The code took over. The systems required architecture. But silence doesn\'t mean I forgot. I really would like to apologize if I ever made you feel ignored. That was never the intention.',
+                    para3: 'Building this was my way of staying connected, even when I couldn\'t be there in person. This archive is my way of saying: I\'m still here. And I\'ve been building... for us.',
+                    signature: '- Trinno Asphalt',
+                    timestamp: 'TRANSMISSION DATE: ' + new Date().toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }).toUpperCase()
+                };
+
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                this.decryptBtn.addEventListener('click', () => this.decrypt());
+            }
+
+            async decrypt() {
+                // Initialize audio on user interaction
+                this.audio.init();
+
+                // Disable button
+                this.decryptBtn.disabled = true;
+                this.btnText.textContent = 'DECRYPTING...';
+
+                // Show binary overlay
+                this.binaryOverlay.show();
+
+                // Decryption animation
+                const statuses = [
+                    'INITIALIZING DECRYPTION PROTOCOL...',
+                    'BYPASSING SECURITY LAYER 1...',
+                    'BYPASSING SECURITY LAYER 2...',
+                    'DECODING BINARY STREAM...',
+                    'RECONSTRUCTING DATA PACKETS...',
+                    'VERIFYING INTEGRITY...',
+                    'DECRYPTION COMPLETE'
+                ];
+
+                for (let i = 0; i < statuses.length; i++) {
+                    this.decryptStatus.textContent = statuses[i];
+                    this.audio.playDecryptSound();
+
+                    // Random binary flicker on status text
+                    if (i < statuses.length - 1) {
+                        await this.delay(300);
+                        this.statusText.textContent = this.generateRandomBinary();
+                        await this.delay(200);
+                    }
+                }
+
+                // Hide binary overlay
+                this.binaryOverlay.hide();
+
+                // Success state
+                this.audio.playUnlockSound();
+
+                this.lockIcon.classList.add('unlocked');
+                this.statusText.textContent = '[DECRYPTION SUCCESSFUL]';
+                this.statusText.classList.add('success');
+                this.msgBox.classList.add('unlocked');
+                this.terminalHeader.classList.add('unlocked');
+
+                // Transition content
+                await this.delay(500);
+
+                gsap.to(this.lockedState, {
+                    opacity: 0,
+                    duration: 0.5,
+                    onComplete: async () => {
+                        this.lockedState.style.display = 'none';
+                        this.unlockedState.style.display = 'block';
+
+                        // Start ambient piano
+                        await this.delay(300);
+                        this.audio.playAmbientPiano();
+
+                        // Typewriter effect for each paragraph
+                        await this.typewriter.type(
+                            document.getElementById('greeting'),
+                            this.messages.greeting,
+                            30
+                        );
+                        await this.delay(500);
+
+                        await this.typewriter.type(
+                            document.getElementById('para1'),
+                            this.messages.para1,
+                            35
+                        );
+                        await this.delay(300);
+
+                        await this.typewriter.type(
+                            document.getElementById('para2'),
+                            this.messages.para2,
+                            25
+                        );
+                        await this.delay(300);
+
+                        await this.typewriter.type(
+                            document.getElementById('para3'),
+                            this.messages.para3,
+                            25
+                        );
+                        await this.delay(500);
+
+                        await this.typewriter.type(
+                            document.getElementById('signature'),
+                            this.messages.signature,
+                            50
+                        );
+
+                        // Show timestamp
+                        await this.delay(300);
+                        const timestamp = document.getElementById('timestamp');
+                        timestamp.textContent = this.messages.timestamp;
+                        timestamp.classList.add('visible');
+
+                        // Show back link
+                        await this.delay(500);
+                        gsap.to(this.backLink, {
+                            opacity: 1,
+                            duration: 0.5,
+                            onComplete: () => {
+                                this.backLink.style.pointerEvents = 'auto';
+                            }
+                        });
+                    }
+                });
+            }
+
+            generateRandomBinary() {
+                let binary = '[';
+                for (let i = 0; i < 8; i++) {
+                    binary += Math.random() > 0.5 ? '1' : '0';
+                }
+                binary += ']';
+                return binary;
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ApologyPage();
         });
     </script>
 </body>
