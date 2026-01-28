@@ -2071,4 +2071,309 @@ class LoginSystem {
 // Initialize Login System when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.loginSystem = new LoginSystem();
+    // Initialize Footer Audio System
+    window.footerSystem = new FooterAudioSystem();
 });
+
+// ============================================
+// PART 6: FOOTER & AUDIO SYSTEM LOGIC
+// ============================================
+
+class FooterAudioSystem {
+    constructor() {
+        this.footer = document.getElementById('main-footer');
+        this.musicToggle = document.getElementById('music-toggle');
+        this.sfxToggle = document.getElementById('sfx-toggle');
+        this.volumeSlider = document.getElementById('master-volume');
+        this.visualizerCanvas = document.getElementById('audio-visualizer');
+
+        this.bgMusic = null;
+        this.audioContext = null;
+        this.analyser = null;
+        this.dataArray = null;
+        this.isMusicPlaying = false;
+        this.isSfxEnabled = true;
+        this.visualizerActive = false;
+
+        if (this.footer) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.initMatrixBackground();
+        this.initAudioControls();
+        this.initSocialTooltips();
+
+        // Initialize GSAP reveals
+        this.initScrollReveal();
+    }
+
+    initAudioControls() {
+        // SFX Toggle
+        if (this.sfxToggle) {
+            this.sfxToggle.addEventListener('click', () => {
+                this.isSfxEnabled = !this.isSfxEnabled;
+                this.updateBtnState(this.sfxToggle, this.isSfxEnabled, 'SFX: ON', 'SFX: OFF');
+
+                // Mute/Unmute global SFX
+                if (window.sfx) {
+                    if (this.isSfxEnabled) {
+                        sfx.playKeyClick(); // Test sound
+                    }
+                    // We don't actually mute the class, we just control it via flags
+                    // In a real app, we'd update a property on the AudioController
+                }
+            });
+        }
+
+        // Music Toggle
+        if (this.musicToggle) {
+            this.musicToggle.addEventListener('click', () => {
+                if (!this.audioContext) {
+                    this.setupAudioContext();
+                }
+
+                if (this.isMusicPlaying) {
+                    this.pauseMusic();
+                } else {
+                    this.playMusic();
+                }
+
+                this.updateBtnState(this.musicToggle, this.isMusicPlaying, 'AMBIENCE: ON', 'AMBIENCE: OFF');
+            });
+        }
+
+        // Volume Control
+        if (this.volumeSlider) {
+            this.volumeSlider.addEventListener('input', (e) => {
+                const vol = parseFloat(e.target.value);
+                if (this.gainNode) {
+                    this.gainNode.gain.value = vol * 0.5; // Max 0.5 for background
+                }
+                // Update track color
+                const percent = vol * 100;
+                e.target.style.background = `linear-gradient(to right, var(--neon-cyan) 0%, var(--neon-cyan) ${percent}%, rgba(255,255,255,0.1) ${percent}%, rgba(255,255,255,0.1) 100%)`;
+            });
+            // Trigger initial style update
+            this.volumeSlider.dispatchEvent(new Event('input'));
+        }
+    }
+
+    updateBtnState(btn, isActive, onText, offText) {
+        const label = btn.querySelector('.btn-label');
+        if (isActive) {
+            btn.classList.add('active');
+            label.innerText = onText;
+        } else {
+            btn.classList.remove('active');
+            label.innerText = offText;
+        }
+    }
+
+    setupAudioContext() {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        this.gainNode = this.audioContext.createGain();
+        this.analyser = this.audioContext.createAnalyser();
+
+        // Connect nodes
+        this.gainNode.connect(this.analyser);
+        this.analyser.connect(this.audioContext.destination);
+
+        // Configure analyser
+        this.analyser.fftSize = 64;
+        const bufferLength = this.analyser.frequencyBinCount;
+        this.dataArray = new Uint8Array(bufferLength);
+
+        // Set initial volume
+        const vol = this.volumeSlider ? parseFloat(this.volumeSlider.value) : 0.5;
+        this.gainNode.gain.value = vol * 0.5;
+
+        // Create Synthwave drone using oscillators logic
+        // This simulates an ambient track without external assets
+    }
+
+    playMusic() {
+        if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+        }
+
+        this.isMusicPlaying = true;
+        this.visualizerActive = true;
+
+        // Create oscillators for ambient drone
+        const osc1 = this.audioContext.createOscillator();
+        const osc2 = this.audioContext.createOscillator();
+        const osc3 = this.audioContext.createOscillator();
+
+        osc1.type = 'sawtooth';
+        osc1.frequency.value = 55; // Low drone (A1)
+
+        osc2.type = 'sine';
+        osc2.frequency.value = 110; // Octave up (A2)
+
+        osc3.type = 'triangle';
+        osc3.frequency.value = 164.81; // E3
+
+        // Filters for smoother sound
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 400;
+
+        // Individual gains
+        const g1 = this.audioContext.createGain(); g1.gain.value = 0.3;
+        const g2 = this.audioContext.createGain(); g2.gain.value = 0.2;
+        const g3 = this.audioContext.createGain(); g3.gain.value = 0.1;
+
+        // LFO for movement
+        const lfo = this.audioContext.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.1; // Slow pulse
+        const lfoGain = this.audioContext.createGain();
+        lfoGain.gain.value = 200;
+
+        lfo.connect(lfoGain);
+        lfoGain.connect(filter.frequency);
+
+        // Connections
+        osc1.connect(g1);
+        osc2.connect(g2);
+        osc3.connect(g3);
+
+        g1.connect(filter);
+        g2.connect(filter);
+        g3.connect(filter);
+
+        filter.connect(this.gainNode);
+
+        // Start playing
+        const now = this.audioContext.currentTime;
+        osc1.start(now);
+        osc2.start(now);
+        osc3.start(now);
+        lfo.start(now);
+
+        // Store references to stop later
+        this.oscillators = [osc1, osc2, osc3, lfo];
+
+        // Start visualizer
+        this.drawVisualizer();
+
+        // Notify
+        if (window.jarvis) jarvis.speak("Ambient protocols engaged.");
+    }
+
+    pauseMusic() {
+        this.isMusicPlaying = false;
+        this.visualizerActive = false;
+
+        // Stop all oscillators
+        if (this.oscillators) {
+            const now = this.audioContext.currentTime;
+            this.oscillators.forEach(osc => {
+                try {
+                    osc.stop(now + 0.1);
+                } catch(e) {}
+            });
+            this.oscillators = [];
+        }
+    }
+
+    drawVisualizer() {
+        if (!this.visualizerActive || !this.visualizerCanvas) return;
+
+        const canvas = this.visualizerCanvas;
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width = canvas.parentElement.offsetWidth;
+        const height = canvas.height = canvas.parentElement.offsetHeight;
+
+        const draw = () => {
+            if (!this.visualizerActive) return;
+            requestAnimationFrame(draw);
+
+            this.analyser.getByteFrequencyData(this.dataArray);
+
+            ctx.clearRect(0, 0, width, height);
+
+            const barWidth = (width / this.dataArray.length) * 2;
+            let x = 0;
+
+            for(let i = 0; i < this.dataArray.length; i++) {
+                const barHeight = (this.dataArray[i] / 255) * height;
+
+                ctx.fillStyle = `rgba(0, 243, 255, ${this.dataArray[i]/255})`;
+                ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+
+                x += barWidth + 1;
+            }
+        };
+
+        draw();
+    }
+
+    initMatrixBackground() {
+        const canvas = document.getElementById('footer-matrix');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = canvas.parentElement.offsetWidth;
+        let height = canvas.height = canvas.parentElement.offsetHeight;
+
+        const chars = '01';
+        const fontSize = 10;
+        const columns = Math.ceil(width / fontSize);
+        const drops = Array(columns).fill(1).map(() => Math.random() * -100);
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = canvas.parentElement.offsetWidth;
+            height = canvas.height = canvas.parentElement.offsetHeight;
+        });
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = '#003300';
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            requestAnimationFrame(draw);
+        };
+
+        draw();
+    }
+
+    initSocialTooltips() {
+        const links = document.querySelectorAll('.social-icon');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                if(this.isSfxEnabled && window.sfx) sfx.playKeyClick();
+            });
+        });
+    }
+
+    initScrollReveal() {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+        gsap.fromTo(".footer-content > *",
+            { opacity: 0, y: 30 },
+            {
+                opacity: 1, y: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: ".main-footer",
+                    start: "top 85%"
+                }
+            }
+        );
+    }
+}

@@ -890,10 +890,57 @@
         </section>
 
         <!-- Footer -->
-        <footer class="main-footer">
-            <div class="branding">
-                <span class="prefix">SYSTEM ARCHITECT:</span>
-                <span class="name glitch-text" data-text="TRINNO ASPHALT">TRINNO ASPHALT</span>
+        <footer class="main-footer" id="main-footer">
+            <canvas id="footer-matrix"></canvas>
+            <div class="footer-content">
+                <div class="footer-top">
+                    <div class="branding">
+                        <div class="brand-logo">
+                            <div class="logo-circle"></div>
+                            <div class="logo-inner">T</div>
+                        </div>
+                        <div class="brand-info">
+                            <span class="prefix">SYSTEM ARCHITECT</span>
+                            <span class="name glitch-text" data-text="TRINNO ASPHALT">TRINNO ASPHALT</span>
+                        </div>
+                    </div>
+                    <div class="footer-socials">
+                        <a href="https://github.com/trinno112" target="_blank" class="social-icon footer-link" data-tooltip="GITHUB"><i class="fab fa-github"></i></a>
+                        <a href="mailto:trinnoasphalt@gmail.com" class="social-icon footer-link" data-tooltip="EMAIL"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="social-icon footer-link" data-tooltip="DISCORD"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-icon footer-link" data-tooltip="LINKEDIN"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div class="audio-panel glass-panel">
+                    <div class="panel-header font-mono">
+                        <i class="fas fa-sliders-h"></i> AUDIO_CONTROL_SYSTEM
+                    </div>
+                    <div class="panel-controls">
+                        <button id="music-toggle" class="audio-btn">
+                            <i class="fas fa-music"></i>
+                            <span class="btn-label font-mono">AMBIENCE: OFF</span>
+                            <div class="btn-indicator"></div>
+                        </button>
+                        <button id="sfx-toggle" class="audio-btn active">
+                            <i class="fas fa-volume-up"></i>
+                            <span class="btn-label font-mono">SFX: ON</span>
+                            <div class="btn-indicator"></div>
+                        </button>
+                        <div class="volume-control">
+                             <div class="volume-label font-mono">MASTER VOL</div>
+                             <input type="range" id="master-volume" class="cyber-range" min="0" max="1" step="0.1" value="0.5">
+                        </div>
+                    </div>
+                    <!-- Audio Visualizer Canvas -->
+                    <canvas id="audio-visualizer"></canvas>
+                </div>
+
+                <div class="footer-bottom font-mono">
+                     <span class="copyright">© 2026 TRINNO INDUSTRIES. ALL RIGHTS RESERVED.</span>
+                     <span class="version">v5.3.1</span>
+                     <span class="sys-status">SYSTEM STATUS: <span class="neon-text-green">ONLINE</span></span>
+                </div>
             </div>
         </footer>
     </main>
