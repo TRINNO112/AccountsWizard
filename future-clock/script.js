@@ -845,6 +845,8 @@ if (initBtn) {
                         initProjectCardsEnhancements();
                         // Initialize new sections (stats dashboard, contact terminal)
                         initNewSections();
+                        // Initialize Part 7 systems (loading transitions, performance, easter eggs)
+                        initPart7Systems();
                     }
                 });
             }
@@ -2376,4 +2378,481 @@ class FooterAudioSystem {
             }
         );
     }
+}
+
+// --- SECTION LOADING TRANSITIONS system ---
+const LoadingTransitions = {
+    init() {
+        this.sectionObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('section-loaded')) {
+                        this.loadSection(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: '100px' }
+        );
+
+        // Observe all sections
+        document.querySelectorAll('section[id]').forEach(section => {
+            if (window.getComputedStyle(section).display !== 'none') {
+                this.sectionObserver.observe(section);
+            }
+        });
+    },
+
+    loadSection(section) {
+        const sectionId = section.id;
+
+        // Mark as loaded
+        section.classList.add('section-loaded');
+
+        // Play section load sound
+        if (window.sfx && window.sfx.initialized) {
+            sfx.playPhaseComplete();
+        }
+
+        // Stagger animation for child elements
+        const elements = section.querySelectorAll(
+            '.section-title, .timeline-item, .tech-card, .project-card, .stat-card'
+        );
+
+        elements.forEach((el, index) => {
+            gsap.fromTo(el,
+                { opacity: 0, y: 40, scale: 0.95 },
+                {
+                    opacity: 1, y: 0, scale: 1,
+                    duration: 0.6,
+                    delay: index * 0.05,
+                    ease: "power2.out"
+                }
+            );
+        });
+    },
+
+    destroy() {
+        if (this.sectionObserver) {
+            this.sectionObserver.disconnect();
+        }
+    }
+};
+
+// --- PERFORMANCE OPTIMIZATION system ---
+const PerformanceOptimizer = {
+    init() {
+        this.initLazyLoading();
+        this.initCanvasOptimizations();
+        this.initMemoryManagement();
+        this.initVisibilityOptimization();
+    },
+
+    initLazyLoading() {
+        // Lazy load images with data-src attribute
+        const imageObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.classList.add('loaded');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            },
+            { threshold: 0.01, rootMargin: '50px' }
+        );
+
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            imageObserver.observe(img);
+        });
+    },
+
+    initCanvasOptimizations() {
+        // Reduce particle count on mobile devices
+        if (window.innerWidth < 768) {
+            if (window.particleSystem) {
+                particleSystem.particleCount = Math.floor(particleSystem.particleCount / 2);
+                particleSystem.init();
+            }
+        }
+
+        // Limit FPS for non-critical animations
+        let lastTime = 0;
+        const targetFPS = 30;
+        const frameInterval = 1000 / targetFPS;
+
+        window.optimizeRAF = (callback) => {
+            return (timestamp) => {
+                if (timestamp - lastTime >= frameInterval) {
+                    lastTime = timestamp;
+                    callback();
+                }
+                requestAnimationFrame(window.optimizeRAF(callback));
+            };
+        };
+    },
+
+    initMemoryManagement() {
+        // Clean up unused objects periodically
+        setInterval(() => {
+            if (window.gc) window.gc(); // Trigger garbage collection if available
+
+            // Clear console periodically
+            if (console.clear) console.clear();
+        }, 60000); // Every minute
+    },
+
+    initVisibilityOptimization() {
+        // Pause animations when page is not visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.pauseAllAnimations();
+            } else {
+                this.resumeAllAnimations();
+            }
+        });
+    },
+
+    pauseAllAnimations() {
+        gsap.globalTimeline.pause();
+        // Pause particle systems, liquid effects, etc.
+    },
+
+    resumeAllAnimations() {
+        gsap.globalTimeline.resume();
+        // Resume animations
+    }
+};
+
+// --- HIDDEN TERMINAL COMMANDS system ---
+const HiddenCommands = {
+    init() {
+        this.commandHistory = [];
+        this.availableCommands = {
+            'help': this.cmdHelp.bind(this),
+            'clear': this.cmdClear.bind(this),
+            'date': this.cmdDate.bind(this),
+            'time': this.cmdTime.bind(this),
+            'weather': this.cmdWeather.bind(this),
+            'btc': this.cmdBTCPrice.bind(this),
+            'theme': this.cmdTheme.bind(this),
+            'uptime': this.cmdUptime.bind(this),
+            'matrix': this.cmdMatrix.bind(this),
+            'whoami': this.cmdWhoami.bind(this),
+            'ls': this.cmdList.bind(this),
+            'pwd': this.cmdPwd.bind(this),
+            'echo': this.cmdEcho.bind(this),
+            'history': this.cmdHistory.bind(this)
+        };
+
+        this.startTime = Date.now();
+        this.bindTerminalInput();
+    },
+
+    bindTerminalInput() {
+        // This would be bound to terminal input in contact section
+        const terminal = document.getElementById('contact-terminal');
+        if (terminal) {
+            terminal.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.target.value.trim()) {
+                    this.executeCommand(e.target.value.trim());
+                    e.target.value = '';
+                }
+            });
+        }
+    },
+
+    executeCommand(command) {
+        const args = command.split(' ');
+        const cmd = args[0].toLowerCase();
+        this.commandHistory.push(command);
+
+        if (this.availableCommands[cmd]) {
+            this.availableCommands[cmd](args.slice(1));
+        } else {
+            this.output(`Command not found: ${cmd}. Type 'help' for available commands.`);
+        }
+    },
+
+    output(text) {
+        const outputDiv = document.getElementById('terminal-output');
+        if (outputDiv) {
+            const line = document.createElement('div');
+            line.textContent = text;
+            outputDiv.appendChild(line);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+    },
+
+    // Command implementations
+    cmdHelp() { this.output('Available commands: ' + Object.keys(this.availableCommands).join(', ')); },
+    cmdClear() { document.getElementById('terminal-output').innerHTML = ''; },
+    cmdDate() { this.output(new Date().toDateString()); },
+    cmdTime() { this.output(new Date().toLocaleTimeString()); },
+    cmdWeather() { this.output('PUNE temp: 28°C - Weather API needed for real data'); },
+    cmdBTCPrice() { this.output('BTC/USD: $98,420.00 - Update with real API'); },
+    cmdTheme(args) { if (args[0]) { setTheme(args[0]); } },
+    cmdUptime() { this.output('Uptime: ' + Math.floor((Date.now() - this.startTime) / 1000) + ' seconds'); },
+    cmdMatrix() { initMatrixRain(); this.output('Matrix mode activated'); },
+    cmdWhoami() { this.output('Administrator (Trinno Asphalt)'); },
+    cmdList() { this.output('index.html style.css script.js favicon.txt'); },
+    cmdPwd() { this.output('/users/trinno/portfolio'); },
+    cmdEcho(args) { this.output(args.join(' ')); },
+    cmdHistory() { this.commandHistory.slice(-10).forEach((cmd, i) => this.output(`${i}: ${cmd}`)); }
+};
+
+// --- KONAMI CODE easter egg ---
+const KonamiCode = {
+    init() {
+        this.pattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        this.currentIndex = 0;
+        this.activated = false;
+
+        document.addEventListener('keydown', (e) => {
+            if (this.pattern[this.currentIndex] === e.key) {
+                this.currentIndex++;
+                if (this.currentIndex === this.pattern.length) {
+                    this.activate();
+                }
+            } else {
+                this.currentIndex = 0;
+            }
+        });
+    },
+
+    activate() {
+        if (this.activated) return;
+        this.activated = true;
+
+        // Play unlock sound
+        if (window.sfx && window.sfx.initialized) {
+            sfx.playSuccessFanfare();
+        }
+
+        // Activate matrix mode
+        document.body.classList.add('matrix-mode');
+
+        // Unlock secret achievement
+        AchievementSystem.unlock('konami-master');
+
+        // Show notification
+        this.showNotification('🎮 KONAMI CODE ACTIVATED! Matrix mode enabled.');
+
+        // Restore after 10 seconds
+        setTimeout(() => {
+            document.body.classList.remove('matrix-mode');
+            this.showNotification('Matrix mode deactivated');
+        }, 10000);
+    },
+
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'konami-notification';
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed; top: 20px; right: 20px;
+            background: var(--neon-green); color: black;
+            padding: 15px; border-radius: 5px;
+            font-family: var(--font-mono); z-index: 99999;
+            transform: translateX(400px); transition: transform 0.3s;
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+};
+
+// --- DYNAMIC ACHIEVEMENT SYSTEM ---
+const AchievementSystem = {
+    achievements: {
+        'first-visit': { name: 'First Login', desc: 'Welcome to the system', unlocked: false },
+        'scroll-master': { name: 'Scroll Master', desc: 'Explored entire portfolio', unlocked: false },
+        'skill-hunter': { name: 'Skill Hunter', desc: 'Viewed all skill cards', unlocked: false },
+        'project-explorer': { name: 'Project Explorer', desc: 'Viewed all projects', unlocked: false },
+        'terminal-warrior': { name: 'Terminal Warrior', desc: 'Used 10+ terminal commands', unlocked: false },
+        'game-master': { name: 'Game Master', desc: 'Scored 100+ in Snake game', unlocked: false },
+        'time-traveler': { name: 'Time Traveler', desc: 'Viewed entire timeline', unlocked: false },
+        'konami-master': { name: 'Konami Master', desc: 'Unlocked secret mode', unlocked: false },
+        'easter-egg-hunter': { name: 'Easter Egg Hunter', desc: 'Found 3+ easter eggs', unlocked: false }
+    },
+
+    init() {
+        this.loadProgress();
+        this.bindTrackingEvents();
+        this.updateUI();
+    },
+
+    bindTrackingEvents() {
+        // Track scrolling to bottom
+        let maxScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY + window.innerHeight;
+            maxScroll = Math.max(maxScroll, currentScroll);
+
+            if (maxScroll >= document.body.scrollHeight - 100) {
+                this.unlock('scroll-master');
+            }
+        });
+
+        // Track skill card views
+        const skillCards = document.querySelectorAll('.tech-card');
+        skillCards.forEach(card => {
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            if (this.checkAllSkillsViewed()) {
+                                this.unlock('skill-hunter');
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 }).observe(card);
+            }
+        });
+
+        // Track project card views
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            if (this.checkAllProjectsViewed()) {
+                                this.unlock('project-explorer');
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 }).observe(card);
+            }
+        });
+
+        // Auto-unlock first visit
+        setTimeout(() => this.unlock('first-visit'), 2000);
+    },
+
+    unlock(achievementId) {
+        if (!this.achievements[achievementId] || this.achievements[achievementId].unlocked) {
+            return false;
+        }
+
+        this.achievements[achievementId].unlocked = true;
+        this.saveProgress();
+        this.showUnlockNotification(this.achievements[achievementId]);
+        this.updateUI();
+
+        // Play unlock sound
+        if (window.sfx && window.sfx.initialized) {
+            sfx.playSuccessFanfare();
+        }
+
+        // Check for easter egg hunter achievement
+        this.checkEasterEggCount();
+
+        return true;
+    },
+
+    checkAllSkillsViewed() {
+        const skills = document.querySelectorAll('.tech-card');
+        let viewed = 0;
+        skills.forEach(skill => {
+            const rect = skill.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                viewed++;
+            }
+        });
+        return viewed >= skills.length;
+    },
+
+    checkAllProjectsViewed() {
+        const projects = document.querySelectorAll('.project-card');
+        let viewed = 0;
+        projects.forEach(project => {
+            const rect = project.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                viewed++;
+            }
+        });
+        return viewed >= projects.length;
+    },
+
+    checkEasterEggCount() {
+        const unlocked = Object.values(this.achievements).filter(a => a.unlocked).length;
+        if (unlocked >= 3) {
+            this.unlock('easter-egg-hunter');
+        }
+    },
+
+    showUnlockNotification(achievement) {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-info">
+                <div class="achievement-name">${achievement.name}</div>
+                <div class="achievement-desc">${achievement.desc}</div>
+            </div>
+        `;
+        notification.style.cssText = `
+            position: fixed; top: 20px; right: 20px;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-cyan));
+            color: black; padding: 15px; border-radius: 8px;
+            font-family: var(--font-mono); z-index: 99999;
+            display: flex; align-items: center; gap: 10px;
+            transform: translateX(400px); transition: transform 0.3s;
+            border: 2px solid var(--neon-gold);
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    },
+
+    updateUI() {
+        // Update achievement badges in the UI
+        Object.keys(this.achievements).forEach(id => {
+            const badge = document.querySelector(`[data-achievement="${id}"]`);
+            if (badge) {
+                if (this.achievements[id].unlocked) {
+                    badge.classList.add('unlocked');
+                    badge.classList.remove('locked');
+                } else {
+                    badge.classList.remove('unlocked');
+                    badge.classList.add('locked');
+                }
+            }
+        });
+    },
+
+    saveProgress() {
+        localStorage.setItem('trinno-achievements', JSON.stringify(this.achievements));
+    },
+
+    loadProgress() {
+        const saved = localStorage.getItem('trinno-achievements');
+        if (saved) {
+            this.achievements = { ...this.achievements, ...JSON.parse(saved) };
+        }
+    }
+};
+
+// --- Initialize Part 7 systems ---
+function initPart7Systems() {
+    // Initialize all Part 7 systems
+    LoadingTransitions.init();
+    PerformanceOptimizer.init();
+    HiddenCommands.init();
+    KonamiCode.init();
+    AchievementSystem.init();
+
+    console.log('Part 7 systems initialized');
 }
