@@ -88,6 +88,10 @@ body.matrix-mode {
   align-items: center;
 }
 
+.full-screen-section.centered {
+  text-align: center;
+}
+
 .content-section {
   padding: 80px 0;
 }
