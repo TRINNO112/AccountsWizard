@@ -491,6 +491,7 @@
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/AccountsWizard/')">QUICK
                                 PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">CLICK TO ACCESS CORE</span>
                         </div>
                     </div>
@@ -526,6 +527,7 @@
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/MinecraftGuide/')">QUICK
                                 PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">SYSTEM ARCHIVED</span>
                         </div>
                     </div>
@@ -556,6 +558,7 @@
                         <div class="preview-content">
                             <span class="preview-tag">CREATIVE LAB</span>
                             <p>Random algorithmic generation and UI stress tests.</p>
+                            <br>
                             <span class="preview-hint">VIEW EXPERIMENTS</span>
                         </div>
                     </div>
@@ -591,6 +594,7 @@
                                 SITE</a>
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/ArthShastra/')">QUICK PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">ANALYZING MARKETS...</span>
                         </div>
                     </div>
@@ -626,6 +630,7 @@
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/OSEM-YearBook/')">QUICK
                                 PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">VIEW MEMORY REEL</span>
                         </div>
                     </div>
@@ -661,6 +666,7 @@
                                 SITE</a>
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/NerdTutors/')">QUICK PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">NETWORK ACTIVE</span>
                         </div>
                     </div>
@@ -697,6 +703,7 @@
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/miscellaneous-adventure/')">QUICK
                                 PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">AWAITING PLAYER...</span>
                         </div>
                     </div>
@@ -732,6 +739,7 @@
                                 SITE</a>
                             <button class="btn-access preview-trigger"
                                 onclick="openPreview('https://trinno112.github.io/Surprise/')">QUICK PREVIEW</button>
+                            <br><br>
                             <span class="preview-hint">LAUNCHING SURPRISE...</span>
                         </div>
                     </div>
@@ -919,10 +927,19 @@
 
         <!-- Apology Trigger -->
         <section id="apology-gate" class="full-screen-section centered">
-            <div class="glass-panel sensitive"
-                style="text-align: center; border-color: var(--neon-purple); max-width: 600px;">
-                <h3 class="font-mono neon-text-purple" style="margin-bottom: 1rem;">[SECURE_CHANNEL_DETECTED]</h3>
-                <p style="margin-bottom: 2rem; color: #ccc;">Encrypted transmission waiting for decryption key.</p>
+            <div class="apology-gate-panel glass-panel sensitive">
+                <div class="gate-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="font-mono neon-text-purple gate-title">[SECURE_CHANNEL_DETECTED]</h3>
+                <p class="gate-message">Encrypted transmission waiting for decryption key.</p>
+                <div class="gate-encryption-bar">
+                    <div class="encryption-segment"></div>
+                    <div class="encryption-segment"></div>
+                    <div class="encryption-segment"></div>
+                    <div class="encryption-segment"></div>
+                    <div class="encryption-segment"></div>
+                </div>
                 <a href="apology.html" class="btn-glitch" data-text="DECRYPT MESSAGE">DECRYPT MESSAGE</a>
             </div>
         </section>

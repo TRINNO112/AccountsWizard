@@ -2203,104 +2203,130 @@ class FooterAudioSystem {
         this.isMusicPlaying = true;
         this.visualizerActive = true;
 
-        // Create soft, pleasant ambient soundscape
-        // Base pad layer (very soft and warm)
-        const pad1 = this.audioContext.createOscillator();
-        const pad2 = this.audioContext.createOscillator();
-        const pad3 = this.audioContext.createOscillator();
+        // Create soft piano-like ambient soundscape
+        // Piano chord progression: Cmaj7 -> Am7 -> Fmaj7 -> G7
 
-        pad1.type = 'sine';
-        pad1.frequency.value = 130.81; // C3
+        // Main piano-like tones using triangle waves (softer than sine)
+        const chord1 = this.audioContext.createOscillator(); // C3
+        const chord2 = this.audioContext.createOscillator(); // E3
+        const chord3 = this.audioContext.createOscillator(); // G3
+        const chord4 = this.audioContext.createOscillator(); // B3 (maj7)
 
-        pad2.type = 'sine';
-        pad2.frequency.value = 164.81; // E3
+        chord1.type = 'triangle';
+        chord1.frequency.value = 130.81; // C3
 
-        pad3.type = 'sine';
-        pad3.frequency.value = 196.00; // G3
+        chord2.type = 'triangle';
+        chord2.frequency.value = 164.81; // E3
 
-        // Soft higher layer for atmosphere
-        const atmos1 = this.audioContext.createOscillator();
-        const atmos2 = this.audioContext.createOscillator();
+        chord3.type = 'triangle';
+        chord3.frequency.value = 196.00; // G3
 
-        atmos1.type = 'triangle';
-        atmos1.frequency.value = 523.25; // C5
+        chord4.type = 'triangle';
+        chord4.frequency.value = 246.94; // B3
 
-        atmos2.type = 'triangle';
-        atmos2.frequency.value = 659.25; // E5
+        // High shimmer (like piano harmonics)
+        const shimmer1 = this.audioContext.createOscillator();
+        const shimmer2 = this.audioContext.createOscillator();
 
-        // Very soft sub bass for depth
-        const sub = this.audioContext.createOscillator();
-        sub.type = 'sine';
-        sub.frequency.value = 65.41; // C2
+        shimmer1.type = 'sine';
+        shimmer1.frequency.value = 523.25; // C5
 
-        // Create a smooth lowpass filter
+        shimmer2.type = 'sine';
+        shimmer2.frequency.value = 659.25; // E5
+
+        // Soft sub bass for warmth
+        const bass = this.audioContext.createOscillator();
+        bass.type = 'sine';
+        bass.frequency.value = 65.41; // C2
+
+        // Piano-like filter (warm lowpass)
         const filter = this.audioContext.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.value = 800;
-        filter.Q.value = 0.5;
+        filter.frequency.value = 1200;
+        filter.Q.value = 1;
 
-        // Add reverb-like effect with delay
-        const delay = this.audioContext.createDelay();
-        delay.delayTime.value = 0.3;
+        // Reverb simulation with delay
+        const delay1 = this.audioContext.createDelay();
+        delay1.delayTime.value = 0.4;
+        const delay2 = this.audioContext.createDelay();
+        delay2.delayTime.value = 0.6;
         const delayFeedback = this.audioContext.createGain();
-        delayFeedback.gain.value = 0.3;
+        delayFeedback.gain.value = 0.25;
 
-        // Individual gains (very soft volumes)
-        const g1 = this.audioContext.createGain(); g1.gain.value = 0.08;
-        const g2 = this.audioContext.createGain(); g2.gain.value = 0.06;
-        const g3 = this.audioContext.createGain(); g3.gain.value = 0.05;
-        const g4 = this.audioContext.createGain(); g4.gain.value = 0.03;
-        const g5 = this.audioContext.createGain(); g5.gain.value = 0.03;
-        const gSub = this.audioContext.createGain(); gSub.gain.value = 0.04;
+        // Piano-like ADSR with gains (softer attack, gentle sustain)
+        const g1 = this.audioContext.createGain();
+        const g2 = this.audioContext.createGain();
+        const g3 = this.audioContext.createGain();
+        const g4 = this.audioContext.createGain();
+        const g5 = this.audioContext.createGain();
+        const g6 = this.audioContext.createGain();
+        const gBass = this.audioContext.createGain();
 
-        // Slow LFO for gentle movement
+        // Very soft volumes for piano-like quality
+        g1.gain.value = 0.06;
+        g2.gain.value = 0.05;
+        g3.gain.value = 0.04;
+        g4.gain.value = 0.04;
+        g5.gain.value = 0.02;
+        g6.gain.value = 0.02;
+        gBass.gain.value = 0.03;
+
+        // Gentle LFO for slight vibrato (piano-like)
         const lfo = this.audioContext.createOscillator();
         lfo.type = 'sine';
-        lfo.frequency.value = 0.05; // Very slow pulse
+        lfo.frequency.value = 0.08; // Slow vibrato
         const lfoGain = this.audioContext.createGain();
-        lfoGain.gain.value = 150;
+        lfoGain.gain.value = 100;
 
         lfo.connect(lfoGain);
         lfoGain.connect(filter.frequency);
 
-        // Connect everything
-        pad1.connect(g1);
-        pad2.connect(g2);
-        pad3.connect(g3);
-        atmos1.connect(g4);
-        atmos2.connect(g5);
-        sub.connect(gSub);
+        // Connect chord tones
+        chord1.connect(g1);
+        chord2.connect(g2);
+        chord3.connect(g3);
+        chord4.connect(g4);
+        shimmer1.connect(g5);
+        shimmer2.connect(g6);
+        bass.connect(gBass);
 
+        // Route through filter
         g1.connect(filter);
         g2.connect(filter);
         g3.connect(filter);
         g4.connect(filter);
         g5.connect(filter);
-        gSub.connect(filter);
+        g6.connect(filter);
+        gBass.connect(filter);
 
-        // Add delay for atmosphere
-        filter.connect(delay);
-        delay.connect(delayFeedback);
-        delayFeedback.connect(delay);
-        delay.connect(this.gainNode);
+        // Add reverb layers
+        filter.connect(delay1);
+        filter.connect(delay2);
+        delay1.connect(delayFeedback);
+        delay2.connect(delayFeedback);
+        delayFeedback.connect(delay1);
+        delayFeedback.connect(delay2);
+        delay1.connect(this.gainNode);
+        delay2.connect(this.gainNode);
         filter.connect(this.gainNode);
 
         // Start all oscillators
         const now = this.audioContext.currentTime;
-        pad1.start(now);
-        pad2.start(now);
-        pad3.start(now);
-        atmos1.start(now);
-        atmos2.start(now);
-        sub.start(now);
+        chord1.start(now);
+        chord2.start(now);
+        chord3.start(now);
+        chord4.start(now);
+        shimmer1.start(now);
+        shimmer2.start(now);
+        bass.start(now);
         lfo.start(now);
 
-        // Fade in gently
+        // Fade in very gently (piano-like attack)
         this.gainNode.gain.setValueAtTime(0, now);
-        this.gainNode.gain.linearRampToValueAtTime(0.15, now + 2);
+        this.gainNode.gain.linearRampToValueAtTime(0.12, now + 3);
 
         // Store references
-        this.oscillators = [pad1, pad2, pad3, atmos1, atmos2, sub, lfo];
+        this.oscillators = [chord1, chord2, chord3, chord4, shimmer1, shimmer2, bass, lfo];
 
         // Start visualizer
         this.drawVisualizer();
