@@ -2203,66 +2203,110 @@ class FooterAudioSystem {
         this.isMusicPlaying = true;
         this.visualizerActive = true;
 
-        // Create oscillators for ambient drone
-        const osc1 = this.audioContext.createOscillator();
-        const osc2 = this.audioContext.createOscillator();
-        const osc3 = this.audioContext.createOscillator();
+        // Create soft, pleasant ambient soundscape
+        // Base pad layer (very soft and warm)
+        const pad1 = this.audioContext.createOscillator();
+        const pad2 = this.audioContext.createOscillator();
+        const pad3 = this.audioContext.createOscillator();
 
-        osc1.type = 'sawtooth';
-        osc1.frequency.value = 55; // Low drone (A1)
+        pad1.type = 'sine';
+        pad1.frequency.value = 130.81; // C3
 
-        osc2.type = 'sine';
-        osc2.frequency.value = 110; // Octave up (A2)
+        pad2.type = 'sine';
+        pad2.frequency.value = 164.81; // E3
 
-        osc3.type = 'triangle';
-        osc3.frequency.value = 164.81; // E3
+        pad3.type = 'sine';
+        pad3.frequency.value = 196.00; // G3
 
-        // Filters for smoother sound
+        // Soft higher layer for atmosphere
+        const atmos1 = this.audioContext.createOscillator();
+        const atmos2 = this.audioContext.createOscillator();
+
+        atmos1.type = 'triangle';
+        atmos1.frequency.value = 523.25; // C5
+
+        atmos2.type = 'triangle';
+        atmos2.frequency.value = 659.25; // E5
+
+        // Very soft sub bass for depth
+        const sub = this.audioContext.createOscillator();
+        sub.type = 'sine';
+        sub.frequency.value = 65.41; // C2
+
+        // Create a smooth lowpass filter
         const filter = this.audioContext.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.value = 400;
+        filter.frequency.value = 800;
+        filter.Q.value = 0.5;
 
-        // Individual gains
-        const g1 = this.audioContext.createGain(); g1.gain.value = 0.3;
-        const g2 = this.audioContext.createGain(); g2.gain.value = 0.2;
-        const g3 = this.audioContext.createGain(); g3.gain.value = 0.1;
+        // Add reverb-like effect with delay
+        const delay = this.audioContext.createDelay();
+        delay.delayTime.value = 0.3;
+        const delayFeedback = this.audioContext.createGain();
+        delayFeedback.gain.value = 0.3;
 
-        // LFO for movement
+        // Individual gains (very soft volumes)
+        const g1 = this.audioContext.createGain(); g1.gain.value = 0.08;
+        const g2 = this.audioContext.createGain(); g2.gain.value = 0.06;
+        const g3 = this.audioContext.createGain(); g3.gain.value = 0.05;
+        const g4 = this.audioContext.createGain(); g4.gain.value = 0.03;
+        const g5 = this.audioContext.createGain(); g5.gain.value = 0.03;
+        const gSub = this.audioContext.createGain(); gSub.gain.value = 0.04;
+
+        // Slow LFO for gentle movement
         const lfo = this.audioContext.createOscillator();
         lfo.type = 'sine';
-        lfo.frequency.value = 0.1; // Slow pulse
+        lfo.frequency.value = 0.05; // Very slow pulse
         const lfoGain = this.audioContext.createGain();
-        lfoGain.gain.value = 200;
+        lfoGain.gain.value = 150;
 
         lfo.connect(lfoGain);
         lfoGain.connect(filter.frequency);
 
-        // Connections
-        osc1.connect(g1);
-        osc2.connect(g2);
-        osc3.connect(g3);
+        // Connect everything
+        pad1.connect(g1);
+        pad2.connect(g2);
+        pad3.connect(g3);
+        atmos1.connect(g4);
+        atmos2.connect(g5);
+        sub.connect(gSub);
 
         g1.connect(filter);
         g2.connect(filter);
         g3.connect(filter);
+        g4.connect(filter);
+        g5.connect(filter);
+        gSub.connect(filter);
 
+        // Add delay for atmosphere
+        filter.connect(delay);
+        delay.connect(delayFeedback);
+        delayFeedback.connect(delay);
+        delay.connect(this.gainNode);
         filter.connect(this.gainNode);
 
-        // Start playing
+        // Start all oscillators
         const now = this.audioContext.currentTime;
-        osc1.start(now);
-        osc2.start(now);
-        osc3.start(now);
+        pad1.start(now);
+        pad2.start(now);
+        pad3.start(now);
+        atmos1.start(now);
+        atmos2.start(now);
+        sub.start(now);
         lfo.start(now);
 
-        // Store references to stop later
-        this.oscillators = [osc1, osc2, osc3, lfo];
+        // Fade in gently
+        this.gainNode.gain.setValueAtTime(0, now);
+        this.gainNode.gain.linearRampToValueAtTime(0.15, now + 2);
+
+        // Store references
+        this.oscillators = [pad1, pad2, pad3, atmos1, atmos2, sub, lfo];
 
         // Start visualizer
         this.drawVisualizer();
 
         // Notify
-        if (window.jarvis) jarvis.speak("Ambient protocols engaged.");
+        if (window.jarvis) jarvis.speak("Ambient soundscape initialized.");
     }
 
     pauseMusic() {

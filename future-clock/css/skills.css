@@ -1,0 +1,378 @@
+.modules-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+/* 3D Flip Card Container */
+.module-card {
+    width: 160px;
+    height: 180px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.module-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.module-card:hover .module-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front and Back Faces */
+.module-front,
+.module-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--glass-border);
+    background: linear-gradient(135deg, rgba(189, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 1rem;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.module-front {
+    z-index: 2;
+}
+
+/* Module Icon */
+.module-icon {
+    position: relative;
+    font-size: 2.5rem;
+    color: var(--neon-purple);
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.module-icon i {
+    position: relative;
+    z-index: 1;
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Icon Glow Ring */
+.module-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--neon-purple);
+    border-radius: 50%;
+    opacity: 0;
+    animation: iconRing 2s ease-out infinite;
+}
+
+@keyframes iconRing {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Module Name */
+.module-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* Glow Effect Behind Card */
+.module-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, var(--neon-purple) 0%, transparent 70%);
+    opacity: 0;
+    filter: blur(20px);
+    transition: opacity 0.3s;
+    z-index: -1;
+}
+
+.module-card:hover .module-glow {
+    opacity: 0.3;
+}
+
+/* Back Face Styles */
+.module-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.15) 0%, rgba(0, 0, 0, 0.95) 100%);
+    border-color: var(--neon-cyan);
+    gap: 0.8rem;
+}
+
+.module-level-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+}
+
+/* Skill Level Bar */
+.module-level-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.module-level-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    position: relative;
+}
+
+/* Animate fill when card is flipped */
+.module-card:hover .module-level-fill {
+    width: var(--level);
+}
+
+/* Animated shine on level bar */
+.module-level-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: levelShine 2s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes levelShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.module-percent {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--neon-cyan);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+.module-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.3rem 0.8rem;
+    background: rgba(0, 243, 255, 0.2);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
+}
+
+/* Status color variations */
+.module-card[data-skill="95"] .module-status,
+.module-card[data-skill="90"] .module-status {
+    background: rgba(0, 255, 65, 0.2);
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+/* Corner Decorations */
+.module-front::before,
+.module-back::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid var(--neon-purple);
+    border-right: 2px solid var(--neon-purple);
+}
+
+.module-front::after,
+.module-back::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid var(--neon-pink);
+    border-left: 2px solid var(--neon-pink);
+}
+
+.module-back::before {
+    border-color: var(--neon-cyan);
+}
+
+.module-back::after {
+    border-color: var(--neon-green);
+}
+
+/* Hover border glow */
+.module-card:hover .module-front {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 20px rgba(189, 0, 255, 0.3), inset 0 0 20px rgba(189, 0, 255, 0.1);
+}
+
+/* Skills Stats Bar */
+.skills-stats {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 3rem;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(90deg, transparent, rgba(189, 0, 255, 0.1), transparent);
+    border-top: 1px solid rgba(189, 0, 255, 0.2);
+    border-bottom: 1px solid rgba(189, 0, 255, 0.2);
+}
+
+.stat-item {
+    text-align: center;
+    position: relative;
+}
+
+.stat-value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--neon-purple);
+    text-shadow: 0 0 15px rgba(189, 0, 255, 0.5);
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    margin-top: 0.5rem;
+}
+
+/* Stat value counter animation */
+.stat-value.counting {
+    animation: countPulse 0.1s ease;
+}
+
+@keyframes countPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Particle burst container */
+.module-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.skill-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--neon-purple);
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 6px var(--neon-purple);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .modules-grid {
+        gap: 1rem;
+    }
+
+    .module-card {
+        width: 140px;
+        height: 160px;
+    }
+
+    .module-icon {
+        font-size: 2rem;
+    }
+
+    .module-name {
+        font-size: 0.75rem;
+    }
+
+    .skills-stats {
+        gap: 2rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.6rem;
+    }
+
+    /* Disable flip on mobile - show front only */
+    .module-card:hover .module-inner {
+        transform: rotateY(0deg);
+    }
+
+    .module-card:active .module-inner {
+        transform: rotateY(180deg);
+    }
+}
+
+/* Stagger animation on scroll */
+.module-card {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.module-card.animate-in {
+    animation: moduleReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes moduleReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }

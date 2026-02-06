@@ -1,0 +1,40 @@
+/* CSS Variables & Theme Colors */
+
+:root {
+  /* Colors - Default Theme */
+  --bg-color: #050505;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+
+  --neon-cyan: #00f3ff;
+  --neon-pink: #ff00ff;
+  --neon-green: #00ff41;
+  --neon-purple: #bd00ff;
+  --neon-gold: #ffd700;
+  --alert-red: #ff3333;
+
+  --glass-bg: rgba(10, 10, 10, 0.6);
+  --glass-border: rgba(0, 243, 255, 0.2);
+
+  --font-main: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Orbitron', sans-serif;
+}
+
+/* THEME: MATRIX */
+body.theme-matrix {
+  --neon-cyan: #00ff41;
+  --neon-pink: #00ff41;
+  --neon-purple: #00ff41;
+  --glass-border: rgba(0, 255, 65, 0.3);
+}
+
+/* THEME: SYNTHWAVE */
+body.theme-synthwave {
+  --bg-color: #1a1a2e;
+  --neon-cyan: #ff7edb;
+  --neon-pink: #00d9ff;
+  --neon-green: #ff7edb;
+  --neon-purple: #00d9ff;
+  --glass-border: rgba(255, 126, 219, 0.3);
+}

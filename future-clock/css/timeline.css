@@ -1,0 +1,531 @@
+/* TIMELINE - CYBERPUNK REDESIGN */
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 0;
+    min-height: 600px;
+}
+
+/* Central glowing line */
+.timeline::before {
+    content: ''; 
+    position: absolute; 
+    left: 50%; 
+    top: 0; 
+    bottom: 0; 
+    width: 3px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        var(--neon-cyan) 10%, 
+        var(--neon-pink) 50%, 
+        var(--neon-cyan) 90%, 
+        transparent 100%);
+    transform: translateX(-50%); 
+    z-index: 0;
+    box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 243, 255, 0.3);
+    animation: pulseLine 3s ease-in-out infinite;
+}
+
+@keyframes pulseLine {
+    0%, 100% { opacity: 0.8; box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 243, 255, 0.3); }
+    50% { opacity: 1; box-shadow: 0 0 25px var(--neon-pink), 0 0 50px rgba(255, 0, 255, 0.4); }
+}
+
+.timeline-item {
+    width: 45%;
+    margin-bottom: 4.5rem;
+    position: relative;
+    clear: both;
+    z-index: 2;
+}
+.timeline-item.left {
+    float: left;
+    text-align: right;
+    padding-right: 50px;
+}
+.timeline-item.right {
+    float: right;
+    text-align: left;
+    padding-left: 50px;
+}
+
+/* Timeline Card Styling */
+.timeline-item .glass-panel {
+    padding: 1.8rem 2rem;
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.05) 0%, rgba(0, 0, 0, 0.95) 100%);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 0;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(10px);
+    min-height: 140px;
+    z-index: 3;
+}
+
+/* Corner decorations */
+.timeline-item .glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    border-top: 2px solid var(--neon-cyan);
+    border-right: 2px solid var(--neon-cyan);
+    opacity: 0.7;
+}
+.timeline-item .glass-panel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    border-bottom: 2px solid var(--neon-pink);
+    border-left: 2px solid var(--neon-pink);
+    opacity: 0.7;
+}
+
+/* Year Badge */
+.timeline-item .year {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+    color: #000;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    position: relative;
+    z-index: 5;
+}
+
+.timeline-item .content h3 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--neon-cyan);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    position: relative;
+    z-index: 4;
+}
+
+.timeline-item .content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #ddd;
+    margin: 0;
+    position: relative;
+    z-index: 4;
+}
+
+/* Dot Connector - Redesigned */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    width: 18px;
+    height: 18px;
+    background: var(--bg-color);
+    border: 3px solid var(--neon-cyan);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 10px var(--neon-cyan), inset 0 0 5px var(--neon-cyan);
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+.timeline-item.left::after {
+    right: -59px;
+}
+.timeline-item.right::after {
+    left: -59px;
+}
+
+/* Connector line from dot to card */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan));
+    z-index: 0;
+}
+.timeline-item.left::before {
+    right: 0;
+    background: linear-gradient(90deg, var(--neon-cyan), transparent);
+}
+.timeline-item.right::before {
+    left: 0;
+}
+
+/* Hover Effects */
+.timeline-item:hover .glass-panel { 
+    border-color: var(--neon-pink); 
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.2), inset 0 0 20px rgba(255, 0, 255, 0.05);
+    transform: translateY(-5px) scale(1.02);
+}
+.timeline-item:hover::after { 
+    background: var(--neon-pink);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink), inset 0 0 8px var(--neon-pink);
+    transform: scale(1.2);
+}
+.timeline-item:hover .year {
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+}
+.timeline-item:hover .content h3 {
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+}
+
+/* Highlight border for current grade */
+.timeline-item.highlight-border .glass-panel {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 25px rgba(0, 255, 65, 0.2);
+}
+.timeline-item.highlight-border::after {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 15px var(--neon-green), inset 0 0 8px var(--neon-green);
+    animation: pulseGreen 2s ease-in-out infinite;
+}
+@keyframes pulseGreen {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+/* Clearfix for floats */
+.timeline::after { content: ""; display: table; clear: both; }
+
+/* ============================================
+   TIMELINE ENHANCEMENTS - PART 2
+   ============================================ */
+
+/* Data Stream Effect - Binary/Hex flowing down the timeline */
+.timeline-data-stream {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    transform: translateX(-50%);
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.data-bit {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--neon-cyan);
+    white-space: nowrap;
+    animation: dataFlow linear infinite;
+    text-shadow: 0 0 5px var(--neon-cyan);
+    opacity: 0;
+}
+
+.data-bit.alt {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+@keyframes dataFlow {
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* Timeline Traveling Particles */
+.timeline-particles {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.timeline-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+    animation: particleTravel 4s ease-in-out infinite;
+    opacity: 0;
+}
+
+.timeline-particle:nth-child(2) {
+    animation-delay: 1.3s;
+    background: var(--neon-pink);
+    box-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
+}
+
+.timeline-particle:nth-child(3) {
+    animation-delay: 2.6s;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 30px var(--neon-green);
+}
+
+@keyframes particleTravel {
+    0% {
+        top: 0%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.5);
+    }
+    5% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    95% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.5);
+    }
+}
+
+/* Enhanced Year Badge with Pulse */
+.timeline-item .year {
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-item .year::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: yearShine 3s ease-in-out infinite;
+}
+
+@keyframes yearShine {
+    0%, 100% { left: -100%; }
+    50% { left: 100%; }
+}
+
+/* Year Badge Glow Animation */
+.timeline-item .year::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: inherit;
+    filter: blur(8px);
+    opacity: 0;
+    z-index: -1;
+    animation: yearGlow 2s ease-in-out infinite;
+}
+
+@keyframes yearGlow {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.5; }
+}
+
+/* Enhanced Hover - Card Expansion with Details */
+.timeline-item .glass-panel {
+    overflow: hidden;
+}
+
+.timeline-item .content {
+    position: relative;
+}
+
+/* Scan line effect on hover */
+.timeline-item .glass-panel .scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.timeline-item:hover .glass-panel .scan-line {
+    animation: scanDown 1.5s ease-in-out infinite;
+}
+
+@keyframes scanDown {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(calc(100vh));
+        opacity: 0;
+    }
+}
+
+/* Enhanced Connector Animation */
+.timeline-item:hover::before {
+    animation: connectorPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes connectorPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Dot Ring Animation */
+.timeline-item:hover::after {
+    animation: dotRing 0.8s ease-out;
+}
+
+@keyframes dotRing {
+    0% {
+        box-shadow: 0 0 0 0 var(--neon-pink), 0 0 10px var(--neon-pink), inset 0 0 8px var(--neon-pink);
+    }
+    100% {
+        box-shadow: 0 0 0 15px transparent, 0 0 10px var(--neon-pink), inset 0 0 8px var(--neon-pink);
+    }
+}
+
+/* Timeline Progress Indicator */
+.timeline-progress {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 200px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.timeline-progress.visible {
+    opacity: 1;
+}
+
+.timeline-progress-fill {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-pink));
+    border-radius: 3px;
+    box-shadow: 0 0 10px var(--neon-cyan);
+    transition: height 0.1s;
+}
+
+/* Stagger animation for timeline items on scroll */
+.timeline-item.animate-in {
+    animation: timelineSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.timeline-item.left.animate-in {
+    animation-name: timelineSlideInLeft;
+}
+
+.timeline-item.right.animate-in {
+    animation-name: timelineSlideInRight;
+}
+
+@keyframes timelineSlideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes timelineSlideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Mobile Timeline Adjustments */
+@media (max-width: 768px) {
+    .timeline {
+        padding: 2rem 0;
+    }
+
+    .timeline::before {
+        left: 20px;
+        transform: none;
+    }
+
+    .timeline-item {
+        width: 100%;
+        float: none !important;
+        text-align: left !important;
+        padding-left: 50px !important;
+        padding-right: 0 !important;
+        margin-bottom: 3rem;
+    }
+
+    .timeline-item .glass-panel {
+        min-height: 120px;
+    }
+
+    .timeline-item::after {
+        left: 11px !important;
+        right: auto !important;
+    }
+
+    .timeline-item::before {
+        left: 20px !important;
+        right: auto !important;
+        background: linear-gradient(90deg, var(--neon-cyan), transparent) !important;
+    }
+
+    .timeline-data-stream {
+        display: none;
+    }
+
+    .timeline-particles {
+        display: none;
+    }
+
+    .timeline-progress {
+        display: none;
+    }
+}
