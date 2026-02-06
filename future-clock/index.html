@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" href="favicon.png?v=2">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body class="loading">
@@ -246,43 +246,53 @@
                 <!-- Data Stream Effect -->
                 <div class="timeline-data-stream" id="timeline-data-stream"></div>
                 <!-- Traveling Particles -->
-                <div class="timeline-particles" id="timeline-particles"></div>
+                <div class="timeline-particles" id="timeline-particles">
+                    <div class="timeline-particle"></div>
+                    <div class="timeline-particle"></div>
+                    <div class="timeline-particle"></div>
+                </div>
 
                 <!-- Grade 08 -->
-                <div class="timeline-item left glass-panel sensitive" data-magnet="0.2">
-                    <div class="year font-mono">GRADE 08</div>
-                    <div class="content">
-                        <h3>System Failure</h3>
-                        <p>The objective was simple: An RGB Clock. The result: Failure. Lack of knowledge was the fatal
-                            error.</p>
+                <div class="timeline-item left sensitive" data-magnet="0.2">
+                    <div class="glass-panel">
+                        <div class="year font-mono">GRADE 08</div>
+                        <div class="content">
+                            <h3>System Failure</h3>
+                            <p>The objective was simple: An RGB Clock. The result: Failure. Lack of knowledge was the fatal error.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Grade 09 -->
-                <div class="timeline-item right glass-panel sensitive" data-magnet="0.2">
-                    <div class="year font-mono">GRADE 09</div>
-                    <div class="content">
-                        <h3>Reboot & Learn</h3>
-                        <p>I didn't quit. I rebooted. Deep dive into the kernel of web development.</p>
+                <div class="timeline-item right sensitive" data-magnet="0.2">
+                    <div class="glass-panel">
+                        <div class="year font-mono">GRADE 09</div>
+                        <div class="content">
+                            <h3>Reboot & Learn</h3>
+                            <p>I didn't quit. I rebooted. Deep dive into the kernel of web development.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Grade 10 -->
-                <div class="timeline-item left glass-panel sensitive" data-magnet="0.2">
-                    <div class="year font-mono">GRADE 10</div>
-                    <div class="content">
-                        <h3>System Upgrade</h3>
-                        <p>New languages acquired. Frameworks integrated. The redemption began.</p>
+                <div class="timeline-item left sensitive" data-magnet="0.2">
+                    <div class="glass-panel">
+                        <div class="year font-mono">GRADE 10</div>
+                        <div class="content">
+                            <h3>System Upgrade</h3>
+                            <p>New languages acquired. Frameworks integrated. The redemption began.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Grade 11 -->
-                <div class="timeline-item right glass-panel sensitive highlight-border" data-magnet="0.2">
-                    <div class="year font-mono neon-text-green">GRADE 11 [CURRENT]</div>
-                    <div class="content">
-                        <h3>Scaling the Peak</h3>
-                        <p>Mastering complex algorithms, System Design, and building Legacy Architectures. The systems
-                            are now active.</p>
+                <div class="timeline-item right sensitive highlight-border" data-magnet="0.2">
+                    <div class="glass-panel">
+                        <div class="year font-mono neon-text-green">GRADE 11 [CURRENT]</div>
+                        <div class="content">
+                            <h3>Scaling the Peak</h3>
+                            <p>Mastering complex algorithms, System Design, and building Legacy Architectures. The systems are now active.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -658,12 +668,25 @@
                 </div>
 
                 <!-- Misc Adventure -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status waiting">STATUS: INTERACTIVE</div>
-                    <span class="stat-line">ID: TRINNO-007 | MODE: STORY</span>
-                    <h3>Misc. Adventure</h3>
-                    <p>A "Choose Your Own Path" story mode webpage. Your interactions drastically alter the narrative.
-                        Choices matter.</p>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status waiting">STATUS: INTERACTIVE</div>
+                        <span class="stat-line">ID: TRINNO-007 | MODE: STORY</span>
+                        <h3>Misc. Adventure</h3>
+                        <p>A "Choose Your Own Path" story mode webpage. Your interactions drastically alter the narrative.
+                            Choices matter.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="html"><i class="fab fa-html5"></i> HTML</span>
+                            <span class="tech-badge" data-tech="js"><i class="fab fa-js"></i> JS</span>
+                            <span class="tech-badge" data-tech="css"><i class="fab fa-css3-alt"></i> CSS</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -677,15 +700,29 @@
                             <span class="preview-hint">AWAITING PLAYER...</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
                 <!-- Project Surprise -->
-                <div class="tech-card sensitive" data-magnet="0.3">
-                    <div class="status">STATUS: CELEBRATION</div>
-                    <span class="stat-line">ID: TRINNO-008 | TYPE: DYNAMIC</span>
-                    <h3>Project Surprise</h3>
-                    <p>A dynamic birthday engine. Configurable for any name, with high-end animations to wish anyone
-                        instantly. Reusable joy.</p>
+                <div class="tech-card sensitive" data-magnet="0.3" data-tilt>
+                    <div class="card-glow"></div>
+                    <div class="card-border-glow"></div>
+                    <div class="card-corner tl"></div>
+                    <div class="card-corner tr"></div>
+                    <div class="card-corner bl"></div>
+                    <div class="card-corner br"></div>
+                    <div class="card-content">
+                        <div class="status">STATUS: CELEBRATION</div>
+                        <span class="stat-line">ID: TRINNO-008 | TYPE: DYNAMIC</span>
+                        <h3>Project Surprise</h3>
+                        <p>A dynamic birthday engine. Configurable for any name, with high-end animations to wish anyone
+                            instantly. Reusable joy.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge" data-tech="html"><i class="fab fa-html5"></i> HTML</span>
+                            <span class="tech-badge" data-tech="js"><i class="fab fa-js"></i> JS</span>
+                            <span class="tech-badge" data-tech="gsap"><i class="fas fa-magic"></i> GSAP</span>
+                        </div>
+                    </div>
                     <div class="preview-overlay">
                         <div class="scanline"></div>
                         <div class="preview-content">
@@ -698,6 +735,7 @@
                             <span class="preview-hint">LAUNCHING SURPRISE...</span>
                         </div>
                     </div>
+                    <div class="holographic-shine"></div>
                 </div>
 
             </div>
@@ -720,46 +758,46 @@
                 <div class="stat-card glass-panel" data-stat="commits">
                     <div class="stat-icon"><i class="fas fa-history"></i></div>
                     <div class="stat-info">
-                        <span class="stat-number" data-target="500">0</span>
+                        <span class="stat-number" data-target="360">0</span>
                         <span class="stat-label">GIT COMMITS</span>
                     </div>
-                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 65%"></div></div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 70%"></div></div>
                 </div>
 
                 <div class="stat-card glass-panel" data-stat="lines">
                     <div class="stat-icon"><i class="fas fa-file-code"></i></div>
                     <div class="stat-info">
-                        <span class="stat-number" data-target="25000">0</span>
+                        <span class="stat-number" data-target="190000">0</span>
                         <span class="stat-label">LINES OF CODE</span>
                     </div>
-                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 75%"></div></div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 95%"></div></div>
                 </div>
 
                 <div class="stat-card glass-panel" data-stat="hours">
                     <div class="stat-icon"><i class="fas fa-clock"></i></div>
                     <div class="stat-info">
-                        <span class="stat-number" data-target="1200">0</span>
+                        <span class="stat-number" data-target="1500">0</span>
                         <span class="stat-label">CODING HOURS</span>
                     </div>
-                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 60%"></div></div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 85%"></div></div>
                 </div>
 
-                <div class="stat-card glass-panel" data-stat="coffee">
-                    <div class="stat-icon"><i class="fas fa-coffee"></i></div>
+                <div class="stat-card glass-panel" data-stat="energy">
+                    <div class="stat-icon"><i class="fas fa-bolt"></i></div>
                     <div class="stat-info">
-                        <span class="stat-number" data-target="842">0</span>
-                        <span class="stat-label">CUPS OF COFFEE</span>
+                        <span class="stat-number" data-target="1000">0</span>
+                        <span class="stat-label">ENERGY DRINKS</span>
                     </div>
-                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 90%"></div></div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 88%"></div></div>
                 </div>
 
                 <div class="stat-card glass-panel" data-stat="bugs">
                     <div class="stat-icon"><i class="fas fa-bug"></i></div>
                     <div class="stat-info">
-                        <span class="stat-number" data-target="347">0</span>
+                        <span class="stat-number" data-target="550">0</span>
                         <span class="stat-label">BUGS SQUASHED</span>
                     </div>
-                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 70%"></div></div>
+                    <div class="stat-bar"><div class="stat-bar-fill" style="--width: 80%"></div></div>
                 </div>
             </div>
 
@@ -859,20 +897,20 @@
                             <span>GitHub</span>
                             <span class="link-handle">@trinno112</span>
                         </a>
-                        <a href="mailto:trinnoasphalt@gmail.com" class="link-card">
+                        <a href="mailto:kaushtubh457@gmail.com" class="link-card">
                             <i class="fas fa-envelope"></i>
                             <span>Email</span>
-                            <span class="link-handle">trinnoasphalt@gmail.com</span>
+                            <span class="link-handle">kaushtubh457@gmail.com</span>
                         </a>
-                        <a href="#" class="link-card">
+                        <a href="https://discord.com/users/code00xya" target="_blank" class="link-card">
                             <i class="fab fa-discord"></i>
                             <span>Discord</span>
-                            <span class="link-handle">trinno_asphalt</span>
+                            <span class="link-handle">code00xya</span>
                         </a>
-                        <a href="#" class="link-card">
+                        <a href="https://www.linkedin.com/in/trinno-asphalt-30b968344/" target="_blank" class="link-card">
                             <i class="fab fa-linkedin"></i>
                             <span>LinkedIn</span>
-                            <span class="link-handle">Coming Soon</span>
+                            <span class="link-handle">Trinno Asphalt</span>
                         </a>
                     </div>
                 </div>
@@ -906,9 +944,9 @@
                     </div>
                     <div class="footer-socials">
                         <a href="https://github.com/trinno112" target="_blank" class="social-icon footer-link" data-tooltip="GITHUB"><i class="fab fa-github"></i></a>
-                        <a href="mailto:trinnoasphalt@gmail.com" class="social-icon footer-link" data-tooltip="EMAIL"><i class="fas fa-envelope"></i></a>
-                        <a href="#" class="social-icon footer-link" data-tooltip="DISCORD"><i class="fab fa-discord"></i></a>
-                        <a href="#" class="social-icon footer-link" data-tooltip="LINKEDIN"><i class="fab fa-linkedin"></i></a>
+                        <a href="mailto:kaushtubh457@gmail.com" class="social-icon footer-link" data-tooltip="EMAIL"><i class="fas fa-envelope"></i></a>
+                        <a href="https://discord.com/users/code00xya" target="_blank" class="social-icon footer-link" data-tooltip="DISCORD"><i class="fab fa-discord"></i></a>
+                        <a href="https://www.linkedin.com/in/trinno-asphalt-30b968344/" target="_blank" class="social-icon footer-link" data-tooltip="LINKEDIN"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
 

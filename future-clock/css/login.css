@@ -1,0 +1,347 @@
+/* Windows Login Screen */
+
+#login-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default !important;
+  overflow: hidden;
+}
+
+#login-screen * {
+  cursor: default !important;
+}
+
+#login-screen input {
+  cursor: text !important;
+}
+
+#login-screen button {
+  cursor: pointer !important;
+}
+
+/* Clean Dark Background */
+.login-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* Subtle grid pattern */
+.login-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Scanline effect */
+.login-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.02) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  animation: scanlineMove 10s linear infinite;
+}
+
+@keyframes scanlineMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+/* Login Container - Clean Terminal Style */
+.login-container {
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid var(--neon-green);
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+}
+
+/* Large screens - bigger container */
+@media (min-width: 1024px) {
+  .login-container {
+    width: 1000px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .login-container {
+    width: 1000px;
+  }
+}
+
+/* Terminal Header Bar */
+.login-container::before {
+  content: 'TRINNO_OS_LOGIN.exe';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 20px;
+  background: var(--neon-green);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+
+/* Corner accent */
+.login-container::after {
+  content: '';
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  width: 25px;
+  height: 25px;
+  border-bottom: 2px solid var(--neon-green);
+  border-left: 2px solid var(--neon-green);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Login Header */
+.login-header {
+  text-align: center;
+  padding: 55px 40px 25px;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+/* Windows Logo - Matrix Style */
+.windows-logo {
+  display: grid;
+  grid-template-columns: repeat(2, 20px);
+  gap: 3px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.logo-square {
+  width: 20px;
+  height: 20px;
+  background: var(--neon-green);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.login-container:hover .logo-square {
+  box-shadow: 0 0 10px var(--neon-green);
+  opacity: 1;
+}
+
+.login-title {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--neon-green);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+/* Login Form */
+.login-form {
+  padding: 30px 40px 40px;
+}
+
+@media (min-width: 1024px) {
+  .login-form {
+    padding: 35px 50px 45px;
+  }
+}
+
+/* User Avatar - Minimalist */
+.user-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.avatar-placeholder {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--neon-green);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.avatar-placeholder:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.avatar-placeholder i {
+  font-size: 2rem;
+  color: var(--neon-green);
+}
+
+.user-name {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+/* Input Group */
+.input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--neon-green);
+  opacity: 0.7;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 45px;
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--neon-green);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+  background: rgba(0, 255, 65, 0.08);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.toggle-password:hover {
+  color: var(--neon-green);
+}
+
+/* Login Options */
+.login-options {
+  margin: 1rem 0;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.remember-me input[type='checkbox'] {
+  cursor: pointer;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: var(--neon-green);
+  border: none;
+  color: #000;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s;
+  margin-top: 1.5rem;
+}
+
+.login-button:hover {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Login Hint */
+.login-hint {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+/* Login Footer */
+.login-footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  border-top: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.footer-btn {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.footer-btn:hover {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+}
