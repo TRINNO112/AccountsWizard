@@ -183,35 +183,15 @@ class GameSFX {
     }
 }
 
-// --- 4. LIQUID DISTORTION ---
+// --- 4. LIQUID DISTORTION (DISABLED for performance) ---
 class LiquidEffects {
     constructor() {
-        this.canvas = document.getElementById('liquid-canvas');
-        if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
-        this.ripples = [];
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        this.animate();
+        // Disabled - canvas is hidden via CSS
     }
-    resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
-    addRipple(x, y) { this.ripples.push({ x, y, radius: 0, alpha: 1, speed: 2 }); }
-    animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        for (let i = 0; i < this.ripples.length; i++) {
-            let r = this.ripples[i];
-            r.radius += r.speed; r.alpha -= 0.02;
-            if (r.alpha <= 0) { this.ripples.splice(i, 1); i--; continue; }
-            this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeStyle = `rgba(0, 243, 255, ${r.alpha * 0.5})`;
-            this.ctx.stroke();
-        }
-        requestAnimationFrame(() => this.animate());
-    }
+    addRipple() {}
 }
 
-// --- PARTICLE SYSTEM ---
+// --- PARTICLE SYSTEM (Optimized for performance) ---
 class ParticleSystem {
     constructor() {
         this.canvas = document.getElementById('particle-canvas');
@@ -220,6 +200,7 @@ class ParticleSystem {
         this.particles = [];
         this.mouse = { x: 0, y: 0 };
         this.colors = ['#00f3ff', '#ff00ff', '#00ff41', '#bd00ff', '#ffd700'];
+        this.frameCount = 0;
 
         this.resize();
         window.addEventListener('resize', () => this.resize());
@@ -238,7 +219,8 @@ class ParticleSystem {
     }
 
     init() {
-        const particleCount = Math.min(80, Math.floor(window.innerWidth / 15));
+        // Reduced particle count for performance
+        const particleCount = Math.min(30, Math.floor(window.innerWidth / 50));
         for (let i = 0; i < particleCount; i++) {
             this.particles.push(this.createParticle());
         }
@@ -248,79 +230,61 @@ class ParticleSystem {
         return {
             x: Math.random() * this.canvas.width,
             y: Math.random() * this.canvas.height,
-            size: Math.random() * 3 + 1,
-            speedX: (Math.random() - 0.5) * 0.5,
-            speedY: (Math.random() - 0.5) * 0.5,
+            size: Math.random() * 2 + 1,
+            speedX: (Math.random() - 0.5) * 0.3,
+            speedY: (Math.random() - 0.5) * 0.3,
             color: this.colors[Math.floor(Math.random() * this.colors.length)],
-            alpha: Math.random() * 0.5 + 0.2,
-            pulse: Math.random() * Math.PI * 2
+            alpha: Math.random() * 0.4 + 0.1
         };
     }
 
     animate() {
+        this.frameCount++;
+        // Run at ~20fps instead of 60fps
+        if (this.frameCount % 3 !== 0) {
+            requestAnimationFrame(() => this.animate());
+            return;
+        }
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.particles.forEach((p, index) => {
-            // Update position
+        this.particles.forEach((p) => {
             p.x += p.speedX;
             p.y += p.speedY;
-            p.pulse += 0.02;
 
-            // Mouse interaction - particles move away from cursor
-            const dx = p.x - this.mouse.x;
-            const dy = p.y - this.mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 150) {
-                const force = (150 - dist) / 150;
-                p.x += (dx / dist) * force * 2;
-                p.y += (dy / dist) * force * 2;
-            }
-
-            // Wrap around screen
+            // Wrap around
             if (p.x < 0) p.x = this.canvas.width;
             if (p.x > this.canvas.width) p.x = 0;
             if (p.y < 0) p.y = this.canvas.height;
             if (p.y > this.canvas.height) p.y = 0;
 
-            // Draw particle with pulsing effect
-            const pulseSize = p.size + Math.sin(p.pulse) * 0.5;
-            const pulseAlpha = p.alpha + Math.sin(p.pulse) * 0.1;
-
+            // Simple circle - no radial gradient (saves huge GPU)
             this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, pulseSize, 0, Math.PI * 2);
+            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             this.ctx.fillStyle = p.color;
-            this.ctx.globalAlpha = pulseAlpha;
+            this.ctx.globalAlpha = p.alpha;
             this.ctx.fill();
-
-            // Draw glow
-            this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, pulseSize * 2, 0, Math.PI * 2);
-            const gradient = this.ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pulseSize * 2);
-            gradient.addColorStop(0, p.color);
-            gradient.addColorStop(1, 'transparent');
-            this.ctx.fillStyle = gradient;
-            this.ctx.globalAlpha = pulseAlpha * 0.3;
-            this.ctx.fill();
-
             this.ctx.globalAlpha = 1;
+        });
 
-            // Draw connections between nearby particles
-            this.particles.slice(index + 1).forEach(p2 => {
-                const dx2 = p.x - p2.x;
-                const dy2 = p.y - p2.y;
-                const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-                if (dist2 < 100) {
+        // Draw connections only between very close particles (no O(n^2) scan for distant ones)
+        for (let i = 0; i < this.particles.length; i++) {
+            for (let j = i + 1; j < this.particles.length; j++) {
+                const dx = this.particles[i].x - this.particles[j].x;
+                const dy = this.particles[i].y - this.particles[j].y;
+                const dist = dx * dx + dy * dy; // Skip sqrt for performance
+                if (dist < 8000) { // ~89px
                     this.ctx.beginPath();
-                    this.ctx.moveTo(p.x, p.y);
-                    this.ctx.lineTo(p2.x, p2.y);
-                    this.ctx.strokeStyle = p.color;
-                    this.ctx.globalAlpha = (1 - dist2 / 100) * 0.2;
+                    this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                    this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+                    this.ctx.strokeStyle = this.particles[i].color;
+                    this.ctx.globalAlpha = 0.1;
                     this.ctx.lineWidth = 0.5;
                     this.ctx.stroke();
                     this.ctx.globalAlpha = 1;
                 }
-            });
-        });
+            }
+        }
 
         requestAnimationFrame(() => this.animate());
     }
@@ -523,96 +487,62 @@ fetchGlobalData(); setInterval(fetchGlobalData, 60000);
 
 // --- 9. BOOT & EVENTS ---
 const bootMessages = [
-    // PHASE 1: BIOS & Hardware Init
+    // PHASE 1: BIOS
     "[BIOS] POST Check... OK",
     "[BIOS] CPU: TRINNO-CORE-X9 @ 4.8GHz... DETECTED",
-    "[BIOS] RAM: 64GB DDR5-6400 @ CL32... INITIALIZED",
-    "[BIOS] GPU: NVIDIA RTX 5090 Ti... DETECTED",
-    "[BIOS] NVME: Samsung 990 PRO 4TB... MOUNTED",
-    "[BIOS] Audio Subsystem: Dolby Atmos... ENABLED",
+    "[BIOS] RAM: 64GB DDR5-6400... INITIALIZED",
+    "[BIOS] GPU: RTX 5090 Ti... DETECTED",
 
-    // PHASE 2: Kernel Boot
+    // PHASE 2: Kernel
     "[KERNEL] Loading TRINNO_OS v5.3.1...",
-    "[KERNEL] Initializing memory management unit...",
-    "[KERNEL] Allocating heap space: 0x00000000 - 0xFFFFFFFF",
     "[KERNEL] Mounting virtual filesystem...",
-    "[KERNEL] Loading device drivers...",
-    "[DRIVER] Display controller: ACTIVE",
-    "[DRIVER] Input subsystem: ACTIVE",
-    "[DRIVER] Network interface: ACTIVE",
-    "[DRIVER] Audio controller: ACTIVE",
+    "[DRIVER] All device drivers: ACTIVE",
 
-    // PHASE 3: Network Init
-    "[NETWORK] Scanning available interfaces...",
+    // PHASE 3: Network
     "[NETWORK] eth0: 10.0.0.42/24 UP",
-    "[NETWORK] wlan0: 192.168.1.137/24 UP",
-    "[NETWORK] Establishing secure tunnel...",
-    "[NETWORK] VPN: tunnel0 -> 45.33.32.156:443",
     "[NETWORK] Handshake: TLS 1.3... SUCCESS",
-    "[NETWORK] DNS: 1.1.1.1, 8.8.8.8... RESOLVED",
-    "[NETWORK] Latency check: 12ms... OPTIMAL",
+    "[NETWORK] DNS: RESOLVED | Latency: 12ms",
 
     // PHASE 4: Security
-    "[SECURITY] Loading firewall rules... 847 RULES APPLIED",
-    "[SECURITY] Intrusion Detection System: ARMED",
+    "[SECURITY] Firewall: 847 RULES APPLIED",
     "[SECURITY] Encryption: AES-256-GCM... ENABLED",
     "[SECURITY] SSH Keys: RSA-4096... VERIFIED",
-    "[SECURITY] Certificate chain: VALID until 2027-12-31",
-    "[SECURITY] Two-factor auth module: STANDBY",
 
     // PHASE 5: Services
-    "[SERVICE] Starting daemon: redis-server... PID 1842",
-    "[SERVICE] Starting daemon: nginx... PID 1901",
-    "[SERVICE] Starting daemon: node-runtime... PID 2001",
-    "[SERVICE] Starting daemon: matrix-rain... PID 2077",
-    "[SERVICE] Loading UI framework: GSAP/TweenMax",
-    "[SERVICE] Loading voice synthesizer: JARVIS_V2",
-    "[SERVICE] Loading arcade subsystem...",
+    "[SERVICE] nginx, node-runtime, redis... STARTED",
+    "[SERVICE] UI framework: GSAP/TweenMax... LOADED",
+    "[SERVICE] Voice synthesizer: JARVIS_V2... READY",
 
-    // PHASE 6: Data Sync
-    "[SYNC] Connecting to CoinGecko API...",
-    "[SYNC] Fetching BTC/USD: $98,420.00",
-    "[SYNC] Connecting to Weather API...",
-    "[SYNC] Fetching PUNE temp: 28°C",
-    "[SYNC] Syncing leaderboard data...",
-    "[SYNC] Last session: RESTORED",
+    // PHASE 6: Sync
+    "[SYNC] BTC/USD & Weather API... CONNECTED",
+    "[SYNC] Session data: RESTORED",
 
-    // PHASE 7: System Checks
-    "[CHECK] Running memory diagnostic... PASS",
-    "[CHECK] Running disk integrity... PASS",
-    "[CHECK] Running GPU stress test... PASS",
-    "[CHECK] Verifying system binaries... 2,847 FILES OK",
-    "[CHECK] Loading environment variables... 156 VARS",
-
-    // PHASE 8: Final
-    "[BOOT] Initializing display compositor...",
-    "[BOOT] Loading theme: CYBER_NEON_DARK",
-    "[BOOT] Rendering viewport: 1920x1080",
-    "[BOOT] Enabling hardware acceleration...",
+    // PHASE 7: Final
+    "[BOOT] Theme: CYBER_NEON_DARK... LOADED",
+    "[BOOT] Hardware acceleration: ENABLED",
     "[BOOT] All subsystems: NOMINAL",
 
-    // PHASE 9: Welcome
-    "═══════════════════════════════════════════════",
-    "   TRINNO ASPHALT OPERATING SYSTEM v5.3.1",
-    "   Copyright (c) 2024-2026 Trinno Industries",
-    "   All rights reserved.",
-    "═══════════════════════════════════════════════",
-    " ",
+    // PHASE 8: Welcome
+    "═══════════════════════════════════════",
+    "  TRINNO ASPHALT OS v5.3.1",
+    "  Copyright (c) 2024-2026 Trinno Industries",
+    "═══════════════════════════════════════",
     "[READY] System boot complete.",
     "[READY] Awaiting operator authentication..."
 ];
 
 function typeWriterEffect(element, text, callback, playSound = false) {
     let i = 0;
-    const speed = 3 + Math.random() * 8; // Faster typing
+    const speed = 1 + Math.random() * 4; // Ultra fast typing
     function type() {
         if (i < text.length) {
-            element.textContent += text.charAt(i);
-            // Play key click sound occasionally
-            if (playSound && sfx.initialized && Math.random() > 0.7) {
+            // Type 2-3 chars at once for speed
+            const chunk = Math.min(3, text.length - i);
+            element.textContent += text.substring(i, i + chunk);
+            if (playSound && sfx.initialized && Math.random() > 0.8) {
                 sfx.playKeyClick();
             }
-            i++;
+            i += chunk;
             setTimeout(type, speed);
         } else if (callback) {
             callback();
@@ -622,7 +552,7 @@ function typeWriterEffect(element, text, callback, playSound = false) {
 }
 
 // Phase markers for sound effects
-const phaseMarkers = [6, 14, 22, 28, 35, 41, 46, 51]; // Indices where phases end
+const phaseMarkers = [3, 6, 9, 12, 15, 18, 20, 22]; // Indices where phases end
 
 function runBootSequence() {
     if (sessionStorage.getItem('booted')) { skipBootSequence(); return; }
@@ -682,8 +612,8 @@ function runBootSequence() {
                 sfx.playBootBeep();
             }
 
-            // Random delay between messages for that hacker feel
-            const delay = 20 + Math.random() * 60;
+            // Quick delay between messages
+            const delay = 10 + Math.random() * 30;
             setTimeout(displayNextMessage, delay);
         }, true);
     }

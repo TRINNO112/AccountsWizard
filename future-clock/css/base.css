@@ -116,3 +116,110 @@ body.matrix-mode {
   transform: translateY(0);
   transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+/* ============================================
+   MOBILE FIXES
+   ============================================ */
+@media (max-width: 768px) {
+  /* Hide HUD top-left (ARCHITECT) to prevent collision with BTC/PUNE */
+  .hud-item.top-left {
+    display: none;
+  }
+
+  /* Reposition top-center HUD so it doesn't collide */
+  .hud-item.top-center {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    gap: 10px;
+  }
+
+  /* Section titles - smaller on mobile to fit in one line */
+  .section-title {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    word-break: keep-all;
+    white-space: normal;
+    padding: 0 10px;
+  }
+
+  /* Content sections - less padding on mobile */
+  .content-section {
+    padding: 40px 0;
+  }
+
+  /* Ensure glass panels don't overflow on mobile */
+  .glass-panel {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  .hud-item.top-left {
+    display: none;
+  }
+
+  .hud-item.top-center {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    gap: 6px;
+  }
+
+  .hud-item.top-right {
+    display: none;
+  }
+
+  .section-title {
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+  }
+}
+
+/* New message sections - styling */
+#opening-message .glass-panel,
+#real-topic .glass-panel,
+#clock-reveal .glass-panel,
+#ai-reality .glass-panel,
+#tech-intro .glass-panel,
+#asking-you .glass-panel,
+#closing-message .glass-panel {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+#opening-message .glass-panel p,
+#real-topic .glass-panel p,
+#clock-reveal .glass-panel p,
+#ai-reality .glass-panel p,
+#tech-intro .glass-panel p,
+#asking-you .glass-panel p,
+#closing-message .glass-panel p {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  #opening-message .glass-panel,
+  #real-topic .glass-panel,
+  #clock-reveal .glass-panel,
+  #ai-reality .glass-panel,
+  #tech-intro .glass-panel,
+  #asking-you .glass-panel,
+  #closing-message .glass-panel {
+    padding: 1.5rem !important;
+    max-width: 95% !important;
+    margin: 0 auto !important;
+  }
+
+  #opening-message .glass-panel p,
+  #real-topic .glass-panel p,
+  #clock-reveal .glass-panel p,
+  #ai-reality .glass-panel p,
+  #tech-intro .glass-panel p,
+  #asking-you .glass-panel p,
+  #closing-message .glass-panel p {
+    font-size: 0.85rem !important;
+    line-height: 1.7 !important;
+  }
+}

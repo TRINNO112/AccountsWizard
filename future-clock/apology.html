@@ -486,6 +486,46 @@
             50% { opacity: 1; }
         }
 
+        /* Skip Link */
+        .skip-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            padding: 12px 24px;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--neon-cyan);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skip-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-cyan);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .skip-link:hover {
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+        }
+
+        .skip-link:hover::before {
+            left: 0;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .container {
@@ -577,6 +617,10 @@
                     <p id="para1"></p>
                     <p id="para2"></p>
                     <p id="para3"></p>
+                    <p id="para4"></p>
+                    <p id="para5"></p>
+                    <p id="para6"></p>
+                    <p id="para7"></p>
                     <p class="signature" id="signature"></p>
                     <div class="timestamp" id="timestamp"></div>
                 </div>
@@ -586,6 +630,11 @@
         <a href="index.html" class="back-link" id="back-link" style="opacity: 0; pointer-events: none;">
             <i class="fas fa-arrow-left"></i>
             <span>RETURN TO SYSTEM CORE</span>
+        </a>
+
+        <a href="index.html#real-topic" class="skip-link" id="skip-link">
+            <i class="fas fa-forward"></i>
+            <span>SKIP TO MAIN TOPIC</span>
         </a>
     </div>
 
@@ -945,9 +994,13 @@
 
                 this.messages = {
                     greeting: '> ACCESS GRANTED - TRANSMISSION DECRYPTED',
-                    para1: 'To my friends and unexpected visitors,',
-                    para2: 'I know I\'ve been absent. The code took over. The systems required architecture. But silence doesn\'t mean I forgot. I really would like to apologize if I ever made you feel ignored. That was never the intention.',
-                    para3: 'Building this was my way of staying connected, even when I couldn\'t be there in person. This archive is my way of saying: I\'m still here. And I\'ve been building... for us.',
+                    para1: 'Toh kuch baatein jo shayad hum pehle nahi kar paaye the, aaj unhe continue karte hain. Main hamesha chahta tha ki hum ache dost bane rahein, par shayad 8th grade ki ek misunderstanding ki wajah se humare beech distance badhta chala gaya.',
+                    para2: 'Haan, main us din ki Instagram conversation ki hi baat kar raha hoon. Shayad us time meri taraf se hi misunderstanding ho gayi thi. Isliye bhai, meri galti ke liye mujhe maaf kar dena.',
+                    para3: 'Agar tu maaf na bhi kar paaye, toh bas itna samajh lena ki us waqt galti meri hi thi. Main itna immature tha ki mujhe samajh hi nahi aata tha kya sahi hai, kya galat, aur kis par trust karna chahiye.',
+                    para4: 'Aakhirkaar meri wajah se hi humne kaafi saalon tak baat nahi ki. Uske liye sincerely sorry bro — it was all my fault.',
+                    para5: 'Umeed karta hoon ki tu mujhe maaf kar dega.',
+                    para6: 'Main jaanta hoon ki shayad yeh sab padhke tujhe ajeeb lagega, par mujhe lagta tha ki yeh bolna zaroori hai. Kuch baatein agar samay par nahi boli jaayein, toh woh hamesha ke liye reh jaati hain.',
+                    para7: 'Toh bas itna hi — tera purana dost, jo aaj bhi tera dost hai.',
                     signature: '- Trinno Asphalt',
                     timestamp: 'TRANSMISSION DATE: ' + new Date().toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -1036,21 +1089,49 @@
                         await this.typewriter.type(
                             document.getElementById('para1'),
                             this.messages.para1,
-                            35
+                            25
                         );
-                        await this.delay(300);
+                        await this.delay(400);
 
                         await this.typewriter.type(
                             document.getElementById('para2'),
                             this.messages.para2,
                             25
                         );
-                        await this.delay(300);
+                        await this.delay(400);
 
                         await this.typewriter.type(
                             document.getElementById('para3'),
                             this.messages.para3,
                             25
+                        );
+                        await this.delay(400);
+
+                        await this.typewriter.type(
+                            document.getElementById('para4'),
+                            this.messages.para4,
+                            25
+                        );
+                        await this.delay(400);
+
+                        await this.typewriter.type(
+                            document.getElementById('para5'),
+                            this.messages.para5,
+                            30
+                        );
+                        await this.delay(400);
+
+                        await this.typewriter.type(
+                            document.getElementById('para6'),
+                            this.messages.para6,
+                            25
+                        );
+                        await this.delay(400);
+
+                        await this.typewriter.type(
+                            document.getElementById('para7'),
+                            this.messages.para7,
+                            30
                         );
                         await this.delay(500);
 
