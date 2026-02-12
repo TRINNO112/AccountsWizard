@@ -1,6 +1,6 @@
 /* Reusable Components */
 
-/* CRT Overlay */
+/* CRT Overlay - Optimized with will-change for GPU layer */
 .test-crt-scanline {
   position: fixed;
   top: 0;
@@ -12,24 +12,28 @@
   background-size: 100% 3px, 3px 100%;
   z-index: 999;
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.3;
+  will-change: auto;
+  contain: strict;
 }
 
-/* 3D Grid Plane */
+/* 3D Grid Plane - Optimized */
 #grid-plane {
   position: fixed;
   bottom: -50%;
-  left: -50%;
-  width: 200%;
+  left: -25%;
+  width: 150%;
   height: 100%;
-  background-image: linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(0, 243, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.07) 1px, transparent 1px);
   background-size: 50px 50px;
   transform: perspective(500px) rotateX(60deg) translateY(0);
   animation: gridMove 20s linear infinite;
   z-index: -2;
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  will-change: transform;
+  contain: layout style;
 }
 
 @keyframes gridMove {
@@ -72,7 +76,8 @@
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.5;
+  will-change: auto;
 }
 
 /* Custom Cursor */

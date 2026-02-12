@@ -29,7 +29,7 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, #000 0%, #050508 40%, #0a0510 70%, #000 100%);
             color: var(--text-color);
             font-family: var(--font-mono);
             margin: 0;
@@ -40,7 +40,7 @@
             align-items: center;
         }
 
-        /* Matrix Rain Canvas */
+        /* Matrix Rain Canvas - Lighter */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -48,7 +48,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.12;
+            opacity: 0.06;
             pointer-events: none;
         }
 
@@ -109,7 +109,7 @@
             pointer-events: none;
         }
 
-        /* Scanline Effect */
+        /* Scanline Effect - Subtle */
         .scanline {
             position: fixed;
             top: 0;
@@ -117,11 +117,12 @@
             width: 100%;
             height: 100%;
             background:
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.08) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
             background-size: 100% 3px, 4px 100%;
             pointer-events: none;
             z-index: 99;
+            opacity: 0.6;
         }
 
         /* Classified Watermark */
@@ -141,13 +142,14 @@
             user-select: none;
         }
 
-        /* Corner Decorations */
+        /* Corner Decorations - Subtle */
         .corner-decoration {
             position: fixed;
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             pointer-events: none;
             z-index: 50;
+            opacity: 0.6;
         }
 
         .corner-decoration.top-left {
@@ -257,17 +259,19 @@
 
         /* Message Box - Terminal Style */
         .message-box {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(5, 5, 8, 0.95);
             border: 1px solid var(--neon-red);
             padding: 0;
             transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
         .message-box.unlocked {
             border-color: var(--neon-green);
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.1), 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
         /* Terminal Header */
@@ -303,7 +307,7 @@
 
         /* Message Content */
         .message-content {
-            padding: 2rem;
+            padding: 2rem 2.5rem;
         }
 
         .hidden-content {
@@ -363,12 +367,15 @@
         /* Apology Text Styling */
         .apology-text p {
             margin: 0;
-            padding: 0.8rem 0;
+            padding: 1rem 0.8rem;
             line-height: 1.9;
             opacity: 0;
             transform: translateY(10px);
-            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
-            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.06);
+            transition: all 0.4s ease;
+            font-size: 0.88rem;
+            color: rgba(224, 224, 224, 0.9);
+            border-radius: 4px;
         }
 
         .apology-text p:last-of-type {
@@ -381,9 +388,9 @@
         }
 
         .apology-text p:hover {
-            background: rgba(0, 255, 65, 0.05);
-            padding-left: 10px;
-            border-left: 2px solid var(--neon-green);
+            background: rgba(0, 255, 65, 0.04);
+            padding-left: 1.2rem;
+            border-left: 2px solid rgba(0, 255, 65, 0.5);
         }
 
         .apology-text .greeting {
@@ -664,16 +671,16 @@
             }
 
             animate() {
-                // Slower fade for more subtle effect
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+                // Very light fade for subtle traces
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
                 this.ctx.fillStyle = '#00ff41';
                 this.ctx.font = `${this.fontSize}px monospace`;
 
                 for (let i = 0; i < this.drops.length; i++) {
-                    // Only update some columns each frame for slower effect
-                    if (Math.random() > 0.7) continue;
+                    // Only update ~20% of columns each frame for very slow effect
+                    if (Math.random() > 0.2) continue;
 
                     const char = this.chars[Math.floor(Math.random() * this.chars.length)];
                     this.ctx.fillText(char, i * this.fontSize, this.drops[i] * this.fontSize);
@@ -684,8 +691,8 @@
                     this.drops[i]++;
                 }
 
-                // Slower animation - 80ms instead of 50ms
-                setTimeout(() => requestAnimationFrame(() => this.animate()), 80);
+                // Very slow animation - 150ms between frames
+                setTimeout(() => requestAnimationFrame(() => this.animate()), 150);
             }
         }
 
@@ -695,7 +702,7 @@
         class BinaryOverlay {
             constructor() {
                 this.container = document.getElementById('binary-overlay');
-                this.columns = 30;
+                this.columns = 15;
                 this.createColumns();
             }
 
