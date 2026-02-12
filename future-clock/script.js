@@ -826,6 +826,7 @@ function handleCommand(cmd) {
     setTimeout(() => { printToTerminal(`> ${response}`); if (jarvis.enabled) jarvis.speak(response); }, 200);
 }
 function initMatrixRain() { const canvas = document.getElementById('matrix-canvas'); if (!canvas) return; const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const chars = '01'; const cols = canvas.width / 16; const drops = []; for (let i = 0; i < cols; i++)drops[i] = 1; function d() { ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#0F0'; for (let i = 0; i < drops.length; i++) { ctx.fillText(chars[Math.floor(Math.random() * 2)], i * 16, drops[i] * 16); if (drops[i] * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; } if (document.body.classList.contains('loading')) requestAnimationFrame(d); } d(); }
+// Clock engine - update every 100ms instead of every frame (60fps)
 function timeEngine() {
     const now = new Date(); const t = now.toLocaleTimeString('en-US', { hour12: false });
     const clockEl = document.getElementById('rgb-clock');
@@ -845,9 +846,9 @@ function timeEngine() {
             glitchEl.style.textShadow = shadow;
         }
     }
-    requestAnimationFrame(timeEngine);
 }
 timeEngine();
+setInterval(timeEngine, 100);
 
 // --- PROJECT PREVIEW MODAL LOGIC ---
 const modal = document.getElementById('preview-modal');
